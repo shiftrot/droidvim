@@ -16,17 +16,33 @@
 
 package jackpal.androidterm.emulatorview;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.util.FloatMath;
 
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
+import java.io.*;
 
 class PaintRenderer extends BaseTextRenderer {
-    public PaintRenderer(int fontSize, ColorScheme scheme) {
+    private static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
+    @SuppressLint("NewApi")
+    public PaintRenderer(int fontSize, ColorScheme scheme, String fontFile) {
         super(scheme);
         mTextPaint = new Paint();
-        mTextPaint.setTypeface(Typeface.MONOSPACE);
+        if (AndroidCompat.SDK > 3) {
+            String fontPath = String.format("%s/%s", FONTPATH, (fontFile != null ? fontFile : "ate.ttf"));
+            File file = new File(fontPath);
+            if (file.exists()) {
+                mTextPaint.setTypeface(Typeface.createFromFile(file));
+            } else {
+                mTextPaint.setTypeface(Typeface.MONOSPACE);
+            }
+        } else {
+            mTextPaint.setTypeface(Typeface.MONOSPACE);
+        }
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(fontSize);
 

@@ -36,6 +36,7 @@ public class TermView extends EmulatorView {
         }
 
         setTextSize(settings.getFontSize());
+        setTextFont(settings.getFontFile());
         setUseCookedIME(settings.useCookedIME());
         setColorScheme(scheme);
         setBackKeyCharacter(settings.getBackKeyCharacter());

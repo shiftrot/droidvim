@@ -83,6 +83,15 @@
                 android:dialogTitle="@string/dialog_title_fontsize_preference" />
 
         <ListPreference
+            android:key="fontfile"
+            android:defaultValue="@string/pref_fontfile_default"
+            android:title="@string/title_fontfile_preference"
+            android:summary="@string/summary_fontfile_preference"
+            android:entries="@array/entries_fontfile_preference"
+            android:entryValues="@array/entries_fontfile_preference"
+            android:dialogTitle="@string/dialog_title_fontfile_preference" />
+
+        <ListPreference
                 android:key="color"
                 android:defaultValue="@string/pref_color_default"
                 android:title="@string/title_color_preference"

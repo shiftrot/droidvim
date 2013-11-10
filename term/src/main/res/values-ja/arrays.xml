@@ -62,6 +62,10 @@
         <item>288 pt</item>
     </string-array>
 
+    <string-array name="entries_fontfile_preference">
+        <item>システムフォント</item>
+    </string-array>
+
     <string-array name="entries_color_preference">
         <item>白背景に黒字</item>
         <item>黒背景に白字</item>

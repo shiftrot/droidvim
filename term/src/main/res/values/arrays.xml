@@ -68,6 +68,10 @@
         <item>288 pt</item>
     </string-array>
 
+    <string-array name="entries_fontfile_preference">
+        <item>system</item>
+    </string-array>
+
     <string-array name="entries_color_preference">
         <item>Black text on white</item>
         <item>White text on black</item>

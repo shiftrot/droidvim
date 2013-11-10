@@ -75,6 +75,11 @@
    <string name="summary_fontsize_preference">文字の高さと大きさを選択</string>
    <string name="dialog_title_fontsize_preference">フォントサイズ</string>
 
+   <string name="title_fontfile_preference">フォントファイル</string>
+   <string name="summary_fontfile_preference">フォントを選択</string>
+   <string name="dialog_title_fontfile_preference">フォントファイル</string>
+   <string name="entry_fontfile_default">システムフォント</string>
+
    <string name="title_color_preference">色</string>
    <string name="summary_color_preference">文字の色を選択</string>
    <string name="dialog_title_color_preference">文字の色</string>

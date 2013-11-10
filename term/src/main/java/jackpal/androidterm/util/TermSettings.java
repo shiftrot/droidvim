@@ -35,6 +35,7 @@ public class TermSettings {
     private int mCursorStyle;
     private int mCursorBlink;
     private int mFontSize;
+    private String mFontFile;
     private int mColorId;
     private boolean mUTF8ByDefault;
     private int mBackKeyAction;
@@ -64,6 +65,7 @@ public class TermSettings {
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
     private static final String FONTSIZE_KEY = "fontsize";
+    private static final String FONTFILE_KEY = "fontfile";
     private static final String COLOR_KEY = "color";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String BACKACTION_KEY = "backaction";
@@ -164,6 +166,7 @@ public class TermSettings {
         mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
         mCursorBlink = Integer.parseInt(res.getString(R.string.pref_cursorblink_default));
         mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
+        mFontFile = res.getString(R.string.pref_fontfile_default);
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
@@ -192,6 +195,7 @@ public class TermSettings {
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 288);
+        mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
@@ -257,6 +261,10 @@ public class TermSettings {
 
     public int getFontSize() {
         return mFontSize;
+    }
+
+    public String getFontFile() {
+        return mFontFile;
     }
 
     public int[] getColorScheme() {
