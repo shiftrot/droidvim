@@ -164,8 +164,9 @@ class TranscriptScreen implements Screen {
      * @param cursorMode the cursor mode. See TextRenderer.
      */
     public final void drawText(int row, Canvas canvas, float x, float y,
-            TextRenderer renderer, int cx, int selx1, int selx2, String imeText, int cursorMode) {
+            TextRenderer renderer, int curx, int selx1, int selx2, String imeText, int cursorMode) {
         char[] line;
+        int cx = imeText.length() > 0 ? -1 : curx;
         StyleRow color;
         int cursorWidth = 1;
         try {
@@ -284,15 +285,26 @@ class TranscriptScreen implements Screen {
                     cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
         }
 
+        cx = curx;
         if (cx >= 0 && imeText.length() > 0) {
             int imeLength = Math.min(columns, imeText.length());
             int imeOffset = imeText.length() - imeLength;
-            int imePosition = Math.min(cx, columns - imeLength);
+            int wimeLength = Math.min(columns, getStringWidth(imeText));
+            int imePosition = Math.min(cx, columns - wimeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
                     imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal),
                     -1, 0, 0, 0, 0);
         }
      }
+
+    private int getStringWidth(String text) {
+        if (text.length() == 0) return 0;
+        int len = 0;
+        for (int i = 0; i < text.length(); i++) {
+            len += UnicodeTranscript.charWidth(text.codePointAt(i));
+        }
+        return len;
+    }
 
     /**
      * Get the count of active rows.

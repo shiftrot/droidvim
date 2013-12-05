@@ -63,8 +63,9 @@ class PaintRenderer extends BaseTextRenderer {
         mTextPaint.setColor(mPalette[backColor]);
 
         float left = x + lineOffset * mCharWidth;
+        float textWidth = mTextPaint.measureText(new String(text));
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
-                left + runWidth * mCharWidth, y,
+                left + textWidth, y,
                 mTextPaint);
 
         boolean cursorVisible = lineOffset <= cursorOffset && cursorOffset < (lineOffset + runWidth);
