@@ -40,7 +40,11 @@ public class RemoteInterface extends Activity {
     protected static final String PRIVACT_OPEN_NEW_WINDOW = "jackpal.androidterm.private.OPEN_NEW_WINDOW";
     protected static final String PRIVACT_SWITCH_WINDOW = "jackpal.androidterm.private.SWITCH_WINDOW";
 
+    private static String mHandle = null;
+    private static String mFname = null;
+
     protected static final String PRIVEXTRA_TARGET_WINDOW = "jackpal.androidterm.private.target_window";
+    protected static final String EXTRA_WINDOW_HANDLE = "jackpal.androidterm.window_handle";
 
     protected static final String PRIVACT_ACTIVITY_ALIAS = "jackpal.androidterm.TermInternal";
 
@@ -117,8 +121,51 @@ public class RemoteInterface extends Activity {
             if (extraStream instanceof Uri) {
                 String path = ((Uri) extraStream).getPath();
                 File file = new File(path);
-                String dirPath = file.isDirectory() ? path : file.getParent();
-                openNewWindow("cd " + quoteForBash(dirPath));
+                String command = mSettings.getIntentCommand();
+                if (command.matches("^:.*") && file.isDirectory() == false) {
+                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    command = String.format(command, path);
+                    // Find the target window
+                    mHandle = switchToWindow(mHandle, command);
+                } else if (file.isDirectory() == false) {
+                    command = String.format(command, path);
+                    mHandle = openNewWindow(command);
+                } else {
+                    String dirPath = file.isDirectory() ? path : file.getParent();
+                    openNewWindow("cd " + quoteForBash(dirPath));
+                }
+            }
+        } else if ((action.equals("android.intent.action.VIEW")) ||
+                   (action.equals("android.intent.action.EDIT")) ||
+                   (action.equals("android.intent.action.PICK")) ||
+                   (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT"))) {
+            String url = null;
+            if (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT")) {
+                url = myIntent.getExtras().getString("com.googlecode.android_scripting.extra.SCRIPT_PATH");
+            } else if (myIntent.getScheme() != null && myIntent.getScheme().equals("file")) {
+                if (myIntent.getData() != null) url = myIntent.getData().getPath();
+            }
+            if (url != null) {
+                String command = mSettings.getIntentCommand();
+                if (command.matches("^:.*")) {
+                    url = url.replaceAll("([ ()%#&$])", "\\\\$1");
+                    command = String.format(command, url);
+                    // Find the target window
+                    mHandle = switchToWindow(mHandle, command);
+                 } else if ((mHandle != null) && (url.equals(mFname))) {
+                    // Target the request at an existing window if open
+                    command = String.format(command, url);
+                    mHandle = switchToWindow(mHandle, command);
+                } else {
+                    // Open a new window
+                    command = String.format(command, url);
+                    mHandle = openNewWindow(command);
+                }
+                mFname = url;
+
+                Intent result = new Intent();
+                result.putExtra(EXTRA_WINDOW_HANDLE, mHandle);
+                setResult(RESULT_OK, result);
             }
         } else {
             // Intent sender may not have permissions, ignore any extras
@@ -211,6 +258,45 @@ public class RemoteInterface extends Activity {
         intent.putExtra(PRIVEXTRA_TARGET_WINDOW, index);
         startActivity(intent);
 
+        return handle;
+    }
+
+    private String switchToWindow(String handle, String iInitialCommand) {
+        TermService service = mTermService;
+        if (service == null) {
+            finish();
+            return null;
+        }
+
+        // Find the target window
+        SessionList sessions = service.getSessions();
+        ShellTermSession target = null;
+        int index;
+        for (index = 0; index < sessions.size(); ++index) {
+            ShellTermSession session = (ShellTermSession) sessions.get(index);
+            String h = session.getHandle();
+            if (h != null && h.equals(handle)) {
+                target = session;
+                break;
+            }
+        }
+
+        if (target == null) {
+            if (sessions.isEmpty() || iInitialCommand == null) return openNewWindow(iInitialCommand);
+            target = (ShellTermSession) sessions.get(0);
+        }
+
+        if (iInitialCommand != null) {
+            target.write(iInitialCommand);
+            target.write('\r');
+        }
+
+        handle = target.getHandle();
+        Intent intent = new Intent(PRIVACT_SWITCH_WINDOW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(PRIVEXTRA_TARGET_WINDOW, index);
+        startActivity(intent);
         return handle;
     }
 }

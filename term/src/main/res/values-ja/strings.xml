@@ -119,6 +119,10 @@
    <string name="summary_initialcommand_preference">開始時、シェルにコマンドを送信</string>
    <string name="dialog_title_initialcommand_preference">初期コマンド</string>
 
+   <string name="title_intentcommand_preference">インテントコマンド</string>
+   <string name="summary_intentcommand_preference">インテント呼出時に実行するコマンド</string>
+   <string name="dialog_title_intentcommand_preference">インテントコマンド\n(%s:ファイル名)</string>
+
    <string name="title_termtype_preference">ターミナルタイプ</string>
    <string name="summary_termtype_preference">シェルに報告するターミナルタイプ</string>
    <string name="dialog_title_termtype_preference">ターミナルタイプ</string>

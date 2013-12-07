@@ -47,6 +47,7 @@ public class TermSettings {
     private String mShell;
     private String mFailsafeShell;
     private String mInitialCommand;
+    private String mIntentCommand;
     private String mTermType;
     private boolean mCloseOnExit;
     private boolean mVerifyPath;
@@ -78,6 +79,7 @@ public class TermSettings {
     private static final String IME_KEY = "ime";
     private static final String SHELL_KEY = "shell";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
+    private static final String INTENTCOMMAND_KEY = "intentcommand";
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
     private static final String VERIFYPATH_KEY = "verify_path";
@@ -182,6 +184,7 @@ public class TermSettings {
         mFailsafeShell = res.getString(R.string.pref_shell_default);
         mShell = mFailsafeShell;
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
+        mIntentCommand = res.getString(R.string.pref_intentcommand_default);
         mTermType = res.getString(R.string.pref_termtype_default);
         mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
         mVerifyPath = res.getBoolean(R.bool.pref_verify_path_default);
@@ -214,6 +217,7 @@ public class TermSettings {
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
+        mIntentCommand = readStringPref(INTENTCOMMAND_KEY, mIntentCommand);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);
         mVerifyPath = readBooleanPref(VERIFYPATH_KEY, mVerifyPath);
@@ -349,6 +353,10 @@ public class TermSettings {
 
     public String getInitialCommand() {
         return mInitialCommand;
+    }
+
+    public String getIntentCommand() {
+        return mIntentCommand;
     }
 
     public String getTermType() {

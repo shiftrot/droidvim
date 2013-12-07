@@ -57,10 +57,36 @@
                 <action android:name="jackpal.androidterm.OPEN_NEW_WINDOW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/javascript" />
+                <data android:mimeType="application/json" />
+                <data android:mimeType="application/atom+xml" />
+                <data android:mimeType="application/soap+xm" />
+                <data android:mimeType="application/xhtml+xml" />
+                <data android:mimeType="application/xml-dtd" />
+                <data android:mimeType="application/x-latex" />
+                <data android:mimeType="application/*xml" />
+                <data android:mimeType="application/ecmascript" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.googlecode.android_scripting.action.EDIT_SCRIPT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity-alias
                 android:name="TermHere"
-                android:label="@string/activity_term_here_title"
                 android:targetActivity="RemoteInterface"
                 android:exported="true"
         >
