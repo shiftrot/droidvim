@@ -85,6 +85,7 @@
         <item>アクティビティを閉じ，セッションは実行を継続</item>
         <item>ターミナルにESCを送出</item>
         <item>ターミナルにTABを送出</item>
+        <item>IMEのトグル</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

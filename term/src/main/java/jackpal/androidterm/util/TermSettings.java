@@ -158,7 +158,8 @@ public class TermSettings {
     public static final int BACK_KEY_CLOSES_ACTIVITY = 2;
     public static final int BACK_KEY_SENDS_ESC = 3;
     public static final int BACK_KEY_SENDS_TAB = 4;
-    private static final int BACK_KEY_MAX = 4;
+    public static final int BACK_KEY_TOGGLE_IME = 5;
+    private static final int BACK_KEY_MAX = 5;
 
     public TermSettings(Resources res, SharedPreferences prefs) {
         readDefaultPrefs(res);
@@ -300,6 +301,7 @@ public class TermSettings {
     }
 
     public boolean backKeySendsCharacter() {
+        if (mBackKeyAction == BACK_KEY_TOGGLE_IME) return false;
         return mBackKeyAction >= BACK_KEY_SENDS_ESC;
     }
 

@@ -919,6 +919,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             case TermSettings.BACK_KEY_CLOSES_WINDOW:
                 doCloseWindow();
                 return true;
+            case TermSettings.BACK_KEY_TOGGLE_IME:
+                doToggleSoftKeyboard();
+                return true;
             default:
                 return false;
             }
