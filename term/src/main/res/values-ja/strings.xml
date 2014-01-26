@@ -43,7 +43,7 @@
    <string name="edit_text">テキスト編集</string>
    <string name="select_text">テキスト選択</string>
    <string name="copy_all">すべてコピー</string>
-   <string name="paste">貼付け</string>
+   <string name="paste">貼り付け</string>
    <string name="send_control_key">コントールキー送信</string>
    <string name="send_fn_key">fnキー送信</string>
 
@@ -74,8 +74,12 @@
    <string name="title_functionbar_hide">ファンクションバーを隠す</string>
 
    <string name="title_actionbar_preference">アクションバー</string>
-   <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降).</string>
+   <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降)</string>
    <string name="dialog_title_actionbar_preference">アクションバーの振舞い</string>
+
+   <string name="title_orientation_preference">画面の向き</string>
+   <string name="summary_orientation_preference">画面の向きを選択</string>
+   <string name="dialog_title_orientation_preference">画面の向き</string>
 
    <string name="title_cursorstyle_preference">カーソルのスタイル</string>
    <string name="summary_cursorstyle_preference">カーソルスタイルの選択</string>
@@ -88,7 +92,7 @@
    <string name="text_preferences">テキスト</string>
 
    <string name="title_utf8_by_default_preference">デフォルトをUTF-8にする</string>
-   <string name="summary_utf8_by_default_preference">デフォルトでUTF-8モードを可能にするか否か.</string>
+   <string name="summary_utf8_by_default_preference">エンコーディングをUTF-8に設定する</string>
 
    <string name="title_hw_acceleration_by_default_preference">ハードウェアアクセラレーション</string>
    <string name="summary_hw_acceleration_by_default_preference">ハードウェアアクセラレーションを有効にする</string>
@@ -137,16 +141,16 @@
 
    <string name="keyboard_preferences">キーボード</string>
 
-   <string name="title_backaction_preference">Backボタンの振舞い</string>
-   <string name="summary_backaction_preference">Backボタンの振る舞いを選択</string>
+   <string name="title_backaction_preference">Backボタン</string>
+   <string name="summary_backaction_preference">Backボタンの振舞いを選択</string>
    <string name="dialog_title_backaction_preference">Backボタンの振舞い</string>
 
    <string name="title_controlkey_preference">コントロールキー</string>
-   <string name="summary_controlkey_preference">コントロールキーを選択</string>
+   <string name="summary_controlkey_preference">コントロールキーの割り当て先を選択</string>
    <string name="dialog_title_controlkey_preference">コントロールキー</string>
 
    <string name="title_fnkey_preference">Fnキー</string>
-   <string name="summary_fnkey_preference">Fnキーを選択</string>
+   <string name="summary_fnkey_preference">Fnキーの割り当て先を選択</string>
    <string name="dialog_title_fnkey_preference">Fnキー</string>
 
    <string name="title_ime_preference">インプットメソッド</string>
@@ -159,7 +163,7 @@
    <string name="dialog_title_shell_preference">シェル</string>
 
    <string name="title_initialcommand_preference">初期コマンド</string>
-   <string name="summary_initialcommand_preference">開始時、シェルにコマンドを送信</string>
+   <string name="summary_initialcommand_preference">シェル開始時に実行するコマンド</string>
    <string name="dialog_title_initialcommand_preference">初期コマンド</string>
 
    <string name="title_intentcommand_preference">インテントコマンド</string>
@@ -167,20 +171,23 @@
    <string name="dialog_title_intentcommand_preference">インテントコマンド\n(%s:ファイル名)</string>
 
    <string name="title_termtype_preference">ターミナルタイプ</string>
-   <string name="summary_termtype_preference">シェルに報告するターミナルタイプ</string>
+   <string name="summary_termtype_preference">シェルに設定するターミナルタイプ</string>
    <string name="dialog_title_termtype_preference">ターミナルタイプ</string>
 
    <string name="title_close_window_on_process_exit_preference">終了時にウインドウを閉じる</string>
-   <string name="summary_close_window_on_process_exit_preference">シェル終了時にウインドウを閉じるか否か.</string>
+   <string name="summary_close_window_on_process_exit_preference">シェル終了時にウインドウを閉じる</string>
 
    <string name="title_verify_path_preference">PATHエントリを照合</string>
-   <string name="summary_verify_path_preference">アクセス不可ディレクトリをPATHから取り除くべきか否か.</string>
+   <string name="summary_verify_path_preference">アクセス不可ディレクトリをPATHから取り除く</string>
 
    <string name="title_do_path_extensions_preference">PATH拡張の許可</string>
-   <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可するか否か (PATHへの追加).</string>
+   <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
 
    <string name="title_allow_prepend_path_preference">PATHへのプリペンドの許可</string>
-   <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可するか否か (PATHの先頭に追加).</string>
+   <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
+
+   <string name="title_home_path_preference">ホームディレクトリ</string>
+   <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ</string>
 
    <string name="control_key_dialog_title">コントロールキーとファンクションキー</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
@@ -206,8 +213,15 @@
   <string name="email_transcript_no_email_activity_found">転写を送信するEメール用アクティビティが選択できませんでした.</string>
 
   <string name="alt_sends_esc">AltキーでESCを送出</string>
-  <string name="alt_sends_esc_summary_on">Alt keyでESCを送出する.</string>
-  <string name="alt_sends_esc_summary_off">Alt keyでESCを送出しない.</string>
+  <string name="alt_sends_esc_summary_on">AltキーでESCを送出する</string>
+  <string name="alt_sends_esc_summary_off">AltキーでESCを送出しない</string>
+
+  <string name="title_mouse_tracking_preference">マウスイベントの送出</string>
+  <string name="summary_mouse_tracking_preference">タップやスワイプを端末へのエスケープシーケンスに変換する</string>
+
+  <string name="title_use_keyboard_shortcuts">キーボードショートカット</string>
+  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: ウィンドウ移動, Ctrl-Shift-N: 新しいウィンドウ, Ctrl-Shift-V: 貼り付け</string>
+  <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
 
   <string name="title_pre_ime_shortcuts">IMEショートカット</string>
   <string name="summary_title_pre_ime_shortcuts">ハードウェアキーボードで直接入力とIME入力を切り替える</string>
@@ -217,4 +231,10 @@
   <string name="pref_switch_charset">[漢字]</string>
 
   <string name="help">ヘルプ</string>
+  <!-- AddShortcut.java -->
+  <string name="addshortcut_button_find_command">コマンド指定</string>
+  <string name="addshortcut_command_window_instructions">コマンドはフルパスで指定し引数は省略可. フルパスで指定しない場合は引数ウィンドウのみで設定 (例: cd /sdcard).</string>
+  <string name="addshortcut_arguments_label">引数\:</string>
+  <string name="addshortcut_shortcut_label">ラベル\:</string>
+  <string name="addshortcut_button_text_icon">テキストアイコン</string>
 </resources>
