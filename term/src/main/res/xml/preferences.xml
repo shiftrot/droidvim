@@ -195,15 +195,6 @@
             android:title="@string/text_preferences">
 
         <ListPreference
-                android:key="fontsize"
-                android:defaultValue="@string/pref_fontsize_default"
-                android:title="@string/title_fontsize_preference"
-                android:summary="@string/summary_fontsize_preference"
-                android:entries="@array/entries_fontsize_preference"
-                android:entryValues="@array/entryvalues_fontsize_preference"
-                android:dialogTitle="@string/dialog_title_fontsize_preference" />
-
-        <ListPreference
             android:key="fontfile"
             android:defaultValue="@string/pref_fontfile_default"
             android:title="@string/title_fontfile_preference"
@@ -211,6 +202,17 @@
             android:entries="@array/entries_fontfile_preference"
             android:entryValues="@array/entries_fontfile_preference"
             android:dialogTitle="@string/dialog_title_fontfile_preference" />
+
+        <!-- <ListPreference -->
+        <EditTextPreference
+                android:key="fontsize"
+                android:defaultValue="@string/pref_fontsize_default"
+                android:title="@string/title_fontsize_preference"
+                android:summary="@string/summary_fontsize_preference"
+                android:entries="@array/entries_fontsize_preference"
+                android:entryValues="@array/entryvalues_fontsize_preference"
+                android:dialogTitle="@string/dialog_title_fontsize_preference"
+                android:inputType="number" />
 
         <EditTextPreference
                 android:key="fontleading"
