@@ -16,6 +16,7 @@
 
 package jackpal.androidterm.emulatorview;
 
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -535,10 +537,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         commonConstructor(context);
     }
 
+    private static boolean mHardwareAcceleration = true;
+    @SuppressLint("NewApi")
     private void commonConstructor(Context context) {
         // TODO: See if we want to use the API level 11 constructor to get new flywheel feature.
         mScroller = new Scroller(context);
         mMouseTrackingFlingRunner.mScroller = new Scroller(context);
+        if ((AndroidCompat.SDK >= 11) && (mHardwareAcceleration == false)) {
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
     }
 
@@ -1423,6 +1430,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return flag && mIMECtrlBeginBatchEditDisable;
     }
 
+    @SuppressLint("NewApi")
     private void doEscCtrl() {
         while (true) {
             int ctrl = mEmulator.getEscCtrlMode();
@@ -1474,6 +1482,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 14:
                 break;
             case 15:
+                break;
+            case 100:
+                mHardwareAcceleration = true;
+                this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                break;
+            case 101:
+                mHardwareAcceleration = false;
+                this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 break;
             default:
                 break;
