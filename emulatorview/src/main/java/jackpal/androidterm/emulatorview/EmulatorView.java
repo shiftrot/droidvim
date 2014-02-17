@@ -990,6 +990,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         requestFocus();
     }
 
+    public void setAmbiWidth(int width) {
+        UnicodeTranscript.setAmbiWidth(width);
+    }
+
     /**
      * Get the {@link TermSession} corresponding to this view.
      *

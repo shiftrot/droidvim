@@ -37,6 +37,7 @@ public class TermSettings {
     private int mFontSize;
     private int mFontLeading;
     private String mFontFile;
+    private int mAmbiWidth;
     private int mColorId;
     private boolean mUTF8ByDefault;
     private int mBackKeyAction;
@@ -68,6 +69,7 @@ public class TermSettings {
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String FONTLEADING_KEY = "fontleading";
     private static final String FONTFILE_KEY = "fontfile";
+    private static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String COLOR_KEY = "color";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String BACKACTION_KEY = "backaction";
@@ -170,6 +172,7 @@ public class TermSettings {
         mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
         mFontLeading = Integer.parseInt(res.getString(R.string.pref_fontleading_default));
         mFontFile = res.getString(R.string.pref_fontfile_default);
+        mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiwidth_default));
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
@@ -200,6 +203,7 @@ public class TermSettings {
         mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 288);
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
+        mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
@@ -273,6 +277,10 @@ public class TermSettings {
 
     public String getFontFile() {
         return mFontFile;
+    }
+
+    public int getAmbiWidth() {
+        return mAmbiWidth;
     }
 
     public int[] getColorScheme() {
