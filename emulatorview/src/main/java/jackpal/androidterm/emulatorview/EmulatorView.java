@@ -281,6 +281,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private int createLinks(int row)
     {
+        if (mCreateURL == false) return 1;
         TranscriptScreen transcriptScreen = mEmulator.getScreen();
         char [] line = transcriptScreen.getScriptLine(row);
         int lineCount = 1;
@@ -1022,6 +1023,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIMEInputTypeGoogle = getDevBoolean(this.getContext(), "IME_INPUT_TYPE_GOOGLE", true);
         mIMECtrlBeginBatchEditDisable = getDevBoolean(this.getContext(), "BatchEditDisable", true);
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
+        mCreateURL = getDevBoolean(this.getContext(), "CreateURL", false);
 
         requestFocus();
     }
@@ -1415,6 +1417,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private static boolean mGrave = false;
     private static boolean mSwitchCharset = false;
     private static boolean mHaveFullHwKeyboard = false;
+    private static boolean mCreateURL = false;
 
     public void setHaveFullHwKeyboard(boolean mode) {
         mHaveFullHwKeyboard = mode;
@@ -1592,6 +1595,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 14:
                 break;
             case 15:
+                break;
+            case 20:
+                mCreateURL = !getDevBoolean(this.getContext(), "CreateURL", false);
+                setDevBoolean(this.getContext(), "CreateURL", mCreateURL);
                 break;
             case 998:
             case 999:
@@ -2131,6 +2138,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public String getURLat(float x, float y)
     {
+        if (mCreateURL == false) return null;
         float w = getWidth();
         float h = getHeight();
 
