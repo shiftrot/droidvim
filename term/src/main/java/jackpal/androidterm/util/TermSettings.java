@@ -42,6 +42,7 @@ public class TermSettings {
     private boolean mUTF8ByDefault;
     private int mActionBarIconAction;
     private int mActionBarPlusAction;
+    private int mActionBarMinusAction;
     private int mActionBarXAction;
     private int mActionBarUserAction;
     private int mBackKeyAction;
@@ -79,6 +80,7 @@ public class TermSettings {
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String ACTIONBAR_ICON_KEY = "actionbar_icon_action";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
+    private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
     private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
     private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
     private static final String BACKACTION_KEY = "backaction";
@@ -189,6 +191,7 @@ public class TermSettings {
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
         mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_icon_default));
         mActionBarPlusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_plus_default));
+        mActionBarMinusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_minus_default));
         mActionBarXAction = Integer.parseInt(res.getString(R.string.pref_actionbar_x_default));
         mActionBarUserAction = Integer.parseInt(res.getString(R.string.pref_actionbar_user_default));
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
@@ -225,6 +228,7 @@ public class TermSettings {
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mActionBarIconAction = readIntPref(ACTIONBAR_ICON_KEY, mActionBarIconAction, ACTIONBAR_KEY_MAX);
         mActionBarPlusAction = readIntPref(ACTIONBAR_PLUS_KEY, mActionBarPlusAction, ACTIONBAR_KEY_MAX);
+        mActionBarMinusAction = readIntPref(ACTIONBAR_MINUS_KEY, mActionBarMinusAction, ACTIONBAR_KEY_MAX);
         mActionBarXAction    = readIntPref(ACTIONBAR_X_KEY,    mActionBarXAction,    ACTIONBAR_KEY_MAX);
         mActionBarUserAction = readIntPref(ACTIONBAR_USER_KEY, mActionBarUserAction, ACTIONBAR_KEY_MAX);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
@@ -319,6 +323,10 @@ public class TermSettings {
 
     public int getActionBarPlusKeyAction() {
         return mActionBarPlusAction;
+    }
+
+    public int getActionBarMinusKeyAction() {
+        return mActionBarMinusAction;
     }
 
     public int getActionBarXKeyAction() {

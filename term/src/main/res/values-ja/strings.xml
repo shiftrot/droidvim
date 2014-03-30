@@ -16,6 +16,7 @@
 -->
 <resources>
    <string name="plus">＋</string>
+   <string name="minus">－</string>
    <string name="x">Ｘ</string>
    <string name="user">？</string>
    <string name="application_terminal">端末エミュレータ</string>
@@ -23,7 +24,6 @@
    <string name="new_window">新規ウインドウ</string>
    <string name="close_window">ウインドウを閉じる</string>
    <string name="window_list">ウインドウ一覧</string>
-   <string name="minus">貼り付け</string>
    <string name="prev_window">前のウインドウ</string>
    <string name="next_window">次のウインドウ</string>
    <string name="reset">端末をリセット</string>
@@ -104,6 +104,9 @@
    <string name="title_actionbar_plus_preference">＋ボタン</string>
    <string name="summary_actionbar_plus_preference">＋ボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_plus_preference">＋ボタンの振舞い</string>
+   <string name="title_actionbar_minus_preference">－ボタン</string>
+   <string name="summary_actionbar_minus_preference">－ボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_minus_preference">－ボタンの振舞い</string>
    <string name="title_actionbar_x_preference">Ｘボタン</string>
    <string name="summary_actionbar_x_preference">Ｘボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_x_preference">Ｘボタンの振舞い</string>

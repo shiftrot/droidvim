@@ -676,6 +676,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else {
             menu.removeItem(R.id.menu_plus);
         }
+        if (mSettings.getActionBarMinusKeyAction() != 999) {
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_minus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        } else {
+            menu.removeItem(R.id.menu_minus);
+        }
         if (mSettings.getActionBarXKeyAction() != 999) {
             MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_x), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         } else {
@@ -702,6 +707,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) {
                 int key = mSettings.getActionBarPlusKeyAction();
+                return doSendActionBarKey(view, key);
+            }
+        } else if (id == R.id.menu_minus) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) {
+                int key = mSettings.getActionBarMinusKeyAction();
                 return doSendActionBarKey(view, key);
             }
         } else if (id == R.id.menu_close_window) {

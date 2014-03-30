@@ -16,13 +16,13 @@
 -->
 <resources>
    <string name="plus">+</string>
+   <string name="minus">-</string>
    <string name="x">X</string>
    <string name="user">\?</string>
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Preferences</string>
    <string name="new_window">New window</string>
    <string name="close_window">Close window</string>
-   <string name="minus">Paste</string>
    <string name="window_list">Windows</string>
    <string name="prev_window">Prev window</string>
    <string name="next_window">Next window</string>
@@ -108,6 +108,9 @@
    <string name="title_actionbar_plus_preference">+ button behavior</string>
    <string name="summary_actionbar_plus_preference">Choose what pressing the + button does.</string>
    <string name="dialog_title_actionbar_plus_preference">+ button behavior</string>
+   <string name="title_actionbar_minus_preference">- button behavior</string>
+   <string name="summary_actionbar_minus_preference">Choose what pressing the - button does.</string>
+   <string name="dialog_title_actionbar_minus_preference">- button behavior</string>
    <string name="title_actionbar_x_preference">X button behavior</string>
    <string name="summary_actionbar_x_preference">Choose what pressing the X button does.</string>
    <string name="dialog_title_actionbar_x_preference">X button behavior</string>
