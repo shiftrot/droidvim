@@ -330,7 +330,7 @@ abstract class BaseTextRenderer implements TextRenderer {
         // Cursor paint and cursor stroke paint are used to draw a grayscale mask that's converted
         // to an alpha8 texture. Only the red channel's value matters.
         mCursorPaint = new Paint();
-        mCursorPaint.setColor(0xff909090); // Opaque lightgray
+        mCursorPaint.setColor(0xffffffff);
         mCursorPaint.setAntiAlias(true);
 
         mCursorStrokePaint = new Paint(mCursorPaint);
@@ -356,14 +356,14 @@ abstract class BaseTextRenderer implements TextRenderer {
         mAltCursor.lineTo(1.0f, 1.0f);
 
         mCtrlCursor = new Path();
-        mCtrlCursor.moveTo(0.0f, 0.25f);
+        mCtrlCursor.moveTo(0.0f, 0.00f);
         mCtrlCursor.lineTo(1.0f, 0.5f);
-        mCtrlCursor.lineTo(0.0f, 0.75f);
+        mCtrlCursor.lineTo(0.0f, 1.00f);
 
         mFnCursor = new Path();
-        mFnCursor.moveTo(1.0f, 0.25f);
+        mFnCursor.moveTo(1.0f, 0.00f);
         mFnCursor.lineTo(0.0f, 0.5f);
-        mFnCursor.lineTo(1.0f, 0.75f);
+        mFnCursor.lineTo(1.0f, 1.00f);
 
         // For creating the transform when the terminal resizes
         mTempSrc = new RectF();
@@ -418,7 +418,7 @@ abstract class BaseTextRenderer implements TextRenderer {
 
         if (cursorMode != mCursorBitmapCursorMode) {
             mCursorBitmapCursorMode = cursorMode;
-            mWorkBitmap.eraseColor(0xffffffff);
+            mWorkBitmap.eraseColor(0xff000000);
             Canvas workCanvas = new Canvas(mWorkBitmap);
             workCanvas.concat(mScaleMatrix);
             drawCursorHelper(workCanvas, mShiftCursor, cursorMode, MODE_SHIFT_SHIFT);
