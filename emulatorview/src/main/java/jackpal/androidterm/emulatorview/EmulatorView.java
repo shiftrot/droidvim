@@ -106,6 +106,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Text size. Zero means 4 x 8 font.
      */
     private int mTextSize = 10;
+    private int mTextLeading = 0;
     private String mTextFont;
 
     private int mCursorBlink;
@@ -1073,6 +1074,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         updateText();
     }
 
+    public void setTextLeading(int fontLeading) {
+        mTextLeading = fontLeading;
+        updateText();
+    }
+
     public void setTextFont(String fontFile) {
         mTextFont = fontFile;
         updateText();
@@ -1438,7 +1444,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void updateText() {
         ColorScheme scheme = mColorScheme;
         if (mTextSize > 0) {
-            mTextRenderer = new PaintRenderer(mTextSize, scheme, mTextFont);
+            mTextRenderer = new PaintRenderer(mTextSize, scheme, mTextFont, mTextLeading);
         }
         else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);

@@ -79,6 +79,10 @@
    <string name="summary_fontsize_preference">Choose character height in points.</string>
    <string name="dialog_title_fontsize_preference">Font size</string>
 
+   <string name="title_fontleading_preference">Font leading</string>
+   <string name="summary_fontleading_preference">Choose font leading.</string>
+   <string name="dialog_title_fontleading_preference">Font leading</string>
+
    <string name="title_fontfile_preference">Font file</string>
    <string name="summary_fontfile_preference">Choose font.</string>
    <string name="dialog_title_fontfile_preference">Font file</string>

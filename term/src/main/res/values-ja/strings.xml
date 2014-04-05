@@ -75,6 +75,10 @@
    <string name="summary_fontsize_preference">文字の高さと大きさを選択</string>
    <string name="dialog_title_fontsize_preference">フォントサイズ</string>
 
+   <string name="title_fontleading_preference">行間</string>
+   <string name="summary_fontleading_preference">行間の大きさを指定する</string>
+   <string name="dialog_title_fontleading_preference">行間の大きさ</string>
+
    <string name="title_fontfile_preference">フォントファイル</string>
    <string name="summary_fontfile_preference">フォントを選択</string>
    <string name="dialog_title_fontfile_preference">フォントファイル</string>

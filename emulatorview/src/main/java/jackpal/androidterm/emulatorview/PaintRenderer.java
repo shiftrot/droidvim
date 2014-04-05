@@ -28,10 +28,12 @@ import java.io.*;
 
 class PaintRenderer extends BaseTextRenderer {
     private static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
+    private int mTextLeading = 0;
     @SuppressLint("NewApi")
-    public PaintRenderer(int fontSize, ColorScheme scheme, String fontFile) {
+    public PaintRenderer(int fontSize, ColorScheme scheme, String fontFile, int textLeading) {
         super(scheme);
         mTextPaint = new Paint();
+        mTextLeading = textLeading;
         if (AndroidCompat.SDK > 3) {
             String fontPath = String.format("%s/%s", FONTPATH, (fontFile != null ? fontFile : "ate.ttf"));
             File file = new File(fontPath);
@@ -49,6 +51,8 @@ class PaintRenderer extends BaseTextRenderer {
         mCharHeight = (int) FloatMath.ceil(mTextPaint.getFontSpacing());
         mCharAscent = (int) FloatMath.ceil(mTextPaint.ascent());
         mCharDescent = mCharHeight + mCharAscent;
+        mCharHeight += mTextLeading*2;
+        mCharDescent += mTextLeading;
         mCharWidth = mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
     }
 
@@ -80,7 +84,7 @@ class PaintRenderer extends BaseTextRenderer {
 
         float left = x + lineOffset * mCharWidth;
         float textWidth = mTextPaint.measureText(new String(text));
-        canvas.drawRect(left, y + mCharAscent - mCharDescent,
+        canvas.drawRect(left, y + mCharAscent - mCharDescent - mTextLeading,
                 left + textWidth, y,
                 mTextPaint);
 
