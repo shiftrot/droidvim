@@ -181,7 +181,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private float mDensity;
 
     private float mScaledDensity;
-    private static final int SELECT_TEXT_OFFSET_Y = -40;
+    private static final int SELECT_TEXT_OFFSET_Y = -12;
     private int mSelXAnchor = -1;
     private int mSelYAnchor = -1;
     private int mSelX1 = -1;
