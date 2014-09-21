@@ -537,9 +537,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private TermSession createTermSession() throws IOException {
         TermSettings settings = mSettings;
-        TermSession session = createTermSession(this, settings, settings.getInitialCommand());
+        TermSession session = createTermSession(this, settings, getInitialCommand());
         session.setFinishCallback(mTermService);
         return session;
+    }
+
+    boolean mFirst = true;
+    private String getInitialCommand() {
+        String cmd = mSettings.getInitialCommand();
+        cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
+        mFirst = false;
+        return cmd;
     }
 
     private TermView createEmulatorView(TermSession session) {

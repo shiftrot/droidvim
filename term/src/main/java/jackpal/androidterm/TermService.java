@@ -42,6 +42,7 @@ import jackpal.androidterm.libtermexec.v1.*;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import java.io.File;
 import java.util.UUID;
 
 public class TermService extends Service implements TermSession.FinishCallback
@@ -127,6 +128,20 @@ public class TermService extends Service implements TermSession.FinishCallback
 
         Log.d(TermDebug.LOG_TAG, "TermService started");
         return;
+    }
+
+    @SuppressLint("NewApi")
+    public String getInitialCommand(String cmd, boolean bFirst) {
+        String replace = bFirst ? "" : "#";
+        cmd = cmd.replaceAll("(^|\n)-+", "$1"+ replace);
+        String appbase = this.getApplicationInfo().dataDir;
+        String appfiles = this.getFilesDir().toString();
+        File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
+        String appextfiles = extfilesdir != null ? extfilesdir.toString() : "";
+        cmd = cmd.replaceAll("%APPBASE%", appbase);
+        cmd = cmd.replaceAll("%APPFILES%", appfiles);
+        cmd = cmd.replaceAll("%APPEXTFILES%", appextfiles);
+        return cmd;
     }
 
     @Override

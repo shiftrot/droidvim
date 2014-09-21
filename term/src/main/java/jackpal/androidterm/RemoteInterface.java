@@ -126,11 +126,13 @@ public class RemoteInterface extends Activity {
                 String path = ((Uri) extraStream).getPath();
                 File file = new File(path);
                 String command = mSettings.getIntentCommand();
-                if (command.matches("^:.*") && file.isDirectory() == false) {
+                if (command.matches("^:.*")) {
                     path = path.replaceAll("([ ()%#&])", "\\\\$1");
                     command = String.format(command, path);
                     // Find the target window
+                    mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
+                    mReplace = false;
                 } else if (file.isDirectory() == false) {
                     command = String.format(command, path);
                     mHandle = openNewWindow(command);
@@ -155,7 +157,9 @@ public class RemoteInterface extends Activity {
                     url = url.replaceAll("([ ()%#&$])", "\\\\$1");
                     command = String.format(command, url);
                     // Find the target window
+                    mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
+                    mReplace = false;
                  } else if ((mHandle != null) && (url.equals(mFname))) {
                     // Target the request at an existing window if open
                     command = String.format(command, url);
@@ -214,7 +218,7 @@ public class RemoteInterface extends Activity {
     protected String openNewWindow(String iInitialCommand) {
         TermService service = getTermService();
 
-        String initialCommand = mSettings.getInitialCommand();
+        String initialCommand = getInitialCommand();
         if (iInitialCommand != null) {
             if (initialCommand != null) {
                 initialCommand += "\r" + iInitialCommand;
@@ -241,6 +245,13 @@ public class RemoteInterface extends Activity {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    private boolean mReplace = false;
+    private String getInitialCommand() {
+        String cmd = mSettings.getInitialCommand();
+        cmd = mTermService.getInitialCommand(cmd, (mReplace && mTermService.getSessions().size() == 0));
+        return cmd;
     }
 
     protected String appendToWindow(String handle, String iInitialCommand) {
