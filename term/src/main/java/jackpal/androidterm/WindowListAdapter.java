@@ -19,6 +19,9 @@ package jackpal.androidterm;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -72,8 +75,10 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
         }
     }
 
+    private Handler mHandler = new Handler();
+
     public View getView(int position, View convertView, ViewGroup parent) {
-        Activity act = findActivityFromContext(parent.getContext());
+        final Activity act = findActivityFromContext(parent.getContext());
         View child = act.getLayoutInflater().inflate(R.layout.window_list_item, parent, false);
         View close = child.findViewById(R.id.window_list_close);
 
@@ -85,11 +90,26 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
         final int closePosition = position;
         close.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TermSession session = sessions.remove(closePosition);
-                if (session != null) {
-                    session.finish();
-                    notifyDataSetChanged();
-                }
+                final AlertDialog.Builder b = new AlertDialog.Builder(act);
+                b.setIcon(android.R.drawable.ic_dialog_alert);
+                b.setMessage(R.string.confirm_window_close_message);
+                final Runnable closeWindow = new Runnable() {
+                    public void run() {
+                        TermSession session = sessions.remove(closePosition);
+                        if (session != null) {
+                            session.finish();
+                            notifyDataSetChanged();
+                        }
+                    }
+                };
+                b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       dialog.dismiss();
+                       mHandler.post(closeWindow);
+                   }
+                });
+                b.setNegativeButton(android.R.string.no, null);
+                b.show();
             }
         });
 
