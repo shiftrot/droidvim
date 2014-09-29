@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
@@ -535,6 +536,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // TODO: See if we want to use the API level 11 constructor to get new flywheel feature.
         mScroller = new Scroller(context);
         mMouseTrackingFlingRunner.mScroller = new Scroller(context);
+        mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
     }
 
     /**
@@ -1355,6 +1357,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mKeyListener.keyUp(keyCode, event);
         clearSpecialKeyStatus();
         return true;
+    }
+
+    private static boolean mHaveFullHwKeyboard = false;
+
+    public void setHaveFullHwKeyboard(boolean mode) {
+        mHaveFullHwKeyboard = mode;
+    }
+
+    public void onConfigurationChangedToEmulatorView(Configuration newConfig) {
+        mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
+    }
+
+    private boolean checkHaveFullHwKeyboard(Configuration c) {
+        return (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
+            (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
     }
 
     @Override

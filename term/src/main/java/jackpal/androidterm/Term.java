@@ -658,6 +658,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
             v.updateSize(false);
+            v.onConfigurationChangedToEmulatorView(newConfig);
         }
 
         if (mWinListAdapter != null) {
