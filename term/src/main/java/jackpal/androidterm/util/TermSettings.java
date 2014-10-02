@@ -40,6 +40,10 @@ public class TermSettings {
     private int mAmbiWidth;
     private int mColorId;
     private boolean mUTF8ByDefault;
+    private int mActionBarIconAction;
+    private int mActionBarPlusAction;
+    private int mActionBarXAction;
+    private int mActionBarUserAction;
     private int mBackKeyAction;
     private int mControlKeyId;
     private int mFnKeyId;
@@ -73,6 +77,10 @@ public class TermSettings {
     private static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String COLOR_KEY = "color";
     private static final String UTF8_KEY = "utf8_by_default";
+    private static final String ACTIONBAR_ICON_KEY = "actionbar_icon_action";
+    private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
+    private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
+    private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
     private static final String BACKACTION_KEY = "backaction";
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
@@ -160,6 +168,7 @@ public class TermSettings {
     public static final int BACK_KEY_SENDS_TAB = 4;
     public static final int BACK_KEY_TOGGLE_IME = 5;
     private static final int BACK_KEY_MAX = 5;
+    private static final int ACTIONBAR_KEY_MAX = 65535;
 
     public TermSettings(Resources res, SharedPreferences prefs) {
         readDefaultPrefs(res);
@@ -178,6 +187,10 @@ public class TermSettings {
         mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiwidth_default));
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
+        mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_icon_default));
+        mActionBarPlusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_plus_default));
+        mActionBarXAction = Integer.parseInt(res.getString(R.string.pref_actionbar_x_default));
+        mActionBarUserAction = Integer.parseInt(res.getString(R.string.pref_actionbar_user_default));
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
         mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
@@ -210,6 +223,10 @@ public class TermSettings {
         mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
+        mActionBarIconAction = readIntPref(ACTIONBAR_ICON_KEY, mActionBarIconAction, ACTIONBAR_KEY_MAX);
+        mActionBarPlusAction = readIntPref(ACTIONBAR_PLUS_KEY, mActionBarPlusAction, ACTIONBAR_KEY_MAX);
+        mActionBarXAction    = readIntPref(ACTIONBAR_X_KEY,    mActionBarXAction,    ACTIONBAR_KEY_MAX);
+        mActionBarUserAction = readIntPref(ACTIONBAR_USER_KEY, mActionBarUserAction, ACTIONBAR_KEY_MAX);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
                 CONTROL_KEY_SCHEMES.length - 1);
@@ -294,6 +311,22 @@ public class TermSettings {
 
     public boolean defaultToUTF8Mode() {
         return mUTF8ByDefault;
+    }
+
+    public int getActionBarIconKeyAction() {
+        return mActionBarIconAction;
+    }
+
+    public int getActionBarPlusKeyAction() {
+        return mActionBarPlusAction;
+    }
+
+    public int getActionBarXKeyAction() {
+        return mActionBarXAction;
+    }
+
+    public int getActionBarUserKeyAction() {
+        return mActionBarUserAction;
     }
 
     public int getBackKeyAction() {

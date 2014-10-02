@@ -90,6 +90,22 @@
         <item>Linux Console</item>
     </string-array>
 
+    <string-array name="entries_actionbar_icon_preference">
+        <item>Sends ESC to terminal</item>
+        <item>Sends CTRL to terminal</item>
+        <item>Sends TAB to terminal</item>
+        <item>Create Window</item>
+        <item>Close Window</item>
+        <item>Toggle soft keyboard</item>
+        <item>Choose input method</item>
+        <item>Paste</item>
+        <item>Sends i from terminal</item>
+        <item>Sends : from terminal</item>
+        <item>Sends / from terminal</item>
+        <item>Quit Vim</item>
+        <item>None</item>
+    </string-array>
+
     <string-array name="entries_backaction_preference">
         <item>Closes all terminal windows</item>
         <item>Closes this terminal window only</item>

@@ -12,6 +12,10 @@
    <string name="pref_ambiwidth_default" translatable="false">1</string>
    <string name="pref_color_default" translatable="false">1</string>
    <bool name="pref_utf8_by_default_default">false</bool>
+   <string name="pref_actionbar_icon_default" translatable="false">113</string>
+   <string name="pref_actionbar_plus_default" translatable="false">1250</string>
+   <string name="pref_actionbar_x_default" translatable="false">1251</string>
+   <string name="pref_actionbar_user_default" translatable="false">999</string>
    <string name="pref_backaction_default" translatable="false">2</string>
    <string name="pref_controlkey_default" translatable="false">5</string>
    <string name="pref_fnkey_default" translatable="false">4</string>

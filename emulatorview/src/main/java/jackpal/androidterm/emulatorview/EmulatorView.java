@@ -1374,6 +1374,22 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
     }
 
+    public void sendFnKeyCode() {
+        // FIXME:
+        mIsFnKeySent = true;
+        mKeyListener.handleFnKey(true);
+        mKeyListener.handleFnKey(false);
+        invalidate();
+    }
+
+    public void sendControlKeyCode() {
+        // FIXME:
+        mIsControlKeySent = true;
+        mKeyListener.handleControlKey(true);
+        mKeyListener.handleControlKey(false);
+        invalidate();
+    }
+
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if (sTrapAltAndMeta) {

@@ -15,11 +15,15 @@
  * limitations under the License.
 -->
 <resources>
+   <string name="plus">＋</string>
+   <string name="x">Ｘ</string>
+   <string name="user">？</string>
    <string name="application_terminal">端末エミュレータ</string>
    <string name="preferences">設定</string>
    <string name="new_window">新規ウインドウ</string>
    <string name="close_window">ウインドウを閉じる</string>
    <string name="window_list">ウインドウ一覧</string>
+   <string name="minus">貼り付け</string>
    <string name="prev_window">前のウインドウ</string>
    <string name="next_window">次のウインドウ</string>
    <string name="reset">端末をリセット</string>
@@ -92,6 +96,20 @@
    <string name="title_color_preference">色</string>
    <string name="summary_color_preference">文字の色を選択</string>
    <string name="dialog_title_color_preference">文字の色</string>
+
+   <string name="actionbar_key_preferences">アクションバーボタン</string>
+   <string name="title_actionbar_icon_preference">アイコンボタン</string>
+   <string name="summary_actionbar_icon_preference">アイコンボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_icon_preference">アイコンボタンの振舞い</string>
+   <string name="title_actionbar_plus_preference">＋ボタン</string>
+   <string name="summary_actionbar_plus_preference">＋ボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_plus_preference">＋ボタンの振舞い</string>
+   <string name="title_actionbar_x_preference">Ｘボタン</string>
+   <string name="summary_actionbar_x_preference">Ｘボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_x_preference">Ｘボタンの振舞い</string>
+   <string name="title_actionbar_user_preference">？ボタン</string>
+   <string name="summary_actionbar_user_preference">？ボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_user_preference">？ボタンの振舞い</string>
 
    <string name="keyboard_preferences">キーボード</string>
 
@@ -167,4 +185,5 @@
   <string name="alt_sends_esc_summary_on">Alt keyでESCを送出する.</string>
   <string name="alt_sends_esc_summary_off">Alt keyでESCを送出しない.</string>
 
+  <string name="help">ヘルプ</string>
 </resources>

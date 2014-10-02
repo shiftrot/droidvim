@@ -79,6 +79,22 @@
         <item>Linux Console</item>
     </string-array>
 
+    <string-array name="entries_actionbar_icon_preference">
+        <item>ターミナルにESCを送出</item>
+        <item>ターミナルにCTRLを送出</item>
+        <item>ターミナルにTABを送出</item>
+        <item>ウィンドウ作成</item>
+        <item>ウィンドウを閉じる</item>
+        <item>IMEのトグル</item>
+        <item>IMEの選択</item>
+        <item>貼り付け</item>
+        <item>ターミナルから i を送出</item>
+        <item>ターミナルから : を送出</item>
+        <item>ターミナルから / を送出</item>
+        <item>Vimを終了</item>
+        <item>なし</item>
+    </string-array>
+
     <string-array name="entries_backaction_preference">
         <item>すべてのターミナルウインドウを閉じる</item>
         <item>このターミナルウインドウだけを閉じる</item>

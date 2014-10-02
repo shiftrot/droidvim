@@ -547,6 +547,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void updatePrefs() {
+        ActivityCompat.invalidateOptionsMenu(this);
         mUseKeyboardShortcuts = mSettings.getUseKeyboardShortcutsFlag();
 
         DisplayMetrics metrics = new DisplayMetrics();
@@ -670,8 +671,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_new_window), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_close_window), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        if (mSettings.getActionBarPlusKeyAction() != 999) {
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_plus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        } else {
+            menu.removeItem(R.id.menu_plus);
+        }
+        if (mSettings.getActionBarXKeyAction() != 999) {
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_x), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        } else {
+            menu.removeItem(R.id.menu_x);
+        }
+        if (mSettings.getActionBarUserKeyAction() != 999) {
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_user), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        } else {
+            menu.removeItem(R.id.menu_user);
+        }
         return true;
     }
 
@@ -680,10 +694,30 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         int id = item.getItemId();
         if (id == R.id.menu_preferences) {
             doPreferences();
+        } else if (id == R.id.menu_paste) {
+            doPaste();
         } else if (id == R.id.menu_new_window) {
             doCreateNewWindow();
+        } else if (id == R.id.menu_plus) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) {
+                int key = mSettings.getActionBarPlusKeyAction();
+                return doSendActionBarKey(view, key);
+            }
         } else if (id == R.id.menu_close_window) {
             confirmCloseWindow();
+        } else if (id == R.id.menu_x) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) {
+                int key = mSettings.getActionBarXKeyAction();
+                return doSendActionBarKey(view, key);
+            }
+        } else if  (id == R.id.menu_user) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) {
+                int key = mSettings.getActionBarUserKeyAction();
+                return doSendActionBarKey(view, key);
+            }
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
@@ -702,7 +736,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
         } else if  (id == R.id.action_help) {
-                Intent openHelp = new Intent(Intent.ACTION_VIEW,
+            Intent openHelp = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(getString(R.string.help_url)));
                 startActivity(openHelp);
         }
@@ -711,6 +745,48 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mActionBar.hide();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean doSendActionBarKey(EmulatorView view, int key) {
+        if (key == 999) {
+            // do nothing
+        } else if (key == 1002) {
+            doToggleSoftKeyboard();
+        } else if (key == 1249) {
+            doPaste();
+        } else if (key == 1250) {
+            doCreateNewWindow();
+        } else if (key == 1251) {
+            confirmCloseWindow();
+        } else if (key == 1252) {
+            InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showInputMethodPicker();
+        } else if (key == 1253) {
+            sendKeyStrings(":confirm qa\r", true);
+        } else if (key == 1254) {
+            view.sendFnKeyCode();
+        } else if (key == KeycodeConstants.KEYCODE_CTRL_LEFT) {
+            view.sendControlKeyCode();
+        } else if (key == 1247) {
+            sendKeyStrings(":", false);
+        } else if (key > 0) {
+            KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
+            dispatchKeyEvent(event);
+        }
+        return true;
+    }
+
+    private void sendKeyStrings(String str, boolean esc) {
+        TermSession session = getCurrentTermSession();
+        if (session != null) {
+            if (esc == true) {
+                KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeycodeConstants.KEYCODE_ESCAPE);
+                dispatchKeyEvent(event);
+            }
+            session.write(str);
+        }
+        return;
     }
 
     private void doCreateNewWindow() {
