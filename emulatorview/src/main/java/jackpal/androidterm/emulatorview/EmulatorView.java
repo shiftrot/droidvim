@@ -1500,6 +1500,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 int key = ctrl == 998 ? 0xfffffffe : 0xffffffff;
                 activity.onKeyUp(key, null);
                 break;
+            case 1000:
+                ((Activity)this.getContext()).onKeyUp(0xffff0000, null);
+                break;
             default:
                 break;
             }

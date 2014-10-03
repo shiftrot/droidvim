@@ -1001,6 +1001,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
             doCloseWindow();
             return true;
+        case 0xffff0000:
+            return true;
         case KeyEvent.KEYCODE_BACK:
             if (AndroidCompat.SDK < 5) {
                 if (!mBackKeyPressed) {
