@@ -653,7 +653,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
 
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
@@ -985,6 +984,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
+        case 0xfffffffe:
+            if (mTermSessions.size() > 1) {
+                return true;
+            }
+            // fall into next
+        case 0xffffffff:
+            if (mTermSessions.size() == 1) {
+                doHideSoftKeyboard();
+            }
+            doCloseWindow();
+            return true;
         case KeyEvent.KEYCODE_BACK:
             if (AndroidCompat.SDK < 5) {
                 if (!mBackKeyPressed) {
@@ -1157,6 +1167,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 
+    }
+
+    private void doHideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+            getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     private void doToggleWakeLock() {

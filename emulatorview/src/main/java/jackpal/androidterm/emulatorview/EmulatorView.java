@@ -1493,6 +1493,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 15:
                 break;
+            case 998:
+            case 999:
+                Activity activity = (Activity)this.getContext();
+                int key = ctrl == 998 ? 0xfffffffe : 0xffffffff;
+                activity.onKeyUp(key, null);
+                break;
             default:
                 break;
             }
