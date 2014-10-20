@@ -348,6 +348,30 @@
                 android:summaryOn="@string/use_keyboard_shortcuts_summary_on"
                 android:summaryOff="@string/use_keyboard_shortcuts_summary_off" />
 
+        <PreferenceScreen
+                android:title="@string/title_pre_ime_shortcuts"
+                android:summary="@string/summary_title_pre_ime_shortcuts">
+                <CheckBoxPreference
+                        android:key="AltGrave"
+                        android:defaultValue="true"
+                        android:title="@string/pref_alt_grave"/>
+                <CheckBoxPreference
+                        android:key="AltEsc"
+                        android:defaultValue="false"
+                    android:title="@string/pref_alt_esc"/>
+                <CheckBoxPreference
+                        android:key="CtrlSpace"
+                        android:defaultValue="false"
+                        android:title="@string/pref_ctrl_space"/>
+                <CheckBoxPreference
+                    android:key="ZENKAKU_HANKAKU"
+                    android:defaultValue="false"
+                    android:title="@string/pref_zenkaku_hankaku"/>
+                <CheckBoxPreference
+                    android:key="GRAVE"
+                    android:defaultValue="false"
+                    android:title="@string/pref_grave"/>
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory

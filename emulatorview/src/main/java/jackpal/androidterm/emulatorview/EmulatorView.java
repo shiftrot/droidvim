@@ -29,6 +29,8 @@ import java.util.Hashtable;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -1406,6 +1408,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private static boolean mIMECtrlBeginBatchEditDisable = true;
     private static boolean mIMECtrlBeginBatchEditDisableHwKbdChk = false;
+    private static boolean mAltGrave = true;
+    private static boolean mAltEsc = false;
+    private static boolean mCtrlSpace = false;
+    private static boolean mZenkakuHankaku = false;
+    private static boolean mGrave = false;
+    private static boolean mSwitchCharset = false;
     private static boolean mHaveFullHwKeyboard = false;
 
     public void setHaveFullHwKeyboard(boolean mode) {
@@ -1719,6 +1727,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
+        if (preIMEShortcuts(keyCode, event)) {
+            return true;
+        }
+
         if (handleHardwareControlKey(keyCode, event)) {
             return true;
         }
@@ -1733,6 +1745,46 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         return super.onKeyPreIme(keyCode, event);
     };
+
+    private boolean preIMEShortcuts(int keyCode, KeyEvent event) {
+        boolean alt = false;
+        boolean cs = false;
+        boolean zh = false;
+        boolean sc = false;
+        boolean grave = false;
+        boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
+        boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
+        boolean metaOn = (event.getMetaState() & (KeyEvent.META_SHIFT_ON | KeyEvent.META_META_ON)) != 0;
+
+        // KeyEvent.KEYCODE_ZENKAKU_HANKAKU 211
+        alt |= mAltGrave && ((keyCode == 211) || (keyCode == KeycodeConstants.KEYCODE_GRAVE)) && (altOn && !ctrlOn && !metaOn);
+        alt |= mAltEsc && keyCode == KeycodeConstants.KEYCODE_ESCAPE && (altOn && !ctrlOn && !metaOn);
+        cs |= mCtrlSpace && keyCode == KeycodeConstants.KEYCODE_SPACE && (!altOn && ctrlOn && !metaOn);
+        zh |= mZenkakuHankaku && keyCode == 211 && (!ctrlOn && !altOn && !metaOn);  // KeyEvent.KEYCODE_ZENKAKU_HANKAKU;
+        grave |= mGrave && keyCode == KeycodeConstants.KEYCODE_GRAVE && (!ctrlOn && !altOn && !metaOn);
+        sc |= mSwitchCharset && keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET;
+        if (((alt || zh || sc || grave) && event.getAction() == KeyEvent.ACTION_DOWN) || (cs && event.getAction() == KeyEvent.ACTION_UP)) {
+            doToggleSoftKeyboard();
+            return true;
+        }
+        return false;
+    }
+
+    public void setPreIMEShortcut(String key, boolean value) {
+        if (key.equals("AltGrave")) {
+            mAltGrave = value;
+        } else if (key.equals("AltEsc")) {
+            mAltEsc = value;
+        } else if (key.equals("CtrlSpace")) {
+            mCtrlSpace = value;
+        } else if (key.equals("ZENKAKU_HANKAKU")) {
+            mZenkakuHankaku = value;
+        } else if (key.equals("GRAVE")) {
+            mGrave = value;
+        } else if (key.equals("SWITCH_CHARSET")) {
+            mSwitchCharset = value;
+        }
+    }
 
     public boolean setDevBoolean(Context context, String key, boolean value) {
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);

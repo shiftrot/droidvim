@@ -220,6 +220,15 @@
   <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
   <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
+  <string name="title_pre_ime_shortcuts">Use IME Shortcuts</string>
+  <string name="summary_title_pre_ime_shortcuts">Toggle direct input/IME from hardware keyboard.</string>
+  <string name="pref_alt_grave">Alt + [`]</string>
+  <string name="pref_alt_esc">Alt + [Esc]</string>
+  <string name="pref_ctrl_space">Ctrl + [Space]</string>
+  <string name="pref_zenkaku_hankaku">[Hankaku/Zenkaku]</string>
+  <string name="pref_grave">[`]</string>
+  <string name="pref_switch_charset">[Kanji]</string>
+
   <string name="help">Help</string>
   <string name="help_url" translatable="false">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
   <string name="activity_term_here_title">Term here</string>

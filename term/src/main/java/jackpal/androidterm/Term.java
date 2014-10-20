@@ -575,6 +575,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         for (View v : mViewFlipper) {
             ((EmulatorView) v).setDensity(metrics);
             ((TermView) v).updatePrefs(mSettings);
+            setPreIMEShortsuts((EmulatorView) v);
+            if (mSettings.useCookedIME() == false) {
+                ((EmulatorView) v).setIMECtrlBeginBatchEditDisable(false);
+            }
         }
 
         if (mTermSessions != null) {
@@ -616,6 +620,22 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             /* Shouldn't be happened. */
         }
         setRequestedOrientation(o);
+    }
+
+    private void setPreIMEShortsuts(EmulatorView v) {
+        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean value = mPrefs.getBoolean("AltGrave", true);
+        v.setPreIMEShortcut("AltGrave", value);
+        value = mPrefs.getBoolean("AltEsc", false);
+        v.setPreIMEShortcut("AltEsc", value);
+        value = mPrefs.getBoolean("CtrlSpace", false);
+        v.setPreIMEShortcut("CtrlSpace", value);
+        value = mPrefs.getBoolean("ZENKAKU_HANKAKU", false);
+        v.setPreIMEShortcut("ZENKAKU_HANKAKU", value);
+        value = mPrefs.getBoolean("GRAVE", false);
+        v.setPreIMEShortcut("GRAVE", value);
+        value = mPrefs.getBoolean("SWITCH_CHARSET", false);
+        v.setPreIMEShortcut("SWITCH_CHARSET", value);
     }
 
     @Override
