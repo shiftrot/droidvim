@@ -17,7 +17,11 @@
 package jackpal.androidterm.emulatorview;
 
 import java.util.Arrays;
+
 import android.graphics.Canvas;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.style.CharacterStyle;
 
 /**
  * A TranscriptScreen is a screen that remembers data that's been scrolled. The
@@ -164,7 +168,7 @@ class TranscriptScreen implements Screen {
      * @param cursorMode the cursor mode. See TextRenderer.
      */
     public final void drawText(int row, Canvas canvas, float x, float y,
-            TextRenderer renderer, int curx, int selx1, int selx2, String imeText, int cursorMode) {
+            TextRenderer renderer, int curx, int selx1, int selx2, String imeText, int cursorMode, SpannableString imeSpannableString) {
         char[] line;
         int cx = imeText.length() > 0 ? -1 : curx;
         StyleRow color;
@@ -291,11 +295,87 @@ class TranscriptScreen implements Screen {
             int imeOffset = imeText.length() - imeLength;
             int wimeLength = Math.min(columns, getStringWidth(imeText));
             int imePosition = Math.min(cx, columns - wimeLength);
-            renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                    imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal),
-                    -1, 0, 0, 0, 0);
+            int imeColor = mIMEColor == IME_AUTODETECT ? mIMEDetect : mIMEColor;
+
+            if ((imeColor <= IME_UNDERLINE) || (imeSpannableString == null)) {
+                int underline = imeSpannableString == null ? 0 : splitComposingText(imeSpannableString);
+                int textStyle = underline == 0 ? TextStyle.fxUnderline : TextStyle.fxNormal;
+                if (imeColor == IME_NONE) {
+                    underline = 0;
+                    textStyle = TextStyle.fxNormal;
+                }
+
+                renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
+                        imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, textStyle),
+                        -1, 0, 0, 0, 0);
+                if (underline > 0) {
+                    imeText = imeText.substring(0, underline);
+                    int uimeLength = Math.min(columns, imeText.length());
+                    int uimeOffset = imeText.length() - uimeLength;
+                    renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
+                            uimeOffset, uimeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxUnderline),
+                            -1, 0, 0, 0, 0);
+                }
+            } else {
+                // FIXME:
+                int effect = TextStyle.fxUnderline;
+                if (imeColor == IME_GOOGLE) effect |= TextStyle.fxImeBackground;
+                renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
+                        imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, effect),
+                        -1, 0, 0, 0, 0);
+                TextPaint paint = new TextPaint();
+                int length = imeSpannableString.length();
+                Object[] objs = imeSpannableString.getSpans(0, length, Object.class);
+                for (Object obj : objs) {
+                    if (!(obj instanceof CharacterStyle)) {
+                         continue;
+                    }
+                    CharacterStyle style = (CharacterStyle)obj;
+                    style.updateDrawState(paint);
+                    int bold = paint.isFakeBoldText() ? TextStyle.fxBold : 0;
+                    int underline = paint.isUnderlineText() ? TextStyle.fxUnderline: 0;
+                    int textStyle = bold+underline;
+
+                    int start = imeSpannableString.getSpanStart(style);
+                    int end = imeSpannableString.getSpanEnd(style);
+                    if (imeColor != IME_GOOGLE && (start == 0 && end == length)) {
+                        if (imeColor == IME_ATOK) {
+                            if (underline > 0) continue;
+                        } else {
+                            continue;
+                        }
+                    }
+
+                    String imeSubText = imeText.substring(start, end);
+                    int uimeLength = Math.min(columns, imeSubText.length());
+                    int uimeOffset = imeSubText.length() - uimeLength;
+                    float ofsx = renderer.getMeasureText(imeText.substring(0, start));
+
+                    textStyle += TextStyle.fxIme;
+                    renderer.setImePaint(paint);
+                    renderer.drawTextRun(canvas, x+ofsx, y, imePosition, uimeLength, imeSubText.toCharArray(),
+                            uimeOffset, uimeLength, true, TextStyle.encode(0x0f, 0x00, textStyle),
+                            -1, 0, 0, 0, 0);
+                }
+            }
         }
      }
+
+    private final static int IME_NONE       = 0;
+    private final static int IME_UNDERLINE  = 1;
+    private final static int IME_AUTODETECT = 2;
+    private final static int IME_ATOK       = 3;
+    private final static int IME_GOOGLE     = 4;
+    private final static int IME_DEFAULT    = 100;
+    private static int mIMEColor = 1;
+    private static int mIMEDetect = IME_AUTODETECT;
+    public void setIMEColor(int mode) {
+        mIMEColor = mode;
+    }
+
+    public void setIME(int ime) {
+        mIMEDetect = ime;
+    }
 
     private int getStringWidth(String text) {
         if (text.length() == 0) return 0;
@@ -305,6 +385,25 @@ class TranscriptScreen implements Screen {
         }
         return len;
     }
+
+    private int splitComposingText(SpannableString composingText) {
+       if (composingText == null) return 0;
+       int length = composingText.length();
+       if (length > 0) {
+           Object[] objs = composingText.getSpans(0, length, Object.class);
+           for (Object obj : objs) {
+               if (!(obj instanceof CharacterStyle)) {
+                    continue;
+               }
+               CharacterStyle style = (CharacterStyle)obj;
+               int start = composingText.getSpanStart(style);
+               int end = composingText.getSpanEnd(style);
+               if (start > 0) return start;
+               if (end < length) return end;
+           }
+       }
+       return 0;
+   }
 
     /**
      * Get the count of active rows.

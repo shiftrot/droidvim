@@ -90,6 +90,15 @@
         <item>Linux Console</item>
     </string-array>
 
+    <string-array name="entries_composingtext_preference">
+        <item>None</item>
+        <item>Underline</item>
+        <item>Autodetect</item>
+        <item>ATOK</item>
+        <item>Google IME</item>
+        <item>Default</item>
+    </string-array>
+
     <string-array name="entries_actionbar_icon_preference">
         <item>Sends ESC to terminal</item>
         <item>Sends CTRL to terminal</item>

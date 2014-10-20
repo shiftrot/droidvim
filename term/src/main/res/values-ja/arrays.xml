@@ -79,6 +79,15 @@
         <item>Linux Console</item>
     </string-array>
 
+    <string-array name="entries_composingtext_preference">
+        <item>なし</item>
+        <item>アンダーライン</item>
+        <item>自動選択</item>
+        <item>ATOK</item>
+        <item>Google日本語入力</item>
+        <item>デフォルト</item>
+    </string-array>
+
     <string-array name="entries_actionbar_icon_preference">
         <item>ターミナルにESCを送出</item>
         <item>ターミナルにCTRLを送出</item>

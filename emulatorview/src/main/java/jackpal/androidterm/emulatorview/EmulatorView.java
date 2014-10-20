@@ -35,6 +35,8 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.URLSpan;
@@ -473,6 +475,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private TermKeyListener mKeyListener;
 
     private String mImeBuffer = "";
+    private SpannableString mImeSpannableString = null;
 
     /**
      * Our message handler class. Implements a periodic callback.
@@ -885,6 +888,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mComposingTextEnd = mComposingTextStart + text.length();
                 mCursor = newCursorPosition > 0 ? mComposingTextEnd + newCursorPosition - 1
                         : mComposingTextStart - newCursorPosition;
+                if (text instanceof SpannableString) {
+                    mImeSpannableString = (SpannableString)text;
+                }
+                invalidate();
                 return true;
             }
 
@@ -1509,6 +1516,30 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    // com.justsystems.atokmobile.tv.service/.AtokInputMethodService
+    private final static String IME_ATOK = "com.justsystems.atokmobile..*";
+    // com.google.android.inputmethod.japanese/.MozcService
+    private final static String IME_GOOGLE = "com.google.android.inputmethod.japanese/.*";
+    private int mIme = -1;
+    private int setIME(TerminalEmulator view) {
+        if (view == null) return 0;
+        String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+        int ime = 2;
+        if (defime.matches(IME_ATOK)) {
+            ime = 3;
+        } else if (defime.matches(IME_GOOGLE)) {
+            ime = 4;
+        }
+        if (mIme != ime) {
+            TranscriptScreen transcriptScreen = view.getScreen();
+            if (transcriptScreen != null) {
+                transcriptScreen.setIME(ime);
+                mIme = ime;
+            }
+        }
+        return ime;
+    }
+
     private void doShowSoftKeyboard() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1705,6 +1736,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mVisibleWidth = w;
                 mVisibleHeight = h;
                 updateSize(mVisibleWidth, mVisibleHeight);
+                setIME(mEmulator);
             }
         }
     }
@@ -1764,7 +1796,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     selx2 = mColumns;
                 }
             }
-            mEmulator.getScreen().drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
+            mEmulator.getScreen().drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle, mImeSpannableString);
             y += mCharacterHeight;
             //if no lines to skip, create links for the line being drawn
             if(linkLinesToSkip == 0)

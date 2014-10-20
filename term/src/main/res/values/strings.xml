@@ -104,6 +104,10 @@
    <string name="summary_color_preference">Choose text color.</string>
    <string name="dialog_title_color_preference">Text color</string>
 
+   <string name="title_composingtext_preference">Input method color</string>
+   <string name="summary_composingtext_preference">Choose input method composing text color.</string>
+   <string name="dialog_title_composingtext_preference">Input method composing text color</string>
+
    <string name="actionbar_key_preferences">Actionbar button</string>
    <string name="title_actionbar_icon_preference">Icon button behavior</string>
    <string name="summary_actionbar_icon_preference">Choose what pressing the icon button does.</string>

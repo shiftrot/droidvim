@@ -76,6 +76,7 @@ class GenericTermSession extends TermSession {
     public void updatePrefs(TermSettings settings) {
         mSettings = settings;
         setColorScheme(new ColorScheme(settings.getColorScheme()));
+        setIMEColor(settings.getIMEColor());
         setDefaultUTF8Mode(settings.defaultToUTF8Mode());
     }
 

@@ -11,6 +11,7 @@
    <string name="pref_fontfile_default" translatable="false">system</string>
    <string name="pref_ambiwidth_default" translatable="false">1</string>
    <string name="pref_color_default" translatable="false">1</string>
+   <string name="pref_composingtext_default" translatable="false">1</string>
    <bool name="pref_utf8_by_default_default">false</bool>
    <bool name="pref_hw_acceleration_by_default">true</bool>
    <string name="pref_actionbar_icon_default" translatable="false">113</string>

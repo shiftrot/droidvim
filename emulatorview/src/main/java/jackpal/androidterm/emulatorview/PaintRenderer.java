@@ -21,6 +21,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Environment;
+import android.text.TextPaint;
 import android.util.FloatMath;
 
 import jackpal.androidterm.emulatorview.compat.AndroidCompat;
@@ -81,6 +82,11 @@ class PaintRenderer extends BaseTextRenderer {
             backColor += 8;
         }
         mTextPaint.setColor(mPalette[backColor]);
+        if ((effect & TextStyle.fxIme) != 0) {
+            mTextPaint.setColor(mImePaint.bgColor);
+        } else if ((effect & TextStyle.fxImeBackground) != 0) {
+            mTextPaint.setColor(mPalette[foreColor]);
+        }
 
         float left = x + lineOffset * mCharWidth;
         float textWidth = mTextPaint.measureText(new String(text));
@@ -113,6 +119,9 @@ class PaintRenderer extends BaseTextRenderer {
                 textPaintColor = mPalette[foreColor];
             }
             mTextPaint.setColor(textPaintColor);
+            if ((effect & TextStyle.fxIme) != 0) {
+                mTextPaint.setColor(mImePaint.getColor());
+            }
 
             float textOriginY = y - mCharDescent;
 
@@ -154,11 +163,20 @@ class PaintRenderer extends BaseTextRenderer {
         return mCharWidth;
     }
 
+    public float getMeasureText(String text) {
+        return mTextPaint.measureText(text);
+    }
+
+    public void setImePaint(TextPaint paint) {
+        mImePaint = paint;
+    }
+
     public int getTopMargin() {
         return mCharDescent;
     }
 
     private Paint mTextPaint;
+    private TextPaint mImePaint = null;
     private float mCharWidth;
     private int mCharHeight;
     private int mCharAscent;

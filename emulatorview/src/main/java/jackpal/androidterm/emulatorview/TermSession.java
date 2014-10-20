@@ -63,6 +63,7 @@ public class TermSession {
     private TermKeyListener mKeyListener;
 
     private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
+    private int mIMEColor = 1;
     private UpdateCallback mNotify;
 
     private OutputStream mTermOut;
@@ -242,6 +243,7 @@ public class TermSession {
      */
     public void initializeEmulator(int columns, int rows) {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
+        setIMEColor(mIMEColor);
         mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
         mEmulator.setKeyListener(mKeyListener);
@@ -543,6 +545,14 @@ public class TermSession {
             return;
         }
         mEmulator.setColorScheme(scheme);
+    }
+
+    public void setIMEColor(int color) {
+        mIMEColor = color;
+        if (mTranscriptScreen != null) {
+            mTranscriptScreen.setIMEColor(color);
+        }
+        return;
     }
 
     /**

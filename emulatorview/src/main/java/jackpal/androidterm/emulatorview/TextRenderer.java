@@ -17,6 +17,7 @@
 package jackpal.androidterm.emulatorview;
 
 import android.graphics.Canvas;
+import android.text.TextPaint;
 
 /**
  * Text renderer interface
@@ -60,4 +61,6 @@ interface TextRenderer {
             int lineOffset, int runWidth, char[] text,
             int index, int count, boolean selectionStyle, int textStyle,
             int cursorOffset, int cursorIndex, int cursorIncr, int cursorWidth, int cursorMode);
+    float getMeasureText(String str);
+    void setImePaint(TextPaint paint);
 }

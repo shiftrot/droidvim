@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.text.TextPaint;
 
 
 class Bitmap4x8FontRenderer extends BaseTextRenderer {
@@ -50,6 +51,14 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
 
     public float getCharacterWidth() {
         return kCharacterWidth;
+    }
+
+    public float getMeasureText(String text) {
+        return kCharacterWidth*text.length();
+    }
+
+    public void setImePaint(TextPaint paint) {
+        // dummy function
     }
 
     public int getCharacterHeight() {

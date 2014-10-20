@@ -40,6 +40,7 @@ public class TermSettings {
     private int mAmbiWidth;
     private boolean mHwAcceleration;
     private int mColorId;
+    private int mIMEColor;
     private boolean mUTF8ByDefault;
     private int mActionBarIconAction;
     private int mActionBarPlusAction;
@@ -78,6 +79,7 @@ public class TermSettings {
     private static final String FONTFILE_KEY = "fontfile";
     private static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String COLOR_KEY = "color";
+    private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";
     private static final String ACTIONBAR_ICON_KEY = "actionbar_icon_action";
@@ -190,6 +192,7 @@ public class TermSettings {
         mFontFile = res.getString(R.string.pref_fontfile_default);
         mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiwidth_default));
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
+        mIMEColor = Integer.parseInt(res.getString(R.string.pref_composingtext_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
         mHwAcceleration = res.getBoolean(R.bool.pref_hw_acceleration_by_default);
         mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_icon_default));
@@ -228,6 +231,7 @@ public class TermSettings {
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
         mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
+        mIMEColor = readIntPref(IMECOLOR_KEY, mIMEColor, 100);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mHwAcceleration = readBooleanPref(HWACCELERATION_KEY, mHwAcceleration);
         mActionBarIconAction = readIntPref(ACTIONBAR_ICON_KEY, mActionBarIconAction, ACTIONBAR_KEY_MAX);
@@ -319,6 +323,10 @@ public class TermSettings {
 
     public int[] getColorScheme() {
         return COLOR_SCHEMES[mColorId];
+    }
+
+    public int getIMEColor() {
+        return mIMEColor;
     }
 
     public boolean defaultToUTF8Mode() {
