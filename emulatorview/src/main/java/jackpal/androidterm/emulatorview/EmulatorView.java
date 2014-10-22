@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
@@ -51,6 +52,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Scroller;
 
 /**
@@ -480,6 +482,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private UpdateCallback mUpdateNotify = new UpdateCallback() {
         public void onUpdate() {
+            doEscCtrl();
             if ( mIsSelectingText ) {
                 int rowShift = mEmulator.getScrollCounter();
                 mSelY1 -= rowShift;
@@ -1388,6 +1391,64 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mKeyListener.handleControlKey(true);
         mKeyListener.handleControlKey(false);
         invalidate();
+    }
+
+    private void doEscCtrl() {
+        while (true) {
+            int ctrl = mEmulator.getEscCtrlMode();
+            if (ctrl == -1) return;
+            if ((mHaveFullHwKeyboard == false) && (ctrl <= 2)) {
+                continue;
+            }
+            switch (ctrl) {
+            case 0:
+                doHideSoftKeyboard();
+                break;
+            case 1:
+                doShowSoftKeyboard();
+                break;
+            case 2:
+                doToggleSoftKeyboard();
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                doHideSoftKeyboard();
+                break;
+            case 8:
+                doShowSoftKeyboard();
+                break;
+            case 9:
+                doToggleSoftKeyboard();
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    private void doShowSoftKeyboard() {
+        Activity activity = (Activity)this.getContext();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
+    }
+
+    private void doHideSoftKeyboard() {
+        Activity activity = (Activity)this.getContext();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+    }
+
+    private void doToggleSoftKeyboard() {
+        Activity activity = (Activity)this.getContext();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
     @Override

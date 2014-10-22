@@ -23,6 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.util.Locale;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import android.util.Log;
 
@@ -679,6 +681,27 @@ class TerminalEmulator {
 
     private void process(byte b) {
         process(b, true);
+    }
+
+    private static Queue<Integer> mEscSeq = new LinkedList<Integer>();
+    public void setEscCtrlMode() {
+        int esc = 0;
+        for (int i = 0; i <= mArgIndex; i++) {
+            esc = mArgs[i];
+        }
+        setOSCMode(esc);
+        return;
+    }
+
+    public void setOSCMode(int esc) {
+        mEscSeq.offer(esc);
+        mUTF8ModeNotify.onUpdate();
+        return;
+    }
+
+    public int getEscCtrlMode() {
+        if (mEscSeq.size() == 0) return -1;
+        return mEscSeq.poll();
     }
 
     private void process(byte b, boolean doUTF8) {
@@ -1386,6 +1409,9 @@ class TerminalEmulator {
         }
             break;
 
+        case 't':
+            setEscCtrlMode();
+            break;
         default:
             parseArg(b);
             break;
@@ -1527,6 +1553,10 @@ class TerminalEmulator {
             changeTitle(ps, nextOSCString(-1));
             break;
         default:
+            if (ps >= 10000) {
+                setOSCMode(ps-10000);
+                break;
+            }
             unknownParameter(ps);
             break;
         }
