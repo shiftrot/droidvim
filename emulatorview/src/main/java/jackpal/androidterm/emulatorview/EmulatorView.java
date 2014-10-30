@@ -1459,6 +1459,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 doToggleSoftKeyboard();
                 break;
             case 3:
+                ((Activity)this.getContext()).onKeyUp(0xfffffff1, null);
                 break;
             case 4:
                 break;

@@ -30,7 +30,13 @@ import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.List;
@@ -1030,8 +1036,36 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             } else {
                 return super.onKeyUp(keyCode, event);
             }
+        case 0xfffffff1:
+            copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
+            return true;
         default:
             return super.onKeyUp(keyCode, event);
+        }
+    }
+
+    private void copyFileToClipboard(String filename) {
+        if (filename == null) return;
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(filename);
+            FileChannel fc = fis.getChannel();
+            try {
+                ByteBuffer bbuf;
+                bbuf = fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
+                // Create a read-only CharBuffer on the file
+                CharBuffer cbuf = Charset.forName("UTF-8").newDecoder().decode(bbuf);
+                String str = cbuf.toString();
+                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                        .getManager(getApplicationContext());
+                clip.setText(str);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
