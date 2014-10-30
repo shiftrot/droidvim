@@ -28,6 +28,7 @@
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
 
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
+   <string name="toast_clipboard">Text copied to clipboard.</string>
 
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>

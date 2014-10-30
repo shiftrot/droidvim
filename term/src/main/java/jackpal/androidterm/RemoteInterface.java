@@ -30,8 +30,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
@@ -167,12 +171,25 @@ public class RemoteInterface extends Activity {
                 result.putExtra(EXTRA_WINDOW_HANDLE, mHandle);
                 setResult(RESULT_OK, result);
             }
+        } else if (action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_TEXT)) {
+            Object extraStream = myIntent.getExtras().get(Intent.EXTRA_TEXT);
+            String str = (String)extraStream;
+            copyToClipboard(str);
         } else {
             // Intent sender may not have permissions, ignore any extras
             openNewWindow(null);
         }
 
         finish();
+    }
+
+    private void copyToClipboard(String str) {
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(this.getApplicationContext());
+        clip.setText(str);
+        Toast toast = Toast.makeText(this,R.string.toast_clipboard,Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
     }
 
     /**
