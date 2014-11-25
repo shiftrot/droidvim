@@ -639,10 +639,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
+    private int mIMEInputType = 0;
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         outAttrs.inputType = mUseCookedIme ?
-                EditorInfo.TYPE_CLASS_TEXT :
+                EditorInfo.TYPE_CLASS_TEXT | mIMEInputType:
                 EditorInfo.TYPE_NULL;
         return new BaseInputConnection(this, true) {
             /**
@@ -809,7 +810,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     Log.w(TAG, "commitText(\"" + text + "\", " + newCursorPosition + ")");
                 }
                 clearComposingText();
-                sendText(text);
+                if (mIMEInputType == IME_INPUT_TYPE_GOOGLE) {
+                    if (text.toString().matches(". ")) sendText(" ");
+                } else {
+                    sendText(text);
+                }
                 setImeBuffer("");
                 mCursor = 0;
                 return true;
@@ -890,6 +895,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                         : mComposingTextStart - newCursorPosition;
                 if (text instanceof SpannableString) {
                     mImeSpannableString = (SpannableString)text;
+                }
+                if (mIMEInputType == IME_INPUT_TYPE_GOOGLE) {
+                    if (text.toString().equals("") == false) {
+                        clearComposingText();
+                        sendText(text);
+                    }
                 }
                 invalidate();
                 return true;
@@ -1005,6 +1016,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mEmulator = session.getEmulator();
         setHwAcceleration(mHardwareAcceleration);
         session.setUpdateCallback(mUpdateNotify);
+
+        mIMEInputTypeGoogle = getDevBoolean(this.getContext(), "IME_INPUT_TYPE_GOOGLE", true);
         mIMECtrlBeginBatchEditDisable = getDevBoolean(this.getContext(), "BatchEditDisable", true);
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
 
@@ -1469,8 +1482,73 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 ((Activity)this.getContext()).onKeyUp(0xfffffff1, null);
                 break;
             case 4:
+                setIMEInputType(0);
                 break;
             case 5:
+                setIMEInputType(getIMEInputType(IME_AUTODETECT, EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD));
+                mIMEAutoDetect = true;
+                break;
+            case 50:
+                setIMEInputType(0);
+                break;
+            case 51:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                break;
+            case 510:
+            case 511:
+            case 512:
+            case 513:
+                String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+                if (defime.matches(IME_GOOGLE)) {
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    break;
+                }
+                if (ctrl == 511) {
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else if (ctrl == 512) {
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                } else if (defime.matches(IME_ATOK)) {
+                    setIMEInputType(ctrl == 510 ? IME_INPUT_TYPE_ATOK : EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    setIMEInputType(0);
+                }
+                break;
+            case 52:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                break;
+            case 53:
+                setIMEInputType(IME_INPUT_TYPE_GOOGLE);
+                break;
+            case 55:
+                setIMEInputType(getIMEInputType(IME_WNN, EditorInfo.TYPE_TEXT_VARIATION_URI));
+                break;
+            case 555:
+                mIMEInputTypeGoogle = !getDevBoolean(this.getContext(), "IME_INPUT_TYPE_GOOGLE", true);
+                setDevBoolean(this.getContext(), "IME_INPUT_TYPE_GOOGLE", mIMEInputTypeGoogle);
+                break;
+            case 500:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                break;
+            case 501:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER);
+                break;
+            case 502:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                break;
+            case 503:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC);
+                break;
+            case 504:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                break;
+            case 505:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                break;
+            case 506:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
+                break;
+            case 507:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
                 break;
             case 6:
                 doInputMethodPicker();
@@ -1516,10 +1594,23 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    private static boolean mIMEInputTypeGoogle = true;
+    private final static int IME_INPUT_TYPE_NORMAL = EditorInfo.TYPE_TEXT_VARIATION_NORMAL;
+    private final static int IME_INPUT_TYPE_ATOK = EditorInfo.TYPE_TEXT_VARIATION_URI;
+    private final static int IME_INPUT_TYPE_GOOGLE = EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
+    private final static int IME_INPUT_TYPE_ANDROID = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+    private final static String IME_AUTODETECT = "";
+    // com.android.inputmethod.latin/.LatinIME
+    // com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
+    private final static String IME_ANDROID = ".*com.android.inputmethod.latin.*";
     // com.justsystems.atokmobile.tv.service/.AtokInputMethodService
     private final static String IME_ATOK = "com.justsystems.atokmobile..*";
     // com.google.android.inputmethod.japanese/.MozcService
     private final static String IME_GOOGLE = "com.google.android.inputmethod.japanese/.*";
+    // jp.co.omronsoft.openwnn/.OpenWnnJAJP
+    // jp.co.omronsoft.wnnlab/.standardcommon.IWnnLanguageSwitcher
+    // jp.co.omronsoft.iwnnime.ml/.standardcommon.IWnnLanguageSwitcher
+    private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
     private int mIme = -1;
     private int setIME(TerminalEmulator view) {
         if (view == null) return 0;
@@ -1538,6 +1629,38 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
         return ime;
+    }
+
+    private int getIMEInputType(String ime, int defType) {
+        String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+        if (ime.equals(IME_AUTODETECT) == false) {
+            return defime.matches(ime) ? defType : 0;
+        }
+        int inputType = defType;
+        if (defime.matches(IME_ATOK)) {
+            inputType = IME_INPUT_TYPE_ATOK;
+        } else if (defime.matches(IME_GOOGLE)) {
+            if (mIMEInputTypeGoogle == false) inputType = IME_INPUT_TYPE_NORMAL;
+        } else if (defime.matches(IME_ANDROID)) {
+            inputType = IME_INPUT_TYPE_ANDROID;
+        }
+        return inputType;
+    }
+
+    private boolean mIMEAutoDetect = false;
+    public void setIMEInputType(int attr) {
+        mIMEAutoDetect = false;
+        if (mHaveFullHwKeyboard == false) {
+            if (mIMEInputType == attr) return;
+            mIMEInputType = attr;
+        } else if (mIMEInputType != 0) {
+            mIMEInputType = 0;
+        } else {
+            return;
+        }
+        Activity activity = (Activity)this.getContext();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.restartInput(this);
     }
 
     private void doShowSoftKeyboard() {
@@ -1700,6 +1823,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             initialize();
         } else {
             updateSize(false);
+        }
+
+        if (mIMEAutoDetect == true) {
+            int inputType = getIMEInputType(IME_AUTODETECT, EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            if (mIMEInputType != inputType) {
+                setIMEInputType(inputType);
+                mIMEAutoDetect = true;
+            }
         }
     }
 
