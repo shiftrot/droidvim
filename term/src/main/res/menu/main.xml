@@ -39,6 +39,8 @@
         android:icon="@drawable/ic_menu_windows" />
     <item android:id="@+id/menu_toggle_soft_keyboard"
         android:title="@string/toggle_soft_keyboard" />
+    <item android:id="@+id/menu_toggle_function_bar"
+        android:title="@string/toggle_function_bar" />
     <item android:id="@+id/menu_special_keys"
         android:title="@string/special_keys" />
     <item android:id="@+id/menu_preferences"

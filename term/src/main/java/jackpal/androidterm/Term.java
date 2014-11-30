@@ -109,6 +109,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private final static int PASTE_ID = 2;
     private final static int SEND_CONTROL_KEY_ID = 3;
     private final static int SEND_FN_KEY_ID = 4;
+    private final static int SEND_FUNCTION_BAR_ID = 5;
+    private final static int SEND_MENU_ID = 6;
 
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
@@ -756,6 +758,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doDocumentKeys();
         } else if (id == R.id.menu_toggle_soft_keyboard) {
             doToggleSoftKeyboard();
+        } else if (id == R.id.menu_toggle_function_bar) {
+            setFunctionBar(2);
         } else if (id == R.id.menu_toggle_wakelock) {
             doToggleWakeLock();
         } else if (id == R.id.menu_toggle_wifilock) {
@@ -954,8 +958,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
       menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
       menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
       menu.add(0, PASTE_ID, 0, R.string.paste);
-      menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
-      menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
+      // menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
+      // menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
+      menu.add(0, SEND_MENU_ID, 0, R.string.title_functionbar_menu);
+      menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
       if (!canPaste()) {
           menu.getItem(PASTE_ID).setEnabled(false);
       }
@@ -978,6 +984,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return true;
           case SEND_FN_KEY_ID:
             doSendFnKey();
+            return true;
+          case SEND_MENU_ID:
+              openOptionsMenu();
+              return true;
+          case SEND_FUNCTION_BAR_ID:
+            setFunctionBar(2);
             return true;
           default:
             return super.onContextItemSelected(item);
@@ -1055,6 +1067,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         case 0xfffffff1:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
+            return true;
+        case 0xfffffff2:
+            setFunctionBar(2);
             return true;
         default:
             return super.onKeyUp(keyCode, event);
