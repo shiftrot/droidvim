@@ -1068,8 +1068,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         case 0xfffffff1:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
             return true;
+        case 0xffffffe0:
+            setFunctionBar(0);
+            return true;
+        case 0xffffffe1:
+            setFunctionBar(1);
+            return true;
         case 0xfffffff2:
             setFunctionBar(2);
+            return true;
+        case 0xfffffff3:
+            openOptionsMenu();
             return true;
         default:
             return super.onKeyUp(keyCode, event);
