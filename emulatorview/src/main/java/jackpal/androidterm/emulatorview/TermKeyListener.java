@@ -177,9 +177,12 @@ class TermKeyListener {
         mAppKeyCodes[KEYCODE_NUMPAD_7] = "\033Ow";
         mAppKeyCodes[KEYCODE_NUMPAD_8] = "\033Ox";
         mAppKeyCodes[KEYCODE_NUMPAD_9] = "\033Oy";
+        setCursorKeysApplicationMode(mCursorApplicationMode);
     }
 
+    private boolean mCursorApplicationMode = true;
     public void setCursorKeysApplicationMode(boolean val) {
+        mCursorApplicationMode = val;
         if (LOG_MISC) {
             Log.d(EmulatorDebug.LOG_TAG, "CursorKeysApplicationMode=" + val);
         }
