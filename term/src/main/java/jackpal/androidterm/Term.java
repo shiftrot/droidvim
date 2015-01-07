@@ -32,6 +32,7 @@ import jackpal.androidterm.util.TermSettings;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -1100,6 +1101,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         case 0xfffffff3:
             openOptionsMenu();
             return true;
+        case 0xfffffff4:
+        case 0xfffffff5:
+            copyClipboardToFile(mSettings.getHomePath()+"/.clipboard");
+            if (keyCode == 0xfffffff5) sendKeyStrings(":ATEMod _paste\r", true);
+            return true;
         default:
             return super.onKeyUp(keyCode, event);
         }
@@ -1120,6 +1126,30 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
                 clip.setText(str);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void copyClipboardToFile(String filename) {
+        if (filename == null) return;
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(filename);
+            FileChannel fc = fos.getChannel();
+            try {
+                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                        .getManager(getApplicationContext());
+                if (clip.hasText()) {
+                    ByteBuffer by = ByteBuffer.wrap(clip.getText().toString().getBytes());
+                    fc.write(by);
+                }
+                fc.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
