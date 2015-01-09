@@ -407,6 +407,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
+        setSoftInputMode(mHaveFullHwKeyboard);
 
         if (mFunctionBar == -1) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
@@ -688,10 +689,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
     }
 
+    private void setSoftInputMode(boolean haveFullHwKeyboard) {
+        int mode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+        if (haveFullHwKeyboard) {
+            mode |= WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
+        } else {
+            mode |= WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
+        }
+        getWindow().setSoftInputMode(mode);
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
+        setSoftInputMode(mHaveFullHwKeyboard);
 
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
