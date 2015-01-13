@@ -35,6 +35,8 @@
    <string name="reset_toast_notification">このウインドウのターミナル状態はリセットされました.</string>
    <string name="toast_clipboard">テキストをクリップボードへコピーしました</string>
 
+   <string name="edit_vimrc">.vimrcを編集</string>
+
    <string name="enable_wakelock">WakeLockを取得</string>
    <string name="disable_wakelock">WakeLockを解除</string>
    <string name="enable_wifilock">WifiLockを取得</string>

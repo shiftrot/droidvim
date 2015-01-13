@@ -73,6 +73,18 @@ public class TermPreferences extends PreferenceActivity {
             }
         }
 
+        if (jackpal.androidterm.BuildConfig.FLAVOR.equals("vim")) {
+            findPreference("functionbar_vim_paste").setDefaultValue(true);
+        }
+        if (!jackpal.androidterm.BuildConfig.FLAVOR.equals("master")) {
+            PreferenceCategory shellCategory =
+                    (PreferenceCategory) findPreference("categoryShell");
+            if (shellCategory != null) {
+                shellCategory.removePreference(findPreference("do_path_extensions"));
+                shellCategory.removePreference(findPreference("allow_prepend_path"));
+            }
+        }
+
         // FIXME:
         ListPreference fontFileList= (ListPreference) getPreferenceScreen().findPreference("fontfile");
         setFontList(fontFileList);

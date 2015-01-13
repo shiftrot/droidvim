@@ -95,6 +95,10 @@ public class TermService extends Service implements TermSession.FinishCallback
         String defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
+        if (BuildConfig.FLAVOR.equals("vim")) {
+            editor.putBoolean("functionbar_vim_paste", true);
+            editor.putBoolean("functionbar_colon", true);
+        }
         editor.commit();
 
         compat = new ServiceForegroundCompat(this);
@@ -103,8 +107,12 @@ public class TermService extends Service implements TermSession.FinishCallback
         int priority = Notification.PRIORITY_DEFAULT;
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (pref.getBoolean("statusbar_icon", true) == false) priority = Notification.PRIORITY_MIN;
+        CharSequence contentText = getText(R.string.application_terminal);
+        if (BuildConfig.FLAVOR.equals("vim")) {
+            contentText = getText(R.string.application_termvim);
+        }
         Notification notification = new NotificationCompat.Builder(getApplicationContext())
-            .setContentTitle(getText(R.string.application_terminal))
+            .setContentTitle(contentText)
             .setContentText(getText(R.string.service_notify_text))
             .setSmallIcon(R.drawable.ic_stat_service_notification_icon)
             .setPriority(priority)

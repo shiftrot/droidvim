@@ -442,7 +442,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/shell_preferences">
+        android:title="@string/shell_preferences"
+        android:key="categoryShell">
 
     <EditTextPreference
             android:key="shell"

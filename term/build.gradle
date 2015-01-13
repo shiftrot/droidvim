@@ -27,6 +27,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), getDefaultProguardFile('proguard-android-optimize.txt')
         }
     }
+
+    productFlavors {
+        vim {
+            setApplicationId("vim.androidterm")
+        }
+    }
 }
 
 dependencies {

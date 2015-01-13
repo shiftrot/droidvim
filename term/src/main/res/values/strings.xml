@@ -20,6 +20,7 @@
    <string name="x">X</string>
    <string name="user">□</string>
    <string name="application_terminal">Terminal Emulator</string>
+   <string name="application_termvim">TermVim</string>
    <string name="preferences">Preferences</string>
    <string name="new_window">New window</string>
    <string name="close_window">Close window</string>
@@ -34,6 +35,8 @@
 
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
    <string name="toast_clipboard">Text copied to clipboard.</string>
+
+   <string name="edit_vimrc">Edit .vimrc</string>
 
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
