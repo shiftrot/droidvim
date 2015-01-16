@@ -23,8 +23,10 @@ public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
 
     @Override
     public boolean hasText() {
-        return (clip.hasPrimaryClip() && clip.getPrimaryClipDescription()
-                .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN));
+        ClipData data = clip.getPrimaryClip();
+        if (data == null) return false;
+        ClipData.Item item = clip.getPrimaryClip().getItemAt(0);
+        return (clip.hasPrimaryClip() && item.getText() != null);
     }
 
     @Override
