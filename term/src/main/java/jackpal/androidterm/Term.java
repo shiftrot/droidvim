@@ -475,6 +475,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 onResumeSelectWindow = -1;
             }
             mViewFlipper.onResume();
+            if (!mHaveFullHwKeyboard) {
+                doShowSoftKeyboard();
+            }
         }
     }
 
@@ -1316,6 +1319,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 
+    }
+
+    private void doShowSoftKeyboard() {
+        if (getCurrentEmulatorView() == null) return;
+        Activity activity = this;
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
     }
 
     private void doHideSoftKeyboard() {
