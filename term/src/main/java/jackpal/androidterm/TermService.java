@@ -18,6 +18,7 @@ package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -25,7 +26,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.*;
-import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -97,11 +99,14 @@ public class TermService extends Service implements TermSession.FinishCallback
         mTermSessions = new SessionList();
 
         if (AndroidCompat.SDK >= 16) {
+            int priority = Notification.PRIORITY_DEFAULT;
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+            if (pref.getBoolean("statusbar_icon", true) == false) priority = Notification.PRIORITY_MIN;
             Notification notification = new Notification.Builder(getApplicationContext())
                 .setContentTitle(getText(R.string.application_terminal))
                 .setContentText(getText(R.string.service_notify_text))
                 .setSmallIcon(R.drawable.ic_stat_service_notification_icon)
-                .setPriority(Notification.PRIORITY_MIN)
+                .setPriority(priority)
                 .build();
             notification.flags |= Notification.FLAG_ONGOING_EVENT;
             Intent notifyIntent = new Intent(this, Term.class);

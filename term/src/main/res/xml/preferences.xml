@@ -30,6 +30,12 @@
                 android:entryValues="@array/entryvalues_statusbar_preference"
                 android:dialogTitle="@string/dialog_title_statusbar_preference" />
 
+        <CheckBoxPreference
+                android:key="statusbar_icon"
+                android:defaultValue="true"
+                android:title="@string/title_statusbar_icon_preference"
+                android:summary="@string/summary_statusbar_icon_preference"/>
+
         <ListPreference
                 android:key="actionbar"
                 android:defaultValue="@integer/pref_actionbar_default"

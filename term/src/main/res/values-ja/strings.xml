@@ -60,6 +60,9 @@
    <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
    <string name="dialog_title_statusbar_preference">ステータスバー</string>
 
+   <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
+   <string name="summary_statusbar_icon_preference">ステータスバーアイコンの表示/非表示. (Android 4.1 以降, 要再起動)</string>
+
    <string name="title_functionbar_preference">ファンクションバー</string>
    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
 
