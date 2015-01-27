@@ -1614,6 +1614,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 1003:
                 ((Activity)this.getContext()).onKeyUp(0xfffffff3, null);
                 break;
+            case 1006:
+                ((Activity)this.getContext()).onKeyUp(0xfffffff6, null);
+                break;
+            case 1007:
+                ((Activity)this.getContext()).onKeyUp(0xfffffff7, null);
+                break;
             default:
                 break;
             }

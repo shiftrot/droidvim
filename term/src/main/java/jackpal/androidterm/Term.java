@@ -1106,6 +1106,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             copyClipboardToFile(mSettings.getHomePath()+"/.clipboard");
             if (keyCode == 0xfffffff5) sendKeyStrings(":ATEMod _paste\r", true);
             return true;
+        case 0xfffffff6:
+        case 0xfffffff7:
+            mVimPaste = (keyCode == 0xfffffff6) ? true : false;
+            return true;
         default:
             return super.onKeyUp(keyCode, event);
         }
@@ -1238,7 +1242,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         clip.setText(getCurrentTermSession().getTranscriptText().trim());
     }
 
+    private static boolean mVimPaste = false;
     private void doPaste() {
+        if (mVimPaste && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+            sendKeyStrings("\"*p", false);
+            return;
+        }
         if (!canPaste()) {
             return;
         }
