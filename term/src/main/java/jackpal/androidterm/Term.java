@@ -405,7 +405,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
 
         if (mFunctionBar == -1) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
-        if (mFunctionBar == 0) setFunctionBar(mFunctionBar);
+        if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
 
         updatePrefs();
         mAlreadyStarted = true;
@@ -1401,7 +1401,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setFunctionBarButton(R.id.button_menu_quit, visibility);
 
         setFunctionBarSize();
-        visibility = mFunctionBar != 0 ? View.VISIBLE : View.GONE;
+        visibility = mFunctionBar == 1 ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar).setVisibility(visibility);
         mViewFlipper.setFunctionBar(mFunctionBar == 1);
     }

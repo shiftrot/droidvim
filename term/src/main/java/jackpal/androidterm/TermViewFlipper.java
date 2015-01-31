@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
@@ -98,6 +99,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         Rect visible = mVisibleRect;
         mChildParams = new LayoutParams(visible.width(), visible.height(),
             Gravity.TOP|Gravity.LEFT);
+        // FIXME
+        mFunctionBarSize = getDevInt(context, "functinbar_size", mFunctionBarSize);
     }
 
     public void updatePrefs(TermSettings settings) {
@@ -256,7 +259,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
            it's possible that the view won't resize correctly on IME hide */
         visible.right = window.right;
         visible.bottom = window.bottom;
-        visible.bottom -= mFunctionBarSize * (mFunctionBar ? 1 : 0);
+        visible.bottom -= mFunctionBar ? mFunctionBarSize : 0;
     }
 
     private void adjustChildSize() {
@@ -306,10 +309,28 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private int mFunctionBarSize = 0;
     private boolean mFunctionBar = true;
     public void setFunctionBarSize(int size) {
-        if (size > 0) mFunctionBarSize = size;
+        if (size > 0) {
+            if (getDevInt(context, "functinbar_size", mFunctionBarSize) != size) setDevInt(context, "functinbar_size", size);
+            mFunctionBarSize = size;
+        }
     }
 
     public void setFunctionBar(boolean bool) {
+        if (mFunctionBar == bool) return;
         mFunctionBar = bool;
+        adjustChildSize();
+    }
+
+    public int setDevInt(Context context, String key, int value) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(key, value);
+        editor.commit();
+        return value;
+    }
+
+    public int getDevInt(Context context, String key, int defValue) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        return pref.getInt(key, defValue);
     }
 }
