@@ -663,6 +663,14 @@ class TermKeyListener {
     }
 
     public boolean handleKeyCode(int keyCode, KeyEvent event, boolean appMode) throws IOException {
+        if (keyCode == 95 || keyCode == 211 || keyCode == 212) {
+            // SWITCH_CHARSET, ZENKAKU_HANKAKU, EISU
+            return true;
+        }
+        if (keyCode >= 213 && keyCode <= 215) {
+            // ignore HENKAN, MUHENKAN, KATAKANA_HIRAGANA
+            return true;
+        }
         String code = null;
         if (event != null) {
             int keyMod = 0;
