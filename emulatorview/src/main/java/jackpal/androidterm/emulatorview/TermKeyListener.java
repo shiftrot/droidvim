@@ -341,6 +341,7 @@ class TermKeyListener {
         // Ensure we don't have any left-over modifier state when switching
         // views.
         mHardwareControlKey = false;
+        mAltControlKey = false;
     }
 
     public void onResume() {
@@ -425,7 +426,7 @@ class TermKeyListener {
     }
 
     public int mapControlChar(int ch) {
-        return mapControlChar(mHardwareControlKey || mControlKey.isActive(), mFnKey.isActive(), ch);
+        return mapControlChar(mAltControlKey || mHardwareControlKey || mControlKey.isActive(), mFnKey.isActive(), ch);
     }
 
     public int mapControlChar(boolean control, boolean fn, int ch) {
@@ -618,7 +619,7 @@ class TermKeyListener {
             }
         }
 
-        boolean effectiveControl = chordedCtrl || mHardwareControlKey || (allowToggle && mControlKey.isActive());
+        boolean effectiveControl = chordedCtrl || mAltControlKey || mHardwareControlKey || (allowToggle && mControlKey.isActive());
         boolean effectiveFn = allowToggle && mFnKey.isActive();
 
         result = mapControlChar(effectiveControl, effectiveFn, result);
@@ -662,13 +663,20 @@ class TermKeyListener {
                 KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
     }
 
+    private boolean mThumbCtrl = false;
+    public void setThumbCtrl(boolean val) {
+        mThumbCtrl = val;
+    }
+
+    private boolean mAltControlKey = false;
     public boolean handleKeyCode(int keyCode, KeyEvent event, boolean appMode) throws IOException {
         if (keyCode == 95 || keyCode == 211 || keyCode == 212) {
             // SWITCH_CHARSET, ZENKAKU_HANKAKU, EISU
             return true;
         }
         if (keyCode >= 213 && keyCode <= 215) {
-            // ignore HENKAN, MUHENKAN, KATAKANA_HIRAGANA
+            // HENKAN, MUHENKAN, KATAKANA_HIRAGANA
+            if (mThumbCtrl) mAltControlKey = true;
             return true;
         }
         String code = null;
@@ -677,7 +685,7 @@ class TermKeyListener {
             // META_CTRL_ON was added only in API 11, so don't use it,
             // use our own tracking of Ctrl key instead.
             // (event.getMetaState() & META_CTRL_ON) != 0
-            if (mHardwareControlKey || mControlKey.isActive()) {
+            if (mAltControlKey || mHardwareControlKey || mControlKey.isActive()) {
                 keyMod |= KEYMOD_CTRL;
             }
             if ((event.getMetaState() & META_ALT_ON) != 0) {
@@ -721,6 +729,12 @@ class TermKeyListener {
     public void keyUp(int keyCode, KeyEvent event) {
         boolean allowToggle = isEventFromToggleDevice(event);
         switch (keyCode) {
+        case 213:
+        case 214:
+        case 215:
+            // HENKAN, MUHENKAN, KATAKANA_HIRAGANA
+            if (mThumbCtrl) mAltControlKey = false;
+            break;
         case KeyEvent.KEYCODE_ALT_LEFT:
         case KeyEvent.KEYCODE_ALT_RIGHT:
             if (allowToggle) {

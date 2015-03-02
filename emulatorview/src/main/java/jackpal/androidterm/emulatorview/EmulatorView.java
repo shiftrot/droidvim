@@ -572,6 +572,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         mKeyListener = new TermKeyListener(session);
         session.setKeyListener(mKeyListener);
+        mKeyListener.setThumbCtrl(getDevBoolean(this.getContext(), "ThumbCtrl", false));
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {
@@ -1599,6 +1600,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 20:
                 mCreateURL = !getDevBoolean(this.getContext(), "CreateURL", false);
                 setDevBoolean(this.getContext(), "CreateURL", mCreateURL);
+                break;
+            case 100:
+                boolean tc = !getDevBoolean(this.getContext(), "ThumbCtrl", false);
+                setDevBoolean(this.getContext(), "ThumbCtrl", tc);
+                if (mKeyListener != null) mKeyListener.setThumbCtrl(tc);
                 break;
             case 998:
             case 999:
