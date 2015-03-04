@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -1406,9 +1407,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mViewFlipper.setFunctionBar(mFunctionBar == 1);
     }
 
+    @SuppressLint("NewApi")
     private void setFunctionBarButton(int id, int visibility) {
         Button button = (Button)findViewById(id);
         button.setVisibility(visibility);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int height = mSettings.getFontSize() * (int) (metrics.density * metrics.scaledDensity);
+        button.setMinHeight(height);
+        if (AndroidCompat.SDK >= 14) {
+            button.setAllCaps(false);
+        }
     }
 
     public void onClick(View v) {
