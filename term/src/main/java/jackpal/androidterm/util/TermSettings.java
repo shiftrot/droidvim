@@ -38,6 +38,7 @@ public class TermSettings {
     private int mFontLeading;
     private String mFontFile;
     private int mAmbiWidth;
+    private boolean mHwAcceleration;
     private int mColorId;
     private boolean mUTF8ByDefault;
     private int mActionBarIconAction;
@@ -78,6 +79,7 @@ public class TermSettings {
     private static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String COLOR_KEY = "color";
     private static final String UTF8_KEY = "utf8_by_default";
+    private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";
     private static final String ACTIONBAR_ICON_KEY = "actionbar_icon_action";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
@@ -189,6 +191,7 @@ public class TermSettings {
         mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiwidth_default));
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
+        mHwAcceleration = res.getBoolean(R.bool.pref_hw_acceleration_by_default);
         mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_icon_default));
         mActionBarPlusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_plus_default));
         mActionBarMinusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_minus_default));
@@ -226,6 +229,7 @@ public class TermSettings {
         mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
+        mHwAcceleration = readBooleanPref(HWACCELERATION_KEY, mHwAcceleration);
         mActionBarIconAction = readIntPref(ACTIONBAR_ICON_KEY, mActionBarIconAction, ACTIONBAR_KEY_MAX);
         mActionBarPlusAction = readIntPref(ACTIONBAR_PLUS_KEY, mActionBarPlusAction, ACTIONBAR_KEY_MAX);
         mActionBarMinusAction = readIntPref(ACTIONBAR_MINUS_KEY, mActionBarMinusAction, ACTIONBAR_KEY_MAX);
@@ -307,6 +311,10 @@ public class TermSettings {
 
     public int getAmbiWidth() {
         return mAmbiWidth;
+    }
+
+    public boolean getHwAcceleration() {
+        return mHwAcceleration;
     }
 
     public int[] getColorScheme() {

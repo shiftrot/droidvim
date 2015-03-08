@@ -537,15 +537,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         commonConstructor(context);
     }
 
-    private static boolean mHardwareAcceleration = true;
-    @SuppressLint("NewApi")
     private void commonConstructor(Context context) {
         // TODO: See if we want to use the API level 11 constructor to get new flywheel feature.
         mScroller = new Scroller(context);
         mMouseTrackingFlingRunner.mScroller = new Scroller(context);
-        if ((AndroidCompat.SDK >= 11) && (mHardwareAcceleration == false)) {
-            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+        setHwAcceleration(mHardwareAcceleration);
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
     }
 
@@ -1000,6 +996,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         updateText();
 
         mEmulator = session.getEmulator();
+        setHwAcceleration(mHardwareAcceleration);
         session.setUpdateCallback(mUpdateNotify);
         mIMECtrlBeginBatchEditDisable = getDevBoolean(this.getContext(), "BatchEditDisable", true);
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
@@ -1009,6 +1006,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setAmbiWidth(int width) {
         UnicodeTranscript.setAmbiWidth(width);
+    }
+
+    @SuppressLint("NewApi")
+    private boolean mHardwareAcceleration = true;
+    public void setHwAcceleration(boolean mode) {
+        if (mHardwareAcceleration == mode) return;
+        mHardwareAcceleration = mode;
+        if (AndroidCompat.SDK < 11) return;
+        if (mode) {
+            this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
     }
 
     /**
@@ -1482,14 +1492,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 14:
                 break;
             case 15:
-                break;
-            case 100:
-                mHardwareAcceleration = true;
-                this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-                break;
-            case 101:
-                mHardwareAcceleration = false;
-                this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 break;
             default:
                 break;

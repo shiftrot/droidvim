@@ -80,6 +80,9 @@
    <string name="title_utf8_by_default_preference">Default to UTF-8</string>
    <string name="summary_utf8_by_default_preference">Whether UTF-8 mode is enabled by default.</string>
 
+   <string name="title_hw_acceleration_by_default_preference">Hardware acceleration</string>
+   <string name="summary_hw_acceleration_by_default_preference">Whether hardware acceleration mode is enabled.</string>
+
    <string name="title_fontsize_preference">Font size</string>
    <string name="summary_fontsize_preference">Choose character height in points.</string>
    <string name="dialog_title_fontsize_preference">Font size</string>

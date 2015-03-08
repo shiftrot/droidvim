@@ -76,6 +76,9 @@
    <string name="title_utf8_by_default_preference">デフォルトをUTF-8にする</string>
    <string name="summary_utf8_by_default_preference">デフォルトでUTF-8モードを可能にするか否か.</string>
 
+   <string name="title_hw_acceleration_by_default_preference">ハードウェアアクセラレーション</string>
+   <string name="summary_hw_acceleration_by_default_preference">ハードウェアアクセラレーションを有効にする</string>
+
    <string name="title_fontsize_preference">フォントサイズ</string>
    <string name="summary_fontsize_preference">文字の高さと大きさを選択</string>
    <string name="dialog_title_fontsize_preference">フォントサイズ</string>
