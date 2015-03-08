@@ -573,6 +573,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mKeyListener = new TermKeyListener(session);
         session.setKeyListener(mKeyListener);
         mKeyListener.setThumbCtrl(getDevBoolean(this.getContext(), "ThumbCtrl", false));
+        mKeyListener.setSwapESC2HZ(getDevBoolean(this.getContext(), "SwapESC2HZ", false));
+        mKeyListener.setJpYenRo(getDevBoolean(this.getContext(), "JpYenRo", false));
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {
@@ -1605,6 +1607,16 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 boolean tc = !getDevBoolean(this.getContext(), "ThumbCtrl", false);
                 setDevBoolean(this.getContext(), "ThumbCtrl", tc);
                 if (mKeyListener != null) mKeyListener.setThumbCtrl(tc);
+                break;
+            case 101:
+                boolean sez = !getDevBoolean(this.getContext(), "SwapESC2HZ", false);
+                setDevBoolean(this.getContext(), "SwapESC2HZ", sez);
+                if (mKeyListener != null) mKeyListener.setSwapESC2HZ(sez);
+                break;
+            case 102:
+                boolean yr = !getDevBoolean(this.getContext(), "JpYenRo", false);
+                setDevBoolean(this.getContext(), "JpYenRo", yr);
+                if (mKeyListener != null) mKeyListener.setJpYenRo(yr);
                 break;
             case 998:
             case 999:

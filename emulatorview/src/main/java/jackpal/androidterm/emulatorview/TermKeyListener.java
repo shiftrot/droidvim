@@ -668,6 +668,16 @@ class TermKeyListener {
         mThumbCtrl = val;
     }
 
+    private boolean mJpYenRo = false;
+    public void setJpYenRo(boolean val) {
+        mJpYenRo = val;
+    }
+
+    private boolean mSwapESC2HZ = false;
+    public void setSwapESC2HZ(boolean val) {
+        mSwapESC2HZ = val;
+    }
+
     private boolean mAltControlKey = false;
     public boolean handleKeyCode(int keyCode, KeyEvent event, boolean appMode) throws IOException {
         if (keyCode == 95 || keyCode == 211 || keyCode == 212) {
@@ -679,6 +689,20 @@ class TermKeyListener {
             if (mThumbCtrl) mAltControlKey = true;
             return true;
         }
+        String altString = "";
+        if (mSwapESC2HZ && (keyCode == 111 || keyCode == 68 || keyCode == 211)) {
+            // ESC 111, GRAVE 68, ZENKAKU_HANKAKU 211
+            altString = keyCode != 111 ? "\033" : "`";
+        }
+        if (mJpYenRo && (keyCode == 216 || keyCode == 217)) {
+            // YEN 216, Ro 217
+            altString = keyCode == 216 ? "`" : "-";
+        }
+        if ((altString != "") && ((event.getMetaState() & META_SHIFT_ON) != 0)) {
+            if (altString == "`") altString = "~";
+            else if (altString == "-") altString = "_";
+        }
+
         String code = null;
         if (event != null) {
             int keyMod = 0;
@@ -710,6 +734,7 @@ class TermKeyListener {
             }
         }
 
+        if (altString != "") code = altString;
         if (code != null) {
             if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
                 byte[] bytes = code.getBytes();
