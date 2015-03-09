@@ -1417,6 +1417,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 5:
                 break;
             case 6:
+                doInputMethodPicker();
                 break;
             case 7:
                 doHideSoftKeyboard();
@@ -1426,6 +1427,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 9:
                 doToggleSoftKeyboard();
+                break;
+            case 10:
                 break;
             default:
                 break;
@@ -1449,6 +1452,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+    }
+
+    private void doInputMethodPicker() {
+        Activity activity = (Activity)this.getContext();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showInputMethodPicker();
     }
 
     @Override
