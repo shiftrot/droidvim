@@ -1393,6 +1393,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
     }
 
+    private void pasteClipboard() {
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(this.getContext());
+        if (clip.hasText() == false) {
+            return;
+        }
+        CharSequence paste = clip.getText();
+        mTermSession.write(paste.toString());
+    }
+
     private void doEscCtrl() {
         while (true) {
             int ctrl = mEmulator.getEscCtrlMode();
@@ -1429,6 +1438,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 doToggleSoftKeyboard();
                 break;
             case 10:
+                pasteClipboard();
                 break;
             default:
                 break;
