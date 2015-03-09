@@ -686,6 +686,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (LOG_IME) {
                     Log.w(TAG, "beginBatchEdit");
                 }
+                if (IMECtrlBeginBatchEditDisable() == true) {
+                    return true;
+                }
                 setImeBuffer("");
                 mCursor = 0;
                 mComposingTextStart = 0;
@@ -991,6 +994,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         mEmulator = session.getEmulator();
         session.setUpdateCallback(mUpdateNotify);
+        mIMECtrlBeginBatchEditDisable = getDevBoolean(this.getContext(), "BatchEditDisable", true);
+        mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
 
         requestFocus();
     }
@@ -1362,6 +1367,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
+    private static boolean mIMECtrlBeginBatchEditDisable = true;
+    private static boolean mIMECtrlBeginBatchEditDisableHwKbdChk = false;
     private static boolean mHaveFullHwKeyboard = false;
 
     public void setHaveFullHwKeyboard(boolean mode) {
@@ -1402,6 +1409,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession.write(paste.toString());
     }
 
+    public void setIMECtrlBeginBatchEditDisable(boolean mode) {
+        mIMECtrlBeginBatchEditDisable = mode;
+        if (getDevBoolean(this.getContext(), "BatchEditDisable", false)) mIMECtrlBeginBatchEditDisable = true;
+    }
+
+    public void setIMECtrlBeginBatchEditDisableHwKbdChk(boolean mode) {
+        mIMECtrlBeginBatchEditDisableHwKbdChk = mode;
+    }
+
+    private boolean IMECtrlBeginBatchEditDisable() {
+        boolean flag = mIMECtrlBeginBatchEditDisableHwKbdChk ? mHaveFullHwKeyboard : true;
+        return flag && mIMECtrlBeginBatchEditDisable;
+    }
+
     private void doEscCtrl() {
         while (true) {
             int ctrl = mEmulator.getEscCtrlMode();
@@ -1439,6 +1460,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 10:
                 pasteClipboard();
+                break;
+            case 11:
+                mIMECtrlBeginBatchEditDisable = !getDevBoolean(this.getContext(), "BatchEditDisable", false);
+                setDevBoolean(this.getContext(), "BatchEditDisable", mIMECtrlBeginBatchEditDisable);
+                break;
+            case 12:
+                mIMECtrlBeginBatchEditDisableHwKbdChk = !getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
+                setDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", mIMECtrlBeginBatchEditDisableHwKbdChk);
+                break;
+            case 13:
+                break;
+            case 14:
+                break;
+            case 15:
                 break;
             default:
                 break;
@@ -1502,6 +1537,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         return super.onKeyPreIme(keyCode, event);
     };
+
+    public boolean setDevBoolean(Context context, String key, boolean value) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        Editor editor = pref.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+        return value;
+    }
+
+    public boolean getDevBoolean(Context context, String key, boolean defValue) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        return pref.getBoolean(key, defValue);
+    }
 
     private boolean handleControlKey(int keyCode, boolean down) {
         if (keyCode == mControlKeyCode) {
