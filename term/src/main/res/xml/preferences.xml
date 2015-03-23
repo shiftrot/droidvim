@@ -251,12 +251,6 @@
             android:dialogTitle="@string/dialog_title_composingtext_preference" />
 
         <CheckBoxPreference
-                android:key="utf8_by_default"
-                android:defaultValue="@bool/pref_utf8_by_default_default"
-                android:title="@string/title_utf8_by_default_preference"
-                android:summary="@string/summary_utf8_by_default_preference" />
-
-        <CheckBoxPreference
                 android:key="hw_acceleration_by_default"
                 android:defaultValue="@bool/pref_hw_acceleration_by_default"
                 android:title="@string/title_hw_acceleration_by_default_preference"
@@ -415,11 +409,6 @@
             android:key="mouse_tracking"
             android:defaultValue="@bool/pref_mouse_tracking_default"
             android:summary="@string/summary_mouse_tracking_preference" />
-    <CheckBoxPreference
-            android:key="close_window_on_process_exit"
-            android:defaultValue="@bool/pref_close_window_on_process_exit_default"
-            android:title="@string/title_close_window_on_process_exit_preference"
-            android:summary="@string/summary_close_window_on_process_exit_preference" />
     <CheckBoxPreference
             android:key="verify_path"
             android:defaultValue="@bool/pref_verify_path_default"
