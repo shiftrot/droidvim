@@ -1499,7 +1499,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 512:
             case 513:
                 String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
-                if (defime.matches(IME_GOOGLE)) {
+                if (defime.matches(IME_GOOGLE) || defime.matches(IME_YAHOO)) {
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     break;
                 }
@@ -1611,6 +1611,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // jp.co.omronsoft.wnnlab/.standardcommon.IWnnLanguageSwitcher
     // jp.co.omronsoft.iwnnime.ml/.standardcommon.IWnnLanguageSwitcher
     private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
+    // jp.co.yahoo.android.keypalet/.MozcService
+    private final static String IME_YAHOO = "jp.co.yahoo.android.keypalet/.*";
     private int mIme = -1;
     private int setIME(TerminalEmulator view) {
         if (view == null) return 0;
@@ -1618,7 +1620,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int ime = 2;
         if (defime.matches(IME_ATOK)) {
             ime = 3;
-        } else if (defime.matches(IME_GOOGLE)) {
+        } else if (defime.matches(IME_GOOGLE) || defime.matches(IME_YAHOO)) {
             ime = 4;
         }
         if (mIme != ime) {
@@ -1639,7 +1641,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int inputType = defType;
         if (defime.matches(IME_ATOK)) {
             inputType = IME_INPUT_TYPE_ATOK;
-        } else if (defime.matches(IME_GOOGLE)) {
+        } else if (defime.matches(IME_GOOGLE)|| defime.matches(IME_YAHOO)) {
             if (mIMEInputTypeGoogle == false) inputType = IME_INPUT_TYPE_NORMAL;
         } else if (defime.matches(IME_ANDROID)) {
             inputType = IME_INPUT_TYPE_ANDROID;
