@@ -367,17 +367,24 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         startService(TSIntent);
 
         if (AndroidCompat.SDK >= 11) {
+            int theme = mSettings.getColorTheme();
             int actionBarMode = mSettings.actionBarMode();
             mActionBarMode = actionBarMode;
-            if (AndroidCompat.V11ToV20) {
-                switch (actionBarMode) {
-                case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
+            switch (actionBarMode) {
+            case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
+                if (theme == 0) {
                     setTheme(R.style.Theme_Holo);
-                    break;
-                case TermSettings.ACTION_BAR_MODE_HIDES:
-                    setTheme(R.style.Theme_Holo_ActionBarOverlay);
-                    break;
+                } else {
+                    setTheme(R.style.Theme_Holo_Light);
                 }
+                break;
+            case TermSettings.ACTION_BAR_MODE_HIDES:
+                if (theme == 0) {
+                    setTheme(R.style.Theme_Holo_ActionBarOverlay);
+                } else {
+                    setTheme(R.style.Theme_Holo_Light_ActionBarOverlay);
+                }
+                break;
             }
         } else {
             mActionBarMode = TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE;

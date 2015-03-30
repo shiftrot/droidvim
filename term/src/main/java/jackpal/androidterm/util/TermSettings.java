@@ -333,6 +333,11 @@ public class TermSettings {
         return COLOR_SCHEMES[mColorId];
     }
 
+    public int getColorTheme() {
+        int bg = COLOR_SCHEMES[mColorId][1];
+        return (bg == WHITE || bg == SOLARIZED_BG) ? 1 : 0;
+    }
+
     public int getIMEColor() {
         return mIMEColor;
     }

@@ -19,10 +19,18 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    <style name="Theme.Holo.Light" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
     <!-- This style is used for the main terminal window when the action bar
          is hidden. It is set programmatically at run time.
      -->
     <style name="Theme.Holo.ActionBarOverlay" parent="@style/Theme.Holo">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>
+    </style>
+    <style name="Theme.Holo.Light.ActionBarOverlay" parent="@style/Theme.Holo.Light">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>
     </style>
