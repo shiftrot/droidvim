@@ -820,6 +820,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return super.onOptionsItemSelected(item);
     }
 
+    private static boolean mVimApp = false;
     private boolean doSendActionBarKey(EmulatorView view, int key) {
         if (key == 999) {
             // do nothing
@@ -831,7 +832,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (key == 1250) {
             doCreateNewWindow();
         } else if (key == 1251) {
-            confirmCloseWindow();
+            if (mVimApp && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                sendKeyStrings(":confirm qa\r", true);
+            } else {
+                confirmCloseWindow();
+            }
         } else if (key == 1252) {
             InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1135,6 +1140,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         case 0xfffffff6:
         case 0xfffffff7:
             mVimPaste = (keyCode == 0xfffffff6) ? true : false;
+            return true;
+        case 0xfffffff8:
+        case 0xfffffff9:
+            mVimApp = (keyCode == 0xfffffff8) ? true : false;
             return true;
         default:
             return super.onKeyUp(keyCode, event);
