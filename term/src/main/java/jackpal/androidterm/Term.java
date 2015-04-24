@@ -1430,6 +1430,19 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             startActivity(openLink);
     }
 
+    public boolean setDevBoolean(Context context, String key, boolean value) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+        return value;
+    }
+
+    public boolean getDevBoolean(Context context, String key, boolean defValue) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        return pref.getBoolean(key, defValue);
+    }
+
     private static int mFunctionBar = -1;
     private void setFunctionBar(int mode) {
         if (mode == 2) mFunctionBar = mFunctionBar == 0 ? 1 : 0;
