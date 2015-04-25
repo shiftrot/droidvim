@@ -905,6 +905,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (view == null) {
             return;
         }
+        if (mTermSessions.size() == 1) {
+            doHideSoftKeyboard();
+        }
         TermSession session = mTermSessions.remove(mViewFlipper.getDisplayedChild());
         view.onPause();
         session.finish();
