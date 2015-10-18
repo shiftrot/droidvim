@@ -22,7 +22,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.text.TextPaint;
-import android.util.FloatMath;
 
 import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import java.io.*;
@@ -49,8 +48,8 @@ class PaintRenderer extends BaseTextRenderer {
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(fontSize);
 
-        mCharHeight = (int) FloatMath.ceil(mTextPaint.getFontSpacing());
-        mCharAscent = (int) FloatMath.ceil(mTextPaint.ascent());
+        mCharHeight = (int) Math.ceil(mTextPaint.getFontSpacing());
+        mCharAscent = (int) Math.ceil(mTextPaint.ascent());
         mCharDescent = mCharHeight + mCharAscent;
         mCharHeight += mTextLeading*2;
         mCharDescent += mTextLeading;
