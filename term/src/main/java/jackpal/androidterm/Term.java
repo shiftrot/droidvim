@@ -529,9 +529,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
+    @SuppressLint("NewApi")
     private void restart() {
-        startActivity(getIntent());
-        finish();
+        if (AndroidCompat.SDK >= 11) {
+            recreate();
+        } else {
+            finish();
+            startActivity(getIntent());
+        }
     }
 
     protected static TermSession createTermSession(Context context, TermSettings settings, String initialCommand) throws IOException {
