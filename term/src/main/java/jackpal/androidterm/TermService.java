@@ -29,6 +29,7 @@ import android.os.*;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.app.Notification;
@@ -99,32 +100,21 @@ public class TermService extends Service implements TermSession.FinishCallback
         compat = new ServiceForegroundCompat(this);
         mTermSessions = new SessionList();
 
-        if (AndroidCompat.SDK >= 16) {
-            int priority = Notification.PRIORITY_DEFAULT;
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            if (pref.getBoolean("statusbar_icon", true) == false) priority = Notification.PRIORITY_MIN;
-            Notification notification = new Notification.Builder(getApplicationContext())
-                .setContentTitle(getText(R.string.application_terminal))
-                .setContentText(getText(R.string.service_notify_text))
-                .setSmallIcon(R.drawable.ic_stat_service_notification_icon)
-                .setPriority(priority)
-                .build();
-            notification.flags |= Notification.FLAG_ONGOING_EVENT;
-            Intent notifyIntent = new Intent(this, Term.class);
-            notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
-            notification.contentIntent = pendingIntent;
-            compat.startForeground(RUNNING_NOTIFICATION, notification);
-        } else {
-            /* Put the service in the foreground. */
-            Notification notification = new Notification(R.drawable.ic_stat_service_notification_icon, getText(R.string.service_notify_text), System.currentTimeMillis());
-            notification.flags |= Notification.FLAG_ONGOING_EVENT;
-            Intent notifyIntent = new Intent(this, Term.class);
-            notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
-            notification.setLatestEventInfo(this, getText(R.string.application_terminal), getText(R.string.service_notify_text), pendingIntent);
-            compat.startForeground(RUNNING_NOTIFICATION, notification);
-        }
+        int priority = Notification.PRIORITY_DEFAULT;
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (pref.getBoolean("statusbar_icon", true) == false) priority = Notification.PRIORITY_MIN;
+        Notification notification = new NotificationCompat.Builder(getApplicationContext())
+            .setContentTitle(getText(R.string.application_terminal))
+            .setContentText(getText(R.string.service_notify_text))
+            .setSmallIcon(R.drawable.ic_stat_service_notification_icon)
+            .setPriority(priority)
+            .build();
+        notification.flags |= Notification.FLAG_ONGOING_EVENT;
+        Intent notifyIntent = new Intent(this, Term.class);
+        notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
+        notification.contentIntent = pendingIntent;
+        compat.startForeground(RUNNING_NOTIFICATION, notification);
 
         Log.d(TermDebug.LOG_TAG, "TermService started");
         return;
