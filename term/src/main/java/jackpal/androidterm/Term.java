@@ -1152,6 +1152,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         case 0xfffffff9:
             mVimApp = (keyCode == 0xfffffff8) ? true : false;
             return true;
+        case 0xfffffffa:
+            clearClipBoard();
+            return true;
         default:
             return super.onKeyUp(keyCode, event);
         }
@@ -1204,6 +1207,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void clearClipBoard() {
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
+        clip.setText("");
     }
 
     // Called when the list of sessions changes
