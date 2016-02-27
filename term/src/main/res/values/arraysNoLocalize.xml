@@ -161,5 +161,6 @@
         <item>linux</item>
         <item>screen-256color</item>
         <item>xterm</item>
+        <item>xterm-256color</item>
     </string-array>
 </resources>
