@@ -536,58 +536,173 @@ class UnicodeTranscript {
             return 0;
         }
 
-        if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
-            (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
-            if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
-                /* Treat Hangul jamo medial vowels and final consonants as
-                 * combining characters with width 0 to make jamo composition
-                 * work correctly.
-                 *
-                 * XXX: This is wrong for medials/finals outside a Korean
-                 * syllable block, but there's no easy solution to that
-                 * problem, and we may as well at least get the common case
-                 * right. */
-                return 0;
-            } else {
-                /* Older versions of Android didn't compose Hangul jamo, but
-                 * instead rendered them as individual East Asian wide
-                 * characters (despite Unicode defining medial vowels and final
-                 * consonants as East Asian neutral/narrow).  Treat them as
-                 * width 2 characters to match the rendering. */
-                return 2;
-            }
-        }
-
-        if (mAmbiWidth == 3) {
-            int charWidth = ambiwidth(codePoint);
-            if (charWidth > 0) return charWidth ;
-        }
-
-        if (Character.charCount(codePoint) == 1) {
-            // Android's getEastAsianWidth() only works for BMP characters
-            switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
-            case AndroidCharacterCompat.EAST_ASIAN_WIDTH_FULL_WIDTH:
-            case AndroidCharacterCompat.EAST_ASIAN_WIDTH_WIDE:
-                return 2;
-            }
+        if (mAmbiWidth == 2) {
+            return vimCharWidth(codePoint);
         } else {
-            // Outside the BMP, only the ideographic planes contain wide chars
-            switch ((codePoint >> 16) & 0xf) {
-            case 2: // Supplementary Ideographic Plane
-            case 3: // Tertiary Ideographic Plane
-                return 2;
+            if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
+                (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
+                if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
+                    /* Treat Hangul jamo medial vowels and final consonants as
+                     * combining characters with width 0 to make jamo composition
+                     * work correctly.
+                     *
+                     * XXX: This is wrong for medials/finals outside a Korean
+                     * syllable block, but there's no easy solution to that
+                     * problem, and we may as well at least get the common case
+                     * right. */
+                    return 0;
+                } else {
+                    /* Older versions of Android didn't compose Hangul jamo, but
+                     * instead rendered them as individual East Asian wide
+                     * characters (despite Unicode defining medial vowels and final
+                     * consonants as East Asian neutral/narrow).  Treat them as
+                     * width 2 characters to match the rendering. */
+                    return 2;
+                }
+            }
+
+            if (Character.charCount(codePoint) == 1) {
+                // Android's getEastAsianWidth() only works for BMP characters
+                switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
+                case AndroidCharacterCompat.EAST_ASIAN_WIDTH_FULL_WIDTH:
+                case AndroidCharacterCompat.EAST_ASIAN_WIDTH_WIDE:
+                    return 2;
+                }
+            } else {
+                // Outside the BMP, only the ideographic planes contain wide chars
+                switch ((codePoint >> 16) & 0xf) {
+                case 2: // Supplementary Ideographic Plane
+                case 3: // Tertiary Ideographic Plane
+                    return 2;
+                }
+            }
+
+            if (mAmbiWidth == 3) {
+                int charWidth = ambiwidth(codePoint);
+                if (charWidth > 0) return charWidth ;
             }
         }
-
-        if (mAmbiWidth >= 2) return vimAmbiwidth(codePoint);
 
         return 1;
     }
 
-    private static int vimAmbiwidth(int codePoint) {
+    private static int vimCharWidth(int codePoint) {
+
+        /* Sorted list of non-overlapping intervals of East Asian double width
+         * characters, generated with ../runtime/tools/unicode.vim. */
+        if (codePoint <= 0x318e) {
+            if (codePoint >= 0x1100 && codePoint <= 0x115f) {
+                return 2;
+            }
+            if (codePoint >= 0x2329 && codePoint <= 0x232a) {
+                return 2;
+            }
+            if (codePoint >= 0x2e80 && codePoint <= 0x2e99) {
+                return 2;
+            }
+            if (codePoint >= 0x2e9b && codePoint <= 0x2ef3) {
+                return 2;
+            }
+            if (codePoint >= 0x2f00 && codePoint <= 0x2fd5) {
+                return 2;
+            }
+            if (codePoint >= 0x2ff0 && codePoint <= 0x2ffb) {
+                return 2;
+            }
+            if (codePoint >= 0x3000 && codePoint <= 0x303e) {
+                return 2;
+            }
+            if (codePoint >= 0x3041 && codePoint <= 0x3096) {
+                return 2;
+            }
+            if (codePoint >= 0x3099 && codePoint <= 0x30ff) {
+                return 2;
+            }
+            if (codePoint >= 0x3105 && codePoint <= 0x312d) {
+                return 2;
+            }
+            if (codePoint >= 0x3131 && codePoint <= 0x318e) {
+                return 2;
+            }
+        } else if (codePoint <= 0xd7a3) {
+            if (codePoint >= 0x3190 && codePoint <= 0x31ba) {
+                return 2;
+            }
+            if (codePoint >= 0x31c0 && codePoint <= 0x31e3) {
+                return 2;
+            }
+            if (codePoint >= 0x31f0 && codePoint <= 0x321e) {
+                return 2;
+            }
+            if (codePoint >= 0x3220 && codePoint <= 0x3247) {
+                return 2;
+            }
+            if (codePoint >= 0x3250 && codePoint <= 0x32fe) {
+                return 2;
+            }
+            if (codePoint >= 0x3300 && codePoint <= 0x4dbf) {
+                return 2;
+            }
+            if (codePoint >= 0x4e00 && codePoint <= 0xa48c) {
+                return 2;
+            }
+            if (codePoint >= 0xa490 && codePoint <= 0xa4c6) {
+                return 2;
+            }
+            if (codePoint >= 0xa960 && codePoint <= 0xa97c) {
+                return 2;
+            }
+            if (codePoint >= 0xac00 && codePoint <= 0xd7a3) {
+                return 2;
+            }
+        } else {
+            if (codePoint >= 0xf900 && codePoint <= 0xfaff) {
+                return 2;
+            }
+            if (codePoint >= 0xfe10 && codePoint <= 0xfe19) {
+                return 2;
+            }
+            if (codePoint >= 0xfe30 && codePoint <= 0xfe52) {
+                return 2;
+            }
+            if (codePoint >= 0xfe54 && codePoint <= 0xfe66) {
+                return 2;
+            }
+            if (codePoint >= 0xfe68 && codePoint <= 0xfe6b) {
+                return 2;
+            }
+            if (codePoint >= 0xff01 && codePoint <= 0xff60) {
+                return 2;
+            }
+            if (codePoint >= 0xffe0 && codePoint <= 0xffe6) {
+                return 2;
+            }
+            if (codePoint >= 0x1b000 && codePoint <= 0x1b001) {
+                return 2;
+            }
+            if (codePoint >= 0x1f200 && codePoint <= 0x1f202) {
+                return 2;
+            }
+            if (codePoint >= 0x1f210 && codePoint <= 0x1f23a) {
+                return 2;
+            }
+            if (codePoint >= 0x1f240 && codePoint <= 0x1f248) {
+                return 2;
+            }
+            if (codePoint >= 0x1f250 && codePoint <= 0x1f251) {
+                return 2;
+            }
+            if (codePoint >= 0x20000 && codePoint <= 0x2fffd) {
+                return 2;
+            }
+            if (codePoint >= 0x30000 && codePoint <= 0x3fffd) {
+                return 2;
+            }
+        }
+
         // East Asian ambiguous
         // Generated with $VIMRUNTIME/tools/unicode.vim.
-        if (codePoint < 0x0150) {
+        if (codePoint <= 0x014d) {
             if (codePoint >= 0x00a1 && codePoint <= 0x00a1) {
                 return 2;
             }
@@ -684,7 +799,7 @@ class UnicodeTranscript {
             if (codePoint >= 0x014d && codePoint <= 0x014d) {
                 return 2;
             }
-        } else if (codePoint < 0x02000) {
+        } else if (codePoint < 0x0451) {
             if (codePoint >= 0x0152 && codePoint <= 0x0153) {
                 return 2;
             }
@@ -769,7 +884,7 @@ class UnicodeTranscript {
             if (codePoint >= 0x0451 && codePoint <= 0x0451) {
                 return 2;
             }
-        } else if (codePoint < 0x02200) {
+        } else if (codePoint < 0x21e7) {
             if (codePoint >= 0x2010 && codePoint <= 0x2010) {
                 return 2;
             }
@@ -869,7 +984,7 @@ class UnicodeTranscript {
             if (codePoint >= 0x21e7 && codePoint <= 0x21e7) {
                 return 2;
             }
-        } else if (codePoint < 0x02300) {
+        } else if (codePoint <= 0x22bf) {
             if (codePoint >= 0x2200 && codePoint <= 0x2200) {
                 return 2;
             }
@@ -954,7 +1069,7 @@ class UnicodeTranscript {
             if (codePoint >= 0x22bf && codePoint <= 0x22bf) {
                 return 2;
             }
-        } else if (codePoint < 0x02610) {
+        } else if (codePoint <= 0x260f) {
             if (codePoint >= 0x2312 && codePoint <= 0x2312) {
                 return 2;
             }
@@ -1015,7 +1130,7 @@ class UnicodeTranscript {
             if (codePoint >= 0x260e && codePoint <= 0x260f) {
                 return 2;
             }
-        } else if (codePoint < 0x10000) {
+        } else if (codePoint <= 0x0fffd) {
             if (codePoint >= 0x2614 && codePoint <= 0x2615) {
                 return 2;
             }
@@ -1138,10 +1253,353 @@ class UnicodeTranscript {
                 return 2;
             }
         }
+
+        int charWidth = emojiWidth(codePoint);
+        if (charWidth > 1) return charWidth ;
+
         return 1;
     }
 
     private static int ambiwidth(int codePoint) {
+        return 0;
+    }
+
+    private static int emojiWidth(int codePoint) {
+        if (codePoint < 0x2699) {
+            if (codePoint >= 0x203c && codePoint <= 0x203c) {
+                return 2;
+            }
+            if (codePoint >= 0x2049 && codePoint <= 0x2049) {
+                return 2;
+            }
+            if (codePoint >= 0x2122 && codePoint <= 0x2122) {
+                return 2;
+            }
+            if (codePoint >= 0x2139 && codePoint <= 0x2139) {
+                return 2;
+            }
+            if (codePoint >= 0x2194 && codePoint <= 0x2199) {
+                return 2;
+            }
+            if (codePoint >= 0x21a9 && codePoint <= 0x21aa) {
+                return 2;
+            }
+            if (codePoint >= 0x231a && codePoint <= 0x231b) {
+                return 2;
+            }
+            if (codePoint >= 0x2328 && codePoint <= 0x2328) {
+                return 2;
+            }
+            if (codePoint >= 0x23cf && codePoint <= 0x23cf) {
+                return 2;
+            }
+            if (codePoint >= 0x23e9 && codePoint <= 0x23f3) {
+                return 2;
+            }
+            if (codePoint >= 0x24c2 && codePoint <= 0x24c2) {
+                return 2;
+            }
+            if (codePoint >= 0x25aa && codePoint <= 0x25ab) {
+                return 2;
+            }
+            if (codePoint >= 0x25b6 && codePoint <= 0x25b6) {
+                return 2;
+            }
+            if (codePoint >= 0x25c0 && codePoint <= 0x25c0) {
+                return 2;
+            }
+            if (codePoint >= 0x25fb && codePoint <= 0x25fe) {
+                return 2;
+            }
+            if (codePoint >= 0x2600 && codePoint <= 0x2604) {
+                return 2;
+            }
+            if (codePoint >= 0x260e && codePoint <= 0x260e) {
+                return 2;
+            }
+            if (codePoint >= 0x2611 && codePoint <= 0x2611) {
+                return 2;
+            }
+            if (codePoint >= 0x2614 && codePoint <= 0x2615) {
+                return 2;
+            }
+            if (codePoint >= 0x2618 && codePoint <= 0x2618) {
+                return 2;
+            }
+            if (codePoint >= 0x261d && codePoint <= 0x261d) {
+                return 2;
+            }
+            if (codePoint >= 0x2620 && codePoint <= 0x2620) {
+                return 2;
+            }
+            if (codePoint >= 0x2622 && codePoint <= 0x2623) {
+                return 2;
+            }
+            if (codePoint >= 0x2626 && codePoint <= 0x2626) {
+                return 2;
+            }
+            if (codePoint >= 0x262a && codePoint <= 0x262a) {
+                return 2;
+            }
+            if (codePoint >= 0x262e && codePoint <= 0x262f) {
+                return 2;
+            }
+            if (codePoint >= 0x2638 && codePoint <= 0x263a) {
+                return 2;
+            }
+            if (codePoint >= 0x2648 && codePoint <= 0x2653) {
+                return 2;
+            }
+            if (codePoint >= 0x2660 && codePoint <= 0x2660) {
+                return 2;
+            }
+            if (codePoint >= 0x2663 && codePoint <= 0x2663) {
+                return 2;
+            }
+            if (codePoint >= 0x2665 && codePoint <= 0x2666) {
+                return 2;
+            }
+            if (codePoint >= 0x2668 && codePoint <= 0x2668) {
+                return 2;
+            }
+            if (codePoint >= 0x267b && codePoint <= 0x267b) {
+                return 2;
+            }
+            if (codePoint >= 0x267f && codePoint <= 0x267f) {
+                return 2;
+            }
+            if (codePoint >= 0x2692 && codePoint <= 0x2694) {
+                return 2;
+            }
+            if (codePoint >= 0x2696 && codePoint <= 0x2697) {
+                return 2;
+            }
+            if (codePoint >= 0x2699 && codePoint <= 0x2699) {
+                return 2;
+            }
+        } else if (codePoint < 0x2935) {
+            if (codePoint >= 0x269b && codePoint <= 0x269c) {
+                return 2;
+            }
+            if (codePoint >= 0x26a0 && codePoint <= 0x26a1) {
+                return 2;
+            }
+            if (codePoint >= 0x26aa && codePoint <= 0x26ab) {
+                return 2;
+            }
+            if (codePoint >= 0x26b0 && codePoint <= 0x26b1) {
+                return 2;
+            }
+            if (codePoint >= 0x26bd && codePoint <= 0x26be) {
+                return 2;
+            }
+            if (codePoint >= 0x26c4 && codePoint <= 0x26c5) {
+                return 2;
+            }
+            if (codePoint >= 0x26c8 && codePoint <= 0x26c8) {
+                return 2;
+            }
+            if (codePoint >= 0x26ce && codePoint <= 0x26cf) {
+                return 2;
+            }
+            if (codePoint >= 0x26d1 && codePoint <= 0x26d1) {
+                return 2;
+            }
+            if (codePoint >= 0x26d3 && codePoint <= 0x26d4) {
+                return 2;
+            }
+            if (codePoint >= 0x26e9 && codePoint <= 0x26ea) {
+                return 2;
+            }
+            if (codePoint >= 0x26f0 && codePoint <= 0x26f5) {
+                return 2;
+            }
+            if (codePoint >= 0x26f7 && codePoint <= 0x26fa) {
+                return 2;
+            }
+            if (codePoint >= 0x26fd && codePoint <= 0x26fd) {
+                return 2;
+            }
+            if (codePoint >= 0x2702 && codePoint <= 0x2702) {
+                return 2;
+            }
+            if (codePoint >= 0x2705 && codePoint <= 0x2705) {
+                return 2;
+            }
+            if (codePoint >= 0x2708 && codePoint <= 0x270d) {
+                return 2;
+            }
+            if (codePoint >= 0x270f && codePoint <= 0x270f) {
+                return 2;
+            }
+            if (codePoint >= 0x2712 && codePoint <= 0x2712) {
+                return 2;
+            }
+            if (codePoint >= 0x2714 && codePoint <= 0x2714) {
+                return 2;
+            }
+            if (codePoint >= 0x2716 && codePoint <= 0x2716) {
+                return 2;
+            }
+            if (codePoint >= 0x271d && codePoint <= 0x271d) {
+                return 2;
+            }
+            if (codePoint >= 0x2721 && codePoint <= 0x2721) {
+                return 2;
+            }
+            if (codePoint >= 0x2728 && codePoint <= 0x2728) {
+                return 2;
+            }
+            if (codePoint >= 0x2733 && codePoint <= 0x2734) {
+                return 2;
+            }
+            if (codePoint >= 0x2744 && codePoint <= 0x2744) {
+                return 2;
+            }
+            if (codePoint >= 0x2747 && codePoint <= 0x2747) {
+                return 2;
+            }
+            if (codePoint >= 0x274c && codePoint <= 0x274c) {
+                return 2;
+            }
+            if (codePoint >= 0x274e && codePoint <= 0x274e) {
+                return 2;
+            }
+            if (codePoint >= 0x2753 && codePoint <= 0x2755) {
+                return 2;
+            }
+            if (codePoint >= 0x2757 && codePoint <= 0x2757) {
+                return 2;
+            }
+            if (codePoint >= 0x2763 && codePoint <= 0x2764) {
+                return 2;
+            }
+            if (codePoint >= 0x2795 && codePoint <= 0x2797) {
+                return 2;
+            }
+            if (codePoint >= 0x27a1 && codePoint <= 0x27a1) {
+                return 2;
+            }
+            if (codePoint >= 0x27b0 && codePoint <= 0x27b0) {
+                return 2;
+            }
+            if (codePoint >= 0x27bf && codePoint <= 0x27bf) {
+                return 2;
+            }
+            if (codePoint >= 0x2934 && codePoint <= 0x2935) {
+                return 2;
+            }
+        } else if (codePoint < 0x1f6c5) {
+            if (codePoint >= 0x2b05 && codePoint <= 0x2b07) {
+                return 2;
+            }
+            if (codePoint >= 0x2b1b && codePoint <= 0x2b1c) {
+                return 2;
+            }
+            if (codePoint >= 0x2b50 && codePoint <= 0x2b50) {
+                return 2;
+            }
+            if (codePoint >= 0x2b55 && codePoint <= 0x2b55) {
+                return 2;
+            }
+            if (codePoint >= 0x3030 && codePoint <= 0x3030) {
+                return 2;
+            }
+            if (codePoint >= 0x303d && codePoint <= 0x303d) {
+                return 2;
+            }
+            if (codePoint >= 0x3297 && codePoint <= 0x3297) {
+                return 2;
+            }
+            if (codePoint >= 0x3299 && codePoint <= 0x3299) {
+                return 2;
+            }
+            if (codePoint >= 0x1f004 && codePoint <= 0x1f004) {
+                return 2;
+            }
+            if (codePoint >= 0x1f0cf && codePoint <= 0x1f0cf) {
+                return 2;
+            }
+            if (codePoint >= 0x1f170 && codePoint <= 0x1f171) {
+                return 2;
+            }
+            if (codePoint >= 0x1f17e && codePoint <= 0x1f17f) {
+                return 2;
+            }
+            if (codePoint >= 0x1f18e && codePoint <= 0x1f18e) {
+                return 2;
+            }
+            if (codePoint >= 0x1f191 && codePoint <= 0x1f19a) {
+                return 2;
+            }
+            if (codePoint >= 0x1f1e6 && codePoint <= 0x1f1ff) {
+                return 2;
+            }
+            if (codePoint >= 0x1f201 && codePoint <= 0x1f202) {
+                return 2;
+            }
+            if (codePoint >= 0x1f21a && codePoint <= 0x1f21a) {
+                return 2;
+            }
+            if (codePoint >= 0x1f22f && codePoint <= 0x1f22f) {
+                return 2;
+            }
+            if (codePoint >= 0x1f232 && codePoint <= 0x1f23a) {
+                return 2;
+            }
+            if (codePoint >= 0x1f250 && codePoint <= 0x1f251) {
+                return 2;
+            }
+            if (codePoint >= 0x1f300 && codePoint <= 0x1f320) {
+                return 2;
+            }
+            if (codePoint >= 0x1f330 && codePoint <= 0x1f335) {
+                return 2;
+            }
+            if (codePoint >= 0x1f337 && codePoint <= 0x1f37c) {
+                return 2;
+            }
+            if (codePoint >= 0x1f380 && codePoint <= 0x1f393) {
+                return 2;
+            }
+            if (codePoint >= 0x1f3a0 && codePoint <= 0x1f3c4) {
+                return 2;
+            }
+            if (codePoint >= 0x1f3c6 && codePoint <= 0x1f3ca) {
+                return 2;
+            }
+            if (codePoint >= 0x1f3e0 && codePoint <= 0x1f3f0) {
+                return 2;
+            }
+            if (codePoint >= 0x1f400 && codePoint <= 0x1f43e) {
+                return 2;
+            }
+            if (codePoint >= 0x1f440 && codePoint <= 0x1f440) {
+                return 2;
+            }
+            if (codePoint >= 0x1f442 && codePoint <= 0x1f4f7) {
+                return 2;
+            }
+            if (codePoint >= 0x1f4f9 && codePoint <= 0x1f4fc) {
+                return 2;
+            }
+            if (codePoint >= 0x1f500 && codePoint <= 0x1f53d) {
+                return 2;
+            }
+            if (codePoint >= 0x1f550 && codePoint <= 0x1f567) {
+                return 2;
+            }
+            if (codePoint >= 0x1f5fb && codePoint <= 0x1f640) {
+                return 2;
+            }
+            if (codePoint >= 0x1f645 && codePoint <= 0x1f64f) {
+                return 2;
+            }
+            if (codePoint >= 0x1f680 && codePoint <= 0x1f6c5) {
+                return 2;
+            }
+        }
+
         return 0;
     }
 
