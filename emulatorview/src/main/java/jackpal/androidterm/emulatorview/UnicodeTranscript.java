@@ -586,1020 +586,273 @@ class UnicodeTranscript {
         return 1;
     }
 
+    private static int mAmbiguous[][] =
+    {
+        {0x00a1, 0x00a1},
+        {0x00a4, 0x00a4},
+        {0x00a7, 0x00a8},
+        {0x00aa, 0x00aa},
+        {0x00ad, 0x00ae},
+        {0x00b0, 0x00b4},
+        {0x00b6, 0x00ba},
+        {0x00bc, 0x00bf},
+        {0x00c6, 0x00c6},
+        {0x00d0, 0x00d0},
+        {0x00d7, 0x00d8},
+        {0x00de, 0x00e1},
+        {0x00e6, 0x00e6},
+        {0x00e8, 0x00ea},
+        {0x00ec, 0x00ed},
+        {0x00f0, 0x00f0},
+        {0x00f2, 0x00f3},
+        {0x00f7, 0x00fa},
+        {0x00fc, 0x00fc},
+        {0x00fe, 0x00fe},
+        {0x0101, 0x0101},
+        {0x0111, 0x0111},
+        {0x0113, 0x0113},
+        {0x011b, 0x011b},
+        {0x0126, 0x0127},
+        {0x012b, 0x012b},
+        {0x0131, 0x0133},
+        {0x0138, 0x0138},
+        {0x013f, 0x0142},
+        {0x0144, 0x0144},
+        {0x0148, 0x014b},
+        {0x014d, 0x014d},
+        {0x0152, 0x0153},
+        {0x0166, 0x0167},
+        {0x016b, 0x016b},
+        {0x01ce, 0x01ce},
+        {0x01d0, 0x01d0},
+        {0x01d2, 0x01d2},
+        {0x01d4, 0x01d4},
+        {0x01d6, 0x01d6},
+        {0x01d8, 0x01d8},
+        {0x01da, 0x01da},
+        {0x01dc, 0x01dc},
+        {0x0251, 0x0251},
+        {0x0261, 0x0261},
+        {0x02c4, 0x02c4},
+        {0x02c7, 0x02c7},
+        {0x02c9, 0x02cb},
+        {0x02cd, 0x02cd},
+        {0x02d0, 0x02d0},
+        {0x02d8, 0x02db},
+        {0x02dd, 0x02dd},
+        {0x02df, 0x02df},
+        {0x0300, 0x036f},
+        {0x0391, 0x03a1},
+        {0x03a3, 0x03a9},
+        {0x03b1, 0x03c1},
+        {0x03c3, 0x03c9},
+        {0x0401, 0x0401},
+        {0x0410, 0x044f},
+        {0x0451, 0x0451},
+        {0x2010, 0x2010},
+        {0x2013, 0x2016},
+        {0x2018, 0x2019},
+        {0x201c, 0x201d},
+        {0x2020, 0x2022},
+        {0x2024, 0x2027},
+        {0x2030, 0x2030},
+        {0x2032, 0x2033},
+        {0x2035, 0x2035},
+        {0x203b, 0x203b},
+        {0x203e, 0x203e},
+        {0x2074, 0x2074},
+        {0x207f, 0x207f},
+        {0x2081, 0x2084},
+        {0x20ac, 0x20ac},
+        {0x2103, 0x2103},
+        {0x2105, 0x2105},
+        {0x2109, 0x2109},
+        {0x2113, 0x2113},
+        {0x2116, 0x2116},
+        {0x2121, 0x2122},
+        {0x2126, 0x2126},
+        {0x212b, 0x212b},
+        {0x2153, 0x2154},
+        {0x215b, 0x215e},
+        {0x2160, 0x216b},
+        {0x2170, 0x2179},
+        {0x2189, 0x2189},
+        {0x2190, 0x2199},
+        {0x21b8, 0x21b9},
+        {0x21d2, 0x21d2},
+        {0x21d4, 0x21d4},
+        {0x21e7, 0x21e7},
+        {0x2200, 0x2200},
+        {0x2202, 0x2203},
+        {0x2207, 0x2208},
+        {0x220b, 0x220b},
+        {0x220f, 0x220f},
+        {0x2211, 0x2211},
+        {0x2215, 0x2215},
+        {0x221a, 0x221a},
+        {0x221d, 0x2220},
+        {0x2223, 0x2223},
+        {0x2225, 0x2225},
+        {0x2227, 0x222c},
+        {0x222e, 0x222e},
+        {0x2234, 0x2237},
+        {0x223c, 0x223d},
+        {0x2248, 0x2248},
+        {0x224c, 0x224c},
+        {0x2252, 0x2252},
+        {0x2260, 0x2261},
+        {0x2264, 0x2267},
+        {0x226a, 0x226b},
+        {0x226e, 0x226f},
+        {0x2282, 0x2283},
+        {0x2286, 0x2287},
+        {0x2295, 0x2295},
+        {0x2299, 0x2299},
+        {0x22a5, 0x22a5},
+        {0x22bf, 0x22bf},
+        {0x2312, 0x2312},
+        {0x2460, 0x24e9},
+        {0x24eb, 0x254b},
+        {0x2550, 0x2573},
+        {0x2580, 0x258f},
+        {0x2592, 0x2595},
+        {0x25a0, 0x25a1},
+        {0x25a3, 0x25a9},
+        {0x25b2, 0x25b3},
+        {0x25b6, 0x25b7},
+        {0x25bc, 0x25bd},
+        {0x25c0, 0x25c1},
+        {0x25c6, 0x25c8},
+        {0x25cb, 0x25cb},
+        {0x25ce, 0x25d1},
+        {0x25e2, 0x25e5},
+        {0x25ef, 0x25ef},
+        {0x2605, 0x2606},
+        {0x2609, 0x2609},
+        {0x260e, 0x260f},
+        {0x2614, 0x2615},
+        {0x261c, 0x261c},
+        {0x261e, 0x261e},
+        {0x2640, 0x2640},
+        {0x2642, 0x2642},
+        {0x2660, 0x2661},
+        {0x2663, 0x2665},
+        {0x2667, 0x266a},
+        {0x266c, 0x266d},
+        {0x266f, 0x266f},
+        {0x269e, 0x269f},
+        {0x26be, 0x26bf},
+        {0x26c4, 0x26cd},
+        {0x26cf, 0x26e1},
+        {0x26e3, 0x26e3},
+        {0x26e8, 0x26ff},
+        {0x273d, 0x273d},
+        {0x2757, 0x2757},
+        {0x2776, 0x277f},
+        {0x2b55, 0x2b59},
+        {0x3248, 0x324f},
+        {0xe000, 0xf8ff},
+        {0xfe00, 0xfe0f},
+        {0xfffd, 0xfffd},
+        {0x1f100, 0x1f10a},
+        {0x1f110, 0x1f12d},
+        {0x1f130, 0x1f169},
+        {0x1f170, 0x1f19a},
+        {0xe0100, 0xe01ef},
+        {0xf0000, 0xffffd},
+        {0x100000, 0x10fffd}
+    };
+
+    private static int[][] mDoublewidth =
+    {
+        {0x1100, 0x115f},
+        {0x2329, 0x232a},
+        {0x2e80, 0x2e99},
+        {0x2e9b, 0x2ef3},
+        {0x2f00, 0x2fd5},
+        {0x2ff0, 0x2ffb},
+        {0x3000, 0x303e},
+        {0x3041, 0x3096},
+        {0x3099, 0x30ff},
+        {0x3105, 0x312d},
+        {0x3131, 0x318e},
+        {0x3190, 0x31ba},
+        {0x31c0, 0x31e3},
+        {0x31f0, 0x321e},
+        {0x3220, 0x3247},
+        {0x3250, 0x32fe},
+        {0x3300, 0x4dbf},
+        {0x4e00, 0xa48c},
+        {0xa490, 0xa4c6},
+        {0xa960, 0xa97c},
+        {0xac00, 0xd7a3},
+        {0xf900, 0xfaff},
+        {0xfe10, 0xfe19},
+        {0xfe30, 0xfe52},
+        {0xfe54, 0xfe66},
+        {0xfe68, 0xfe6b},
+        {0xff01, 0xff60},
+        {0xffe0, 0xffe6},
+        {0x1b000, 0x1b001},
+        {0x1f200, 0x1f202},
+        {0x1f210, 0x1f23a},
+        {0x1f240, 0x1f248},
+        {0x1f250, 0x1f251},
+        {0x20000, 0x2fffd},
+        {0x30000, 0x3fffd}
+    };
+
+    private static int[][] mEmoji_width = {
+         {0x1f004, 0x1f004},
+         {0x1f0cf, 0x1f0cf},
+         {0x1f1e6, 0x1f1ff},
+         {0x1f300, 0x1f320},
+         {0x1f330, 0x1f335},
+         {0x1f337, 0x1f37c},
+         {0x1f380, 0x1f393},
+         {0x1f3a0, 0x1f3c4},
+         {0x1f3c6, 0x1f3ca},
+         {0x1f3e0, 0x1f3f0},
+         {0x1f400, 0x1f43e},
+         {0x1f440, 0x1f440},
+         {0x1f442, 0x1f4f7},
+         {0x1f4f9, 0x1f4fc},
+         {0x1f500, 0x1f53d},
+         {0x1f550, 0x1f567},
+         {0x1f5fb, 0x1f640},
+         {0x1f645, 0x1f64f},
+         {0x1f680, 0x1f6c5}
+    };
+
     private static int vimCharWidth(int codePoint) {
-
-        /* Sorted list of non-overlapping intervals of East Asian double width
-         * characters, generated with ../runtime/tools/unicode.vim. */
-        if (codePoint <= 0x318e) {
-            if (codePoint >= 0x1100 && codePoint <= 0x115f) {
-                return 2;
-            }
-            if (codePoint >= 0x2329 && codePoint <= 0x232a) {
-                return 2;
-            }
-            if (codePoint >= 0x2e80 && codePoint <= 0x2e99) {
-                return 2;
-            }
-            if (codePoint >= 0x2e9b && codePoint <= 0x2ef3) {
-                return 2;
-            }
-            if (codePoint >= 0x2f00 && codePoint <= 0x2fd5) {
-                return 2;
-            }
-            if (codePoint >= 0x2ff0 && codePoint <= 0x2ffb) {
-                return 2;
-            }
-            if (codePoint >= 0x3000 && codePoint <= 0x303e) {
-                return 2;
-            }
-            if (codePoint >= 0x3041 && codePoint <= 0x3096) {
-                return 2;
-            }
-            if (codePoint >= 0x3099 && codePoint <= 0x30ff) {
-                return 2;
-            }
-            if (codePoint >= 0x3105 && codePoint <= 0x312d) {
-                return 2;
-            }
-            if (codePoint >= 0x3131 && codePoint <= 0x318e) {
-                return 2;
-            }
-        } else if (codePoint <= 0xd7a3) {
-            if (codePoint >= 0x3190 && codePoint <= 0x31ba) {
-                return 2;
-            }
-            if (codePoint >= 0x31c0 && codePoint <= 0x31e3) {
-                return 2;
-            }
-            if (codePoint >= 0x31f0 && codePoint <= 0x321e) {
-                return 2;
-            }
-            if (codePoint >= 0x3220 && codePoint <= 0x3247) {
-                return 2;
-            }
-            if (codePoint >= 0x3250 && codePoint <= 0x32fe) {
-                return 2;
-            }
-            if (codePoint >= 0x3300 && codePoint <= 0x4dbf) {
-                return 2;
-            }
-            if (codePoint >= 0x4e00 && codePoint <= 0xa48c) {
-                return 2;
-            }
-            if (codePoint >= 0xa490 && codePoint <= 0xa4c6) {
-                return 2;
-            }
-            if (codePoint >= 0xa960 && codePoint <= 0xa97c) {
-                return 2;
-            }
-            if (codePoint >= 0xac00 && codePoint <= 0xd7a3) {
-                return 2;
-            }
-        } else {
-            if (codePoint >= 0xf900 && codePoint <= 0xfaff) {
-                return 2;
-            }
-            if (codePoint >= 0xfe10 && codePoint <= 0xfe19) {
-                return 2;
-            }
-            if (codePoint >= 0xfe30 && codePoint <= 0xfe52) {
-                return 2;
-            }
-            if (codePoint >= 0xfe54 && codePoint <= 0xfe66) {
-                return 2;
-            }
-            if (codePoint >= 0xfe68 && codePoint <= 0xfe6b) {
-                return 2;
-            }
-            if (codePoint >= 0xff01 && codePoint <= 0xff60) {
-                return 2;
-            }
-            if (codePoint >= 0xffe0 && codePoint <= 0xffe6) {
-                return 2;
-            }
-            if (codePoint >= 0x1b000 && codePoint <= 0x1b001) {
-                return 2;
-            }
-            if (codePoint >= 0x1f200 && codePoint <= 0x1f202) {
-                return 2;
-            }
-            if (codePoint >= 0x1f210 && codePoint <= 0x1f23a) {
-                return 2;
-            }
-            if (codePoint >= 0x1f240 && codePoint <= 0x1f248) {
-                return 2;
-            }
-            if (codePoint >= 0x1f250 && codePoint <= 0x1f251) {
-                return 2;
-            }
-            if (codePoint >= 0x20000 && codePoint <= 0x2fffd) {
-                return 2;
-            }
-            if (codePoint >= 0x30000 && codePoint <= 0x3fffd) {
-                return 2;
-            }
-        }
-
-        // East Asian ambiguous
-        // Generated with $VIMRUNTIME/tools/unicode.vim.
-        if (codePoint <= 0x014d) {
-            if (codePoint >= 0x00a1 && codePoint <= 0x00a1) {
-                return 2;
-            }
-            if (codePoint >= 0x00a4 && codePoint <= 0x00a4) {
-                return 2;
-            }
-            if (codePoint >= 0x00a7 && codePoint <= 0x00a8) {
-                return 2;
-            }
-            if (codePoint >= 0x00aa && codePoint <= 0x00aa) {
-                return 2;
-            }
-            if (codePoint >= 0x00ad && codePoint <= 0x00ae) {
-                return 2;
-            }
-            if (codePoint >= 0x00b0 && codePoint <= 0x00b4) {
-                return 2;
-            }
-            if (codePoint >= 0x00b6 && codePoint <= 0x00ba) {
-                return 2;
-            }
-            if (codePoint >= 0x00bc && codePoint <= 0x00bf) {
-                return 2;
-            }
-            if (codePoint >= 0x00c6 && codePoint <= 0x00c6) {
-                return 2;
-            }
-            if (codePoint >= 0x00d0 && codePoint <= 0x00d0) {
-                return 2;
-            }
-            if (codePoint >= 0x00d7 && codePoint <= 0x00d8) {
-                return 2;
-            }
-            if (codePoint >= 0x00de && codePoint <= 0x00e1) {
-                return 2;
-            }
-            if (codePoint >= 0x00e6 && codePoint <= 0x00e6) {
-                return 2;
-            }
-            if (codePoint >= 0x00e8 && codePoint <= 0x00ea) {
-                return 2;
-            }
-            if (codePoint >= 0x00ec && codePoint <= 0x00ed) {
-                return 2;
-            }
-            if (codePoint >= 0x00f0 && codePoint <= 0x00f0) {
-                return 2;
-            }
-            if (codePoint >= 0x00f2 && codePoint <= 0x00f3) {
-                return 2;
-            }
-            if (codePoint >= 0x00f7 && codePoint <= 0x00fa) {
-                return 2;
-            }
-            if (codePoint >= 0x00fc && codePoint <= 0x00fc) {
-                return 2;
-            }
-            if (codePoint >= 0x00fe && codePoint <= 0x00fe) {
-                return 2;
-            }
-            if (codePoint >= 0x0101 && codePoint <= 0x0101) {
-                return 2;
-            }
-            if (codePoint >= 0x0111 && codePoint <= 0x0111) {
-                return 2;
-            }
-            if (codePoint >= 0x0113 && codePoint <= 0x0113) {
-                return 2;
-            }
-            if (codePoint >= 0x011b && codePoint <= 0x011b) {
-                return 2;
-            }
-            if (codePoint >= 0x0126 && codePoint <= 0x0127) {
-                return 2;
-            }
-            if (codePoint >= 0x012b && codePoint <= 0x012b) {
-                return 2;
-            }
-            if (codePoint >= 0x0131 && codePoint <= 0x0133) {
-                return 2;
-            }
-            if (codePoint >= 0x0138 && codePoint <= 0x0138) {
-                return 2;
-            }
-            if (codePoint >= 0x013f && codePoint <= 0x0142) {
-                return 2;
-            }
-            if (codePoint >= 0x0144 && codePoint <= 0x0144) {
-                return 2;
-            }
-            if (codePoint >= 0x0148 && codePoint <= 0x014b) {
-                return 2;
-            }
-            if (codePoint >= 0x014d && codePoint <= 0x014d) {
-                return 2;
-            }
-        } else if (codePoint < 0x0451) {
-            if (codePoint >= 0x0152 && codePoint <= 0x0153) {
-                return 2;
-            }
-            if (codePoint >= 0x0166 && codePoint <= 0x0167) {
-                return 2;
-            }
-            if (codePoint >= 0x016b && codePoint <= 0x016b) {
-                return 2;
-            }
-            if (codePoint >= 0x01ce && codePoint <= 0x01ce) {
-                return 2;
-            }
-            if (codePoint >= 0x01d0 && codePoint <= 0x01d0) {
-                return 2;
-            }
-            if (codePoint >= 0x01d2 && codePoint <= 0x01d2) {
-                return 2;
-            }
-            if (codePoint >= 0x01d4 && codePoint <= 0x01d4) {
-                return 2;
-            }
-            if (codePoint >= 0x01d6 && codePoint <= 0x01d6) {
-                return 2;
-            }
-            if (codePoint >= 0x01d8 && codePoint <= 0x01d8) {
-                return 2;
-            }
-            if (codePoint >= 0x01da && codePoint <= 0x01da) {
-                return 2;
-            }
-            if (codePoint >= 0x01dc && codePoint <= 0x01dc) {
-                return 2;
-            }
-            if (codePoint >= 0x0251 && codePoint <= 0x0251) {
-                return 2;
-            }
-            if (codePoint >= 0x0261 && codePoint <= 0x0261) {
-                return 2;
-            }
-            if (codePoint >= 0x02c4 && codePoint <= 0x02c4) {
-                return 2;
-            }
-            if (codePoint >= 0x02c7 && codePoint <= 0x02c7) {
-                return 2;
-            }
-            if (codePoint >= 0x02c9 && codePoint <= 0x02cb) {
-                return 2;
-            }
-            if (codePoint >= 0x02cd && codePoint <= 0x02cd) {
-                return 2;
-            }
-            if (codePoint >= 0x02d0 && codePoint <= 0x02d0) {
-                return 2;
-            }
-            if (codePoint >= 0x02d8 && codePoint <= 0x02db) {
-                return 2;
-            }
-            if (codePoint >= 0x02dd && codePoint <= 0x02dd) {
-                return 2;
-            }
-            if (codePoint >= 0x02df && codePoint <= 0x02df) {
-                return 2;
-            }
-            if (codePoint >= 0x0391 && codePoint <= 0x03a1) {
-                return 2;
-            }
-            if (codePoint >= 0x03a3 && codePoint <= 0x03a9) {
-                return 2;
-            }
-            if (codePoint >= 0x03b1 && codePoint <= 0x03c1) {
-                return 2;
-            }
-            if (codePoint >= 0x03c3 && codePoint <= 0x03c9) {
-                return 2;
-            }
-            if (codePoint >= 0x0401 && codePoint <= 0x0401) {
-                return 2;
-            }
-            if (codePoint >= 0x0410 && codePoint <= 0x044f) {
-                return 2;
-            }
-            if (codePoint >= 0x0451 && codePoint <= 0x0451) {
-                return 2;
-            }
-        } else if (codePoint < 0x21e7) {
-            if (codePoint >= 0x2010 && codePoint <= 0x2010) {
-                return 2;
-            }
-            if (codePoint >= 0x2013 && codePoint <= 0x2016) {
-                return 2;
-            }
-            if (codePoint >= 0x2018 && codePoint <= 0x2019) {
-                return 2;
-            }
-            if (codePoint >= 0x201c && codePoint <= 0x201d) {
-                return 2;
-            }
-            if (codePoint >= 0x2020 && codePoint <= 0x2022) {
-                return 2;
-            }
-            if (codePoint >= 0x2024 && codePoint <= 0x2027) {
-                return 2;
-            }
-            if (codePoint >= 0x2030 && codePoint <= 0x2030) {
-                return 2;
-            }
-            if (codePoint >= 0x2032 && codePoint <= 0x2033) {
-                return 2;
-            }
-            if (codePoint >= 0x2035 && codePoint <= 0x2035) {
-                return 2;
-            }
-            if (codePoint >= 0x203b && codePoint <= 0x203b) {
-                return 2;
-            }
-            if (codePoint >= 0x203e && codePoint <= 0x203e) {
-                return 2;
-            }
-            if (codePoint >= 0x2074 && codePoint <= 0x2074) {
-                return 2;
-            }
-            if (codePoint >= 0x207f && codePoint <= 0x207f) {
-                return 2;
-            }
-            if (codePoint >= 0x2081 && codePoint <= 0x2084) {
-                return 2;
-            }
-            if (codePoint >= 0x20ac && codePoint <= 0x20ac) {
-                return 2;
-            }
-            if (codePoint >= 0x2103 && codePoint <= 0x2103) {
-                return 2;
-            }
-            if (codePoint >= 0x2105 && codePoint <= 0x2105) {
-                return 2;
-            }
-            if (codePoint >= 0x2109 && codePoint <= 0x2109) {
-                return 2;
-            }
-            if (codePoint >= 0x2113 && codePoint <= 0x2113) {
-                return 2;
-            }
-            if (codePoint >= 0x2116 && codePoint <= 0x2116) {
-                return 2;
-            }
-            if (codePoint >= 0x2121 && codePoint <= 0x2122) {
-                return 2;
-            }
-            if (codePoint >= 0x2126 && codePoint <= 0x2126) {
-                return 2;
-            }
-            if (codePoint >= 0x212b && codePoint <= 0x212b) {
-                return 2;
-            }
-            if (codePoint >= 0x2153 && codePoint <= 0x2154) {
-                return 2;
-            }
-            if (codePoint >= 0x215b && codePoint <= 0x215e) {
-                return 2;
-            }
-            if (codePoint >= 0x2160 && codePoint <= 0x216b) {
-                return 2;
-            }
-            if (codePoint >= 0x2170 && codePoint <= 0x2179) {
-                return 2;
-            }
-            if (codePoint >= 0x2189 && codePoint <= 0x2189) {
-                return 2;
-            }
-            if (codePoint >= 0x2190 && codePoint <= 0x2199) {
-                return 2;
-            }
-            if (codePoint >= 0x21b8 && codePoint <= 0x21b9) {
-                return 2;
-            }
-            if (codePoint >= 0x21d2 && codePoint <= 0x21d2) {
-                return 2;
-            }
-            if (codePoint >= 0x21d4 && codePoint <= 0x21d4) {
-                return 2;
-            }
-            if (codePoint >= 0x21e7 && codePoint <= 0x21e7) {
-                return 2;
-            }
-        } else if (codePoint <= 0x22bf) {
-            if (codePoint >= 0x2200 && codePoint <= 0x2200) {
-                return 2;
-            }
-            if (codePoint >= 0x2202 && codePoint <= 0x2203) {
-                return 2;
-            }
-            if (codePoint >= 0x2207 && codePoint <= 0x2208) {
-                return 2;
-            }
-            if (codePoint >= 0x220b && codePoint <= 0x220b) {
-                return 2;
-            }
-            if (codePoint >= 0x220f && codePoint <= 0x220f) {
-                return 2;
-            }
-            if (codePoint >= 0x2211 && codePoint <= 0x2211) {
-                return 2;
-            }
-            if (codePoint >= 0x2215 && codePoint <= 0x2215) {
-                return 2;
-            }
-            if (codePoint >= 0x221a && codePoint <= 0x221a) {
-                return 2;
-            }
-            if (codePoint >= 0x221d && codePoint <= 0x2220) {
-                return 2;
-            }
-            if (codePoint >= 0x2223 && codePoint <= 0x2223) {
-                return 2;
-            }
-            if (codePoint >= 0x2225 && codePoint <= 0x2225) {
-                return 2;
-            }
-            if (codePoint >= 0x2227 && codePoint <= 0x222c) {
-                return 2;
-            }
-            if (codePoint >= 0x222e && codePoint <= 0x222e) {
-                return 2;
-            }
-            if (codePoint >= 0x2234 && codePoint <= 0x2237) {
-                return 2;
-            }
-            if (codePoint >= 0x223c && codePoint <= 0x223d) {
-                return 2;
-            }
-            if (codePoint >= 0x2248 && codePoint <= 0x2248) {
-                return 2;
-            }
-            if (codePoint >= 0x224c && codePoint <= 0x224c) {
-                return 2;
-            }
-            if (codePoint >= 0x2252 && codePoint <= 0x2252) {
-                return 2;
-            }
-            if (codePoint >= 0x2260 && codePoint <= 0x2261) {
-                return 2;
-            }
-            if (codePoint >= 0x2264 && codePoint <= 0x2267) {
-                return 2;
-            }
-            if (codePoint >= 0x226a && codePoint <= 0x226b) {
-                return 2;
-            }
-            if (codePoint >= 0x226e && codePoint <= 0x226f) {
-                return 2;
-            }
-            if (codePoint >= 0x2282 && codePoint <= 0x2283) {
-                return 2;
-            }
-            if (codePoint >= 0x2286 && codePoint <= 0x2287) {
-                return 2;
-            }
-            if (codePoint >= 0x2295 && codePoint <= 0x2295) {
-                return 2;
-            }
-            if (codePoint >= 0x2299 && codePoint <= 0x2299) {
-                return 2;
-            }
-            if (codePoint >= 0x22a5 && codePoint <= 0x22a5) {
-                return 2;
-            }
-            if (codePoint >= 0x22bf && codePoint <= 0x22bf) {
-                return 2;
-            }
-        } else if (codePoint <= 0x260f) {
-            if (codePoint >= 0x2312 && codePoint <= 0x2312) {
-                return 2;
-            }
-            if (codePoint >= 0x2460 && codePoint <= 0x24e9) {
-                return 2;
-            }
-            if (codePoint >= 0x24eb && codePoint <= 0x254b) {
-                return 2;
-            }
-            if (codePoint >= 0x2550 && codePoint <= 0x2573) {
-                return 2;
-            }
-            if (codePoint >= 0x2580 && codePoint <= 0x258f) {
-                return 2;
-            }
-            if (codePoint >= 0x2592 && codePoint <= 0x2595) {
-                return 2;
-            }
-            if (codePoint >= 0x25a0 && codePoint <= 0x25a1) {
-                return 2;
-            }
-            if (codePoint >= 0x25a3 && codePoint <= 0x25a9) {
-                return 2;
-            }
-            if (codePoint >= 0x25b2 && codePoint <= 0x25b3) {
-                return 2;
-            }
-            if (codePoint >= 0x25b6 && codePoint <= 0x25b7) {
-                return 2;
-            }
-            if (codePoint >= 0x25bc && codePoint <= 0x25bd) {
-                return 2;
-            }
-            if (codePoint >= 0x25c0 && codePoint <= 0x25c1) {
-                return 2;
-            }
-            if (codePoint >= 0x25c6 && codePoint <= 0x25c8) {
-                return 2;
-            }
-            if (codePoint >= 0x25cb && codePoint <= 0x25cb) {
-                return 2;
-            }
-            if (codePoint >= 0x25ce && codePoint <= 0x25d1) {
-                return 2;
-            }
-            if (codePoint >= 0x25e2 && codePoint <= 0x25e5) {
-                return 2;
-            }
-            if (codePoint >= 0x25ef && codePoint <= 0x25ef) {
-                return 2;
-            }
-            if (codePoint >= 0x2605 && codePoint <= 0x2606) {
-                return 2;
-            }
-            if (codePoint >= 0x2609 && codePoint <= 0x2609) {
-                return 2;
-            }
-            if (codePoint >= 0x260e && codePoint <= 0x260f) {
-                return 2;
-            }
-        } else if (codePoint <= 0x0fffd) {
-            if (codePoint >= 0x2614 && codePoint <= 0x2615) {
-                return 2;
-            }
-            if (codePoint >= 0x261c && codePoint <= 0x261c) {
-                return 2;
-            }
-            if (codePoint >= 0x261e && codePoint <= 0x261e) {
-                return 2;
-            }
-            if (codePoint >= 0x2640 && codePoint <= 0x2640) {
-                return 2;
-            }
-            if (codePoint >= 0x2642 && codePoint <= 0x2642) {
-                return 2;
-            }
-            if (codePoint >= 0x2660 && codePoint <= 0x2661) {
-                return 2;
-            }
-            if (codePoint >= 0x2663 && codePoint <= 0x2665) {
-                return 2;
-            }
-            if (codePoint >= 0x2667 && codePoint <= 0x266a) {
-                return 2;
-            }
-            if (codePoint >= 0x266c && codePoint <= 0x266d) {
-                return 2;
-            }
-            if (codePoint >= 0x266f && codePoint <= 0x266f) {
-                return 2;
-            }
-            if (codePoint >= 0x269e && codePoint <= 0x269f) {
-                return 2;
-            }
-            if (codePoint >= 0x26be && codePoint <= 0x26bf) {
-                return 2;
-            }
-            if (codePoint >= 0x26c4 && codePoint <= 0x26cd) {
-                return 2;
-            }
-            if (codePoint >= 0x26cf && codePoint <= 0x26e1) {
-                return 2;
-            }
-            if (codePoint >= 0x26e3 && codePoint <= 0x26e3) {
-                return 2;
-            }
-            if (codePoint >= 0x26e8 && codePoint <= 0x26ff) {
-                return 2;
-            }
-            if (codePoint >= 0x273d && codePoint <= 0x273d) {
-                return 2;
-            }
-            if (codePoint >= 0x2757 && codePoint <= 0x2757) {
-                return 2;
-            }
-            if (codePoint >= 0x2776 && codePoint <= 0x277f) {
-                return 2;
-            }
-            if (codePoint >= 0x2b55 && codePoint <= 0x2b59) {
-                return 2;
-            }
-            if (codePoint >= 0x3248 && codePoint <= 0x324f) {
-                return 2;
-            }
-            if (codePoint >= 0x0e000 && codePoint <= 0x0f8ff) {
-                return 2;
-            }
-            if (codePoint >= 0x0fffd && codePoint <= 0x0fffd) {
-                return 2;
-            }
-        } else {
-            if (codePoint >= 0x1f100 && codePoint <= 0x1f10a) {
-                return 2;
-            }
-            if (codePoint >= 0x1f110 && codePoint <= 0x1f12d) {
-                return 2;
-            }
-            if (codePoint >= 0x1f131 && codePoint <= 0x1f131) {
-                return 2;
-            }
-            if (codePoint >= 0x1f13d && codePoint <= 0x1f13d) {
-                return 2;
-            }
-            if (codePoint >= 0x1f13f && codePoint <= 0x1f13f) {
-                return 2;
-            }
-            if (codePoint >= 0x1f142 && codePoint <= 0x1f142) {
-                return 2;
-            }
-            if (codePoint >= 0x1f146 && codePoint <= 0x1f146) {
-                return 2;
-            }
-            if (codePoint >= 0x1f14a && codePoint <= 0x1f14e) {
-                return 2;
-            }
-            if (codePoint >= 0x1f157 && codePoint <= 0x1f157) {
-                return 2;
-            }
-            if (codePoint >= 0x1f15f && codePoint <= 0x1f15f) {
-                return 2;
-            }
-            if (codePoint >= 0x1f179 && codePoint <= 0x1f179) {
-                return 2;
-            }
-            if (codePoint >= 0x1f17b && codePoint <= 0x1f17c) {
-                return 2;
-            }
-            if (codePoint >= 0x1f17f && codePoint <= 0x1f17f) {
-                return 2;
-            }
-            if (codePoint >= 0x1f18a && codePoint <= 0x1f18d) {
-                return 2;
-            }
-            if (codePoint >= 0x1f190 && codePoint <= 0x1f190) {
-                return 2;
-            }
-            if (codePoint >= 0xf0000 && codePoint <= 0xffffd) {
-                return 2;
-            }
-            if (codePoint >= 0x100000 && codePoint <= 0x10fffd) {
-                return 2;
-            }
-        }
-
-        int charWidth = emojiWidth(codePoint);
-        if (charWidth > 1) return charWidth ;
-
+        if (vimCharWidth(codePoint, mDoublewidth) > 0) return 2;
+        if (vimCharWidth(codePoint, mAmbiguous) > 0) return 2;
+        if (vimCharWidth(codePoint, mEmoji_width) > 0) return 2;
         return 1;
     }
 
-    private static int ambiwidth(int codePoint) {
+    private static int vimCharWidth(int codePoint, int[][] arrays) {
+        int min = 0;
+        int step = 30;
+        int len = arrays.length;
+        if (codePoint > arrays[len-1][1]) return 0;
+        int max;
+        while (true) {
+            max = min + step - 1;
+            if (max >= len - 1) {
+                max = len - 1;
+                break;
+            }
+            if (codePoint <= arrays[max][1]) break;
+            min += step;
+        }
+        for (int i = min; i <= max; i++) {
+            if (codePoint >= arrays[i][0] && codePoint <= arrays[i][1]) return 2;
+        }
         return 0;
     }
 
-    private static int emojiWidth(int codePoint) {
-        if (codePoint < 0x2699) {
-            if (codePoint >= 0x203c && codePoint <= 0x203c) {
-                return 2;
-            }
-            if (codePoint >= 0x2049 && codePoint <= 0x2049) {
-                return 2;
-            }
-            if (codePoint >= 0x2122 && codePoint <= 0x2122) {
-                return 2;
-            }
-            if (codePoint >= 0x2139 && codePoint <= 0x2139) {
-                return 2;
-            }
-            if (codePoint >= 0x2194 && codePoint <= 0x2199) {
-                return 2;
-            }
-            if (codePoint >= 0x21a9 && codePoint <= 0x21aa) {
-                return 2;
-            }
-            if (codePoint >= 0x231a && codePoint <= 0x231b) {
-                return 2;
-            }
-            if (codePoint >= 0x2328 && codePoint <= 0x2328) {
-                return 2;
-            }
-            if (codePoint >= 0x23cf && codePoint <= 0x23cf) {
-                return 2;
-            }
-            if (codePoint >= 0x23e9 && codePoint <= 0x23f3) {
-                return 2;
-            }
-            if (codePoint >= 0x24c2 && codePoint <= 0x24c2) {
-                return 2;
-            }
-            if (codePoint >= 0x25aa && codePoint <= 0x25ab) {
-                return 2;
-            }
-            if (codePoint >= 0x25b6 && codePoint <= 0x25b6) {
-                return 2;
-            }
-            if (codePoint >= 0x25c0 && codePoint <= 0x25c0) {
-                return 2;
-            }
-            if (codePoint >= 0x25fb && codePoint <= 0x25fe) {
-                return 2;
-            }
-            if (codePoint >= 0x2600 && codePoint <= 0x2604) {
-                return 2;
-            }
-            if (codePoint >= 0x260e && codePoint <= 0x260e) {
-                return 2;
-            }
-            if (codePoint >= 0x2611 && codePoint <= 0x2611) {
-                return 2;
-            }
-            if (codePoint >= 0x2614 && codePoint <= 0x2615) {
-                return 2;
-            }
-            if (codePoint >= 0x2618 && codePoint <= 0x2618) {
-                return 2;
-            }
-            if (codePoint >= 0x261d && codePoint <= 0x261d) {
-                return 2;
-            }
-            if (codePoint >= 0x2620 && codePoint <= 0x2620) {
-                return 2;
-            }
-            if (codePoint >= 0x2622 && codePoint <= 0x2623) {
-                return 2;
-            }
-            if (codePoint >= 0x2626 && codePoint <= 0x2626) {
-                return 2;
-            }
-            if (codePoint >= 0x262a && codePoint <= 0x262a) {
-                return 2;
-            }
-            if (codePoint >= 0x262e && codePoint <= 0x262f) {
-                return 2;
-            }
-            if (codePoint >= 0x2638 && codePoint <= 0x263a) {
-                return 2;
-            }
-            if (codePoint >= 0x2648 && codePoint <= 0x2653) {
-                return 2;
-            }
-            if (codePoint >= 0x2660 && codePoint <= 0x2660) {
-                return 2;
-            }
-            if (codePoint >= 0x2663 && codePoint <= 0x2663) {
-                return 2;
-            }
-            if (codePoint >= 0x2665 && codePoint <= 0x2666) {
-                return 2;
-            }
-            if (codePoint >= 0x2668 && codePoint <= 0x2668) {
-                return 2;
-            }
-            if (codePoint >= 0x267b && codePoint <= 0x267b) {
-                return 2;
-            }
-            if (codePoint >= 0x267f && codePoint <= 0x267f) {
-                return 2;
-            }
-            if (codePoint >= 0x2692 && codePoint <= 0x2694) {
-                return 2;
-            }
-            if (codePoint >= 0x2696 && codePoint <= 0x2697) {
-                return 2;
-            }
-            if (codePoint >= 0x2699 && codePoint <= 0x2699) {
-                return 2;
-            }
-        } else if (codePoint < 0x2935) {
-            if (codePoint >= 0x269b && codePoint <= 0x269c) {
-                return 2;
-            }
-            if (codePoint >= 0x26a0 && codePoint <= 0x26a1) {
-                return 2;
-            }
-            if (codePoint >= 0x26aa && codePoint <= 0x26ab) {
-                return 2;
-            }
-            if (codePoint >= 0x26b0 && codePoint <= 0x26b1) {
-                return 2;
-            }
-            if (codePoint >= 0x26bd && codePoint <= 0x26be) {
-                return 2;
-            }
-            if (codePoint >= 0x26c4 && codePoint <= 0x26c5) {
-                return 2;
-            }
-            if (codePoint >= 0x26c8 && codePoint <= 0x26c8) {
-                return 2;
-            }
-            if (codePoint >= 0x26ce && codePoint <= 0x26cf) {
-                return 2;
-            }
-            if (codePoint >= 0x26d1 && codePoint <= 0x26d1) {
-                return 2;
-            }
-            if (codePoint >= 0x26d3 && codePoint <= 0x26d4) {
-                return 2;
-            }
-            if (codePoint >= 0x26e9 && codePoint <= 0x26ea) {
-                return 2;
-            }
-            if (codePoint >= 0x26f0 && codePoint <= 0x26f5) {
-                return 2;
-            }
-            if (codePoint >= 0x26f7 && codePoint <= 0x26fa) {
-                return 2;
-            }
-            if (codePoint >= 0x26fd && codePoint <= 0x26fd) {
-                return 2;
-            }
-            if (codePoint >= 0x2702 && codePoint <= 0x2702) {
-                return 2;
-            }
-            if (codePoint >= 0x2705 && codePoint <= 0x2705) {
-                return 2;
-            }
-            if (codePoint >= 0x2708 && codePoint <= 0x270d) {
-                return 2;
-            }
-            if (codePoint >= 0x270f && codePoint <= 0x270f) {
-                return 2;
-            }
-            if (codePoint >= 0x2712 && codePoint <= 0x2712) {
-                return 2;
-            }
-            if (codePoint >= 0x2714 && codePoint <= 0x2714) {
-                return 2;
-            }
-            if (codePoint >= 0x2716 && codePoint <= 0x2716) {
-                return 2;
-            }
-            if (codePoint >= 0x271d && codePoint <= 0x271d) {
-                return 2;
-            }
-            if (codePoint >= 0x2721 && codePoint <= 0x2721) {
-                return 2;
-            }
-            if (codePoint >= 0x2728 && codePoint <= 0x2728) {
-                return 2;
-            }
-            if (codePoint >= 0x2733 && codePoint <= 0x2734) {
-                return 2;
-            }
-            if (codePoint >= 0x2744 && codePoint <= 0x2744) {
-                return 2;
-            }
-            if (codePoint >= 0x2747 && codePoint <= 0x2747) {
-                return 2;
-            }
-            if (codePoint >= 0x274c && codePoint <= 0x274c) {
-                return 2;
-            }
-            if (codePoint >= 0x274e && codePoint <= 0x274e) {
-                return 2;
-            }
-            if (codePoint >= 0x2753 && codePoint <= 0x2755) {
-                return 2;
-            }
-            if (codePoint >= 0x2757 && codePoint <= 0x2757) {
-                return 2;
-            }
-            if (codePoint >= 0x2763 && codePoint <= 0x2764) {
-                return 2;
-            }
-            if (codePoint >= 0x2795 && codePoint <= 0x2797) {
-                return 2;
-            }
-            if (codePoint >= 0x27a1 && codePoint <= 0x27a1) {
-                return 2;
-            }
-            if (codePoint >= 0x27b0 && codePoint <= 0x27b0) {
-                return 2;
-            }
-            if (codePoint >= 0x27bf && codePoint <= 0x27bf) {
-                return 2;
-            }
-            if (codePoint >= 0x2934 && codePoint <= 0x2935) {
-                return 2;
-            }
-        } else if (codePoint < 0x1f6c5) {
-            if (codePoint >= 0x2b05 && codePoint <= 0x2b07) {
-                return 2;
-            }
-            if (codePoint >= 0x2b1b && codePoint <= 0x2b1c) {
-                return 2;
-            }
-            if (codePoint >= 0x2b50 && codePoint <= 0x2b50) {
-                return 2;
-            }
-            if (codePoint >= 0x2b55 && codePoint <= 0x2b55) {
-                return 2;
-            }
-            if (codePoint >= 0x3030 && codePoint <= 0x3030) {
-                return 2;
-            }
-            if (codePoint >= 0x303d && codePoint <= 0x303d) {
-                return 2;
-            }
-            if (codePoint >= 0x3297 && codePoint <= 0x3297) {
-                return 2;
-            }
-            if (codePoint >= 0x3299 && codePoint <= 0x3299) {
-                return 2;
-            }
-            if (codePoint >= 0x1f004 && codePoint <= 0x1f004) {
-                return 2;
-            }
-            if (codePoint >= 0x1f0cf && codePoint <= 0x1f0cf) {
-                return 2;
-            }
-            if (codePoint >= 0x1f170 && codePoint <= 0x1f171) {
-                return 2;
-            }
-            if (codePoint >= 0x1f17e && codePoint <= 0x1f17f) {
-                return 2;
-            }
-            if (codePoint >= 0x1f18e && codePoint <= 0x1f18e) {
-                return 2;
-            }
-            if (codePoint >= 0x1f191 && codePoint <= 0x1f19a) {
-                return 2;
-            }
-            if (codePoint >= 0x1f1e6 && codePoint <= 0x1f1ff) {
-                return 2;
-            }
-            if (codePoint >= 0x1f201 && codePoint <= 0x1f202) {
-                return 2;
-            }
-            if (codePoint >= 0x1f21a && codePoint <= 0x1f21a) {
-                return 2;
-            }
-            if (codePoint >= 0x1f22f && codePoint <= 0x1f22f) {
-                return 2;
-            }
-            if (codePoint >= 0x1f232 && codePoint <= 0x1f23a) {
-                return 2;
-            }
-            if (codePoint >= 0x1f250 && codePoint <= 0x1f251) {
-                return 2;
-            }
-            if (codePoint >= 0x1f300 && codePoint <= 0x1f320) {
-                return 2;
-            }
-            if (codePoint >= 0x1f330 && codePoint <= 0x1f335) {
-                return 2;
-            }
-            if (codePoint >= 0x1f337 && codePoint <= 0x1f37c) {
-                return 2;
-            }
-            if (codePoint >= 0x1f380 && codePoint <= 0x1f393) {
-                return 2;
-            }
-            if (codePoint >= 0x1f3a0 && codePoint <= 0x1f3c4) {
-                return 2;
-            }
-            if (codePoint >= 0x1f3c6 && codePoint <= 0x1f3ca) {
-                return 2;
-            }
-            if (codePoint >= 0x1f3e0 && codePoint <= 0x1f3f0) {
-                return 2;
-            }
-            if (codePoint >= 0x1f400 && codePoint <= 0x1f43e) {
-                return 2;
-            }
-            if (codePoint >= 0x1f440 && codePoint <= 0x1f440) {
-                return 2;
-            }
-            if (codePoint >= 0x1f442 && codePoint <= 0x1f4f7) {
-                return 2;
-            }
-            if (codePoint >= 0x1f4f9 && codePoint <= 0x1f4fc) {
-                return 2;
-            }
-            if (codePoint >= 0x1f500 && codePoint <= 0x1f53d) {
-                return 2;
-            }
-            if (codePoint >= 0x1f550 && codePoint <= 0x1f567) {
-                return 2;
-            }
-            if (codePoint >= 0x1f5fb && codePoint <= 0x1f640) {
-                return 2;
-            }
-            if (codePoint >= 0x1f645 && codePoint <= 0x1f64f) {
-                return 2;
-            }
-            if (codePoint >= 0x1f680 && codePoint <= 0x1f6c5) {
-                return 2;
-            }
-        }
-
+    private static int ambiwidth(int codePoint) {
         return 0;
     }
 
