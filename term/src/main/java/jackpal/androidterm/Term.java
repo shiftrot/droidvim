@@ -30,9 +30,12 @@ import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -82,6 +85,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1160,8 +1164,63 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         case 0xfffffffa:
             clearClipBoard();
             return true;
+        case 0xfffffffb:
+            doAndroidIntent(mSettings.getHomePath() + "/.intent");
+            return true;
         default:
             return super.onKeyUp(keyCode, event);
+        }
+    }
+
+    private void doAndroidIntent(String filename) {
+        if (filename == null) return;
+        String str[] = new String[3];
+        try {
+            File file = new File(filename);
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            for (int i = 0; i < 3; i++) {
+                str[i] = br.readLine();
+                if (str[i] == null) break;
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        String action = str[0];
+        if (action == null || str[1] == null) return;
+
+        TermSession session = getCurrentTermSession();
+        if (session != null) {
+            if (action.equalsIgnoreCase("activity")) {
+                try {
+                    startActivity(new Intent(this, Class.forName(str[1])));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else if (action.matches("^.*(VIEW|EDIT).*")) {
+                Intent intent = new Intent(action);
+
+                String MIME;
+                if (str[2] != null) {
+                    MIME = str[2];
+                } else {
+                    int ch = str[1].lastIndexOf('.');
+                    String ext = (ch >= 0) ?str[1].substring(ch + 1) : null;
+                    MIME = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase());
+                    if (MIME != null && !MIME.equals("")){
+                         intent.setType(MIME);
+                    } else {
+                        Log.e("CreateIntent","MIME is Error");
+                    }
+                }
+                intent.setDataAndType(Uri.parse(str[1]), MIME);
+                startActivity(intent);
+            }
         }
     }
 
