@@ -950,9 +950,11 @@ class TerminalEmulator {
             case 1:
                 mKeyListener.setCursorKeysApplicationMode(true);
                 break;
+            case 1049:
+                mScreen = mMainBuffer;
+                break;
             case 47:
             case 1047:
-            case 1049:
                 if (mAltBuffer != null) {
                     mScreen = mAltBuffer;
                 }
@@ -969,9 +971,13 @@ class TerminalEmulator {
             case 1:
                 mKeyListener.setCursorKeysApplicationMode(false);
                 break;
+            case 1049:
+                if (mAltBuffer != null) {
+                    mScreen = mAltBuffer;
+                }
+                break;
             case 47:
             case 1047:
-            case 1049:
                 mScreen = mMainBuffer;
                 break;
             }
