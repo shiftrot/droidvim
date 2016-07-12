@@ -951,7 +951,9 @@ class TerminalEmulator {
                 mKeyListener.setCursorKeysApplicationMode(true);
                 break;
             case 1049:
+                doSaveCursor();
                 mScreen = mMainBuffer;
+                blockClear(0, 0, mColumns, mRows);
                 break;
             case 47:
             case 1047:
@@ -975,9 +977,15 @@ class TerminalEmulator {
                 if (mAltBuffer != null) {
                     mScreen = mAltBuffer;
                 }
+                doRestoreCursor();
                 break;
             case 47:
             case 1047:
+                /* XXX: xterm documentation says we should clear the alternate
+                 * screen here.  As we don't provide a way to select the
+                 * alternate screen without first clearing it, though, skip
+                 * that step here; we need to revisit this if we ever
+                 * implement an escape sequence that does that. */
                 mScreen = mMainBuffer;
                 break;
             }
@@ -1113,17 +1121,11 @@ class TerminalEmulator {
             break;
 
         case '7': // DECSC save cursor
-            mSavedCursorRow = mCursorRow;
-            mSavedCursorCol = mCursorCol;
-            mSavedEffect = mEffect;
-            mSavedDecFlags_DECSC_DECRC = mDecFlags & K_DECSC_DECRC_MASK;
+            doSaveCursor();
             break;
 
         case '8': // DECRC restore cursor
-            setCursorRowCol(mSavedCursorRow, mSavedCursorCol);
-            mEffect = mSavedEffect;
-            mDecFlags = (mDecFlags & ~ K_DECSC_DECRC_MASK)
-                    | mSavedDecFlags_DECSC_DECRC;
+            doRestoreCursor();
             break;
 
         case 'D': // INDEX
@@ -1191,6 +1193,20 @@ class TerminalEmulator {
             unknownSequence(b);
             break;
         }
+    }
+
+    private void doSaveCursor() {
+        mSavedCursorRow = mCursorRow;
+        mSavedCursorCol = mCursorCol;
+        mSavedEffect = mEffect;
+        mSavedDecFlags_DECSC_DECRC = mDecFlags & K_DECSC_DECRC_MASK;
+    }
+
+    private void doRestoreCursor() {
+        setCursorRowCol(mSavedCursorRow, mSavedCursorCol);
+        mEffect = mSavedEffect;
+        mDecFlags = (mDecFlags & ~ K_DECSC_DECRC_MASK)
+            | mSavedDecFlags_DECSC_DECRC;
     }
 
     private void doEscLeftSquareBracket(byte b) {
