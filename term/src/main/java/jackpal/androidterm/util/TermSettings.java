@@ -286,7 +286,7 @@ public class TermSettings {
     }
 
     public boolean showStatusBar() {
-        return (mStatusBar != 0);
+        return true;
     }
 
     public boolean showFunctionBar() {

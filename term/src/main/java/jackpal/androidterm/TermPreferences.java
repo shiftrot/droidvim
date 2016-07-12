@@ -36,6 +36,7 @@ import android.preference.PreferenceCategory;
 import android.view.MenuItem;
 
 public class TermPreferences extends PreferenceActivity {
+    private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CATEGORY_SCREEN_KEY = "screen";
     private static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
@@ -55,6 +56,13 @@ public class TermPreferences extends PreferenceActivity {
              if ((actionBarPref != null) && (screenCategory != null)) {
                  screenCategory.removePreference(actionBarPref);
              }
+        }
+
+        Preference statusBarPref = findPreference(STATUSBAR_KEY);
+        PreferenceCategory screenCategory =
+                (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
+        if ((statusBarPref != null) && (screenCategory != null)) {
+            screenCategory.removePreference(statusBarPref);
         }
 
         // Display up indicator on action bar home button
