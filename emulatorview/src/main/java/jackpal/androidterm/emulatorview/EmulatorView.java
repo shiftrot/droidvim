@@ -609,6 +609,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mKeyListener != null) {
             mKeyListener.onResume();
         }
+        restartInput();
     }
 
     /**
@@ -645,7 +646,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
-    private int mIMEInputType = 0;
+    private static int mIMEInputType = 0;
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         outAttrs.inputType = mUseCookedIme ?
@@ -1729,6 +1730,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else {
             return;
         }
+        restartInput();
+    }
+
+    private void restartInput() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.restartInput(this);
