@@ -817,7 +817,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     Log.w(TAG, "commitText(\"" + text + "\", " + newCursorPosition + ")");
                 }
                 clearComposingText();
-                if (mIMEInputType == IME_INPUT_TYPE_GOOGLE) {
+                if ((mIMEInputType == IME_INPUT_TYPE_GOOGLE) && (mIme == 4)) {
                     if (text.toString().matches(". ")) sendText(" ");
                 } else {
                     sendText(text);
@@ -903,7 +903,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (text instanceof SpannableString) {
                     mImeSpannableString = (SpannableString)text;
                 }
-                if (mIMEInputType == IME_INPUT_TYPE_GOOGLE) {
+                if ((mIMEInputType == IME_INPUT_TYPE_GOOGLE) && (mIme == 4)) {
                     if (text.toString().equals("") == false) {
                         clearComposingText();
                         sendText(text);
