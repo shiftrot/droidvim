@@ -1320,6 +1320,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (session != null) {
             session.reset();
         }
+        getCurrentEmulatorView().reset();
     }
 
     private void doEmailTranscript() {

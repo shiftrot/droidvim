@@ -2200,4 +2200,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         else
             return null;
     }
+
+    public void reset() {
+        mIMEInputType = 0;
+        restartInput();
+    }
 }
