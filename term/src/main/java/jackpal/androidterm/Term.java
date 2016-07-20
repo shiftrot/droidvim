@@ -16,6 +16,8 @@
 
 package jackpal.androidterm;
 
+import android.Manifest;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
@@ -433,7 +435,40 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
 
         updatePrefs();
+        permissionCheckExternalStorage();
         mAlreadyStarted = true;
+    }
+
+    public static final int REQUEST_STORAGE = 1;
+
+    @SuppressLint("NewApi")
+    void permissionCheckExternalStorage() {
+        if (AndroidCompat.SDK < 23) return;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+        }
+    }
+
+    @Override
+    @SuppressLint("NewApi")
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_STORAGE) {
+            if (permissions.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+                    }
+                }
+            } else if (permissions.equals(Manifest.permission.READ_EXTERNAL_STORAGE))  {
+                // do something
+            } else {
+//                Toast.makeText(this, "permission does not granted", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private String makePathFromBundle(Bundle extras) {
