@@ -37,6 +37,7 @@
    <string name="toast_clipboard">Text copied to clipboard.</string>
 
    <string name="edit_vimrc">Edit .vimrc</string>
+   <string name="update_vim">Updating binaries and libraries.\nPlease wait until vim starts.</string>
 
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
@@ -280,4 +281,10 @@
   <string name="colorvalue_label_lock_button_column">LOCK</string>
   <string name="colorvalue_icon_text_entry_hint">Enter icon text</string>
   <!-- END SHORTCUT RELATED STRINGS -->
+
+  <string name="button_yes">Yes</string>
+  <string name="button_no">No</string>
+  <string name="install_runtime_doc_message">Would you like to install help files?</string>
+  <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
+
 </resources>

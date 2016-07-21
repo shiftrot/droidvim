@@ -666,6 +666,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
+        if (TermVimInstaller.doInstallVim) {
+            cmd = cmd.replaceAll("\n-?vim.app", "");
+            TermVimInstaller.installVim(Term.this, new Runnable(){
+                @Override
+                public void run() {
+                    sendKeyStrings("vim.app\n", false);
+                }
+            });
+        }
         mFirst = false;
         return cmd;
     }

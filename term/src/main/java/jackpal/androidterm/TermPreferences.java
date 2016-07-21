@@ -39,7 +39,7 @@ public class TermPreferences extends PreferenceActivity {
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CATEGORY_SCREEN_KEY = "screen";
-    private static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
+    static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

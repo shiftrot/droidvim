@@ -47,6 +47,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.Process;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -146,7 +147,11 @@ public class TermService extends Service implements TermSession.FinishCallback
         return;
     }
 
-    private void install() {
+    @SuppressLint("NewApi")
+    private boolean install() {
+        boolean status = getInstallStatus(TermVimInstaller.getInstallVersionFile(this), "res/raw/version");
+        TermVimInstaller.doInstallVim = !status;
+        return status;
     }
 
     @SuppressLint("NewApi")
@@ -220,26 +225,10 @@ public class TermService extends Service implements TermSession.FinishCallback
         return 0;
     }
 
-    private void exeCmd(String cmd) {
-        try {
-            _exeCmd(cmd);
-        } catch (IOException e) {
-        } catch (InterruptedException e) {
-        }
-    }
-
-    private int _exeCmd(String cmd) throws IOException, InterruptedException {
-        Process p = Runtime.getRuntime().exec(cmd);
-        int ret = p.waitFor();
-        return ret;
-    }
-
-    private long getInstallStatus(String scriptFile, String zipFile) {
-        if (!BuildConfig.VERSION_NAME.equals(getDevString(this, "versionName", ""))) {
-            setDevString(this, "versionName", BuildConfig.VERSION_NAME);
-            return 1;
-        }
-        return 0;
+    private boolean getInstallStatus(String scriptFile, String zipFile) {
+        if (!TermVimInstaller.TERMVIM_VERSION.equals(getDevString(this, "versionName", ""))) return false;
+        if (!(new File(scriptFile).exists())) return false;
+        return true;
     }
 
     public String setDevString(Context context, String key, String value) {
