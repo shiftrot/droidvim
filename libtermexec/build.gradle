@@ -24,7 +24,7 @@ android {
 
         ndk {
             moduleName 'libjackpal-termexec2'
-            abiFilters 'all'
+            abiFilters 'armeabi', 'mips', 'x86'
             ldLibs 'log', 'c'
         }
     }
