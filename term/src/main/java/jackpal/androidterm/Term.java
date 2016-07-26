@@ -139,22 +139,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private static final String PERMISSION_PATH_BROADCAST = "jackpal.androidterm.permission.APPEND_TO_PATH";
     private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
     private int mPendingPathBroadcasts = 0;
-    private BroadcastReceiver mPathReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String path = makePathFromBundle(getResultExtras(false));
-            if (intent.getAction().equals(ACTION_PATH_PREPEND_BROADCAST)) {
-                mSettings.setPrependPath(path);
-            } else {
-                mSettings.setAppendPath(path);
-            }
-            mPendingPathBroadcasts--;
-
-            if (mPendingPathBroadcasts <= 0 && mTermService != null) {
-                populateViewFlipper();
-                populateWindowList();
-            }
-        }
-    };
+    private BroadcastReceiver mPathReceiver;
     // Available on API 12 and later
     private static final int FLAG_INCLUDE_STOPPED_PACKAGES = 0x20;
 
@@ -355,17 +340,40 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mSettings = new TermSettings(getResources(), mPrefs);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
-        Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
-        if (AndroidCompat.SDK >= 12) {
-            broadcast.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
-        }
-        mPendingPathBroadcasts++;
-        sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+        boolean vimflavor = this.getPackageName().matches(".*vim.androidterm.*");
 
-        broadcast = new Intent(broadcast);
-        broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
-        mPendingPathBroadcasts++;
-        sendOrderedBroadcast(broadcast, PERMISSION_PATH_PREPEND_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+        if (!vimflavor && mSettings.doPathExtensions()) {
+            mPathReceiver = new BroadcastReceiver() {
+                public void onReceive(Context context, Intent intent) {
+                    String path = makePathFromBundle(getResultExtras(false));
+                    if (intent.getAction().equals(ACTION_PATH_PREPEND_BROADCAST)) {
+                        mSettings.setPrependPath(path);
+                    } else {
+                        mSettings.setAppendPath(path);
+                    }
+                    mPendingPathBroadcasts--;
+
+                    if (mPendingPathBroadcasts <= 0 && mTermService != null) {
+                        populateViewFlipper();
+                        populateWindowList();
+                    }
+                }
+            };
+
+            Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
+            if (AndroidCompat.SDK >= 12) {
+                broadcast.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
+            }
+            mPendingPathBroadcasts++;
+            sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+
+            if (mSettings.allowPathPrepend()) {
+                broadcast = new Intent(broadcast);
+                broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
+                mPendingPathBroadcasts++;
+                sendOrderedBroadcast(broadcast, PERMISSION_PATH_PREPEND_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+            }
+        }
 
         TSIntent = new Intent(this, TermService.class);
         startService(TSIntent);
