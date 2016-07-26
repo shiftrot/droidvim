@@ -796,21 +796,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else {
             menu.removeItem(R.id.menu_plus);
         }
-        if (mSettings.getActionBarMinusKeyAction() != 999) {
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_minus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        } else {
-            menu.removeItem(R.id.menu_minus);
-        }
+//        if (mSettings.getActionBarMinusKeyAction() != 999) {
+//            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_minus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//        } else {
+//            menu.removeItem(R.id.menu_minus);
+//        }
         if (mSettings.getActionBarXKeyAction() != 999) {
             MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_x), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         } else {
             menu.removeItem(R.id.menu_x);
         }
-        if (mSettings.getActionBarUserKeyAction() != 999) {
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_user), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        } else {
-            menu.removeItem(R.id.menu_user);
-        }
+//        if (mSettings.getActionBarUserKeyAction() != 999) {
+//            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_user), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//        } else {
+//            menu.removeItem(R.id.menu_user);
+//        }
         return true;
     }
 
@@ -829,12 +829,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 int key = mSettings.getActionBarPlusKeyAction();
                 return doSendActionBarKey(view, key);
             }
-        } else if (id == R.id.menu_minus) {
-            EmulatorView view = getCurrentEmulatorView();
-            if (view != null) {
-                int key = mSettings.getActionBarMinusKeyAction();
-                return doSendActionBarKey(view, key);
-            }
+//        } else if (id == R.id.menu_minus) {
+//            EmulatorView view = getCurrentEmulatorView();
+//            if (view != null) {
+//                int key = mSettings.getActionBarMinusKeyAction();
+//                return doSendActionBarKey(view, key);
+//            }
         } else if (id == R.id.menu_close_window) {
             confirmCloseWindow();
         } else if (id == R.id.menu_x) {
@@ -843,12 +843,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 int key = mSettings.getActionBarXKeyAction();
                 return doSendActionBarKey(view, key);
             }
-        } else if  (id == R.id.menu_user) {
-            EmulatorView view = getCurrentEmulatorView();
-            if (view != null) {
-                int key = mSettings.getActionBarUserKeyAction();
-                return doSendActionBarKey(view, key);
-            }
+//        } else if  (id == R.id.menu_user) {
+//            EmulatorView view = getCurrentEmulatorView();
+//            if (view != null) {
+//                int key = mSettings.getActionBarUserKeyAction();
+//                return doSendActionBarKey(view, key);
+//            }
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
@@ -1654,13 +1654,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_hide, visibility);
 
-        visibility = mPrefs.getBoolean("functionbar_menu_plus", false)  ? View.VISIBLE : View.GONE;
+        visibility = View.GONE;
+        // visibility = mPrefs.getBoolean("functionbar_menu_plus", false)  ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_plus, visibility);
-        visibility = mPrefs.getBoolean("functionbar_menu_minus", false) ? View.VISIBLE : View.GONE;
+        // visibility = mPrefs.getBoolean("functionbar_menu_minus", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_minus, visibility);
-        visibility = mPrefs.getBoolean("functionbar_menu_x", false) ? View.VISIBLE : View.GONE;
+        // visibility = mPrefs.getBoolean("functionbar_menu_x", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_x, visibility);
-        visibility = mPrefs.getBoolean("functionbar_menu_user", false)  ? View.VISIBLE : View.GONE;
+        // visibility = mPrefs.getBoolean("functionbar_menu_user", false)  ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_user, visibility);
         visibility = mPrefs.getBoolean("functionbar_menu_quit", true)  ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_quit, visibility);

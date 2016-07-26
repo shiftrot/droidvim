@@ -126,6 +126,7 @@
                         android:key="functionbar_vim_yank"
                         android:defaultValue="false"
                         android:title="&quot;*yy"/>
+<!--
                 <CheckBoxPreference
                         android:key="functionbar_menu_plus"
                         android:defaultValue="false"
@@ -142,6 +143,7 @@
                         android:key="functionbar_menu_user"
                         android:defaultValue="false"
                         android:title="[？]"/>
+-->
                 <CheckBoxPreference
                     android:key="functionbar_menu_quit"
                     android:defaultValue="true"
@@ -258,6 +260,7 @@
 
     </PreferenceCategory>
 
+<!--
     <PreferenceCategory
             android:title="@string/actionbar_key_preferences">
 
@@ -298,6 +301,7 @@
                 android:dialogTitle="@string/dialog_title_actionbar_user_preference" />
 
     </PreferenceCategory>
+-->
 
     <PreferenceCategory
             android:title="@string/keyboard_preferences">

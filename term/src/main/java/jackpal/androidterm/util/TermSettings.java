@@ -351,18 +351,21 @@ public class TermSettings {
     }
 
     public int getActionBarPlusKeyAction() {
-        return mActionBarPlusAction;
-    }
+        mActionBarPlusAction = 1250;
+        return mActionBarPlusAction; }
 
     public int getActionBarMinusKeyAction() {
+        mActionBarMinusAction = 999;
         return mActionBarMinusAction;
     }
 
     public int getActionBarXKeyAction() {
+        mActionBarXAction = 1251;
         return mActionBarXAction;
     }
 
     public int getActionBarUserKeyAction() {
+        mActionBarUserAction = 999;
         return mActionBarUserAction;
     }
 

@@ -19,15 +19,19 @@
     <item android:id="@+id/menu_plus"
         android:title="@string/plus"
         android:icon="@drawable/ic_menu_add" />
+<!--
     <item android:id="@+id/menu_minus"
         android:title="@string/minus"
         android:icon="@drawable/ic_menu_minus" />
+-->
     <item android:id="@+id/menu_x"
         android:title="@string/x"
         android:icon="@drawable/ic_menu_close_clear_cancel" />
+<!--
     <item android:id="@+id/menu_user"
         android:title="@string/user"
         android:icon="@drawable/ic_action_help" />
+-->
     <item android:id="@+id/menu_new_window"
         android:title="@string/new_window"
         android:icon="@drawable/ic_menu_add" />
