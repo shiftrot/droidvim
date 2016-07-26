@@ -225,7 +225,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     mViewFlipper.addView(createEmulatorView(mTermSessions.get(position)));
                 }
                 mViewFlipper.setDisplayedChild(position);
-                if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+                if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
                     mActionBar.hide();
                 }
             }
@@ -327,7 +327,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
          * Make sure the back button always leaves the application.
          */
         private boolean backkeyInterceptor(int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
                 /* We need to intercept the key event before the view sees it,
                    otherwise the view will handle it before we get it */
                 onKeyUp(keyCode, event);
@@ -382,6 +382,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     setTheme(R.style.Theme_Holo_Light);
                 }
                 break;
+            case TermSettings.ACTION_BAR_MODE_HIDES+1:
             case TermSettings.ACTION_BAR_MODE_HIDES:
                 if (theme == 0) {
                     setTheme(R.style.Theme_Holo_ActionBarOverlay);
@@ -412,7 +413,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mActionBar = actionBar;
             actionBar.setNavigationMode(ActionBarCompat.NAVIGATION_MODE_LIST);
             actionBar.setDisplayOptions(0, ActionBarCompat.DISPLAY_SHOW_TITLE);
-            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+            if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
                 actionBar.hide();
             }
         }
@@ -628,7 +629,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     restart();
                 } else {
                     win.setFlags(desiredFlag, FULLSCREEN);
-                    if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+                    if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
                         if (mActionBar != null) {
                             mActionBar.hide();
                         }
@@ -830,7 +831,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 startActivity(openHelp);
         }
         // Hide the action bar if appropriate
-        if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+        if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
             mActionBar.hide();
         }
         return super.onOptionsItemSelected(item);
@@ -1107,7 +1108,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
                 mBackKeyPressed = false;
             }
-            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
+            if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
                 mActionBar.hide();
                 return true;
             }
@@ -1471,6 +1472,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 doToggleSoftKeyboard();
             }
             break;
+        case TermSettings.ACTION_BAR_MODE_HIDES+1:
         case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
             if (!mHaveFullHwKeyboard) {
                 doToggleSoftKeyboard();

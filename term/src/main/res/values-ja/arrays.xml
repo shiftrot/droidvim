@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>常にアクションバーを表示する</item>
         <item>アクションバーを隠す (スクリーンの上部へのタッチかメニューキーで表示)</item>
+        <item>アクションバーを隠す</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">

@@ -136,7 +136,7 @@ public class TermSettings {
     public static final int ACTION_BAR_MODE_NONE = 0;
     public static final int ACTION_BAR_MODE_ALWAYS_VISIBLE = 1;
     public static final int ACTION_BAR_MODE_HIDES = 2;
-    private static final int ACTION_BAR_MODE_MAX = 2;
+    private static final int ACTION_BAR_MODE_MAX = 3;
 
     public static final int ORIENTATION_UNSPECIFIED = 0;
     public static final int ORIENTATION_LANDSCAPE = 1;

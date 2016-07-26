@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Always show action bar</item>
         <item>Hide action bar (touch top of screen or Menu key to show)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
