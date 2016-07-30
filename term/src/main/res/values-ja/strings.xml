@@ -59,6 +59,16 @@
    <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
    <string name="dialog_title_statusbar_preference">ステータスバー</string>
 
+   <string name="title_functionbar_preference">ファンクションバー</string>
+   <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
+
+   <string name="title_functionbar_key_preference">ファンクションキー</string>
+   <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
+
+   <string name="title_functionbar_menu">メニュー</string>
+   <string name="title_functionbar_softkeyboard">IMEのトグル</string>
+   <string name="title_functionbar_hide">ファンクションバーを隠す</string>
+
    <string name="title_actionbar_preference">アクションバー</string>
    <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降).</string>
    <string name="dialog_title_actionbar_preference">アクションバーの振舞い</string>

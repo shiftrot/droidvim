@@ -256,6 +256,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
            it's possible that the view won't resize correctly on IME hide */
         visible.right = window.right;
         visible.bottom = window.bottom;
+        visible.bottom -= mFunctionBarSize * (mFunctionBar ? 1 : 0);
     }
 
     private void adjustChildSize() {
@@ -300,5 +301,15 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             mRedoLayout = false;
         }
         super.onDraw(canvas);
+    }
+
+    private int mFunctionBarSize = 0;
+    private boolean mFunctionBar = true;
+    public void setFunctionBarSize(int size) {
+        if (size > 0) mFunctionBarSize = size;
+    }
+
+    public void setFunctionBar(boolean bool) {
+        mFunctionBar = bool;
     }
 }

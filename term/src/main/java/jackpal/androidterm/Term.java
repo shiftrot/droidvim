@@ -75,10 +75,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,7 +88,7 @@ import android.widget.Toast;
  * A terminal emulator activity.
  */
 
-public class Term extends Activity implements UpdateCallback, SharedPreferences.OnSharedPreferenceChangeListener {
+public class Term extends Activity implements UpdateCallback, SharedPreferences.OnSharedPreferenceChangeListener, OnClickListener {
     /**
      * The ViewFlipper which holds the collection of EmulatorView widgets.
      */
@@ -379,6 +381,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         setContentView(R.layout.term_activity);
         mViewFlipper = (TermViewFlipper) findViewById(VIEW_FLIPPER);
+        setFunctionKeyListener();
 
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
@@ -400,6 +403,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
+
+        if (mFunctionBar == -1) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
+        if (mFunctionBar == 0) setFunctionBar(mFunctionBar);
 
         updatePrefs();
         mAlreadyStarted = true;
@@ -496,6 +502,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         if (mStopServiceOnFinish) {
             stopService(TSIntent);
+            mFunctionBar = -1;
         }
         mTermService = null;
         mTSConnection = null;
@@ -559,6 +566,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
+        setFunctionKeyVisibility();
         mViewFlipper.updatePrefs(mSettings);
 
         for (View v : mViewFlipper) {
@@ -767,6 +775,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (key == 999) {
             // do nothing
         } else if (key == 1002) {
+
             doToggleSoftKeyboard();
         } else if (key == 1249) {
             doPaste();
@@ -786,8 +795,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             view.sendControlKeyCode();
         } else if (key == 1247) {
             sendKeyStrings(":", false);
+        } else if (key == 1255) {
+            setFunctionBar(2);
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
+            dispatchKeyEvent(event);
+            event = new KeyEvent(KeyEvent.ACTION_UP, key);
             dispatchKeyEvent(event);
         }
         return true;
@@ -1002,6 +1015,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doCloseWindow();
             return true;
         case 0xffff0000:
+            setFunctionBar(2);
             return true;
         case KeyEvent.KEYCODE_BACK:
             if (AndroidCompat.SDK < 5) {
@@ -1282,4 +1296,204 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if(handlers.size() > 0)
             startActivity(openLink);
     }
+
+    private static int mFunctionBar = -1;
+    private void setFunctionBar(int mode) {
+        if (mode == 2) mFunctionBar = mFunctionBar == 0 ? 1 : 0;
+        else mFunctionBar = mode;
+        if (mAlreadyStarted) updatePrefs();
+    }
+
+    private void setFunctionBarSize() {
+        int size = findViewById(R.id.view_function_bar).getHeight();
+        if (mViewFlipper != null) mViewFlipper.setFunctionBarSize(size);
+    }
+
+    private void setFunctionKeyListener() {
+        findViewById(R.id.button_esc  ).setOnClickListener(this);
+        findViewById(R.id.button_ctrl ).setOnClickListener(this);
+        findViewById(R.id.button_tab  ).setOnClickListener(this);
+        findViewById(R.id.button_up   ).setOnClickListener(this);
+        findViewById(R.id.button_down ).setOnClickListener(this);
+        findViewById(R.id.button_left ).setOnClickListener(this);
+        findViewById(R.id.button_right).setOnClickListener(this);
+        findViewById(R.id.button_backspace).setOnClickListener(this);
+        findViewById(R.id.button_enter).setOnClickListener(this);
+        findViewById(R.id.button_i).setOnClickListener(this);
+        findViewById(R.id.button_colon).setOnClickListener(this);
+        findViewById(R.id.button_slash).setOnClickListener(this);
+        findViewById(R.id.button_equal).setOnClickListener(this);
+        findViewById(R.id.button_asterisk).setOnClickListener(this);
+        findViewById(R.id.button_pipe).setOnClickListener(this);
+        findViewById(R.id.button_minus).setOnClickListener(this);
+        findViewById(R.id.button_vim_paste).setOnClickListener(this);
+        findViewById(R.id.button_vim_yank).setOnClickListener(this);
+        findViewById(R.id.button_softkeyboard).setOnClickListener(this);
+        findViewById(R.id.button_menu).setOnClickListener(this);
+        findViewById(R.id.button_menu_hide).setOnClickListener(this);
+        findViewById(R.id.button_menu_plus ).setOnClickListener(this);
+        findViewById(R.id.button_menu_minus).setOnClickListener(this);
+        findViewById(R.id.button_menu_x    ).setOnClickListener(this);
+        findViewById(R.id.button_menu_user ).setOnClickListener(this);
+        findViewById(R.id.button_menu_quit ).setOnClickListener(this);
+    }
+
+    private void setFunctionKeyVisibility() {
+        int visibility;
+        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        visibility = mPrefs.getBoolean("functionbar_esc", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_esc, visibility);
+        visibility = mPrefs.getBoolean("functionbar_ctrl", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_ctrl, visibility);
+        visibility = mPrefs.getBoolean("functionbar_tab", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_tab, visibility);
+
+        visibility = mPrefs.getBoolean("functionbar_up", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_up, visibility);
+        visibility = mPrefs.getBoolean("functionbar_down", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_down, visibility);
+        visibility = mPrefs.getBoolean("functionbar_left", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_left, visibility);
+        visibility = mPrefs.getBoolean("functionbar_right", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_right, visibility);
+
+        visibility = mPrefs.getBoolean("functionbar_backspace", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_backspace, visibility);
+        visibility = mPrefs.getBoolean("functionbar_enter", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_enter, visibility);
+
+        visibility = mPrefs.getBoolean("functionbar_i", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_i, visibility);
+        visibility = mPrefs.getBoolean("functionbar_colon", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_colon, visibility);
+        visibility = mPrefs.getBoolean("functionbar_slash", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_slash, visibility);
+        visibility = mPrefs.getBoolean("functionbar_equal", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_equal, visibility);
+        visibility = mPrefs.getBoolean("functionbar_asterisk", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_asterisk, visibility);
+        visibility = mPrefs.getBoolean("functionbar_pipe", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_pipe, visibility);
+        visibility = mPrefs.getBoolean("functionbar_minus", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_minus, visibility);
+        visibility = mPrefs.getBoolean("functionbar_vim_paste", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_vim_paste, visibility);
+        visibility = mPrefs.getBoolean("functionbar_vim_yank", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_vim_yank, visibility);
+
+        visibility = mPrefs.getBoolean("functionbar_menu", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu, visibility);
+        visibility = mPrefs.getBoolean("functionbar_softkeyboard", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_softkeyboard, visibility);
+        visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu_hide, visibility);
+
+        visibility = mPrefs.getBoolean("functionbar_menu_plus", false)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu_plus, visibility);
+        visibility = mPrefs.getBoolean("functionbar_menu_minus", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu_minus, visibility);
+        visibility = mPrefs.getBoolean("functionbar_menu_x", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu_x, visibility);
+        visibility = mPrefs.getBoolean("functionbar_menu_user", false)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu_user, visibility);
+        visibility = mPrefs.getBoolean("functionbar_menu_quit", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_menu_quit, visibility);
+
+        setFunctionBarSize();
+        visibility = mFunctionBar != 0 ? View.VISIBLE : View.GONE;
+        findViewById(R.id.view_function_bar).setVisibility(visibility);
+        mViewFlipper.setFunctionBar(mFunctionBar == 1);
+    }
+
+    private void setFunctionBarButton(int id, int visibility) {
+        Button button = (Button)findViewById(id);
+        button.setVisibility(visibility);
+    }
+
+    public void onClick(View v) {
+        EmulatorView view = getCurrentEmulatorView();
+        switch (v.getId()) {
+        case R.id.button_esc:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
+            break;
+        case R.id.button_ctrl:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_CTRL_LEFT);
+            break;
+        case R.id.button_tab:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
+            break;
+        case R.id.button_up:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_UP);
+            break;
+        case R.id.button_down:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_DOWN);
+            break;
+        case R.id.button_left:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
+            break;
+        case R.id.button_right:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
+            break;
+        case R.id.button_backspace:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DEL);
+            break;
+        case R.id.button_enter:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_ENTER);
+            break;
+        case R.id.button_i:
+            sendKeyStrings("i", false);
+            break;
+        case R.id.button_colon:
+            sendKeyStrings(":", false);
+            break;
+        case R.id.button_slash:
+            sendKeyStrings("/", false);
+            break;
+        case R.id.button_equal:
+            sendKeyStrings("=", false);
+            break;
+        case R.id.button_asterisk:
+            sendKeyStrings("*", false);
+            break;
+        case R.id.button_pipe:
+            sendKeyStrings("|", false);
+            break;
+        case R.id.button_minus:
+            sendKeyStrings("-", false);
+            break;
+        case R.id.button_vim_paste:
+            sendKeyStrings("\"*p", false);
+            break;
+        case R.id.button_vim_yank:
+            sendKeyStrings("\"*yy", false);
+            break;
+        case R.id.button_menu_plus:
+            doSendActionBarKey(view, mSettings.getActionBarPlusKeyAction());
+            break;
+        case R.id.button_menu_minus:
+            doSendActionBarKey(view, mSettings.getActionBarMinusKeyAction());
+            break;
+        case R.id.button_menu_x:
+            doSendActionBarKey(view, mSettings.getActionBarXKeyAction());
+            break;
+        case R.id.button_menu_user:
+            doSendActionBarKey(view, mSettings.getActionBarUserKeyAction());
+            break;
+        case R.id.button_menu_quit:
+            int cmd = this.getPackageName().matches(".*vim.androidterm.*") ? 1253 : 1251;
+            doSendActionBarKey(view, cmd);
+            break;
+        case R.id.button_softkeyboard:
+            doToggleSoftKeyboard();
+            break;
+        case R.id.button_menu:
+            openOptionsMenu();
+            break;
+        case R.id.button_menu_hide:
+            setFunctionBar(2);
+            break;
+        }
+    }
+
 }

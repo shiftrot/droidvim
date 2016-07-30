@@ -59,6 +59,16 @@
    <string name="summary_statusbar_preference">Show/hide status bar.</string>
    <string name="dialog_title_statusbar_preference">Status bar</string>
 
+   <string name="title_functionbar_preference">Function bar</string>
+   <string name="summary_functionbar_preference">Show function bar on start up.</string>
+
+   <string name="title_functionbar_key_preference">Function key</string>
+   <string name="summary_functionbar_key_preference">Show/hide function bar\'s key</string>
+
+   <string name="title_functionbar_menu">Menu</string>
+   <string name="title_functionbar_softkeyboard">Soft keyboard</string>
+   <string name="title_functionbar_hide">Hide functionbar</string>
+
    <string name="title_actionbar_preference">Action bar</string>
    <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
    <string name="dialog_title_actionbar_preference">Action bar behavior</string>
