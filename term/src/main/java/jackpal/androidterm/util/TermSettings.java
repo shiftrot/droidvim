@@ -360,13 +360,17 @@ public class TermSettings {
     }
 
     public int getActionBarXKeyAction() {
-        mActionBarXAction = 1251;
-        return mActionBarXAction;
+        return 1251;
+//        return mActionBarXAction;
     }
 
     public int getActionBarUserKeyAction() {
         mActionBarUserAction = 999;
         return mActionBarUserAction;
+    }
+
+    public int getActionBarQuitKeyAction() {
+        return mActionBarXAction;
     }
 
     public int getBackKeyAction() {

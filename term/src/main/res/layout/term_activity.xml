@@ -204,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="45sp"
                     android:minWidth="60sp"
-                    android:text="Quit"/>
+                    android:text="[Q]"/>
                 <Button
                     android:id="@+id/button_softkeyboard"
                     android:layout_width="wrap_content"

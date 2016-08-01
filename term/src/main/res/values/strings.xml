@@ -132,9 +132,9 @@
    <string name="title_actionbar_minus_preference">- button behavior</string>
    <string name="summary_actionbar_minus_preference">Choose what pressing the - button does.</string>
    <string name="dialog_title_actionbar_minus_preference">- button behavior</string>
-   <string name="title_actionbar_x_preference">X button behavior</string>
-   <string name="summary_actionbar_x_preference">Choose what pressing the X button does.</string>
-   <string name="dialog_title_actionbar_x_preference">X button behavior</string>
+   <string name="title_actionbar_x_preference">Q button behavior</string>
+   <string name="summary_actionbar_x_preference">Choose what pressing the Q button does.</string>
+   <string name="dialog_title_actionbar_x_preference">Q button behavior</string>
    <string name="title_actionbar_user_preference">\? button behavior</string>
    <string name="summary_actionbar_user_preference">Choose what pressing the ? button does.</string>
    <string name="dialog_title_actionbar_user_preference">\? button behavior</string>

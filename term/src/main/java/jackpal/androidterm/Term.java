@@ -1755,8 +1755,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doSendActionBarKey(view, mSettings.getActionBarUserKeyAction());
             break;
         case R.id.button_menu_quit:
-            int cmd = this.getPackageName().matches(".*vim.androidterm.*") ? 1253 : 1251;
-            doSendActionBarKey(view, cmd);
+            doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
             break;
         case R.id.button_softkeyboard:
             doToggleSoftKeyboard();

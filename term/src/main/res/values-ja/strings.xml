@@ -132,9 +132,9 @@
    <string name="title_actionbar_minus_preference">－ボタン</string>
    <string name="summary_actionbar_minus_preference">－ボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_minus_preference">－ボタンの振舞い</string>
-   <string name="title_actionbar_x_preference">Ｘボタン</string>
-   <string name="summary_actionbar_x_preference">Ｘボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_x_preference">Ｘボタンの振舞い</string>
+   <string name="title_actionbar_x_preference">Ｑボタン</string>
+   <string name="summary_actionbar_x_preference">Ｑボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_x_preference">Ｑボタンの振舞い</string>
    <string name="title_actionbar_user_preference">？ボタン</string>
    <string name="summary_actionbar_user_preference">？ボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_user_preference">？ボタンの振舞い</string>
