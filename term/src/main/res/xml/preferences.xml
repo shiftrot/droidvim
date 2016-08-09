@@ -205,6 +205,15 @@
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
+
+        <ListPreference
+            android:key="actionbar_icon_action"
+            android:defaultValue="@string/pref_actionbar_icon_default"
+            android:title="@string/title_actionbar_icon_preference"
+            android:summary="@string/summary_actionbar_icon_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_actionbar_icon_preference" />
     </PreferenceCategory>
 
     <PreferenceCategory

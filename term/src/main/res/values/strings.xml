@@ -123,9 +123,9 @@
    <string name="dialog_title_composingtext_preference">Input method composing text color</string>
 
    <string name="actionbar_key_preferences">Actionbar button</string>
-   <string name="title_actionbar_icon_preference">Icon button behavior</string>
-   <string name="summary_actionbar_icon_preference">Choose what pressing the icon button does.</string>
-   <string name="dialog_title_actionbar_icon_preference">Icon button behavior</string>
+   <string name="title_actionbar_icon_preference">◇ button behavior</string>
+   <string name="summary_actionbar_icon_preference">Choose what pressing the ◇ button does.</string>
+   <string name="dialog_title_actionbar_icon_preference">◇ button behavior</string>
    <string name="title_actionbar_plus_preference">+ button behavior</string>
    <string name="summary_actionbar_plus_preference">Choose what pressing the + button does.</string>
    <string name="dialog_title_actionbar_plus_preference">+ button behavior</string>

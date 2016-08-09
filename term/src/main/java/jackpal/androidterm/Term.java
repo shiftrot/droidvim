@@ -1758,7 +1758,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
             break;
         case R.id.button_softkeyboard:
-            doToggleSoftKeyboard();
+            doSendActionBarKey(view, mSettings.getActionBarIconKeyAction());
             break;
         case R.id.button_menu:
             openOptionsMenu();

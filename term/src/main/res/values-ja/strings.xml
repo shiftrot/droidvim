@@ -123,9 +123,9 @@
    <string name="dialog_title_composingtext_preference">IME変換中の文字色</string>
 
    <string name="actionbar_key_preferences">アクションバーボタン</string>
-   <string name="title_actionbar_icon_preference">アイコンボタン</string>
-   <string name="summary_actionbar_icon_preference">アイコンボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_icon_preference">アイコンボタンの振舞い</string>
+   <string name="title_actionbar_icon_preference">◇ボタン</string>
+   <string name="summary_actionbar_icon_preference">◇ボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_icon_preference">◇ボタンの振舞い</string>
    <string name="title_actionbar_plus_preference">＋ボタン</string>
    <string name="summary_actionbar_plus_preference">＋ボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_plus_preference">＋ボタンの振舞い</string>
