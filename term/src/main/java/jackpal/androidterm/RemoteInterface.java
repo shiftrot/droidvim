@@ -128,7 +128,7 @@ public class RemoteInterface extends Activity {
                 String command = mSettings.getIntentCommand();
                 if (command.matches("^:.*")) {
                     path = path.replaceAll("([ ()%#&])", "\\\\$1");
-                    command = String.format(command, path);
+                    command = "\u001b"+String.format(command, path);
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -155,7 +155,7 @@ public class RemoteInterface extends Activity {
                 String command = mSettings.getIntentCommand();
                 if (command.matches("^:.*")) {
                     url = url.replaceAll("([ ()%#&$])", "\\\\$1");
-                    command = String.format(command, url);
+                    command = "\u001b"+String.format(command, url);
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
