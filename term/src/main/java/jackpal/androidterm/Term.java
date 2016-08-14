@@ -697,7 +697,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void setPreIMEShortsuts(EmulatorView v) {
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean value = mPrefs.getBoolean("AltGrave", true);
+        boolean value = mPrefs.getBoolean("AltGrave", false);
         v.setPreIMEShortcut("AltGrave", value);
         value = mPrefs.getBoolean("AltEsc", false);
         v.setPreIMEShortcut("AltEsc", value);

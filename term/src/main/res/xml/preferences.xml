@@ -382,7 +382,7 @@
                 android:summary="@string/summary_title_pre_ime_shortcuts">
                 <CheckBoxPreference
                         android:key="AltGrave"
-                        android:defaultValue="true"
+                        android:defaultValue="false"
                         android:title="@string/pref_alt_grave"/>
                 <CheckBoxPreference
                         android:key="AltEsc"
