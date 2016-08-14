@@ -59,6 +59,13 @@
                     android:minWidth="60sp"
                     android:text="Ctrl"/>
                 <Button
+                    android:id="@+id/button_alt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45sp"
+                    android:minWidth="60sp"
+                    android:text="Alt"/>
+                <Button
                     android:id="@+id/button_tab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

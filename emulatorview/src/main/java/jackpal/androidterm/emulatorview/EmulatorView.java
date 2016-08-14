@@ -37,6 +37,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -174,6 +175,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mControlKeyCode;
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
+    private boolean mIsAltKeySent = false;
     private boolean mIsFnKeySent = false;
 
     private boolean mMouseTracking;
@@ -686,12 +688,48 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 }
             }
 
+            private  int charToKeyCode(int c) {
+                if (c >= 'a' && c <= 'z') {
+                    return (c - 'a' + KeycodeConstants.KEYCODE_A);
+                } else if (c >= 'A' && c <= 'Z') {
+                    return (c - 'A' + KeycodeConstants.KEYCODE_A);
+                } else if (c >= '0' && c <= '9') {
+                    return (c - '0' + KeycodeConstants.KEYCODE_0);
+                } else if (c == ' ') {
+                     return KeycodeConstants.KEYCODE_SPACE;
+                } else if (c == '/') {
+                     return KeycodeConstants.KEYCODE_SLASH;
+                } else if (c == '\\') {
+                     return KeycodeConstants.KEYCODE_BACKSLASH;
+                } else if (c == ',') {
+                    return KeycodeConstants.KEYCODE_COMMA;
+                } else if (c == '.') {
+                    return KeycodeConstants.KEYCODE_PERIOD;
+                } else if (c == '<') {
+                    return KeycodeConstants.KEYCODE_SHIFT_LEFT;
+                } else if (c == '>') {
+                    return KeycodeConstants.KEYCODE_SHIFT_RIGHT;
+                }
+                return c;
+            }
+
             private void mapAndSend(int c) throws IOException {
-                int result = mKeyListener.mapControlChar(c);
-                if (result < TermKeyListener.KEYCODE_OFFSET) {
-                    mTermSession.write(result);
+                int key = charToKeyCode(c);
+                if (mIsAltKeySent && c != key) {
+                    int meta  = KeyEvent.META_ALT_ON;
+                    if (c >= 'A' && c <= 'Z') {
+                        meta += KeyEvent.META_SHIFT_LEFT_ON;
+                    }
+                    long eventTime = SystemClock.uptimeMillis();
+                    KeyEvent event = new KeyEvent(eventTime, eventTime, KeyEvent.ACTION_DOWN, key, 1, meta);
+                    dispatchKeyEvent(event);
                 } else {
-                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, null, getKeypadApplicationMode());
+                    int result = mKeyListener.mapControlChar(c);
+                    if (result < TermKeyListener.KEYCODE_OFFSET) {
+                        mTermSession.write(result);
+                    } else {
+                        mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, null, getKeypadApplicationMode());
+                    }
                 }
                 clearSpecialKeyStatus();
             }
@@ -1444,6 +1482,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
     }
 
+    public void sendAltKeyCode() {
+        // FIXME:
+        mIsAltKeySent = true;
+        mKeyListener.handleAltKey(true);
+        mKeyListener.handleAltKey(false);
+        invalidate();
+    }
+
     public void sendControlKeyCode() {
         // FIXME:
         mIsControlKeySent = true;
@@ -1905,6 +1951,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mIsControlKeySent) {
             mIsControlKeySent = false;
             mKeyListener.handleControlKey(false);
+            invalidate();
+        }
+        if (mIsAltKeySent) {
+            mIsAltKeySent = false;
+            mKeyListener.handleAltKey(false);
             invalidate();
         }
         if (mIsFnKeySent) {

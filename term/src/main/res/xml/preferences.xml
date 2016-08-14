@@ -96,6 +96,10 @@
                 android:defaultValue="true"
                 android:title="Ctrl"/>
             <CheckBoxPreference
+                android:key="functionbar_alt"
+                android:defaultValue="false"
+                android:title="Alt"/>
+            <CheckBoxPreference
                 android:key="functionbar_tab"
                 android:defaultValue="true"
                 android:title="Tab"/>

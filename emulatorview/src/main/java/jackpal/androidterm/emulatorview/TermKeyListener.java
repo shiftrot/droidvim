@@ -357,6 +357,15 @@ class TermKeyListener {
         updateCursorMode();
     }
 
+    public void handleAltKey(boolean down) {
+        if (down) {
+            mAltKey.onPress();
+        } else {
+            mAltKey.onRelease();
+        }
+        updateCursorMode();
+    }
+
     public void handleFnKey(boolean down) {
         if (down) {
             mFnKey.onPress();

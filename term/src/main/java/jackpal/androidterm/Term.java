@@ -905,6 +905,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             sendKeyStrings(":confirm qa\r", true);
         } else if (key == 1254) {
             view.sendFnKeyCode();
+        } else if (key == KeycodeConstants.KEYCODE_ALT_LEFT) {
+            view.sendAltKeyCode();
         } else if (key == KeycodeConstants.KEYCODE_CTRL_LEFT) {
             view.sendControlKeyCode();
         } else if (key == 1247) {
@@ -1577,6 +1579,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void setFunctionKeyListener() {
         findViewById(R.id.button_esc  ).setOnClickListener(this);
         findViewById(R.id.button_ctrl ).setOnClickListener(this);
+        findViewById(R.id.button_alt ).setOnClickListener(this);
         findViewById(R.id.button_tab  ).setOnClickListener(this);
         findViewById(R.id.button_up   ).setOnClickListener(this);
         findViewById(R.id.button_down ).setOnClickListener(this);
@@ -1611,6 +1614,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setFunctionBarButton(R.id.button_esc, visibility);
         visibility = mPrefs.getBoolean("functionbar_ctrl", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_ctrl, visibility);
+        visibility = mPrefs.getBoolean("functionbar_alt", false) ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_alt, visibility);
         visibility = mPrefs.getBoolean("functionbar_tab", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_tab, visibility);
 
@@ -1693,6 +1698,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             break;
         case R.id.button_ctrl:
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_CTRL_LEFT);
+            break;
+        case R.id.button_alt:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
             break;
         case R.id.button_tab:
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
