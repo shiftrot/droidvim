@@ -1607,6 +1607,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mCreateURL = !getDevBoolean(this.getContext(), "CreateURL", false);
                 setDevBoolean(this.getContext(), "CreateURL", mCreateURL);
                 break;
+            case 99:
+                testFunc();
+                break;
             case 100:
                 boolean tc = !getDevBoolean(this.getContext(), "ThumbCtrl", false);
                 setDevBoolean(this.getContext(), "ThumbCtrl", tc);
@@ -1662,6 +1665,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             }
         }
+    }
+
+    private void testFunc() {
     }
 
     private static boolean mIMEInputTypeGoogle = true;
