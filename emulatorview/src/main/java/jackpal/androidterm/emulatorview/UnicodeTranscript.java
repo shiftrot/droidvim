@@ -536,12 +536,9 @@ class UnicodeTranscript {
             return 0;
         }
 
-        if (mAmbiWidth == 2) {
-            return vimCharWidth(codePoint);
-        } else {
-            if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
+        if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
                 (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
-                if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
+            if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
                     /* Treat Hangul jamo medial vowels and final consonants as
                      * combining characters with width 0 to make jamo composition
                      * work correctly.
@@ -550,17 +547,20 @@ class UnicodeTranscript {
                      * syllable block, but there's no easy solution to that
                      * problem, and we may as well at least get the common case
                      * right. */
-                    return 0;
-                } else {
+                return 0;
+            } else {
                     /* Older versions of Android didn't compose Hangul jamo, but
                      * instead rendered them as individual East Asian wide
                      * characters (despite Unicode defining medial vowels and final
                      * consonants as East Asian neutral/narrow).  Treat them as
                      * width 2 characters to match the rendering. */
-                    return 2;
-                }
+                return 2;
             }
+        }
 
+        if (mAmbiWidth <= 2) {
+            return vimCharWidth(codePoint);
+        } else {
             if (Character.charCount(codePoint) == 1) {
                 // Android's getEastAsianWidth() only works for BMP characters
                 switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
@@ -575,11 +575,6 @@ class UnicodeTranscript {
                 case 3: // Tertiary Ideographic Plane
                     return 2;
                 }
-            }
-
-            if (mAmbiWidth == 3) {
-                int charWidth = ambiwidth(codePoint);
-                if (charWidth > 0) return charWidth ;
             }
         }
 
@@ -825,35 +820,29 @@ class UnicodeTranscript {
     };
 
     private static int vimCharWidth(int codePoint) {
-        if (vimCharWidth(codePoint, mDoublewidth) > 0) return 2;
-        if (vimCharWidth(codePoint, mAmbiguous) > 0) return 2;
-        if (vimCharWidth(codePoint, mEmoji_width) > 0) return 2;
+        if (intable(codePoint, mDoublewidth)) return 2;
+        if (intable(codePoint, mAmbiguous)) return mAmbiWidth;
+        if (intable(codePoint, mEmoji_width)) return 2;
         return 1;
     }
 
-    private static int vimCharWidth(int codePoint, int[][] arrays) {
-        int min = 0;
-        int step = 30;
-        int len = arrays.length;
-        if (codePoint > arrays[len-1][1]) return 0;
-        int max;
-        while (true) {
-            max = min + step - 1;
-            if (max >= len - 1) {
-                max = len - 1;
-                break;
-            }
-            if (codePoint <= arrays[max][1]) break;
-            min += step;
-        }
-        for (int i = min; i <= max; i++) {
-            if (codePoint >= arrays[i][0] && codePoint <= arrays[i][1]) return 2;
-        }
-        return 0;
-    }
+    private static boolean intable(int c, int[][] table) {
+        if (c < table[0][0]) return false;
 
-    private static int ambiwidth(int codePoint) {
-        return 0;
+        // Binary search
+        int bot = 0;
+        int top = table.length - 1;
+        while (top >= bot) {
+            int mid = (bot + top) / 2;
+            if (table[mid][1] < c) {
+                bot = mid + 1;
+            } else if (table[mid][0] > c) {
+                top = mid - 1;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int charWidth(char cHigh, char cLow) {
