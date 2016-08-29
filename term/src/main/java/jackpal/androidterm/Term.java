@@ -1075,7 +1075,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
       // menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
       // menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
       menu.add(0, SEND_MENU_ID, 0, R.string.title_functionbar_menu);
-      menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
+      // menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
       if (!canPaste()) {
           menu.getItem(PASTE_ID).setEnabled(false);
       }
