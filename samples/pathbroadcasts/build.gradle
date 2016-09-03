@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 24
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "jackpal.androidterm.sample.pathbroadcasts"
         minSdkVersion 4
-        targetSdkVersion 22
+        targetSdkVersion 24
 
         ndk {
             moduleName "libjackpal-androidterm4"
