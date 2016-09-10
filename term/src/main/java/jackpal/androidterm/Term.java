@@ -17,6 +17,7 @@
 package jackpal.androidterm;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
@@ -71,6 +72,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -687,6 +689,67 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
+    private static String RELOAD_STYLE_ACTION = "com.termux.app.reload_style";
+    private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (action.equals(RELOAD_STYLE_ACTION)) {
+                String stringExtra = intent.getStringExtra(RELOAD_STYLE_ACTION);
+                if (stringExtra.equals("storage")) {
+                    setupStorageSymlinks(Term.this);
+                    return;
+                }
+            }
+        }
+    };
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupStorageSymlinks(final Context context) {
+        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+        try {
+            File storageDir = new File(mSettings.getHomePath(), "storage");
+
+            if (!storageDir.exists() && !storageDir.mkdirs()) {
+                Log.e(TermDebug.LOG_TAG, "Unable to mkdirs() for $HOME/storage");
+                return;
+            }
+
+            File sharedDir = Environment.getExternalStorageDirectory();
+            Os.symlink(sharedDir.getAbsolutePath(), new File(storageDir, "shared").getAbsolutePath());
+
+            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            Os.symlink(downloadsDir.getAbsolutePath(), new File(storageDir, "downloads").getAbsolutePath());
+
+            File dcimDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+            Os.symlink(dcimDir.getAbsolutePath(), new File(storageDir, "dcim").getAbsolutePath());
+
+            File picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            Os.symlink(picturesDir.getAbsolutePath(), new File(storageDir, "pictures").getAbsolutePath());
+
+            File musicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+            Os.symlink(musicDir.getAbsolutePath(), new File(storageDir, "music").getAbsolutePath());
+
+            File moviesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            Os.symlink(moviesDir.getAbsolutePath(), new File(storageDir, "movies").getAbsolutePath());
+
+            final File[] dirs = context.getExternalFilesDirs(null);
+            if (dirs != null && dirs.length > 1) {
+                for (int i = 1; i < dirs.length; i++) {
+                    File dir = dirs[i];
+                    if (dir == null) continue;
+                    String symlinkName = "external-" + i;
+                    Os.symlink(dir.getAbsolutePath(), new File(storageDir, symlinkName).getAbsolutePath());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
+        }
+    }
+
     private void populateViewFlipper() {
         if (mTermService != null) {
             mTermSessions = mTermService.getSessions();
@@ -918,6 +981,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public void onPause() {
         super.onPause();
 
+        unregisterReceiver(mBroadcastReceiever);
+
         if (AndroidCompat.SDK < 5) {
             /* If we lose focus between a back key down and a back key up,
                we shouldn't respond to the next back key up event unless
@@ -936,6 +1001,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 imm.hideSoftInputFromWindow(token, 0);
             }
         }.start();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
+        registerReceiver(mBroadcastReceiever, new IntentFilter(RELOAD_STYLE_ACTION));
     }
 
     @Override
@@ -1571,6 +1644,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mVimPaste = (keyCode == 0xfffffff6) ? true : false;
             return true;
         case 0xfffffff8:
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setupStorageSymlinks(this);
+            }
             return true;
         case 0xfffffff9:
             return true;
