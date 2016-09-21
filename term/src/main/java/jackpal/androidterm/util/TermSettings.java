@@ -130,7 +130,8 @@ public class TermSettings {
         {HOLO_BLUE,         BLACK},
         {SOLARIZED_FG,      SOLARIZED_BG},
         {SOLARIZED_DARK_FG, SOLARIZED_DARK_BG},
-        {LINUX_CONSOLE_WHITE, BLACK}
+        {LINUX_CONSOLE_WHITE, BLACK},
+        {BLACK,             SOLARIZED_BG}
     };
 
     public static final int ACTION_BAR_MODE_NONE = 0;
