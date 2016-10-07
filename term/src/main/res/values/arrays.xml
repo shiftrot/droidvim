@@ -177,4 +177,11 @@
         <item>Camera</item>
         <item>None</item>
     </string-array>
+
+    <string-array name="entries_ime_shortcuts_action_preference">
+        <item>Toggle</item>
+        <item>Password</item>
+        <item>URI</item>
+        <item>Password(Google Japanese input)</item>
+    </string-array>
 </resources>

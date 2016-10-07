@@ -48,6 +48,7 @@ public class TermView extends EmulatorView {
         setFnKeyCode(settings.getFnKeyCode());
         setTermType(settings.getTermType());
         setMouseTracking(settings.getMouseTrackingFlag());
+        setPreIMEShortcutsAction(settings.getImeShortcutsAction());
     }
 
     public void updatePrefs(TermSettings settings) {

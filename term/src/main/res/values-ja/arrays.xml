@@ -172,4 +172,11 @@
         <item>カメラ</item>
         <item>なし</item>
     </string-array>
+
+    <string-array name="entries_ime_shortcuts_action_preference">
+        <item>IMEのトグル</item>
+        <item>パスワード</item>
+        <item>URI</item>
+        <item>パスワード (Google日本語入力)</item>
+    </string-array>
 </resources>

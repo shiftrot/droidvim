@@ -709,6 +709,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         v.setPreIMEShortcut("GRAVE", value);
         value = mPrefs.getBoolean("SWITCH_CHARSET", false);
         v.setPreIMEShortcut("SWITCH_CHARSET", value);
+        v.setPreIMEShortcutsAction(mSettings.getImeShortcutsAction());
     }
 
     @Override

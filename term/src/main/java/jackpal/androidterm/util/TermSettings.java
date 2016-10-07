@@ -71,6 +71,7 @@ public class TermSettings {
     private boolean mMouseTracking;
 
     private boolean mUseKeyboardShortcuts;
+    private int mImeShortcutsAction;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String FUNCTIONBAR_KEY = "functionbar";
@@ -105,6 +106,7 @@ public class TermSettings {
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
+    private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action";
 
     public static final int WHITE               = 0xffffffff;
     public static final int BLACK               = 0xff000000;
@@ -178,6 +180,7 @@ public class TermSettings {
     public static final int BACK_KEY_TOGGLE_IME = 5;
     private static final int BACK_KEY_MAX = 5;
     private static final int ACTIONBAR_KEY_MAX = 65535;
+    private static final int IME_SHORTCUTS_ACTION_MAX = 65535;
 
     public TermSettings(Resources res, SharedPreferences prefs) {
         readDefaultPrefs(res);
@@ -221,6 +224,7 @@ public class TermSettings {
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
+        mImeShortcutsAction = res.getInteger(R.integer.pref_ime_shortcuts_action_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -263,6 +267,7 @@ public class TermSettings {
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
+        mImeShortcutsAction = readIntPref(IME_SHORTCUTS_ACTION, mImeShortcutsAction, IME_SHORTCUTS_ACTION_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -393,6 +398,10 @@ public class TermSettings {
 
     public boolean getUseKeyboardShortcutsFlag() {
         return mUseKeyboardShortcuts;
+    }
+
+    public int getImeShortcutsAction() {
+        return mImeShortcutsAction;
     }
 
     public int getBackKeyCharacter() {

@@ -36,4 +36,5 @@
    <!-- the home_path default is set dynamically in Term.onResume() -->
    <bool name="pref_mouse_tracking_default">true</bool>
    <bool name="pref_use_keyboard_shortcuts_default">true</bool>
+   <integer name="pref_ime_shortcuts_action_default">0</integer>
 </resources>

@@ -165,4 +165,11 @@
         <item>xterm</item>
         <item>xterm-256color</item>
     </string-array>
+
+    <string-array name="entryvalues_ime_shortcuts_action_preference">
+        <item>0</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+    </string-array>
 </resources>
