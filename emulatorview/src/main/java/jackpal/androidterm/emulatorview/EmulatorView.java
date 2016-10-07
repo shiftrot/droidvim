@@ -651,6 +651,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private static int mIMEInputType = 0;
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+        if (mEmulator != null) setIME(mEmulator);
         outAttrs.inputType = mUseCookedIme ?
                 EditorInfo.TYPE_CLASS_TEXT | mIMEInputType:
                 EditorInfo.TYPE_NULL;
@@ -2044,7 +2045,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mVisibleWidth = w;
                 mVisibleHeight = h;
                 updateSize(mVisibleWidth, mVisibleHeight);
-                setIME(mEmulator);
             }
         }
     }
