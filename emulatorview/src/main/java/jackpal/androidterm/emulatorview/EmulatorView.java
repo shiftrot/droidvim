@@ -687,6 +687,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 } catch (IOException e) {
                     Log.e(TAG, "error writing ", e);
                 }
+                if (n > 0 && mIMEInputType == IME_INPUT_TYPE_GOOGLE && mIme == 4) {
+                    restartInput();
+                }
             }
 
             private  int charToKeyCode(int c) {
@@ -856,11 +859,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     Log.w(TAG, "commitText(\"" + text + "\", " + newCursorPosition + ")");
                 }
                 clearComposingText();
-                if ((mIMEInputType == IME_INPUT_TYPE_GOOGLE) && (mIme == 4)) {
-                    if (text.toString().matches(". ")) sendText(" ");
-                } else {
-                    sendText(text);
-                }
+                sendText(text);
                 setImeBuffer("");
                 mCursor = 0;
                 return true;
@@ -942,8 +941,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (text instanceof SpannableString) {
                     mImeSpannableString = (SpannableString)text;
                 }
-                if ((mIMEInputType == IME_INPUT_TYPE_GOOGLE) && (mIme == 4)) {
-                    if (text.toString().equals("") == false) {
+                if (mIMEInputType == IME_INPUT_TYPE_GOOGLE && mIme == 4) {
+                    if (text.length() > 0) {
                         clearComposingText();
                         sendText(text);
                     }
