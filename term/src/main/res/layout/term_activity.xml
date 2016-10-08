@@ -1,240 +1,318 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-/* Copyright 2007, The Android Open Source Project
-**
-** Licensed under the Apache License, Version 2.0 (the "License"); 
-** you may not use this file except in compliance with the License. 
-** You may obtain a copy of the License at 
-**
-**     http://www.apache.org/licenses/LICENSE-2.0 
-**
-** Unless required by applicable law or agreed to in writing, software 
-** distributed under the License is distributed on an "AS IS" BASIS, 
-** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-** See the License for the specific language governing permissions and 
-** limitations under the License.
-*/
--->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_alignParentTop="true"
+        android:layout_height="match_parent">
 
-        <jackpal.androidterm.TermViewFlipper
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/view_flipper"
-            android:layout_weight="1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <HorizontalScrollView
-            android:id="@+id/view_function_bar"
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-            <LinearLayout
-                android:id="@+id/view_function_bar_keys"
-                android:orientation="horizontal"
+            <jackpal.androidterm.TermViewFlipper
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/view_flipper"
+                android:focusableInTouchMode="true"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <HorizontalScrollView
+                android:id="@+id/view_function_bar"
+                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-                <Button
-                    android:id="@+id/button_esc"
+                <LinearLayout
+                    android:id="@+id/view_function_bar_keys"
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="Esc"/>
-                <Button
-                    android:id="@+id/button_ctrl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="Ctrl"/>
-                <Button
-                    android:id="@+id/button_alt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="Alt"/>
-                <Button
-                    android:id="@+id/button_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="Tab"/>
-                <Button
-                    android:id="@+id/button_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="▲"/>
-                <Button
-                    android:id="@+id/button_down"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="▼"/>
-                <Button
-                    android:id="@+id/button_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="◀"/>
-                <Button
-                    android:id="@+id/button_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="▶"/>
-                <Button
-                    android:id="@+id/button_backspace"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="BS"/>
-                <Button
-                    android:id="@+id/button_enter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="↲"/>
-                <Button
-                    android:id="@+id/button_softkeyboard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="◇"/>
-                <Button
-                    android:id="@+id/button_i"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="i"/>
-                <Button
-                    android:id="@+id/button_colon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text=":"/>
-                <Button
-                    android:id="@+id/button_slash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="/"/>
-                <Button
-                    android:id="@+id/button_minus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="-"/>
-                <Button
-                    android:id="@+id/button_equal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="="/>
-                <Button
-                    android:id="@+id/button_asterisk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="*"/>
-                <Button
-                    android:id="@+id/button_pipe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="|"/>
-                <Button
-                    android:id="@+id/button_vim_paste"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="&quot;*p"/>
-                <Button
-                    android:id="@+id/button_vim_yank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="&quot;*yy"/>
-                <Button
-                    android:id="@+id/button_menu_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="[＋]"/>
-                <Button
-                    android:id="@+id/button_menu_minus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="[－]"/>
-                <Button
-                    android:id="@+id/button_menu_x"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="[×]"/>
-                <Button
-                    android:id="@+id/button_menu_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="[？]"/>
-                <Button
-                    android:id="@+id/button_menu_quit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="[Q]"/>
-                <Button
-                    android:id="@+id/button_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="≡"/>
-                <Button
-                    android:id="@+id/button_menu_hide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="45sp"
-                    android:minWidth="60sp"
-                    android:text="∇"/>
-            </LinearLayout>
-        </HorizontalScrollView>
-    </LinearLayout>
+                    android:layout_height="wrap_content" >
+                    <Button
+                        android:id="@+id/button_esc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="Esc"/>
+                    <Button
+                        android:id="@+id/button_ctrl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="Ctrl"/>
+                    <Button
+                        android:id="@+id/button_alt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="Alt"/>
+                    <Button
+                        android:id="@+id/button_tab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="Tab"/>
+                    <Button
+                        android:id="@+id/button_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="▲"/>
+                    <Button
+                        android:id="@+id/button_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="▼"/>
+                    <Button
+                        android:id="@+id/button_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="◀"/>
+                    <Button
+                        android:id="@+id/button_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="▶"/>
+                    <Button
+                        android:id="@+id/button_backspace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="BS"/>
+                    <Button
+                        android:id="@+id/button_enter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="↲"/>
+                    <Button
+                        android:id="@+id/button_softkeyboard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="◇"/>
+                    <Button
+                        android:id="@+id/button_i"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="i"/>
+                    <Button
+                        android:id="@+id/button_colon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text=":"/>
+                    <Button
+                        android:id="@+id/button_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="/"/>
+                    <Button
+                        android:id="@+id/button_minus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="-"/>
+                    <Button
+                        android:id="@+id/button_equal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="="/>
+                    <Button
+                        android:id="@+id/button_asterisk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="*"/>
+                    <Button
+                        android:id="@+id/button_pipe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="|"/>
+                    <Button
+                        android:id="@+id/button_vim_paste"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="&quot;*p"/>
+                    <Button
+                        android:id="@+id/button_vim_yank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="&quot;*yy"/>
+                    <Button
+                        android:id="@+id/button_menu_plus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="[＋]"/>
+                    <Button
+                        android:id="@+id/button_menu_minus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="[－]"/>
+                    <Button
+                        android:id="@+id/button_menu_x"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="[×]"/>
+                    <Button
+                        android:id="@+id/button_menu_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="[？]"/>
+                    <Button
+                        android:id="@+id/button_menu_quit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="[Q]"/>
+                    <Button
+                        android:id="@+id/button_menu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="≡"/>
+                    <Button
+                        android:id="@+id/button_menu_hide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45sp"
+                        android:minWidth="60sp"
+                        android:text="∇"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"
+                android:layout_weight="1"
+                android:choiceMode="singleChoice"
+                android:longClickable="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/drawer_dropbox_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dropbox" />
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="15dp" />
+
+                <Button
+                    android:id="@+id/drawer_keyboard_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_functionbar_softkeyboard" />
+
+                <Button
+                    android:id="@+id/drawer_menu_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_functionbar_menu" />
+
+                <Button
+                    android:id="@+id/drawer_quit_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Quit" />
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>

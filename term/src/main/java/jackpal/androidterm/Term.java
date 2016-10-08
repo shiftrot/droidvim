@@ -17,7 +17,11 @@
 package jackpal.androidterm;
 
 import android.Manifest;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.system.Os;
 import android.text.TextUtils;
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
@@ -436,7 +440,60 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         updatePrefs();
         permissionCheckExternalStorage();
+        setDrawerButtons();
         mAlreadyStarted = true;
+    }
+
+    private void setDrawerButtons() {
+        if (BuildConfig.FLAVOR.equals("vim")) {
+            Button button;
+            List<ApplicationInfo> appInfoList = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+            for (ApplicationInfo info : appInfoList) {
+                if ("com.dropbox.android".equals(info.processName)) {
+                    button = (Button)findViewById(R.id.drawer_dropbox_button);
+                    button.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+        }
+        findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setAction("android.intent.category.LAUNCHER");
+                intent.setClassName("com.dropbox.android", "com.dropbox.android.activity.DropboxBrowser");
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.drawer_keyboard_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doToggleSoftKeyboard();
+            }
+        });
+        findViewById(R.id.drawer_menu_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                openOptionsMenu();
+            }
+        });
+        findViewById(R.id.drawer_quit_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                if (BuildConfig.FLAVOR.equals("vim") && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                    sendKeyStrings(":confirm qa\r", true);
+                } else {
+                    confirmCloseWindow();
+                }
+            }
+        });
+    }
+
+    private DrawerLayout getDrawer() {
+        return (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
     public static final int REQUEST_STORAGE = 1;
@@ -1070,6 +1127,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else {
             wifiLockItem.setTitle(R.string.enable_wifilock);
         }
+        menu.removeItem(R.id.menu_window_list);
         return super.onPrepareOptionsMenu(menu);
     }
 
