@@ -172,12 +172,10 @@
                                     android:key="functionbar_menu_minus"
                                     android:defaultValue="false"
                                     android:title="[－]"/>
-            -->
-            <CheckBoxPreference
-                android:key="functionbar_menu_x"
-                android:defaultValue="false"
-                android:title="[×]"/>
-            <!--
+                            <CheckBoxPreference
+                                    android:key="functionbar_menu_x"
+                                    android:defaultValue="false"
+                                    android:title="[×]"/>
                             <CheckBoxPreference
                                     android:key="functionbar_menu_user"
                                     android:defaultValue="false"
@@ -190,7 +188,7 @@
             <CheckBoxPreference
                 android:key="functionbar_softkeyboard"
                 android:defaultValue="true"
-                android:title="@string/title_functionbar_softkeyboard"/>
+                android:title="◇"/>
             <CheckBoxPreference
                 android:key="functionbar_menu"
                 android:defaultValue="true"

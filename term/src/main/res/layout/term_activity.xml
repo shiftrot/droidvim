@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="45sp"
                     android:minWidth="60sp"
-                    android:text="⏎"/>
+                    android:text="↲"/>
                 <Button
                     android:id="@+id/button_i"
                     android:layout_width="wrap_content"
