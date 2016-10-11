@@ -1774,14 +1774,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private boolean mIMEAutoDetect = false;
     public void setIMEInputType(int attr) {
         mIMEAutoDetect = false;
-        if (mHaveFullHwKeyboard == false) {
-            if (mIMEInputType == attr) return;
-            mIMEInputType = attr;
-        } else if (mIMEInputType != 0) {
-            mIMEInputType = 0;
-        } else {
-            return;
-        }
+        if (mIMEInputType == attr) return;
+        mIMEInputType = attr;
         restartInput();
     }
 
