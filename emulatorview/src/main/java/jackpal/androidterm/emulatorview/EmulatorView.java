@@ -1067,6 +1067,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
         mCreateURL = getDevBoolean(this.getContext(), "CreateURL", false);
 
+        setIME(mEmulator);
         requestFocus();
     }
 
@@ -1735,7 +1736,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
     // jp.co.yahoo.android.keypalet/.MozcService
     private final static String IME_YAHOO = "jp.co.yahoo.android.keypalet/.*";
-    private int mIme = -1;
+    private static int mIme = -1;
     private int setIME(TerminalEmulator view) {
         if (view == null) return 0;
         String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
