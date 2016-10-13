@@ -25,6 +25,7 @@
    <string name="pref_fnkey_default" translatable="false">7</string>
    <string name="pref_ime_default" translatable="false">1</string>
    <bool name="pref_alt_sends_esc_default">false</bool>
+   <bool name="pref_ignore_xoff_default">false</bool>
    <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
    <string name="pref_initialcommand_default" translatable="false">export APPBASE=%APPBASE%\nexport APPFILES=%APPFILES%\nexport APPEXTFILES=%APPEXTFILES%</string>
    <string name="pref_intentcommand_default" translatable="false">sh \"%s\"</string>

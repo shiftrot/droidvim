@@ -217,6 +217,10 @@
   <string name="alt_sends_esc_summary_on">AltキーでESCを送出する</string>
   <string name="alt_sends_esc_summary_off">AltキーでESCを送出しない</string>
 
+  <string name="ignore_xoff">XOFFフロー制御を無効化</string>
+  <string name="ignore_xoff_summary_on">Ctrl-sの入力を無視する.</string>
+  <string name="ignore_xoff_summary_off">Ctrl-sの入力でXOFFを送出する.</string>
+
   <string name="title_mouse_tracking_preference">マウスイベントの送出</string>
   <string name="summary_mouse_tracking_preference">タップやスワイプを端末へのエスケープシーケンスに変換する</string>
 

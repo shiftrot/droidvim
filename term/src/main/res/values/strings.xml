@@ -217,6 +217,10 @@
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
   <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
+  <string name="ignore_xoff">Disable XOFF flow control</string>
+  <string name="ignore_xoff_summary_on">Ignore Ctrl-s.</string>
+  <string name="ignore_xoff_summary_off">Ctrl-s sends xoff.</string>
+
   <string name="title_mouse_tracking_preference">Send mouse events</string>
   <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
 

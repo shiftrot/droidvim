@@ -68,6 +68,8 @@ public class TermSettings {
 
     private boolean mAltSendsEsc;
 
+    private boolean mIgnoreXoff;
+
     private boolean mMouseTracking;
 
     private boolean mUseKeyboardShortcuts;
@@ -105,6 +107,7 @@ public class TermSettings {
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
     private static final String HOMEPATH_KEY = "home_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
+    private static final String IGNORE_XON = "ignore_xoff";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action";
@@ -224,6 +227,7 @@ public class TermSettings {
         mAllowPathPrepend = res.getBoolean(R.bool.pref_allow_prepend_path_default);
         // the mHomePath default is set dynamically in readPrefs()
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
+        mIgnoreXoff = res.getBoolean(R.bool.pref_ignore_xoff_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
         mImeShortcutsAction = res.getInteger(R.integer.pref_ime_shortcuts_action_default);
@@ -267,6 +271,7 @@ public class TermSettings {
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
+        mIgnoreXoff = readBooleanPref(IGNORE_XON, mIgnoreXoff);
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
@@ -394,6 +399,10 @@ public class TermSettings {
 
     public boolean getAltSendsEscFlag() {
         return mAltSendsEsc;
+    }
+
+    public boolean getIgnoreXoff() {
+        return mIgnoreXoff;
     }
 
     public boolean getMouseTrackingFlag() {

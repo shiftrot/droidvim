@@ -310,6 +310,8 @@ class TermKeyListener {
     private int mBackKeyCode;
     private boolean mAltSendsEsc;
 
+    private boolean mIgnoreXoff;
+
     private int mCombiningAccent;
 
     // Map keycodes out of (above) the Unicode code point space.
@@ -331,6 +333,10 @@ class TermKeyListener {
 
     public void setAltSendsEsc(boolean flag) {
         mAltSendsEsc = flag;
+    }
+
+    public void setmIgnoreXoff(boolean flag) {
+        mIgnoreXoff = flag;
     }
 
     public void handleHardwareControlKey(boolean down) {
@@ -639,7 +645,11 @@ class TermKeyListener {
             if (setHighBit) {
                 result |= 0x80;
             }
-            mTermSession.write(result);
+            if (mIgnoreXoff && result == 19) {
+                mTermSession.write(17);
+            } else {
+                mTermSession.write(result);
+            }
         }
     }
 

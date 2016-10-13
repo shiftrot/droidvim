@@ -649,6 +649,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private static int mIMEInputType = 0;
+    private static boolean mIgnoreXoff = false;
+
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         if (mEmulator != null) setIME(mEmulator);
@@ -729,7 +731,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     dispatchKeyEvent(event);
                 } else {
                     int result = mKeyListener.mapControlChar(c);
-                    if (result < TermKeyListener.KEYCODE_OFFSET) {
+                    if (mIgnoreXoff && result == 19) {
+                        mTermSession.write(17);
+                    } else if (result < TermKeyListener.KEYCODE_OFFSET) {
                         mTermSession.write(result);
                     } else {
                         mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, null, getKeypadApplicationMode());
@@ -2173,6 +2177,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setAltSendsEsc(boolean flag) {
         mKeyListener.setAltSendsEsc(flag);
+    }
+
+    public void setIgnoreXoff(boolean flag) {
+        mIgnoreXoff = flag;
+        mKeyListener.setmIgnoreXoff(flag);
     }
 
     /**

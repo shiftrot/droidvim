@@ -382,6 +382,12 @@
                 android:summaryOn="@string/alt_sends_esc_summary_on"
                 android:summaryOff="@string/alt_sends_esc_summary_off" />
 
+        <CheckBoxPreference android:title="@string/ignore_xoff"
+                android:key="ignore_xoff"
+                android:defaultValue="@bool/pref_ignore_xoff_default"
+                android:summaryOn="@string/ignore_xoff_summary_on"
+                android:summaryOff="@string/ignore_xoff_summary_off" />
+
         <CheckBoxPreference android:title="@string/title_use_keyboard_shortcuts"
                 android:key="use_keyboard_shortcuts"
                 android:defaultValue="@bool/pref_use_keyboard_shortcuts_default"
