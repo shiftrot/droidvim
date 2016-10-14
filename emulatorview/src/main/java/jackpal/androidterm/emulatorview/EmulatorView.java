@@ -687,7 +687,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 } catch (IOException e) {
                     Log.e(TAG, "error writing ", e);
                 }
-                if (n > 0 && mIMEInputType == IME_INPUT_TYPE_GOOGLE && mIme == 4) {
+                if (n > 0 && mIme == 4 && mIMEGoogleInput) {
                     restartInput();
                 }
             }
@@ -941,7 +941,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (text instanceof SpannableString) {
                     mImeSpannableString = (SpannableString)text;
                 }
-                if (mIMEInputType == IME_INPUT_TYPE_GOOGLE && mIme == 4) {
+                if (mIme == 4 && mIMEGoogleInput) {
                     if (text.length() > 0) {
                         clearComposingText();
                         sendText(text);
@@ -1561,7 +1561,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
                 break;
             case 53:
-                setIMEInputType(IME_INPUT_TYPE_GOOGLE);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
+                break;
+            case 55:
+                mIMEGoogleInputEnable = !mIMEGoogleInputEnable;
+                mIMEGoogleInput = mIMEGoogleInput & mIMEGoogleInputEnable;
                 break;
             case 500:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
@@ -1683,7 +1687,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void testFunc() {
     }
 
-    private final static int IME_INPUT_TYPE_GOOGLE  = EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
     // com.android.inputmethod.latin/.LatinIME
     // com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
     private final static String IME_ANDROID = ".*com.android.inputmethod.latin.*";
@@ -1715,10 +1718,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return ime;
     }
 
-    public void setIMEInputType(int attr) {
+    private static boolean mIMEGoogleInput = false;
+    private static boolean mIMEGoogleInputEnable = true;
+    private void setIMEInputType(int attr, boolean google) {
+        mIMEGoogleInput = google & mIMEGoogleInputEnable;
         if (mIMEInputType == attr) return;
         mIMEInputType = attr;
         restartInput();
+    }
+
+    private void setIMEInputType(int attr) {
+        setIMEInputType(attr, false);
     }
 
     private void restartInput() {
