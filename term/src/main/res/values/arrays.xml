@@ -108,7 +108,7 @@
         <!--<item>Create Window</item>-->
         <item>Close Window</item>
         <item>Toggle soft keyboard</item>
-        <!--<item>Toggle function bar</item>-->
+        <item>IME shortcut</item>
         <item>Choose input method</item>
         <item>Paste</item>
         <!--<item>Sends i from terminal</item>-->

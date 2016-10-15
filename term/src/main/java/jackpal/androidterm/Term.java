@@ -914,6 +914,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             sendKeyStrings(":", false);
         } else if (key == 1255) {
             setFunctionBar(2);
+        } else if (key == 1260) {
+            view.doImeShortcutsAction();
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);

@@ -103,7 +103,7 @@
         <!--<item>ウィンドウ作成</item>-->
         <item>ウィンドウを閉じる</item>
         <item>IMEのトグル</item>
-        <!--<item>ファンクションバーのトグル</item>-->
+        <item>IMEショートカット</item>
         <item>IMEの選択</item>
         <item>貼り付け</item>
         <!--<item>ターミナルから i を送出</item>-->

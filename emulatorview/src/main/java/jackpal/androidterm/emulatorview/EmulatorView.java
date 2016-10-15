@@ -1817,30 +1817,34 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         grave |= mGrave && keyCode == KeycodeConstants.KEYCODE_GRAVE && (!ctrlOn && !altOn && !metaOn);
         sc |= mSwitchCharset && keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET;
         if (((alt || zh || sc || grave) && event.getAction() == KeyEvent.ACTION_DOWN) || (cs && event.getAction() == KeyEvent.ACTION_UP)) {
-            if (mIMEShortcutsAction == 0) {
-                doToggleSoftKeyboard();
-            } else {
-                if (mIMEInputType == 0) {
-                    switch (mIMEShortcutsAction) {
-                        case 51:
-                            setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
-                            break;
-                        case 52:
-                            setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
-                            break;
-                        case 53:
-                            setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    setIMEInputType(0);
-                }
-            }
+            doImeShortcutsAction();
             return true;
         }
         return false;
+    }
+
+    public void doImeShortcutsAction() {
+        if (mIMEShortcutsAction == 0) {
+            doToggleSoftKeyboard();
+        } else {
+            if (mIMEInputType == 0) {
+                switch (mIMEShortcutsAction) {
+                    case 51:
+                        setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+                    case 52:
+                        setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                        break;
+                    case 53:
+                        setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                setIMEInputType(0);
+            }
+        }
     }
 
     public void setPreIMEShortcut(String key, boolean value) {
