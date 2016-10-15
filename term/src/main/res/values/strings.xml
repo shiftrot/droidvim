@@ -225,7 +225,7 @@
   <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
   <string name="title_pre_ime_shortcuts">Use IME Shortcuts</string>
-  <string name="summary_title_pre_ime_shortcuts">Change input mode with hardware keyboard.</string>
+  <string name="summary_title_pre_ime_shortcuts">Change ime input mode with function key or hardware keyboard.</string>
   <string name="pref_alt_grave">Alt + [`]</string>
   <string name="pref_alt_esc">Alt + [Esc]</string>
   <string name="pref_ctrl_space">Ctrl + [Space]</string>
@@ -234,7 +234,7 @@
   <string name="pref_switch_charset">[Kanji]</string>
 
   <string name="title_ime_shortcuts_action_preference">Action</string>
-  <string name="summary_ime_shortcuts_action_preference">Set shortcut key action</string>
+  <string name="summary_ime_shortcuts_action_preference">Set IME shortcut action</string>
   <string name="dialog_titleime_shortcuts_action_preference">IME shortcuts action</string>
 
   <string name="help">Help</string>

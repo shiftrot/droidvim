@@ -225,14 +225,14 @@
   <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
 
   <string name="title_pre_ime_shortcuts">IMEショートカット</string>
-  <string name="summary_title_pre_ime_shortcuts">ハードウェアキーボードショートカットによって入力モードを切り替える</string>
+  <string name="summary_title_pre_ime_shortcuts">ハードウェアキーボードまたはファンクションキーで入力モードを切り替える</string>
   <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
   <string name="pref_zenkaku_hankaku">[半/全]</string>
   <string name="pref_grave">[`] ([半/全])</string>
   <string name="pref_switch_charset">[漢字]</string>
 
   <string name="title_ime_shortcuts_action_preference">機能割当</string>
-  <string name="summary_ime_shortcuts_action_preference">ハードウェアキーボードショートカットに割り当てる機能を設定する</string>
+  <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を設定する</string>
   <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
 
   <string name="help">ヘルプ</string>
