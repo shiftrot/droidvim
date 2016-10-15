@@ -128,6 +128,10 @@
                 android:defaultValue="false"
                 android:title="ENTER"/>
             <CheckBoxPreference
+                android:key="functionbar_softkeyboard"
+                android:defaultValue="true"
+                android:title="◇"/>
+            <CheckBoxPreference
                 android:key="functionbar_i"
                 android:defaultValue="false"
                 android:title="i"/>
@@ -186,10 +190,6 @@
                 android:defaultValue="true"
                 android:title="[Q]"/>
             <CheckBoxPreference
-                android:key="functionbar_softkeyboard"
-                android:defaultValue="true"
-                android:title="◇"/>
-            <CheckBoxPreference
                 android:key="functionbar_menu"
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_menu"/>
@@ -200,15 +200,6 @@
         </PreferenceScreen>
 
         <ListPreference
-            android:key="actionbar_x_action"
-            android:defaultValue="@string/pref_actionbar_x_default"
-            android:title="@string/title_actionbar_x_preference"
-            android:summary="@string/summary_actionbar_x_preference"
-            android:entries="@array/entries_actionbar_icon_preference"
-            android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
-
-        <ListPreference
             android:key="actionbar_icon_action"
             android:defaultValue="@string/pref_actionbar_icon_default"
             android:title="@string/title_actionbar_icon_preference"
@@ -216,6 +207,15 @@
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_icon_preference" />
+
+        <ListPreference
+            android:key="actionbar_x_action"
+            android:defaultValue="@string/pref_actionbar_x_default"
+            android:title="@string/title_actionbar_x_preference"
+            android:summary="@string/summary_actionbar_x_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
     </PreferenceCategory>
 
     <PreferenceCategory
