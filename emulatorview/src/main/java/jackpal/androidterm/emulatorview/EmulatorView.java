@@ -1564,33 +1564,35 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 53:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
                 break;
+            case 54:
+                mIMEGoogleInput = !mIMEGoogleInput;
+                break;
             case 55:
-                mIMEGoogleInputEnable = !mIMEGoogleInputEnable;
-                mIMEGoogleInput = mIMEGoogleInput & mIMEGoogleInputEnable;
+                doImeShortcutsAction();
                 break;
             case 500:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL, mIMEGoogleInput);
                 break;
             case 501:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER, mIMEGoogleInput);
                 break;
             case 502:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, mIMEGoogleInput);
                 break;
             case 503:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC, mIMEGoogleInput);
                 break;
             case 504:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI, mIMEGoogleInput);
                 break;
             case 505:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, mIMEGoogleInput);
                 break;
             case 506:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT, mIMEGoogleInput);
                 break;
             case 507:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD, mIMEGoogleInput);
                 break;
             case 6:
                 doInputMethodPicker();
@@ -1720,9 +1722,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private static boolean mIMEGoogleInput = false;
-    private static boolean mIMEGoogleInputEnable = true;
     private void setIMEInputType(int attr, boolean google) {
-        mIMEGoogleInput = google & mIMEGoogleInputEnable;
+        mIMEGoogleInput = google;
         if (mIMEInputType == attr) return;
         mIMEInputType = attr;
         restartInput();
