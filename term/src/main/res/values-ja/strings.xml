@@ -38,6 +38,9 @@
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="update_vim">実行ファイルとライブラリをアップデートしています.</string>
 
+   <string name="menu_update">アップデート</string>
+   <string name="menu_update_latest">アプリは最新です</string>
+
    <string name="enable_wakelock">WakeLockを取得</string>
    <string name="disable_wakelock">WakeLockを解除</string>
    <string name="enable_wifilock">WifiLockを取得</string>

@@ -39,6 +39,9 @@
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="update_vim">Updating binaries and libraries.\nPlease wait until vim starts.</string>
 
+   <string name="menu_update">Update</string>
+   <string name="menu_update_latest">Already updated.</string>
+
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
    <string name="enable_wifilock">Take WifiLock</string>

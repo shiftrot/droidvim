@@ -1145,6 +1145,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doToggleSoftKeyboard();
         } else if (id == R.id.menu_toggle_function_bar) {
             setFunctionBar(2);
+        } else if (id == R.id.menu_update) {
+            networkUpdate();
         } else if (id == R.id.menu_toggle_wakelock) {
             doToggleWakeLock();
         } else if (id == R.id.menu_toggle_wifilock) {
@@ -1161,6 +1163,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mActionBar.hide();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void networkUpdate() {
+    }
+
+    public static String getVersionName(Context context) {
+        PackageManager pm = context.getPackageManager();
+        String versionName = "";
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
     }
 
     private boolean doSendActionBarKey(EmulatorView view, int key) {
@@ -1496,6 +1513,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         menu.removeItem(R.id.menu_toggle_soft_keyboard);
         menu.removeItem(R.id.menu_special_keys);
         menu.removeItem(R.id.menu_send_email);
+        menu.removeItem(R.id.menu_update);
         menu.removeItem(R.id.action_help);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -1655,6 +1673,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return true;
         case 0xfffffffb:
             doAndroidIntent(mSettings.getHomePath() + "/.intent");
+            return true;
+        case 0xfffffffc:
+            networkUpdate();
             return true;
         default:
             return super.onKeyUp(keyCode, event);
