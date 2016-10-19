@@ -103,12 +103,15 @@
         <!--<item>ウィンドウ作成</item>-->
         <item>ウィンドウを閉じる</item>
         <item>IMEのトグル</item>
-        <item>IMEショートカット</item>
         <item>IMEの選択</item>
         <item>貼り付け</item>
         <!--<item>ターミナルから i を送出</item>-->
         <!--<item>ターミナルから : を送出</item>-->
         <!--<item>ターミナルから / を送出</item>-->
+        <item>IMEショートカット</item>
+        <item>入力モード : パスワード</item>
+        <item>入力モード : URI</item>
+        <item>入力モード : パスワード (Google日本語入力)</item>
         <item>Vimを終了</item>
         <!--<item>なし</item>-->
     </string-array>
@@ -175,8 +178,8 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>IMEのトグル</item>
-        <item>パスワード</item>
-        <item>URI</item>
-        <item>パスワード (Google日本語入力)</item>
+        <item>入力モード : パスワード</item>
+        <item>入力モード : URI</item>
+        <item>入力モード : パスワード (Google日本語入力)</item>
     </string-array>
 </resources>

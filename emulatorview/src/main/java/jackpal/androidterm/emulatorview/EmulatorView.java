@@ -1825,11 +1825,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public void doImeShortcutsAction() {
-        if (mIMEShortcutsAction == 0) {
+        doImeShortcutsAction(mIMEShortcutsAction);
+    }
+
+    public void doImeShortcutsAction(int action) {
+        if (action == 0) {
             doToggleSoftKeyboard();
         } else {
             if (mIMEInputType == 0) {
-                switch (mIMEShortcutsAction) {
+                switch (action) {
                     case 51:
                         setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
                         break;

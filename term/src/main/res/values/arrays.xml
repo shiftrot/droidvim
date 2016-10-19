@@ -108,12 +108,15 @@
         <!--<item>Create Window</item>-->
         <item>Close Window</item>
         <item>Toggle soft keyboard</item>
-        <item>IME shortcut</item>
         <item>Choose input method</item>
         <item>Paste</item>
         <!--<item>Sends i from terminal</item>-->
         <!--<item>Sends : from terminal</item>-->
         <!--<item>Sends / from terminal</item>-->
+        <item>IME shortcut</item>
+        <item>Input type : password</item>
+        <item>Input type : URI</item>
+        <item>Input type : password (Google Japanese input)</item>
         <item>Quit Vim</item>
         <!--<item>None</item>-->
     </string-array>
@@ -180,8 +183,8 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>Toggle</item>
-        <item>Password</item>
-        <item>URI</item>
-        <item>Password(Google Japanese input)</item>
+        <item>Input type : Password</item>
+        <item>Input type : URI</item>
+        <item>Input type : Password(Google Japanese input)</item>
     </string-array>
 </resources>
