@@ -237,6 +237,10 @@
   <string name="summary_ime_shortcuts_action_preference">Set IME shortcut action</string>
   <string name="dialog_titleime_shortcuts_action_preference">IME shortcuts action</string>
 
+  <string name="title_ime_inputtype_preference">Default input type</string>
+  <string name="summary_ime_inputtype_preference">Choose default input type.</string>
+  <string name="dialog_titleime_inputtype_preference">Choose default input type</string>
+
   <string name="help">Help</string>
   <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
   <string name="activity_term_here_title">Term here</string>

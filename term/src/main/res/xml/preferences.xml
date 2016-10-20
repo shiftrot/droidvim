@@ -222,6 +222,15 @@
             android:title="@string/text_preferences">
 
         <ListPreference
+            android:key="ime_default_inputtype"
+            android:defaultValue="@integer/pref_ime_inputtype_default"
+            android:title="@string/title_ime_inputtype_preference"
+            android:summary="@string/summary_ime_inputtype_preference"
+            android:entries="@array/entries_ime_inputtype_preference"
+            android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
+            android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
+
+        <ListPreference
             android:key="fontfile"
             android:defaultValue="@string/pref_fontfile_default"
             android:title="@string/title_fontfile_preference"

@@ -72,6 +72,7 @@ public class TermSettings {
 
     private boolean mUseKeyboardShortcuts;
     private int mImeShortcutsAction;
+    private int mImeDefaultInputtype;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String FUNCTIONBAR_KEY = "functionbar";
@@ -107,6 +108,7 @@ public class TermSettings {
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action";
+    private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
 
     public static final int WHITE               = 0xffffffff;
     public static final int BLACK               = 0xff000000;
@@ -225,6 +227,7 @@ public class TermSettings {
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
         mImeShortcutsAction = res.getInteger(R.integer.pref_ime_shortcuts_action_default);
+        mImeDefaultInputtype = res.getInteger(R.integer.pref_ime_inputtype_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -268,6 +271,7 @@ public class TermSettings {
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
         mImeShortcutsAction = readIntPref(IME_SHORTCUTS_ACTION, mImeShortcutsAction, IME_SHORTCUTS_ACTION_MAX);
+        mImeDefaultInputtype = readIntPref(IME_DEFAULT_INPUTTYPE, mImeDefaultInputtype, IME_SHORTCUTS_ACTION_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -402,6 +406,10 @@ public class TermSettings {
 
     public int getImeShortcutsAction() {
         return mImeShortcutsAction;
+    }
+
+    public int getmImeDefaultInputtype() {
+        return mImeDefaultInputtype;
     }
 
     public int getBackKeyCharacter() {

@@ -225,7 +225,7 @@
   <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
 
   <string name="title_pre_ime_shortcuts">IMEショートカット</string>
-  <string name="summary_title_pre_ime_shortcuts">ハードウェアキーボードまたはファンクションキーで入力モードを切り替える</string>
+  <string name="summary_title_pre_ime_shortcuts">キーボードショートカットで入力モードを切り替える</string>
   <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
   <string name="pref_zenkaku_hankaku">[半/全]</string>
   <string name="pref_grave">[`] ([半/全])</string>
@@ -234,6 +234,10 @@
   <string name="title_ime_shortcuts_action_preference">機能割当</string>
   <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を設定する</string>
   <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
+
+  <string name="title_ime_inputtype_preference">起動時の入力モード</string>
+  <string name="summary_ime_inputtype_preference">起動時の入力モードを設定する</string>
+  <string name="dialog_titleime_inputtype_preference">起動時の入力モード設定</string>
 
   <string name="help">ヘルプ</string>
   <string name="help_url">https://sites.google.com/site/fudist/Home/qfixhowm/other-service/howm-android/android-terminal-emulator-mod</string>

@@ -1833,22 +1833,27 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             doToggleSoftKeyboard();
         } else {
             if (mIMEInputType == 0) {
-                switch (action) {
-                    case 51:
-                        setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
-                        break;
-                    case 52:
-                        setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
-                        break;
-                    case 53:
-                        setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
-                        break;
-                    default:
-                        break;
-                }
+                setImeShortcutsAction(action);
             } else {
                 setIMEInputType(0);
             }
+        }
+    }
+
+    public void setImeShortcutsAction(int action) {
+        switch (action) {
+            case 51:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                break;
+            case 52:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                break;
+            case 53:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
+                break;
+            default:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                break;
         }
     }
 
@@ -2227,10 +2232,5 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return link.getURL();
         else
             return null;
-    }
-
-    public void reset() {
-        mIMEInputType = 0;
-        restartInput();
     }
 }
