@@ -8,11 +8,11 @@ android {
         applicationId "jackpal.androidterm"
         minSdkVersion 4
         targetSdkVersion 24
+    }
 
-        ndk {
-            moduleName "libjackpal-androidterm5"
-            abiFilters 'armeabi', 'mips', 'x86'
-            ldLibs "log"
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
         }
     }
 

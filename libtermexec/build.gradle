@@ -19,11 +19,11 @@ android {
     defaultConfig {
         minSdkVersion 4
         targetSdkVersion 24
+    }
 
-        ndk {
-            moduleName 'libjackpal-termexec2'
-            abiFilters 'armeabi', 'mips', 'x86'
-            ldLibs 'log', 'c'
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
         }
     }
 
