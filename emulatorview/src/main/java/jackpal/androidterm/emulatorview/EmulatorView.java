@@ -1458,6 +1458,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private static boolean mZenkakuHankaku = false;
     private static boolean mGrave = false;
     private static boolean mSwitchCharset = false;
+    private static boolean mCtrlJ = false;
     private static boolean mHaveFullHwKeyboard = false;
     private static boolean mCreateURL = false;
     private static int mIMEShortcutsAction = 0;
@@ -1806,18 +1807,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean zh = false;
         boolean sc = false;
         boolean grave = false;
+        boolean cj = false;
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
         boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
         boolean metaOn = (event.getMetaState() & (KeyEvent.META_SHIFT_ON | KeyEvent.META_META_ON)) != 0;
 
         // KeyEvent.KEYCODE_ZENKAKU_HANKAKU 211
-        alt |= mAltGrave && ((keyCode == 211) || (keyCode == KeycodeConstants.KEYCODE_GRAVE)) && (altOn && !ctrlOn && !metaOn);
-        alt |= mAltEsc && keyCode == KeycodeConstants.KEYCODE_ESCAPE && (altOn && !ctrlOn && !metaOn);
-        cs |= mCtrlSpace && keyCode == KeycodeConstants.KEYCODE_SPACE && (!altOn && ctrlOn && !metaOn);
-        zh |= mZenkakuHankaku && keyCode == 211 && (!ctrlOn && !altOn && !metaOn);  // KeyEvent.KEYCODE_ZENKAKU_HANKAKU;
-        grave |= mGrave && keyCode == KeycodeConstants.KEYCODE_GRAVE && (!ctrlOn && !altOn && !metaOn);
-        sc |= mSwitchCharset && keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET;
-        if (((alt || zh || sc || grave) && event.getAction() == KeyEvent.ACTION_DOWN) || (cs && event.getAction() == KeyEvent.ACTION_UP)) {
+        alt = mAltGrave && ((keyCode == 211) || (keyCode == KeycodeConstants.KEYCODE_GRAVE)) && (altOn && !ctrlOn && !metaOn);
+        alt |= mAltEsc && (keyCode == KeycodeConstants.KEYCODE_ESCAPE) && (altOn && !ctrlOn && !metaOn);
+        cs = mCtrlSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (!altOn && ctrlOn && !metaOn);
+        zh = mZenkakuHankaku && (keyCode == 211) && (!ctrlOn && !altOn && !metaOn);  // KeyEvent.KEYCODE_ZENKAKU_HANKAKU;
+        grave = mGrave && (keyCode == KeycodeConstants.KEYCODE_GRAVE) && (!ctrlOn && !altOn && !metaOn);
+        sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
+        cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metaOn);
+        if (((alt || zh || sc || grave || cj) && event.getAction() == KeyEvent.ACTION_DOWN) || (cs && event.getAction() == KeyEvent.ACTION_UP)) {
             doImeShortcutsAction();
             return true;
         }
@@ -1870,6 +1873,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             mGrave = value;
         } else if (key.equals("SWITCH_CHARSET")) {
             mSwitchCharset = value;
+        } else if (key.equals("CtrlJ")) {
+            mCtrlJ = value;
         }
     }
 

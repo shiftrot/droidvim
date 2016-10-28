@@ -232,6 +232,7 @@
   <string name="pref_zenkaku_hankaku">[Hankaku/Zenkaku]</string>
   <string name="pref_grave">[`]</string>
   <string name="pref_switch_charset">[Kanji]</string>
+  <string name="pref_ctrl_j">Ctrl + [j]</string>
 
   <string name="title_ime_shortcuts_action_preference">Action</string>
   <string name="summary_ime_shortcuts_action_preference">Set IME shortcut action</string>

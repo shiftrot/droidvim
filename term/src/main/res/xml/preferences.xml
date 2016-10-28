@@ -419,6 +419,10 @@
                     android:key="GRAVE"
                     android:defaultValue="false"
                     android:title="@string/pref_grave"/>
+                <CheckBoxPreference
+                    android:key="CtrlJ"
+                    android:defaultValue="false"
+                    android:title="@string/pref_ctrl_j"/>
         </PreferenceScreen>
     </PreferenceCategory>
 
