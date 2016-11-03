@@ -1070,6 +1070,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
         mCreateURL = getDevBoolean(this.getContext(), "CreateURL", false);
 
+        IME_GOOGLE_CLONE = getDevString(this.getContext(), "IME_GOOGLE_CLONE", "");
         setIME(mEmulator);
         requestFocus();
     }
@@ -1575,6 +1576,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 55:
                 doImeShortcutsAction();
                 break;
+            case 63:
+                String ime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+                if (getDevString(this.getContext(), "IME_GOOGLE_CLONE", "").equals(ime)) {
+                    ime = "";
+                }
+                setDevString(this.getContext(), "IME_GOOGLE_CLONE", ime);
+                IME_GOOGLE_CLONE = ime;
+                if (mEmulator != null) setIME(mEmulator);
+                break;
             case 500:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL, mIMEGoogleInput);
                 break;
@@ -1702,6 +1712,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static String IME_ATOK = "com.justsystems.atokmobile..*";
     // com.google.android.inputmethod.japanese/.MozcService
     private final static String IME_GOOGLE = ".*/.MozcService.*";
+    private static String IME_GOOGLE_CLONE = "";
     // jp.co.omronsoft.openwnn/.OpenWnnJAJP
     // jp.co.omronsoft.wnnlab/.standardcommon.IWnnLanguageSwitcher
     // jp.co.omronsoft.iwnnime.ml/.standardcommon.IWnnLanguageSwitcher
@@ -1711,7 +1722,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (view == null) return 0;
         String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
         int ime = 2;
-        if (defime.matches(IME_ATOK)) {
+        if (!IME_GOOGLE_CLONE.equals("")  && defime.matches(IME_GOOGLE_CLONE)) {
+            ime = 4;
+        } else if (defime.matches(IME_ATOK)) {
             ime = 3;
         } else if (defime.matches(IME_GOOGLE)) {
             ime = 4;
@@ -1724,6 +1737,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
         return ime;
+    }
+
+    public String setDevString(Context context, String key, String value) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        Editor editor = pref.edit();
+        editor.putString(key, value);
+        editor.commit();
+        return value;
+    }
+
+    public String getDevString(Context context, String key, String defValue) {
+        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
+        return pref.getString(key, defValue);
     }
 
     private static boolean mIMEGoogleInput = false;
