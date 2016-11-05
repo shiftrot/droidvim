@@ -606,9 +606,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
+        mFirst = false;
         return cmd;
     }
 
+    static boolean mFirstInputtype = true;
     private TermView createEmulatorView(TermSession session) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -618,9 +620,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         emulatorView.setOnKeyListener(mKeyListener);
         registerForContextMenu(emulatorView);
 
-        if (mFirst) {
+        if (mFirstInputtype) {
             emulatorView.setImeShortcutsAction(mSettings.getmImeDefaultInputtype());
-            mFirst = false;
+            mFirstInputtype = false;
         }
         return emulatorView;
     }
