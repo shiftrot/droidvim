@@ -937,10 +937,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void sendKeyStrings(String str, boolean esc) {
         TermSession session = getCurrentTermSession();
         if (session != null) {
-            if (esc == true) {
-                KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeycodeConstants.KEYCODE_ESCAPE);
-                dispatchKeyEvent(event);
-            }
+            if (esc) str = "\u001b"+str;
             session.write(str);
         }
         return;
