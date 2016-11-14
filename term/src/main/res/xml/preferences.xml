@@ -347,7 +347,8 @@
 -->
 
     <PreferenceCategory
-            android:title="@string/keyboard_preferences">
+            android:title="@string/keyboard_preferences"
+            android:key="categoryKeyboard">
 
         <ListPreference
                 android:key="backaction"

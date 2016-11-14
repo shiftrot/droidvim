@@ -49,7 +49,7 @@ public class TermPreferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         // Remove the action bar pref on older platforms without an action bar
-        if (AndroidCompat.SDK < 11) {
+        if ((AndroidCompat.SDK < 11) || (BuildConfig.FLAVOR.equals("vim"))) {
             Preference actionBarPref = findPreference(ACTIONBAR_KEY);
              PreferenceCategory screenCategory =
                     (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
@@ -63,6 +63,18 @@ public class TermPreferences extends PreferenceActivity {
                 (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
         if ((statusBarPref != null) && (screenCategory != null)) {
             screenCategory.removePreference(statusBarPref);
+        }
+        if (BuildConfig.FLAVOR.equals("vim")) {
+            PreferenceCategory keyboardCategory =
+                    (PreferenceCategory) findPreference("categoryKeyboard");
+            Preference controlKeyPref = findPreference("controlkey");
+            if ((controlKeyPref != null) && (keyboardCategory != null)) {
+                keyboardCategory.removePreference(controlKeyPref);
+            }
+            Preference fnKeyPref = findPreference("fnkey");
+            if ((fnKeyPref != null) && (keyboardCategory != null)) {
+                keyboardCategory.removePreference(fnKeyPref);
+            }
         }
 
         // Display up indicator on action bar home button
