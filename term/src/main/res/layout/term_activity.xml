@@ -251,6 +251,45 @@
                 android:orientation="vertical">
 
                 <Button
+                    android:id="@+id/drawer_dropbox_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dropbox" />
+
+                <Button
+                    android:id="@+id/drawer_storage_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/external_storage" />
+
+                <Button
+                    android:id="@+id/drawer_createfile_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_file" />
+
+                <Button
                     android:id="@+id/drawer_clear_cache_button"
                     android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"

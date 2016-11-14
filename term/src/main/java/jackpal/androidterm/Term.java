@@ -20,6 +20,7 @@ import android.Manifest;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.support.v4.content.ContextCompat;
@@ -145,6 +146,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final int REQUEST_FILE_PICKER = 2;
+    public static final int REQUEST_FILE_DELETE = 3;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -529,9 +531,47 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void setDrawerButtons() {
         if (BuildConfig.FLAVOR.equals("vim")) {
             Button button;
+            List<ApplicationInfo> appInfoList = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+            for (ApplicationInfo info : appInfoList) {
+                if ("com.dropbox.android".equals(info.processName)) {
+                    button = (Button)findViewById(R.id.drawer_dropbox_button);
+                    button.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                button = (Button)findViewById(R.id.drawer_storage_button);
+                button.setVisibility(View.VISIBLE);
+                button = (Button)findViewById(R.id.drawer_createfile_button);
+                button.setVisibility(View.VISIBLE);
+            }
             button = (Button)findViewById(R.id.drawer_clear_cache_button);
             button.setVisibility(View.VISIBLE);
         }
+        findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setAction("android.intent.category.LAUNCHER");
+                intent.setClassName("com.dropbox.android", "com.dropbox.android.activity.DropboxBrowser");
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                filePicker();
+            }
+        });
+        findViewById(R.id.drawer_createfile_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                fileCreate();
+            }
+        });
         findViewById(R.id.drawer_clear_cache_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1179,10 +1219,60 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
+    private void filePicker() {
+        permissionCheckExternalStorage();
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent, REQUEST_FILE_PICKER);
+    }
+
+    private void fileDelete() {
+        permissionCheckExternalStorage();
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent, REQUEST_FILE_DELETE);
+    }
+
+    private void confirmDelete(final Uri uri) {
+        String path = getPath(this, uri);
+        if (path == null) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+            path = handleOpenDocument(uri, cursor);
+        }
+        String file = new File(path).getName();
+        final AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setIcon(android.R.drawable.ic_dialog_alert);
+        b.setMessage(file);
+        b.setPositiveButton(this.getString(R.string.delete_file), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                DocumentsContract.deleteDocument(getContentResolver(), uri);
+            }
+        });
+        b.setNegativeButton(android.R.string.no, null);
+        b.show();
+    }
+
+    private void fileCreate() {
+        permissionCheckExternalStorage();
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
+        startActivityForResult(intent, REQUEST_FILE_PICKER);
+    }
+
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         switch (request) {
+            case REQUEST_FILE_DELETE:
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    confirmDelete(uri);
+                }
+                break;
             case REQUEST_FILE_PICKER:
                 String path = null;
                 if (result == RESULT_OK && data != null) {
