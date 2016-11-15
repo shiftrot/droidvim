@@ -1409,7 +1409,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void doCopyAll() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        clip.setText(getCurrentTermSession().getTranscriptText().trim());
+        clip.setText(getCurrentEmulatorView().getTranscriptScreenText());
     }
 
     private static boolean mVimPaste = false;

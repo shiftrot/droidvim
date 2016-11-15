@@ -423,6 +423,10 @@ class TranscriptScreen implements Screen {
         return mData.getActiveTranscriptRows();
     }
 
+    public String getTranscriptScreenText() {
+        return internalGetTranscriptText(null, 0, 0, mColumns, mScreenRows);
+    }
+
     public String getTranscriptText() {
         return internalGetTranscriptText(null, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }

@@ -2273,4 +2273,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         else
             return null;
     }
+
+     public String getTranscriptScreenText() {
+         if (mEmulator == null) return null;
+         TranscriptScreen ts = mEmulator.getScreen();
+         if (ts == null) return null;
+         return ts.getTranscriptScreenText();
+    }
 }
