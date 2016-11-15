@@ -25,6 +25,7 @@
         <!-- <item>Barra di azione disabilitata</item> -->
         <item>Mostra sempre barra di azione</item>
         <item>Nascondi barra di azione (tocca cima dello schermo o tasto Menu per mostrarla)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -79,6 +80,7 @@
         <item>Solarizzato Chiaro</item>
         <item>Solarizzato Scuro</item>
         <item>Console Linux</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -87,6 +89,7 @@
         <item>Chiude l\'attività, lasciando attive le sessioni</item>
         <item>Invia ESC al terminale</item>
         <item>Invia TAB al terminale</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

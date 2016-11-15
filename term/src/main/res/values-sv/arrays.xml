@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Always show action bar</item>
         <item>Hide action bar (touch top of screen or Menu key to show)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
@@ -73,6 +74,7 @@
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -81,6 +83,7 @@
         <item>Closes activity, leaving sessions running</item>
         <item>Sends ESC to terminal</item>
         <item>Sends TAB to terminal</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

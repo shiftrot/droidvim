@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Vždy zobrazovat panel akcí</item>
         <item>Skrývat panel akcí (zobrazit dotykem v horní části obrazovky, nebo tlačítkem menu)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
@@ -69,9 +70,11 @@
         <item>Zelený text na černém podkladu</item>
         <item>Žlutý text na černém podkladu</item>
         <item>Červený text na černém podkladu</item>
+        <item>Holo blue text on black</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -80,6 +83,7 @@
         <item>Zavřít terminál, ale dál poběží na pozadí</item>
         <item>Poslat klávesu ESC do terminálu</item>
         <item>Poslat klávesu TAB do terminálu</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

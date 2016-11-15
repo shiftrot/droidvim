@@ -25,6 +25,7 @@
         <!-- <item>Akciósáv letiltva</item> -->
         <item>Mindig jelenjen meg</item>
         <item>Elrejtés (a megjelenítéshez érintsd meg a képernyő tetejét vagy a menü gombot)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -79,6 +80,7 @@
         <item>Solarized világos</item>
         <item>Solarized sötét</item>
         <item>Linux konzol</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -87,6 +89,7 @@
         <item>Kilép a programból, de a munkamenetből nem</item>
         <item>ESC-et küld a terminálra</item>
         <item>TAB-ot küld a terminálra</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

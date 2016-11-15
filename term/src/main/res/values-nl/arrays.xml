@@ -24,6 +24,7 @@
     <string-array name="entries_actionbar_preference">
         <item>Menubalk altijd tonen</item>
         <item>Menubalk verbergen (op bovenkant scherm of menuknop tikken om te tonen)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -78,6 +79,7 @@
         <item>Gesolariseerd licht</item>
         <item>Gesolariseerd donker</item>
         <item>Linux console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -86,6 +88,7 @@
         <item>App sluiten, sessies open laten</item>
         <item>ESC naar terminal sturen</item>
         <item>TAB naar terminal sturen</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

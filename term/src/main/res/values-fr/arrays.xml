@@ -25,6 +25,7 @@
         <!-- <item>Désactiver la barre d\'actions</item> -->
         <item>Toujours afficher la barre d\'actions</item>
         <item>Cacher la barre d\'actions (Touche Haut de l\'écran ou la touche Menu de l\'appareil pour afficher)</item>
+        <item>Action bar disabled</item>
     </string-array>
     
     <string-array name="entries_orientation_preference">
@@ -51,9 +52,11 @@
         <item>Texte vert sur noir</item>
         <item>Texte orange sur noir</item>
         <item>Texte rouge sur noir</item>
+        <item>Holo blue text on black</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Console Linux</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -62,6 +65,7 @@
         <item>Quitter en laissant les sessions activées</item>
         <item>Simuler la touche ESC</item>
         <item>Simuler la touche TAB</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
@@ -72,6 +76,7 @@
         <item>Touche Vol Haut</item>
         <item>Touche Vol Bas</item>
         <item>Touche Camera</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
@@ -82,6 +87,7 @@
         <item>Touche Vol Haut</item>
         <item>Touche Vol Bas</item>
         <item>Touche Camera</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="entries_ime_preference">

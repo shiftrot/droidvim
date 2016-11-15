@@ -7,6 +7,7 @@
     <string-array name="entries_actionbar_preference">
         <item>Завжди показувати бар дії</item>
         <item>Сховати дії бару (торкніться верху екрану або клавіші Меню, щоб показати)</item>
+        <item>Action bar disabled</item>
     </string-array>
     <string-array name="entries_cursorblink_preference">
         <item>Не-миготливий курсор</item>
@@ -47,9 +48,11 @@
         <item>Зелений на чорному</item>
         <item>Жовтий на чорному</item>
         <item>Червоний на чорному</item>
+        <item>Holo blue text on black</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
     <string-array name="entries_backaction_preference">
         <item>Закрити всі вікна терміналу</item>
@@ -57,6 +60,7 @@
         <item>Активне закриття, решти запущених сеансів</item>
         <item>Послати ESC в термінал</item>
         <item>Послати TAB в термінал</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
     <string-array name="entries_controlkey_preference">
         <item>Куля Jog</item>

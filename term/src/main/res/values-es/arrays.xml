@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Mostrar</item>
         <item>Ocultar (Pulsa MENÚ para mostrarla)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -87,6 +88,7 @@
         <item>Sale del terminal, dejándolo en segundo plano</item>
         <item>Envía ESC al terminal</item>
         <item>Envía TAB al terminal</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

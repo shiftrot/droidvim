@@ -22,6 +22,7 @@
   <string-array name="entries_actionbar_preference">
     <item>הצג תמיד שורת מצב</item>
     <item>הסתר בר פעולות (הקש בחלק עליון של המסך או על כפתור תפריט כדי להציג)</item>
+    <item>Action bar disabled</item>
   </string-array>
   <string-array name="entries_orientation_preference">
     <item>אוטומטי</item>
@@ -71,6 +72,7 @@
     <item>Solarized Light</item>
     <item>Solarized Dark</item>
     <item>מסוף לינוקס</item>
+    <item>Black text on Solarized Light</item>
   </string-array>
   <string-array name="entries_backaction_preference">
     <item>סוגר את חלונות מסוף</item>
@@ -78,6 +80,7 @@
     <item>סוגר פעילות, ומשאיר הפעלות רצות</item>
     <item>שולח ESC למסוף</item>
     <item>שולח TAB למסוף</item>
+    <item>Toggle soft keyboard</item>
   </string-array>
   <string-array name="entries_controlkey_preference">
     <item>רענון הכדור</item>

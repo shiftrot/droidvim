@@ -13,6 +13,7 @@
     <string-array name="entries_actionbar_preference">
         <item>Всегда показывать</item>
         <item>Скрывать панель действий (коснитесь верха экрана или клавиши «Меню», чтобы её показать)</item>
+        <item>Action bar disabled</item>
     </string-array>
     <string-array name="entries_backaction_preference">
         <item>Закрыть все окна терминала</item>
@@ -20,6 +21,7 @@
         <item>Закрывает приложение, но оставляет запущенным терминал</item>
         <item>Посылает ESC в терминал</item>
         <item>Посылает TAB в терминал</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
     <string-array name="entries_color_preference">
         <item>Чёрный на белом</item>
@@ -32,6 +34,7 @@
         <item>Соляризованный светлый</item>
         <item>Соляризованный тёмный</item>
         <item>Консоль Linux</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
     <string-array name="entries_controlkey_preference">
         <item>Трекбол</item>

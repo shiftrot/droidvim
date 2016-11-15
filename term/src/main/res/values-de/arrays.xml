@@ -36,6 +36,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Aktionsleiste immer anzeigen</item>
         <item>Aktionsleiste verstecken (zum Anzeigen Bildschirm oben berühren oder Menü-Taste drücken)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
   <string-array name="entries_cursorstyle_preference">

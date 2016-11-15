@@ -24,6 +24,7 @@
   <string-array name="entries_actionbar_preference">
       <item>Vždy zobraziť panel akcií</item>
       <item>Skryť panel akcií (pre zobrazenie sa dotknite vrchu obrazovky alebo tlačidla Ponuka)</item>
+      <item>Action bar disabled</item>
   </string-array>
 
   <string-array name="entries_cursorblink_preference">
@@ -78,6 +79,7 @@
     <item>Solarizovaná svetlá</item>
     <item>Solarizovaná tmavá</item>
     <item>Linuxová konzola</item>
+    <item>Black text on Solarized Light</item>
   </string-array>
 
   <string-array name="entries_backaction_preference">
@@ -86,6 +88,7 @@
       <item>Zavrieť aktivitu, ponechať reláciu bežiacou</item>
       <item>Odoslať ESC do terminálu</item>
       <item>Odoslať TAB do terminálu</item>
+      <item>Toggle soft keyboard</item>
   </string-array>
 
   <string-array name="entries_controlkey_preference">

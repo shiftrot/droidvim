@@ -25,6 +25,7 @@
       <!-- <item>Action bar disabled</item> -->
       <item>Alltid vis handlingslinjen</item>
       <item>Skjul handlingslinjen (Trykk på toppen av skjermen for å vise den)</item>
+      <item>Action bar disabled</item>
   </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -79,6 +80,7 @@
     <item>Solarized Lys</item>
     <item>Solarized Mørk</item>
     <item>Linux konsoll</item>
+    <item>Black text on Solarized Light</item>
   </string-array>
 
   <string-array name="entries_backaction_preference">
@@ -87,6 +89,7 @@
       <item>Lukker aktiviteten, men lar økten kjøre</item>
       <item>Sender ESC til terminalen</item>
       <item>Sender TAB til terminalen</item>
+      <item>Toggle soft keyboard</item>
   </string-array>
 
   <string-array name="entries_controlkey_preference">

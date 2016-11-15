@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>액션바 보이기</item>
         <item>액션바 숨기기 (화면 상단을 누르거나 메뉴키를 누르면 반투명하게 표시됩니다.)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -78,6 +79,8 @@
         <item>검은 배경에 Holo Blue 글자</item>
         <item>밝은 솔라리스</item>
         <item>어두운 솔라리스</item>
+        <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -86,6 +89,7 @@
         <item>어플리케이션 및 세션 종료</item>
         <item>ESC키 입력</item>
         <item>TAB키 입력</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

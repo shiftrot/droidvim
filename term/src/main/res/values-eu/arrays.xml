@@ -25,6 +25,7 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Beti erakutsi ekintza-barra</item>
         <item>Ezkutatu ekintza-barra (erakusteko ukitu pantailaren goialdea edo Menu tekla)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
@@ -69,9 +70,11 @@
         <item>Testu berdea beltzaren gainean</item>
         <item>Testu anbarra beltzaren gainean</item>
         <item>Testu gorria beltzaren gainean</item>
+        <item>Holo blue text on black</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -80,6 +83,7 @@
         <item>Jarduera ixten du, saioak martxan utziz</item>
         <item>ESC bidaltzen du terminalera</item>
         <item>TAB bidaltzen du terminalera</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

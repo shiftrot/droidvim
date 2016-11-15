@@ -25,6 +25,7 @@
         <!-- <item>Pasek narzędziowy wyłączony</item> -->
         <item>Zawsze pokazuj pasek narzędziowy</item>
         <item>Ukryj pasek narzędzi (dotknij góry ekranu lub przycisk Menu, aby wyświetlić)</item>
+        <item>Action bar disabled</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
@@ -73,6 +74,7 @@
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
@@ -81,6 +83,7 @@
         <item>Ukrywa program, pozostawiając sesję w tle</item>
         <item>Wysyła klawisz ESC do terminala</item>
         <item>Wysyła klawisz TAB do terminala</item>
+        <item>Toggle soft keyboard</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

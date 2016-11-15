@@ -63,9 +63,11 @@
         <item>Siyah arkaplan üzerinde yeşil metin</item>
         <item>Siyah arkaplan üzerinde turuncu metin</item>
         <item>Siyah arkaplan üzerinde kırmızı metin</item>
+        <item>Holo blue text on black</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
         <item>Linux Console</item>
+        <item>Black text on Solarized Light</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
