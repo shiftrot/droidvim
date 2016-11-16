@@ -1373,6 +1373,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         TermSession session = getCurrentTermSession();
         if (session != null) {
             session.reset();
+            if (BuildConfig.FLAVOR.equals("vim") && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                sendKeyStrings("\u001b\u000c", false);
+            }
         }
     }
 
