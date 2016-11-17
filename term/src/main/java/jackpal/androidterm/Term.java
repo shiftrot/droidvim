@@ -19,6 +19,9 @@ package jackpal.androidterm;
 import android.Manifest;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.database.Cursor;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,12 +42,15 @@ import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
@@ -53,6 +59,7 @@ import java.text.Collator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -98,6 +105,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * A terminal emulator activity.
  */
@@ -133,6 +144,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private Intent TSIntent;
 
     public static final int REQUEST_CHOOSE_WINDOW = 1;
+    public static final int REQUEST_FILE_PICKER = 2;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -255,6 +267,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
+
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
@@ -334,6 +347,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     };
 
     private Handler mHandler = new Handler();
+    private SyncFileObserver mSyncFileObserver = null;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -444,29 +458,85 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         updatePrefs();
         permissionCheckExternalStorage();
         setDrawerButtons();
+        restoreSyncFileObserver();
         mAlreadyStarted = true;
+    }
+
+    private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
+    private void restoreSyncFileObserver() {
+        if (!BuildConfig.FLAVOR.equals("vim")) return;
+        if (mSyncFileObserver != null) return;
+        File dir = new File(this.getExternalCacheDir().toString()+"/scratch");
+        mSyncFileObserver = new SyncFileObserver(dir.toString());
+        mSyncFileObserver.deleteFromStorage(true);
+        File sfofile = new File(dir.toString()+"/"+mSyncFileObserverFile);
+        if (sfofile.exists()) {
+            try {
+                FileInputStream fis = new FileInputStream(sfofile.toString());
+                int size = fis.available();
+                byte[] buffer = new byte[size];
+                fis.read(buffer);
+                fis.close();
+
+                String json = new String(buffer);
+                JSONObject jsonObject = new JSONObject(json);
+                JSONArray jsonArray = jsonObject.getJSONArray("mHashMap");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonOneRecord = jsonArray.getJSONObject(i);
+                    mSyncFileObserver.putHashMap((String) jsonOneRecord.get("path"), (String) jsonOneRecord.get("uri"));
+                }
+                fis.close();
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        mSyncFileObserver.setConTentResolver(this.getContentResolver());
+        mSyncFileObserver.setActivity(this);
+        mSyncFileObserver.startWatching();
+    }
+
+    private void saveSyncFileObserver() {
+        if (!BuildConfig.FLAVOR.equals("vim")) return;
+        if (mSyncFileObserver == null) return;
+        mSyncFileObserver.stopWatching();
+        try {
+            String dir = mSyncFileObserver.getObserverDir();
+            File sfofile = new File(dir +"/"+mSyncFileObserverFile);
+
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArary = new JSONArray();
+
+            Map<String, String> hashMap = mSyncFileObserver.getHashMap();
+            for(Map.Entry<String, String> entry : hashMap.entrySet()) {
+                JSONObject jsonOneData;
+                jsonOneData = new JSONObject();
+                jsonOneData.put("path", entry.getKey());
+                jsonOneData.put("uri", entry.getValue());
+                jsonArary.put(jsonOneData);
+            }
+            jsonObject.put("mHashMap", jsonArary);
+
+            FileWriter fileWriter = new FileWriter(sfofile);
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            PrintWriter pw = new PrintWriter(bw);
+            pw.write(jsonObject.toString());
+            pw.close();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDrawerButtons() {
         if (BuildConfig.FLAVOR.equals("vim")) {
             Button button;
-            List<ApplicationInfo> appInfoList = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-            for (ApplicationInfo info : appInfoList) {
-                if ("com.dropbox.android".equals(info.processName)) {
-                    button = (Button)findViewById(R.id.drawer_dropbox_button);
-                    button.setVisibility(View.VISIBLE);
-                    break;
-                }
-            }
+            button = (Button)findViewById(R.id.drawer_clear_cache_button);
+            button.setVisibility(View.VISIBLE);
         }
-        findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
+        findViewById(R.id.drawer_clear_cache_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setAction("android.intent.category.LAUNCHER");
-                intent.setClassName("com.dropbox.android", "com.dropbox.android.activity.DropboxBrowser");
-                startActivity(intent);
+                confirmClearCache();
             }
         });
         findViewById(R.id.drawer_keyboard_button).setOnClickListener(new OnClickListener() {
@@ -493,6 +563,25 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
             }
         });
+    }
+
+    private void confirmClearCache() {
+        final AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setIcon(android.R.drawable.ic_dialog_alert);
+        b.setMessage(R.string.confirm_clear_cache_message);
+        final Runnable clearCache = new Runnable() {
+            public void run() {
+                if (mSyncFileObserver != null) mSyncFileObserver.clearCache();
+            }
+        };
+        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                mHandler.post(clearCache);
+            }
+        });
+        b.setNegativeButton(android.R.string.no, null);
+        b.show();
     }
 
     private DrawerLayout getDrawer() {
@@ -623,6 +712,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
 
+        saveSyncFileObserver();
         if (mStopServiceOnFinish) {
             stopService(TSIntent);
             mFunctionBar = -1;
@@ -1091,27 +1181,113 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
+        super.onActivityResult(request, result, data);
         switch (request) {
-        case REQUEST_CHOOSE_WINDOW:
-            if (result == RESULT_OK && data != null) {
-                int position = data.getIntExtra(EXTRA_WINDOW_ID, -2);
-                if (position >= 0) {
-                    // Switch windows after session list is in sync, not here
-                    onResumeSelectWindow = position;
-                } else if (position == -1) {
-                    doCreateNewWindow();
-                    onResumeSelectWindow = mTermSessions.size() - 1;
+            case REQUEST_FILE_PICKER:
+                String path = null;
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    path = getPath(this, uri);
+                    if (path == null) {
+                        Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+                        if (mSyncFileObserver != null) {
+                            path = handleOpenDocument(uri, cursor);
+                            if (path != null && mSyncFileObserver != null) {
+                                path = mSyncFileObserver.getObserverDir() + path;
+                                if (!mSyncFileObserver.putUriAndLoad(uri, path)) {
+                                    AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                                    bld.setMessage(this.getString(R.string.storage_read_error));
+                                    bld.setNeutralButton("OK", null);
+                                    bld.create().show();
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
-            } else {
-                // Close the activity if user closed all sessions
-                // TODO the left path will be invoked when nothing happened, but this Activity was destroyed!
-                if (mTermSessions == null || mTermSessions.size() == 0) {
-                    mStopServiceOnFinish = true;
-                    finish();
+                if (path != null) {
+                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    path = String.format(":e %s\r", path);
+                    sendKeyStrings(path, true);
                 }
-            }
-            break;
+                break;
+            case REQUEST_CHOOSE_WINDOW:
+                if (result == RESULT_OK && data != null) {
+                    int position = data.getIntExtra(EXTRA_WINDOW_ID, -2);
+                    if (position >= 0) {
+                        // Switch windows after session list is in sync, not here
+                        onResumeSelectWindow = position;
+                    } else if (position == -1) {
+                        doCreateNewWindow();
+                        onResumeSelectWindow = mTermSessions.size() - 1;
+                    }
+                } else {
+                    // Close the activity if user closed all sessions
+                    // TODO the left path will be invoked when nothing happened, but this Activity was destroyed!
+                    if (mTermSessions == null || mTermSessions.size() == 0) {
+                        mStopServiceOnFinish = true;
+                        finish();
+                    }
+                }
+                break;
         }
+    }
+
+    /**
+     * Get a file path from a Uri. This will get the the path for Storage Access
+     * Framework Documents, as well as the _data field for the MediaStore and
+     * other file-based ContentProviders.
+     *
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @author paulburke
+     */
+    public static String getPath(final Context context, final Uri uri) {
+        if (uri.toString().matches("^file:///.*")) {
+            String path = uri.getPath();
+            if (new File(path).canRead()) {
+                return path;
+            }
+        }
+        if (AndroidCompat.SDK < 19) return null;
+        if (DocumentsContract.isDocumentUri(context, uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                File file;
+                if ("primary".equalsIgnoreCase(type)) {
+                    file = new File(Environment.getExternalStorageDirectory() + "/" + split[1]);
+                    if (file.exists()) {
+                        return file.toString();
+                    }
+                }
+
+                String path = uri.getPath();
+                path = path.replaceAll(":", "/");
+                path = path.replaceFirst("document", "storage");
+                file = new File(path);
+                if (file.canWrite()) {
+                    return file.toString();
+                }
+                path = uri.getPath();
+                final File[] dirs = context.getExternalFilesDirs(null);
+                if (dirs != null && dirs.length >= 2) {
+                    for (File dir : dirs) {
+                        path = dir.getAbsolutePath().replaceAll(type.concat(".*"), "");
+                        path = String.format("%s/%s/%s", path, type, split[1]);
+                        path = path.replaceAll("/+", "/");
+                        file = new File(path);
+                        if (file.canWrite()) {
+                            return file.toString();
+                        }
+                    }
+                }
+                return null;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -1879,4 +2055,59 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
+    public static String handleOpenDocument(Uri uri, Cursor cursor) {
+        if (uri == null || cursor == null) return "";
+
+        cursor.moveToFirst();
+        String displayName = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME));
+
+        String path = null;
+        if (isExternalStorageDocument(uri)) {
+            path = uri.getPath();
+            path = path.replaceAll(":", "/");
+            path = path.replaceFirst("/document/", "/storage/");
+        } else {
+            if (isDownloadDocument(uri)) {
+                path = uri.toString().replaceFirst("content://[^/]+/", "/Download/");
+            } else if (isGoogleDriveDocument(uri)) {
+                path = uri.toString().replaceFirst("content://[^/]+/", "/GoogleDrive/");
+            } else if (isGoogleDriveLegacyDocument(uri)) {
+                path = uri.toString().replaceFirst("content://[^/]+/", "/GoogleDriveLegacy/");
+            } else if (isOneDriveDocument(uri)) {
+                path = uri.toString().replaceFirst("content://[^/]+/", "/OneDrive/");
+            } else if (isMediaDocument(uri)) {
+                path = null;
+            } else {
+                path = uri.toString().replaceFirst("content://[^/]+/", "/");
+            }
+            if (path != null) {
+                path = path+"/"+displayName;
+            }
+        }
+        return path;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isDownloadDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isGoogleDriveDocument(Uri uri) {
+        return "com.google.android.apps.docs.storage".equals(uri.getAuthority());
+    }
+
+    public static boolean isGoogleDriveLegacyDocument(Uri uri) {
+        return ("com.google.android.apps.docs.storage.legacy".equals(uri.getAuthority()));
+    }
+
+    public static boolean isOneDriveDocument(Uri uri) {
+        return "com.microsoft.skydrive.content.StorageAccessProvider".equals(uri.getAuthority());
+    }
 }

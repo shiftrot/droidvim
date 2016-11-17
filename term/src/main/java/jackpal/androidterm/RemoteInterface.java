@@ -21,10 +21,14 @@ import java.io.IOException;
 import java.util.UUID;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -33,6 +37,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
@@ -118,35 +123,74 @@ public class RemoteInterface extends Activity {
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
-        if (action.equals(Intent.ACTION_SEND)
-                && myIntent.hasExtra(Intent.EXTRA_STREAM)) {
-          /* "permission.RUN_SCRIPT" not required as this is merely opening a new window. */
-            Object extraStream = myIntent.getExtras().get(Intent.EXTRA_STREAM);
-            if (extraStream instanceof Uri) {
-                String path = ((Uri) extraStream).getPath();
-                File file = new File(path);
-                String command = mSettings.getIntentCommand();
-                if (command.matches("^:.*")) {
-                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
-                    command = "\u001b"+String.format(command, path);
-                    // Find the target window
-                    mReplace = true;
-                    mHandle = switchToWindow(mHandle, command);
-                    mReplace = false;
-                } else if (file.isDirectory() == false) {
-                    command = String.format(command, path);
-                    mHandle = openNewWindow(command);
-                } else {
-                    String dirPath = file.isDirectory() ? path : file.getParent();
-                    openNewWindow("cd " + quoteForBash(dirPath));
-                }
-            }
-        } else if ((action.equals("android.intent.action.VIEW")) ||
+
+        ClipData clipData = myIntent.getClipData();
+        if ((AndroidCompat.SDK >= 19 && action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) ||
+                   (action.equals(Intent.ACTION_SEND) && clipData != null) ||
+                   (action.equals("android.intent.action.VIEW")) ||
                    (action.equals("android.intent.action.EDIT")) ||
                    (action.equals("android.intent.action.PICK")) ||
                    (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT"))) {
             String url = null;
-            if (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT")) {
+            Uri uri = null;
+            if (clipData != null) {
+                uri = clipData.getItemAt(0).getUri();
+                if (uri == null) {
+                    copyToClipboard(clipData.toString());
+                    finish();
+                    return;
+                }
+            } else if (AndroidCompat.SDK >= 19 && action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) {
+                Object extraStream = myIntent.getExtras().get(Intent.EXTRA_STREAM);
+                if (extraStream instanceof Uri) {
+                    uri = (Uri) extraStream;
+                }
+            } else {
+                uri = myIntent.getData();
+            }
+            if (uri != null && uri.toString().matches("^file:///.*")) {
+                String path = uri.getPath();
+                if (new File(path).canRead()) {
+                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    String command = "\u001b"+String.format(":e %s", path);
+                    // Find the target window
+                    mReplace = true;
+                    mHandle = switchToWindow(mHandle, command);
+                    mReplace = false;
+                }
+                finish();
+            } else if (uri != null && AndroidCompat.SDK >= 19 && uri.getScheme().equals("content") && BuildConfig.FLAVOR.matches("vim")) {
+                Context context = this;
+                String command = null;
+                String path = Term.getPath(context, uri);
+                if (path != null) {
+                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    command = "\u001b"+String.format(":e %s", path);
+                } else {
+                    Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+                    path = Term.handleOpenDocument(uri, cursor);
+                    if (path != null) {
+                        File dir = new File(this.getExternalCacheDir().toString()+"/scratch");
+                        SyncFileObserver sfo = new SyncFileObserver(path);
+                        sfo.setConTentResolver(this.getContentResolver());
+                        path = dir.toString()+path;
+                        if (!sfo.putUriAndLoad(uri, path)) {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                            bld.setMessage(this.getString(R.string.storage_read_error));
+                            bld.setNeutralButton("OK", null);
+                            bld.create().show();
+                            finish();
+                        }
+                        path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                        command = "\u001b"+String.format(":e %s", path);
+                    }
+                }
+                // Find the target window
+                mReplace = true;
+                mHandle = switchToWindow(mHandle, command);
+                mReplace = false;
+                finish();
+            } else if (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT")) {
                 url = myIntent.getExtras().getString("com.googlecode.android_scripting.extra.SCRIPT_PATH");
             } else if (myIntent.getScheme() != null && myIntent.getScheme().equals("file")) {
                 if (myIntent.getData() != null) url = myIntent.getData().getPath();
@@ -180,8 +224,6 @@ public class RemoteInterface extends Activity {
             String str = (String)extraStream;
             copyToClipboard(str);
         } else {
-            // Intent sender may not have permissions, ignore any extras
-            openNewWindow(null);
         }
 
         finish();

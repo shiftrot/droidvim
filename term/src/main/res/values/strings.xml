@@ -287,4 +287,13 @@
   <string name="install_runtime_doc_message">Would you like to install help files?</string>
   <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
 
+  <string name="external_storage">Storage</string>
+  <string name="create_file">Create file</string>
+  <string name="delete_file">Delete file</string>
+  <string name="manage_storage">Manage</string>
+  <string name="storage_read_error">No such file.</string>
+  <string name="storage_write_error">Cannot write to external storage.</string>
+  <string name="storage_delete_file">Delete file from external storage.</string>
+  <string name="clear_cache">Clear cache</string>
+  <string name="confirm_clear_cache_message">Clear external storage cache.</string>
 </resources>

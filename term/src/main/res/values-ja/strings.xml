@@ -260,4 +260,13 @@
   <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
   <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
 
+  <string name="external_storage">ストレージ</string>
+  <string name="create_file">新規ファイル</string>
+  <string name="delete_file">ファイル削除</string>
+  <string name="manage_storage">ファイル操作</string>
+  <string name="storage_read_error">ファイルが見つかりません.</string>
+  <string name="storage_write_error">キャッシュを外部ストレージに書き込めません.</string>
+  <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
+  <string name="clear_cache">キャッシュクリア</string>
+  <string name="confirm_clear_cache_message">外部ストレージキャッシュを削除します.</string>
 </resources>

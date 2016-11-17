@@ -251,7 +251,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/drawer_dropbox_button"
+                    android:id="@+id/drawer_clear_cache_button"
                     android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"
                     android:minHeight="35sp"
@@ -261,7 +261,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dropbox" />
+                    android:text="@string/clear_cache" />
 
                 <View
                     android:layout_weight="1"
