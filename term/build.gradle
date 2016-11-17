@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 android {
@@ -8,6 +10,9 @@ android {
         applicationId "jackpal.androidterm"
         minSdkVersion 4
         targetSdkVersion 24
+
+        versionName = "1.0.70" + new SimpleDateFormat(".ss").format(new Date())
+        versionCode 71
     }
 
     externalNativeBuild {
