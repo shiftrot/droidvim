@@ -35,9 +35,9 @@ class PaintRenderer extends BaseTextRenderer {
         mTextPaint = new Paint();
         mTextLeading = textLeading;
         if (AndroidCompat.SDK > 3) {
-            String fontPath = String.format("%s/%s", FONTPATH, (fontFile != null ? fontFile : "ate.ttf"));
+            String fontPath = String.format("%s/%s", FONTPATH, (fontFile != null ? fontFile : "default.ttf"));
             File file = new File(fontPath);
-            if (file.exists()) {
+            if (file.canRead()) {
                 mTextPaint.setTypeface(Typeface.createFromFile(file));
             } else {
                 mTextPaint.setTypeface(Typeface.MONOSPACE);
