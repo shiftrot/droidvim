@@ -1304,8 +1304,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mVimPaste = (keyCode == 0xfffffff6) ? true : false;
             return true;
         case 0xfffffff8:
+            return true;
         case 0xfffffff9:
-            mVimApp = (keyCode == 0xfffffff8) ? true : false;
             return true;
         case 0xfffffffa:
             clearClipBoard();
