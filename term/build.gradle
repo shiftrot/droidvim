@@ -7,12 +7,12 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "jackpal.androidterm"
+        applicationId "com.droidvim"
         minSdkVersion 16
         targetSdkVersion 25
 
-        versionName = "1.0.70" + new SimpleDateFormat(".ss").format(new Date())
-        versionCode 71
+        versionName = "1.0.0"
+        versionCode 1
     }
 
     externalNativeBuild {
@@ -29,8 +29,8 @@ android {
     }
 
     productFlavors {
-        vim {
-            setApplicationId("vim.androidterm")
+        droidvim {
+            setApplicationId("com.droidvim")
         }
     }
 }

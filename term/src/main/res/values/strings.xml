@@ -20,7 +20,7 @@
    <string name="x">X</string>
    <string name="user">□</string>
    <string name="application_terminal">Terminal Emulator</string>
-   <string name="application_termvim">TermVim</string>
+   <string name="application_termvim">DroidVim</string>
    <string name="preferences">Preferences</string>
    <string name="new_window">New window</string>
    <string name="close_window">Close window</string>
@@ -251,7 +251,7 @@
   <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
   <string name="help">Help</string>
-  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
+  <string name="help_url">http://example.com</string>
   <string name="activity_term_here_title">Term here</string>
   <!-- BEGIN SHORTCUT RELATED STRINGS -->
   <!-- AndroidManifest.xml -->

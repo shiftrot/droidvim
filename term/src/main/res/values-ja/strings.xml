@@ -247,7 +247,7 @@
   <string name="dialog_titleime_inputtype_preference">起動時の入力モード設定</string>
 
   <string name="help">ヘルプ</string>
-  <string name="help_url">https://sites.google.com/site/fudist/Home/qfixhowm/other-service/howm-android/android-terminal-emulator-mod</string>
+  <string name="help_url">http://example.com</string>
   <!-- AddShortcut.java -->
   <string name="addshortcut_button_find_command">コマンド指定</string>
   <string name="addshortcut_command_window_instructions">コマンドはフルパスで指定し引数は省略可. フルパスで指定しない場合は引数ウィンドウのみで設定 (例: cd /sdcard).</string>

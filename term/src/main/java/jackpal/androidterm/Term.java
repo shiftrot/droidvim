@@ -635,8 +635,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (AndroidCompat.SDK < 23) return;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE);
         }
     }
 
@@ -646,12 +644,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (requestCode == REQUEST_STORAGE) {
             if (permissions.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-                    }
+                    // do something
                 }
-            } else if (permissions.equals(Manifest.permission.READ_EXTERNAL_STORAGE))  {
-                // do something
             } else {
 //                Toast.makeText(this, "permission does not granted", Toast.LENGTH_SHORT).show();
             }
@@ -1524,12 +1518,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
-                mStopServiceOnFinish = true;
+                // mStopServiceOnFinish = true;
+                // finish();
+                doSendActionBarKey(getCurrentEmulatorView(), 1251);
+                return true;
             case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
                 finish();
                 return true;
             case TermSettings.BACK_KEY_CLOSES_WINDOW:
-                doCloseWindow();
+                doSendActionBarKey(getCurrentEmulatorView(), 1251);
                 return true;
             case TermSettings.BACK_KEY_TOGGLE_IME:
                 doToggleSoftKeyboard();

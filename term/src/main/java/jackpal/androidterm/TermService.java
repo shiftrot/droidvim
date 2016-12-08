@@ -111,7 +111,14 @@ public class TermService extends Service implements TermSession.FinishCallback
         // should really belong to the Application class, but we don't use one...
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
-        String defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        String defValue;
+        if (!BuildConfig.FLAVOR.equals("master")) {
+            defValue = getFilesDir().getAbsolutePath() + "/home";
+            File home = new File(defValue);
+            if (!home.exists()) home.mkdir();
+        } else {
+            defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        }
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
         if (FLAVOR_VIM) {

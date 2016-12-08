@@ -355,8 +355,8 @@
                 android:defaultValue="@string/pref_backaction_default"
                 android:title="@string/title_backaction_preference"
                 android:summary="@string/summary_backaction_preference"
-                android:entries="@array/entries_backaction_preference"
-                android:entryValues="@array/entryvalues_backaction_preference"
+                android:entries="@array/entries_vim_backaction_preference"
+                android:entryValues="@array/entryvalues_vim_backaction_preference"
                 android:dialogTitle="@string/dialog_title_backaction_preference" />
 
         <ListPreference
@@ -398,11 +398,13 @@
                 android:summaryOn="@string/ignore_xoff_summary_on"
                 android:summaryOff="@string/ignore_xoff_summary_off" />
 
+<!--
         <CheckBoxPreference android:title="@string/title_use_keyboard_shortcuts"
                 android:key="use_keyboard_shortcuts"
                 android:defaultValue="@bool/pref_use_keyboard_shortcuts_default"
                 android:summaryOn="@string/use_keyboard_shortcuts_summary_on"
                 android:summaryOff="@string/use_keyboard_shortcuts_summary_off" />
+-->
 
         <PreferenceScreen
                 android:title="@string/title_pre_ime_shortcuts"
