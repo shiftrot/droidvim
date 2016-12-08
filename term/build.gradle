@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "jackpal.androidterm"
-        minSdkVersion 9
+        minSdkVersion 16
         targetSdkVersion 25
 
         versionName = "1.0.70" + new SimpleDateFormat(".ss").format(new Date())
