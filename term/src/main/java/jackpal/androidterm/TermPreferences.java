@@ -41,6 +41,8 @@ public class TermPreferences extends PreferenceActivity {
     private static final String CATEGORY_SCREEN_KEY = "screen";
     static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
 
+    private final static boolean FLAVOR_VIM = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class TermPreferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         // Remove the action bar pref on older platforms without an action bar
-        if ((AndroidCompat.SDK < 11) || (BuildConfig.FLAVOR.equals("vim"))) {
+        if ((AndroidCompat.SDK < 11) || FLAVOR_VIM) {
             Preference actionBarPref = findPreference(ACTIONBAR_KEY);
              PreferenceCategory screenCategory =
                     (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
@@ -64,7 +66,7 @@ public class TermPreferences extends PreferenceActivity {
         if ((statusBarPref != null) && (screenCategory != null)) {
             screenCategory.removePreference(statusBarPref);
         }
-        if (BuildConfig.FLAVOR.equals("vim")) {
+        if (FLAVOR_VIM) {
             PreferenceCategory keyboardCategory =
                     (PreferenceCategory) findPreference("categoryKeyboard");
             Preference controlKeyPref = findPreference("controlkey");
@@ -85,7 +87,7 @@ public class TermPreferences extends PreferenceActivity {
             }
         }
 
-        if (jackpal.androidterm.BuildConfig.FLAVOR.equals("vim")) {
+        if (FLAVOR_VIM) {
             findPreference("functionbar_vim_paste").setDefaultValue(true);
         }
 

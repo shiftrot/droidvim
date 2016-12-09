@@ -56,6 +56,7 @@ public class RemoteInterface extends Activity {
     protected static final String EXTRA_WINDOW_HANDLE = "jackpal.androidterm.window_handle";
 
     protected static final String PRIVACT_ACTIVITY_ALIAS = "jackpal.androidterm.TermInternal";
+    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
 
     private TermSettings mSettings;
 
@@ -159,7 +160,7 @@ public class RemoteInterface extends Activity {
                     mReplace = false;
                 }
                 finish();
-            } else if (uri != null && AndroidCompat.SDK >= 19 && uri.getScheme().equals("content") && BuildConfig.FLAVOR.matches("vim")) {
+            } else if (uri != null && AndroidCompat.SDK >= 19 && uri.getScheme().equals("content") && FLAVOR_VIM) {
                 Context context = this;
                 String command = null;
                 String path = Term.getPath(context, uri);

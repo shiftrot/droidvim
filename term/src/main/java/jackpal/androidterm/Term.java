@@ -140,7 +140,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
 
-    private static boolean mVimFlavor;
+    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    private static boolean mVimFlavor = FLAVOR_VIM;
 
     private Intent TSIntent;
 
@@ -366,7 +367,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mSettings = new TermSettings(getResources(), mPrefs);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
-        mVimFlavor = BuildConfig.FLAVOR.equals("vim");
         if (!mVimFlavor && mSettings.doPathExtensions()) {
             mPathReceiver = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
@@ -466,7 +466,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
     private void restoreSyncFileObserver() {
-        if (!BuildConfig.FLAVOR.equals("vim")) return;
+        if (!FLAVOR_VIM) return;
         if (mSyncFileObserver != null) return;
         File dir = new File(this.getExternalCacheDir().toString()+"/scratch");
         mSyncFileObserver = new SyncFileObserver(dir.toString());
@@ -498,7 +498,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void saveSyncFileObserver() {
-        if (!BuildConfig.FLAVOR.equals("vim")) return;
+        if (!FLAVOR_VIM) return;
         if (mSyncFileObserver == null) return;
         mSyncFileObserver.stopWatching();
         try {
@@ -529,7 +529,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void setDrawerButtons() {
-        if (BuildConfig.FLAVOR.equals("vim")) {
+        if (FLAVOR_VIM) {
             Button button;
             List<ApplicationInfo> appInfoList = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             for (ApplicationInfo info : appInfoList) {
@@ -596,7 +596,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                if (BuildConfig.FLAVOR.equals("vim") && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
                     sendKeyStrings(":confirm qa\r", true);
                 } else {
                     confirmCloseWindow();
@@ -1018,7 +1018,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 //        } else {
 //            menu.removeItem(R.id.menu_user);
 //        }
-        if (!jackpal.androidterm.BuildConfig.FLAVOR.equals("vim")) {
+        if (!FLAVOR_VIM) {
             menu.removeItem(R.id.menu_edit_vimrc);
         }
         return true;
@@ -1092,7 +1092,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return super.onOptionsItemSelected(item);
     }
 
-    private static boolean mVimApp = false;
     private boolean doSendActionBarKey(EmulatorView view, int key) {
         if (key == 999) {
             // do nothing
@@ -1104,7 +1103,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (key == 1250) {
             doCreateNewWindow();
         } else if (key == 1251) {
-            if (mVimApp && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+            if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
                 sendKeyStrings(":confirm qa\r", true);
             } else {
                 confirmCloseWindow();
@@ -1730,7 +1729,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         TermSession session = getCurrentTermSession();
         if (session != null) {
             session.reset();
-            if (BuildConfig.FLAVOR.equals("vim") && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+            if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
                 sendKeyStrings("\u001b\u000c", false);
             }
         }

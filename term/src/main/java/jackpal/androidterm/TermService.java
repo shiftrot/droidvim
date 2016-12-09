@@ -73,6 +73,8 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     private SessionList mTermSessions;
 
+    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+
     public class TSBinder extends Binder {
         TermService getService() {
             Log.i("TermService", "Activity binding to service");
@@ -112,7 +114,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         String defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
-        if (BuildConfig.FLAVOR.equals("vim")) {
+        if (FLAVOR_VIM) {
             editor.putBoolean("functionbar_vim_paste", true);
             editor.putBoolean("functionbar_colon", true);
         }
@@ -125,7 +127,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (pref.getBoolean("statusbar_icon", true) == false) priority = Notification.PRIORITY_MIN;
         CharSequence contentText = getText(R.string.application_terminal);
-        if (BuildConfig.FLAVOR.equals("vim")) {
+        if (FLAVOR_VIM) {
             contentText = getText(R.string.application_termvim);
         }
         Notification notification = new NotificationCompat.Builder(getApplicationContext())
