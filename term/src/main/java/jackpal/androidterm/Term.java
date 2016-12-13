@@ -108,10 +108,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -789,14 +785,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
-    private static AdView mAdView;
     private void showAds() {
         if (BuildConfig.DEBUG) return;
-        mAdView = (AdView) findViewById(R.id.view_ad_bunner);
-        mAdView.setVisibility(View.VISIBLE);
-        MobileAds.initialize(this, mAdView.getAdUnitId());
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        return;
     }
 
     private void populateWindowList() {
@@ -839,7 +830,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mWifiLock.isHeld()) {
             mWifiLock.release();
         }
-        if (mAdView != null) mAdView.destroy();
     }
 
     @SuppressLint("NewApi")
@@ -1017,14 +1007,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 imm.hideSoftInputFromWindow(token, 0);
             }
         }.start();
-        if (mAdView != null) mAdView.pause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        if (mAdView != null) mAdView.resume();
 
         RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
         registerReceiver(mBroadcastReceiever, new IntentFilter(RELOAD_STYLE_ACTION));

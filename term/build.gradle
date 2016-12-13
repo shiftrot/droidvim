@@ -14,8 +14,6 @@ android {
         versionName = "1.0.0"
         versionCode 1
 
-        resValue "string", "ADMOB_UNIT_ID", String.format('"%s"', file('admob-unit-id.txt').getText().replaceAll("[\r\n].*", ""))
-
         externalNativeBuild {
             ndkBuild {
                 abiFilters 'armeabi', 'x86'
@@ -46,9 +44,7 @@ android {
 dependencies {
     compile "com.android.support:appcompat-v7:25.1.0"
     compile "com.android.support:support-v4:25.1.0"
-    compile 'com.google.firebase:firebase-ads:9.6.1'
     compile project(':emulatorview')
     compile project(':libtermexec')
 }
 
-apply plugin: 'com.google.gms.google-services'
