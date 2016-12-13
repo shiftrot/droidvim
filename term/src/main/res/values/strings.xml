@@ -291,6 +291,9 @@
   <string name="install_runtime_doc_message">Would you like to install help files?</string>
   <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
 
+  <string name="extra">Extra</string>
+  <string name="debug">Debug</string>
+  <string name="dropbox">Dropbox</string>
   <string name="external_storage">Storage</string>
   <string name="create_file">Create file</string>
   <string name="delete_file">Delete file</string>
@@ -300,4 +303,14 @@
   <string name="storage_delete_file">Delete file from external storage.</string>
   <string name="clear_cache">Clear cache</string>
   <string name="confirm_clear_cache_message">Clear external storage cache.</string>
+  <string name="softkeyboard">keyboard</string>
+
+  <string name="iab_null">In App Billing helper is null.</string>
+  <string name="donate_confirm_title">Thank you for using DroidVim.</string>
+  <string name="donate_confirm_button">Donate</string>
+  <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get git-cui, curl, busybox after donation!</string>
+  <string name="donate_confirm_summary_no_payed_function">Sorry, no payed functions for your device.\nThis is just a donate option ;)</string>
+  <string name="donate_premium_purchase">Thank you for your donation!</string>
+  <string name="donate_button">Donate</string>
+  <string name="extra_button">Extra</string>
 </resources>

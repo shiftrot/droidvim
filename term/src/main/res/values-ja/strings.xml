@@ -273,4 +273,11 @@
   <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
   <string name="clear_cache">キャッシュクリア</string>
   <string name="confirm_clear_cache_message">外部ストレージキャッシュを削除します.</string>
+  <string name="softkeyboard">キーボード</string>
+
+  <string name="donate_confirm_title">DroidVimのご使用ありがとうございます.</string>
+  <string name="donate_confirm_button">寄付する</string>
+  <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>
+  <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
+  <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
 </resources>

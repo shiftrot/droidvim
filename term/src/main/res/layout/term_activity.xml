@@ -250,6 +250,38 @@
                 android:orientation="vertical">
 
                 <Button
+                    android:id="@+id/drawer_extra_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="25sp"
+                    android:visibility="visible"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/extra_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/extra" />
+
+                <Button
+                    android:id="@+id/drawer_debug_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="25sp"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/extra_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/debug" />
+
+                <View
+                    android:layout_weight="10000"
+                    android:visibility="visible"
+                    android:layout_width="0dp"
+                    android:layout_height="10000dp" />
+
+                <Button
                     android:id="@+id/drawer_dropbox_button"
                     android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"
@@ -260,7 +292,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dropbox" />
+                    android:text="@string/dropbox" />
 
                 <Button
                     android:id="@+id/drawer_storage_button"
@@ -309,6 +341,7 @@
                 <Button
                     android:id="@+id/drawer_keyboard_button"
                     style="?android:attr/buttonBarButtonStyle"
+                    android:visibility="gone"
                     android:minHeight="35sp"
                     android:textColor="@android:color/white"
                     android:background="@drawable/sidebar_button"
@@ -316,7 +349,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_functionbar_softkeyboard" />
+                    android:text="@string/softkeyboard" />
 
                 <Button
                     android:id="@+id/drawer_menu_button"
