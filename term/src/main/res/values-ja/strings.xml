@@ -131,6 +131,7 @@
    <string name="summary_fontfile_preference">フォントを選択</string>
    <string name="dialog_title_fontfile_preference">フォントファイル</string>
    <string name="entry_fontfile_default">システムフォント</string>
+   <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfのフォントファイルを選択してください.</string>
 
    <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
    <string name="summary_ambiwidth_preference">East Asian Ambiguous widthを選択. (要再起動)</string>

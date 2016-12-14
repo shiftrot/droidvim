@@ -348,7 +348,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/text_preferences">
+            android:title="@string/text_preferences"
+            android:key="text">
 
         <ListPreference
             android:key="ime_default_inputtype"
@@ -367,6 +368,11 @@
             android:entries="@array/entries_fontfile_preference"
             android:entryValues="@array/entries_fontfile_preference"
             android:dialogTitle="@string/dialog_title_fontfile_preference" />
+
+        <Preference
+            android:key="fontfile_picker"
+            android:summary="@string/summary_fontfile_preference"
+            android:title="@string/title_fontfile_preference" />
 
         <!-- <ListPreference -->
         <EditTextPreference

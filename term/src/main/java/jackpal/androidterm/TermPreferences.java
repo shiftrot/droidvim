@@ -24,7 +24,14 @@ import java.util.Iterator;
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
@@ -33,13 +40,17 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
+
+import static jackpal.androidterm.Term.getPath;
 
 public class TermPreferences extends PreferenceActivity {
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CATEGORY_SCREEN_KEY = "screen";
     static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
+    private static final String CATEGORY_TEXT_KEY = "text";
 
     private final static boolean FLAVOR_VIM = true;
 
@@ -92,7 +103,16 @@ public class TermPreferences extends PreferenceActivity {
         }
 
         // FIXME:
-        if (!new File(FONTPATH).exists()) new File(FONTPATH).mkdirs();
+        if (AndroidCompat.SDK < 19 && !new File(FONTPATH).exists()) new File(FONTPATH).mkdirs();
+        Preference fontPicker = getPreferenceScreen().findPreference("fontfile_picker");
+        fontPicker.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                filePicker();
+                return true;
+            }
+        });
+
         ListPreference fontFileList= (ListPreference) getPreferenceScreen().findPreference("fontfile");
         setFontList(fontFileList);
 
@@ -117,6 +137,71 @@ public class TermPreferences extends PreferenceActivity {
                 return true;
             }
         });
+
+        PreferenceCategory textCategory = (PreferenceCategory) findPreference(CATEGORY_TEXT_KEY);
+        Preference fontPref;
+        if (AndroidCompat.SDK >= 19) {
+            fontPref = findPreference("fontfile");
+        } else {
+            fontPref = findPreference("fontfile_picker");
+        }
+        if ((fontPref != null) && (textCategory != null)) {
+            textCategory.removePreference(fontPref);
+        }
+    }
+
+    static final String FONT_FILENAME = "font_filename";
+    @Override
+    protected void onActivityResult(int request, int result, Intent data) {
+        super.onActivityResult(request, result, data);
+        switch (request) {
+            case REQUEST_FONT_PICKER:
+                String path;
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    path = getPath(this, uri);
+                    if (path != null && path.matches(".*\\.(ttf|otf)")) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                        sp.edit().putString(FONT_FILENAME, path).apply();
+                    } else {
+                        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                        bld.setIcon(android.R.drawable.ic_dialog_alert);
+                        bld.setMessage(this.getString(R.string.font_file_error));
+                        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                        bld.create().show();
+                        break;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static final int REQUEST_FONT_PICKER = 16;
+    private void filePicker() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(this.getString(R.string.font_file_error));
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("application/octet-stream");
+                startActivityForResult(intent, REQUEST_FONT_PICKER);
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.no), null);
+        final Activity activity = this;
+        bld.setNeutralButton(this.getString(R.string.entry_fontfile_default), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+                sp.edit().putString(FONT_FILENAME, activity.getString(R.string.entry_fontfile_default)).apply();
+            }
+        });
+        bld.create().show();
     }
 
     private ListPreference setFontList(ListPreference fontFileList) {

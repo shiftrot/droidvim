@@ -133,6 +133,7 @@
    <string name="summary_fontfile_preference">Choose font.</string>
    <string name="dialog_title_fontfile_preference">Font file</string>
    <string name="entry_fontfile_default">System font</string>
+   <string name="font_file_error">Please choose font file with extension .ttf or .otf in internal storage path.</string>
 
    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
    <string name="summary_ambiwidth_preference">Choose East Asian ambiguous width. (restart required)</string>

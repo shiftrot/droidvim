@@ -17,12 +17,15 @@
 package jackpal.androidterm;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
 
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
@@ -37,7 +40,12 @@ public class TermView extends EmulatorView {
 
         setTextSize(settings.getFontSize());
         setTextLeading(settings.getFontLeading());
-        setTextFont(settings.getFontFile());
+        if (AndroidCompat.SDK >= 19) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+            setTextFont(sp.getString(TermPreferences.FONT_FILENAME, null));
+        } else {
+            setTextFont(settings.getFontFile());
+        }
         setAmbiWidth(settings.getAmbiWidth());
         setHwAcceleration(settings.getHwAcceleration());
         setUseCookedIME(settings.useCookedIME());
