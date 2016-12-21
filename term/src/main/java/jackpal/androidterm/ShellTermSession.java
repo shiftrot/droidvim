@@ -20,6 +20,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
+import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
 
@@ -133,6 +135,11 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     private int createSubprocess(String shell, String[] env) throws IOException {
+        if (shell == null || shell.equals("")) {
+            shell = (AndroidCompat.SDK >= 21) ? mSettings.getLibShPath() : mSettings.getFailsafeShell();
+            if (shell == null) shell = "/system/bin/sh -";
+        }
+
         ArrayList<String> argList = parse(shell);
         String arg0;
         String[] args;

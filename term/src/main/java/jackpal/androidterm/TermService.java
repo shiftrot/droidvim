@@ -104,6 +104,13 @@ public class TermService extends Service implements TermSession.FinishCallback
         File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
         mAPPEXTFILES = extfilesdir != null ? extfilesdir.toString() : mAPPFILES;
 
+        String arch = TermVimInstaller.getArch();
+        arch = arch.contains("64")  ? "libsh64.so" : "libsh.so";
+        String libShPath = new File(getFilesDir().getAbsolutePath()).getParent() + "/lib/" + arch;
+        editor.putString("lib_sh_path", libShPath);
+        defValue = AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
+        String defshell = prefs.getString("shell_path", defValue);
+        editor.putString("shell_path", defshell);
         editor.apply();
 
         compat = new ServiceForegroundCompat(this);

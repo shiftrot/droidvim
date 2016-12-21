@@ -64,6 +64,7 @@ public class TermSettings {
     private boolean mDoPathExtensions;
     private boolean mAllowPathPrepend;
     private String mHomePath;
+    private String mLibShPath;
 
     private String mPrependPath = null;
     private String mAppendPath = null;
@@ -100,7 +101,7 @@ public class TermSettings {
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
-    private static final String SHELL_KEY = "shell";
+    private static final String SHELL_KEY = "shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
     private static final String INTENTCOMMAND_KEY = "intentcommand";
     private static final String TERMTYPE_KEY = "termtype";
@@ -109,6 +110,7 @@ public class TermSettings {
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
     private static final String HOMEPATH_KEY = "home_path";
+    private static final String LIB_SHPATH_KEY = "lib_sh_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String IGNORE_XON = "ignore_xoff";
     private static final String MOUSE_TRACKING = "mouse_tracking";
@@ -221,7 +223,7 @@ public class TermSettings {
         mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
         mUseCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
         mFailsafeShell = res.getString(R.string.pref_shell_default);
-        mShell = mFailsafeShell;
+        // the mShell default is set dynamically in readPrefs()
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
         mIntentCommand = res.getString(R.string.pref_intentcommand_default);
         mTermType = res.getString(R.string.pref_termtype_default);
@@ -276,6 +278,7 @@ public class TermSettings {
         mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
+        mLibShPath = readStringPref(LIB_SHPATH_KEY, mLibShPath);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mIgnoreXoff = readBooleanPref(IGNORE_XON, mIgnoreXoff);
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
@@ -538,5 +541,9 @@ public class TermSettings {
 
     public String getHomePath() {
         return mHomePath;
+    }
+
+    public String getLibShPath() {
+        return mLibShPath;
     }
 }

@@ -558,7 +558,7 @@
         android:key="categoryShell">
 
     <EditTextPreference
-            android:key="shell"
+            android:key="shell_path"
             android:defaultValue="@string/pref_shell_default"
             android:title="@string/title_shell_preference"
             android:summary="@string/summary_shell_preference"
