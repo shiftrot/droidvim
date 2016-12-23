@@ -380,7 +380,6 @@ public class TermSettings {
     }
 
     public int getActionBarUserKeyAction() {
-        mActionBarUserAction = 999;
         return mActionBarUserAction;
     }
 

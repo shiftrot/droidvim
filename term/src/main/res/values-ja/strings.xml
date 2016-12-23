@@ -135,9 +135,9 @@
    <string name="title_actionbar_x_preference">Ｑボタン</string>
    <string name="summary_actionbar_x_preference">Ｑボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_x_preference">Ｑボタンの振舞い</string>
-   <string name="title_actionbar_user_preference">？ボタン</string>
-   <string name="summary_actionbar_user_preference">？ボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_user_preference">？ボタンの振舞い</string>
+   <string name="title_actionbar_user_preference">□ボタン</string>
+   <string name="summary_actionbar_user_preference">□ボタンの振舞いを選択</string>
+   <string name="dialog_title_actionbar_user_preference">□ボタンの振舞い</string>
    <string name="functionbar_preferences">ファンクションバー</string>
 
    <string name="keyboard_preferences">キーボード</string>

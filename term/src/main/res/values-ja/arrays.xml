@@ -101,7 +101,7 @@
         <!--<item>ターミナルにCTRLを送出</item>-->
         <!--<item>ターミナルにTABを送出</item>-->
         <!--<item>ウィンドウ作成</item>-->
-        <item>ウィンドウを閉じる</item>
+        <item>ドロワーのトグル</item>
         <item>IMEのトグル</item>
         <item>IMEの選択</item>
         <item>貼り付け</item>

@@ -20,8 +20,10 @@ import android.Manifest;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.system.Os;
+import android.text.Layout;
 import android.text.TextUtils;
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
@@ -982,6 +984,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             view.doImeShortcutsAction();
         } else if (key >= 1351 && key <= 1353) {
             view.doImeShortcutsAction(key-1300);
+        } else if (key == 1355) {
+            toggleDrawer();
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);
@@ -989,6 +993,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             dispatchKeyEvent(event);
         }
         return true;
+    }
+
+    private void toggleDrawer() {
+        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            mDrawer.openDrawer(GravityCompat.START);
+        }
     }
 
     private void sendKeyStrings(String str, boolean esc) {
@@ -1735,7 +1748,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setFunctionBarButton(R.id.button_menu_minus, visibility);
         // visibility = mPrefs.getBoolean("functionbar_menu_x", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_x, visibility);
-        // visibility = mPrefs.getBoolean("functionbar_menu_user", false)  ? View.VISIBLE : View.GONE;
+        visibility = mPrefs.getBoolean("functionbar_menu_user", true)  ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_user, visibility);
         visibility = mPrefs.getBoolean("functionbar_menu_quit", true)  ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_quit, visibility);

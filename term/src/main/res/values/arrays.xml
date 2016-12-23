@@ -106,7 +106,7 @@
         <!--<item>Sends CTRL to terminal</item>-->
         <!--<item>Sends TAB to terminal</item>-->
         <!--<item>Create Window</item>-->
-        <item>Close Window</item>
+        <item>Toogle drawer</item>
         <item>Toggle soft keyboard</item>
         <item>Choose input method</item>
         <item>Paste</item>

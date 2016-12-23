@@ -18,7 +18,7 @@
    <string name="plus">+</string>
    <string name="minus">-</string>
    <string name="x">X</string>
-   <string name="user">\?</string>
+   <string name="user">□</string>
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Preferences</string>
    <string name="new_window">New window</string>
@@ -135,9 +135,9 @@
    <string name="title_actionbar_x_preference">Q button behavior</string>
    <string name="summary_actionbar_x_preference">Choose what pressing the Q button does.</string>
    <string name="dialog_title_actionbar_x_preference">Q button behavior</string>
-   <string name="title_actionbar_user_preference">\? button behavior</string>
-   <string name="summary_actionbar_user_preference">Choose what pressing the ? button does.</string>
-   <string name="dialog_title_actionbar_user_preference">\? button behavior</string>
+   <string name="title_actionbar_user_preference">□ button behavior</string>
+   <string name="summary_actionbar_user_preference">Choose what pressing the □ button does.</string>
+   <string name="dialog_title_actionbar_user_preference">□ button behavior</string>
     <string name="functionbar_preferences">functionbar</string>
 
    <string name="keyboard_preferences">Keyboard</string>
