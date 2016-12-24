@@ -246,9 +246,9 @@
   <string name="summary_ime_shortcuts_action_preference">Set IME shortcut action</string>
   <string name="dialog_titleime_shortcuts_action_preference">IME shortcuts action</string>
 
-  <string name="title_ime_inputtype_preference">Default input type</string>
-  <string name="summary_ime_inputtype_preference">Choose default input type.</string>
-  <string name="dialog_titleime_inputtype_preference">Choose default input type</string>
+  <string name="title_ime_inputtype_preference">Input mode at startup</string>
+  <string name="summary_ime_inputtype_preference">If you don\'t need word suggestions, Choose input mode at startup.</string>
+  <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
   <string name="help">Help</string>
   <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
