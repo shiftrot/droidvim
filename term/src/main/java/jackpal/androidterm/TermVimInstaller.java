@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -120,6 +122,8 @@ final class TermVimInstaller {
                 Configuration config = activity.getResources().getConfiguration();
                 fixOrientation(activity, config.orientation);
                 try {
+                    boolean first = !new File(sdcard+"/vimrc").exists();
+                    showWhatsNew(activity, first);
                     int id = activity.getResources().getIdentifier("runtime", "raw", activity.getPackageName());
                     setMessage(activity, pd, "runtime");
                     installZip(sdcard, getInputStream(activity, id));
@@ -149,6 +153,31 @@ final class TermVimInstaller {
                 }
             }
         }.start();
+    }
+
+    static void showWhatsNew(final Activity activity, final boolean first) {
+        if (BuildConfig.DEBUG) return;
+        final String whatsNew = BuildConfig.WHATS_NEW;
+        if (!first && whatsNew.equals("")) return;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                String[] list = activity.getString(R.string.tips_vim_list).split("\\|");
+                Random random = new Random();
+                int index = random.nextInt(list.length);
+                if (first) index = 0;
+                if (first) {
+                    bld.setTitle(activity.getString(R.string.tips_vim_title));
+                    bld.setMessage(list[index]);
+                } else {
+                    bld.setTitle(activity.getString(R.string.whats_new_title));
+                    bld.setMessage(whatsNew);
+                }
+                bld.setNeutralButton("OK", null);
+                bld.create().show();
+            }
+        });
     }
 
     static private int copyScript(Activity activity,int id, String fname) {

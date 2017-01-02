@@ -38,6 +38,9 @@
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="update_vim">実行ファイルとライブラリをアップデートしています.</string>
 
+   <string name="tips_vim_title">Tips</string>
+   <string name="tips_vim_list">☆直接入力\nデフォルトでは「英数入力のみ有効」に設定されています.\n日本語入力が必要な場合は◇ボタンを押してから日本語入力を行ってください.\n(「起動時の入力モード」は設定で変更可能です)\n\n☆終了方法\n「\":qa\"コマンドを使用する」, 「\"Q\"ボタンをタップする」, または「ナビゲーションドロワーの\"QUIT\"ボタンをタップする」ことで終了します.\n\n☆Vimチュートリアル\n\":Vimtutor\"を入力してください.</string>
+
    <string name="menu_update">アップデート</string>
    <string name="menu_update_latest">アプリは最新です</string>
 

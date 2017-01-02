@@ -39,6 +39,10 @@
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="update_vim">Updating binaries and libraries.\nPlease wait until vim starts.</string>
 
+   <string name="whats_new_title">What\'s new</string>
+   <string name="tips_vim_title">Tips</string>
+   <string name="tips_vim_list">Direct input:\nIf you need to enable word suggestions (or to input Non-Alphanumeric characters), tap \"◇\" button.\n(See \"Input mode at startup\" preference)\n\nHow to quit:\n\":qa\", tap \"Q\" button or \"QUIT\" on the navigation drawer.\n\nVim tutorial:\nType \":Vimtutor\".</string>
+
    <string name="menu_update">Update</string>
    <string name="menu_update_latest">Already updated.</string>
 
