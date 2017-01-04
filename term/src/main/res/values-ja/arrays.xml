@@ -109,9 +109,9 @@
         <!--<item>ターミナルから : を送出</item>-->
         <!--<item>ターミナルから / を送出</item>-->
         <item>IMEショートカット</item>
-        <item>英数入力 : パスワード</item>
+        <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
-        <item>英数入力 : パスワード\n(Google日本語入力)</item>
+        <item>直接入力 : パスワード\n(Google日本語入力)</item>
         <item>Vimを終了</item>
         <!--<item>なし</item>-->
     </string-array>
@@ -186,15 +186,15 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>IMEのトグル</item>
-        <item>英数入力 : パスワード</item>
+        <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
-        <item>英数入力 : パスワード\n(Google日本語入力)</item>
+        <item>直接入力 : パスワード\n(Google日本語入力)</item>
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">
         <item>通常入力</item>
-        <item>英数入力 : パスワード</item>
+        <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
-        <item>英数入力 : パスワード\n(Google日本語入力)</item>
+        <item>直接入力 : パスワード\n(Google日本語入力)</item>
     </string-array>
 </resources>

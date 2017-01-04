@@ -114,9 +114,9 @@
         <!--<item>Sends : from terminal</item>-->
         <!--<item>Sends / from terminal</item>-->
         <item>IME shortcut</item>
-        <item>Alphanumeric : password</item>
+        <item>Direct input : password</item>
         <item>Alphanumeric : URI</item>
-        <item>Alphanumeric : password\n(Google Japanese input)</item>
+        <item>Direct input : password\n(Google Japanese input)</item>
         <item>Quit Vim</item>
         <!--<item>None</item>-->
     </string-array>
@@ -191,15 +191,15 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>Toggle</item>
-        <item>Alphanumeric : Password</item>
+        <item>Direct input : Password</item>
         <item>Alphanumeric : URI</item>
-        <item>Alphanumeric : Password\n(Google Japanese input)</item>
+        <item>Direct input : Password\n(Google Japanese input)</item>
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">
         <item>Normal</item>
-        <item>Alphanumeric : Password</item>
+        <item>Direct input : Password</item>
         <item>Alphanumeric : URI</item>
-        <item>Alphanumeric : Password\n(Google Japanese input)</item>
+        <item>Direct input : Password\n(Google Japanese input)</item>
     </string-array>
 </resources>
