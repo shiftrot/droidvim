@@ -122,7 +122,7 @@
    <string name="entry_fontfile_default">システムフォント</string>
 
    <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
-   <string name="summary_ambiwidth_preference">East Asian Ambiguous widthを選択.</string>
+   <string name="summary_ambiwidth_preference">East Asian Ambiguous widthを選択. (要再起動)</string>
    <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
 
    <string name="title_color_preference">色</string>

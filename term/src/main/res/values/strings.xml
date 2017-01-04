@@ -124,7 +124,7 @@
    <string name="entry_fontfile_default">System font</string>
 
    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
-   <string name="summary_ambiwidth_preference">Choose East Asian ambiguous width.</string>
+   <string name="summary_ambiwidth_preference">Choose East Asian ambiguous width. (restart required)</string>
    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
 
    <string name="title_color_preference">Colors</string>

@@ -354,8 +354,14 @@ public class TermSettings {
         return mFontFile;
     }
 
+    // FIXME: vim crashed if change ambiwidth 1 to 2
+    int ambiwidth = -1;
     public int getAmbiWidth() {
-        return mAmbiWidth;
+        if (ambiwidth == -1) {
+            ambiwidth = mAmbiWidth;
+        }
+        return ambiwidth;
+        // return mAmbiWidth;
     }
 
     public boolean getHwAcceleration() {
