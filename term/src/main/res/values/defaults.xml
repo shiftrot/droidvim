@@ -10,7 +10,7 @@
    <string name="pref_fontsize_default" translatable="false">10</string>
    <string name="pref_fontleading_default" translatable="false">0</string>
    <string name="pref_fontfile_default" translatable="false">system</string>
-   <string name="pref_ambiwidth_default" translatable="false">2</string>
+   <string name="pref_ambiguous_width_default" translatable="false">1</string>
    <string name="pref_color_default" translatable="false">0</string>
    <string name="pref_composingtext_default" translatable="false">2</string>
    <bool name="pref_utf8_by_default_default">true</bool>

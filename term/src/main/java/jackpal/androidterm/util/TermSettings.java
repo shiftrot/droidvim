@@ -202,7 +202,7 @@ public class TermSettings {
         mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
         mFontLeading = Integer.parseInt(res.getString(R.string.pref_fontleading_default));
         mFontFile = res.getString(R.string.pref_fontfile_default);
-        mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiwidth_default));
+        mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiguous_width_default));
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
         mIMEColor = Integer.parseInt(res.getString(R.string.pref_composingtext_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);

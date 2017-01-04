@@ -272,7 +272,7 @@
                 android:title="@string/title_ambiwidth_preference"
                 android:summary="@string/summary_ambiwidth_preference"
                 android:entries="@array/entries_ambiwidth_preference"
-                android:defaultValue="@string/pref_ambiwidth_default"
+                android:defaultValue="@string/pref_ambiguous_width_default"
                 android:entryValues="@array/entryvalues_ambiwidth_preference"
                 android:dialogTitle="@string/dialog_title_ambiwidth_preference"
                 android:inputType="number" />
