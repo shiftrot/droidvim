@@ -23,6 +23,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.KeyEvent;
 
+import java.util.Locale;
+
 /**
  * Terminal emulator settings
  */
@@ -236,6 +238,7 @@ public class TermSettings {
 
     public void readPrefs(SharedPreferences prefs) {
         mPrefs = prefs;
+        setLocalizedDefault();
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mFunctionBar = readBooleanPref(FUNCTIONBAR_KEY, mFunctionBar);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
@@ -278,6 +281,21 @@ public class TermSettings {
         mImeShortcutsAction = readIntPref(IME_SHORTCUTS_ACTION, mImeShortcutsAction, IME_SHORTCUTS_ACTION_MAX);
         mImeDefaultInputtype = readIntPref(IME_DEFAULT_INPUTTYPE, mImeDefaultInputtype, IME_SHORTCUTS_ACTION_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
+    }
+
+    private static final String FIRST_KEY = "pref_first";
+    private void setLocalizedDefault() {
+        boolean first = mPrefs.getBoolean(FIRST_KEY, true);
+        if (!first) return;
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putBoolean(FIRST_KEY, false);
+        editor.apply();
+        Locale locale = Locale.getDefault();
+        String language = locale.getLanguage();
+        if (language.equals("ja")) {
+            editor.putString(AMBIWIDTH_KEY, "2");
+            editor.apply();
+        }
     }
 
     private int readIntPref(String key, int defaultValue, int maxValue) {
