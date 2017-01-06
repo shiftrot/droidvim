@@ -105,6 +105,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         }
     }
 
+    private String TMPDIR;
     @Override
     @SuppressLint("NewApi")
     public void onCreate() {
@@ -121,6 +122,9 @@ public class TermService extends Service implements TermSession.FinishCallback
         }
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
+        TMPDIR = getTMPDIR();
+        File tmpdir =new File(TMPDIR);
+        if (!tmpdir.exists()) tmpdir.mkdir();
         if (FLAVOR_VIM) {
             editor.putBoolean("functionbar_vim_paste", true);
             editor.putBoolean("functionbar_colon", true);
@@ -171,10 +175,25 @@ public class TermService extends Service implements TermSession.FinishCallback
         String appfiles = this.getFilesDir().toString();
         File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
         String appextfiles = extfilesdir != null ? extfilesdir.toString() : appfiles;
+        String tmpdir = TMPDIR;
         cmd = cmd.replaceAll("%APPBASE%", appbase);
         cmd = cmd.replaceAll("%APPFILES%", appfiles);
         cmd = cmd.replaceAll("%APPEXTFILES%", appextfiles);
+        cmd = cmd.replaceAll("%TMPDIR%", tmpdir);
         return cmd;
+    }
+
+    private String getTMPDIR() {
+        File cache = getExternalCacheDir();
+        String dir;
+        if (cache != null && cache.canWrite()) dir = cache.getAbsolutePath() + "/tmp";
+        else dir = getFilesDir().getAbsolutePath()+"/tmp";
+        return dir;
+    }
+
+    public void clearTMPDIR() {
+        File tmpdir = new File(TMPDIR);
+        if (tmpdir.exists()) TermVimInstaller.deleteFileOrFolder(tmpdir);
     }
 
     private static String fileToString(File file) throws IOException {

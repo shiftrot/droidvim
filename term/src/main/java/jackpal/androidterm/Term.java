@@ -576,7 +576,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                confirmClearCache();
+                confirmClearCache(false);
             }
         });
         findViewById(R.id.drawer_keyboard_button).setOnClickListener(new OnClickListener() {
@@ -605,13 +605,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         });
     }
 
-    private void confirmClearCache() {
+    private void confirmClearCache(final boolean clearAll) {
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_clear_cache_message);
         final Runnable clearCache = new Runnable() {
             public void run() {
                 if (mSyncFileObserver != null) mSyncFileObserver.clearCache();
+                if (mTermService != null && clearAll) mTermService.clearTMPDIR();
             }
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -622,6 +623,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
+
     }
 
     private DrawerLayout getDrawer() {
