@@ -298,7 +298,7 @@ public class      AddShortcut
       case OP_MAKE_SHORTCUT:
         if(data!=null && (uri=data.getData())!=null && (path=uri.getPath())!=null)
         {
-          SP.edit().putString("lastPath", path).commit();
+          SP.edit().putString("lastPath", path).apply();
           et[PATH].setText(path);
           name=path.replaceAll(".*/", "");
           if(et[NAME].getText().toString().equals("")) et[NAME].setText(name);

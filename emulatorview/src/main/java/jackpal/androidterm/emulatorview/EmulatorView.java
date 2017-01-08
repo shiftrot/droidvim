@@ -1743,7 +1743,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
         Editor editor = pref.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
         return value;
     }
 
@@ -1916,7 +1916,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
         Editor editor = pref.edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
         return value;
     }
 

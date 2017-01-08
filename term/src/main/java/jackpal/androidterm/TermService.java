@@ -129,7 +129,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             editor.putBoolean("functionbar_vim_paste", true);
             editor.putBoolean("functionbar_colon", true);
         }
-        editor.commit();
+        editor.apply();
 
         compat = new ServiceForegroundCompat(this);
         mTermSessions = new SessionList();

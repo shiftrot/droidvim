@@ -80,7 +80,7 @@ public class      FSNavigator
   ////////////////////////////////////////////////////////////
   private void doPause()
   {
-    SP.edit().putString("lastDirectory", getCanonicalPath(cd)).commit();
+    SP.edit().putString("lastDirectory", getCanonicalPath(cd)).apply();
   }
   ////////////////////////////////////////////////////////////
   public void onResume()
@@ -102,7 +102,7 @@ public class      FSNavigator
       case android.R.style.Theme_Light: theme=android.R.style.Theme;       break;
       default: return;
     }
-    SP.edit().putInt("theme", theme).commit();
+    SP.edit().putInt("theme", theme).apply();
     startActivityForResult(getIntent().addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT), -1);
     finish();
   }

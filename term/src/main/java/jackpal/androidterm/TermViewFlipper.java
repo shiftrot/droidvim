@@ -325,7 +325,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt(key, value);
-        editor.commit();
+        editor.apply();
         return value;
     }
 

@@ -163,7 +163,7 @@ public final class ShortcutEncryption {
 
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(SHORTCUT_KEYS_PREF, keys.encode());
-        edit.commit();
+        edit.apply();
     }
 
     /**

@@ -1921,7 +1921,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
         return value;
     }
 
