@@ -1027,6 +1027,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doPreferences();
         } else if (id == R.id.menu_paste) {
             doPaste();
+        } else if (id == R.id.menu_copy_screen) {
+            doCopyAll();
         } else if (id == R.id.menu_new_window) {
             doCreateNewWindow();
         } else if (id == R.id.menu_plus) {
@@ -1428,18 +1430,19 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
-      super.onCreateContextMenu(menu, v, menuInfo);
-      // menu.setHeaderTitle(R.string.edit_text);
-      menu.add(0, PASTE_ID, 0, R.string.paste);
-      menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
-      menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
-      // menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
-      // menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
-      menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
-      menu.add(0, SEND_MENU_ID, 0, R.string.title_functionbar_menu);
-      if (!canPaste()) {
-          menu.getItem(PASTE_ID).setEnabled(false);
-      }
+       openOptionsMenu();
+       // super.onCreateContextMenu(menu, v, menuInfo);
+       // menu.setHeaderTitle(R.string.edit_text);
+       // menu.add(0, PASTE_ID, 0, R.string.paste);
+       // menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
+       // // menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
+       // // menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
+       // // menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
+       // menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
+       // menu.add(0, SEND_MENU_ID, 0, R.string.title_functionbar_menu);
+       // if (!canPaste()) {
+       //   menu.getItem(PASTE_ID).setEnabled(false);
+       // }
     }
 
     @Override

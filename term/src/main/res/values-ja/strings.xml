@@ -46,6 +46,7 @@
    <string name="edit_text">テキスト編集</string>
    <string name="select_text">テキスト選択</string>
    <string name="copy_all">すべてコピー</string>
+   <string name="copy_screen">画面をコピー</string>
    <string name="paste">貼り付け</string>
    <string name="send_control_key">コントールキー送信</string>
    <string name="send_fn_key">fnキー送信</string>
