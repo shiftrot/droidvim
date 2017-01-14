@@ -40,6 +40,7 @@ android {
     productFlavors {
         droidvim {
             setApplicationId("com.droidvim")
+            versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date())+".dev"
         }
     }
 }
