@@ -275,6 +275,14 @@
   <string name="confirm_clear_cache_message">外部ストレージキャッシュを削除します.</string>
   <string name="softkeyboard">キーボード</string>
 
+  <string name="git_install_dialog_title">Gitのインストール</string>
+  <string name="installer_try_again">ファイルのダウンロードに失敗しました.\nネットワーク接続を確認して再実行してください.</string>
+  <string name="installer_try_again_button">再実行</string>
+  <string name="git_install_message_install_git">アップデートをチェックしています...</string>
+  <string name="git_install_confirm_install">新しいバージョンのGitが存在します.\nGitのインストールを実行します.</string>
+  <string name="git_install_confirm_update">既に同じバージョンのGitがインストールされています.\n上書きインストールしますか？</string>
+  <string name="git_install_success">Gitのアップデートに成功しました.</string>
+
   <string name="donate_confirm_title">DroidVimのご使用ありがとうございます.</string>
   <string name="donate_confirm_button">寄付する</string>
   <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>
