@@ -323,6 +323,8 @@
   <string name="softkeyboard">keyboard</string>
 
   <string name="git_install_dialog_title">Install Git</string>
+  <string name="network_error">Please check network connection.</string>
+  <string name="iabsetup_try_again">Unable to connect to Google Play Service.\nPlease check your network connection and try again.</string>
   <string name="installer_try_again">Installer was unable to download the file.\nPlease check your network connection and try again.</string>
   <string name="installer_try_again_button">Try again</string>
   <string name="git_install_message_install_git">Check for update...</string>
@@ -330,7 +332,8 @@
   <string name="git_install_confirm_update">Git : You already have the latest version.\nDo you want to overwrite the existing files?</string>
   <string name="git_install_success">Git has been successfully updated.</string>
 
-  <string name="iab_null">In App Billing helper is null.</string>
+  <string name="iab_null">Cannot found PlayStore.</string>
+  <string name="iab_wait">Please wait a moment.</string>
   <string name="donate_confirm_title">Thank you for using DroidVim.</string>
   <string name="donate_confirm_button">Donate</string>
   <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get git-cui, curl, busybox after donation!</string>

@@ -290,6 +290,8 @@
   <string name="softkeyboard">キーボード</string>
 
   <string name="git_install_dialog_title">Gitのインストール</string>
+  <string name="network_error">ネットワーク接続を確認してください.</string>
+  <string name="iabsetup_try_again">Google Playサービスへの接続に失敗しました。ネットワーク接続を確認して再実行してください.</string>
   <string name="installer_try_again">ファイルのダウンロードに失敗しました.\nネットワーク接続を確認して再実行してください.</string>
   <string name="installer_try_again_button">再実行</string>
   <string name="git_install_message_install_git">アップデートをチェックしています...</string>
@@ -297,6 +299,8 @@
   <string name="git_install_confirm_update">既に同じバージョンのGitがインストールされています.\n上書きインストールしますか？</string>
   <string name="git_install_success">Gitのアップデートに成功しました.</string>
 
+  <string name="iab_null">PlayStoreがみつかりません.</string>
+  <string name="iab_wait">しばらくおまちください.</string>
   <string name="donate_confirm_title">DroidVimのご使用ありがとうございます.</string>
   <string name="donate_confirm_button">寄付する</string>
   <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>

@@ -18,9 +18,12 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -468,6 +471,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
+//        if (!mIabHelperDisable) iabSetup();
         setDrawerButtons();
         restoreSyncFileObserver();
         mAlreadyStarted = true;
@@ -912,12 +916,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
         if (TermVimInstaller.doInstallVim) {
+            mIabHelperDisable = true;
             cmd = cmd.replaceAll("\n-?vim.app", "");
             TermVimInstaller.installVim(Term.this, new Runnable(){
                 @Override
                 public void run() {
                     sendKeyStrings("vim.app\n", false);
                     permissionCheckExternalStorage();
+                    mIabHelperDisable = !existsPlayStore();
+                    if (!mIabHelperDisable) setExtraButton();
                 }
             });
         } else {
@@ -1074,14 +1081,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
         registerReceiver(mBroadcastReceiever, new IntentFilter(RELOAD_STYLE_ACTION));
 
-        if (existsPlayStore()) {
-            if (mIabHelper == null) {
-                iabSetup();
-            } else {
-                // for promotion code
-                mIabHelper.queryInventoryAsync(mGotInventoryListener);
-            }
-        }
+       if (existsPlayStore()) {
+           if (mIabHelper == null) {
+               iabSetup();
+           } else {
+               // for promotion code
+               if (isConnected(this.getApplicationContext())) mIabHelper.queryInventoryAsync(mGotInventoryListener);
+           }
+       }
     }
 
     @Override
@@ -2581,30 +2588,68 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     IabHelper mIabHelper = null;
     boolean mIabHelperDisable = false;
     static final String TAG = "In App Billing";
+    static int iii = 0;
     private void iabSetup() {
-        if (mIabHelperDisable) return;
+        if (!isConnected(this.getApplicationContext())) return;
+        if (mIabHelperDisable) {
+            alert(Term.this.getString(R.string.iab_null));
+            return;
+        }
         String base64EncodedPublicKey = BuildConfig.BASE64_PUBLIC_KEY;
 
-        mIabHelper = new IabHelper(this, base64EncodedPublicKey);
-        mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
+        final ProgressDialog pd = ProgressDialog.show(Term.this, null, Term.this.getString(R.string.iab_wait), true, false);
+        if (mIabHelper == null) mIabHelper = new IabHelper(this, base64EncodedPublicKey);
+        if (mIabHelper == null) {
+            pd.dismiss();
+            confirmRetryIabSetup();
+        } else {
+            mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                public void onIabSetupFinished(IabResult result) {
+                    pd.dismiss();
+                    Log.d(TAG, "Setup finished.");
+                    if (!result.isSuccess()) {
+                        // Oh noes, there was a problem.
+                        // complain("Problem setting up in-app billing: " + result);
+                        showAds(true);
+                        return;
+                    }
 
-                Log.d(TAG, "Setup finished.");
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    // complain("Problem setting up in-app billing: " + result);
-                    showAds(true);
-                    return;
+                    // Have we been disposed of in the meantime? If so, quit.
+                    if (mIabHelper == null) return;
+
+                    // IAB is fully set up. Now, let's get an inventory of stuff we own.
+                    Log.d(TAG, "Setup successful. Querying inventory.");
+                    mIabHelper.queryInventoryAsync(mGotInventoryListener);
                 }
+            });
+        }
+    }
 
-                // Have we been disposed of in the meantime? If so, quit.
-                if (mIabHelper == null) return;
-
-                // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                mIabHelper.queryInventoryAsync(mGotInventoryListener);
+    private void confirmRetryIabSetup() {
+        final AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setIcon(android.R.drawable.ic_dialog_alert);
+        b.setMessage(this.getString(R.string.iabsetup_try_again));
+        b.setPositiveButton(this.getString(R.string.installer_try_again_button), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                iabSetup();
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                mOnExtraButtonClicked = false;
             }
         });
+        b.create().show();
+    }
+
+    public static boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info != null) {
+            return info.isConnected();
+        }
+        return false;
     }
 
     boolean existsPlayStore() {
@@ -2618,11 +2663,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
             Log.d(TAG, "Query inventory finished.");
             // Have we been disposed of in the meantime? If so, quit.
-            if (mIabHelper == null) return;
+            if (mIabHelper == null) {
+                mOnExtraButtonClicked = false;
+                return;
+            }
 
             // Is it a failure?
             if (result.isFailure()) {
-                complain("Failed to query inventory: " + result);
+                // complain("Failed to query inventory: " + result);
+                mOnExtraButtonClicked = false;
                 return;
             }
 
@@ -2640,6 +2689,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             Log.d(TAG, "Initial inventory query finished; enabling main UI.");
             if (BuildConfig.DEBUG) {
                 if (premiumPurchase != null) mIabHelper.consumeAsync(premiumPurchase, mGotConsumeInventoryListener);
+            }
+            if (mOnExtraButtonClicked) {
+                mOnExtraButtonClicked = false;
+                onExtraButtonClicked(null);
             }
         }
     };
@@ -2659,12 +2712,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     /** Verifies the developer payload of a purchase. */
     boolean verifyDeveloperPayload(Purchase p) {
-        String payload = p.getDeveloperPayload();
-        // FIXME: https://github.com/googlesamples/android-play-billing/issues/7
-        // for promotion code
-        if (payload.equals("")) return true;
-        String source = getPayload();
-        return payload.equals(source);
+        return true;
+        // String payload = p.getDeveloperPayload();
+        // // FIXME: https://github.com/googlesamples/android-play-billing/issues/7
+        // // for promotion code
+        // if (payload.equals("")) return true;
+        // String source = getPayload();
+        // return payload.equals(source);
     }
 
     private String getPayload() {
@@ -2680,10 +2734,18 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         confirmClearCache(true);
     }
 
+    private boolean mOnExtraButtonClicked = false;
     // User clicked the "Upgrade to Premium" button.
     public void onExtraButtonClicked(View arg0) {
+        if (!isConnected(this.getApplicationContext())) {
+            alert(this.getString(R.string.network_error));
+            return;
+        }
         if (mIsPremium) {
             installGit();
+        } else if (mIabHelper == null) {
+            mOnExtraButtonClicked = true;
+            iabSetup();
         } else {
             confirmDonation(this);
         }
@@ -2711,8 +2773,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
                     mIabHelper.launchPurchaseFlow(activity, SKU_PREMIUM, REQUEST_BILLING,
                             mPurchaseFinishedListener, payload);
-                } else {
-                    alert(Term.this.getString(R.string.iab_null));
                 }
             }
         });
@@ -2776,4 +2836,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         bld.create().show();
     }
 
+    AlertDialog.Builder mAlertWait = null;
+    void alertOnExtra(String message) {
+        mAlertWait = new AlertDialog.Builder(this);
+        mAlertWait.setMessage(message);
+        mAlertWait.setNeutralButton("OK", null);
+        Log.d(TAG, "Showing alert dialog: " + message);
+        mAlertWait.create().show();
+    }
 }
