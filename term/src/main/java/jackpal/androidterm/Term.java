@@ -2180,7 +2180,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         visibility = mPrefs.getBoolean("functionbar_i", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_i, visibility);
-        visibility = mPrefs.getBoolean("functionbar_colon", false) ? View.VISIBLE : View.GONE;
+        visibility = mPrefs.getBoolean("functionbar_colon", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_colon, visibility);
         visibility = mPrefs.getBoolean("functionbar_slash", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_slash, visibility);
@@ -2192,7 +2192,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setFunctionBarButton(R.id.button_pipe, visibility);
         visibility = mPrefs.getBoolean("functionbar_minus", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_minus, visibility);
-        visibility = mPrefs.getBoolean("functionbar_vim_paste", false) ? View.VISIBLE : View.GONE;
+        visibility = mPrefs.getBoolean("functionbar_vim_paste", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_vim_paste, visibility);
         visibility = mPrefs.getBoolean("functionbar_vim_yank", false) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_vim_yank, visibility);

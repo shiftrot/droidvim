@@ -141,7 +141,7 @@
                 android:title="i"/>
             <CheckBoxPreference
                 android:key="functionbar_colon"
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:title=":"/>
             <CheckBoxPreference
                 android:key="functionbar_slash"
@@ -165,7 +165,7 @@
                 android:title="|"/>
             <CheckBoxPreference
                 android:key="functionbar_vim_paste"
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:title="&quot;*p"/>
             <CheckBoxPreference
                 android:key="functionbar_vim_yank"

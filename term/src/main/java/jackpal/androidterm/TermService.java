@@ -113,10 +113,6 @@ public class TermService extends Service implements TermSession.FinishCallback
         TMPDIR = getTMPDIR();
         File tmpdir =new File(TMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
-        if (FLAVOR_VIM) {
-            editor.putBoolean("functionbar_vim_paste", true);
-            editor.putBoolean("functionbar_colon", true);
-        }
         editor.apply();
 
         compat = new ServiceForegroundCompat(this);
