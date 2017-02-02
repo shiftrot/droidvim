@@ -1799,6 +1799,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (keyCode == 0) return true;
         if (sTrapAltAndMeta) {
             boolean altEsc = mKeyListener.getAltSendsEsc();
             boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
