@@ -1019,8 +1019,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         v.setPreIMEShortcut("AltGrave", value);
         value = mPrefs.getBoolean("AltEsc", false);
         v.setPreIMEShortcut("AltEsc", value);
+        value = mPrefs.getBoolean("AltSpace", false);
+        v.setPreIMEShortcut("AltSpace", value);
         value = mPrefs.getBoolean("CtrlSpace", false);
         v.setPreIMEShortcut("CtrlSpace", value);
+        value = mPrefs.getBoolean("ShiftSpace", false);
+        v.setPreIMEShortcut("ShiftSpace", value);
         value = mPrefs.getBoolean("ZENKAKU_HANKAKU", false);
         v.setPreIMEShortcut("ZENKAKU_HANKAKU", value);
         value = mPrefs.getBoolean("GRAVE", false);

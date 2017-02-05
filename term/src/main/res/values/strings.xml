@@ -240,11 +240,13 @@
   <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
   <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
-  <string name="title_pre_ime_shortcuts">Use IME Shortcuts</string>
-  <string name="summary_title_pre_ime_shortcuts">Change ime input mode with function key or hardware keyboard.</string>
+  <string name="title_pre_ime_shortcuts">IME Shortcuts</string>
+  <string name="summary_title_pre_ime_shortcuts">Change keyboard input mode from hardware keyboard.</string>
   <string name="pref_alt_grave">Alt + [`]</string>
   <string name="pref_alt_esc">Alt + [Esc]</string>
+  <string name="pref_alt_space">Alt + [Space]</string>
   <string name="pref_ctrl_space">Ctrl + [Space]</string>
+  <string name="pref_shift_space">Shift + [Space]</string>
   <string name="pref_zenkaku_hankaku">[Hankaku/Zenkaku]</string>
   <string name="pref_grave">[`]</string>
   <string name="pref_switch_charset">[Kanji]</string>

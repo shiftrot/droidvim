@@ -236,7 +236,7 @@
             android:title="@string/title_ime_inputtype_preference"
             android:summary="@string/summary_ime_inputtype_preference"
             android:entries="@array/entries_ime_inputtype_preference"
-            android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
+            android:entryValues="@array/entryvalues_ime_inputtype_preference"
             android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
 
         <ListPreference
@@ -426,9 +426,17 @@
                         android:defaultValue="false"
                     android:title="@string/pref_alt_esc"/>
                 <CheckBoxPreference
+                        android:key="AltSpace"
+                        android:defaultValue="false"
+                        android:title="@string/pref_alt_space"/>
+                <CheckBoxPreference
                         android:key="CtrlSpace"
                         android:defaultValue="false"
                         android:title="@string/pref_ctrl_space"/>
+                <CheckBoxPreference
+                        android:key="ShiftSpace"
+                        android:defaultValue="false"
+                        android:title="@string/pref_shift_space"/>
                 <CheckBoxPreference
                     android:key="ZENKAKU_HANKAKU"
                     android:defaultValue="false"
