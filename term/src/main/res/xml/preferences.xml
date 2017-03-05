@@ -88,6 +88,10 @@
             android:title="@string/title_functionbar_key_preference"
             android:summary="@string/summary_functionbar_key_preference">
             <CheckBoxPreference
+                android:key="functionbar_next"
+                android:defaultValue="true"
+                android:title="@string/title_functionbar_change"/>
+            <CheckBoxPreference
                 android:key="functionbar_esc"
                 android:defaultValue="true"
                 android:title="Esc"/>
@@ -194,9 +198,103 @@
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_menu"/>
             <CheckBoxPreference
-                android:key="functionbar_hide"
+                android:key="functionbar_next2"
                 android:defaultValue="true"
+                android:title="@string/title_functionbar_change"/>
+            <!--
+            <CheckBoxPreference
+                android:visibility="gone"
+                android:key="functionbar_hide"
+                android:defaultValue="false"
                 android:title="@string/title_functionbar_hide"/>
+            -->
+            <EditTextPreference />
+            <CheckBoxPreference
+                android:key="functionbar_prev"
+                android:defaultValue="true"
+                android:title="@string/title_functionbar_change"/>
+            <CheckBoxPreference
+                android:key="functionbar_m1"
+                android:defaultValue="true"
+                android:title="F1"/>
+            <CheckBoxPreference
+                android:key="functionbar_m2"
+                android:defaultValue="true"
+                android:title="F2"/>
+            <CheckBoxPreference
+                android:key="functionbar_m3"
+                android:defaultValue="true"
+                android:title="F3"/>
+            <CheckBoxPreference
+                android:key="functionbar_m4"
+                android:defaultValue="true"
+                android:title="F4"/>
+            <CheckBoxPreference
+                android:key="functionbar_m5"
+                android:defaultValue="true"
+                android:title="F5"/>
+            <CheckBoxPreference
+                android:key="functionbar_m6"
+                android:defaultValue="true"
+                android:title="F6"/>
+            <CheckBoxPreference
+                android:key="functionbar_m7"
+                android:defaultValue="true"
+                android:title="F7"/>
+            <CheckBoxPreference
+                android:key="functionbar_m8"
+                android:defaultValue="true"
+                android:title="F8"/>
+            <CheckBoxPreference
+                android:key="functionbar_m9"
+                android:defaultValue="true"
+                android:title="F9"/>
+            <CheckBoxPreference
+                android:key="functionbar_m10"
+                android:defaultValue="true"
+                android:title="F10"/>
+            <CheckBoxPreference
+                android:key="functionbar_m11"
+                android:defaultValue="true"
+                android:title="F11"/>
+            <CheckBoxPreference
+                android:key="functionbar_m12"
+                android:defaultValue="true"
+                android:title="F12"/>
+            <!--
+            <CheckBoxPreference
+                android:key="functionbar_m13"
+                android:defaultValue="true"
+                android:title="F13"/>
+            <CheckBoxPreference
+                android:key="functionbar_m14"
+                android:defaultValue="true"
+                android:title="F14"/>
+            <CheckBoxPreference
+                android:key="functionbar_m15"
+                android:defaultValue="true"
+                android:title="F15"/>
+            <CheckBoxPreference
+                android:key="functionbar_m16"
+                android:defaultValue="true"
+                android:title="F16"/>
+            <CheckBoxPreference
+                android:key="functionbar_m17"
+                android:defaultValue="true"
+                android:title="F17"/>
+            <CheckBoxPreference
+                android:key="functionbar_m18"
+                android:defaultValue="true"
+                android:title="F18"/>
+            <CheckBoxPreference
+                android:key="functionbar_m19"
+                android:defaultValue="true"
+                android:title="F19"/>
+            -->
+            <CheckBoxPreference
+                android:key="functionbar_prev2"
+                android:defaultValue="true"
+                android:title="@string/title_functionbar_change"/>
         </PreferenceScreen>
 
         <ListPreference

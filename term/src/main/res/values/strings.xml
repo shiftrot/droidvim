@@ -84,6 +84,7 @@
    <string name="title_functionbar_menu">Menu</string>
    <string name="title_functionbar_softkeyboard">Soft keyboard</string>
    <string name="title_functionbar_hide">Hide functionbar</string>
+   <string name="title_functionbar_change">Switch functionbar</string>
 
    <string name="title_actionbar_preference">Action bar</string>
    <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>

@@ -82,6 +82,7 @@
    <string name="title_functionbar_menu">メニュー</string>
    <string name="title_functionbar_softkeyboard">IMEのトグル</string>
    <string name="title_functionbar_hide">ファンクションバーを隠す</string>
+   <string name="title_functionbar_change">ファンクションバー切替</string>
 
    <string name="title_actionbar_preference">アクションバー</string>
    <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降)</string>

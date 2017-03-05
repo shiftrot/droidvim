@@ -33,194 +33,318 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
                     <Button
+                        android:id="@+id/button_next_functionbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="0sp"
+                        android:text="▽"/>
+                    <Button
                         android:id="@+id/button_esc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="Esc"/>
                     <Button
                         android:id="@+id/button_ctrl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="Ctrl"/>
                     <Button
                         android:id="@+id/button_alt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="Alt"/>
                     <Button
                         android:id="@+id/button_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="Tab"/>
                     <Button
                         android:id="@+id/button_up"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="▲"/>
                     <Button
                         android:id="@+id/button_down"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="▼"/>
                     <Button
                         android:id="@+id/button_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="◀"/>
                     <Button
                         android:id="@+id/button_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="▶"/>
                     <Button
                         android:id="@+id/button_backspace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="BS"/>
                     <Button
                         android:id="@+id/button_enter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="↲"/>
                     <Button
                         android:id="@+id/button_softkeyboard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="◇"/>
                     <Button
                         android:id="@+id/button_menu_user"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="□"/>
                     <Button
                         android:id="@+id/button_i"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="i"/>
                     <Button
                         android:id="@+id/button_colon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text=":"/>
                     <Button
                         android:id="@+id/button_slash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="/"/>
                     <Button
                         android:id="@+id/button_minus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="-"/>
                     <Button
                         android:id="@+id/button_equal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="="/>
                     <Button
                         android:id="@+id/button_asterisk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="*"/>
                     <Button
                         android:id="@+id/button_pipe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="|"/>
                     <Button
                         android:id="@+id/button_vim_paste"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="&quot;*p"/>
                     <Button
                         android:id="@+id/button_vim_yank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="&quot;*yy"/>
                     <Button
                         android:id="@+id/button_menu_plus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="[＋]"/>
                     <Button
                         android:id="@+id/button_menu_minus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="[－]"/>
                     <Button
                         android:id="@+id/button_menu_x"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="[×]"/>
                     <Button
                         android:id="@+id/button_menu_quit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="[Q]"/>
                     <Button
                         android:id="@+id/button_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
                         android:text="≡"/>
                     <Button
                         android:id="@+id/button_menu_hide"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45sp"
-                        android:minWidth="60sp"
-                        android:text="∇"/>
+                        android:minHeight="44sp"
+                        android:minWidth="30sp"
+                        android:text="▽"/>
+                    <Button
+                        android:id="@+id/button_next_functionbar2"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="0sp"
+                        android:text="▽"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/view_function_bar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+                    <Button
+                        android:id="@+id/button_prev_functionbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="0sp"
+                        android:text="△"/>
+                    <Button
+                        android:id="@+id/button_m1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F1"/>
+                    <Button
+                        android:id="@+id/button_m2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F2"/>
+                    <Button
+                        android:id="@+id/button_m3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F3"/>
+                    <Button
+                        android:id="@+id/button_m4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F4"/>
+                    <Button
+                        android:id="@+id/button_m5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F5"/>
+                    <Button
+                        android:id="@+id/button_m6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F6"/>
+                    <Button
+                        android:id="@+id/button_m7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F7"/>
+                    <Button
+                        android:id="@+id/button_m8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F8"/>
+                    <Button
+                        android:id="@+id/button_m9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F9"/>
+                    <Button
+                        android:id="@+id/button_m10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F10"/>
+                    <Button
+                        android:id="@+id/button_m11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F11"/>
+                    <Button
+                        android:id="@+id/button_m12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="F12"/>
+                    <Button
+                        android:id="@+id/button_prev_functionbar2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="0sp"
+                        android:text="△"/>
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>

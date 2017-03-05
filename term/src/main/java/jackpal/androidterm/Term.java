@@ -2121,7 +2121,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void setFunctionBarSize() {
-        int size = findViewById(R.id.view_function_bar).getHeight();
+        int size;
+        if (mFunctionBarId == 0) size = findViewById(R.id.view_function_bar).getHeight();
+        else size = findViewById(R.id.view_function_bar2).getHeight();
         if (mViewFlipper != null) mViewFlipper.setFunctionBarSize(size);
     }
 
@@ -2153,8 +2155,25 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         findViewById(R.id.button_menu_x    ).setOnClickListener(this);
         findViewById(R.id.button_menu_user ).setOnClickListener(this);
         findViewById(R.id.button_menu_quit ).setOnClickListener(this);
+        findViewById(R.id.button_next_functionbar ).setOnClickListener(this);
+        findViewById(R.id.button_next_functionbar2 ).setOnClickListener(this);
+        findViewById(R.id.button_prev_functionbar ).setOnClickListener(this);
+        findViewById(R.id.button_prev_functionbar2 ).setOnClickListener(this);
+        findViewById(R.id.button_m1 ).setOnClickListener(this);
+        findViewById(R.id.button_m2 ).setOnClickListener(this);
+        findViewById(R.id.button_m3 ).setOnClickListener(this);
+        findViewById(R.id.button_m4 ).setOnClickListener(this);
+        findViewById(R.id.button_m5 ).setOnClickListener(this);
+        findViewById(R.id.button_m6 ).setOnClickListener(this);
+        findViewById(R.id.button_m7 ).setOnClickListener(this);
+        findViewById(R.id.button_m8 ).setOnClickListener(this);
+        findViewById(R.id.button_m9 ).setOnClickListener(this);
+        findViewById(R.id.button_m10 ).setOnClickListener(this);
+        findViewById(R.id.button_m11 ).setOnClickListener(this);
+        findViewById(R.id.button_m12 ).setOnClickListener(this);
     }
 
+    static int mFunctionBarId = 0;
     private void setFunctionKeyVisibility() {
         int visibility;
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -2205,7 +2224,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setFunctionBarButton(R.id.button_menu, visibility);
         visibility = mPrefs.getBoolean("functionbar_softkeyboard", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_softkeyboard, visibility);
-        visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
+        visibility = View.GONE;
+        // visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_hide, visibility);
 
         visibility = View.GONE;
@@ -2220,9 +2240,45 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         visibility = mPrefs.getBoolean("functionbar_menu_quit", true)  ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_quit, visibility);
 
-        setFunctionBarSize();
-        visibility = mFunctionBar == 1 ? View.VISIBLE : View.GONE;
+        visibility = mPrefs.getBoolean("functionbar_next", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_next_functionbar, visibility);
+        visibility = mPrefs.getBoolean("functionbar_next2", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_next_functionbar2, visibility);
+        visibility = mPrefs.getBoolean("functionbar_prev", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_prev_functionbar, visibility);
+        visibility = mPrefs.getBoolean("functionbar_prev2", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_prev_functionbar2, visibility);
+
+        visibility = mPrefs.getBoolean("functionbar_m1", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m1, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m2", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m2, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m3", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m3, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m4", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m4, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m5", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m5, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m6", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m6, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m7", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m7, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m8", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m8, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m9", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m9, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m10", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m10, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m11", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m11, visibility);
+        visibility = mPrefs.getBoolean("functionbar_m12", true)  ? View.VISIBLE : View.GONE;
+        setFunctionBarButton(R.id.button_m12, visibility);
+
+        visibility = (mFunctionBar == 1 && mFunctionBarId == 0) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar).setVisibility(visibility);
+        visibility = (mFunctionBar == 1 && mFunctionBarId == 1) ? View.VISIBLE : View.GONE;
+        findViewById(R.id.view_function_bar2).setVisibility(visibility);
+        setFunctionBarSize();
         mViewFlipper.setFunctionBar(mFunctionBar == 1);
     }
 
@@ -2322,6 +2378,49 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             break;
         case R.id.button_menu_hide:
             setFunctionBar(2);
+            break;
+        case R.id.button_next_functionbar:
+        case R.id.button_prev_functionbar:
+        case R.id.button_prev_functionbar2:
+        case R.id.button_next_functionbar2:
+            mFunctionBarId = mFunctionBarId == 0 ? 1 : 0;
+            setFunctionKeyVisibility();
+            break;
+        case R.id.button_m1:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F1);
+            break;
+        case R.id.button_m2:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F2);
+            break;
+        case R.id.button_m3:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F3);
+            break;
+        case R.id.button_m4:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F4);
+            break;
+        case R.id.button_m5:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F5);
+            break;
+        case R.id.button_m6:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F6);
+            break;
+        case R.id.button_m7:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F7);
+            break;
+        case R.id.button_m8:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F8);
+            break;
+        case R.id.button_m9:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F9);
+            break;
+        case R.id.button_m10:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F10);
+            break;
+        case R.id.button_m11:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F11);
+            break;
+        case R.id.button_m12:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F12);
             break;
         }
     }
