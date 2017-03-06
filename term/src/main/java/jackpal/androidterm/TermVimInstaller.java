@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -311,12 +312,33 @@ final class TermVimInstaller {
     }
 
     static String getArch() {
-        String cpu = System.getProperty("os.arch").toLowerCase();
         String arch = null;
-        if (cpu.contains("arm")) {
-            arch = "arm";
-        } else if (cpu.contains("x86") || cpu.contains("i686")) {
-            arch = "x86";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            for (String androidArch : Build.SUPPORTED_ABIS) {
+                if (androidArch.contains("arm64")) {
+                    arch = "arm64";
+                    break;
+                }
+                if (androidArch.contains("armeabi")) {
+                    arch = "arm";
+                    break;
+                }
+                if (androidArch.contains("x86_64")) {
+                    arch = "x86_64";
+                    break;
+                }
+                if (androidArch.contains("x86")) {
+                    arch = "x86";
+                    break;
+                }
+            }
+        } else {
+            String cpu = System.getProperty("os.arch").toLowerCase();
+            if (cpu.contains("arm")) {
+                arch = "arm";
+            } else if (cpu.contains("x86") || cpu.contains("i686")) {
+                arch = "x86";
+            }
         }
         return arch;
     }
