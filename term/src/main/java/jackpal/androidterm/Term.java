@@ -441,7 +441,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
-        WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         int wifiLockMode = WifiManager.WIFI_MODE_FULL;
         if (AndroidCompat.SDK >= 12) {
             wifiLockMode = WIFI_MODE_FULL_HIGH_PERF;
