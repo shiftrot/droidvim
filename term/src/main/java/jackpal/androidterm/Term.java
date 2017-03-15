@@ -465,7 +465,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
 
         updatePrefs();
-        permissionCheckExternalStorage();
         mIabHelperDisable = !existsPlayStore();
         setDrawerButtons();
         restoreSyncFileObserver();
@@ -916,8 +915,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 @Override
                 public void run() {
                     sendKeyStrings("vim.app\n", false);
+                    permissionCheckExternalStorage();
                 }
             });
+        } else {
+            permissionCheckExternalStorage();
         }
         mFirst = false;
         return cmd;
