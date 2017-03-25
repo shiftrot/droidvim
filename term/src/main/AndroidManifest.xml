@@ -14,6 +14,7 @@
                 android:theme="@style/Theme">
         <activity android:name="Term"
                 android:launchMode="singleTask"
+                android:immersive="false"
                 android:configChanges="keyboard|keyboardHidden|orientation"
                 android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
             <intent-filter>
