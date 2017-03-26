@@ -302,12 +302,13 @@
   <string name="debug">Debug</string>
   <string name="dropbox">Dropbox</string>
   <string name="external_storage">Storage</string>
-  <string name="create_file">Create file</string>
+  <string name="create_file">New file</string>
   <string name="delete_file">Delete file</string>
   <string name="manage_storage">Manage</string>
   <string name="storage_read_error">No such file.</string>
   <string name="storage_write_error">Cannot write to external storage.</string>
   <string name="storage_delete_file">Delete file from external storage.</string>
+  <string name="title_internal_storage">Internal private storage</string>
   <string name="clear_cache">Clear cache</string>
   <string name="confirm_clear_cache_message">Clear external storage cache.</string>
   <string name="softkeyboard">keyboard</string>

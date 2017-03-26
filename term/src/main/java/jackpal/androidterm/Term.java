@@ -1547,6 +1547,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     }
                 }
                 return null;
+            } else if (isInternalPrivateStorageDocument(uri)) {
+                String path = uri.getPath();
+                path = path.replaceAll(":", "/");
+                path = path.replaceFirst("/document/", "");
+                File file = new File(path);
+                if (file.exists()) {
+                    return file.toString();
+                }
             }
         }
         return null;
@@ -2438,6 +2446,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             path = uri.getPath();
             path = path.replaceAll(":", "/");
             path = path.replaceFirst("/document/", "/storage/");
+        } else if (isInternalPrivateStorageDocument(uri)) {
+            path = uri.getPath();
+            path = path.replaceAll(":", "/");
+            path = path.replaceFirst("/document/", "");
         } else {
             if (isDownloadDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/Download/");
@@ -2463,6 +2475,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
+    public static boolean isInternalPrivateStorageDocument(Uri uri) {
+        return "com.droidvim.storage.documents".equals(uri.getAuthority());
+    }
     public static boolean isDownloadDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
