@@ -160,6 +160,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public static final int REQUEST_FILE_PICKER = 2;
     public static final int REQUEST_FILE_DELETE = 3;
     public static final int REQUEST_BILLING = 4;
+    public static final int REQUEST_DROPBOX = 5;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -598,10 +599,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setAction("android.intent.category.LAUNCHER");
-                intent.setClassName("com.dropbox.android", "com.dropbox.android.activity.DropboxBrowser");
-                startActivity(intent);
+                if (getDropboxMode() == 0) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setPackage("com.dropbox.android");
+                    intent.setType("*/*");
+                    startActivityForResult(intent, REQUEST_DROPBOX);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setAction("android.intent.category.LAUNCHER");
+                    intent.setClassName("com.dropbox.android", "com.dropbox.android.activity.DropboxBrowser");
+                    startActivity(intent);
+                }
             }
         });
         findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
@@ -649,6 +657,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
             }
         });
+    }
+
+    private int getDropboxMode() {
+        return 1;
     }
 
     private boolean installGit() {
@@ -1473,6 +1485,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     confirmDelete(uri);
                 }
                 break;
+            case REQUEST_DROPBOX:
             case REQUEST_FILE_PICKER:
                 String path = null;
                 if (result == RESULT_OK && data != null) {
