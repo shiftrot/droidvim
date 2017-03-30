@@ -92,6 +92,7 @@ public class TermPreferences extends PreferenceActivity {
         }
 
         // FIXME:
+        if (!new File(FONTPATH).exists()) new File(FONTPATH).mkdirs();
         ListPreference fontFileList= (ListPreference) getPreferenceScreen().findPreference("fontfile");
         setFontList(fontFileList);
 
