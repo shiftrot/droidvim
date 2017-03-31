@@ -109,7 +109,9 @@
         </service>
         <meta-data
             android:name="com.sec.android.support.multiwindow"
-            android:value="true">
-        </meta-data>
+            android:value="true"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="ratio_float"/>
     </application>
 </manifest>
