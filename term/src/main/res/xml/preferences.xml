@@ -84,6 +84,11 @@
             android:title="@string/title_functionbar_preference"
             android:summary="@string/summary_functionbar_preference" />
 
+        <CheckBoxPreference android:title="@string/title_auto_hide_functionbar"
+                android:key="auto_hide_functionbar"
+                android:defaultValue="@bool/pref_auto_hide_functionbar_default"
+                android:summary="@string/auto_hide_functionbar_summary" />
+
         <PreferenceScreen
             android:title="@string/title_functionbar_key_preference"
             android:summary="@string/summary_functionbar_key_preference">
@@ -198,14 +203,13 @@
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_menu"/>
             <CheckBoxPreference
+                android:key="functionbar_hide"
+                android:defaultValue="true"
+                android:title="@string/title_functionbar_hide"/>
+            <CheckBoxPreference
                 android:key="functionbar_next2"
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_change"/>
-            <CheckBoxPreference
-                android:visibility="gone"
-                android:key="functionbar_hide"
-                android:defaultValue="false"
-                android:title="@string/title_functionbar_hide"/>
             <EditTextPreference />
             <CheckBoxPreference
                 android:key="functionbar_prev"
@@ -321,6 +325,7 @@
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

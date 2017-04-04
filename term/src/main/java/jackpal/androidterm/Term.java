@@ -1104,9 +1104,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         super.onStop();
     }
 
+    private int mPrevHaveFullHwKeyboard = -1;
+    private boolean mHideFunctionBar = false;
     private boolean checkHaveFullHwKeyboard(Configuration c) {
-        return (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
-            (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
+        boolean haveFullHwKeyboard =  (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
+                                            (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
+        if (mPrevHaveFullHwKeyboard == -1 || (haveFullHwKeyboard != (mPrevHaveFullHwKeyboard == 1))) {
+            mHideFunctionBar = haveFullHwKeyboard && mSettings.getAutoHideFunctionbar();
+            if (!haveFullHwKeyboard) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
+        }
+        mPrevHaveFullHwKeyboard = haveFullHwKeyboard ? 1 : 0;
+        return haveFullHwKeyboard;
     }
 
     private void setSoftInputMode(boolean haveFullHwKeyboard) {
@@ -2160,7 +2168,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private static int mFunctionBar = -1;
     private void setFunctionBar(int mode) {
-        if (mode == 2) mFunctionBar = mFunctionBar == 0 ? 1 : 0;
+        if (mode == 2) {
+            mFunctionBar = mFunctionBar == 0 ? 1 : 0;
+            if (mHideFunctionBar) mFunctionBar = 1;
+            mHideFunctionBar = false;
+        }
         else mFunctionBar = mode;
         if (mAlreadyStarted) updatePrefs();
     }
@@ -2221,6 +2233,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     static int mFunctionBarId = 0;
     private void setFunctionKeyVisibility() {
         int visibility;
+        if (mHideFunctionBar) {
+            visibility = View.GONE;
+            findViewById(R.id.view_function_bar).setVisibility(visibility);
+            findViewById(R.id.view_function_bar2).setVisibility(visibility);
+            setFunctionBarSize();
+            mViewFlipper.setFunctionBar(false);
+            return;
+        }
+
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         visibility = mPrefs.getBoolean("functionbar_esc", true) ? View.VISIBLE : View.GONE;

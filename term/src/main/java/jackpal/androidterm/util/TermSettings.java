@@ -75,6 +75,7 @@ public class TermSettings {
     private boolean mMouseTracking;
 
     private boolean mUseKeyboardShortcuts;
+    private boolean mAutoHideFunctionbar;
     private int mImeShortcutsAction;
     private int mImeDefaultInputtype;
 
@@ -112,6 +113,7 @@ public class TermSettings {
     private static final String IGNORE_XON = "ignore_xoff";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
+    private static final String AUTO_HIDE_FUNCTIONBAR = "auto_hide_functionbar";
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action";
     private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
 
@@ -232,6 +234,7 @@ public class TermSettings {
         mIgnoreXoff = res.getBoolean(R.bool.pref_ignore_xoff_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
+        mAutoHideFunctionbar = res.getBoolean(R.bool.pref_auto_hide_functionbar_default);
         mImeShortcutsAction = res.getInteger(R.integer.pref_ime_shortcuts_action_default);
         mImeDefaultInputtype = res.getInteger(R.integer.pref_ime_inputtype_default);
     }
@@ -278,6 +281,7 @@ public class TermSettings {
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
+        mAutoHideFunctionbar = readBooleanPref(AUTO_HIDE_FUNCTIONBAR, mAutoHideFunctionbar);
         mImeShortcutsAction = readIntPref(IME_SHORTCUTS_ACTION, mImeShortcutsAction, IME_SHORTCUTS_ACTION_MAX);
         mImeDefaultInputtype = readIntPref(IME_DEFAULT_INPUTTYPE, mImeDefaultInputtype, IME_SHORTCUTS_ACTION_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
@@ -434,6 +438,10 @@ public class TermSettings {
 
     public boolean getUseKeyboardShortcutsFlag() {
         return mUseKeyboardShortcuts;
+    }
+
+    public boolean getAutoHideFunctionbar() {
+        return mAutoHideFunctionbar;
     }
 
     public int getImeShortcutsAction() {
