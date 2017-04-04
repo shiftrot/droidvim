@@ -201,13 +201,11 @@
                 android:key="functionbar_next2"
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_change"/>
-            <!--
             <CheckBoxPreference
                 android:visibility="gone"
                 android:key="functionbar_hide"
                 android:defaultValue="false"
                 android:title="@string/title_functionbar_hide"/>
-            -->
             <EditTextPreference />
             <CheckBoxPreference
                 android:key="functionbar_prev"

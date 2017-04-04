@@ -2269,8 +2269,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setFunctionBarButton(R.id.button_menu, visibility);
         visibility = mPrefs.getBoolean("functionbar_softkeyboard", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_softkeyboard, visibility);
-        visibility = View.GONE;
-        // visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
+        visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
         setFunctionBarButton(R.id.button_menu_hide, visibility);
 
         visibility = View.GONE;
