@@ -1424,6 +1424,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     /** Do we want to intercept this system key? */
     private boolean isInterceptedSystemKey(int keyCode) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            return true;
+        }
         return keyCode == KeyEvent.KEYCODE_BACK && mBackKeySendsCharacter;
     }
 
@@ -1450,6 +1453,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            ((Activity)this.getContext()).onKeyUp(0xfffffff3, null);
+            return true;
+        }
         mKeyListener.keyUp(keyCode, event);
         clearSpecialKeyStatus();
         return true;
