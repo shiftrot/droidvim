@@ -1,7 +1,6 @@
-import java.text.SimpleDateFormat
-
 apply plugin: 'com.android.application'
 
+import java.text.SimpleDateFormat
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
