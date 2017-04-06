@@ -36,21 +36,7 @@ import android.util.Log;
 import android.app.Notification;
 import android.app.PendingIntent;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.lang.Process;
-import java.util.Locale;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 import jackpal.androidterm.emulatorview.TermSession;
 
@@ -60,7 +46,6 @@ import jackpal.androidterm.libtermexec.v1.*;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
-import java.io.File;
 import java.util.UUID;
 
 public class TermService extends Service implements TermSession.FinishCallback
@@ -200,61 +185,6 @@ public class TermService extends Service implements TermSession.FinishCallback
         return mAPPEXTFILES;
     }
 
-    private static String fileToString(File file) throws IOException {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            StringBuilder sb = new StringBuilder();
-            int c;
-            while ((c = br.read()) != -1) {
-              sb.append((char) c);
-            }
-            return sb.toString();
-        } finally {
-            br.close();
-        }
-    }
-
-    private int copyScript(int id, String fname) {
-        return copyScript(id, fname, 0);
-    }
-
-    @SuppressLint("NewApi")
-    private int copyScript(int id, String fname, long time) {
-        if (id == 0) return -1;
-        BufferedReader br = null;
-        try {
-            try {
-                InputStream is = getResources().openRawResource(id);
-                br = new BufferedReader(new InputStreamReader(is));
-                PrintWriter writer = new PrintWriter(this.openFileOutput(fname, MODE_PRIVATE));
-                String str;
-                mAPPBASE = this.getApplicationInfo().dataDir;
-                mAPPFILES = this.getFilesDir().toString();
-                File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
-                mAPPEXTFILES = extfilesdir != null ? extfilesdir.toString() : mAPPFILES;
-                while ((str = br.readLine()) != null) {
-                    str = str.replace("%APPBASE%", mAPPBASE);
-                    str = str.replace("%APPFILES%", mAPPFILES);
-                    str = str.replace("%APPEXTFILES%", mAPPEXTFILES);
-                    writer.print(str+"\n");
-                }
-                writer.close();
-            } catch (IOException e) {
-                return 1;
-            } finally {
-                if (br != null) br.close();
-            }
-        } catch (IOException e) {
-            return 1;
-        }
-        if (time > 0) {
-            File file = new File(mAPPFILES+"/"+fname);
-            file.setLastModified(time);
-        }
-        return 0;
-    }
-
     private boolean getInstallStatus(String scriptFile, String zipFile) {
         if (!TermVimInstaller.TERMVIM_VERSION.equals(getDevString(this, "versionName", ""))) return false;
         if (!(new File(scriptFile).exists())) return false;
@@ -273,58 +203,6 @@ public class TermService extends Service implements TermSession.FinishCallback
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
         return pref.getString(key, defValue);
      }
-
-    private InputStream getInputStream(int id) {
-        InputStream is = null;
-        try {
-            is = getResources().openRawResource(id);
-        } catch(Exception e) {
-        }
-        return is;
-    }
-
-    @SuppressLint("NewApi")
-    public void installZip(String path, InputStream is) {
-        if (is == null) return;
-        File outDir = new File(path);
-        outDir.mkdirs();
-        ZipInputStream zin = new ZipInputStream(new BufferedInputStream(is));
-        ZipEntry ze = null;
-        int size;
-        byte[] buffer = new byte[8192];
-
-        try {
-            while ((ze = zin.getNextEntry()) != null) {
-                if (ze.isDirectory()) {
-                    File file = new File(path+"/"+ze.getName());
-                    if (!file.isDirectory()) file.mkdirs();
-                } else {
-                    File file = new File(path+"/"+ze.getName());
-                    File parentFile = file.getParentFile();
-                    parentFile.mkdirs();
-
-                    FileOutputStream fout = new FileOutputStream(file);
-                    BufferedOutputStream bufferOut = new BufferedOutputStream(fout, buffer.length);
-                    while ((size = zin.read(buffer, 0, buffer.length)) != -1) {
-                        bufferOut.write(buffer, 0, size);
-                    }
-                    bufferOut.flush();
-                    bufferOut.close();
-                    if (ze.getName().startsWith("bin/")) {
-                        if (AndroidCompat.SDK >= 9) file.setExecutable(true, false);
-                    }
-                }
-            }
-
-            byte[] buf = new byte[2048];
-            while (is.available() > 0) {
-                is.read(buf);
-            }
-            buf = null;
-            zin.close();
-        } catch (Exception e) {
-        }
-    }
 
     @Override
     public void onDestroy() {
