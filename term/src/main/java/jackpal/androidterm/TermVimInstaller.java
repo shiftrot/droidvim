@@ -97,23 +97,13 @@ final class TermVimInstaller {
     }
 
     static String getInstallVersionFile(final Service service) {
-        String path = service.getFilesDir().toString();
-        File extfilesdir = (AndroidCompat.SDK >= 8) ? service.getExternalFilesDir(null) : null;
-        String sdcard = extfilesdir != null ? extfilesdir.toString() : path;
-        return sdcard+"/version";
-    }
-
-    static String getInstallVersionFile(final Activity activity) {
-        String path = activity.getFilesDir().toString();
-        File extfilesdir = (AndroidCompat.SDK >= 8) ? activity.getExternalFilesDir(null) : null;
-        String sdcard = extfilesdir != null ? extfilesdir.toString() : path;
+        String sdcard = TermService.getAPPEXTFILES();
         return sdcard+"/version";
     }
 
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
         final String path = activity.getFilesDir().toString();
-        File extfilesdir = (AndroidCompat.SDK >= 8) ? activity.getExternalFilesDir(null) : null;
-        final String sdcard = extfilesdir != null ? extfilesdir.toString() : path;
+        final String sdcard = TermService.getAPPEXTFILES();
         INSTALL_ZIP = activity.getString(R.string.update_vim);
         final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_vim), true, false);
         new Thread() {

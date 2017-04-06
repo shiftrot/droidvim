@@ -93,7 +93,6 @@ public class TermService extends Service implements TermSession.FinishCallback
         }
     }
 
-    private String TMPDIR;
     @Override
     @SuppressLint("NewApi")
     public void onCreate() {
@@ -110,9 +109,15 @@ public class TermService extends Service implements TermSession.FinishCallback
         }
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
-        TMPDIR = getTMPDIR();
-        File tmpdir =new File(TMPDIR);
+        mTMPDIR = getTempDir();
+        File tmpdir =new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
+
+        mAPPBASE = this.getApplicationInfo().dataDir;
+        mAPPFILES = this.getFilesDir().toString();
+        File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
+        mAPPEXTFILES = extfilesdir != null ? extfilesdir.toString() : mAPPFILES;
+
         editor.apply();
 
         compat = new ServiceForegroundCompat(this);
@@ -152,22 +157,21 @@ public class TermService extends Service implements TermSession.FinishCallback
     }
 
     @SuppressLint("NewApi")
+    private static String mAPPBASE;
+    private static String mAPPFILES;
+    private static String mAPPEXTFILES;
+    private static String mTMPDIR;
     public String getInitialCommand(String cmd, boolean bFirst) {
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1"+ replace);
-        String appbase = this.getApplicationInfo().dataDir;
-        String appfiles = this.getFilesDir().toString();
-        File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
-        String appextfiles = extfilesdir != null ? extfilesdir.toString() : appfiles;
-        String tmpdir = TMPDIR;
-        cmd = cmd.replaceAll("%APPBASE%", appbase);
-        cmd = cmd.replaceAll("%APPFILES%", appfiles);
-        cmd = cmd.replaceAll("%APPEXTFILES%", appextfiles);
-        cmd = cmd.replaceAll("%TMPDIR%", tmpdir);
+        cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
+        cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
+        cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
+        cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
         return cmd;
     }
 
-    private String getTMPDIR() {
+    private String getTempDir() {
         File cache = getExternalCacheDir();
         String dir;
         if (cache != null && cache.canWrite()) dir = cache.getAbsolutePath() + "/tmp";
@@ -176,8 +180,24 @@ public class TermService extends Service implements TermSession.FinishCallback
     }
 
     public void clearTMPDIR() {
-        File tmpdir = new File(TMPDIR);
+        File tmpdir = new File(mTMPDIR);
         if (tmpdir.exists()) TermVimInstaller.deleteFileOrFolder(tmpdir);
+    }
+
+    static public String getTMPDIR() {
+        return mTMPDIR;
+    }
+
+    static public String getAPPBASE() {
+        return mAPPBASE;
+    }
+
+    static public String getAPPFILES() {
+        return mAPPFILES;
+    }
+
+    static public String getAPPEXTFILES() {
+        return mAPPEXTFILES;
     }
 
     private static String fileToString(File file) throws IOException {
@@ -203,22 +223,20 @@ public class TermService extends Service implements TermSession.FinishCallback
     private int copyScript(int id, String fname, long time) {
         if (id == 0) return -1;
         BufferedReader br = null;
-        String appfiles = "";
-        String appextfiles = "";
         try {
             try {
                 InputStream is = getResources().openRawResource(id);
                 br = new BufferedReader(new InputStreamReader(is));
                 PrintWriter writer = new PrintWriter(this.openFileOutput(fname, MODE_PRIVATE));
                 String str;
-                String appbase = this.getApplicationInfo().dataDir;
-                appfiles = this.getFilesDir().toString();
+                mAPPBASE = this.getApplicationInfo().dataDir;
+                mAPPFILES = this.getFilesDir().toString();
                 File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
-                appextfiles = extfilesdir != null ? extfilesdir.toString() : appfiles;
+                mAPPEXTFILES = extfilesdir != null ? extfilesdir.toString() : mAPPFILES;
                 while ((str = br.readLine()) != null) {
-                    str = str.replace("%APPBASE%", appbase);
-                    str = str.replace("%APPFILES%", appfiles);
-                    str = str.replace("%APPEXTFILES%", appextfiles);
+                    str = str.replace("%APPBASE%", mAPPBASE);
+                    str = str.replace("%APPFILES%", mAPPFILES);
+                    str = str.replace("%APPEXTFILES%", mAPPEXTFILES);
                     writer.print(str+"\n");
                 }
                 writer.close();
@@ -231,7 +249,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             return 1;
         }
         if (time > 0) {
-            File file = new File(appfiles+"/"+fname);
+            File file = new File(mAPPFILES+"/"+fname);
             file.setLastModified(time);
         }
         return 0;
