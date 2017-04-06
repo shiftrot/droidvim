@@ -98,6 +98,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -109,6 +110,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1973,10 +1975,42 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (!canPaste()) {
             return;
         }
+        doWarningBeforePaste();
+    }
+
+    private void doTermPaste() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
+        if (clip.hasText()) return;
         CharSequence paste = clip.getText();
         getCurrentTermSession().write(paste.toString());
+    }
+
+    private void doWarningBeforePaste() {
+        boolean warning = getDevBoolean(Term.this, "do_warning_before_paste", true);
+        if (!warning) {
+            doTermPaste();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setTitle(R.string.clipboard_warning_title);
+            builder.setMessage(R.string.clipboard_warning);
+            LayoutInflater flater = LayoutInflater.from(this);
+            View view = flater.inflate(R.layout.alert_checkbox, null);
+            builder.setView(view);
+            final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    if (dontShowAgain.isChecked()) {
+                        setDevBoolean(Term.this, "do_warning_before_paste", false);
+                    }
+                    doTermPaste();
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            builder.create().show();
     }
 
     private void doSendControlKey() {
