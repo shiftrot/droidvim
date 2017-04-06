@@ -27,7 +27,7 @@
    <bool name="pref_alt_sends_esc_default">false</bool>
    <bool name="pref_ignore_xoff_default">true</bool>
    <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
-   <string name="pref_initialcommand_default" translatable="false">export APPBASE=%APPBASE%\nexport APPFILES=%APPFILES%\nexport APPEXTFILES=%APPEXTFILES%\nexport TMPDIR=%TMPDIR%\nexport PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH\nexport LD_LIBRARY_PATH=$APPFILES/usr/lib\nexport TERMINFO=$APPEXTFILES/terminfo\nexport VIMRUNTIME=$APPEXTFILES/runtime\nexport VIM=$APPEXTFILES\ncd $HOME\n-vim.app</string>
+   <string name="pref_initialcommand_default" translatable="false">export PS1=\'$USER:${PWD/$HOME} $ \'\ncd $HOME\nexport APPBASE=%APPBASE%\nexport APPFILES=%APPFILES%\nexport APPEXTFILES=%APPEXTFILES%\nexport TMPDIR=%TMPDIR%\nexport PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH\nexport LD_LIBRARY_PATH=$APPFILES/usr/lib\nexport TERMINFO=$APPEXTFILES/terminfo\nexport VIMRUNTIME=$APPEXTFILES/runtime\nexport VIM=$APPEXTFILES\n-vim.app</string>
    <string name="pref_intentcommand_default" translatable="false">:e %s</string>
    <string name="pref_termtype_default" translatable="false">screen-256color</string>
    <bool name="pref_close_window_on_process_exit_default">true</bool>
