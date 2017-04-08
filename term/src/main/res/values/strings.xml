@@ -305,6 +305,7 @@
   <string name="button_no">No</string>
   <string name="install_runtime_doc_message">Would you like to install help files?</string>
   <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
+  <string name="keyboard_warning">If you need to switch keyboard input mode from hardware keyboard, set \"IME shortcut\" appropriately from \"Preferences\" and use IME shortcut.</string>
 
   <string name="extra">Extra</string>
   <string name="debug">Debug</string>

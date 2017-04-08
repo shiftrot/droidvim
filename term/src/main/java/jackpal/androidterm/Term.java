@@ -1112,9 +1112,34 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mPrevHaveFullHwKeyboard == -1 || (haveFullHwKeyboard != (mPrevHaveFullHwKeyboard == 1))) {
             mHideFunctionBar = haveFullHwKeyboard && mSettings.getAutoHideFunctionbar();
             if (!haveFullHwKeyboard) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
+            if (haveFullHwKeyboard) doWarningHwKeyboard();
         }
         mPrevHaveFullHwKeyboard = haveFullHwKeyboard ? 1 : 0;
         return haveFullHwKeyboard;
+    }
+
+    private void doWarningHwKeyboard() {
+        boolean warning = getDevBoolean(Term.this, "do_warning_hw_keyboard", true);
+        if (!warning) {
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setMessage(R.string.keyboard_warning);
+            LayoutInflater flater = LayoutInflater.from(this);
+            View view = flater.inflate(R.layout.alert_checkbox, null);
+            builder.setView(view);
+            final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    if (dontShowAgain.isChecked()) {
+                        setDevBoolean(Term.this, "do_warning_hw_keyboard", false);
+                    }
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            builder.create().show();
     }
 
     private void setSoftInputMode(boolean haveFullHwKeyboard) {

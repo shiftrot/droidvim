@@ -275,6 +275,7 @@
   <string name="button_no">いいえ</string>
   <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
   <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
+  <string name="keyboard_warning">ハードウェアキーボードからキーボード入力モードを切り替える必要がある場合は「環境設定」からIMEショートカットを適切に設定し,IMEショートカットを使用します.</string>
 
   <string name="external_storage">ストレージ</string>
   <string name="create_file">新規ファイル</string>
