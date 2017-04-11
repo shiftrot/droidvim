@@ -94,6 +94,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         }
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
+        mHOME = homePath;
         mTMPDIR = getTempDir();
         File tmpdir =new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
@@ -146,6 +147,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     private static String mAPPFILES;
     private static String mAPPEXTFILES;
     private static String mTMPDIR;
+    private static String mHOME;
     public String getInitialCommand(String cmd, boolean bFirst) {
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1"+ replace);
@@ -171,6 +173,10 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     static public String getTMPDIR() {
         return mTMPDIR;
+    }
+
+    static public String getHOME() {
+        return mHOME;
     }
 
     static public String getAPPBASE() {
