@@ -49,6 +49,8 @@
         android:title="@string/special_keys" />
     <item android:id="@+id/menu_edit_vimrc"
         android:title="@string/edit_vimrc" />
+    <item android:id="@+id/menu_reload"
+        android:title="@string/reload_file" />
     <item android:id="@+id/menu_preferences"
         android:title="@string/preferences"
         android:icon="@drawable/ic_menu_preferences" />

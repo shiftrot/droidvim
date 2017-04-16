@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/force_encoding" />
+
+    <Spinner
+        android:id="@+id/spinner_encoding"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <AutoCompleteTextView android:id="@+id/autocomplete_encoding"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"/>
+
+</LinearLayout>

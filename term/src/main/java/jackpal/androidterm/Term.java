@@ -31,7 +31,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.system.Os;
-import android.text.Layout;
 import android.text.TextUtils;
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
@@ -112,8 +111,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1304,6 +1307,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doToggleWifiLock();
         } else if (id == R.id.menu_edit_vimrc) {
             sendKeyStrings(":exe $MYVIMRC == '' ? 'e $HOME/.vimrc' : 'e $MYVIMRC'\r", true);
+        } else if (id == R.id.menu_reload) {
+            fileReload();
         } else if  (id == R.id.action_help) {
             Intent openHelp = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(getString(R.string.help_url)));
@@ -1499,6 +1504,49 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
         startActivityForResult(intent, REQUEST_FILE_PICKER);
+    }
+
+    private void fileReload() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(android.R.drawable.ic_dialog_info);
+        builder.setTitle(this.getString(R.string.reload_file_title));
+
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout_encoding = inflater.inflate(R.layout.force_encoding, null);
+        final AutoCompleteTextView  textView = (AutoCompleteTextView)layout_encoding.findViewById((R.id.autocomplete_encoding));
+
+        ArrayAdapter<String> ac_adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, IconvHelper.encodings);
+        textView.setAdapter(ac_adapter);
+        textView.setThreshold(1);
+
+        ArrayAdapter<String> sp_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, IconvHelper.encodings);
+        sp_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner sp_encoding = (Spinner) layout_encoding.findViewById(R.id.spinner_encoding);
+        sp_encoding.setAdapter(sp_adapter);
+
+        builder.setView(layout_encoding);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface d, int m) {
+                String encoding = textView.getText().toString();
+                String cmd = ":e!";
+                if (!encoding.equals("")) cmd += " ++enc="+encoding;
+                sendKeyStrings(cmd+"\r", true);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.create().show();
+
+        sp_encoding.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                textView.setText(IconvHelper.encodings[position], null);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                textView.setText("", null);
+            }
+        });
+
     }
 
     @Override

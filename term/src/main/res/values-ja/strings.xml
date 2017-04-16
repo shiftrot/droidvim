@@ -40,6 +40,9 @@
 
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="update_vim">実行ファイルとライブラリをアップデートしています.</string>
+   <string name="reload_file">エンコーディング指定</string>
+   <string name="reload_file_title">ファイル再読込</string>
+   <string name="force_encoding">必要に応じてエンコードを選択します.</string>
 
    <string name="tips_vim_title">Tips</string>
    <string name="tips_vim_list">▼直接入力\n- \"◇\"ボタンで「英数入力のみ有効」/「日本語入力可能」を切替.\n  (「起動時の入力モード」は設定で変更可能です)\n\n▼終了方法\n- \":qa\"を入力.\n- \"[Q]\"ボタンをタップ.\n- ナビゲーションドロワーの\"QUIT\"ボタンをタップ.\n\n▼Vimチュートリアル\n- \":Vimtutor\"を入力.</string>
