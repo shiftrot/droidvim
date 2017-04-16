@@ -480,7 +480,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
     private void restoreSyncFileObserver() {
         if (!FLAVOR_VIM) return;
-        if (mSyncFileObserver != null) return;
         File dir = new File(this.getExternalCacheDir().toString()+"/scratch");
         mSyncFileObserver = new SyncFileObserver(dir.toString());
         mSyncFileObserver.deleteFromStorage(true);
@@ -2552,6 +2551,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 path = uri.toString().replaceFirst("content://[^/]+/", "/");
             }
             if (path != null) {
+                path = path.replaceAll("%2F", "/");
                 path = path+"/"+displayName;
             }
         }
