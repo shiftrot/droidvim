@@ -553,7 +553,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void setDebugButton() {
-        if (BuildConfig.APPLICATION_ID.equals("com.droidvim")) return;
+        if (!BuildConfig.DEBUG) return;
         Button button = (Button)findViewById(R.id.drawer_debug_button);
         button.setVisibility(View.VISIBLE);
     }
@@ -2742,9 +2742,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return property;
     }
 
-    // User clicked the "Upgrade to Premium" button.
     public void onDebugButtonClicked(View arg0) {
-        confirmClearCache(true);
     }
 
     private boolean mOnExtraButtonClicked = false;
