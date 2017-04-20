@@ -2302,50 +2302,75 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mViewFlipper != null) mViewFlipper.setFunctionBarSize(size);
     }
 
+    class FunctionKey {
+        public String key;
+        public int resid;
+        public boolean defValue;
+        FunctionKey(String k, int i, boolean v) {
+            key = k;
+            resid = i;
+            defValue = v;
+        }
+    }
+
+    FunctionKey[] FunctionKeys = {
+        new FunctionKey("functionbar_esc",          R.id.button_esc,               true),
+        new FunctionKey("functionbar_ctrl",         R.id.button_ctrl,              true),
+        new FunctionKey("functionbar_alt",          R.id.button_alt,               false),
+        new FunctionKey("functionbar_tab",          R.id.button_tab,               true),
+        new FunctionKey("functionbar_up",           R.id.button_up,                true),
+        new FunctionKey("functionbar_down",         R.id.button_down,              true),
+        new FunctionKey("functionbar_left",         R.id.button_left,              false),
+        new FunctionKey("functionbar_right",        R.id.button_right,             false),
+        new FunctionKey("functionbar_backspace",    R.id.button_backspace,         false),
+        new FunctionKey("functionbar_enter",        R.id.button_enter,             false),
+        new FunctionKey("functionbar_i",            R.id.button_i,                 false),
+        new FunctionKey("functionbar_colon",        R.id.button_colon,             true),
+        new FunctionKey("functionbar_slash",        R.id.button_slash,             false),
+        new FunctionKey("functionbar_equal",        R.id.button_equal,             false),
+        new FunctionKey("functionbar_asterisk",     R.id.button_asterisk,          false),
+        new FunctionKey("functionbar_pipe",         R.id.button_pipe,              false),
+        new FunctionKey("functionbar_minus",        R.id.button_minus,             false),
+        new FunctionKey("functionbar_vim_paste",    R.id.button_vim_paste,         true),
+        new FunctionKey("functionbar_vim_yank",     R.id.button_vim_yank,          false),
+        new FunctionKey("functionbar_softkeyboard", R.id.button_softkeyboard,      true),
+        new FunctionKey("functionbar_menu",         R.id.button_menu,              true),
+        new FunctionKey("functionbar_menu_hide",    R.id.button_menu_hide,         true),
+        new FunctionKey("functionbar_menu_plus",    R.id.button_menu_plus,         false),
+        new FunctionKey("functionbar_menu_minus",   R.id.button_menu_minus,        false),
+        new FunctionKey("functionbar_menu_x",       R.id.button_menu_x,            false),
+        new FunctionKey("functionbar_menu_user",    R.id.button_menu_user,         true),
+        new FunctionKey("functionbar_menu_quit",    R.id.button_menu_quit,         true),
+        new FunctionKey("functionbar_next",         R.id.button_next_functionbar,  true),
+        new FunctionKey("functionbar_next2",        R.id.button_next_functionbar2, true),
+        new FunctionKey("functionbar_prev",         R.id.button_prev_functionbar,  true),
+        new FunctionKey("functionbar_prev2",        R.id.button_prev_functionbar2, true),
+        new FunctionKey("functionbar_m1",           R.id.button_m1,                true),
+        new FunctionKey("functionbar_m2",           R.id.button_m2,                true),
+        new FunctionKey("functionbar_m3",           R.id.button_m3,                true),
+        new FunctionKey("functionbar_m4",           R.id.button_m4,                true),
+        new FunctionKey("functionbar_m5",           R.id.button_m5,                true),
+        new FunctionKey("functionbar_m6",           R.id.button_m6,                true),
+        new FunctionKey("functionbar_m7",           R.id.button_m7,                true),
+        new FunctionKey("functionbar_m8",           R.id.button_m8,                true),
+        new FunctionKey("functionbar_m9",           R.id.button_m9,                true),
+        new FunctionKey("functionbar_m10",          R.id.button_m10,               true),
+        new FunctionKey("functionbar_m11",          R.id.button_m11,               true),
+        new FunctionKey("functionbar_m12",          R.id.button_m12,               true),
+    };
+
     private void setFunctionKeyListener() {
-        findViewById(R.id.button_esc  ).setOnClickListener(this);
-        findViewById(R.id.button_ctrl ).setOnClickListener(this);
-        findViewById(R.id.button_alt ).setOnClickListener(this);
-        findViewById(R.id.button_tab  ).setOnClickListener(this);
-        findViewById(R.id.button_up   ).setOnClickListener(this);
-        findViewById(R.id.button_down ).setOnClickListener(this);
-        findViewById(R.id.button_left ).setOnClickListener(this);
-        findViewById(R.id.button_right).setOnClickListener(this);
-        findViewById(R.id.button_backspace).setOnClickListener(this);
-        findViewById(R.id.button_enter).setOnClickListener(this);
-        findViewById(R.id.button_i).setOnClickListener(this);
-        findViewById(R.id.button_colon).setOnClickListener(this);
-        findViewById(R.id.button_slash).setOnClickListener(this);
-        findViewById(R.id.button_equal).setOnClickListener(this);
-        findViewById(R.id.button_asterisk).setOnClickListener(this);
-        findViewById(R.id.button_pipe).setOnClickListener(this);
-        findViewById(R.id.button_minus).setOnClickListener(this);
-        findViewById(R.id.button_vim_paste).setOnClickListener(this);
-        findViewById(R.id.button_vim_yank).setOnClickListener(this);
-        findViewById(R.id.button_softkeyboard).setOnClickListener(this);
-        findViewById(R.id.button_menu).setOnClickListener(this);
-        findViewById(R.id.button_menu_hide).setOnClickListener(this);
-        findViewById(R.id.button_menu_plus ).setOnClickListener(this);
-        findViewById(R.id.button_menu_minus).setOnClickListener(this);
-        findViewById(R.id.button_menu_x    ).setOnClickListener(this);
-        findViewById(R.id.button_menu_user ).setOnClickListener(this);
-        findViewById(R.id.button_menu_quit ).setOnClickListener(this);
-        findViewById(R.id.button_next_functionbar ).setOnClickListener(this);
-        findViewById(R.id.button_next_functionbar2 ).setOnClickListener(this);
-        findViewById(R.id.button_prev_functionbar ).setOnClickListener(this);
-        findViewById(R.id.button_prev_functionbar2 ).setOnClickListener(this);
-        findViewById(R.id.button_m1 ).setOnClickListener(this);
-        findViewById(R.id.button_m2 ).setOnClickListener(this);
-        findViewById(R.id.button_m3 ).setOnClickListener(this);
-        findViewById(R.id.button_m4 ).setOnClickListener(this);
-        findViewById(R.id.button_m5 ).setOnClickListener(this);
-        findViewById(R.id.button_m6 ).setOnClickListener(this);
-        findViewById(R.id.button_m7 ).setOnClickListener(this);
-        findViewById(R.id.button_m8 ).setOnClickListener(this);
-        findViewById(R.id.button_m9 ).setOnClickListener(this);
-        findViewById(R.id.button_m10 ).setOnClickListener(this);
-        findViewById(R.id.button_m11 ).setOnClickListener(this);
-        findViewById(R.id.button_m12 ).setOnClickListener(this);
+        for (FunctionKey fkey: FunctionKeys) {
+            findViewById(fkey.resid).setOnClickListener(this);
+        }
+    }
+
+    private void setFunctionKeyVisibility(SharedPreferences prefs, String key, int id, boolean defValue) {
+        int visibility = prefs.getBoolean(key, defValue) ? View.VISIBLE : View.GONE;
+        if (id == R.id.button_menu_plus)  visibility = View.GONE;
+        if (id == R.id.button_menu_minus) visibility = View.GONE;
+        if (id == R.id.button_menu_x)     visibility = View.GONE;
+        setFunctionBarButton(id, visibility);
     }
 
     static int mFunctionBarId = 0;
@@ -2360,102 +2385,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return;
         }
 
-        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        visibility = mPrefs.getBoolean("functionbar_esc", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_esc, visibility);
-        visibility = mPrefs.getBoolean("functionbar_ctrl", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_ctrl, visibility);
-        visibility = mPrefs.getBoolean("functionbar_alt", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_alt, visibility);
-        visibility = mPrefs.getBoolean("functionbar_tab", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_tab, visibility);
-
-        visibility = mPrefs.getBoolean("functionbar_up", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_up, visibility);
-        visibility = mPrefs.getBoolean("functionbar_down", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_down, visibility);
-        visibility = mPrefs.getBoolean("functionbar_left", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_left, visibility);
-        visibility = mPrefs.getBoolean("functionbar_right", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_right, visibility);
-
-        visibility = mPrefs.getBoolean("functionbar_backspace", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_backspace, visibility);
-        visibility = mPrefs.getBoolean("functionbar_enter", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_enter, visibility);
-
-        visibility = mPrefs.getBoolean("functionbar_i", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_i, visibility);
-        visibility = mPrefs.getBoolean("functionbar_colon", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_colon, visibility);
-        visibility = mPrefs.getBoolean("functionbar_slash", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_slash, visibility);
-        visibility = mPrefs.getBoolean("functionbar_equal", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_equal, visibility);
-        visibility = mPrefs.getBoolean("functionbar_asterisk", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_asterisk, visibility);
-        visibility = mPrefs.getBoolean("functionbar_pipe", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_pipe, visibility);
-        visibility = mPrefs.getBoolean("functionbar_minus", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_minus, visibility);
-        visibility = mPrefs.getBoolean("functionbar_vim_paste", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_vim_paste, visibility);
-        visibility = mPrefs.getBoolean("functionbar_vim_yank", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_vim_yank, visibility);
-
-        visibility = mPrefs.getBoolean("functionbar_menu", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu, visibility);
-        visibility = mPrefs.getBoolean("functionbar_softkeyboard", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_softkeyboard, visibility);
-        visibility = mPrefs.getBoolean("functionbar_hide", true) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu_hide, visibility);
-
-        visibility = View.GONE;
-        // visibility = mPrefs.getBoolean("functionbar_menu_plus", false)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu_plus, visibility);
-        // visibility = mPrefs.getBoolean("functionbar_menu_minus", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu_minus, visibility);
-        // visibility = mPrefs.getBoolean("functionbar_menu_x", false) ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu_x, visibility);
-        visibility = mPrefs.getBoolean("functionbar_menu_user", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu_user, visibility);
-        visibility = mPrefs.getBoolean("functionbar_menu_quit", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_menu_quit, visibility);
-
-        visibility = mPrefs.getBoolean("functionbar_next", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_next_functionbar, visibility);
-        visibility = mPrefs.getBoolean("functionbar_next2", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_next_functionbar2, visibility);
-        visibility = mPrefs.getBoolean("functionbar_prev", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_prev_functionbar, visibility);
-        visibility = mPrefs.getBoolean("functionbar_prev2", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_prev_functionbar2, visibility);
-
-        visibility = mPrefs.getBoolean("functionbar_m1", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m1, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m2", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m2, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m3", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m3, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m4", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m4, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m5", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m5, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m6", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m6, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m7", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m7, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m8", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m8, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m9", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m9, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m10", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m10, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m11", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m11, visibility);
-        visibility = mPrefs.getBoolean("functionbar_m12", true)  ? View.VISIBLE : View.GONE;
-        setFunctionBarButton(R.id.button_m12, visibility);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        for (FunctionKey fkey: FunctionKeys) {
+            setFunctionKeyVisibility(prefs, fkey.key, fkey.resid, fkey.defValue);
+        }
 
         visibility = (mFunctionBar == 1 && mFunctionBarId == 0) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar).setVisibility(visibility);
