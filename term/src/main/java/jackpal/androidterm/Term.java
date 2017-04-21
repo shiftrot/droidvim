@@ -2361,7 +2361,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void setFunctionKeyListener() {
         for (FunctionKey fkey: FunctionKeys) {
-            findViewById(fkey.resid).setOnClickListener(this);
+            switch (fkey.resid) {
+            case R.id.button_up:
+            case R.id.button_down:
+            case R.id.button_left:
+            case R.id.button_right:
+                findViewById(fkey.resid).setOnTouchListener(new RepeatListener(400, 40, new OnClickListener() {
+                    public void onClick(View v) {
+                        Term.this.onClick(v);
+                    }
+                }));
+                break;
+            default:
+                findViewById(fkey.resid).setOnClickListener(this);
+                break;
+            }
         }
     }
 
