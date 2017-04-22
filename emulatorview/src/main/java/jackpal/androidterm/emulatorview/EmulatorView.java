@@ -671,6 +671,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 int n = text.length();
                 char c;
                 try {
+                    if (n == 1 && text.charAt(0) == '\n') {
+                        text = "\r";
+                    }
                     for(int i = 0; i < n; i++) {
                         c = text.charAt(i);
                         if (Character.isHighSurrogate(c)) {
@@ -912,7 +915,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 }
                 if (actionCode == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     // The "return" key has been pressed on the IME.
-                    sendText("\r");
+                    String text = mImeBuffer;
+                    if ("".equals(text)) {
+                        text = "\r";
+                    } else {
+                        clearComposingText();
+                        restartInput();
+                    }
+                    sendText(text);
                 }
                 return true;
             }
