@@ -233,10 +233,12 @@ public class RemoteInterface extends Activity {
     private void copyToClipboard(String str) {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(this.getApplicationContext());
-        clip.setText(str);
-        Toast toast = Toast.makeText(this,R.string.toast_clipboard,Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
-        toast.show();
+        if (clip != null) {
+            clip.setText(str);
+            Toast toast = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
     }
 
     /**
