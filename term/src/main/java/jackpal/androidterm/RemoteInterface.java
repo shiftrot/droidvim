@@ -175,9 +175,10 @@ public class RemoteInterface extends Activity {
                         SyncFileObserver sfo = new SyncFileObserver(path);
                         sfo.setConTentResolver(this.getContentResolver());
                         path = dir.toString()+path;
+                        String fname = new File(path).getName();
                         if (!sfo.putUriAndLoad(uri, path)) {
                             AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                            bld.setMessage(this.getString(R.string.storage_read_error));
+                            bld.setMessage(fname+"\n"+this.getString(R.string.storage_read_error));
                             bld.setNeutralButton("OK", null);
                             bld.create().show();
                             finish();

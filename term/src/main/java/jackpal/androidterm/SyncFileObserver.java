@@ -128,6 +128,7 @@ class SyncFileObserver extends RecursiveFileObserver {
 
     boolean putUriAndLoad(Uri uri, String path) {
         mActive = true;
+        path = path.replaceAll("//", "/");
         putHashMap(path, uri.toString());
         boolean load = makeCache(uri, new File(path));
         return load;

@@ -1589,11 +1589,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                         if (mSyncFileObserver != null) {
                             path = handleOpenDocument(uri, cursor);
+                            String fname = new File(path).getName();
                             if (path != null && mSyncFileObserver != null) {
                                 path = mSyncFileObserver.getObserverDir() + path;
                                 if (!mSyncFileObserver.putUriAndLoad(uri, path)) {
                                     AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                                    bld.setMessage(this.getString(R.string.storage_read_error));
+                                    bld.setMessage(fname+"\n"+this.getString(R.string.storage_read_error));
                                     bld.setNeutralButton("OK", null);
                                     bld.create().show();
                                     break;
@@ -2605,8 +2606,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 path = uri.toString().replaceFirst("content://[^/]+/", "/");
             }
             if (path != null) {
+                path = "/"+path+"/"+displayName;
                 path = path.replaceAll("%2F", "/");
-                path = path+"/"+displayName;
+                path = path.replaceAll("//", "/");
             }
         }
         return path;
