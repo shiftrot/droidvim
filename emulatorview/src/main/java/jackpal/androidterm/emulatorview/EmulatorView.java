@@ -905,6 +905,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     sendKeyEvent(
                         new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                 }
+                if (mIme == 5 && mComposingTextStart == 0 && mComposingTextEnd == 0) {
+                    clearComposingText();
+                    restartInput();
+                }
                 // TODO: handle forward deletes.
                 return true;
             }
@@ -1728,8 +1732,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     // com.android.inputmethod.latin/.LatinIME
-    // com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
     private final static String IME_ANDROID = ".*com.android.inputmethod.latin.*";
+    // com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
+    private final static String IME_GBoard = "com.google.android.inputmethod.latin/.*";
     // com.justsystems.atokmobile.tv.service/.AtokInputMethodService
     private final static String IME_ATOK = "com.justsystems.atokmobile..*";
     // com.google.android.inputmethod.japanese/.MozcService
@@ -1750,6 +1755,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             ime = 3;
         } else if (defime.matches(IME_GOOGLE)) {
             ime = 4;
+        } else if (defime.matches(IME_GBoard)) {
+            ime = 5;
         }
         if (mIme != ime) {
             TranscriptScreen transcriptScreen = view.getScreen();
