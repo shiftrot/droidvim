@@ -626,7 +626,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                fileCreate();
+                chooseFilePicker();
             }
         });
         findViewById(R.id.drawer_clear_cache_button).setOnClickListener(new OnClickListener() {
@@ -1468,6 +1468,26 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(intent, REQUEST_FILE_PICKER);
+    }
+
+    private void chooseFilePicker() {
+        final String[] items = {this.getString(R.string.create_file), this.getString(R.string.delete_file)};
+        new AlertDialog.Builder(this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                        case 0:
+                            fileCreate();
+                            break;
+                        case 1:
+                            fileDelete();
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }).show();
     }
 
     private void fileDelete() {

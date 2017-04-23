@@ -442,7 +442,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_file" />
+                    android:text="@string/create_or_delete" />
 
                 <Button
                     android:id="@+id/drawer_clear_cache_button"

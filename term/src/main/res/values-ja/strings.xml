@@ -283,7 +283,8 @@
   <string name="keyboard_warning">ハードウェアキーボードからキーボード入力モードを切り替える必要がある場合は「環境設定」からIMEショートカットを適切に設定し,IMEショートカットを使用します.</string>
 
   <string name="external_storage">ストレージ</string>
-  <string name="create_file">新規ファイル</string>
+  <string name="create_or_delete">新規/削除</string>
+  <string name="create_file">ファイル作成</string>
   <string name="delete_file">ファイル削除</string>
   <string name="manage_storage">ファイル操作</string>
   <string name="storage_read_error">ファイルが見つかりません.</string>

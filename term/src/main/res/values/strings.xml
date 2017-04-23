@@ -316,7 +316,8 @@
   <string name="debug">Debug</string>
   <string name="dropbox">Dropbox</string>
   <string name="external_storage">Storage</string>
-  <string name="create_file">New file</string>
+  <string name="create_or_delete">Create/Delete</string>
+  <string name="create_file">Create file</string>
   <string name="delete_file">Delete file</string>
   <string name="manage_storage">Manage</string>
   <string name="storage_read_error">No such file.</string>
