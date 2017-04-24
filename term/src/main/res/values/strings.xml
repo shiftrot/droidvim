@@ -321,8 +321,8 @@
   <string name="delete_file">Delete file</string>
   <string name="manage_storage">Manage</string>
   <string name="storage_read_error">No such file.</string>
-  <string name="storage_write_error">Cannot write to external storage.</string>
-  <string name="storage_delete_file">Delete file from external storage.</string>
+  <string name="storage_write_error">This file does not allow writing via the Android Storage Access Framework.\n\nIf this storage is cloud storage, please use the client application to open this file with DroidVim.</string>
+  <string name="storage_delete_file">Delete file from storage.</string>
   <string name="title_internal_storage">Internal private storage</string>
   <string name="clear_cache">Clear cache</string>
   <string name="confirm_clear_cache_message">Clear external storage cache.</string>

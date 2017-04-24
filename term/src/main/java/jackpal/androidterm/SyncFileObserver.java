@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.FileObserver;
 import android.provider.DocumentsContract;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -56,7 +58,8 @@ class SyncFileObserver extends RecursiveFileObserver {
                 //     mHashSet.add(path);
                 // }
                 break;
-            case FileObserver.MODIFY:
+            // case FileObserver.MODIFY:
+            case FileObserver.CLOSE_WRITE:
                 flushCache(Uri.parse(mHashMap.get(path)), new File(path), mContentResolver);
                 break;
             default:
@@ -186,19 +189,17 @@ class SyncFileObserver extends RecursiveFileObserver {
             writer.flush();
             writer.close();
             reader.close();
-        } catch (IOException e) {
-            // if (mActivity != null) {
-            //     mActivity.runOnUiThread(new Runnable() {
-            //         @Override
-            //         public void run() {
-            //             AlertDialog.Builder bld = new AlertDialog.Builder(mActivity);
-            //             bld.setMessage(mActivity.getString(R.string.storage_write_error));
-            //             bld.setNeutralButton("OK", null);
-            //             bld.create().show();
-            //         }
-            //     });
-            // }
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (mActivity != null) {
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(mActivity, R.string.storage_write_error, Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+                });
+            }
         }
     }
 
@@ -217,11 +218,9 @@ class SyncFileObserver extends RecursiveFileObserver {
                 String file = path.getName();
                 final AlertDialog.Builder b = new AlertDialog.Builder(mActivity);
                 b.setIcon(android.R.drawable.ic_dialog_alert);
-                String mes = "Delete file from storage";
-                if (mActivity != null) mes = mActivity.getString(R.string.storage_delete_file);
-                b.setTitle(mes);
+                b.setTitle(R.string.storage_delete_file);
                 b.setMessage(file);
-                b.setPositiveButton(mActivity.getString(R.string.delete_file), new DialogInterface.OnClickListener() {
+                b.setPositiveButton(R.string.delete_file, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         boolean result = DocumentsContract.deleteDocument(contentResolver, uri);
                         deleteEmptyDirectory(mCacheDir);
