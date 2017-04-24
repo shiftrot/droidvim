@@ -1650,6 +1650,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     }
 
+    public final static String SHELL_ESCAPE = "([ ()%#&$|])";
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
@@ -1685,7 +1686,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     }
                 }
                 if (path != null) {
-                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
                     path = String.format(":e %s\r", path);
                     sendKeyStrings(path, true);
                 }

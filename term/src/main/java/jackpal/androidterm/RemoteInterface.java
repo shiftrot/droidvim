@@ -152,7 +152,7 @@ public class RemoteInterface extends Activity {
             if (uri != null && uri.toString().matches("^file:///.*")) {
                 String path = uri.getPath();
                 if (new File(path).canRead()) {
-                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     String command = "\u001b"+String.format(":e %s", path);
                     // Find the target window
                     mReplace = true;
@@ -165,7 +165,7 @@ public class RemoteInterface extends Activity {
                 String command = null;
                 String path = Term.getPath(context, uri);
                 if (path != null) {
-                    path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                    path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     command = "\u001b"+String.format(":e %s", path);
                 } else {
                     Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
@@ -183,7 +183,7 @@ public class RemoteInterface extends Activity {
                             bld.create().show();
                             finish();
                         }
-                        path = path.replaceAll("([ ()%#&])", "\\\\$1");
+                        path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                         command = "\u001b"+String.format(":e %s", path);
                     }
                 }
@@ -200,7 +200,7 @@ public class RemoteInterface extends Activity {
             if (url != null) {
                 String command = mSettings.getIntentCommand();
                 if (command.matches("^:.*")) {
-                    url = url.replaceAll("([ ()%#&$])", "\\\\$1");
+                    url = url.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     command = "\u001b"+String.format(command, url);
                     // Find the target window
                     mReplace = true;
