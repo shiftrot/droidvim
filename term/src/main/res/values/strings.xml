@@ -47,9 +47,9 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n\nHow to quit:\n- Type \":qa\".\n- Tap \"[Q]\" button.\n- Tap \"QUIT\" on the navigation drawer.\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
-  <string name="virmc_warning_title">About .vimrc</string>
-  <string name="virmc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.</string>
+   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n\nHow to quit:\n- Type \":qa\".\n- Tap \"[Q]\" button.\n- Tap \"QUIT\" on the navigation drawer (or double tap menu).\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
+   <string name="vimrc_warning_title">About .vimrc</string>
+   <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.</string>
 
    <string name="menu_update">Update</string>
    <string name="menu_update_latest">Already updated.</string>

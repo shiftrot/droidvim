@@ -1028,23 +1028,30 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void doWarningVimrc() {
         if (!mVimFlavor) return;
-        boolean warning = getDevBoolean(Term.this, "do_warning_vimrc", true);
-        if (!warning) return;
         final String home = TermService.getHOME();
         if (new File(home+"/.vimrc").exists()) return;
+        doWarningDialog(this.getString(R.string.vimrc_warning_title), this.getString(R.string.vimrc_warning), "do_warning_vimrc");
+    }
 
+    private void doWarningDialog(String title, String message, String key) {
+        boolean warning = getDevBoolean(Term.this, key, true);
+        if (!warning) {
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(android.R.drawable.ic_dialog_info);
-        builder.setTitle(R.string.virmc_warning_title);
-        builder.setMessage(R.string.virmc_warning);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        if (title != null) builder.setTitle(title);
+        if (message != null) builder.setMessage(message);
         LayoutInflater flater = LayoutInflater.from(this);
         View view = flater.inflate(R.layout.alert_checkbox, null);
         builder.setView(view);
         final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
+        final String warningKey = key;
+        dontShowAgain.setChecked(true);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int m) {
                 if (dontShowAgain.isChecked()) {
-                    setDevBoolean(Term.this, "do_warning_vimrc", false);
+                    setDevBoolean(Term.this, warningKey, false);
                 }
             }
         });
@@ -1243,27 +1250,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doWarningHwKeyboard() {
-        boolean warning = getDevBoolean(Term.this, "do_warning_hw_keyboard", true);
-        if (!warning) {
-            return;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.setMessage(R.string.keyboard_warning);
-            LayoutInflater flater = LayoutInflater.from(this);
-            View view = flater.inflate(R.layout.alert_checkbox, null);
-            builder.setView(view);
-            final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    if (dontShowAgain.isChecked()) {
-                        setDevBoolean(Term.this, "do_warning_hw_keyboard", false);
-                    }
-                }
-            });
-            builder.setNegativeButton(android.R.string.no, null);
-            builder.create().show();
+        doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_hw_keyboard");
     }
 
     private void setSoftInputMode(boolean haveFullHwKeyboard) {
@@ -2238,6 +2225,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             View view = flater.inflate(R.layout.alert_checkbox, null);
             builder.setView(view);
             final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
+            dontShowAgain.setChecked(true);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
                     if (dontShowAgain.isChecked()) {
