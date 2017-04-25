@@ -1946,6 +1946,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 doSendActionBarKey(getCurrentEmulatorView(), 1251);
                 return true;
             case TermSettings.BACK_KEY_TOGGLE_IME:
+            case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
                 doToggleSoftKeyboard();
                 return true;
             default:
@@ -1957,6 +1958,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 return true;
             } else {
                 return super.onKeyUp(keyCode, event);
+            }
+        case 0xffffffc0:
+            if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
+                sendKeyStrings("\u001b", false);
             }
         case 0xfffffff1:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
@@ -2561,6 +2566,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             break;
         case R.id.button_i:
             sendKeyStrings("i", false);
+            if (!mHaveFullHwKeyboard) {
+                doShowSoftKeyboard();
+            }
             break;
         case R.id.button_colon:
             sendKeyStrings(":", false);

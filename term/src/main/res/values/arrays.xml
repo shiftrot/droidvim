@@ -136,6 +136,7 @@
         <item>Sends ESC to terminal</item>
         <item>Sends TAB to terminal</item>
         <item>Toggle soft keyboard</item>
+        <item>Toggle soft keyboard (+ESC)</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

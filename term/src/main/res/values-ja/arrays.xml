@@ -131,6 +131,7 @@
         <item>ターミナルにESCを送出</item>
         <item>ターミナルにTABを送出</item>
         <item>IMEのトグル</item>
+        <item>IMEのトグル (+ESC)</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
