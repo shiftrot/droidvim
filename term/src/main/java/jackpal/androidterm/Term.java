@@ -412,7 +412,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mPendingPathBroadcasts++;
             sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
 
-            if (mSettings.allowPathPrepend()) {
+            if (!mVimFlavor && mSettings.allowPathPrepend()) {
                 broadcast = new Intent(broadcast);
                 broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
                 mPendingPathBroadcasts++;
@@ -1250,6 +1250,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doWarningHwKeyboard() {
+        if (!mVimFlavor) return;
         doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_hw_keyboard");
     }
 
@@ -2211,6 +2212,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doWarningBeforePaste() {
+        if (!mVimFlavor) return;
         boolean warning = getDevBoolean(Term.this, "do_warning_before_paste", true);
         if (!warning) {
             doTermPaste();

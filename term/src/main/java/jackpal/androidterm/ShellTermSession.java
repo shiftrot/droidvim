@@ -129,7 +129,7 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     private void sendInitialCommand(String initialCommand) {
-        if (initialCommand.length() > 0) {
+        if (initialCommand != null && initialCommand.length() > 0) {
             write(initialCommand + '\r');
         }
     }
