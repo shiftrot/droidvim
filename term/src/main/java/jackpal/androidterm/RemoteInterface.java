@@ -171,7 +171,7 @@ public class RemoteInterface extends Activity {
                     Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                     path = Term.handleOpenDocument(uri, cursor);
                     if (path != null) {
-                        File dir = new File(this.getExternalCacheDir().toString()+"/scratch");
+                        File dir = Term.getScratchCacheDir(this);
                         SyncFileObserver sfo = new SyncFileObserver(path);
                         sfo.setConTentResolver(this.getContentResolver());
                         path = dir.toString()+path;

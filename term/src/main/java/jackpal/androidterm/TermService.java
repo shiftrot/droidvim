@@ -166,10 +166,8 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     private String getTempDir() {
         File cache = getExternalCacheDir();
-        String dir;
-        if (cache != null && cache.canWrite()) dir = cache.getAbsolutePath() + "/tmp";
-        else dir = getFilesDir().getAbsolutePath()+"/tmp";
-        return dir;
+        if (cache == null || !cache.canWrite()) cache = getFilesDir();
+        return cache.getAbsolutePath()+"/tmp";
     }
 
     public void clearTMPDIR() {

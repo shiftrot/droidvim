@@ -485,10 +485,16 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mAlreadyStarted = true;
     }
 
+    public static File getScratchCacheDir(Activity activity) {
+        File cache = activity.getExternalCacheDir();
+        if (cache == null || !cache.canWrite()) cache = activity.getFilesDir();
+        return new File(cache.getAbsolutePath()+"/scratch");
+    }
+
     private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
     private void restoreSyncFileObserver() {
         if (!FLAVOR_VIM) return;
-        File dir = new File(this.getExternalCacheDir().toString()+"/scratch");
+        File dir = getScratchCacheDir(this);
         mSyncFileObserver = new SyncFileObserver(dir.toString());
         mSyncFileObserver.deleteFromStorage(true);
         File sfofile = new File(dir.toString()+"/"+mSyncFileObserverFile);
