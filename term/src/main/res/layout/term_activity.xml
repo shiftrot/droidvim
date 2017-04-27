@@ -419,6 +419,37 @@
                     android:text="@string/dropbox" />
 
                 <Button
+                    android:id="@+id/drawer_googledrive_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/googledrive" />
+
+                <Button
+                    android:id="@+id/drawer_onedrive_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onedrive" />
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp" />
+
+                <Button
                     android:id="@+id/drawer_storage_button"
                     android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"
@@ -460,7 +491,7 @@
                 <View
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="15dp" />
+                    android:layout_height="8dp" />
 
                 <Button
                     android:id="@+id/drawer_keyboard_button"

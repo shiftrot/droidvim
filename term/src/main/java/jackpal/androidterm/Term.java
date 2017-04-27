@@ -19,7 +19,6 @@ package jackpal.androidterm;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -64,6 +63,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -183,6 +183,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private BroadcastReceiver mPathReceiver;
     // Available on API 12 and later
     private static final int FLAG_INCLUDE_STOPPED_PACKAGES = 0x20;
+
+    private static final String APP_DROPBOX     = "com.dropbox.android";
+    private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
+    private static final String APP_ONEDRIVE    = "com.microsoft.skydrive";
 
     private TermService mTermService;
     private ServiceConnection mTSConnection = new ServiceConnection() {
@@ -561,16 +565,27 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         button.setVisibility(View.VISIBLE);
     }
 
+    ArrayList<String> mFilePickerItems;
     private void setDrawerButtons() {
         if (FLAVOR_VIM) {
+            mFilePickerItems = new ArrayList<>();
+            mFilePickerItems.add(this.getString(R.string.create_file));
+            mFilePickerItems.add(this.getString(R.string.delete_file));
             Button button;
-            List<ApplicationInfo> appInfoList = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-            for (ApplicationInfo info : appInfoList) {
-                if ("com.dropbox.android".equals(info.processName)) {
-                    button = (Button)findViewById(R.id.drawer_dropbox_button);
-                    button.setVisibility(View.VISIBLE);
-                    break;
-                }
+            if (isAppInstalled(APP_DROPBOX)) {
+                button = (Button)findViewById(R.id.drawer_dropbox_button);
+                button.setVisibility(View.VISIBLE);
+                mFilePickerItems.add(this.getString(R.string.dropbox));
+            }
+            if (isAppInstalled(APP_GOOGLEDRIVE)) {
+                // button = (Button) findViewById(R.id.drawer_googledrive_button);
+                // button.setVisibility(View.VISIBLE);
+                mFilePickerItems.add(this.getString(R.string.googledrive));
+            }
+            if (isAppInstalled(APP_ONEDRIVE)) {
+                // button = (Button) findViewById(R.id.drawer_onedrive_button);
+                // button.setVisibility(View.VISIBLE);
+                mFilePickerItems.add(this.getString(R.string.onedrive));
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 button = (Button)findViewById(R.id.drawer_storage_button);
@@ -589,7 +604,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 onExtraButtonClicked(v);
             }
         });
-        setDebugButton();
+//        setDebugButton();
         findViewById(R.id.drawer_debug_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -602,17 +617,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                if (getDropboxMode() == 0) {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setPackage("com.dropbox.android");
-                    intent.setType("*/*");
-                    startActivityForResult(intent, REQUEST_DROPBOX);
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.setAction("android.intent.category.LAUNCHER");
-                    intent.setClassName("com.dropbox.android", "com.dropbox.android.activity.DropboxBrowser");
-                    startActivity(intent);
-                }
+                dropboxFilePicker(1);
+            }
+        });
+        findViewById(R.id.drawer_googledrive_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                intentMainActivity(APP_GOOGLEDRIVE);
+            }
+        });
+        findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                intentMainActivity(APP_ONEDRIVE);
             }
         });
         findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
@@ -662,7 +681,49 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         });
     }
 
-    private int getDropboxMode() {
+    private boolean isAppInstalled(String appPackage) {
+        PackageManager packageManager = getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(appPackage);
+        return (intent != null);
+    }
+
+    private void intentMainActivity(String app) {
+        if (app.equals(APP_DROPBOX)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_DROPBOX);
+            } else {
+                dropboxFilePicker(0);
+            }
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setAction("android.intent.category.LAUNCHER");
+        switch (app) {
+            case APP_ONEDRIVE:
+                intent.setClassName(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");
+                break;
+            case APP_GOOGLEDRIVE:
+                intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
+                break;
+            default:
+                break;
+        }
+        startActivity(intent);
+    }
+
+    @SuppressLint("NewApi")
+    private int dropboxFilePicker(int mode) {
+        if (mode == 0) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setAction("android.intent.category.LAUNCHER");
+            intent.setClassName(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setPackage(APP_DROPBOX);
+            intent.setType("*/*");
+            startActivityForResult(intent, REQUEST_DROPBOX);
+        }
         return 1;
     }
 
@@ -695,7 +756,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
-    public static final int REQUEST_STORAGE = 1;
+    public static final int REQUEST_STORAGE = 10000;
 
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
@@ -708,16 +769,32 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     @SuppressLint("NewApi")
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_STORAGE) {
-            if (permissions.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // do something
+        switch (requestCode) {
+        case REQUEST_STORAGE:
+            for (int i = 0; i < permissions.length ; i++) {
+                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        // do something
+                    } else {
+                        // Toast.makeText(this, "permission does not granted", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            } else {
-//                Toast.makeText(this, "permission does not granted", Toast.LENGTH_SHORT).show();
             }
-        } else {
+            break;
+        case REQUEST_DROPBOX:
+            for (int i = 0; i < permissions.length ; i++) {
+                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        dropboxFilePicker(0);
+                    } else {
+                        dropboxFilePicker(1);
+                    }
+                }
+            }
+            break;
+        default:
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            break;
         }
     }
 
@@ -1471,24 +1548,28 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void chooseFilePicker() {
-        final String[] items = {this.getString(R.string.create_file), this.getString(R.string.delete_file)};
-        new AlertDialog.Builder(this)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                        case 0:
-                            fileCreate();
-                            break;
-                        case 1:
-                            fileDelete();
-                            break;
-                        default:
-                            break;
-                        }
-                    }
-                }).show();
-    }
+        final String[] items = new String[mFilePickerItems.size()];
+        for (int i = 0; i < mFilePickerItems.size(); i++) {
+            items[i] = mFilePickerItems.get(i);
+        }
+        new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String item = items[which];
+                if (Term.this.getString(R.string.create_file).equals(item)) {
+                    fileCreate();
+                } else if (Term.this.getString(R.string.delete_file).equals(item)) {
+                    fileDelete();
+                } else if (Term.this.getString(R.string.dropbox).equals(item)) {
+                    intentMainActivity(APP_DROPBOX);
+                } else if (Term.this.getString(R.string.googledrive).equals(item)) {
+                    intentMainActivity(APP_GOOGLEDRIVE);
+                } else if (Term.this.getString(R.string.onedrive).equals(item)) {
+                    intentMainActivity(APP_ONEDRIVE);
+                }
+            }
+        }).show();
+}
 
     private void fileDelete() {
         permissionCheckExternalStorage();
