@@ -2107,7 +2107,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void doTermPaste() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        if (clip.hasText()) return;
+        if (clip == null) return;
         CharSequence paste = clip.getText();
         getCurrentTermSession().write(paste.toString());
     }
