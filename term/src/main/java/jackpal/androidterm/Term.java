@@ -1742,8 +1742,16 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 return path;
             }
         }
-        if (AndroidCompat.SDK < 19) return null;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return null;
+        }
         if (DocumentsContract.isDocumentUri(context, uri)) {
+            try {
+                File file = new File(DocumentsContract.getDocumentId(uri));
+                if (file.exists()) return file.toString();
+            } catch (Exception e){
+                Log.d("FilePicker", e.toString());
+            }
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -1752,7 +1760,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 File file;
                 if ("primary".equalsIgnoreCase(type)) {
                     file = new File(Environment.getExternalStorageDirectory() + "/" + split[1]);
-                    if (file.exists()) {
+                    if (file.exists() && file.canWrite()) {
                         return file.toString();
                     }
                 }
@@ -1761,7 +1769,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 path = path.replaceAll(":", "/");
                 path = path.replaceFirst("document", "storage");
                 file = new File(path);
-                if (file.canWrite()) {
+                if (file.exists() && file.canWrite()) {
                     return file.toString();
                 }
                 path = uri.getPath();
@@ -1772,7 +1780,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                         path = String.format("%s/%s/%s", path, type, split[1]);
                         path = path.replaceAll("/+", "/");
                         file = new File(path);
-                        if (file.canWrite()) {
+                        if (file.exists() && file.canWrite()) {
                             return file.toString();
                         }
                     }
