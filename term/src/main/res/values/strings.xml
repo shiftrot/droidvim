@@ -41,7 +41,7 @@
 
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="update_vim">Updating binaries and libraries.\nPlease wait until vim starts.</string>
-   <string name="reload_file">Force encoding</string>
+   <string name="reload_file">Reload (+Encoding)</string>
    <string name="reload_file_title">Reload this file</string>
    <string name="force_encoding">Choose encoding if you need.</string>
 
@@ -271,7 +271,7 @@
   <string name="dialog_titleime_shortcuts_action_preference">IME shortcuts action</string>
 
   <string name="title_ime_inputtype_preference">Input mode at startup</string>
-  <string name="summary_ime_inputtype_preference">If you don\'t need word suggestions, Choose input mode at startup.</string>
+  <string name="summary_ime_inputtype_preference">If you don\'t need word suggestions, choose input mode at startup.</string>
   <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
   <string name="help">Help</string>
