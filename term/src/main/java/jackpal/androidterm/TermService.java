@@ -25,12 +25,16 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.*;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.app.Notification;
@@ -116,24 +120,33 @@ public class TermService extends Service implements TermSession.FinishCallback
         compat = new ServiceForegroundCompat(this);
         mTermSessions = new SessionList();
 
-        int priority = Notification.PRIORITY_DEFAULT;
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (pref.getBoolean("statusbar_icon", true) == false) priority = Notification.PRIORITY_MIN;
         CharSequence contentText = getText(R.string.application_terminal);
         if (FLAVOR_VIM) {
             contentText = getText(R.string.application_termvim);
         }
-        Notification notification = new NotificationCompat.Builder(getApplicationContext())
-            .setContentTitle(contentText)
-            .setContentText(getText(R.string.service_notify_text))
-            .setSmallIcon(R.drawable.ic_stat_service_notification_icon)
-            .setPriority(priority)
-            .build();
-        notification.flags |= Notification.FLAG_ONGOING_EVENT;
+        int priority = Notification.PRIORITY_DEFAULT;
+        int statusIcon = R.drawable.ic_stat_service_notification_icon;
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!pref.getBoolean("statusbar_icon", true)) {
+            priority = Notification.PRIORITY_MIN;
+            // if (AndroidCompat.SDK >= 24) statusIcon = R.drawable.ic_stat_transparent_icon;
+        }
         Intent notifyIntent = new Intent(this, Term.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
-        notification.contentIntent = pendingIntent;
+        Drawable largeIconDrawable = ContextCompat.getDrawable(this, R.drawable.ic_launcher);
+        Bitmap largeIconBitmap = ((BitmapDrawable)largeIconDrawable).getBitmap();
+        Notification notification = new NotificationCompat.Builder(getApplicationContext())
+            .setContentTitle(contentText)
+            .setContentText(getText(R.string.service_notify_text))
+            .setContentIntent(pendingIntent)
+            .setSmallIcon(statusIcon)
+            .setLargeIcon(largeIconBitmap)
+            .setPriority(priority)
+            .setOngoing(true)
+            .setAutoCancel(false)
+            .setVisibility(Notification.VISIBILITY_SECRET)
+            .build();
         compat.startForeground(RUNNING_NOTIFICATION, notification);
 
         install();
