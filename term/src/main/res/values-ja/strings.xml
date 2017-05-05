@@ -159,6 +159,12 @@
    <string name="title_actionbar_user_preference">□ボタン</string>
    <string name="summary_actionbar_user_preference">□ボタンの振舞いを選択</string>
    <string name="dialog_title_actionbar_user_preference">□ボタンの振舞い</string>
+   <string name="title_double_tap_preference">ダブルタップ</string>
+   <string name="summary_double_tap_preference">ダブルタップの振舞いを選択</string>
+   <string name="dialog_title_double_tap_preference">ダブルタップの振舞い</string>
+   <string name="title_right_edge_swipe_preference">画面右端からスワイプの振舞い</string>
+   <string name="summary_right_edge_swipe_preference">画面右端からスワイプの振舞いを選択</string>
+   <string name="dialog_title_right_edge_swipe_preference">画面右端からスワイプの振舞い</string>
    <string name="functionbar_preferences">ファンクションバー</string>
 
    <string name="keyboard_preferences">キーボード</string>

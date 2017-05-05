@@ -73,7 +73,8 @@ import android.widget.Scroller;
  * #EmulatorView(Context, TermSession, DisplayMetrics)} constructor, which will
  * take care of this for you.
  */
-public class EmulatorView extends View implements GestureDetector.OnGestureListener {
+public class EmulatorView extends View implements GestureDetector.OnGestureListener,
+        GestureDetector.OnDoubleTapListener {
     private final static String TAG = "EmulatorView";
     private final static boolean LOG_KEY_EVENTS = false;
     private final static boolean LOG_IME = false;
@@ -1245,6 +1246,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // Begin GestureDetector.OnGestureListener methods
 
     public boolean onSingleTapUp(MotionEvent e) {
+        return true;
+    }
+
+    public boolean onSingleTapConfirmed(MotionEvent e) {
         if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
             return true;
         }
@@ -1255,6 +1260,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
 
         requestFocus();
+        return false;
+    }
+
+    public boolean onDoubleTap(MotionEvent e) {
+        Log.w(TAG, "onDoubleTap");
+        ((Activity)this.getContext()).onKeyUp(0xffffffc1, null);
+        return false;
+    }
+
+    public boolean onDoubleTapEvent(MotionEvent e) {
+        Log.w(TAG, "onDoubleTapEvent");
         return true;
     }
 
@@ -1290,9 +1306,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
 
         return true;
-    }
-
-    public void onSingleTapConfirmed(MotionEvent e) {
     }
 
     public boolean onJumpTapDown(MotionEvent e1, MotionEvent e2) {

@@ -161,6 +161,12 @@
    <string name="title_actionbar_user_preference">□ button behavior</string>
    <string name="summary_actionbar_user_preference">Choose what pressing the □ button does.</string>
    <string name="dialog_title_actionbar_user_preference">□ button behavior</string>
+   <string name="title_double_tap_preference">Double tap behavior</string>
+   <string name="summary_double_tap_preference">Choose what double tap does.</string>
+   <string name="dialog_title_double_tap_preference">Double tap behavior</string>
+   <string name="title_right_edge_swipe_preference">Swipe from the right edge behavior</string>
+   <string name="summary_right_edge_swipe_preference">Choose what Swipe from the right edge does.</string>
+   <string name="dialog_title_right_edge_swipe_preference">Swipe from the right edge behavior</string>
     <string name="functionbar_preferences">functionbar</string>
 
    <string name="keyboard_preferences">Keyboard</string>

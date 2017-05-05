@@ -105,9 +105,10 @@
         <item>IMEのトグル</item>
         <item>IMEの選択</item>
         <item>貼り付け</item>
-        <!--<item>ターミナルから i を送出</item>-->
-        <!--<item>ターミナルから : を送出</item>-->
-        <!--<item>ターミナルから / を送出</item>-->
+        <item>ターミナルから ESC を送出</item>
+        <item>ターミナルから i を送出</item>
+        <item>ターミナルから : を送出</item>
+        <item>ターミナルから / を送出</item>
         <item>IMEショートカット</item>
         <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>

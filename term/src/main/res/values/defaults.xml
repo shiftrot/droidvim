@@ -20,6 +20,8 @@
    <string name="pref_actionbar_minus_default" translatable="false">999</string>
    <string name="pref_actionbar_x_default" translatable="false">1253</string>
    <string name="pref_actionbar_user_default" translatable="false">1355</string>
+   <string name="pref_double_tap_default" translatable="false">1355</string>
+   <string name="pref_right_edge_swipe_default" translatable="false">1002</string>
    <string name="pref_backaction_default" translatable="false">5</string>
    <string name="pref_controlkey_default" translatable="false">7</string>
    <string name="pref_fnkey_default" translatable="false">7</string>

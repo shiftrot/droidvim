@@ -291,6 +291,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
 
+            int width = getCurrentEmulatorView().getVisibleWidth();
+            if (velocityX < 0 && (e1.getX() > (width * 9 / 10))) {
+                doSendActionBarKey(getCurrentEmulatorView(), mSettings.getRightEdgeSwipeAction());
+                return true;
+            }
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
@@ -304,6 +309,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             } else {
                 return false;
             }
+        }
+
+        public boolean onDoubleTap(MotionEvent e) {
+            // Let the EmulatorView handle taps if mouse tracking is active
+            return false;
         }
     }
 
@@ -1960,6 +1970,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
                 sendKeyStrings("\u001b", false);
             }
+            break;
+        case 0xffffffc1:
+            doSendActionBarKey(this.getCurrentEmulatorView(), mSettings.getDoubleTapAction());
+            return true;
         case 0xfffffff1:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
             return true;
@@ -2003,6 +2017,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         default:
             return super.onKeyUp(keyCode, event);
         }
+        return super.onKeyUp(keyCode, event);
     }
 
     private void doAndroidIntent(String filename) {
