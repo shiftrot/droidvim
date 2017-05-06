@@ -604,7 +604,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 onExtraButtonClicked(v);
             }
         });
-//        setDebugButton();
+        setDebugButton();
         findViewById(R.id.drawer_debug_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2724,7 +2724,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     IabHelper mIabHelper = null;
     boolean mIabHelperDisable = false;
     static final String TAG = "In App Billing";
-    static int iii = 0;
     private void iabSetup() {
         if (!isConnected(this.getApplicationContext())) return;
         if (mIabHelperDisable) {

@@ -139,7 +139,6 @@ public class TermService extends Service implements TermSession.FinishCallback
         install();
 
         Log.d(TermDebug.LOG_TAG, "TermService started");
-        return;
     }
 
     @SuppressLint("NewApi")
