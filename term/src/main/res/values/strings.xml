@@ -47,7 +47,7 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n\nHow to quit:\n- Type \":qa\".\n- Tap \"[Q]\" button.\n- Tap \"QUIT\" on the navigation drawer (or double tap menu).\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
+   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n\nHow to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
    <string name="vimrc_warning_title">About .vimrc</string>
    <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.</string>
 
@@ -344,7 +344,7 @@
   <string name="iab_wait">Please wait a moment.</string>
   <string name="donate_confirm_title">Thank you for using DroidVim.</string>
   <string name="donate_confirm_button">Donate</string>
-  <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get git-cui, curl, busybox after donation!</string>
+  <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get Git-cui, curl, Busybox after donation!\n\nGit - Version Control System.\ncurl - A Tool to upload/download files.\nBusybox - A collection of UNIX utilities that do not exist on Android.</string>
   <string name="donate_confirm_summary_no_payed_function">Sorry, no payed functions for your device.\nThis is just a donate option ;)</string>
   <string name="donate_premium_purchase">Thank you for your donation!</string>
   <string name="donate_button">Donate</string>

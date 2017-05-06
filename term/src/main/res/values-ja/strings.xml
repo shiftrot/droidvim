@@ -45,7 +45,7 @@
    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
 
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">▼直接入力\n- \"◇\"ボタンで「英数入力のみ有効」/「日本語入力可能」を切替.\n  (「起動時の入力モード」は設定で変更可能です)\n\n▼終了方法\n- \":qa\"を入力.\n- \"[Q]\"ボタンをタップ.\n- ナビゲーションドロワー(またはダブルタップ)の\"QUIT\"ボタンをタップ.\n\n▼Vimチュートリアル\n- \":Vimtutor\"を入力.</string>
+   <string name="tips_vim_list">▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.\n  (「起動時の入力モード」は設定で変更可能です)\n\n▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Vimチュートリアル\n- \":Vimtutor\"を入力.</string>
    <string name="vimrc_warning_title">.vimrcについて</string>
    <string name="vimrc_warning">あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.</string>
 
