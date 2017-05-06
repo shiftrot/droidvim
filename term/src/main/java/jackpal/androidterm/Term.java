@@ -2341,7 +2341,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         new FunctionKey("functionbar_menu_x",       R.id.button_menu_x,            false),
         new FunctionKey("functionbar_menu_user",    R.id.button_menu_user,         true),
         new FunctionKey("functionbar_menu_quit",    R.id.button_menu_quit,         true),
-        new FunctionKey("functionbar_next",         R.id.button_next_functionbar,  true),
+        new FunctionKey("functionbar_next",         R.id.button_next_functionbar,  false),
         new FunctionKey("functionbar_next2",        R.id.button_next_functionbar2, true),
         new FunctionKey("functionbar_prev",         R.id.button_prev_functionbar,  true),
         new FunctionKey("functionbar_prev2",        R.id.button_prev_functionbar2, true),

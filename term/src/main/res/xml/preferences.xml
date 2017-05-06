@@ -94,7 +94,7 @@
             android:summary="@string/summary_functionbar_key_preference">
             <CheckBoxPreference
                 android:key="functionbar_next"
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:title="@string/title_functionbar_change"/>
             <CheckBoxPreference
                 android:key="functionbar_esc"
