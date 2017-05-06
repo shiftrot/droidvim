@@ -137,14 +137,6 @@
                 android:defaultValue="false"
                 android:title="ENTER"/>
             <CheckBoxPreference
-                android:key="functionbar_softkeyboard"
-                android:defaultValue="true"
-                android:title="◇"/>
-            <CheckBoxPreference
-                android:key="functionbar_menu_user"
-                android:defaultValue="true"
-                android:title="□"/>
-            <CheckBoxPreference
                 android:key="functionbar_i"
                 android:defaultValue="false"
                 android:title="i"/>
@@ -152,6 +144,14 @@
                 android:key="functionbar_colon"
                 android:defaultValue="true"
                 android:title=":"/>
+            <CheckBoxPreference
+                android:key="functionbar_softkeyboard"
+                android:defaultValue="true"
+                android:title="◇"/>
+            <CheckBoxPreference
+                android:key="functionbar_menu_user"
+                android:defaultValue="true"
+                android:title="□"/>
             <CheckBoxPreference
                 android:key="functionbar_slash"
                 android:defaultValue="false"
