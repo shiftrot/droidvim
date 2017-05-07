@@ -1721,15 +1721,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
-    /**
-     * Get a file path from a Uri. This will get the the path for Storage Access
-     * Framework Documents, as well as the _data field for the MediaStore and
-     * other file-based ContentProviders.
-     *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @author paulburke
-     */
     public static String getPath(final Context context, final Uri uri) {
         if (uri.toString().matches("^file:///.*")) {
             String path = uri.getPath();
@@ -2686,6 +2677,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             path = path.replaceAll(":", "/");
             path = path.replaceFirst("/document/", "");
         } else {
+            path = uri.toString().replaceFirst("content://[^/]+/", "/");
             if (isDownloadDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/Download/");
             } else if (isGoogleDriveDocument(uri)) {
@@ -2695,14 +2687,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             } else if (isOneDriveDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/OneDrive/");
             } else if (isMediaDocument(uri)) {
-                path = null;
-            } else {
-                path = uri.toString().replaceFirst("content://[^/]+/", "/");
+                path = uri.toString().replaceFirst("content://[^/]+/", "/MediaDocument/");
             }
             if (path != null) {
                 path = "/"+path+"/"+displayName;
+                path = path.replaceAll(":", "/");
                 path = path.replaceAll("%2F", "/");
-                path = path.replaceAll("//", "/");
+                path = path.replaceAll("//+", "/");
             }
         }
         return path;
