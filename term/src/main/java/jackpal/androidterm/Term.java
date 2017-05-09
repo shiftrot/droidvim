@@ -1455,6 +1455,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             view.doImeShortcutsAction(key-1300);
         } else if (key == 1355) {
             toggleDrawer();
+        } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
+            view.restartInputGoogleIme();
+            KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
+            dispatchKeyEvent(event);
+            event = new KeyEvent(KeyEvent.ACTION_UP, key);
+            dispatchKeyEvent(event);
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);

@@ -1812,6 +1812,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         imm.restartInput(this);
     }
 
+    public void restartInputGoogleIme() {
+        if (mIme != 4 || mIMEGoogleInput) return;
+        Activity activity = (Activity)this.getContext();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.restartInput(this);
+    }
+
     private void doShowSoftKeyboard() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
