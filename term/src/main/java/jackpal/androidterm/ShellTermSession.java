@@ -95,7 +95,8 @@ public class ShellTermSession extends GenericTermSession {
         if (settings.verifyPath()) {
             path = checkPath(path);
         }
-        String[] env = new String[7];
+
+        String[] env = new String[8];
         env[0] = "TERM=" + settings.getTermType();
         env[1] = "PATH=" + path;
         env[2] = "HOME=" + TermService.getHOME();
@@ -103,6 +104,7 @@ public class ShellTermSession extends GenericTermSession {
         env[4] = "APPFILES=" + TermService.getAPPFILES();
         env[5] = "APPEXTFILES=" + TermService.getAPPEXTFILES();
         env[6] = "TMPDIR=" + TermService.getTMPDIR();
+        env[7] = "COLORFGBG=" + (settings.getColorTheme() == 0 ? "15;0" : "0;15");
 
         mProcId = createSubprocess(settings.getShell(), env);
     }
