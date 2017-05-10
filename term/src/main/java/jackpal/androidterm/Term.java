@@ -1665,7 +1665,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                                 if (!mSyncFileObserver.putUriAndLoad(uri, path)) {
                                     AlertDialog.Builder bld = new AlertDialog.Builder(this);
                                     bld.setMessage(fname+"\n"+this.getString(R.string.storage_read_error));
-                                    bld.setNeutralButton("OK", null);
+                                    bld.setPositiveButton("OK", null);
                                     bld.create().show();
                                     break;
                                 }
@@ -2964,7 +2964,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     void alert(String message) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setMessage(message);
-        bld.setNeutralButton("OK", null);
+        bld.setPositiveButton("OK", null);
         Log.d(TAG, "Showing alert dialog: " + message);
         bld.create().show();
     }
@@ -2973,7 +2973,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     void alertOnExtra(String message) {
         mAlertWait = new AlertDialog.Builder(this);
         mAlertWait.setMessage(message);
-        mAlertWait.setNeutralButton("OK", null);
+        mAlertWait.setPositiveButton("OK", null);
         Log.d(TAG, "Showing alert dialog: " + message);
         mAlertWait.create().show();
     }

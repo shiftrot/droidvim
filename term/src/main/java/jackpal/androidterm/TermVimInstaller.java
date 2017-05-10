@@ -46,7 +46,7 @@ final class TermVimInstaller {
                 public void run() {
                     AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                     bld.setMessage(R.string.error_not_supported_device);
-                    bld.setNeutralButton("OK", null);
+                    bld.setPositiveButton("OK", null);
                     bld.create().show();
                     doInstallVim = false;
                 }
@@ -165,7 +165,7 @@ final class TermVimInstaller {
                     bld.setTitle(activity.getString(R.string.whats_new_title));
                     bld.setMessage(whatsNew);
                 }
-                bld.setNeutralButton("OK", null);
+                bld.setPositiveButton("OK", null);
                 bld.create().show();
             }
         });
