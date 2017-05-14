@@ -273,11 +273,11 @@
   <string name="pref_ctrl_j">Ctrl + [j]</string>
 
   <string name="title_ime_shortcuts_action_preference">Action</string>
-  <string name="summary_ime_shortcuts_action_preference">Set IME shortcut action</string>
+  <string name="summary_ime_shortcuts_action_preference">Choose IME shortcut action</string>
   <string name="dialog_titleime_shortcuts_action_preference">IME shortcuts action</string>
 
   <string name="title_ime_inputtype_preference">Input mode at startup</string>
-  <string name="summary_ime_inputtype_preference">If you don\'t need word suggestions, choose input mode at startup.</string>
+  <string name="summary_ime_inputtype_preference">Force direct input at startup.</string>
   <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
   <string name="help">Help</string>
@@ -329,7 +329,7 @@
   <string name="delete_file">Delete file</string>
   <string name="manage_storage">Manage</string>
   <string name="storage_read_error">No such file.</string>
-  <string name="storage_write_error">This file does not allow writing via the Android Storage Access Framework.\n\nIf this storage is cloud storage, please use the client application to open this file with DroidVim.</string>
+  <string name="storage_write_error">This file does not allow writing via the Android Storage Access Framework.\n\nPlease open this file via another filer application or cloud storage client.</string>
   <string name="storage_delete_file">Delete file from storage.</string>
   <string name="title_internal_storage">Internal private storage</string>
   <string name="clear_cache">Clear cache</string>

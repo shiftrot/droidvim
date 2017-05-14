@@ -2990,7 +2990,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     void alert(String message) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setMessage(message);
-        bld.setPositiveButton("OK", null);
+        bld.setPositiveButton(android.R.string.ok, null);
         Log.d(TAG, "Showing alert dialog: " + message);
         bld.create().show();
     }
