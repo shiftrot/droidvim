@@ -83,7 +83,8 @@
    <string name="dialog_title_statusbar_preference">Status bar</string>
 
    <string name="title_statusbar_icon_preference">Status bar icon</string>
-   <string name="summary_statusbar_icon_preference">Show/hide status bar icon. (restart required)</string>
+   <string name="summary_statusbar_icon_on_preference">Show status bar icon. (restart required)</string>
+   <string name="summary_statusbar_icon_off_preference">Hiding only the status bar icon because there is a possibility that the editing state may be lost if the notification is hidden. (restart required)\nIt is also possible to hide notifications in Android settings.</string>
 
    <string name="title_functionbar_preference">Function bar</string>
    <string name="summary_functionbar_preference">Show function bar on start up.</string>

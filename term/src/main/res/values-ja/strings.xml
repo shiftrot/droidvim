@@ -81,7 +81,8 @@
    <string name="dialog_title_statusbar_preference">ステータスバー</string>
 
    <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
-   <string name="summary_statusbar_icon_preference">ステータスバーアイコンの表示/非表示. (要再起動)</string>
+   <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンを表示する. (要再起動)</string>
+   <string name="summary_statusbar_icon_off_preference">通知を非表示にすると, 編集状態が失われる可能性があるため, ステータスバーアイコンのみ非表示にする. (要再起動)\nAndroidの設定で通知を非表示にすることもできます.</string>
 
    <string name="title_functionbar_preference">ファンクションバー</string>
    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
