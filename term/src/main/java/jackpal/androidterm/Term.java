@@ -1572,12 +1572,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (path == null) {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
             path = handleOpenDocument(uri, cursor);
+            if (path == null) {
+                alert(this.getString(R.string.storage_read_error));
+                return;
+            }
         }
         String file = new File(path).getName();
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(file);
         b.setPositiveButton(this.getString(R.string.delete_file), new DialogInterface.OnClickListener() {
+            @SuppressLint("NewApi")
             public void onClick(DialogInterface dialog, int id) {
                 DocumentsContract.deleteDocument(getContentResolver(), uri);
             }
@@ -1659,14 +1664,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                         if (mSyncFileObserver != null) {
                             path = handleOpenDocument(uri, cursor);
+                            if (path == null) {
+                                alert(this.getString(R.string.storage_read_error));
+                                break;
+                            }
                             String fname = new File(path).getName();
                             if (path != null && mSyncFileObserver != null) {
                                 path = mSyncFileObserver.getObserverDir() + path;
-                                if (!mSyncFileObserver.putUriAndLoad(uri, path)) {
-                                    AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                                    bld.setMessage(fname+"\n"+this.getString(R.string.storage_read_error));
-                                    bld.setPositiveButton("OK", null);
-                                    bld.create().show();
+                                if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
+                                    alert(fname+"\n"+this.getString(R.string.storage_read_error));
                                     break;
                                 }
                             }
@@ -2640,10 +2646,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     public static String handleOpenDocument(Uri uri, Cursor cursor) {
-        if (uri == null || cursor == null) return "";
+        if (uri == null || cursor == null) return null;
 
         cursor.moveToFirst();
-        String displayName = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME));
+        int index = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME);
+        if (index == -1) return null;
+        String displayName = cursor.getString(index);
 
         String path = null;
         if (isExternalStorageDocument(uri)) {

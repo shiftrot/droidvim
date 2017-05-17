@@ -294,7 +294,7 @@
   <string name="create_file">ファイル作成</string>
   <string name="delete_file">ファイル削除</string>
   <string name="manage_storage">ファイル操作</string>
-  <string name="storage_read_error">ファイルが見つかりません.</string>
+  <string name="storage_read_error">ファイルが存在しないか, 無効なファイル名です.</string>
   <string name="storage_write_error">このファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません.\n\n別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>
   <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
   <string name="title_internal_storage">内部プライベート領域</string>

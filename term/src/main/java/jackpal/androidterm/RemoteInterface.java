@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
@@ -170,17 +169,17 @@ public class RemoteInterface extends Activity {
                 } else {
                     Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                     path = Term.handleOpenDocument(uri, cursor);
-                    if (path != null) {
+                    if (path == null) {
+                        alert(this.getString(R.string.storage_read_error));
+                        finish();
+                    } else {
                         File dir = Term.getScratchCacheDir(this);
                         SyncFileObserver sfo = new SyncFileObserver(path);
                         sfo.setConTentResolver(this.getContentResolver());
                         path = dir.toString()+path;
                         String fname = new File(path).getName();
-                        if (!sfo.putUriAndLoad(uri, path)) {
-                            AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                            bld.setMessage(fname+"\n"+this.getString(R.string.storage_read_error));
-                            bld.setNeutralButton("OK", null);
-                            bld.create().show();
+                        if (path.equals("") || !sfo.putUriAndLoad(uri, path)) {
+                            alert(fname+"\n"+this.getString(R.string.storage_read_error));
                             finish();
                         }
                         path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
@@ -231,14 +230,18 @@ public class RemoteInterface extends Activity {
         finish();
     }
 
+    void alert(final String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
     private void copyToClipboard(String str) {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(this.getApplicationContext());
         if (clip != null) {
             clip.setText(str);
-            Toast toast = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            alert(this.getString(R.string.toast_clipboard));
         }
     }
 
