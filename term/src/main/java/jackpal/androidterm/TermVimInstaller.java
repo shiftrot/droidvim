@@ -76,21 +76,26 @@ final class TermVimInstaller {
         }
     }
 
+    static private int orientationLock(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            return ActivityInfo.SCREEN_ORIENTATION_LOCKED;
+        }
+        Configuration config = activity.getResources().getConfiguration();
+        switch (config.orientation) {
+            case Configuration.ORIENTATION_PORTRAIT:
+                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            case Configuration.ORIENTATION_LANDSCAPE:
+                return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        }
+        return ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
+    }
+
     static private void fixOrientation(final Activity activity, final int orientation) {
-        if (!activity.isFinishing()) {
+        if (activity != null && !activity.isFinishing()) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    switch(orientation) {
-                        case Configuration.ORIENTATION_PORTRAIT:
-                            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                            break;
-                        case Configuration.ORIENTATION_LANDSCAPE:
-                            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                            break;
-                        default :
-                            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-                    }
+                    activity.setRequestedOrientation(orientation);
                 }
             });
         }
@@ -110,8 +115,7 @@ final class TermVimInstaller {
             @Override
             public void run() {
                 final int orientation = activity.getRequestedOrientation();
-                Configuration config = activity.getResources().getConfiguration();
-                fixOrientation(activity, config.orientation);
+                fixOrientation(activity, orientationLock(activity));
                 try {
                     boolean first = !new File(sdcard+"/vimrc").exists();
                     showWhatsNew(activity, first);
@@ -139,8 +143,8 @@ final class TermVimInstaller {
                                 if (whenDone != null) whenDone.run();
                             }
                         });
-                        activity.setRequestedOrientation(orientation);
                     }
+                    if (!activity.isFinishing()) fixOrientation(activity, orientation);
                 }
             }
         }.start();
