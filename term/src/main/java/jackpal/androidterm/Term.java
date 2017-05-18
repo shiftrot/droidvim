@@ -2368,7 +2368,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     public boolean getDevBoolean(Context context, String key, boolean defValue) {
         SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        return pref.getBoolean(key, defValue);
+        boolean res;
+        try {
+            res = pref.getBoolean(key, defValue);
+        } catch (Exception e) {
+            res = defValue;
+        }
+        return res;
     }
 
     private static int mFunctionBar = -1;
