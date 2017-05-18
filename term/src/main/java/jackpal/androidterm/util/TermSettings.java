@@ -47,6 +47,7 @@ public class TermSettings {
     private boolean mHwAcceleration;
     private int mTheme;
     private int mColorId;
+    private int mKeepScreenTime;
     private int mIMEColor;
     private boolean mUTF8ByDefault;
     private int mActionBarIconAction;
@@ -103,6 +104,7 @@ public class TermSettings {
     private static final String FONTFILE_KEY = "fontfile";
     private static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String THEME_KEY = "theme";
+    private static final String KEEP_SCREEN_TIME_KEY = "keepscreentime";
     private static final String COLOR_KEY = "color";
     private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
@@ -236,6 +238,7 @@ public class TermSettings {
         mFontFile = res.getString(R.string.pref_fontfile_default);
         mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiguous_width_default));
         mTheme = Integer.parseInt(res.getString(R.string.pref_theme_default));
+        mKeepScreenTime = Integer.parseInt(res.getString(R.string.pref_keep_screen_default));
         mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
         mIMEColor = Integer.parseInt(res.getString(R.string.pref_composingtext_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
@@ -292,6 +295,7 @@ public class TermSettings {
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
         mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
         mTheme = readIntPref(THEME_KEY, mTheme, 1);
+        mKeepScreenTime = readIntPref(KEEP_SCREEN_TIME_KEY, mKeepScreenTime, 120);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
         mIMEColor = readIntPref(IMECOLOR_KEY, mIMEColor, 100);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
@@ -445,6 +449,10 @@ public class TermSettings {
 
     public int[] getColorScheme() {
         return COLOR_SCHEMES[mColorId];
+    }
+
+    public int getKeepScreenTime() {
+        return mKeepScreenTime;
     }
 
     public int getColorTheme() {

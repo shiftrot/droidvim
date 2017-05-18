@@ -65,6 +65,14 @@
    <string name="menu_update">Update</string>
    <string name="menu_update_latest">Already updated.</string>
 
+   <string name="title_prefs_keepscreen">Keep screen</string>
+   <string name="summary_keepscreen_preference">\"Keep screen\" is available from \"Menu\" -> \"Screen\".\n\"Keep screen\" keeps the screen awake while this application running in the foreground.</string>
+   <string name="dialog_prefs_keepscreen">Keep screen time (0-120min)</string>
+   <string name="enable_keepscreen">\"Keep screen\" ON</string>
+   <string name="disable_keepscreen">\"Keep screen\" OFF</string>
+   <string name="keepscreen_notice">Keep the screen awake while this application running in the foreground.\nThis condition lasts %d minutes.</string>
+   <string name="keepscreen_deacitvated">\"Keep screen\" has been deactivated.</string>
+
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
    <string name="enable_wifilock">Take WifiLock</string>

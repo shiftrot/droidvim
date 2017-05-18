@@ -81,6 +81,14 @@
                 android:entryValues="@array/entryvalues_composingtext_preference"
                 android:dialogTitle="@string/dialog_title_composingtext_preference" />
 
+        <EditTextPreference
+                android:key="keepscreentime"
+                android:defaultValue="@string/pref_keep_screen_default"
+                android:title="@string/title_prefs_keepscreen"
+                android:summary="@string/summary_keepscreen_preference"
+                android:dialogTitle="@string/dialog_prefs_keepscreen"
+                android:inputType="number" />
+
 <!--
         <ListPreference
                 android:key="cursorstyle"

@@ -63,6 +63,14 @@
    <string name="menu_update">アップデート</string>
    <string name="menu_update_latest">アプリは最新です</string>
 
+   <string name="title_prefs_keepscreen">スリープ無効化</string>
+   <string name="summary_keepscreen_preference">「スリープ無効化」は「長押しメニュー」 -> 「画面」から利用できます.\n「スリープ無効化」はフォアグラウンドでこのアプリケーションでの実行時に, 画面をスリープしないようにします.</string>
+   <string name="dialog_prefs_keepscreen">スリープ無効化 (0-120分)</string>
+   <string name="enable_keepscreen">スリープ無効化</string>
+   <string name="disable_keepscreen">スリープ有効化</string>
+   <string name="keepscreen_notice">フォアグラウンドでこのアプリケーションを実行していると, 画面はスリープしません.\nこの状態は%d分間続きます.</string>
+   <string name="keepscreen_deacitvated">画面の自動スリープが有効になりました.</string>
+
    <string name="enable_wakelock">WakeLockを取得</string>
    <string name="disable_wakelock">WakeLockを解除</string>
    <string name="enable_wifilock">WifiLockを取得</string>

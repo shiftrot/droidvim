@@ -16,6 +16,7 @@
    <string name="pref_ambiguous_width_default" translatable="false">1</string>
    <string name="pref_theme_default" translatable="false">1</string>
    <string name="pref_color_default" translatable="false">0</string>
+   <string name="pref_keep_screen_default">30</string>
    <string name="pref_composingtext_default" translatable="false">2</string>
    <bool name="pref_utf8_by_default_default">true</bool>
    <bool name="pref_hw_acceleration_by_default">true</bool>

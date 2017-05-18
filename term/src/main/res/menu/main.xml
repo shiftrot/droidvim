@@ -60,6 +60,8 @@
         android:title="@string/copy_screen" />
     <item android:id="@+id/menu_send_email"
         android:title="@string/send_email" />
+    <item android:id="@+id/menu_disable_keepscreen"
+        android:title="@string/disable_keepscreen" />
     <item android:id="@+id/menu_toggle_wakelock"
         android:title="@string/enable_wakelock" />
     <item android:id="@+id/menu_toggle_wifilock"
