@@ -87,11 +87,9 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -167,11 +165,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
-
-    private PowerManager.WakeLock mWakeLock;
-    private WifiManager.WifiLock mWifiLock;
-    // Available on API 12 and later
-    private static final int WIFI_MODE_FULL_HIGH_PERF = 3;
 
     private boolean mBackKeyPressed;
 
@@ -461,15 +454,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         setContentView(R.layout.term_activity);
         mViewFlipper = (TermViewFlipper) findViewById(VIEW_FLIPPER);
         setFunctionKeyListener();
-
-        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
-        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        int wifiLockMode = WifiManager.WIFI_MODE_FULL;
-        if (AndroidCompat.SDK >= 12) {
-            wifiLockMode = WIFI_MODE_FULL_HIGH_PERF;
-        }
-        mWifiLock = wm.createWifiLock(wifiLockMode, TermDebug.LOG_TAG);
 
         ActionBarCompat actionBar = ActivityCompat.getActionBar(this);
         if (actionBar != null) {
@@ -981,12 +965,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
         mTermService = null;
         mTSConnection = null;
-        if (mWakeLock.isHeld()) {
-            mWakeLock.release();
-        }
-        if (mWifiLock.isHeld()) {
-            mWifiLock.release();
-        }
         if (mIabHelper != null) {
             mIabHelper.dispose();
             mIabHelper = null;
@@ -1832,17 +1810,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem wakeLockItem = menu.findItem(R.id.menu_toggle_wakelock);
         MenuItem wifiLockItem = menu.findItem(R.id.menu_toggle_wifilock);
-        if (mWakeLock.isHeld()) {
-            wakeLockItem.setTitle(R.string.disable_wakelock);
-        } else {
-            wakeLockItem.setTitle(R.string.enable_wakelock);
-        }
+        menu.removeItem(R.id.menu_toggle_wakelock);
         menu.removeItem(R.id.menu_toggle_wifilock);
-//        if (mWifiLock.isHeld()) {
-//            wifiLockItem.setTitle(R.string.disable_wifilock);
-//        } else {
-//            wifiLockItem.setTitle(R.string.enable_wifilock);
-//        }
         menu.removeItem(R.id.menu_window_list);
         menu.removeItem(R.id.menu_toggle_soft_keyboard);
         menu.removeItem(R.id.menu_special_keys);
@@ -2323,21 +2292,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doToggleWakeLock() {
-        if (mWakeLock.isHeld()) {
-            mWakeLock.release();
-        } else {
-            mWakeLock.acquire();
-        }
-        ActivityCompat.invalidateOptionsMenu(this);
     }
 
     private void doToggleWifiLock() {
-        if (mWifiLock.isHeld()) {
-            mWifiLock.release();
-        } else {
-            mWifiLock.acquire();
-        }
-        ActivityCompat.invalidateOptionsMenu(this);
     }
 
     private void doToggleActionBar() {
