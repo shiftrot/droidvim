@@ -2848,9 +2848,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             updateUi();
             setWaitScreen(false);
             Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-            if (BuildConfig.DEBUG) {
-                if (premiumPurchase != null) mIabHelper.consumeAsync(premiumPurchase, mGotConsumeInventoryListener);
-            }
             if (mOnExtraButtonClicked) {
                 mOnExtraButtonClicked = false;
                 onExtraButtonClicked(null);
@@ -2925,9 +2922,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                if ((BuildConfig.DEBUG) || (BuildConfig.FLAVOR.equals("dev")) || (BuildConfig.APPLICATION_ID.equals("com.termux"))) {
-                    installGit();
-                } else if (mIabHelper != null) {
+                if (mIabHelper != null) {
                     String payload = getPayload();
 
                     mIabHelper.launchPurchaseFlow(activity, SKU_PREMIUM, REQUEST_BILLING,
