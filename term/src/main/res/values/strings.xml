@@ -35,6 +35,7 @@
 
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
    <string name="toast_clipboard">Text copied to clipboard.</string>
+   <string name="toast_clipboard_error">Text is not included.</string>
 
    <string name="clipboard_warning_title">About the clipboard</string>
    <string name="clipboard_warning">Please use the Vim command for yank/paste to Vim.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard.\n\nThis \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>

@@ -124,6 +124,10 @@ public class RemoteInterface extends Activity {
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
 
+        if (action == null) {
+            finish();
+            return;
+        }
         ClipData clipData = myIntent.getClipData();
         if ((AndroidCompat.SDK >= 19 && action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) ||
                    (action.equals(Intent.ACTION_SEND) && clipData != null) ||
@@ -136,7 +140,7 @@ public class RemoteInterface extends Activity {
             if (clipData != null) {
                 uri = clipData.getItemAt(0).getUri();
                 if (uri == null) {
-                    copyToClipboard(clipData.toString());
+                    openText(clipData.getItemAt(0).getText());
                     finish();
                     return;
                 }
@@ -159,7 +163,7 @@ public class RemoteInterface extends Activity {
                     mReplace = false;
                 }
                 finish();
-            } else if (uri != null && AndroidCompat.SDK >= 19 && uri.getScheme().equals("content") && FLAVOR_VIM) {
+            } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content") && FLAVOR_VIM) {
                 Context context = this;
                 String command = null;
                 String path = Term.getPath(context, uri);
@@ -193,7 +197,7 @@ public class RemoteInterface extends Activity {
                 finish();
             } else if (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT")) {
                 url = myIntent.getExtras().getString("com.googlecode.android_scripting.extra.SCRIPT_PATH");
-            } else if (myIntent.getScheme() != null && myIntent.getScheme().equals("file")) {
+            } else if (myIntent.getScheme() != null && myIntent.getScheme() != null && myIntent.getScheme().equals("file")) {
                 if (myIntent.getData() != null) url = myIntent.getData().getPath();
             }
             if (url != null) {
@@ -221,9 +225,7 @@ public class RemoteInterface extends Activity {
                 setResult(RESULT_OK, result);
             }
         } else if (action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_TEXT)) {
-            Object extraStream = myIntent.getExtras().get(Intent.EXTRA_TEXT);
-            String str = (String)extraStream;
-            copyToClipboard(str);
+            openText(myIntent.getExtras().getCharSequence(Intent.EXTRA_TEXT));
         } else {
         }
 
@@ -236,12 +238,21 @@ public class RemoteInterface extends Activity {
         toast.show();
     }
 
-    private void copyToClipboard(String str) {
+    private void openText(CharSequence str) {
+        if (str == null) {
+            alert(this.getString(R.string.toast_clipboard_error));
+            return;
+        }
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(this.getApplicationContext());
         if (clip != null) {
             clip.setText(str);
             alert(this.getString(R.string.toast_clipboard));
+            String command = "\u001b"+String.format(":enew\r:ATEMod paste");
+            // Find the target window
+            mReplace = true;
+            mHandle = switchToWindow(mHandle, command);
+            mReplace = false;
         }
     }
 
