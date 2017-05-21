@@ -327,6 +327,11 @@
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/gesture_preferences">
+
         <ListPreference
             android:key="double_tap_action"
             android:defaultValue="@string/pref_double_tap_default"
@@ -337,13 +342,22 @@
             android:dialogTitle="@string/dialog_title_double_tap_preference" />
 
         <ListPreference
-            android:key="right_edge_swipe_action"
-            android:defaultValue="@string/pref_right_edge_swipe_default"
-            android:title="@string/title_right_edge_swipe_preference"
-            android:summary="@string/summary_right_edge_swipe_preference"
+            android:key="right_double_tap_action"
+            android:defaultValue="@string/pref_right_double_tap_default"
+            android:title="@string/title_right_double_tap_preference"
+            android:summary="@string/summary_right_double_tap_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_right_edge_swipe_preference" />
+            android:dialogTitle="@string/dialog_title_right_double_tap_preference" />
+
+        <ListPreference
+            android:key="bottom_double_tap_action"
+            android:defaultValue="@string/pref_bottom_double_tap_default"
+            android:title="@string/title_bottom_double_tap_preference"
+            android:summary="@string/summary_bottom_double_tap_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_double_tap_preference" />
 
     </PreferenceCategory>
 

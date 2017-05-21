@@ -48,9 +48,12 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n\nHow to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
+   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n- One-line text box starts with double tap near the bottom edge. It is useful for voice input and emoji.\n\nHow to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
    <string name="vimrc_warning_title">About .vimrc</string>
    <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.</string>
+
+   <string name="edit_text_view_warning_title">One-line text box</string>
+   <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - close\nTab - send text</string>
 
    <string name="menu_update">Update</string>
    <string name="menu_update_latest">Already updated.</string>
@@ -167,10 +170,14 @@
    <string name="title_double_tap_preference">Double tap behavior</string>
    <string name="summary_double_tap_preference">Choose what double tap does.</string>
    <string name="dialog_title_double_tap_preference">Double tap behavior</string>
-   <string name="title_right_edge_swipe_preference">Swipe from the right edge behavior</string>
-   <string name="summary_right_edge_swipe_preference">Choose what Swipe from the right edge does.</string>
-   <string name="dialog_title_right_edge_swipe_preference">Swipe from the right edge behavior</string>
-    <string name="functionbar_preferences">functionbar</string>
+   <string name="title_right_double_tap_preference">Double tap near the right edge behavior</string>
+   <string name="summary_right_double_tap_preference">Choose what double tap near the right edge does.</string>
+   <string name="dialog_title_right_double_tap_preference">Double tap near the right edge behavior</string>
+   <string name="title_bottom_double_tap_preference">Double tap near the bottom edge behavior</string>
+   <string name="summary_bottom_double_tap_preference">Choose what double tap near the bottom edge does.</string>
+   <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge behavior</string>
+   <string name="functionbar_preferences">Functionbar</string>
+   <string name="gesture_preferences">Gesture</string>
 
    <string name="keyboard_preferences">Keyboard</string>
 

@@ -114,12 +114,13 @@
         <item>Sends i from terminal</item>
         <item>Sends : from terminal</item>
         <item>Sends / from terminal</item>
+        <item>One-line text box</item>
         <item>IME shortcut</item>
         <item>Direct input : password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : password\n(Google Japanese input)</item>
         <item>Quit Vim</item>
-        <!--<item>None</item>-->
+        <item>None</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

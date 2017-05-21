@@ -217,6 +217,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
+    private GestureDetector.OnDoubleTapListener mDoubleTapListener;
     private Scroller mScroller;
     private Runnable mFlingRunner = new Runnable() {
         public void run() {
@@ -565,7 +566,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mBackgroundPaint = new Paint();
         mTopRow = 0;
         mLeftColumn = 0;
-        mGestureDetector = new GestureDetector(this);
+        mGestureDetector = new GestureDetector(this.getContext(), this);
         // mGestureDetector.setIsLongpressEnabled(false);
         setVerticalScrollBarEnabled(true);
         setFocusable(true);
@@ -1041,6 +1042,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mExtGestureListener = listener;
     }
 
+    public void setDoubleTapListener(GestureDetector.OnDoubleTapListener listener) {
+        mDoubleTapListener = listener;
+    }
+
     /**
      * Compute the vertical range that the vertical scrollbar represents.
      */
@@ -1265,13 +1270,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onDoubleTap(MotionEvent e) {
         Log.w(TAG, "onDoubleTap");
-        ((Activity)this.getContext()).onKeyUp(0xffffffc1, null);
+        if (mDoubleTapListener != null && mDoubleTapListener.onDoubleTap(e)) {
+            return true;
+        }
         return false;
     }
 
     public boolean onDoubleTapEvent(MotionEvent e) {
+        if (mDoubleTapListener != null && mDoubleTapListener.onDoubleTapEvent(e)) {
+            return true;
+        }
         Log.w(TAG, "onDoubleTapEvent");
-        return true;
+        return false;
     }
 
     public void onLongPress(MotionEvent e) {

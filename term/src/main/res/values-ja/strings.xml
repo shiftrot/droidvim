@@ -46,9 +46,12 @@
    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
 
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.\n  (「起動時の入力モード」は設定で変更可能です)\n\n▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Vimチュートリアル\n- \":Vimtutor\"を入力.</string>
+   <string name="tips_vim_list">▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.\n  (「起動時の入力モード」は設定で変更可能です)\n- 一行入力が画面下端付近でのダブルタップで起動します. 音声入力や絵文字の入力で便利です.\n\n▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Vimチュートリアル\n- \":Vimtutor\"を入力.</string>
    <string name="vimrc_warning_title">.vimrcについて</string>
    <string name="vimrc_warning">あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.</string>
+
+   <string name="edit_text_view_warning_title">一行テキストボックス</string>
+   <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 閉じる\nTab - テキスト送出</string>
 
    <string name="menu_update">アップデート</string>
    <string name="menu_update_latest">アプリは最新です</string>
@@ -165,10 +168,14 @@
    <string name="title_double_tap_preference">ダブルタップ</string>
    <string name="summary_double_tap_preference">ダブルタップの振舞いを選択</string>
    <string name="dialog_title_double_tap_preference">ダブルタップの振舞い</string>
-   <string name="title_right_edge_swipe_preference">画面右端からスワイプの振舞い</string>
-   <string name="summary_right_edge_swipe_preference">画面右端からスワイプの振舞いを選択</string>
-   <string name="dialog_title_right_edge_swipe_preference">画面右端からスワイプの振舞い</string>
+   <string name="title_right_double_tap_preference">画面右端でのダブルタップの振舞い</string>
+   <string name="summary_right_double_tap_preference">画面右端でのダブルタップの振舞いを選択</string>
+   <string name="dialog_title_right_double_tap_preference">画面右端でのダブルタップの振舞い</string>
+   <string name="title_bottom_double_tap_preference">画面下端でのダブルタップの振舞い</string>
+   <string name="summary_bottom_double_tap_preference">画面下端でのダブルタップの振舞いを選択</string>
+   <string name="dialog_title_bottom_double_tap_preference">画面下端でのダブルクリックの振舞い</string>
    <string name="functionbar_preferences">ファンクションバー</string>
+   <string name="gesture_preferences">ジェスチャー</string>
 
    <string name="keyboard_preferences">キーボード</string>
 

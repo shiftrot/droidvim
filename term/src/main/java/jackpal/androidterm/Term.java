@@ -95,6 +95,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -107,6 +108,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -114,6 +116,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -285,11 +288,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
 
-            int width = getCurrentEmulatorView().getVisibleWidth();
-            if (velocityX < 0 && (e1.getX() > (width * 9 / 10))) {
-                doSendActionBarKey(getCurrentEmulatorView(), mSettings.getRightEdgeSwipeAction());
-                return true;
-            }
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
@@ -305,10 +303,33 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         }
 
-        public boolean onDoubleTap(MotionEvent e) {
-            // Let the EmulatorView handle taps if mouse tracking is active
+    }
+
+    private class EmulatorViewDoubleTapListener implements GestureDetector.OnDoubleTapListener {
+        private EmulatorView view;
+
+        public EmulatorViewDoubleTapListener(EmulatorView view) {
+            this.view = view;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            Log.w(TAG, "onSingleTapConfirmed");
             return false;
         }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            Log.w(TAG, "onDoubleTapEvent");
+            return doDoubleTapAction(e);
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+            Log.w(TAG, "onDoubleTapEvent");
+            return false;
+        }
+
     }
 
     /**
@@ -471,6 +492,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         if (mFunctionBar == -1) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
+        initEditTextLine();
 
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
@@ -1091,6 +1113,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         TermView emulatorView = new TermView(this, session, metrics);
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
+        emulatorView.setDoubleTapListener(new EmulatorViewDoubleTapListener(emulatorView));
         emulatorView.setOnKeyListener(mKeyListener);
         registerForContextMenu(emulatorView);
 
@@ -1121,6 +1144,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
+        setEditTextVisibility();
         setFunctionKeyVisibility();
         mViewFlipper.updatePrefs(mSettings);
 
@@ -1431,7 +1455,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (key == 999) {
             // do nothing
         } else if (key == 1002) {
-
             doToggleSoftKeyboard();
         } else if (key == 1249) {
             doPaste();
@@ -1461,6 +1484,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             setFunctionBar(2);
         } else if (key == 1260) {
             view.doImeShortcutsAction();
+        } else if (key == 1261) {
+            setEditTextView(2);
         } else if (key >= 1351 && key <= 1353) {
             view.doImeShortcutsAction(key-1300);
         } else if (key == 1355) {
@@ -1987,9 +2012,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 sendKeyStrings("\u001b", false);
             }
             break;
-        case 0xffffffc1:
-            doSendActionBarKey(this.getCurrentEmulatorView(), mSettings.getDoubleTapAction());
-            return true;
         case 0xfffffff1:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
             return true;
@@ -2034,6 +2056,34 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return super.onKeyUp(keyCode, event);
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    private final float EDGE = (float) 50.0;
+    private boolean doDoubleTapAction(MotionEvent me) {
+        EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
+        if (v != null) {
+            Resources resources = getApplicationContext().getResources();
+            DisplayMetrics metrics = resources.getDisplayMetrics();
+            float px = EDGE * (metrics.densityDpi/160.0f);
+            int size = (int) Math.ceil(px);
+
+            int height = getCurrentEmulatorView().getVisibleHeight();
+            int width = getCurrentEmulatorView().getVisibleWidth();
+            int rightAction = mSettings.getRightDoubleTapAction();
+            int bottomAction = mSettings.getBottomDoubleTapAction();
+
+            if (mFunctionBar == 1 && rightAction == 1261 && mEditTextView) rightAction = 999;
+            if (mFunctionBar == 1 && bottomAction == 1261 && mEditTextView) bottomAction = 999;
+            if (rightAction != 999 && (me.getX() > (width - size))) {
+                doSendActionBarKey(getCurrentEmulatorView(), rightAction);
+            } else if (bottomAction != 999 && me.getY() > (height - size)) {
+                doSendActionBarKey(getCurrentEmulatorView(), bottomAction);
+            } else {
+                doSendActionBarKey(getCurrentEmulatorView(), mSettings.getDoubleTapAction());
+            }
+            return true;
+        }
+        return false;
     }
 
     private void doAndroidIntent(String filename) {
@@ -2412,6 +2462,87 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return res;
     }
 
+    private void initEditTextLine() {
+        final EditText editText = (EditText) findViewById(R.id.text_input);
+        editText.setText("");
+        setEditTextView(0);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    // do nothing
+                } else if ((actionId == EditorInfo.IME_ACTION_DONE)
+                        || (actionId == EditorInfo.IME_ACTION_SEND)
+                        || (actionId == EditorInfo.IME_ACTION_UNSPECIFIED)) {
+                    String str = v.getText().toString();
+                    if (str.equals("")) str = "\r";
+                    sendKeyStrings(str, false);
+                    v.setText("");
+                }
+                return true;
+            }
+        });
+    }
+
+    private static boolean mEditTextView = false;
+    private void setEditTextView(int mode) {
+        EmulatorView view = getCurrentEmulatorView();
+        if (mode == 2) {
+            mEditTextView = !mEditTextView;
+            if (view != null) view.restartInputGoogleIme();
+        } else {
+            if (view != null && (mEditTextView != (mode == 1))) {
+                view.restartInputGoogleIme();
+            }
+            mEditTextView = mode == 1;
+            final EditText editText = (EditText) findViewById(R.id.text_input);
+            if (mode == 0) editText.setText("");
+        }
+        if (mAlreadyStarted) updatePrefs();
+    }
+
+    private void setEditTextVisibility() {
+        final EditText editText = (EditText) findViewById(R.id.text_input);
+        int visibilty = mEditTextView ? View.VISIBLE : View.GONE;
+        EmulatorView view = getCurrentEmulatorView();
+        if (view != null) view.restartInputGoogleIme();
+        editText.setVisibility(visibilty);
+        if (visibilty == View.VISIBLE) {
+            if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
+            editText.requestFocus();
+            doWarningEditTextView();
+        } else {
+            if (view != null) view.requestFocus();
+        }
+        setEditTextViewSize();
+        if (mViewFlipper != null) mViewFlipper.setEditTextView(visibilty == View.VISIBLE);
+    }
+
+    private void doWarningEditTextView() {
+        if (!mVimFlavor) return;
+        doWarningDialog(this.getString(R.string.edit_text_view_warning_title), this.getString(R.string.edit_text_view_warning), "do_warning_edit_text_view");
+    }
+
+    final float SCALE_VIEW = (float) 1.28;
+    private int mEditTextViewSize = 0;
+    private void setEditTextViewSize() {
+        int size = 0;
+        if (mEditTextView) {
+            // FIXME: cannot get EditText size at first time.
+            size = findViewById(R.id.text_input).getHeight();
+            if (size == 0) {
+                size = findViewById(R.id.view_function_bar).getHeight();
+                if (size <= 0) {
+                    final TextView  textView = (TextView)findViewById((R.id.text_input));
+                    float sp = SCALE_VIEW * textView.getTextSize() * getApplicationContext().getResources().getDisplayMetrics().scaledDensity;
+                    size = (int) Math.ceil(sp);
+                }
+            }
+        }
+        mEditTextViewSize = size;
+       if (mViewFlipper != null) mViewFlipper.setEditTextViewSize(size);
+    }
+
     private static int mFunctionBar = -1;
     private void setFunctionBar(int mode) {
         if (mode == 2) {
@@ -2557,6 +2688,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         EmulatorView view = getCurrentEmulatorView();
         switch (v.getId()) {
         case R.id.button_esc:
+            if (mEditTextView) {
+                EditText editText = (EditText) findViewById(R.id.text_input);
+                if (editText != null && editText.isFocused()) {
+                    setEditTextView(0);
+                    break;
+                }
+            }
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
             break;
         case R.id.button_ctrl:
@@ -2566,6 +2704,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
             break;
         case R.id.button_tab:
+            if (mEditTextView) {
+                EditText editText = (EditText) findViewById(R.id.text_input);
+                if (editText != null && editText.isFocused()) {
+                    String str = editText.getText().toString();
+                    view.restartInputGoogleIme();
+                    if (str.equals("")) str = "\r";
+                    sendKeyStrings(str, false);
+                    editText.setText("");
+                    break;
+                }
+            }
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
             break;
         case R.id.button_up:

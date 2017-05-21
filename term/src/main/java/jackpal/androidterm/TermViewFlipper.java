@@ -259,6 +259,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
            it's possible that the view won't resize correctly on IME hide */
         visible.right = window.right;
         visible.bottom = window.bottom;
+        visible.bottom -= mEditTextView ? mEditTextViewSize : 0;
         visible.bottom -= mFunctionBar ? mFunctionBarSize : 0;
     }
 
@@ -304,6 +305,21 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             mRedoLayout = false;
         }
         super.onDraw(canvas);
+    }
+
+    private int mEditTextViewSize = 0;
+    private boolean mEditTextView = false;
+    public void setEditTextViewSize(int size) {
+        if (size > 0) {
+            if (getDevInt(context, "edit_text_view_size", mEditTextViewSize) != size) setDevInt(context, "edit_text_view_size", size);
+            mEditTextViewSize = size;
+        }
+    }
+
+    public void setEditTextView(boolean bool) {
+        if (mEditTextView == bool) return;
+        mEditTextView = bool;
+        adjustChildSize();
     }
 
     private int mFunctionBarSize = 0;

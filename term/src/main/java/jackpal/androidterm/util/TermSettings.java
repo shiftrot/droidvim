@@ -51,7 +51,8 @@ public class TermSettings {
     private int mActionBarXAction;
     private int mActionBarUserAction;
     private int mDoubleTapAction;
-    private int mRightEdgeSwipeAction;
+    private int mRightDoubleTapAction;
+    private int mBottomDoubleTapAction;
     private int mBackKeyAction;
     private int mControlKeyId;
     private int mFnKeyId;
@@ -100,7 +101,8 @@ public class TermSettings {
     private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
     private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
     private static final String DOUBLE_TAP_KEY = "double_tap_action";
-    private static final String RIGHT_EDGE_SWIPE_KEY = "right_edge_swipe_action";
+    private static final String RIGHT_DOUBLE_TAP_KEY = "right_double_tap_action";
+    private static final String BOTTOM_DOUBLE_TAP_KEY = "bottom_double_tap_action";
     private static final String BACKACTION_KEY = "backaction";
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
@@ -224,7 +226,8 @@ public class TermSettings {
         mActionBarXAction = Integer.parseInt(res.getString(R.string.pref_actionbar_x_default));
         mActionBarUserAction = Integer.parseInt(res.getString(R.string.pref_actionbar_user_default));
         mDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_double_tap_default));
-        mRightEdgeSwipeAction = Integer.parseInt(res.getString(R.string.pref_right_edge_swipe_default));
+        mRightDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_right_double_tap_default));
+        mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
         mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
@@ -271,7 +274,8 @@ public class TermSettings {
         mActionBarXAction    = readIntPref(ACTIONBAR_X_KEY,    mActionBarXAction,    ACTIONBAR_KEY_MAX);
         mActionBarUserAction = readIntPref(ACTIONBAR_USER_KEY, mActionBarUserAction, ACTIONBAR_KEY_MAX);
         mDoubleTapAction = readIntPref(DOUBLE_TAP_KEY, mDoubleTapAction, ACTIONBAR_KEY_MAX);
-        mRightEdgeSwipeAction = readIntPref(RIGHT_EDGE_SWIPE_KEY, mRightEdgeSwipeAction, ACTIONBAR_KEY_MAX);
+        mRightDoubleTapAction = readIntPref(RIGHT_DOUBLE_TAP_KEY, mRightDoubleTapAction, ACTIONBAR_KEY_MAX);
+        mBottomDoubleTapAction = readIntPref(BOTTOM_DOUBLE_TAP_KEY, mBottomDoubleTapAction, ACTIONBAR_KEY_MAX);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
                 CONTROL_KEY_SCHEMES.length - 1);
@@ -427,8 +431,12 @@ public class TermSettings {
         return mDoubleTapAction;
     }
 
-    public int getRightEdgeSwipeAction() {
-        return mRightEdgeSwipeAction;
+    public int getRightDoubleTapAction() {
+        return mRightDoubleTapAction;
+    }
+
+    public int getBottomDoubleTapAction() {
+        return mBottomDoubleTapAction;
     }
 
     public int getActionBarQuitKeyAction() {
