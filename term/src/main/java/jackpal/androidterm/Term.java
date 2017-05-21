@@ -162,6 +162,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public static final int REQUEST_FILE_DELETE = 3;
     public static final int REQUEST_BILLING = 4;
     public static final int REQUEST_DROPBOX = 5;
+    public static final int REQUEST_GOOGLEDRIVE = 6;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -578,8 +579,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 mFilePickerItems.add(this.getString(R.string.dropbox));
             }
             if (isAppInstalled(APP_GOOGLEDRIVE)) {
-                // button = (Button) findViewById(R.id.drawer_googledrive_button);
-                // button.setVisibility(View.VISIBLE);
+                button = (Button) findViewById(R.id.drawer_googledrive_button);
+                button.setVisibility(View.VISIBLE);
                 mFilePickerItems.add(this.getString(R.string.googledrive));
             }
             if (isAppInstalled(APP_ONEDRIVE)) {
@@ -592,9 +593,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 button.setVisibility(View.VISIBLE);
                 button = (Button)findViewById(R.id.drawer_createfile_button);
                 button.setVisibility(View.VISIBLE);
+                mFilePickerItems.add(this.getString(R.string.clear_cache));
+            } else {
+                button = (Button)findViewById(R.id.drawer_clear_cache_button);
+                button.setVisibility(View.VISIBLE);
             }
-            button = (Button)findViewById(R.id.drawer_clear_cache_button);
-            button.setVisibility(View.VISIBLE);
         }
         setExtraButton();
         findViewById(R.id.drawer_extra_button).setOnClickListener(new OnClickListener() {
@@ -624,7 +627,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                intentMainActivity(APP_GOOGLEDRIVE);
+                googleDriveFilePicker(0);
             }
         });
         findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
@@ -699,11 +702,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setAction("android.intent.category.LAUNCHER");
         switch (app) {
-            case APP_ONEDRIVE:
-                intent.setClassName(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");
+            case APP_DROPBOX:
+                intent.setClassName(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");
                 break;
             case APP_GOOGLEDRIVE:
                 intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
+                break;
+            case APP_ONEDRIVE:
+                intent.setClassName(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");
                 break;
             default:
                 break;
@@ -727,6 +733,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return 1;
     }
 
+    @SuppressLint("NewApi")
+    private int googleDriveFilePicker(int mode) {
+        if (mode == 0) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setAction("android.intent.category.LAUNCHER");
+            intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setPackage(APP_GOOGLEDRIVE);
+            intent.setType("*/*");
+            startActivityForResult(intent, REQUEST_GOOGLEDRIVE);
+        }
+        return 1;
+    }
     private boolean installGit() {
         return true;
     }
@@ -788,6 +809,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                         dropboxFilePicker(0);
                     } else {
                         dropboxFilePicker(1);
+                    }
+                }
+            }
+            break;
+        case REQUEST_GOOGLEDRIVE:
+            for (int i = 0; i < permissions.length ; i++) {
+                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        googleDriveFilePicker(0);
+                    } else {
+                        googleDriveFilePicker(1);
                     }
                 }
             }
@@ -1554,6 +1586,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     intentMainActivity(APP_GOOGLEDRIVE);
                 } else if (Term.this.getString(R.string.onedrive).equals(item)) {
                     intentMainActivity(APP_ONEDRIVE);
+                } else if (Term.this.getString(R.string.clear_cache).equals(item)) {
+                    confirmClearCache(false);
                 }
             }
         }).show();
@@ -1655,6 +1689,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
                 break;
             case REQUEST_DROPBOX:
+            case REQUEST_GOOGLEDRIVE:
             case REQUEST_FILE_PICKER:
                 String path = null;
                 if (result == RESULT_OK && data != null) {
