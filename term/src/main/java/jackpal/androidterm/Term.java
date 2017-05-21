@@ -1422,6 +1422,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doToggleWifiLock();
         } else if (id == R.id.menu_edit_vimrc) {
             sendKeyStrings(":exe $MYVIMRC == '' ? 'e $HOME/.vimrc' : 'e $MYVIMRC'\r", true);
+        } else if (id == R.id.menu_text_box) {
+            setEditTextView(2);
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if  (id == R.id.action_help) {

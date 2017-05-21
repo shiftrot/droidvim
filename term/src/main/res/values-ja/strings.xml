@@ -40,6 +40,7 @@
    <string name="clipboard_warning">Vimへの\"貼り付け\"には、Vimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー.\n\nこの \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで、送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
 
    <string name="edit_vimrc">.vimrcを編集</string>
+   <string name="text_box">一行テキスト入力</string>
    <string name="update_vim">実行ファイルとライブラリをアップデートしています.</string>
    <string name="reload_file">エンコーディング指定</string>
    <string name="reload_file_title">ファイル再読込</string>
