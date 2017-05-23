@@ -70,6 +70,8 @@
         android:title="@string/paste" />
     <item android:id="@+id/menu_update"
         android:title="@string/menu_update" />
+    <item android:id="@+id/menu_tutorial"
+        android:title="@string/tutorial" />
     <item android:id="@+id/action_help"
         android:title="@string/help" />
 </menu>

@@ -49,7 +49,7 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">Direct input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\nSee \"Input mode at startup\" preference.\n- One-line text box starts with double tap near the bottom edge. It is useful for voice input and emoji.\n\nHow to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Type \":Vimtutor\".</string>
+   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\n- One-line text box starts with double tap near the bottom edge. It is useful for voice input and emoji.</string>
    <string name="vimrc_warning_title">About .vimrc</string>
    <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.</string>
 
@@ -291,6 +291,7 @@
   <string name="summary_ime_inputtype_preference">Force direct input at startup.</string>
   <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
+  <string name="tutorial">Vim tutorial</string>
   <string name="help">Help</string>
   <string name="help_url">http://example.com</string>
   <string name="activity_term_here_title">Term here</string>

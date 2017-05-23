@@ -1416,6 +1416,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             setFunctionBar(2);
         } else if (id == R.id.menu_update) {
             networkUpdate();
+        } else if (id == R.id.menu_tutorial) {
+            sendKeyStrings(":Vimtutor\r", true);
         } else if (id == R.id.menu_toggle_wakelock) {
             doToggleWakeLock();
         } else if (id == R.id.menu_toggle_wifilock) {
@@ -1878,6 +1880,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem wakeLockItem = menu.findItem(R.id.menu_toggle_wakelock);
         MenuItem wifiLockItem = menu.findItem(R.id.menu_toggle_wifilock);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
         menu.removeItem(R.id.menu_toggle_wakelock);
         menu.removeItem(R.id.menu_toggle_wifilock);
         menu.removeItem(R.id.menu_window_list);
