@@ -59,6 +59,7 @@ class UnicodeTranscript {
     private char[] tmpLine;
     private StyleRow tmpColor;
 
+    private static int mAmbiWidthMode = 1;
     private static int mAmbiWidth = 1;
 
     public UnicodeTranscript(int columns, int totalRows, int screenRows, int defaultStyle) {
@@ -74,7 +75,8 @@ class UnicodeTranscript {
     }
 
     public static void setAmbiWidth(int width) {
-        mAmbiWidth = width;
+        mAmbiWidthMode = width;
+        mAmbiWidth = mAmbiWidthMode > 1 ? 2 : 1;
     }
 
     public void setDefaultStyle(int defaultStyle) {
@@ -558,8 +560,10 @@ class UnicodeTranscript {
             }
         }
 
-        if (mAmbiWidth <= 2) {
+        if (mAmbiWidthMode <= 2) {
             return vimCharWidth(codePoint);
+        } else if (mAmbiWidthMode == 3) {
+            return unicode9CharWidth(codePoint);
         } else {
             if (Character.charCount(codePoint) == 1) {
                 // Android's getEastAsianWidth() only works for BMP characters
@@ -580,8 +584,8 @@ class UnicodeTranscript {
 
         return 1;
     }
-
-    private static int mAmbiguous[][] =
+    // from vim/src/mbyte.c
+    private static final int AMBIGUOUS_WIDTH[][] =
     {
         {0x00a1, 0x00a1},
         {0x00a4, 0x00a4},
@@ -725,7 +729,6 @@ class UnicodeTranscript {
         {0x2605, 0x2606},
         {0x2609, 0x2609},
         {0x260e, 0x260f},
-        {0x2614, 0x2615},
         {0x261c, 0x261c},
         {0x261e, 0x261e},
         {0x2640, 0x2640},
@@ -736,15 +739,20 @@ class UnicodeTranscript {
         {0x266c, 0x266d},
         {0x266f, 0x266f},
         {0x269e, 0x269f},
-        {0x26be, 0x26bf},
-        {0x26c4, 0x26cd},
-        {0x26cf, 0x26e1},
+        {0x26bf, 0x26bf},
+        {0x26c6, 0x26cd},
+        {0x26cf, 0x26d3},
+        {0x26d5, 0x26e1},
         {0x26e3, 0x26e3},
-        {0x26e8, 0x26ff},
+        {0x26e8, 0x26e9},
+        {0x26eb, 0x26f1},
+        {0x26f4, 0x26f4},
+        {0x26f6, 0x26f9},
+        {0x26fb, 0x26fc},
+        {0x26fe, 0x26ff},
         {0x273d, 0x273d},
-        {0x2757, 0x2757},
         {0x2776, 0x277f},
-        {0x2b55, 0x2b59},
+        {0x2b56, 0x2b59},
         {0x3248, 0x324f},
         {0xe000, 0xf8ff},
         {0xfe00, 0xfe0f},
@@ -752,16 +760,52 @@ class UnicodeTranscript {
         {0x1f100, 0x1f10a},
         {0x1f110, 0x1f12d},
         {0x1f130, 0x1f169},
-        {0x1f170, 0x1f19a},
+        {0x1f170, 0x1f18d},
+        {0x1f18f, 0x1f190},
+        {0x1f19b, 0x1f1ac},
         {0xe0100, 0xe01ef},
         {0xf0000, 0xffffd},
         {0x100000, 0x10fffd}
     };
 
-    private static int[][] mDoublewidth =
+    // from vim/src/mbyte.c
+    private static final int[][] DOUBLE_WIDTH =
     {
         {0x1100, 0x115f},
+        {0x231a, 0x231b},
         {0x2329, 0x232a},
+        {0x23e9, 0x23ec},
+        {0x23f0, 0x23f0},
+        {0x23f3, 0x23f3},
+        {0x25fd, 0x25fe},
+        {0x2614, 0x2615},
+        {0x2648, 0x2653},
+        {0x267f, 0x267f},
+        {0x2693, 0x2693},
+        {0x26a1, 0x26a1},
+        {0x26aa, 0x26ab},
+        {0x26bd, 0x26be},
+        {0x26c4, 0x26c5},
+        {0x26ce, 0x26ce},
+        {0x26d4, 0x26d4},
+        {0x26ea, 0x26ea},
+        {0x26f2, 0x26f3},
+        {0x26f5, 0x26f5},
+        {0x26fa, 0x26fa},
+        {0x26fd, 0x26fd},
+        {0x2705, 0x2705},
+        {0x270a, 0x270b},
+        {0x2728, 0x2728},
+        {0x274c, 0x274c},
+        {0x274e, 0x274e},
+        {0x2753, 0x2755},
+        {0x2757, 0x2757},
+        {0x2795, 0x2797},
+        {0x27b0, 0x27b0},
+        {0x27bf, 0x27bf},
+        {0x2b1b, 0x2b1c},
+        {0x2b50, 0x2b50},
+        {0x2b55, 0x2b55},
         {0x2e80, 0x2e99},
         {0x2e9b, 0x2ef3},
         {0x2f00, 0x2fd5},
@@ -788,41 +832,91 @@ class UnicodeTranscript {
         {0xfe68, 0xfe6b},
         {0xff01, 0xff60},
         {0xffe0, 0xffe6},
+        {0x16fe0, 0x16fe0},
+        {0x17000, 0x187ec},
+        {0x18800, 0x18af2},
         {0x1b000, 0x1b001},
+        {0x1f004, 0x1f004},
+        {0x1f0cf, 0x1f0cf},
+        {0x1f18e, 0x1f18e},
+        {0x1f191, 0x1f19a},
         {0x1f200, 0x1f202},
-        {0x1f210, 0x1f23a},
+        {0x1f210, 0x1f23b},
         {0x1f240, 0x1f248},
         {0x1f250, 0x1f251},
+        {0x1f300, 0x1f320},
+        {0x1f32d, 0x1f335},
+        {0x1f337, 0x1f37c},
+        {0x1f37e, 0x1f393},
+        {0x1f3a0, 0x1f3ca},
+        {0x1f3cf, 0x1f3d3},
+        {0x1f3e0, 0x1f3f0},
+        {0x1f3f4, 0x1f3f4},
+        {0x1f3f8, 0x1f43e},
+        {0x1f440, 0x1f440},
+        {0x1f442, 0x1f4fc},
+        {0x1f4ff, 0x1f53d},
+        {0x1f54b, 0x1f54e},
+        {0x1f550, 0x1f567},
+        {0x1f57a, 0x1f57a},
+        {0x1f595, 0x1f596},
+        {0x1f5a4, 0x1f5a4},
+        {0x1f5fb, 0x1f64f},
+        {0x1f680, 0x1f6c5},
+        {0x1f6cc, 0x1f6cc},
+        {0x1f6d0, 0x1f6d2},
+        {0x1f6eb, 0x1f6ec},
+        {0x1f6f4, 0x1f6f6},
+        {0x1f910, 0x1f91e},
+        {0x1f920, 0x1f927},
+        {0x1f930, 0x1f930},
+        {0x1f933, 0x1f93e},
+        {0x1f940, 0x1f94b},
+        {0x1f950, 0x1f95e},
+        {0x1f980, 0x1f991},
+        {0x1f9c0, 0x1f9c0},
         {0x20000, 0x2fffd},
         {0x30000, 0x3fffd}
     };
 
-    private static int[][] mEmoji_width = {
-         {0x1f004, 0x1f004},
-         {0x1f0cf, 0x1f0cf},
-         {0x1f1e6, 0x1f1ff},
-         {0x1f300, 0x1f320},
-         {0x1f330, 0x1f335},
-         {0x1f337, 0x1f37c},
-         {0x1f380, 0x1f393},
-         {0x1f3a0, 0x1f3c4},
-         {0x1f3c6, 0x1f3ca},
-         {0x1f3e0, 0x1f3f0},
-         {0x1f400, 0x1f43e},
-         {0x1f440, 0x1f440},
-         {0x1f442, 0x1f4f7},
-         {0x1f4f9, 0x1f4fc},
-         {0x1f500, 0x1f53d},
-         {0x1f550, 0x1f567},
-         {0x1f5fb, 0x1f640},
-         {0x1f645, 0x1f64f},
-         {0x1f680, 0x1f6c5}
+    // * based on http://unicode.org/emoji/charts/emoji-list.html */
+    private static final int[][] EMOJI_WIDTH = {
+        {0x1f004, 0x1f004},
+        {0x1f0cf, 0x1f0cf},
+        {0x1f1e6, 0x1f1ff},
+        {0x1f300, 0x1f320},
+        {0x1f330, 0x1f335},
+        {0x1f337, 0x1f37c},
+        {0x1f380, 0x1f393},
+        {0x1f3a0, 0x1f3c4},
+        {0x1f3c6, 0x1f3ca},
+        {0x1f3e0, 0x1f3f0},
+        {0x1f400, 0x1f43e},
+        {0x1f440, 0x1f440},
+        {0x1f442, 0x1f4f7},
+        {0x1f4f9, 0x1f4fc},
+        {0x1f500, 0x1f53d},
+        {0x1f550, 0x1f567},
+        {0x1f5fb, 0x1f640},
+        {0x1f645, 0x1f64f},
+        {0x1f680, 0x1f6c5}
+    };
+
+    // Sorted list of non-overlapping intervals of Emoji
+    private static final int[][] ANDROID_EMOJI_WIDTH = {
+        {0x1f1e6, 0x1f1ff},
     };
 
     private static int vimCharWidth(int codePoint) {
-        if (intable(codePoint, mDoublewidth)) return 2;
-        if (intable(codePoint, mAmbiguous)) return mAmbiWidth;
-        if (intable(codePoint, mEmoji_width)) return 2;
+        if (intable(codePoint, DOUBLE_WIDTH)) return 2;
+        if (intable(codePoint, AMBIGUOUS_WIDTH)) return mAmbiWidth;
+        if (intable(codePoint, ANDROID_EMOJI_WIDTH)) return 2;
+        return 1;
+    }
+
+    private static int unicode9CharWidth(int codePoint) {
+        if (intable(codePoint, DOUBLE_WIDTH)) return 2;
+        if (intable(codePoint, AMBIGUOUS_WIDTH)) return mAmbiWidth;
         return 1;
     }
 

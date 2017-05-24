@@ -75,6 +75,7 @@
 
     <string-array name="entries_ambiwidth_preference">
         <item>1</item>
+        <item>2 (Vim based)</item>
         <item>2</item>
     </string-array>
 

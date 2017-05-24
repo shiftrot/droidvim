@@ -79,6 +79,7 @@
     <string-array name="entryvalues_ambiwidth_preference">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="entryvalues_color_preference">
