@@ -596,7 +596,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setDensity(DisplayMetrics metrics) {
         if (mDensity == 0) {
             // First time we've known the screen density, so update font size
-            mTextSize = (int) (mTextSize * metrics.density);
+            mTextSize = (int) Math.floor(mTextSize * metrics.density);
         }
         mDensity = metrics.density;
         mScaledDensity = metrics.scaledDensity;
@@ -1191,8 +1191,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *
      * @param fontSize the new font size, in density-independent pixels.
      */
-    public void setTextSize(int fontSize) {
-        mTextSize = (int) (fontSize * mDensity);
+    public void setTextSize(float fontSize) {
+        mTextSize = (int) Math.floor(fontSize * mDensity);
         updateText();
     }
 

@@ -2682,7 +2682,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         button.setVisibility(visibility);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int height = mSettings.getFontSize() * (int) (metrics.density * metrics.scaledDensity);
+        int height = (int) Math.ceil(mSettings.getFontSize() * metrics.density * metrics.scaledDensity);
         button.setMinHeight(height);
         if (AndroidCompat.SDK >= 14) {
             button.setAllCaps(false);

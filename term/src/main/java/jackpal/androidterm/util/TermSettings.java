@@ -37,7 +37,7 @@ public class TermSettings {
     private int mOrientation;
     private int mCursorStyle;
     private int mCursorBlink;
-    private int mFontSize;
+    private float mFontSize;
     private int mFontLeading;
     private String mFontFile;
     private int mAmbiWidth;
@@ -212,7 +212,7 @@ public class TermSettings {
         mOrientation = res.getInteger(R.integer.pref_orientation_default);
         mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
         mCursorBlink = Integer.parseInt(res.getString(R.string.pref_cursorblink_default));
-        mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
+        mFontSize = Float.parseFloat(res.getString(R.string.pref_fontsize_default));
         mFontLeading = Integer.parseInt(res.getString(R.string.pref_fontleading_default));
         mFontFile = res.getString(R.string.pref_fontfile_default);
         mAmbiWidth = Integer.parseInt(res.getString(R.string.pref_ambiguous_width_default));
@@ -260,7 +260,7 @@ public class TermSettings {
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
-        mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 288);
+        mFontSize = readFloatPref(FONTSIZE_KEY, mFontSize, 288.0f);
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
         mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
@@ -330,6 +330,17 @@ public class TermSettings {
         return val;
     }
 
+    private float readFloatPref(String key, float defaultValue, float maxValue) {
+        float val;
+        try {
+            val = Float.parseFloat(mPrefs.getString(key, Float.toString(defaultValue)));
+        } catch (NumberFormatException e) {
+            val = defaultValue;
+        }
+        val = Math.max(0, Math.min(val, maxValue));
+        return val;
+    }
+
     private String readStringPref(String key, String defaultValue) {
         return mPrefs.getString(key, defaultValue);
     }
@@ -362,7 +373,7 @@ public class TermSettings {
         return mCursorBlink;
     }
 
-    public int getFontSize() {
+    public float getFontSize() {
         return mFontSize;
     }
 

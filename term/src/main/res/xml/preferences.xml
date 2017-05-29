@@ -397,7 +397,7 @@
                 android:entries="@array/entries_fontsize_preference"
                 android:entryValues="@array/entryvalues_fontsize_preference"
                 android:dialogTitle="@string/dialog_title_fontsize_preference"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
 
         <EditTextPreference
                 android:key="fontleading"
