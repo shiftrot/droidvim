@@ -1232,6 +1232,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     public void onResume() {
         super.onResume();
+        if (mDoResetTerminal) doResetTerminal();
 
         registerReceiver(mBroadcastReceiever, new IntentFilter(PURCHASES_UPDATED));
         RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
@@ -2224,17 +2225,18 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doPreferences() {
+        mDoResetTerminal = true;
         startActivity(new Intent(this, TermPreferences.class));
     }
 
+    boolean mDoResetTerminal = false;
     private void doResetTerminal() {
         TermSession session = getCurrentTermSession();
         if (session != null) {
             session.reset();
-            if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
-                sendKeyStrings("\u001b\u000c", false);
-            }
+            sendKeyStrings("\u001b\u000c", false);
         }
+        mDoResetTerminal = false;
     }
 
     private void doEmailTranscript() {
