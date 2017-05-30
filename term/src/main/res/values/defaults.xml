@@ -43,4 +43,6 @@
    <bool name="pref_auto_hide_functionbar_default">false</bool>
    <integer name="pref_ime_shortcuts_action_default">53</integer>
    <integer name="pref_ime_inputtype_default">53</integer>
+   <bool name="pref_cloud_dropbox_default">false</bool>
+   <bool name="pref_cloud_googledrive_default">false</bool>
 </resources>

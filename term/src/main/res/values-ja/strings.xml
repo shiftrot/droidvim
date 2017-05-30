@@ -330,4 +330,11 @@
   <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>
   <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
   <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
+
+  <string name="cloud_storage_preferences">クラウドストレージ</string>
+  <string name="title_cloud_dropbox_preference">Dropbox</string>
+  <string name="title_cloud_googledrive_preference">GoogleDrive</string>
+  <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
+  <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
+
 </resources>

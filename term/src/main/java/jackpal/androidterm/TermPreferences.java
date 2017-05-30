@@ -61,6 +61,9 @@ public class TermPreferences extends PreferenceActivity {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+        if (FLAVOR_VIM) {
+            addPreferencesFromResource(R.xml.preferences_cloud);
+        }
 
         // Remove the action bar pref on older platforms without an action bar
         Preference actionBarPref = findPreference(ACTIONBAR_KEY);

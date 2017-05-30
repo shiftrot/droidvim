@@ -367,4 +367,11 @@
   <string name="donate_premium_purchase">Thank you for your donation!</string>
   <string name="donate_button">Donate</string>
   <string name="extra_button">Extra</string>
+
+  <string name="cloud_storage_preferences">Cloud storage</string>
+  <string name="title_cloud_dropbox_preference">Dropbox</string>
+  <string name="title_cloud_googledrive_preference">GoogleDrive</string>
+  <string name="summary_cloud_file_picker_on_preference">Application</string>
+  <string name="summary_cloud_file_picker_off_preference">Content picker</string>
+
 </resources>

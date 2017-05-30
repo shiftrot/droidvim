@@ -644,14 +644,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                dropboxFilePicker(1);
+                dropboxFilePicker(mSettings.getDropboxFilePicker());
             }
         });
         findViewById(R.id.drawer_googledrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                googleDriveFilePicker(0);
+                googleDriveFilePicker(mSettings.getGoogleDriveFilePicker());
             }
         });
         findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
@@ -715,28 +715,24 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void intentMainActivity(String app) {
-        if (app.equals(APP_DROPBOX)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_DROPBOX);
-            } else {
-                dropboxFilePicker(0);
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage(app);
+        if (intent == null) {
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setAction("android.intent.category.LAUNCHER");
+            switch (app) {
+                case APP_DROPBOX:
+                    intent.setClassName(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");
+                    break;
+                case APP_GOOGLEDRIVE:
+                    intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
+                    break;
+                case APP_ONEDRIVE:
+                    intent.setClassName(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");
+                    break;
+                default:
+                    break;
             }
-            return;
-        }
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setAction("android.intent.category.LAUNCHER");
-        switch (app) {
-            case APP_DROPBOX:
-                intent.setClassName(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");
-                break;
-            case APP_GOOGLEDRIVE:
-                intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
-                break;
-            case APP_ONEDRIVE:
-                intent.setClassName(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");
-                break;
-            default:
-                break;
         }
         startActivity(intent);
     }
@@ -744,10 +740,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @SuppressLint("NewApi")
     private int dropboxFilePicker(int mode) {
         if (mode == 0) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setAction("android.intent.category.LAUNCHER");
-            intent.setClassName(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");
-            startActivity(intent);
+            intentMainActivity(APP_DROPBOX);
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setPackage(APP_DROPBOX);
@@ -760,10 +753,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @SuppressLint("NewApi")
     private int googleDriveFilePicker(int mode) {
         if (mode == 0) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setAction("android.intent.category.LAUNCHER");
-            intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
-            startActivity(intent);
+            intentMainActivity(APP_GOOGLEDRIVE);
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setPackage(APP_GOOGLEDRIVE);
@@ -772,6 +762,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
         return 1;
     }
+
     private boolean installGit() {
         return true;
     }
@@ -826,25 +817,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
             }
             break;
-        case REQUEST_DROPBOX:
+        case REQUEST_FILE_PICKER:
             for (int i = 0; i < permissions.length ; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        dropboxFilePicker(0);
-                    } else {
-                        dropboxFilePicker(1);
-                    }
-                }
-            }
-            break;
-        case REQUEST_GOOGLEDRIVE:
-            for (int i = 0; i < permissions.length ; i++) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        googleDriveFilePicker(0);
-                    } else {
-                        googleDriveFilePicker(1);
-                    }
+                    intentFilePicker();
                 }
             }
             break;
@@ -1599,7 +1575,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void filePicker() {
-        permissionCheckExternalStorage();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FILE_PICKER);
+        } else {
+            intentFilePicker();
+        }
+    }
+
+    private void intentFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
