@@ -2118,35 +2118,81 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
         String action = str[0];
         if (action == null || str[1] == null) return;
+        String mime = null;
+        if (str[2] != null) {
+            mime = str[2];
+        } else {
+            int ch = str[1].lastIndexOf('.');
+            String ext = (ch >= 0) ?str[1].substring(ch + 1) : null;
+            mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase());
+        }
+        if ((str[1] != null) && (str[1].matches("^%(w3m|open)%.*"))) {
+            String url = str[1].replaceFirst("%(w3m|open)%", "");
+            if ((mime == null || mime.equals("")) && !url.matches("^http://.*")) {
+                url = "http://" + url;
+            } else if (url.matches("^file://.*")) {
+                url = url.replaceFirst("file://", "");
+            }
+            str[1] = url;
+        }
+        Uri uri = null;
 
         TermSession session = getCurrentTermSession();
         if (session != null) {
             if (action.equalsIgnoreCase("activity")) {
                 try {
                     startActivity(new Intent(this, Class.forName(str[1])));
-                } catch (ClassNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (action.matches("^.*(VIEW|EDIT).*")) {
                 Intent intent = new Intent(action);
-
-                String MIME;
-                if (str[2] != null) {
-                    MIME = str[2];
+                if (str[1].matches("^http://.*")) {
+                    uri = Uri.parse(str[1]);
                 } else {
-                    int ch = str[1].lastIndexOf('.');
-                    String ext = (ch >= 0) ?str[1].substring(ch + 1) : null;
-                    MIME = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase());
-                    if (MIME != null && !MIME.equals("")){
-                         intent.setType(MIME);
+                    File file = new File(str[1]);
+                    if (file.exists()) {
+                        String scheme = "";
+                        scheme = "file://";
+                        uri = Uri.parse(scheme + file.getAbsolutePath());
                     } else {
-                        Log.e("CreateIntent","MIME is Error");
+                        Toast toast = Toast.makeText(this,R.string.storage_read_error,Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        return;
                     }
                 }
-                intent.setDataAndType(Uri.parse(str[1]), MIME);
-                startActivity(intent);
+                if (mime != null && !mime.equals("")){
+                    intent.setDataAndType(uri, mime);
+                    Toast toast = Toast.makeText(this,R.string.storage_read_error,Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    return;
+                } else {
+                    intent.setData(uri);
+                }
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    private void start(Intent intent) {
+        String action = intent.getAction();
+        String data = "";
+        String mime = intent.getType();
+        Uri uri = intent.getData();
+        if (uri != null) {
+            data = uri.toString();
+            String scheme = "text/html";
+            String cmd = "am start intent --user 0 -a "+action+" -t "+scheme+" -d "+data;
+            TermVimInstaller.shell(cmd);
+            return;
+        }
+        startActivity(intent);
     }
 
     private void copyFileToClipboard(String filename) {
