@@ -22,14 +22,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
 
-            <EditText xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/text_input"
+            <LinearLayout
+                android:id="@+id/oneline_text_box"
                 android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionSend|flagNoFullscreen"
-                android:maxLines="1"
-                android:inputType="text" />
+                android:orientation="horizontal">
+
+                <EditText xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/text_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSend|flagNoFullscreen"
+                    android:maxLines="1"
+                    android:layout_weight="1"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/button_oneline_text_box_enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:layout_weight="1"
+                    android:minHeight="44sp"
+                    android:minWidth="96dp"
+                    android:text="↲"/>
+
+            </LinearLayout>
 
             <HorizontalScrollView
                 android:id="@+id/view_function_bar"

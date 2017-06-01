@@ -84,6 +84,12 @@
             android:title="@string/title_functionbar_preference"
             android:summary="@string/summary_functionbar_preference" />
 
+        <CheckBoxPreference
+            android:key="oneline_textbox"
+            android:defaultValue="false"
+            android:title="@string/title_oneline_textbox_preference"
+            android:summary="@string/summary_oneline_textbox_preference" />
+
         <CheckBoxPreference android:title="@string/title_auto_hide_functionbar"
                 android:key="auto_hide_functionbar"
                 android:defaultValue="@bool/pref_auto_hide_functionbar_default"

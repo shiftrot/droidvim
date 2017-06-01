@@ -33,6 +33,7 @@ public class TermSettings {
 
     private int mStatusBar;
     private boolean mFunctionBar;
+    private boolean mOnelineTextBox;
     private int mActionBarMode;
     private int mOrientation;
     private int mCursorStyle;
@@ -87,6 +88,7 @@ public class TermSettings {
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String FUNCTIONBAR_KEY = "functionbar";
+    private static final String ONELINE_TEXTBOX_KEY = "oneline_textbox";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
     private static final String FONTSIZE_KEY = "fontsize";
@@ -212,6 +214,7 @@ public class TermSettings {
     private void readDefaultPrefs(Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
         mFunctionBar = res.getBoolean(R.bool.pref_functionbar_default);
+        mOnelineTextBox = res.getBoolean(R.bool.pref_one_line_textbox_default);
         mActionBarMode = res.getInteger(R.integer.pref_actionbar_default);
         mOrientation = res.getInteger(R.integer.pref_orientation_default);
         mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
@@ -262,6 +265,7 @@ public class TermSettings {
         setLocalizedDefault();
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mFunctionBar = readBooleanPref(FUNCTIONBAR_KEY, mFunctionBar);
+        mOnelineTextBox = readBooleanPref(ONELINE_TEXTBOX_KEY, mOnelineTextBox);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
@@ -363,6 +367,10 @@ public class TermSettings {
 
     public boolean showFunctionBar() {
         return mFunctionBar;
+    }
+
+    public boolean showOnelineTextBox() {
+        return mOnelineTextBox;
     }
 
     public int actionBarMode() {

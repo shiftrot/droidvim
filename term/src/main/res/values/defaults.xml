@@ -3,6 +3,7 @@
    <!-- Don't localize these default values -->
    <string name="pref_statusbar_default" translatable="false">1</string>
    <bool name="pref_functionbar_default">true</bool>
+   <bool name="pref_one_line_textbox_default">false</bool>
    <integer name="pref_actionbar_default">3</integer>
    <integer name="pref_orientation_default">0</integer>
    <string name="pref_cursorstyle_default" translatable="false">0</string>

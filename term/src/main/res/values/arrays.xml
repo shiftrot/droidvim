@@ -198,6 +198,7 @@
         <item>Direct input : Password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : Password\n(Google Japanese input)</item>
+        <item>One-line text box</item>
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">

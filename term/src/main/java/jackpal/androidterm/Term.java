@@ -492,7 +492,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         if (mFunctionBar == -1) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
-        initEditTextLine();
+        if (mOnelineTextBox == -1) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
+        initOnelineTextBox(mOnelineTextBox);
 
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
@@ -1277,6 +1278,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mHideFunctionBar = haveFullHwKeyboard && mSettings.getAutoHideFunctionbar();
             if (!haveFullHwKeyboard) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
             if (haveFullHwKeyboard) doWarningHwKeyboard();
+            // if (!haveFullHwKeyboard) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         }
         mPrevHaveFullHwKeyboard = haveFullHwKeyboard ? 1 : 0;
         return haveFullHwKeyboard;
@@ -1977,6 +1979,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
                 mBackKeyPressed = false;
             }
+            if (onelineTextBoxEsc()) {
+                return true;
+            }
             if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
                 mActionBar.hide();
                 return true;
@@ -2042,6 +2047,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
             return true;
         case 0xfffffff9:
+            EditText editText = (EditText) findViewById(R.id.text_input);
+            if (mEditTextView && editText != null && !editText.isFocused()) {
+                editText.requestFocus();
+            } else {
+                setEditTextView(2);
+            }
             return true;
         case 0xfffffffa:
             clearClipBoard();
@@ -2072,8 +2083,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             int rightAction = mSettings.getRightDoubleTapAction();
             int bottomAction = mSettings.getBottomDoubleTapAction();
 
-            if (mFunctionBar == 1 && rightAction == 1261 && mEditTextView) rightAction = 999;
-            if (mFunctionBar == 1 && bottomAction == 1261 && mEditTextView) bottomAction = 999;
+            // if (mFunctionBar == 1 && rightAction == 1261 && mEditTextView) rightAction = 999;
+            // if (mFunctionBar == 1 && bottomAction == 1261 && mEditTextView) bottomAction = 999;
             if (rightAction != 999 && (me.getX() > (width - size))) {
                 doSendActionBarKey(getCurrentEmulatorView(), rightAction);
             } else if (bottomAction != 999 && me.getY() > (height - size)) {
@@ -2466,10 +2477,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         return res;
     }
 
-    private void initEditTextLine() {
+    private int mOnelineTextBox = -1;
+    private void initOnelineTextBox(int mode) {
         final EditText editText = (EditText) findViewById(R.id.text_input);
         editText.setText("");
-        setEditTextView(0);
+        setEditTextView(mode);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -2507,11 +2519,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void setEditTextVisibility() {
         final EditText editText = (EditText) findViewById(R.id.text_input);
-        int visibilty = mEditTextView ? View.VISIBLE : View.GONE;
+        final View layout = findViewById(R.id.oneline_text_box);
+        int visibility = mEditTextView ? View.VISIBLE : View.GONE;
+        if (mHideFunctionBar) visibility = View.GONE;
         EmulatorView view = getCurrentEmulatorView();
         if (view != null) view.restartInputGoogleIme();
-        editText.setVisibility(visibilty);
-        if (visibilty == View.VISIBLE) {
+        layout.setVisibility(visibility);
+        if (visibility == View.VISIBLE) {
             if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
             editText.requestFocus();
             doWarningEditTextView();
@@ -2519,7 +2533,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             if (view != null) view.requestFocus();
         }
         setEditTextViewSize();
-        if (mViewFlipper != null) mViewFlipper.setEditTextView(visibilty == View.VISIBLE);
+        if (mViewFlipper != null) mViewFlipper.setEditTextView(visibility == View.VISIBLE);
     }
 
     private void doWarningEditTextView() {
@@ -2528,12 +2542,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     final float SCALE_VIEW = (float) 1.28;
-    private int mEditTextViewSize = 0;
     private void setEditTextViewSize() {
         int size = 0;
         if (mEditTextView) {
             // FIXME: cannot get EditText size at first time.
-            size = findViewById(R.id.text_input).getHeight();
+            size = findViewById(R.id.oneline_text_box).getHeight();
             if (size == 0) {
                 size = findViewById(R.id.view_function_bar).getHeight();
                 if (size <= 0) {
@@ -2543,7 +2556,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
             }
         }
-        mEditTextViewSize = size;
        if (mViewFlipper != null) mViewFlipper.setEditTextViewSize(size);
     }
 
@@ -2640,6 +2652,64 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 break;
             }
         }
+        Button button = (Button)findViewById(R.id.button_oneline_text_box_enter);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onelineTextBoxEnter(true);
+            }
+        });
+        final String label = "⏎";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
+        button = (Button)findViewById(R.id.button_enter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
+    }
+
+    private boolean onelineTextBoxEsc(){
+        if (mEditTextView) {
+            EditText editText = (EditText) findViewById(R.id.text_input);
+            if (editText != null && editText.isFocused()) {
+                String str = editText.getText().toString();
+                EmulatorView view = getCurrentEmulatorView();
+                if (str.equals("")) {
+                    if (view != null) view.requestFocus();
+                } else {
+                    if (view != null) view.restartInputGoogleIme();
+                    editText.setText("");
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean onelineTextBoxTab(){
+        if (mEditTextView) {
+            EditText editText = (EditText) findViewById(R.id.text_input);
+            if (editText != null && editText.isFocused()) {
+                sendKeyStrings("\t", false);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean onelineTextBoxEnter(boolean force){
+        if (mEditTextView) {
+            EditText editText = (EditText) findViewById(R.id.text_input);
+            if (editText != null && (force || editText.isFocused())) {
+                String str = editText.getText().toString();
+                EmulatorView view = getCurrentEmulatorView();
+                if (view != null) {
+                    view.restartInputGoogleIme();
+                    if (str.equals("")) str = "\r";
+                    sendKeyStrings(str, false);
+                    editText.setText("");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void setFunctionKeyVisibility(SharedPreferences prefs, String key, int id, boolean defValue) {
@@ -2692,13 +2762,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         EmulatorView view = getCurrentEmulatorView();
         switch (v.getId()) {
         case R.id.button_esc:
-            if (mEditTextView) {
-                EditText editText = (EditText) findViewById(R.id.text_input);
-                if (editText != null && editText.isFocused()) {
-                    setEditTextView(0);
-                    break;
-                }
-            }
+            if (onelineTextBoxEsc()) break;
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
             break;
         case R.id.button_ctrl:
@@ -2708,17 +2772,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
             break;
         case R.id.button_tab:
-            if (mEditTextView) {
-                EditText editText = (EditText) findViewById(R.id.text_input);
-                if (editText != null && editText.isFocused()) {
-                    String str = editText.getText().toString();
-                    view.restartInputGoogleIme();
-                    if (str.equals("")) str = "\r";
-                    sendKeyStrings(str, false);
-                    editText.setText("");
-                    break;
-                }
-            }
+            if (onelineTextBoxTab()) break;
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
             break;
         case R.id.button_up:

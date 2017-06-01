@@ -54,7 +54,7 @@
    <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.\n\nIf you create $HOME/.vim or a symbolic link, it is treated as a runtime path.</string>
 
    <string name="edit_text_view_warning_title">One-line text box</string>
-   <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - close\nTab - send text</string>
+   <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - Delete all/Quit</string>
 
    <string name="menu_update">Update</string>
    <string name="menu_update_latest">Already updated.</string>
@@ -93,6 +93,8 @@
 
    <string name="title_functionbar_preference">Function bar</string>
    <string name="summary_functionbar_preference">Show function bar on start up.</string>
+   <string name="title_oneline_textbox_preference">One-line text box</string>
+   <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
 
    <string name="title_functionbar_key_preference">Function key</string>
    <string name="summary_functionbar_key_preference">Show/hide function bar\'s key</string>

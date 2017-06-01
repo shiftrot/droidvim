@@ -52,7 +52,7 @@
    <string name="vimrc_warning">あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.\n\n$HOME/.vimまたはシンボリックリンクを作成すると、ランタイムパスとして扱われます.</string>
 
    <string name="edit_text_view_warning_title">一行テキストボックス</string>
-   <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 閉じる\nTab - テキスト送出</string>
+   <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 全削除/一行テキストボックスから移動</string>
 
    <string name="menu_update">アップデート</string>
    <string name="menu_update_latest">アプリは最新です</string>
@@ -91,6 +91,8 @@
 
    <string name="title_functionbar_preference">ファンクションバー</string>
    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
+   <string name="title_oneline_textbox_preference">一行テキスト入力</string>
+   <string name="summary_oneline_textbox_preference">起動時に一行テキスト入力を表示する.</string>
 
    <string name="title_functionbar_key_preference">ファンクションキー</string>
    <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
