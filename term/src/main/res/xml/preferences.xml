@@ -50,7 +50,6 @@
             android:key="orientation"
             android:defaultValue="@integer/pref_orientation_default"
             android:title="@string/title_orientation_preference"
-            android:summary="@string/summary_orientation_preference"
             android:entries="@array/entries_orientation_preference"
             android:entryValues="@array/entryvalues_orientation_preference"
             android:dialogTitle="@string/dialog_title_orientation_preference" />
@@ -91,8 +90,7 @@
                 android:summary="@string/auto_hide_functionbar_summary" />
 
         <PreferenceScreen
-            android:title="@string/title_functionbar_key_preference"
-            android:summary="@string/summary_functionbar_key_preference">
+            android:title="@string/title_functionbar_key_preference">
             <CheckBoxPreference
                 android:key="functionbar_next"
                 android:defaultValue="false"
@@ -304,7 +302,6 @@
             android:key="actionbar_icon_action"
             android:defaultValue="@string/pref_actionbar_icon_default"
             android:title="@string/title_actionbar_icon_preference"
-            android:summary="@string/summary_actionbar_icon_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_icon_preference" />
@@ -313,7 +310,6 @@
             android:key="actionbar_user_action"
             android:defaultValue="@string/pref_actionbar_user_default"
             android:title="@string/title_actionbar_user_preference"
-            android:summary="@string/summary_actionbar_user_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_user_preference" />
@@ -322,10 +318,54 @@
             android:key="actionbar_x_action"
             android:defaultValue="@string/pref_actionbar_x_default"
             android:title="@string/title_actionbar_x_preference"
-            android:summary="@string/summary_actionbar_x_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
+
+        <PreferenceScreen
+                android:title="@string/title_pre_ime_shortcuts"
+                android:summary="@string/summary_title_pre_ime_shortcuts">
+                <ListPreference
+                    android:key="ime_shortcuts_action"
+                    android:defaultValue="@integer/pref_ime_shortcuts_action_default"
+                    android:title="@string/title_ime_shortcuts_action_preference"
+                    android:summary="@string/summary_ime_shortcuts_action_preference"
+                    android:entries="@array/entries_ime_shortcuts_action_preference"
+                    android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
+                    android:dialogTitle="@string/dialog_titleime_shortcuts_action_preference" />
+                <CheckBoxPreference
+                        android:key="AltGrave"
+                        android:defaultValue="false"
+                        android:title="@string/pref_alt_grave"/>
+                <CheckBoxPreference
+                        android:key="AltEsc"
+                        android:defaultValue="false"
+                    android:title="@string/pref_alt_esc"/>
+                <CheckBoxPreference
+                        android:key="AltSpace"
+                        android:defaultValue="false"
+                        android:title="@string/pref_alt_space"/>
+                <CheckBoxPreference
+                        android:key="CtrlSpace"
+                        android:defaultValue="false"
+                        android:title="@string/pref_ctrl_space"/>
+                <CheckBoxPreference
+                        android:key="ShiftSpace"
+                        android:defaultValue="false"
+                        android:title="@string/pref_shift_space"/>
+                <CheckBoxPreference
+                    android:key="ZENKAKU_HANKAKU"
+                    android:defaultValue="false"
+                    android:title="@string/pref_zenkaku_hankaku"/>
+                <CheckBoxPreference
+                    android:key="GRAVE"
+                    android:defaultValue="false"
+                    android:title="@string/pref_grave"/>
+                <CheckBoxPreference
+                    android:key="CtrlJ"
+                    android:defaultValue="false"
+                    android:title="@string/pref_ctrl_j"/>
+        </PreferenceScreen>
 
     </PreferenceCategory>
 
@@ -336,7 +376,6 @@
             android:key="double_tap_action"
             android:defaultValue="@string/pref_double_tap_default"
             android:title="@string/title_double_tap_preference"
-            android:summary="@string/summary_double_tap_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_double_tap_preference" />
@@ -345,7 +384,6 @@
             android:key="right_double_tap_action"
             android:defaultValue="@string/pref_right_double_tap_default"
             android:title="@string/title_right_double_tap_preference"
-            android:summary="@string/summary_right_double_tap_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_right_double_tap_preference" />
@@ -354,10 +392,9 @@
             android:key="bottom_double_tap_action"
             android:defaultValue="@string/pref_bottom_double_tap_default"
             android:title="@string/title_bottom_double_tap_preference"
-            android:summary="@string/summary_bottom_double_tap_preference"
             android:entries="@array/entries_actionbar_icon_preference"
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_double_tap_preference" />
+            android:dialogTitle="@string/dialog_title_bottom_double_tap_preference" />
 
     </PreferenceCategory>
 
@@ -366,34 +403,30 @@
             android:key="text">
 
         <ListPreference
-            android:key="ime_default_inputtype"
-            android:defaultValue="@integer/pref_ime_inputtype_default"
-            android:title="@string/title_ime_inputtype_preference"
-            android:summary="@string/summary_ime_inputtype_preference"
-            android:entries="@array/entries_ime_inputtype_preference"
-            android:entryValues="@array/entryvalues_ime_inputtype_preference"
-            android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
+                android:key="ime_default_inputtype"
+                android:defaultValue="@integer/pref_ime_inputtype_default"
+                android:title="@string/title_ime_inputtype_preference"
+                android:summary="@string/summary_ime_inputtype_preference"
+                android:entries="@array/entries_ime_inputtype_preference"
+                android:entryValues="@array/entryvalues_ime_inputtype_preference"
+                android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
 
         <ListPreference
-            android:key="fontfile"
-            android:defaultValue="@string/pref_fontfile_default"
-            android:title="@string/title_fontfile_preference"
-            android:summary="@string/summary_fontfile_preference"
-            android:entries="@array/entries_fontfile_preference"
-            android:entryValues="@array/entries_fontfile_preference"
-            android:dialogTitle="@string/dialog_title_fontfile_preference" />
+                android:key="fontfile"
+                android:defaultValue="@string/pref_fontfile_default"
+                android:title="@string/title_fontfile_preference"
+                android:entries="@array/entries_fontfile_preference"
+                android:entryValues="@array/entries_fontfile_preference"
+                android:dialogTitle="@string/dialog_title_fontfile_preference" />
 
         <Preference
-            android:key="fontfile_picker"
-            android:summary="@string/summary_fontfile_preference"
-            android:title="@string/title_fontfile_preference" />
+                android:key="fontfile_picker"
+                android:title="@string/title_fontfile_preference" />
 
-        <!-- <ListPreference -->
         <EditTextPreference
                 android:key="fontsize"
                 android:defaultValue="@string/pref_fontsize_default"
                 android:title="@string/title_fontsize_preference"
-                android:summary="@string/summary_fontsize_preference"
                 android:entries="@array/entries_fontsize_preference"
                 android:entryValues="@array/entryvalues_fontsize_preference"
                 android:dialogTitle="@string/dialog_title_fontsize_preference"
@@ -403,7 +436,6 @@
                 android:key="fontleading"
                 android:defaultValue="@string/pref_fontleading_default"
                 android:title="@string/title_fontleading_preference"
-                android:summary="@string/summary_fontleading_preference"
                 android:dialogTitle="@string/dialog_title_fontleading_preference"
                 android:inputType="number" />
 
@@ -421,25 +453,23 @@
                 android:key="color"
                 android:defaultValue="@string/pref_color_default"
                 android:title="@string/title_color_preference"
-                android:summary="@string/summary_color_preference"
                 android:entries="@array/entries_color_preference"
                 android:entryValues="@array/entryvalues_color_preference"
                 android:dialogTitle="@string/dialog_title_color_preference" />
 
         <ListPreference
-            android:key="composingtext"
-            android:defaultValue="@string/pref_composingtext_default"
-            android:title="@string/title_composingtext_preference"
-            android:summary="@string/summary_composingtext_preference"
-            android:entries="@array/entries_composingtext_preference"
-            android:entryValues="@array/entryvalues_composingtext_preference"
-            android:dialogTitle="@string/dialog_title_composingtext_preference" />
+                android:key="composingtext"
+                android:defaultValue="@string/pref_composingtext_default"
+                android:title="@string/title_composingtext_preference"
+                android:summary="@string/summary_composingtext_preference"
+                android:entries="@array/entries_composingtext_preference"
+                android:entryValues="@array/entryvalues_composingtext_preference"
+                android:dialogTitle="@string/dialog_title_composingtext_preference" />
 
         <CheckBoxPreference
                 android:key="hw_acceleration_by_default"
                 android:defaultValue="@bool/pref_hw_acceleration_by_default"
-                android:title="@string/title_hw_acceleration_by_default_preference"
-                android:summary="@string/summary_hw_acceleration_by_default_preference" />
+                android:title="@string/title_hw_acceleration_by_default_preference" />
 
     </PreferenceCategory>
 
@@ -494,7 +524,6 @@
                 android:key="backaction"
                 android:defaultValue="@string/pref_backaction_default"
                 android:title="@string/title_backaction_preference"
-                android:summary="@string/summary_backaction_preference"
                 android:entries="@array/entries_vim_backaction_preference"
                 android:entryValues="@array/entryvalues_vim_backaction_preference"
                 android:dialogTitle="@string/dialog_title_backaction_preference" />
@@ -503,7 +532,6 @@
                 android:key="controlkey"
                 android:defaultValue="@string/pref_controlkey_default"
                 android:title="@string/title_controlkey_preference"
-                android:summary="@string/summary_controlkey_preference"
                 android:entries="@array/entries_controlkey_preference"
                 android:entryValues="@array/entryvalues_controlkey_preference"
                 android:dialogTitle="@string/dialog_title_controlkey_preference" />
@@ -512,7 +540,6 @@
                 android:key="fnkey"
                 android:defaultValue="@string/pref_fnkey_default"
                 android:title="@string/title_fnkey_preference"
-                android:summary="@string/summary_fnkey_preference"
                 android:entries="@array/entries_fnkey_preference"
                 android:entryValues="@array/entryvalues_fnkey_preference"
                 android:dialogTitle="@string/dialog_title_fnkey_preference" />
@@ -528,9 +555,7 @@
 
         <CheckBoxPreference android:title="@string/alt_sends_esc"
                 android:key="alt_sends_esc"
-                android:defaultValue="@bool/pref_alt_sends_esc_default"
-                android:summaryOn="@string/alt_sends_esc_summary_on"
-                android:summaryOff="@string/alt_sends_esc_summary_off" />
+                android:defaultValue="@bool/pref_alt_sends_esc_default" />
 
         <CheckBoxPreference android:title="@string/ignore_xoff"
                 android:key="ignore_xoff"
@@ -538,58 +563,6 @@
                 android:summaryOn="@string/ignore_xoff_summary_on"
                 android:summaryOff="@string/ignore_xoff_summary_off" />
 
-<!--
-        <CheckBoxPreference android:title="@string/title_use_keyboard_shortcuts"
-                android:key="use_keyboard_shortcuts"
-                android:defaultValue="@bool/pref_use_keyboard_shortcuts_default"
-                android:summaryOn="@string/use_keyboard_shortcuts_summary_on"
-                android:summaryOff="@string/use_keyboard_shortcuts_summary_off" />
--->
-
-        <PreferenceScreen
-                android:title="@string/title_pre_ime_shortcuts"
-                android:summary="@string/summary_title_pre_ime_shortcuts">
-                <ListPreference
-                    android:key="ime_shortcuts_action"
-                    android:defaultValue="@integer/pref_ime_shortcuts_action_default"
-                    android:title="@string/title_ime_shortcuts_action_preference"
-                    android:summary="@string/summary_ime_shortcuts_action_preference"
-                    android:entries="@array/entries_ime_shortcuts_action_preference"
-                    android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
-                    android:dialogTitle="@string/dialog_titleime_shortcuts_action_preference" />
-                <CheckBoxPreference
-                        android:key="AltGrave"
-                        android:defaultValue="false"
-                        android:title="@string/pref_alt_grave"/>
-                <CheckBoxPreference
-                        android:key="AltEsc"
-                        android:defaultValue="false"
-                    android:title="@string/pref_alt_esc"/>
-                <CheckBoxPreference
-                        android:key="AltSpace"
-                        android:defaultValue="false"
-                        android:title="@string/pref_alt_space"/>
-                <CheckBoxPreference
-                        android:key="CtrlSpace"
-                        android:defaultValue="false"
-                        android:title="@string/pref_ctrl_space"/>
-                <CheckBoxPreference
-                        android:key="ShiftSpace"
-                        android:defaultValue="false"
-                        android:title="@string/pref_shift_space"/>
-                <CheckBoxPreference
-                    android:key="ZENKAKU_HANKAKU"
-                    android:defaultValue="false"
-                    android:title="@string/pref_zenkaku_hankaku"/>
-                <CheckBoxPreference
-                    android:key="GRAVE"
-                    android:defaultValue="false"
-                    android:title="@string/pref_grave"/>
-                <CheckBoxPreference
-                    android:key="CtrlJ"
-                    android:defaultValue="false"
-                    android:title="@string/pref_ctrl_j"/>
-        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory

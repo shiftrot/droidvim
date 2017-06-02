@@ -104,11 +104,11 @@
 
    <string name="title_actionbar_preference">Action bar</string>
    <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
-   <string name="dialog_title_actionbar_preference">Action bar behavior</string>
+   <string name="dialog_title_actionbar_preference">Action bar</string>
 
    <string name="title_orientation_preference">Screen orientation</string>
    <string name="summary_orientation_preference">Choose the screen orientation behavior.</string>
-   <string name="dialog_title_orientation_preference">Screen orientation behavior</string>
+   <string name="dialog_title_orientation_preference">Screen orientation</string>
 
    <string name="title_cursorstyle_preference">Cursor style</string>
    <string name="summary_cursorstyle_preference">Choose cursor style.</string>
@@ -141,7 +141,7 @@
    <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
 
    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
-   <string name="summary_ambiwidth_preference">Choose East Asian ambiguous width. (restart required)</string>
+   <string name="summary_ambiwidth_preference">Restart required after setting change.</string>
    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
 
    <string name="title_color_preference">Colors</string>
@@ -153,38 +153,38 @@
    <string name="dialog_title_composingtext_preference">Input method composing text color</string>
 
    <string name="actionbar_key_preferences">Actionbar button</string>
-   <string name="title_actionbar_icon_preference">◇ button behavior</string>
+   <string name="title_actionbar_icon_preference">◇ button</string>
    <string name="summary_actionbar_icon_preference">Choose what pressing the ◇ button does.</string>
-   <string name="dialog_title_actionbar_icon_preference">◇ button behavior</string>
-   <string name="title_actionbar_plus_preference">+ button behavior</string>
+   <string name="dialog_title_actionbar_icon_preference">◇ button</string>
+   <string name="title_actionbar_plus_preference">+ button</string>
    <string name="summary_actionbar_plus_preference">Choose what pressing the + button does.</string>
-   <string name="dialog_title_actionbar_plus_preference">+ button behavior</string>
-   <string name="title_actionbar_minus_preference">- button behavior</string>
+   <string name="dialog_title_actionbar_plus_preference">+ button</string>
+   <string name="title_actionbar_minus_preference">- button</string>
    <string name="summary_actionbar_minus_preference">Choose what pressing the - button does.</string>
-   <string name="dialog_title_actionbar_minus_preference">- button behavior</string>
-   <string name="title_actionbar_x_preference">Q button behavior</string>
+   <string name="dialog_title_actionbar_minus_preference">- button</string>
+   <string name="title_actionbar_x_preference">Q button</string>
    <string name="summary_actionbar_x_preference">Choose what pressing the Q button does.</string>
-   <string name="dialog_title_actionbar_x_preference">Q button behavior</string>
-   <string name="title_actionbar_user_preference">□ button behavior</string>
+   <string name="dialog_title_actionbar_x_preference">Q button</string>
+   <string name="title_actionbar_user_preference">□ button</string>
    <string name="summary_actionbar_user_preference">Choose what pressing the □ button does.</string>
-   <string name="dialog_title_actionbar_user_preference">□ button behavior</string>
-   <string name="title_double_tap_preference">Double tap behavior</string>
+   <string name="dialog_title_actionbar_user_preference">□ button</string>
+   <string name="title_double_tap_preference">Double tap</string>
    <string name="summary_double_tap_preference">Choose what double tap does.</string>
-   <string name="dialog_title_double_tap_preference">Double tap behavior</string>
-   <string name="title_right_double_tap_preference">Double tap near the right edge behavior</string>
+   <string name="dialog_title_double_tap_preference">Double tap</string>
+   <string name="title_right_double_tap_preference">Double tap near the right edge</string>
    <string name="summary_right_double_tap_preference">Choose what double tap near the right edge does.</string>
-   <string name="dialog_title_right_double_tap_preference">Double tap near the right edge behavior</string>
-   <string name="title_bottom_double_tap_preference">Double tap near the bottom edge behavior</string>
+   <string name="dialog_title_right_double_tap_preference">Double tap near the right edge</string>
+   <string name="title_bottom_double_tap_preference">Double tap near the bottom edge</string>
    <string name="summary_bottom_double_tap_preference">Choose what double tap near the bottom edge does.</string>
-   <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge behavior</string>
+   <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>
    <string name="functionbar_preferences">Functionbar</string>
    <string name="gesture_preferences">Gesture</string>
 
    <string name="keyboard_preferences">Keyboard</string>
 
-   <string name="title_backaction_preference">Back button behavior</string>
+   <string name="title_backaction_preference">Back button</string>
    <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
-   <string name="dialog_title_backaction_preference">Back button behavior</string>
+   <string name="dialog_title_backaction_preference">Back button</string>
 
    <string name="title_controlkey_preference">Control key</string>
    <string name="summary_controlkey_preference">Choose control key.</string>
@@ -257,7 +257,7 @@
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
   <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
-  <string name="ignore_xoff">Disable XOFF flow control</string>
+  <string name="ignore_xoff">XOFF flow control</string>
   <string name="ignore_xoff_summary_on">Ignore Ctrl-s.</string>
   <string name="ignore_xoff_summary_off">Ctrl-s sends xoff.</string>
 
