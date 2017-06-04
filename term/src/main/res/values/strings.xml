@@ -38,7 +38,7 @@
    <string name="toast_clipboard_error">Text is not included.</string>
 
    <string name="clipboard_warning_title">About the clipboard</string>
-   <string name="clipboard_warning">Please use the Vim command for yank/paste to Vim.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard.\n\nThis \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
+   <string name="clipboard_warning">Please use the Vim command for yank/paste to Vim.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)\n\nThis \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
 
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="text_box">One-line text box</string>
@@ -49,9 +49,9 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\n- One-line text box starts with double tap near the bottom edge. It is useful for voice input and emoji.</string>
+   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\n- One-line text box starts with double tap near the bottom edge. It is useful for emoticon, Non-Alphanumeric characters and voice input.</string>
    <string name="vimrc_warning_title">About .vimrc</string>
-   <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.</string>
+   <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.\n\nIf you create $HOME/.vim or a symbolic link, it is treated as a runtime path.</string>
 
    <string name="edit_text_view_warning_title">One-line text box</string>
    <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - close\nTab - send text</string>
@@ -138,7 +138,7 @@
    <string name="summary_fontfile_preference">Choose font.</string>
    <string name="dialog_title_fontfile_preference">Font file</string>
    <string name="entry_fontfile_default">System font</string>
-   <string name="font_file_error">Please choose font file with extension .ttf or .otf in internal storage path.</string>
+   <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
 
    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
    <string name="summary_ambiwidth_preference">Choose East Asian ambiguous width. (restart required)</string>
@@ -362,7 +362,7 @@
   <string name="iab_wait">Please wait a moment.</string>
   <string name="donate_confirm_title">Thank you for using DroidVim.</string>
   <string name="donate_confirm_button">Donate</string>
-  <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get Git-cui, curl, Busybox after donation!\n\nGit - Version Control System.\ncurl - A Tool to upload/download files.\nBusybox - A collection of UNIX utilities that do not exist on Android.</string>
+  <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get Git-cui, curl, Busybox after donation!\n\nGit - Version Control System.\ncurl - A tool to upload/download files.\nBusybox - A collection of UNIX utilities that do not exist on Android.</string>
   <string name="donate_confirm_summary_no_payed_function">Sorry, no payed functions for your device.\nThis is just a donate option ;)</string>
   <string name="donate_premium_purchase">Thank you for your donation!</string>
   <string name="donate_button">Donate</string>

@@ -37,7 +37,7 @@
    <string name="toast_clipboard_error">テキストが含まれていません.</string>
 
    <string name="clipboard_warning_title">クリップボードについて</string>
-   <string name="clipboard_warning">Vimへの\"貼り付け\"には、Vimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー.\n\nこの \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで、送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
+   <string name="clipboard_warning">Vimへの\"貼り付け\"には、Vimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)\n\nこの \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで、送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
 
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="text_box">一行テキスト入力</string>
@@ -49,7 +49,7 @@
    <string name="tips_vim_title">Tips</string>
    <string name="tips_vim_list">▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Vimチュートリアル\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.\n\n▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力が画面下端付近でのダブルタップで起動します. 音声入力や絵文字の入力で便利です.</string>
    <string name="vimrc_warning_title">.vimrcについて</string>
-   <string name="vimrc_warning">あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.</string>
+   <string name="vimrc_warning">あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.\n\n$HOME/.vimまたはシンボリックリンクを作成すると、ランタイムパスとして扱われます.</string>
 
    <string name="edit_text_view_warning_title">一行テキストボックス</string>
    <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 閉じる\nTab - テキスト送出</string>
@@ -136,7 +136,7 @@
    <string name="summary_fontfile_preference">フォントを選択</string>
    <string name="dialog_title_fontfile_preference">フォントファイル</string>
    <string name="entry_fontfile_default">システムフォント</string>
-   <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfのフォントファイルを選択してください.</string>
+   <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfの等幅フォントファイルを選択してください.</string>
 
    <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
    <string name="summary_ambiwidth_preference">East Asian Ambiguous widthを選択. (要再起動)</string>
