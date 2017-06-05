@@ -178,6 +178,8 @@ public class TermService extends Service implements TermSession.FinishCallback
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
+        cmd = cmd.replaceAll("\n#.*\n|\n\n", "\n");
+        cmd = cmd.replaceAll("^#.*\n|\n#.*$|\n$", "");
         return cmd;
     }
 
