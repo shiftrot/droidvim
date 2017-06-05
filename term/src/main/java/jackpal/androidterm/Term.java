@@ -2222,17 +2222,23 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void copyClipboardToFile(String filename) {
         if (filename == null) return;
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
+        if (clip.hasText()) {
+            String str = clip.getText().toString();
+            writeStringToFile(filename, str);
+        }
+    }
+
+    public static void writeStringToFile(String filename, String str) {
+        if (filename == null) return;
         FileOutputStream fos;
         try {
             fos = new FileOutputStream(filename);
             FileChannel fc = fos.getChannel();
             try {
-                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                        .getManager(getApplicationContext());
-                if (clip.hasText()) {
-                    ByteBuffer by = ByteBuffer.wrap(clip.getText().toString().getBytes());
-                    fc.write(by);
-                }
+                ByteBuffer by = ByteBuffer.wrap(str.getBytes());
+                fc.write(by);
                 fc.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block

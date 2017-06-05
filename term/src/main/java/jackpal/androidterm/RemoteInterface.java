@@ -246,13 +246,18 @@ public class RemoteInterface extends Activity {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(this.getApplicationContext());
         if (clip != null) {
-            clip.setText(str);
-            alert(this.getString(R.string.toast_clipboard));
-            String command = "\u001b"+String.format(":enew\r:ATEMod paste");
-            // Find the target window
-            mReplace = true;
-            mHandle = switchToWindow(mHandle, command);
-            mReplace = false;
+            if (FLAVOR_VIM) {
+                String filename = mSettings.getHomePath()+"/.clipboard";
+                Term.writeStringToFile(filename, "\n"+str.toString());
+                String command = "\u001b"+String.format(":ATEMod _paste");
+                // Find the target window
+                mReplace = true;
+                mHandle = switchToWindow(mHandle, command);
+                mReplace = false;
+            } else {
+                clip.setText(str);
+                alert(this.getString(R.string.toast_clipboard));
+            }
         }
     }
 
