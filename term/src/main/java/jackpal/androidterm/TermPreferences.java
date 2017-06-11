@@ -49,10 +49,11 @@ public class TermPreferences extends PreferenceActivity {
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CATEGORY_SCREEN_KEY = "screen";
+    private static final String CATEGORY_CLOUD_STORAGE_KEY = "categoryCloudStorage";
     static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
     private static final String CATEGORY_TEXT_KEY = "text";
 
-    private final static boolean FLAVOR_VIM = true;
+    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,32 +63,27 @@ public class TermPreferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         // Remove the action bar pref on older platforms without an action bar
-        if ((AndroidCompat.SDK < 11) || FLAVOR_VIM) {
-            Preference actionBarPref = findPreference(ACTIONBAR_KEY);
-             PreferenceCategory screenCategory =
-                    (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
-             if ((actionBarPref != null) && (screenCategory != null)) {
-                 screenCategory.removePreference(actionBarPref);
-             }
+        Preference actionBarPref = findPreference(ACTIONBAR_KEY);
+        PreferenceCategory screenCategory =
+               (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
+        if ((actionBarPref != null) && (screenCategory != null)) {
+            screenCategory.removePreference(actionBarPref);
         }
 
         Preference statusBarPref = findPreference(STATUSBAR_KEY);
-        PreferenceCategory screenCategory =
-                (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
         if ((statusBarPref != null) && (screenCategory != null)) {
             screenCategory.removePreference(statusBarPref);
         }
-        if (FLAVOR_VIM) {
-            PreferenceCategory keyboardCategory =
-                    (PreferenceCategory) findPreference("categoryKeyboard");
-            Preference controlKeyPref = findPreference("controlkey");
-            if ((controlKeyPref != null) && (keyboardCategory != null)) {
-                keyboardCategory.removePreference(controlKeyPref);
-            }
-            Preference fnKeyPref = findPreference("fnkey");
-            if ((fnKeyPref != null) && (keyboardCategory != null)) {
-                keyboardCategory.removePreference(fnKeyPref);
-            }
+
+        PreferenceCategory keyboardCategory =
+                (PreferenceCategory) findPreference("categoryKeyboard");
+        Preference controlKeyPref = findPreference("controlkey");
+        if ((controlKeyPref != null) && (keyboardCategory != null)) {
+            keyboardCategory.removePreference(controlKeyPref);
+        }
+        Preference fnKeyPref = findPreference("fnkey");
+        if ((fnKeyPref != null) && (keyboardCategory != null)) {
+            keyboardCategory.removePreference(fnKeyPref);
         }
 
         // Display up indicator on action bar home button

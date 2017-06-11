@@ -30,8 +30,8 @@
    <bool name="pref_alt_sends_esc_default">false</bool>
    <bool name="pref_ignore_xoff_default">true</bool>
    <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
-   <string name="pref_initialcommand_default" translatable="false">export PS1=\'${PWD/$HOME} $(if (( USER_ID )); then print \\$; else print \\#; fi) \'\ncd $HOME\nexport PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH\nexport LD_LIBRARY_PATH=$APPFILES/usr/lib\nexport TERMINFO=$APPEXTFILES/terminfo\nexport VIMRUNTIME=$APPEXTFILES/runtime\nexport VIM=$APPEXTFILES\n-vim.app</string>
-   <string name="pref_intentcommand_default" translatable="false">:e %s</string>
+   <string name="pref_initialcommand_default" translatable="false">export PS1=\'${PWD/$HOME} $(if (( USER_ID )); then print \\$; else print \\#; fi) \'\ncd $HOME\nexport PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH\nexport LD_LIBRARY_PATH=$APPFILES/usr/lib\nexport TERMINFO=$APPEXTFILES/terminfo\n-clear</string>
+   <string name="pref_intentcommand_default" translatable="false">sh %s</string>
    <string name="pref_termtype_default" translatable="false">screen-256color</string>
    <bool name="pref_close_window_on_process_exit_default">true</bool>
    <bool name="pref_verify_path_default">false</bool>

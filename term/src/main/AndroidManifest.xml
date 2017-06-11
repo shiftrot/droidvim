@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <application android:icon="@drawable/ic_launcher"
-                android:label="@string/application_termvim"
+                android:label="@string/application_terminal"
                 android:hardwareAccelerated="true"
                 android:theme="@style/Theme">
         <activity android:name="Term"
@@ -77,30 +77,6 @@
         <activity android:name="WindowList"
                 android:theme="@style/Theme.Holo.Light"
                 android:label="@string/window_list" />
-        <provider
-            android:name="com.droidvim.storage.LocalStorageProvider"
-            android:authorities="com.droidvim.storage.documents"
-            android:grantUriPermissions="true"
-            android:exported="true"
-            android:permission="android.permission.MANAGE_DOCUMENTS"
-            android:enabled="@bool/atLeastKitKat">
-            <intent-filter>
-                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
-            </intent-filter>
-        </provider>
-        <!-- This activity alias is added so that GET_CONTENT intent-filter
-        <activity-alias android:name="com.droidvim.storage.HomePicker"
-                android:targetActivity="Term"
-                android:enabled="@bool/atMostJellyBeanMR2"
-                android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT" />
-                <category android:name="android.intent.category.OPENABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="*/*" />
-            </intent-filter>
-        </activity-alias>
-         can be disabled for builds on API level 19 and higher. -->
         <service android:name="TermService" >
             <intent-filter>
                 <action android:name="jackpal.androidterm.action.START_TERM.v1"/>

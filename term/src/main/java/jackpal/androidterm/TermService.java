@@ -17,6 +17,7 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -99,18 +100,21 @@ public class TermService extends Service implements TermSession.FinishCallback
         String homePath = prefs.getString("home_path", defValue);
         editor.putString("home_path", homePath);
         mHOME = homePath;
-        mTMPDIR = getTempDir();
-        File tmpdir =new File(mTMPDIR);
-        if (!tmpdir.exists()) tmpdir.mkdir();
 
         mAPPBASE = this.getApplicationInfo().dataDir;
         mAPPFILES = this.getFilesDir().toString();
-        File extfilesdir = (AndroidCompat.SDK >= 8) ? this.getExternalFilesDir(null) : null;
-        mAPPEXTFILES = extfilesdir != null ? extfilesdir.toString() : mAPPFILES;
+        File externalFiles = this.getExternalFilesDir(null);
+        mAPPEXTFILES = externalFiles != null ? externalFiles.toString() : mAPPFILES;
+        int sdcard = getSDCard(this);
+        if (sdcard > 0) {
+            File[] dirs = this.getApplicationContext().getExternalFilesDirs(null);
+            mAPPEXTFILES = dirs[sdcard].toString();
+        }
+        mTMPDIR = getCacheDir(this, sdcard) + "/tmp";
+        File tmpdir = new File(mTMPDIR);
+        if (!tmpdir.exists()) tmpdir.mkdir();
 
-        String arch = TermVimInstaller.getArch();
-        arch = arch.contains("64")  ? "libsh64.so" : "libsh.so";
-        String libShPath = new File(getFilesDir().getAbsolutePath()).getParent() + "/lib/" + arch;
+        String libShPath = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir) + "/libsh.so";
         editor.putString("lib_sh_path", libShPath);
         defValue = AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
         String defshell = prefs.getString("shell_path", defValue);
@@ -121,8 +125,8 @@ public class TermService extends Service implements TermSession.FinishCallback
         mTermSessions = new SessionList();
 
         CharSequence contentText = getText(R.string.application_terminal);
-        if (FLAVOR_VIM) {
-            contentText = getText(R.string.application_termvim);
+        if (!BuildConfig.FLAVOR.equals("main")) {
+            contentText = getText(R.string.application_term_app);
         }
         int priority = Notification.PRIORITY_DEFAULT;
         int statusIcon = R.drawable.ic_stat_service_notification_icon;
@@ -177,10 +181,31 @@ public class TermService extends Service implements TermSession.FinishCallback
         return cmd;
     }
 
-    private String getTempDir() {
-        File cache = getExternalCacheDir();
-        if (cache == null || !cache.canWrite()) cache = getFilesDir();
-        return cache.getAbsolutePath()+"/tmp";
+    static int getSDCard(Context context) {
+        int sdcard = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            File[] dirs = context.getApplicationContext().getExternalFilesDirs(null);
+            if (dirs.length > 1) {
+                for (int i = 1; i < dirs.length; i++) {
+                    File dir = dirs[i];
+                    if (dir != null && dir.canWrite() && new File(dir.toString()+"/terminfo").isDirectory()) {
+                        sdcard = i;
+                        break;
+                    }
+                }
+            }
+        }
+        return sdcard;
+    }
+
+    static String getCacheDir(Context context, int sdcard) {
+        File cache = context.getExternalCacheDir();
+        if (sdcard > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            File[] dirs = context.getApplicationContext().getExternalCacheDirs();
+            if (sdcard < dirs.length) cache = dirs[sdcard];
+        }
+        if (cache == null || !cache.canWrite()) cache = context.getCacheDir();
+        return cache.getAbsolutePath();
     }
 
     public void clearTMPDIR() {

@@ -114,7 +114,7 @@
         <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
         <item>直接入力 : パスワード\n(Google日本語入力)</item>
-        <item>Vimを終了</item>
+        <item>終了</item>
         <item>なし</item>
     </string-array>
 
@@ -128,7 +128,7 @@
     </string-array>
 
     <string-array name="entries_vim_backaction_preference">
-        <item>Vimを終了</item>
+        <item>終了</item>
         <item>アクティビティを閉じ，セッションは実行を継続</item>
         <item>ターミナルにESCを送出</item>
         <item>ターミナルにTABを送出</item>

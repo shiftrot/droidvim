@@ -33,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 final class TermVimInstaller {
 
-    static final boolean FLAVOR_VIM = true;
+    static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static public boolean doInstallVim = false;
     static void installVim(final Activity activity, final Runnable whenDone) {
@@ -106,8 +106,27 @@ final class TermVimInstaller {
         return sdcard+"/version";
     }
 
+    static boolean doInstallTerm(final Activity activity) {
+        final String sdcard = TermService.getAPPEXTFILES();
+        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
+        File dir = new File(sdcard+"/terminfo");
+        boolean doInstall = !dir.isDirectory() || !pref.getString("versionName", "").equals(TERMVIM_VERSION);
+
+        if (doInstall) {
+            int id = activity.getResources().getIdentifier("terminfo", "raw", activity.getPackageName());
+            installZip(sdcard, getInputStream(activity, id));
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                File fontPath = new File(TermPreferences.FONTPATH);
+                if (!fontPath.exists()) fontPath.mkdirs();
+            }
+            if (!FLAVOR_VIM) setDevString(activity, "versionName", TERMVIM_VERSION);
+            return true;
+        }
+        return false;
+    }
+
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
-        final String path = activity.getFilesDir().toString();
+        final String path = TermService.getAPPFILES();
         final String sdcard = TermService.getAPPEXTFILES();
         INSTALL_ZIP = activity.getString(R.string.update_vim);
         final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_vim), true, false);
@@ -119,20 +138,42 @@ final class TermVimInstaller {
                 try {
                     boolean first = !new File(sdcard+"/vimrc").exists();
                     showWhatsNew(activity, first);
-                    int id = activity.getResources().getIdentifier("runtime", "raw", activity.getPackageName());
                     setMessage(activity, pd, "runtime");
+                    doInstallTerm(activity);
+                    int id = activity.getResources().getIdentifier("runtime", "raw", activity.getPackageName());
                     installZip(sdcard, getInputStream(activity, id));
+                    setMessage(activity, pd, "lang");
+                    id = activity.getResources().getIdentifier("runtimelang", "raw", activity.getPackageName());
+                    installZip(sdcard, getInputStream(activity, id));
+                    setMessage(activity, pd, "spell");
+                    id = activity.getResources().getIdentifier("runtimespell", "raw", activity.getPackageName());
+                    installZip(sdcard, getInputStream(activity, id));
+                    setMessage(activity, pd, "syntax");
+                    id = activity.getResources().getIdentifier("runtimesyntax", "raw", activity.getPackageName());
+                    installZip(sdcard, getInputStream(activity, id));
+                    if (installHelp) {
+                        setMessage(activity, pd, "doc");
+                        id = activity.getResources().getIdentifier("runtimedoc", "raw", activity.getPackageName());
+                        installZip(sdcard, getInputStream(activity, id));
+                    }
+                    setMessage(activity, pd, "tutor");
+                    id = activity.getResources().getIdentifier("runtimetutor", "raw", activity.getPackageName());
+                    installZip(sdcard, getInputStream(activity, id));
+                    setMessage(activity, pd, "binaries");
                     id = activity.getResources().getIdentifier("extra", "raw", activity.getPackageName());
                     installZip(sdcard, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("bin", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    id = activity.getResources().getIdentifier("terminfo", "raw", activity.getPackageName());
-                    installZip(sdcard, getInputStream(activity, id));
+                    String arch = getArch().contains("arm") ? "arm" : "x86";
+                    String bin = "bin_" + arch;
+                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    installZip(path, getInputStream(activity, id));
+                    bin = "vim_" + arch;
+                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    installZip(path, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity, id, sdcard+"/version");
                     setDevString(activity, "versionName", TERMVIM_VERSION);
-                    File fontPath = new File(TermPreferences.FONTPATH);
-                    if (!fontPath.exists()) fontPath.mkdirs();
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
                         activity.runOnUiThread(new Runnable() {
@@ -212,11 +253,12 @@ final class TermVimInstaller {
         try {
             is = activity.getResources().openRawResource(id);
         } catch(Exception e) {
+            // do nothing
         }
         return is;
     }
 
-    static public void deleteFileOrFolder(File fileOrDirectory) {
+    static void deleteFileOrFolder(File fileOrDirectory) {
         File[] children = fileOrDirectory.listFiles();
         if (children != null) {
             for (File child : children) {
@@ -306,34 +348,70 @@ final class TermVimInstaller {
     }
 
     static String getArch() {
-        String arch = null;
+        String cpu;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (String androidArch : Build.SUPPORTED_ABIS) {
-                if (androidArch.contains("arm64")) {
-                    arch = "arm64";
-                    break;
+            for (String androidArch : Build.SUPPORTED_64_BIT_ABIS) {
+                cpu = androidArch.toLowerCase();
+                if (cpu.contains("arm64")) {
+                    return "arm64";
                 }
-                if (androidArch.contains("armeabi")) {
-                    arch = "arm";
-                    break;
+                if (cpu.contains("x86_64")) {
+                    return "x86_64";
                 }
-                if (androidArch.contains("x86_64")) {
-                    arch = "x86_64";
-                    break;
+            }
+            // FIXME: for Kindle
+            cpu = getProp("ro.product.cpu.abi");
+            if (cpu != null) {
+                cpu = cpu.toLowerCase();
+                if (cpu.contains("arm64")) {
+                    return "arm64";
                 }
-                if (androidArch.contains("x86")) {
-                    arch = "x86";
-                    break;
+                if (cpu.contains("x86_64")) {
+                    return "x86_64";
+                }
+            }
+            for (String androidArch : Build.SUPPORTED_32_BIT_ABIS) {
+                cpu = androidArch.toLowerCase();
+                if (cpu.contains("arm")) {
+                    return "arm";
+                }
+                if (cpu.contains("x86") || cpu.contains("i686")) {
+                    return "x86";
                 }
             }
         } else {
-            String cpu = System.getProperty("os.arch").toLowerCase();
+            cpu = System.getProperty("os.arch").toLowerCase();
             if (cpu.contains("arm")) {
-                arch = "arm";
+                return "arm";
             } else if (cpu.contains("x86") || cpu.contains("i686")) {
-                arch = "x86";
+                return  "x86";
             }
         }
-        return arch;
+        return "arm";
+    }
+
+    static String getProp(String propName) {
+        Process process = null;
+        BufferedReader bufferedReader = null;
+
+        try {
+            final String GETPROP_PATH = "/system/bin/getprop";
+            process = new ProcessBuilder().command(GETPROP_PATH, propName).redirectErrorStream(true).start();
+            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            return bufferedReader.readLine();
+        } catch (Exception e) {
+            return null;
+        } finally{
+            if (bufferedReader != null){
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    // do nothing
+                }
+            }
+            if (process != null){
+                process.destroy();
+            }
+        }
     }
 }

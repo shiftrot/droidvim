@@ -1,5 +1,5 @@
 APP_PLATFORM := android-16
-APP_ABI := armeabi x86 mips
+APP_ABI := armeabi x86 arm64-v8a x86_64
 
 APP_CFLAGS := -Werror=return-type -Werror=implicit-function-declaration -Wno-multichar
 APP_CFLAGS += -DHAVE_PTHREADS

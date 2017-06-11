@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools" >
+    <application
+        android:label="@string/application_term_app"
+        tools:replace="android:label">
+        <provider
+            android:name="com.droidvim.storage.LocalStorageProvider"
+            android:authorities="com.droidvim.storage.documents"
+            android:grantUriPermissions="true"
+            android:exported="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS"
+            android:enabled="@bool/atLeastKitKat">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
+    </application>
+</manifest>

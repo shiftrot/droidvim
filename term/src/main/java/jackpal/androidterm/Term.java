@@ -226,7 +226,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             String title = getSessionTitle(position, getString(R.string.window_title, position + 1));
             label.setText(title);
             if (AndroidCompat.SDK >= 13) {
-                label.setTextAppearance(Term.this, TextAppearance_Holo_Widget_ActionBar_Title);
+                label.setTextAppearance(Term.this, android.R.style.TextAppearance_Holo_Widget_ActionBar_Title);
             } else {
                 label.setTextAppearance(Term.this, android.R.style.TextAppearance_Medium);
             }
@@ -503,9 +503,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     public static File getScratchCacheDir(Activity activity) {
-        File cache = activity.getExternalCacheDir();
-        if (cache == null || !cache.canWrite()) cache = activity.getFilesDir();
-        return new File(cache.getAbsolutePath()+"/scratch");
+        int sdcard = TermService.getSDCard(activity.getApplicationContext());
+        String cacheDir = TermService.getCacheDir(activity.getApplicationContext(), sdcard);
+        return new File(cacheDir+"/scratch");
     }
 
     private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
@@ -573,7 +573,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void setExtraButton() {
         Button button = (Button)findViewById(R.id.drawer_extra_button);
-        button.setVisibility(mIabHelperDisable ? View.GONE : View.VISIBLE);
+        int visibilty = View.VISIBLE;
+        if (mIabHelperDisable || !FLAVOR_VIM) visibilty = View.GONE;
+        button.setVisibility(visibilty);
         if (mIsPremium) {
             button.setText(getString(R.string.extra_button));
             button.setBackgroundResource(R.drawable.sidebar_button);
@@ -1054,13 +1056,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
-        if (TermVimInstaller.doInstallVim) {
+        if (!FLAVOR_VIM) {
+            TermVimInstaller.doInstallTerm(Term.this);
+            permissionCheckExternalStorage();
+        } else if (TermVimInstaller.doInstallVim) {
             mIabHelperDisable = true;
+            final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
             cmd = cmd.replaceAll("\n-?vim.app", "");
             TermVimInstaller.installVim(Term.this, new Runnable(){
                 @Override
                 public void run() {
-                    sendKeyStrings("vim.app\n", false);
+                    if (vimApp) sendKeyStrings("vim.app\n", false);
                     permissionCheckExternalStorage();
                     mIabHelperDisable = !existsPlayStore();
                     if (!mIabHelperDisable) setExtraButton();
@@ -1475,7 +1481,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showInputMethodPicker();
         } else if (key == 1253) {
-            sendKeyStrings(":confirm qa\r", true);
+            if (FLAVOR_VIM) {
+                sendKeyStrings(":confirm qa\r", true);
+            } else {
+                confirmCloseWindow();
+            }
         } else if (key == 1254) {
             view.sendFnKeyCode();
         } else if (key == KeycodeConstants.KEYCODE_ALT_LEFT) {
@@ -1880,6 +1890,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem wakeLockItem = menu.findItem(R.id.menu_toggle_wakelock);
         MenuItem wifiLockItem = menu.findItem(R.id.menu_toggle_wifilock);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
         menu.removeItem(R.id.menu_toggle_wakelock);
         menu.removeItem(R.id.menu_toggle_wifilock);
@@ -2300,7 +2311,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doWarningBeforePaste() {
-        if (!mVimFlavor) return;
+        if (!mVimFlavor) {
+            doTermPaste();
+            return;
+        }
         boolean warning = getDevBoolean(Term.this, "do_warning_before_paste", true);
         if (!warning) {
             doTermPaste();

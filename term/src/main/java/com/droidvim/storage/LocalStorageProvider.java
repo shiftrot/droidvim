@@ -69,7 +69,7 @@ public class LocalStorageProvider extends DocumentsProvider {
         MatrixCursor.RowBuilder row;
         String title = "DroidVim";
         if (getContext() != null) {
-            title = getContext().getString(R.string.application_termvim);
+            title = getContext().getString(R.string.application_term_app);
         }
 
         row = result.newRow();
