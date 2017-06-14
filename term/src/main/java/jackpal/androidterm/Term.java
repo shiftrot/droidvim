@@ -117,6 +117,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -3255,12 +3256,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         bld.create().show();
     }
 
-    AlertDialog.Builder mAlertWait = null;
-    void alertOnExtra(String message) {
-        mAlertWait = new AlertDialog.Builder(this);
-        mAlertWait.setMessage(message);
-        mAlertWait.setPositiveButton("OK", null);
-        Log.d(TAG, "Showing alert dialog: " + message);
-        mAlertWait.create().show();
+    private void showImageDialog(AlertDialog dialog, String mes, int id) {
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.image_dialog, null);
+        ImageView iv = (ImageView)view.findViewById(R.id.iv_image_dialog);
+        iv.setImageResource(id);
+        dialog.setMessage(mes);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setView(view);
+        dialog.show();
     }
+
 }
