@@ -2035,6 +2035,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return true;
         case 0xfffffff4:
         case 0xfffffff5:
+            if (!canPaste()) {
+                alert(Term.this.getString(R.string.toast_clipboard_error));
+                return true;
+            }
             copyClipboardToFile(mSettings.getHomePath()+"/.clipboard");
             if (keyCode == 0xfffffff5) sendKeyStrings(":ATEMod _paste\r", true);
             return true;
@@ -2221,14 +2225,16 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
-    private void copyClipboardToFile(String filename) {
-        if (filename == null) return;
-        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                .getManager(getApplicationContext());
-        if (clip.hasText()) {
+    private boolean copyClipboardToFile(String filename) {
+        if (filename == null) return false;
+        if (canPaste()) {
+            ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                    .getManager(getApplicationContext());
             String str = clip.getText().toString();
             writeStringToFile(filename, str);
+            return true;
         }
+        return false;
     }
 
     public static void writeStringToFile(String filename, String str) {
@@ -2282,7 +2288,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private boolean canPaste() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        if (clip.hasText()) {
+        if (clip.hasText() && (clip.getText().toString().length() > 0)) {
             return true;
         }
         return false;
@@ -2346,6 +2352,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return;
         }
         if (!canPaste()) {
+            Toast toast = Toast.makeText(this,R.string.toast_clipboard_error,Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
         doWarningBeforePaste();
