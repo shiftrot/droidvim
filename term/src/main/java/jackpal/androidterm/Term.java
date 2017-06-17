@@ -2161,17 +2161,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                         scheme = "file://";
                         uri = Uri.parse(scheme + file.getAbsolutePath());
                     } else {
-                        Toast toast = Toast.makeText(this,R.string.storage_read_error,Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        alert(Term.this.getString(R.string.storage_read_error));
                         return;
                     }
                 }
                 if (mime != null && !mime.equals("")){
                     intent.setDataAndType(uri, mime);
-                    Toast toast = Toast.makeText(this,R.string.storage_read_error,Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    alert(Term.this.getString(R.string.storage_read_error));
                     return;
                 } else {
                     intent.setData(uri);
@@ -2352,9 +2348,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return;
         }
         if (!canPaste()) {
-            Toast toast = Toast.makeText(this,R.string.toast_clipboard_error,Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            alert(Term.this.getString(R.string.toast_clipboard_error));
             return;
         }
         doWarningBeforePaste();

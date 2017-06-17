@@ -1,5 +1,6 @@
 package jackpal.androidterm;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -7,8 +8,6 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.FileObserver;
 import android.provider.DocumentsContract;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -171,6 +170,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         return result;
     }
 
+    static boolean mDialogIsActive = false;
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;
 
@@ -194,9 +194,23 @@ class SyncFileObserver extends RecursiveFileObserver {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast toast = Toast.makeText(mActivity, R.string.storage_write_error, Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        if (!mDialogIsActive) {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(mActivity);
+                            bld.setMessage(R.string.storage_write_error);
+                            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                            bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    mDialogIsActive = false;
+                                }
+                            });
+                            mDialogIsActive = true;
+                            bld.create().show();
+                        }
                     }
                 });
             }
@@ -207,6 +221,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         mDeleteFromStorage = delete;
     }
 
+    @SuppressLint("NewApi")
     private void confirmDelete(final Uri uri, final File path, final ContentResolver contentResolver) {
         if (!mDeleteFromStorage || mActivity == null) return;
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
@@ -233,4 +248,5 @@ class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 }
+
 
