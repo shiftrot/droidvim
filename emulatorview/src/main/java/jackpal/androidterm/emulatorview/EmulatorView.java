@@ -32,12 +32,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -48,6 +51,7 @@ import android.text.util.Linkify.MatchFilter;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -1192,8 +1196,31 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * @param fontSize the new font size, in density-independent pixels.
      */
     public void setTextSize(float fontSize) {
+        if (fontSize == 0) {
+            fontSize = getTextSize((Activity)this.getContext());
+        }
         mTextSize = (int) Math.floor(fontSize * mDensity);
         updateText();
+    }
+
+    static public float getTextSize(Activity activity) {
+        final float splashWidth = 30.4f;
+        final float fontSizeMax = 20.0f;
+        float fontSize = 14.0f;
+        Point point = new Point();
+        Display display = (activity.getWindowManager().getDefaultDisplay());
+        display.getSize(point);
+        Resources resources = activity.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float fs = point.x / metrics.density / splashWidth;
+        fs = (float)Math.floor(fs) + (((fs - Math.floor(fs)) > 0.5f) ? 0.5f : 0f);
+        if (fs > fontSize) fontSize = fs;
+        if (fontSize > fontSizeMax) fontSize = fontSizeMax;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("fontsize", (String.valueOf(fontSize)));
+        editor.apply();
+        return fontSize;
     }
 
     public void setTextLeading(int fontLeading) {

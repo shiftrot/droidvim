@@ -8,7 +8,7 @@
    <integer name="pref_orientation_default">0</integer>
    <string name="pref_cursorstyle_default" translatable="false">0</string>
    <string name="pref_cursorblink_default" translatable="false">0</string>
-   <string name="pref_fontsize_default" translatable="false">14.0</string>
+   <string name="pref_fontsize_default" translatable="false">0.0</string>
    <string name="pref_fontleading_default" translatable="false">0</string>
    <string name="pref_fontfile_default" translatable="false">system</string>
    <string name="pref_ambiguous_width_default" translatable="false">1</string>
