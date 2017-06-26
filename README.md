@@ -1,8 +1,8 @@
-#DroidVim
+# DroidVim
 
 DroidVim is a Vim clone for Android.  
 [Download the DroidVim from Google Play](https://play.google.com/store/apps/details?id=com.droidvim)  
-To build the "DroidVim" application, select the "droidvim flavor" and build.
+To build the "DroidVim" application, select the "droidvim" flavor and build.
 
 This code is based on the "Terminal Emulator for Android".  
-By selecting the "main flavor", you can build the "Terminal Emulator for Android" compatible application with various functions of the DroidVim.
+By selecting the "main" flavor, you can build the "Terminal Emulator for Android" compatible application with various functions of the DroidVim.
