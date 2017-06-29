@@ -111,6 +111,11 @@ public class TermService extends Service implements TermSession.FinishCallback
             mAPPEXTFILES = dirs[sdcard].toString();
         }
         mTMPDIR = getCacheDir(this, sdcard) + "/tmp";
+        mLD_LIBRARY_PATH = mAPPFILES+"/usr/lib";
+        String model = TermVimInstaller.getProp("ro.product.model");
+        if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
+            mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:"+mLD_LIBRARY_PATH;
+        }
         File tmpdir = new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
 
@@ -169,6 +174,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     private static String mAPPBASE;
     private static String mAPPFILES;
     private static String mAPPEXTFILES;
+    private static String mLD_LIBRARY_PATH;
     private static String mTMPDIR;
     private static String mHOME;
     public String getInitialCommand(String cmd, boolean bFirst) {
@@ -178,6 +184,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
+        cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
         cmd = cmd.replaceAll("\n#.*\n|\n\n", "\n");
         cmd = cmd.replaceAll("^#.*\n|\n#.*$|\n$", "");
         return cmd;
@@ -233,6 +240,10 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     static public String getAPPEXTFILES() {
         return mAPPEXTFILES;
+    }
+
+    static public String getLD_LIBRARY_PATH() {
+        return mLD_LIBRARY_PATH;
     }
 
     private boolean getInstallStatus(String scriptFile, String zipFile) {
