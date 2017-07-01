@@ -2653,6 +2653,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         new FunctionKey("functionbar_down",         R.id.button_down,              true),
         new FunctionKey("functionbar_left",         R.id.button_left,              false),
         new FunctionKey("functionbar_right",        R.id.button_right,             false),
+        new FunctionKey("functionbar_page_up",      R.id.button_page_up,           false),
+        new FunctionKey("functionbar_page_down",    R.id.button_page_down,         false),
         new FunctionKey("functionbar_backspace",    R.id.button_backspace,         false),
         new FunctionKey("functionbar_enter",        R.id.button_enter,             false),
         new FunctionKey("functionbar_i",            R.id.button_i,                 false),
@@ -2844,6 +2846,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             break;
         case R.id.button_right:
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
+            break;
+        case R.id.button_page_up:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_UP);
+            break;
+        case R.id.button_page_down:
+            doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_DOWN);
             break;
         case R.id.button_backspace:
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_DEL);

@@ -134,6 +134,14 @@
                 android:defaultValue="false"
                 android:title="▶"/>
             <CheckBoxPreference
+                android:key="functionbar_page_up"
+                android:defaultValue="false"
+                android:title="PageUp"/>
+            <CheckBoxPreference
+                android:key="functionbar_page_down"
+                android:defaultValue="false"
+                android:title="PageDown"/>
+            <CheckBoxPreference
                 android:key="functionbar_backspace"
                 android:defaultValue="false"
                 android:title="BS"/>

@@ -124,6 +124,20 @@
                         android:minWidth="56sp"
                         android:text="▶"/>
                     <Button
+                        android:id="@+id/button_page_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="PU"/>
+                    <Button
+                        android:id="@+id/button_page_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44sp"
+                        android:minWidth="56sp"
+                        android:text="PD"/>
+                    <Button
                         android:id="@+id/button_backspace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
