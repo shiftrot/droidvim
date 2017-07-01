@@ -128,8 +128,9 @@ final class TermVimInstaller {
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
         final String path = TermService.getAPPFILES();
         final String sdcard = TermService.getAPPEXTFILES();
-        INSTALL_ZIP = activity.getString(R.string.update_vim);
-        final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_vim), true, false);
+        INSTALL_ZIP = activity.getString(R.string.update_message);
+        INSTALL_WARNING = "\n\n"+activity.getString(R.string.update_warning);
+        final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_message), true, false);
         new Thread() {
             @Override
             public void run() {
@@ -294,13 +295,13 @@ final class TermVimInstaller {
     }
 
     static String INSTALL_ZIP = "";
+    static String INSTALL_WARNING = "";
     static private void setMessage(final Activity activity, final ProgressDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    activity.getString(R.string.update_vim);
-                    pd.setMessage(INSTALL_ZIP + "\n- " + message);
+                    pd.setMessage(INSTALL_ZIP + "\n- " + message + INSTALL_WARNING);
                 }
             });
         }
