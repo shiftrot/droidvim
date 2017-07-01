@@ -42,8 +42,9 @@
 
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="text_box">One-line text box</string>
-   <string name="update_message">Updating binaries and libraries.\nPlease wait for a while.</string>
-   <string name="update_warning">(Do not run this application in the background or forcibly rotate the screen)</string>
+   <string name="update_message">Updating binaries and libraries.</string>
+   <string name="update_warning">Do not run in the background or forcibly rotate the screen.</string>
+   <string name="update_vim_warning">(Please wait until Vim starts even if the dialog disappears)</string>
    <string name="reload_file">Reload (+Encoding)</string>
    <string name="reload_file_title">Reload this file</string>
    <string name="force_encoding">Choose encoding if you need.</string>

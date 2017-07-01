@@ -42,7 +42,8 @@
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="text_box">一行テキスト入力</string>
    <string name="update_message">実行ファイルとライブラリをアップデートしています.</string>
-   <string name="update_warning">(アップデート中にこのアプリをバックグラウンドで動作させたり、強制的に画面を回転させないでください)</string>
+   <string name="update_warning">アップデート中にこのアプリをバックグラウンドで動作させたり強制的に画面を回転させないでください.</string>
+   <string name="update_vim_warning">(もしダイアログが表示されなくなっても, Vimが起動するまで待ってください)</string>
    <string name="reload_file">エンコーディング指定</string>
    <string name="reload_file_title">ファイル再読込</string>
    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
