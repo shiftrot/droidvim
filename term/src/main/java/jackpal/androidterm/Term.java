@@ -2363,6 +2363,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 .getManager(getApplicationContext());
         if (clip == null) return;
         CharSequence paste = clip.getText();
+        if (paste == null) return;
         getCurrentTermSession().write(paste.toString());
     }
 
@@ -2500,7 +2501,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
             break;
         }
-        getCurrentEmulatorView().requestFocus();
+        EmulatorView view = getCurrentEmulatorView();
+        if (view != null) getCurrentEmulatorView().requestFocus();
     }
 
     /**
