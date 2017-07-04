@@ -216,7 +216,7 @@
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_menu"/>
             <CheckBoxPreference
-                android:key="functionbar_hide"
+                android:key="functionbar_menu_hide"
                 android:defaultValue="true"
                 android:title="@string/title_functionbar_hide"/>
             <CheckBoxPreference
