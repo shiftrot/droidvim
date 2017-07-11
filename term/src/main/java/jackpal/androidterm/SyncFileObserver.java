@@ -196,6 +196,8 @@ class SyncFileObserver extends RecursiveFileObserver {
                     public void run() {
                         if (!mDialogIsActive) {
                             AlertDialog.Builder bld = new AlertDialog.Builder(mActivity);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
+                            bld.setTitle(R.string.storage_write_error_title);
                             bld.setMessage(R.string.storage_write_error);
                             bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
