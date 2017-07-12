@@ -53,6 +53,7 @@ public class TermSettings {
     private int mActionBarUserAction;
     private int mDoubleTapAction;
     private int mRightDoubleTapAction;
+    private int mLeftDoubleTapAction;
     private int mBottomDoubleTapAction;
     private int mBackKeyAction;
     private int mControlKeyId;
@@ -106,6 +107,7 @@ public class TermSettings {
     private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
     private static final String DOUBLE_TAP_KEY = "double_tap_action";
     private static final String RIGHT_DOUBLE_TAP_KEY = "right_double_tap_action";
+    private static final String LEFT_DOUBLE_TAP_KEY = "left_double_tap_action";
     private static final String BOTTOM_DOUBLE_TAP_KEY = "bottom_double_tap_action";
     private static final String BACKACTION_KEY = "backaction";
     private static final String CONTROLKEY_KEY = "controlkey";
@@ -234,6 +236,7 @@ public class TermSettings {
         mActionBarUserAction = Integer.parseInt(res.getString(R.string.pref_actionbar_user_default));
         mDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_double_tap_default));
         mRightDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_right_double_tap_default));
+        mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mDropboxFilePicker = res.getBoolean(R.bool.pref_cloud_dropbox_default);
         mGoogleDriveFilePicker = res.getBoolean(R.bool.pref_cloud_googledrive_default);
@@ -285,6 +288,7 @@ public class TermSettings {
         mActionBarUserAction = readIntPref(ACTIONBAR_USER_KEY, mActionBarUserAction, ACTIONBAR_KEY_MAX);
         mDoubleTapAction = readIntPref(DOUBLE_TAP_KEY, mDoubleTapAction, ACTIONBAR_KEY_MAX);
         mRightDoubleTapAction = readIntPref(RIGHT_DOUBLE_TAP_KEY, mRightDoubleTapAction, ACTIONBAR_KEY_MAX);
+        mLeftDoubleTapAction = readIntPref(LEFT_DOUBLE_TAP_KEY, mLeftDoubleTapAction, ACTIONBAR_KEY_MAX);
         mBottomDoubleTapAction = readIntPref(BOTTOM_DOUBLE_TAP_KEY, mBottomDoubleTapAction, ACTIONBAR_KEY_MAX);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
@@ -460,6 +464,10 @@ public class TermSettings {
 
     public int getRightDoubleTapAction() {
         return mRightDoubleTapAction;
+    }
+
+    public int getLeftDoubleTapAction() {
+        return mLeftDoubleTapAction;
     }
 
     public int getBottomDoubleTapAction() {

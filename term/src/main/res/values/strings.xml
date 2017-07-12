@@ -178,6 +178,9 @@
    <string name="title_right_double_tap_preference">Double tap near the right edge</string>
    <string name="summary_right_double_tap_preference">Choose what double tap near the right edge does.</string>
    <string name="dialog_title_right_double_tap_preference">Double tap near the right edge</string>
+   <string name="title_left_double_tap_preference">Double tap near the left edge</string>
+   <string name="summary_left_double_tap_preference">Choose what double tap near the left edge does.</string>
+   <string name="dialog_title_left_double_tap_preference">Double tap near the left edge</string>
    <string name="title_bottom_double_tap_preference">Double tap near the bottom edge</string>
    <string name="summary_bottom_double_tap_preference">Choose what double tap near the bottom edge does.</string>
    <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>

@@ -176,6 +176,9 @@
    <string name="title_right_double_tap_preference">画面右端でのダブルタップ</string>
    <string name="summary_right_double_tap_preference">画面右端でのダブルタップの振舞いを選択</string>
    <string name="dialog_title_right_double_tap_preference">画面右端でのダブルタップ</string>
+   <string name="title_left_double_tap_preference">画面左端でのダブルタップ</string>
+   <string name="summary_left_double_tap_preference">画面左端でのダブルタップの振舞いを選択</string>
+   <string name="dialog_title_left_double_tap_preference">画面左端でのダブルタップ</string>
    <string name="title_bottom_double_tap_preference">画面下端でのダブルタップ</string>
    <string name="summary_bottom_double_tap_preference">画面下端でのダブルタップの振舞いを選択</string>
    <string name="dialog_title_bottom_double_tap_preference">画面下端でのダブルクリック</string>

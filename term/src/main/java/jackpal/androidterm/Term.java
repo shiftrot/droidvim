@@ -2086,12 +2086,16 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             int height = getCurrentEmulatorView().getVisibleHeight();
             int width = getCurrentEmulatorView().getVisibleWidth();
             int rightAction = mSettings.getRightDoubleTapAction();
+            int leftAction = mSettings.getLeftDoubleTapAction();
             int bottomAction = mSettings.getBottomDoubleTapAction();
 
             // if (mFunctionBar == 1 && rightAction == 1261 && mEditTextView) rightAction = 999;
+            // if (mFunctionBar == 1 && leftAction == 1261 && mEditTextView) leftAction = 999;
             // if (mFunctionBar == 1 && bottomAction == 1261 && mEditTextView) bottomAction = 999;
             if (rightAction != 999 && (me.getX() > (width - size))) {
                 doSendActionBarKey(getCurrentEmulatorView(), rightAction);
+            } else if (leftAction != 999 && (me.getX() < size)) {
+                doSendActionBarKey(getCurrentEmulatorView(), leftAction);
             } else if (bottomAction != 999 && me.getY() > (height - size)) {
                 doSendActionBarKey(getCurrentEmulatorView(), bottomAction);
             } else {
