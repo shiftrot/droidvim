@@ -49,7 +49,7 @@
    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
 
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Vimチュートリアル\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.\n\n▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力が画面下端付近でのダブルタップで起動します. 音声入力や絵文字の入力で便利です.</string>
+   <string name="tips_vim_list">▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Vimチュートリアル\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.\n\n▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力は画面下端付近でのダブルタップでON/OFF可能です. 予測変換入力、音声入力または絵文字の入力で便利です.</string>
    <string name="vimrc_warning_title">.vimrcについて</string>
    <string name="vimrc_warning">あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.\n\n$HOME/.vimまたはシンボリックリンクを作成すると、ランタイムパスとして扱われます.</string>
 

@@ -51,7 +51,7 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\n- One-line text box starts with double tap near the bottom edge. It is useful for emoticon, Non-Alphanumeric characters and voice input.</string>
+   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.\n- One-line text box (double tap near the bottom edge) is useful for emoticon, Non-Alphanumeric characters and voice input.</string>
    <string name="vimrc_warning_title">About .vimrc</string>
    <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.\n\nIf you create $HOME/.vim or a symbolic link, it is treated as a runtime path.</string>
 
