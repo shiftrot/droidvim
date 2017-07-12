@@ -2,4 +2,5 @@
 <resources>
     <string name="pref_initialcommand_default" translatable="false">export PS1=\'${PWD/$HOME} $(if (( USER_ID )); then print \\$; else print \\#; fi) \'\ncd $HOME\nexport PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH\nexport LD_LIBRARY_PATH=%LD_LIBRARY_PATH%\nexport TERMINFO=$APPEXTFILES/terminfo\nexport VIMRUNTIME=$APPEXTFILES/runtime\nexport VIM=$APPEXTFILES\n-vim.app</string>
     <string name="pref_intentcommand_default" translatable="false">:e %s</string>
+    <bool name="pref_one_line_textbox_default">true</bool>
 </resources>

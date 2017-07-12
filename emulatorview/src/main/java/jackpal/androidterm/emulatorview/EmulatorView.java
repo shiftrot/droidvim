@@ -1643,11 +1643,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 53:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
                 break;
-            case 54:
-                mIMEGoogleInput = !mIMEGoogleInput;
-                break;
             case 55:
                 doImeShortcutsAction();
+                break;
+            case 56:
+                ((Activity)this.getContext()).onKeyUp(0xffffff56, null);
+                break;
+            case 57:
+                ((Activity)this.getContext()).onKeyUp(0xffffff57, null);
+                break;
+            case 58:
+                ((Activity)this.getContext()).onKeyUp(0xffffff58, null);
                 break;
             case 63:
                 String ime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
@@ -1958,7 +1964,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (action == 0) {
             doToggleSoftKeyboard();
         } else if (action == 1261) {
-            ((Activity)this.getContext()).onKeyUp(0xfffffff9, null);
+            ((Activity)this.getContext()).onKeyUp(0xffffff58, null);
         } else {
             if (mIMEInputType == 0) {
                 setImeShortcutsAction(action);

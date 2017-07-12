@@ -1477,10 +1477,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (key == 1255) {
             setFunctionBar(2);
         } else if (key == 1260) {
+            if (mSettings.getImeShortcutsAction() != 1261) {
+                if (setEditTextAltCmd()) return true;
+            }
             view.doImeShortcutsAction();
+            return true;
         } else if (key == 1261) {
             setEditTextView(2);
         } else if (key >= 1351 && key <= 1353) {
+            if (setEditTextAltCmd()) return true;
             view.doImeShortcutsAction(key-1300);
         } else if (key == 1355) {
             toggleDrawer();
@@ -2052,12 +2057,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
             return true;
         case 0xfffffff9:
-            EditText editText = (EditText) findViewById(R.id.text_input);
-            if (mEditTextView && editText != null && !editText.isFocused()) {
-                editText.requestFocus();
-            } else {
-                setEditTextView(2);
-            }
+            return true;
+        case 0xffffff56:
+            setEditTextViewFocus(0);
+            return true;
+        case 0xffffff57:
+            setEditTextViewFocus(1);
+            return true;
+        case 0xffffff58:
+            setEditTextViewFocus(2);
             return true;
         case 0xfffffffa:
             clearClipBoard();
@@ -2579,6 +2587,30 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mAlreadyStarted) updatePrefs();
     }
 
+    private void setEditTextViewFocus(int mode) {
+        setEditTextView(mode);
+        int focus = mode;
+        if (mode == 2) focus = mEditTextView ? 1 : 0;
+        final EditText editText = (EditText) findViewById(R.id.text_input);
+        if (focus == 1 && mEditTextView && editText != null) {
+            editText.requestFocus();
+        } else {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) view.requestFocus();
+        }
+    }
+
+    private boolean setEditTextAltCmd() {
+        EditText editText = (EditText) findViewById(R.id.text_input);
+        if (mEditTextView && editText != null && editText.isFocused()) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) view.requestFocus();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void setEditTextVisibility() {
         final EditText editText = (EditText) findViewById(R.id.text_input);
         final View layout = findViewById(R.id.oneline_text_box);
@@ -2590,7 +2622,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (visibility == View.VISIBLE) {
             if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
             editText.requestFocus();
-            doWarningEditTextView();
+//            doWarningEditTextView();
         } else {
             if (view != null) view.requestFocus();
         }
@@ -2737,6 +2769,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 EmulatorView view = getCurrentEmulatorView();
                 if (str.equals("")) {
                     if (view != null) view.requestFocus();
+                    if (mSettings.getOneLineTextBoxEsc()) {
+                        setEditTextView(0);
+                        return false;
+                    };
+                    return true;
                 } else {
                     if (view != null) view.restartInputGoogleIme();
                     editText.setText("");

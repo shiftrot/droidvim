@@ -94,7 +94,10 @@
    <string name="title_functionbar_preference">ファンクションバー</string>
    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
    <string name="title_oneline_textbox_preference">一行テキスト入力</string>
-   <string name="summary_oneline_textbox_preference">起動時に一行テキスト入力を表示する.</string>
+   <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
+   <string name="title_oneline_textbox_esc_preference">一行テキスト入力でのESCの振る舞い</string>
+   <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
+   <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
 
    <string name="title_functionbar_key_preference">ファンクションキー</string>
    <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>

@@ -80,20 +80,27 @@
         android:title="@string/functionbar_preferences">
         <CheckBoxPreference
             android:key="functionbar"
-            android:defaultValue="true"
+            android:defaultValue="@bool/pref_functionbar_default"
             android:title="@string/title_functionbar_preference"
             android:summary="@string/summary_functionbar_preference" />
-
-        <CheckBoxPreference
-            android:key="oneline_textbox"
-            android:defaultValue="false"
-            android:title="@string/title_oneline_textbox_preference"
-            android:summary="@string/summary_oneline_textbox_preference" />
 
         <CheckBoxPreference android:title="@string/title_auto_hide_functionbar"
                 android:key="auto_hide_functionbar"
                 android:defaultValue="@bool/pref_auto_hide_functionbar_default"
                 android:summary="@string/auto_hide_functionbar_summary" />
+
+        <CheckBoxPreference
+            android:key="oneline_textbox"
+            android:defaultValue="@bool/pref_one_line_textbox_default"
+            android:title="@string/title_oneline_textbox_preference"
+            android:summary="@string/summary_oneline_textbox_preference" />
+
+        <CheckBoxPreference
+            android:key="oneline_textbox_esc"
+            android:defaultValue="@bool/pref_one_line_textbox_esc_default"
+            android:title="@string/title_oneline_textbox_esc_preference"
+            android:summaryOn="@string/summary_oneline_textbox_esc_on"
+            android:summaryOff="@string/summary_oneline_textbox_esc_off" />
 
         <PreferenceScreen
             android:title="@string/title_functionbar_key_preference">
