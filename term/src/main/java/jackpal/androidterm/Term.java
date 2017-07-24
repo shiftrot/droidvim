@@ -3002,6 +3002,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     }
 
+    @SuppressLint("NewApi")
     public static String handleOpenDocument(Uri uri, Cursor cursor) {
         if (uri == null || cursor == null) return null;
 
@@ -3033,9 +3034,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 path = uri.toString().replaceFirst("content://[^/]+/", "/MediaDocument/");
             }
             if (path != null) {
-                path = "/"+path+"/"+displayName;
-                path = path.replaceAll(":", "/");
-                path = path.replaceAll("%2F", "/");
+                path = "/"+path.replaceAll("%2F", "/");
+                String fname = new File(path).getName();
+                if (!(fname == null || fname.equals(displayName))) path = path+"/"+displayName;
+                path = path.replaceAll(":|\\|", "-");
                 path = path.replaceAll("//+", "/");
             }
         }
