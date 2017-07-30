@@ -1845,6 +1845,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 }
             }
         }
+        String path = Uri.decode(uri.toString());
+        final String AUTHORITY_TRESORIT = "content://com.tresorit.mobile.provider/external_files/";
+        if (path != null && path.matches("^"+AUTHORITY_TRESORIT +".*$")) {
+            path = Environment.getExternalStorageDirectory().toString()+path.substring(AUTHORITY_TRESORIT.length()-1);
+            if (new File(path).exists()) return path;
+        }
         return null;
     }
 
@@ -3110,6 +3116,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public static boolean isInternalPrivateStorageDocument(Uri uri) {
         return "com.droidvim.storage.documents".equals(uri.getAuthority());
     }
+
     public static boolean isDownloadDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
