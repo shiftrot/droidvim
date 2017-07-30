@@ -97,7 +97,7 @@
    <string name="summary_functionbar_preference">Show function bar on start up.</string>
    <string name="title_oneline_textbox_preference">One-line text box</string>
    <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
-   <string name="title_oneline_textbox_esc_preference">One-line text box ESC behavior</string>
+   <string name="title_oneline_textbox_esc_preference">Press ESC to hide One-line text box</string>
    <string name="summary_oneline_textbox_esc_on">Move focus, send ESC and hide.</string>
    <string name="summary_oneline_textbox_esc_off">Move focus.</string>
 

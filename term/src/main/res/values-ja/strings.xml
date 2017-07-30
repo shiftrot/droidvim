@@ -95,7 +95,7 @@
    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
    <string name="title_oneline_textbox_preference">一行テキスト入力</string>
    <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
-   <string name="title_oneline_textbox_esc_preference">一行テキスト入力でのESCの振る舞い</string>
+   <string name="title_oneline_textbox_esc_preference">ESCで一行テキストボックスを非表示にする</string>
    <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
    <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
 
