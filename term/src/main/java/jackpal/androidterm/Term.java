@@ -19,6 +19,7 @@ package jackpal.androidterm;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -26,6 +27,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -1788,12 +1790,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     public static String getPath(final Context context, final Uri uri) {
-        if (uri.toString().matches("^file:///.*")) {
-            String path = uri.getPath();
-            if (new File(path).canRead()) {
-                return path;
-            }
-        }
+        String realPath = getRealPathFromURI(context, uri);
+        if (realPath != null && new File(realPath).canRead()) return realPath;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return null;
         }
@@ -1808,7 +1806,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
-
                 File file;
                 if ("primary".equalsIgnoreCase(type)) {
                     file = new File(Environment.getExternalStorageDirectory() + "/" + split[1]);
@@ -1847,6 +1844,68 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     return file.toString();
                 }
             }
+        }
+        return null;
+    }
+
+    @SuppressLint("NewApi")
+    private static String getRealPathFromURI(final Context context, final Uri uri) {
+        boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        // DocumentProvider
+        Log.e(TAG,"uri:" + uri.getAuthority());
+        if (isAfterKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            if ("com.android.externalstorage.documents".equals(
+                    uri.getAuthority())) { // ExternalStorageProvider
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                } else {
+                    return "/stroage/" + type +  "/" + split[1];
+                }
+            } else if ("com.android.providers.downloads.documents".equals(
+                    uri.getAuthority())) { // DownloadsProvider
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                return getDataColumn(context, contentUri, null, null);
+            }else if ("com.android.providers.media.documents".equals(
+                    uri.getAuthority())) { // MediaProvider
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                Uri contentUri = null;
+                contentUri = MediaStore.Files.getContentUri("external");
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[] {
+                        split[1]
+                };
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) { // MediaStore
+            return getDataColumn(context, uri, null, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) { // File
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String[] projection = {
+                MediaStore.Files.FileColumns.DATA
+        };
+        try {
+            cursor = context.getContentResolver().query(
+                    uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int cindex = cursor.getColumnIndexOrThrow(projection[0]);
+                return cursor.getString(cindex);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
         return null;
     }
