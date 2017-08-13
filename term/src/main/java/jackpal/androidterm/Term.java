@@ -26,7 +26,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -60,6 +59,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
@@ -127,6 +127,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.provider.DocumentsContract.*;
 
 /**
  * A terminal emulator activity.
@@ -1651,7 +1653,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         b.setPositiveButton(this.getString(R.string.delete_file), new DialogInterface.OnClickListener() {
             @SuppressLint("NewApi")
             public void onClick(DialogInterface dialog, int id) {
-                DocumentsContract.deleteDocument(getContentResolver(), uri);
+                deleteDocument(getContentResolver(), uri);
             }
         });
         b.setNegativeButton(android.R.string.no, null);
@@ -1795,15 +1797,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return null;
         }
-        if (DocumentsContract.isDocumentUri(context, uri)) {
+        if (isDocumentUri(context, uri)) {
             try {
-                File file = new File(DocumentsContract.getDocumentId(uri));
+                File file = new File(getDocumentId(uri));
                 if (file.exists()) return file.toString();
             } catch (Exception e){
                 Log.d("FilePicker", e.toString());
             }
             if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
+                final String docId = getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
                 File file;
@@ -1856,43 +1858,47 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     @SuppressLint("NewApi")
     private static String getRealPathFromURI(final Context context, final Uri uri) {
-        boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        // DocumentProvider
-        Log.e(TAG,"uri:" + uri.getAuthority());
-        if (isAfterKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            if ("com.android.externalstorage.documents".equals(
-                    uri.getAuthority())) { // ExternalStorageProvider
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                } else {
-                    return "/stroage/" + type +  "/" + split[1];
+        try {
+            boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+            // DocumentProvider
+            Log.e(TAG,"uri:" + uri.getAuthority());
+            if (isAfterKitKat && isDocumentUri(context, uri)) {
+                if ("com.android.externalstorage.documents".equals(
+                        uri.getAuthority())) { // ExternalStorageProvider
+                    final String docId = getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    final String type = split[0];
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    } else {
+                        return "/stroage/" + type +  "/" + split[1];
+                    }
+                } else if ("com.android.providers.downloads.documents".equals(
+                        uri.getAuthority())) { // DownloadsProvider
+                        final String id = getDocumentId(uri);
+                        final Uri contentUri = ContentUris.withAppendedId(
+                                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                        return getDataColumn(context, contentUri, null, null);
+                } else if ("com.android.providers.media.documents".equals(
+                        uri.getAuthority())) { // MediaProvider
+                    final String docId = getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    final String type = split[0];
+                    Uri contentUri = null;
+                    contentUri = MediaStore.Files.getContentUri("external");
+                    final String selection = "_id=?";
+                    final String[] selectionArgs = new String[] {
+                            split[1]
+                    };
+                    return getDataColumn(context, contentUri, selection, selectionArgs);
                 }
-            } else if ("com.android.providers.downloads.documents".equals(
-                    uri.getAuthority())) { // DownloadsProvider
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                return getDataColumn(context, contentUri, null, null);
-            }else if ("com.android.providers.media.documents".equals(
-                    uri.getAuthority())) { // MediaProvider
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                Uri contentUri = null;
-                contentUri = MediaStore.Files.getContentUri("external");
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1]
-                };
-                return getDataColumn(context, contentUri, selection, selectionArgs);
+            } else if ("content".equalsIgnoreCase(uri.getScheme())) { // MediaStore
+                return getDataColumn(context, uri, null, null);
+            } else if ("file".equalsIgnoreCase(uri.getScheme())) { // File
+                return uri.getPath();
             }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) { // MediaStore
-            return getDataColumn(context, uri, null, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) { // File
-            return uri.getPath();
+        } catch (Exception e) {
+            // do nothing
         }
         return null;
     }
@@ -1900,18 +1906,20 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String[] projection = {
-                MediaStore.Files.FileColumns.DATA
+            MediaStore.Files.FileColumns.DATA
         };
         try {
-            cursor = context.getContentResolver().query(
-                    uri, projection, selection, selectionArgs, null);
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
-                final int cindex = cursor.getColumnIndexOrThrow(projection[0]);
-                return cursor.getString(cindex);
+                try {
+                    final int cindex = cursor.getColumnIndexOrThrow(projection[0]);
+                    return cursor.getString(cindex);
+                } catch (Exception e) {
+                    // do nothing
+                }
             }
         } finally {
-            if (cursor != null)
-                cursor.close();
+            if (cursor != null) cursor.close();
         }
         return null;
     }
@@ -3071,10 +3079,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public static String handleOpenDocument(Uri uri, Cursor cursor) {
         if (uri == null || cursor == null) return null;
 
-        cursor.moveToFirst();
-        int index = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME);
-        if (index == -1) return null;
-        String displayName = cursor.getString(index);
+        String displayName = null;
+        try {
+            int index = -1;
+            cursor.moveToFirst();
+            index = cursor.getColumnIndex(Document.COLUMN_DISPLAY_NAME);
+            if (index != -1) displayName = cursor.getString(index);
+        } catch (Exception e) {
+            // do nothing
+        }
 
         String path = null;
         if (isExternalStorageDocument(uri)) {
@@ -3086,22 +3099,30 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             path = path.replaceAll(":", "/");
             path = path.replaceFirst("/document/", "");
         } else {
-            path = uri.toString().replaceFirst("content://[^/]+/", "/");
             if (isDownloadDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/Download/");
             } else if (isGoogleDriveDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/GoogleDrive/");
             } else if (isGoogleDriveLegacyDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/GoogleDriveLegacy/");
+            } else if (isGoogleSambaDocument(uri)) {
+                path = Uri.decode(uri.toString()).replaceFirst("content://[^/]+/", "/");
+                try {
+                    path = URLDecoder.decode(path, "UTF-8");
+                } catch (Exception e) {
+                    // do nothing
+                }
             } else if (isOneDriveDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/OneDrive/");
             } else if (isMediaDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/MediaDocument/");
+            } else {
+                path = uri.toString().replaceFirst("content://[^/]+/", "/");
             }
             if (path != null) {
                 path = "/"+path.replaceAll("%2F", "/");
                 String fname = new File(path).getName();
-                if (!(fname == null || fname.equals(displayName))) path = path+"/"+displayName;
+                if (displayName != null && !(fname == null || fname.equals(displayName))) path = path+"/"+displayName;
                 path = path.replaceAll(":|\\|", "-");
                 path = path.replaceAll("//+", "/");
             }
@@ -3131,6 +3152,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     public static boolean isGoogleDriveLegacyDocument(Uri uri) {
         return ("com.google.android.apps.docs.storage.legacy".equals(uri.getAuthority()));
+    }
+
+    public static boolean isGoogleSambaDocument(Uri uri) {
+        return ("com.google.android.sambadocumentsprovider".equals(uri.getAuthority()));
     }
 
     public static boolean isOneDriveDocument(Uri uri) {
