@@ -17,9 +17,12 @@
 package jackpal.androidterm;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
@@ -43,6 +46,8 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
+import com.droidvim.XmlUtils;
+
 import static jackpal.androidterm.Term.getPath;
 
 public class TermPreferences extends PreferenceActivity {
@@ -64,6 +69,20 @@ public class TermPreferences extends PreferenceActivity {
         if (FLAVOR_VIM) {
             addPreferencesFromResource(R.xml.preferences_cloud);
         }
+
+        if (AndroidCompat.SDK >= 19) {
+            addPreferencesFromResource(R.xml.preferences_prefs);
+            final String PREFS_KEY = "prefs_rw";
+            Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
+            prefsPicker.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    prefsPicker();
+                    return true;
+                }
+            });
+        }
+
 
         // Remove the action bar pref on older platforms without an action bar
         Preference actionBarPref = findPreference(ACTIONBAR_KEY);
@@ -147,6 +166,138 @@ public class TermPreferences extends PreferenceActivity {
         if ((fontPref != null) && (textCategory != null)) {
             textCategory.removePreference(fontPref);
         }
+
+    }
+
+    public static final int REQUEST_FONT_PICKER = 16;
+    public static final int REQUEST_PREFS_READ_PICKER = REQUEST_FONT_PICKER + 1;
+    private void prefsPicker() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(this.getString(R.string.prefs_dialog_rw));
+        bld.setNeutralButton(this.getString(R.string.prefs_write), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                confirmWritePrefs();
+            }
+        });
+        bld.setPositiveButton(this.getString(R.string.prefs_read), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("text/xml");
+                startActivityForResult(intent, REQUEST_PREFS_READ_PICKER);
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.no), null);
+        bld.create().show();
+    }
+
+    private void confirmWritePrefs() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(this.getString(R.string.prefs_write_confirm));
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                writePrefs();
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.no), null);
+        bld.create().show();
+    }
+
+    private boolean writePrefs() {
+        File pathExternalPublicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String downloadDir = pathExternalPublicDir.getPath();
+        String filename = downloadDir + "/"+ BuildConfig.APPLICATION_ID + ".xml";
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(filename);
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+            XmlUtils.writeMapXml(pref.getAll(), fos);
+        } catch (Exception e) {
+            bld.setMessage(this.getString(R.string.prefs_write_info_failure));
+            bld.create().show();
+            return false;
+        }
+        bld.setMessage(this.getString(R.string.prefs_write_info_success)+"\n\n"+filename);
+        bld.create().show();
+        return true;
+    }
+
+    private boolean readPrefs(Uri uri, boolean clearPrefs) {
+        try {
+            InputStream is = this.getApplicationContext().getContentResolver().openInputStream(uri);
+            SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            Map<String, ?> entries = XmlUtils.readMapXml(is);
+
+            int error = 0;
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                if (!prefs.contains(entry.getKey())) error += 1;
+                if (error > 3) throw new Exception();
+            }
+            if (clearPrefs && error == 0) prefEdit.clear();
+
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                putObject(prefEdit, entry.getKey(), entry.getValue());
+            }
+            prefEdit.apply();
+        } catch (Exception e) {
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setIcon(android.R.drawable.ic_dialog_alert);
+            bld.setTitle(this.getString(R.string.prefs_read_error_title));
+            bld.setMessage(this.getString(R.string.prefs_read_error));
+            bld.setPositiveButton(this.getString(android.R.string.ok), null);
+            bld.create().show();
+            return false;
+        }
+        return true;
+    }
+
+    private SharedPreferences.Editor putObject(final SharedPreferences.Editor edit, final String key, final Object val) {
+        if (val instanceof Boolean)
+            return edit.putBoolean(key, (Boolean) val);
+        else if (val instanceof Float)
+            return edit.putFloat(key, (Float) val);
+        else if (val instanceof Integer)
+            return edit.putInt(key, (Integer) val);
+        else if (val instanceof Long)
+            return edit.putLong(key, (Long) val);
+        else if (val instanceof String) {
+            String loadVal = (String)val;
+            if (key.equals("lib_sh_path")) {
+                if (!new File(loadVal).canRead()) loadVal = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir) + "/libsh.so";
+                return edit.putString(key, loadVal);
+            }
+            if (key.equals("shell_path")) {
+                loadVal = loadVal.replaceFirst(" .*$", "");
+                if (!loadVal.equals("") && !new File(loadVal).canRead()) loadVal = AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
+                return edit.putString(key, loadVal);
+            }
+            if (key.equals("home_path")) {
+                if (!new File(loadVal).canWrite()) {
+                    String defValue;
+                    if (!BuildConfig.FLAVOR.equals("master")) {
+                        defValue = TermService.getAPPFILES() + "/home";
+                        File home = new File(defValue);
+                        if (!home.exists()) home.mkdir();
+                    } else {
+                        defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+                    }
+                    loadVal = defValue;
+                }
+                return edit.putString(key, loadVal);
+            }
+            return edit.putString(key, ((String)val));
+        }
+        return edit;
     }
 
     static final String FONT_FILENAME = "font_filename";
@@ -154,6 +305,13 @@ public class TermPreferences extends PreferenceActivity {
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         switch (request) {
+            case REQUEST_PREFS_READ_PICKER:
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    if (readPrefs(uri, false)) onCreate(null);
+                    break;
+                }
+                break;
             case REQUEST_FONT_PICKER:
                 String path;
                 if (result == RESULT_OK && data != null) {
@@ -177,7 +335,6 @@ public class TermPreferences extends PreferenceActivity {
         }
     }
 
-    public static final int REQUEST_FONT_PICKER = 16;
     private void filePicker() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);

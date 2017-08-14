@@ -83,6 +83,17 @@
    <string name="do_not_show">Do not show again</string>
 
    <!-- Preference dialog -->
+   <string name="prefs_preferences">User Settings</string>
+   <string name="title_prefs_preference">Backup/Restore</string>
+   <string name="prefs_dialog_rw">Backup/Restore settings</string>
+   <string name="prefs_read">Restore</string>
+   <string name="prefs_read_error_title">File read error</string>
+   <string name="prefs_read_error">This file is not backup file or too old to restore.</string>
+   <string name="prefs_write">Backup</string>
+   <string name="prefs_write_confirm">Overwrite the backup file.</string>
+   <string name="prefs_write_info_success">Backup file is created successfully.</string>
+   <string name="prefs_write_info_failure">Unable to create backup file.</string>
+
    <string name="screen_preferences">Screen</string>
 
    <string name="title_statusbar_preference">Status bar</string>

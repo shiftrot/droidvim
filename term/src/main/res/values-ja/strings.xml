@@ -81,6 +81,16 @@
    <string name="do_not_show">次回から表示しない</string>
 
    <!-- Preference dialog -->
+   <string name="prefs_preferences">設定</string>
+   <string name="title_prefs_preference">保存/読込</string>
+   <string name="prefs_dialog_rw">設定の保存/読込を行います.</string>
+   <string name="prefs_read">読込</string>
+   <string name="prefs_read_error_title">読込エラー</string>
+   <string name="prefs_read_error">このファイルはバックアップファイルではないか, 古すぎるバックアップファイルです.</string>
+   <string name="prefs_write">保存</string>
+   <string name="prefs_write_confirm">バックアップファイルを上書きします.</string>
+   <string name="prefs_write_info_success">バックアップファイルが作成されました.</string>
+   <string name="prefs_write_info_failure">バックアップファイルを作成できません.</string>
    <string name="screen_preferences">スクリーン</string>
 
    <string name="title_statusbar_preference">ステータスバー</string>
