@@ -364,6 +364,9 @@
   <string name="storage_read_error">The file cannot be read or edited.\nPlease contact us if this file can be edited by other application.</string>
   <string name="storage_write_error_title">File write error</string>
   <string name="storage_write_error">Check the following.\n\n- This file no longer exists.\nIf this file exists in the external storage, reopen it via the \"Storage\" button.\n\n- This file does not allow writing.\nThis file does not allow writing via the Android Storage Access Framework. Open this file via another filer application or cloud storage client.</string>
+  <string name="storage_hash_error_title">File hash error</string>
+  <string name="storage_hash_error">Because there is a possibility that the file was changed on the external storage, writing to the external storage is canceled.\nOverwrite or reopen this file via the \"Storage\" button.</string>
+  <string name="storage_hash_overwrite">Overwrite</string>
   <string name="storage_delete_file">Delete file from storage.</string>
   <string name="title_internal_storage">Internal private storage</string>
   <string name="clear_cache">Clear cache</string>

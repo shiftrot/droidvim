@@ -17,6 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.DigestException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -128,26 +131,39 @@ class SyncFileObserver extends RecursiveFileObserver {
         }
     }
 
+    private final static String HASH_ERROR = "HASH_ERROR";
+    private final static String HASH_ALGORITHM = "SHA-1";
     boolean putUriAndLoad(Uri uri, String path) {
         mActive = true;
         path = path.replaceAll("//", "/");
-        putHashMap(path, uri.toString());
-        boolean load = makeCache(uri, new File(path));
-        return load;
+        String hash = makeCache(uri, new File(path));
+        if (!hash.equals(HASH_ERROR)) {
+            putHashMap(path, uri.toString());
+            putHashMap(HASH_ALGORITHM+path, hash);
+            return true;
+        }
+        return false;
     }
 
-    private boolean makeCache(final Uri uri, final File dst) {
+    private String makeCache(final Uri uri, final File dst) {
         return makeCache(uri, dst, mContentResolver);
     }
 
-    private boolean makeCache(final Uri uri, final File dst, final ContentResolver contentResolver) {
-        if (dst == null || uri == null || contentResolver == null) return false;
+    private String makeCache(final Uri uri, final File dst, final ContentResolver contentResolver) {
+        if (dst == null || uri == null || contentResolver == null) return "";
 
-        boolean result = true;
+        String hashValue = "";
         mActive = false;
         dst.mkdirs();
         if (dst.isDirectory()) delete(dst);
         try {
+            MessageDigest md;
+            try {
+                md = MessageDigest.getInstance(HASH_ALGORITHM);
+            } catch (NoSuchAlgorithmException e) {
+                md = null;
+            }
+
             InputStream is = contentResolver.openInputStream(uri);
             BufferedInputStream reader = new BufferedInputStream(is);
 
@@ -156,25 +172,127 @@ class SyncFileObserver extends RecursiveFileObserver {
             byte buf[] = new byte[4096];
             int len;
             while ((len = reader.read(buf)) != -1) {
+                if (md != null) md.update(buf, 0, len);
                 writer.write(buf, 0, len);
             }
             writer.flush();
             writer.close();
             reader.close();
+            if (md != null) {
+                byte[] digest = md.digest();
+                hashValue = toHexString(digest);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            result = false;
+            mActive = true;
+            return HASH_ERROR;
         }
         startWatching(dst.toString());
         mActive = true;
-        return result;
+        return hashValue;
     }
 
-    static boolean mDialogIsActive = false;
+    private static String digest(InputStream is)
+            throws NoSuchAlgorithmException, IOException, DigestException {
+        MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
+
+        byte[] buf = new byte[4096];
+        int len;
+        while ((len = is.read(buf)) != -1) {
+            md.update(buf, 0, len);
+        }
+        byte[] digest = md.digest();
+        return toHexString(digest);
+    }
+
+    private static String toHexString (byte[] digest) {
+        StringBuilder buff = new StringBuilder();
+        for (byte b : digest) {
+            buff.append(String.format("%1$02x", b));
+        }
+        return buff.toString();
+    }
+
+    public static int HASH_CHECK_MODE = 2;
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
+        if (contentResolver == null) return;
+        if (HASH_CHECK_MODE == 0) {
+            flushCacheExec(uri, file, contentResolver);
+            return;
+        }
+
+        final String oldHash = mHashMap.get(HASH_ALGORITHM+file.toString());
+        try {
+            InputStream dstIs = contentResolver.openInputStream(uri);
+            if (dstIs != null) {
+                String hashDst = digest(dstIs);
+                dstIs.close();
+                if (hashDst.equals("")) {
+                    flushCacheExec(uri, file, contentResolver);
+                    return;
+                }
+                if (HASH_CHECK_MODE == 2) {
+                    InputStream srcIs = new FileInputStream(file.toString());
+                    String hashSrc = digest(srcIs);
+                    srcIs.close();
+                    if (hashDst.equals(hashSrc)) return;
+                }
+                if (hashDst.equals(oldHash)) {
+                    flushCacheExec(uri, file, contentResolver);
+                } else {
+                    if (mActivity != null) {
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!mDialogIsActive) {
+                                    AlertDialog.Builder bld = new AlertDialog.Builder(mActivity);
+                                    bld.setIcon(android.R.drawable.ic_dialog_alert);
+                                    bld.setTitle(R.string.storage_hash_error_title);
+                                    bld.setMessage(R.string.storage_hash_error);
+                                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                            mDialogIsActive = false;
+                                        }
+                                    });
+                                    bld.setNeutralButton(R.string.storage_hash_overwrite, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                            mDialogIsActive = false;
+                                            flushCacheExec(uri, file, contentResolver);
+                                        }
+                                    });
+                                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialog) {
+                                            mDialogIsActive = false;
+                                        }
+                                    });
+                                    mDialogIsActive = true;
+                                    bld.create().show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        } catch (Exception e) {
+            flushCacheExec(uri, file, contentResolver);
+        }
+    }
+
+    private static boolean mDialogIsActive = false;
+    private void flushCacheExec(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;
 
         try {
+            MessageDigest md;
+            try {
+                md = MessageDigest.getInstance(HASH_ALGORITHM);
+            } catch (NoSuchAlgorithmException e) {
+                md = null;
+            }
+
             OutputStream os = contentResolver.openOutputStream(uri);
             BufferedOutputStream writer = new BufferedOutputStream(os);
 
@@ -184,11 +302,17 @@ class SyncFileObserver extends RecursiveFileObserver {
             byte buf[] = new byte[4096];
             int len;
             while ((len = reader.read(buf)) != -1) {
+                if (md != null) md.update(buf, 0, len);
                 writer.write(buf, 0, len);
             }
             writer.flush();
             writer.close();
             reader.close();
+            if (md != null) {
+                byte[] digest = md.digest();
+                String hashValue = toHexString(digest);
+                putHashMap(HASH_ALGORITHM+file.toString(), hashValue);
+            }
         } catch (Exception e) {
             if (mActivity != null) {
                 mActivity.runOnUiThread(new Runnable() {
@@ -202,6 +326,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                             bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
+                                    mDialogIsActive = false;
                                 }
                             });
                             bld.setOnCancelListener(new DialogInterface.OnCancelListener() {

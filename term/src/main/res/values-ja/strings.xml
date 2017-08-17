@@ -328,6 +328,9 @@
   <string name="storage_read_error">読み込めないか編集できないファイルです.\nこのファイルを他のアプリケーションで編集できる場合は, デベロッパーに連絡してください.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
   <string name="storage_write_error">以下をチェックしてください\n\n・このファイルは外部ストレージに存在しません.\nファイルが存在している場合は\"Storage\"ボタンから再度ファイルを開いてください.\n\n・このファイルは書き込みを許可していません.\nこのファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません. 別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>
+  <string name="storage_hash_error_title">ハッシュエラー</string>
+  <string name="storage_hash_error">外部ストレージ上でファイルが変更された可能性があるため, 外部ストレージへの書き込みを中止します.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
+  <string name="storage_hash_overwrite">上書き</string>
   <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
   <string name="title_internal_storage">内部プライベート領域</string>
   <string name="clear_cache">キャッシュクリア</string>
