@@ -502,7 +502,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
-//        if (!mIabHelperDisable) iabSetup();
+        if (!mAlreadyStarted && !mIabHelperDisable && mIabHelper == null) iabSetupFirst();
         setDrawerButtons();
         restoreSyncFileObserver();
         mAlreadyStarted = true;
@@ -3179,6 +3179,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             pd.dismiss();
             confirmRetryIabSetup();
         } else {
+            pd.dismiss();
+            if (mIabSetupFirst) return;
             mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     pd.dismiss();
@@ -3198,6 +3200,31 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     mIabHelper.queryInventoryAsync(mGotInventoryListener);
                 }
             });
+        }
+    }
+
+    boolean mIabSetupFirst = false;
+    public void iabSetupFirst() {
+        try {
+            if (!isConnected(this.getApplicationContext())) return;
+            String base64EncodedPublicKey = BuildConfig.BASE64_PUBLIC_KEY;
+            if (mIabHelper == null) {
+                mIabHelper = new IabHelper(this, base64EncodedPublicKey);
+                if (mIabHelper == null) return;
+                mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                    public void onIabSetupFinished(IabResult result) {
+                        Log.d(TAG, "Setup finished.");
+                        if (!result.isSuccess()) return;
+                        if (mIabHelper != null) {
+                            Log.d(TAG, "Setup successful. Querying inventory.");
+                            mIabSetupFirst = true;
+                            mIabHelper.queryInventoryAsync(mGotInventoryListener);
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            // do nothing
         }
     }
 
@@ -3340,13 +3367,20 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 if (mIabHelper != null) {
                     String payload = getPayload();
 
-                    mIabHelper.launchPurchaseFlow(activity, SKU_PREMIUM, REQUEST_BILLING,
-                            mPurchaseFinishedListener, payload);
+                    launchPurchaseFlow(activity, SKU_PREMIUM, REQUEST_BILLING, mPurchaseFinishedListener, payload);
                 }
             }
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
+    }
+
+    private void launchPurchaseFlow(Activity activity, String sku, int requestCode, IabHelper.OnIabPurchaseFinishedListener listener, String extraData) {
+        try {
+            mIabHelper.launchPurchaseFlow(activity, sku, requestCode, listener, extraData);
+        } catch (Exception e) {
+            // do nothing
+        }
     }
 
     // Callback for when a purchase is finished
