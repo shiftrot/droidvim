@@ -18,8 +18,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-            android:title="@string/cloud_storage_preferences"
-            android:key="categoryCloudStorage">
+            android:title="@string/external_apps_preferences"
+            android:key="categoryApps">
 
         <CheckBoxPreference
                 android:key="cloud_dropbox"

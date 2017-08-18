@@ -54,7 +54,6 @@ public class TermPreferences extends PreferenceActivity {
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CATEGORY_SCREEN_KEY = "screen";
-    private static final String CATEGORY_CLOUD_STORAGE_KEY = "categoryCloudStorage";
     static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
     private static final String CATEGORY_TEXT_KEY = "text";
 
@@ -67,7 +66,7 @@ public class TermPreferences extends PreferenceActivity {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         if (FLAVOR_VIM) {
-            addPreferencesFromResource(R.xml.preferences_cloud);
+            addPreferencesFromResource(R.xml.preferences_apps);
         }
 
         if (AndroidCompat.SDK >= 19) {

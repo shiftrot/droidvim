@@ -355,7 +355,9 @@
   <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
   <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
 
-  <string name="cloud_storage_preferences">クラウドストレージ</string>
+  <string name="external_apps_preferences">外部アプリ</string>
+  <string name="title_app_button">外部アプリ</string>
+  <string name="title_app_button_preference">外部アプリボタン</string>
   <string name="title_cloud_dropbox_preference">Dropbox</string>
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
   <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>

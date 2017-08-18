@@ -393,7 +393,9 @@
   <string name="donate_button">Donate</string>
   <string name="extra_button">Extra</string>
 
-  <string name="cloud_storage_preferences">Cloud storage</string>
+  <string name="external_apps_preferences">External apps</string>
+  <string name="title_app_button">External App</string>
+  <string name="title_app_button_preference">External app button</string>
   <string name="title_cloud_dropbox_preference">Dropbox</string>
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
   <string name="summary_cloud_file_picker_on_preference">Application</string>

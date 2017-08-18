@@ -448,6 +448,19 @@
                     android:layout_height="10000dp" />
 
                 <Button
+                    android:id="@+id/drawer_app_button"
+                    android:visibility="gone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:minHeight="35dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sidebar_button3"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_app_button" />
+
+                <Button
                     android:id="@+id/drawer_dropbox_button"
                     android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"

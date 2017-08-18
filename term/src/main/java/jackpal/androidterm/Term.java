@@ -186,6 +186,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     // Available on API 12 and later
     private static final int FLAG_INCLUDE_STOPPED_PACKAGES = 0x20;
 
+    private String mExternalApp                 = "com.example.filemanager";
     private static final String APP_DROPBOX     = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE    = "com.microsoft.skydrive";
@@ -603,6 +604,18 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mFilePickerItems.add(this.getString(R.string.create_file));
             mFilePickerItems.add(this.getString(R.string.delete_file));
             Button button;
+            if (isAppInstalled(mExternalApp)) {
+                button = (Button) findViewById(R.id.drawer_app_button);
+                button.setVisibility(View.VISIBLE);
+                try {
+                    PackageManager pm = this.getApplicationContext().getPackageManager();
+                    PackageInfo packageInfo = pm.getPackageInfo(mExternalApp, 0);
+                    String label = (String) packageInfo.applicationInfo.loadLabel(pm);
+                    button.setText(label);
+                } catch (Exception e) {
+                    button.setText(R.string.title_app_button);
+                }
+            }
             if (isAppInstalled(APP_DROPBOX)) {
                 button = (Button)findViewById(R.id.drawer_dropbox_button);
                 button.setVisibility(View.VISIBLE);
@@ -630,6 +643,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         }
         setExtraButton();
+        findViewById(R.id.drawer_app_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                externalApp();
+            }
+        });
         findViewById(R.id.drawer_extra_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -741,6 +761,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         }
         startActivity(intent);
+    }
+
+    private void externalApp() {
+        intentMainActivity(mExternalApp);
     }
 
     @SuppressLint("NewApi")
