@@ -2845,7 +2845,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 break;
             }
         }
-        Button button = (Button)findViewById(R.id.button_oneline_text_box_enter);
+        Button button = (Button)findViewById(R.id.button_oneline_text_box_clear);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onelineTextBoxClear();
+            }
+        });
+        button = (Button)findViewById(R.id.button_oneline_text_box_enter);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2858,22 +2865,38 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
     }
 
+    private boolean onelineTextBoxClear(){
+        if (mEditTextView) {
+            EditText editText = (EditText) findViewById(R.id.text_input);
+            if (editText != null) {
+                String str = editText.getText().toString();
+                EmulatorView view = getCurrentEmulatorView();
+                if (editText.isFocused()) {
+                    if (!str.equals("")) {
+                        if (view != null) view.restartInputGoogleIme();
+                        editText.setText("");
+                    } else {
+                        setEditTextView(0);
+                    }
+                } else {
+                    editText.requestFocus();
+                    editText.setText("");
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean onelineTextBoxEsc(){
         if (mEditTextView) {
             EditText editText = (EditText) findViewById(R.id.text_input);
             if (editText != null && editText.isFocused()) {
-                String str = editText.getText().toString();
                 EmulatorView view = getCurrentEmulatorView();
-                if (str.equals("")) {
-                    if (view != null) view.requestFocus();
-                    if (mSettings.getOneLineTextBoxEsc()) {
-                        setEditTextView(0);
-                        return false;
-                    };
-                    return true;
-                } else {
-                    if (view != null) view.restartInputGoogleIme();
-                    editText.setText("");
+                if (view != null) view.requestFocus();
+                if (mSettings.getOneLineTextBoxEsc()) {
+                    setEditTextView(0);
+                    return false;
                 }
                 return true;
             }

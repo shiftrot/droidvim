@@ -39,7 +39,19 @@
                     android:inputType="text" />
 
                 <Button
+                    android:id="@+id/button_oneline_text_box_clear"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:layout_weight="1"
+                    android:minHeight="44sp"
+                    android:minWidth="96dp"
+                    android:text="×"/>
+
+                <Button
                     android:id="@+id/button_oneline_text_box_enter"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
