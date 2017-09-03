@@ -194,23 +194,28 @@ public class TermPreferences extends PreferenceActivity {
     }
 
     private void confirmWritePrefs() {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_info);
-        bld.setMessage(this.getString(R.string.prefs_write_confirm));
-        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                writePrefs();
-            }
-        });
-        bld.setNegativeButton(this.getString(android.R.string.no), null);
-        bld.create().show();
-    }
-
-    private boolean writePrefs() {
         File pathExternalPublicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String downloadDir = pathExternalPublicDir.getPath();
-        String filename = downloadDir + "/"+ BuildConfig.APPLICATION_ID + ".xml";
+        final String filename = downloadDir + "/"+ BuildConfig.APPLICATION_ID + ".xml";
+        if (new File(filename).exists()) {
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setIcon(android.R.drawable.ic_dialog_info);
+            bld.setMessage(this.getString(R.string.prefs_write_confirm));
+            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    writePrefs(filename);
+                }
+            });
+            bld.setNegativeButton(this.getString(android.R.string.no), null);
+            bld.create().show();
+        } else {
+            writePrefs(filename);
+            return;
+        }
+    }
+
+    private boolean writePrefs(String filename) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setPositiveButton(this.getString(android.R.string.ok), null);
