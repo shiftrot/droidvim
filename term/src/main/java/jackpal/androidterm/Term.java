@@ -1141,8 +1141,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (sessions == null) {
             return null;
         } else {
-            return sessions.get(mViewFlipper.getDisplayedChild());
+            if (mViewFlipper != null) return sessions.get(mViewFlipper.getDisplayedChild());
         }
+        return null;
     }
 
     private EmulatorView getCurrentEmulatorView() {
@@ -1479,10 +1480,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (key == 1250) {
             doCreateNewWindow();
         } else if (key == 1251) {
-            if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
-                sendKeyStrings(":confirm qa\r", true);
-            } else {
-                confirmCloseWindow();
+            if (mTermSessions != null) {
+                if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                    sendKeyStrings(":confirm qa\r", true);
+                } else {
+                    confirmCloseWindow();
+                }
             }
         } else if (key == 1252) {
             InputMethodManager imm = (InputMethodManager)
@@ -1851,6 +1854,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 final File[] dirs = context.getExternalFilesDirs(null);
                 if (dirs != null && dirs.length >= 2) {
                     for (File dir : dirs) {
+                        if (dir == null) continue;
                         path = dir.getAbsolutePath().replaceAll(type.concat(".*"), "");
                         path = String.format("%s/%s/%s", path, type, split[1]);
                         path = path.replaceAll("/+", "/");
@@ -2237,8 +2241,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mime = str[2];
         } else {
             int ch = str[1].lastIndexOf('.');
-            String ext = (ch >= 0) ?str[1].substring(ch + 1) : null;
-            mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase());
+            String ext = (ch >= 0) ?str[1].substring(ch + 1) : "";
+            if (ext != null) mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase());
         }
         if ((str[1] != null) && (str[1].matches("^%(w3m|open)%.*"))) {
             String url = str[1].replaceFirst("%(w3m|open)%", "");
@@ -2469,7 +2473,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (clip == null) return;
         CharSequence paste = clip.getText();
         if (paste == null) return;
-        getCurrentTermSession().write(paste.toString());
+        TermSession session = getCurrentTermSession();
+        if (session != null) session.write(paste.toString());
     }
 
     private void doWarningBeforePaste() {
