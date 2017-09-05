@@ -338,15 +338,16 @@ class TranscriptScreen implements Screen {
 
                     int start = imeSpannableString.getSpanStart(style);
                     int end = imeSpannableString.getSpanEnd(style);
+                    if (start == -1 || end == -1) continue;
                     if (imeColor != IME_GOOGLE && (start == 0 && end == length)) {
-                        if (imeColor == IME_ATOK) {
+                        if (imeColor == IME_ATOK || imeColor == IME_WNNLAB) {
                             if (underline > 0) continue;
                         } else {
                             continue;
                         }
                     }
 
-                    String imeSubText = imeText.substring(start, end);
+                    String imeSubText = imeSpannableString.subSequence(start, end).toString();
                     int uimeLength = Math.min(columns, imeSubText.length());
                     int uimeOffset = imeSubText.length() - uimeLength;
                     float ofsx = renderer.getMeasureText(imeText.substring(0, start));
@@ -366,6 +367,8 @@ class TranscriptScreen implements Screen {
     private final static int IME_AUTODETECT = 2;
     private final static int IME_ATOK       = 3;
     private final static int IME_GOOGLE     = 4;
+    private final static int IME_GBOARD     = 5;
+    private final static int IME_WNNLAB     = 6;
     private final static int IME_DEFAULT    = 100;
     private static int mIMEColor = 1;
     private static int mIMEDetect = IME_AUTODETECT;

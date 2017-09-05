@@ -1790,7 +1790,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // com.android.inputmethod.latin/.LatinIME
     private final static String IME_ANDROID = ".*com.android.inputmethod.latin.*";
     // com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
-    private final static String IME_GBoard = "com.google.android.inputmethod.latin/.*";
+    private final static String IME_GBOARD = "com.google.android.inputmethod.latin/.*";
     // com.justsystems.atokmobile.tv.service/.AtokInputMethodService
     private final static String IME_ATOK = "com.justsystems.atokmobile..*";
     // com.google.android.inputmethod.japanese/.MozcService
@@ -1799,7 +1799,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // jp.co.omronsoft.openwnn/.OpenWnnJAJP
     // jp.co.omronsoft.wnnlab/.standardcommon.IWnnLanguageSwitcher
     // jp.co.omronsoft.iwnnime.ml/.standardcommon.IWnnLanguageSwitcher
-    private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
+    // private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
+    private final static String IME_WNNLAB = "jp.co.omronsoft.wnnlab.*";
     private static int mIme = -1;
     private int setIME(TerminalEmulator view) {
         if (view == null) return 0;
@@ -1811,8 +1812,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             ime = 3;
         } else if (defime.matches(IME_GOOGLE)) {
             ime = 4;
-        } else if (defime.matches(IME_GBoard)) {
+        } else if (defime.matches(IME_GBOARD)) {
             ime = 5;
+        } else if (defime.matches(IME_WNNLAB)) {
+            ime = 6;
         }
         if (mIme != ime) {
             TranscriptScreen transcriptScreen = view.getScreen();
