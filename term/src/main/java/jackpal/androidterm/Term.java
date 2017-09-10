@@ -669,15 +669,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDrawer().closeDrawers();
-                dropboxFilePicker(mSettings.getDropboxFilePicker());
+                if (dropboxFilePicker(mSettings.getDropboxFilePicker())) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_googledrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDrawer().closeDrawers();
-                googleDriveFilePicker(mSettings.getGoogleDriveFilePicker());
+                if (googleDriveFilePicker(mSettings.getGoogleDriveFilePicker())) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
@@ -768,29 +766,39 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     @SuppressLint("NewApi")
-    private int dropboxFilePicker(int mode) {
-        if (mode == 0) {
-            intentMainActivity(APP_DROPBOX);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setPackage(APP_DROPBOX);
-            intent.setType("*/*");
-            startActivityForResult(intent, REQUEST_DROPBOX);
+    private boolean dropboxFilePicker(int mode) {
+        try {
+            if (mode == 0) {
+                intentMainActivity(APP_DROPBOX);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setPackage(APP_DROPBOX);
+                intent.setType("*/*");
+                startActivityForResult(intent, REQUEST_DROPBOX);
+            }
+        } catch (Exception e) {
+            alert(this.getString(R.string.activity_not_found));
+            return false;
         }
-        return 1;
+        return true;
     }
 
     @SuppressLint("NewApi")
-    private int googleDriveFilePicker(int mode) {
-        if (mode == 0) {
-            intentMainActivity(APP_GOOGLEDRIVE);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setPackage(APP_GOOGLEDRIVE);
-            intent.setType("*/*");
-            startActivityForResult(intent, REQUEST_GOOGLEDRIVE);
+    private boolean googleDriveFilePicker(int mode) {
+        try {
+            if (mode == 0) {
+                intentMainActivity(APP_GOOGLEDRIVE);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setPackage(APP_GOOGLEDRIVE);
+                intent.setType("*/*");
+                startActivityForResult(intent, REQUEST_GOOGLEDRIVE);
+            }
+        } catch (Exception e) {
+            alert(this.getString(R.string.activity_not_found));
+            return false;
         }
-        return 1;
+        return true;
     }
 
     private boolean installGit() {

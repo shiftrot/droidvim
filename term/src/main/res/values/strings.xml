@@ -356,6 +356,7 @@
   <string name="dropbox">Dropbox</string>
   <string name="googledrive">GoogleDrive</string>
   <string name="onedrive">OneDrive</string>
+  <string name="activity_not_found">Activity not found.\nPlease try again.</string>
   <string name="external_storage">Storage</string>
   <string name="create_or_delete">Create/Delete</string>
   <string name="create_file">Create file</string>
