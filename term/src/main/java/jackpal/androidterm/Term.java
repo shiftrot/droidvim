@@ -462,7 +462,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
-        if (!mAlreadyStarted && !mIabHelperDisable && mIabHelper == null) iabSetupFirst();
+        // if (!mAlreadyStarted && !mIabHelperDisable && mIabHelper == null) iabSetupFirst();
         setDrawerButtons();
         restoreSyncFileObserver();
         mAlreadyStarted = true;
@@ -1344,14 +1344,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
         registerReceiver(mBroadcastReceiever, new IntentFilter(RELOAD_STYLE_ACTION));
 
-       if (existsPlayStore()) {
-           if (mIabHelper == null) {
-               iabSetup();
-           } else {
-               // for promotion code
-               if (isConnected(this.getApplicationContext())) mIabHelper.queryInventoryAsync(mGotInventoryListener);
-           }
-       }
+        if (existsPlayStore()) {
+            if (mIabHelper == null) {
+                iabSetup();
+            } else {
+                // for promotion code
+                if (isConnected(this.getApplicationContext())) mIabHelper.queryInventoryAsync(mGotInventoryListener);
+            }
+        }
     }
 
     @Override
