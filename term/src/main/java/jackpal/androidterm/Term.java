@@ -588,6 +588,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             button.setBackgroundResource(R.drawable.sidebar_button);
         } else {
             button.setText(getString(R.string.extra_button));
+            if (mIabHelper != null) button.setBackgroundResource(R.drawable.sidebar_button);
         }
     }
 
