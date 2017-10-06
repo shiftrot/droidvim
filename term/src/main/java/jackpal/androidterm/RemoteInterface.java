@@ -152,25 +152,27 @@ public class RemoteInterface extends Activity {
             } else {
                 uri = myIntent.getData();
             }
-            if (uri != null && uri.toString().matches("^file:///.*")) {
+            String intentCommand = mSettings.getIntentCommand();
+            boolean flavorVim = intentCommand.matches("^:.*");
+            if (uri != null && uri.toString().matches("^file:///.*") && flavorVim) {
                 String path = uri.getPath();
                 if (new File(path).canRead()) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    String command = "\u001b"+String.format(":e %s", path);
+                    String command = "\u001b"+String.format(intentCommand, path);
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
                     mReplace = false;
                 }
                 finish();
-            } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content") && FLAVOR_VIM) {
+            } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content") && flavorVim) {
                 Context context = this;
                 String command = null;
                 String path = Term.getPath(context, uri);
                 if (path != null) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+String.format(":e %s", path);
-                } else {
+                    command = "\u001b"+String.format(intentCommand, path);
+                } else if (getContentResolver() != null) {
                     Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                     path = Term.handleOpenDocument(uri, cursor);
                     if (path == null) {
@@ -187,7 +189,7 @@ public class RemoteInterface extends Activity {
                             finish();
                         }
                         path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                        command = "\u001b"+String.format(":e %s", path);
+                        command = "\u001b"+String.format(intentCommand, path);
                     }
                 }
                 // Find the target window

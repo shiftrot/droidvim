@@ -1786,8 +1786,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     }
                 }
                 if (path != null) {
+                    String intentCommand = mSettings.getIntentCommand();
+                    if (!intentCommand.matches("^:.*")) intentCommand = ":e %s";
                     path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
-                    path = String.format(":e %s\r", path);
+                    path = String.format(intentCommand+"\r", path);
                     sendKeyStrings(path, true);
                 }
                 break;
