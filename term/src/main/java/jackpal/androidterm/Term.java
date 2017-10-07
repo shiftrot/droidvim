@@ -1529,6 +1529,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             view.doImeShortcutsAction(key-1300);
         } else if (key == 1355) {
             toggleDrawer();
+        } else if (key == 1356) {
+            sendKeyStrings(":tabnew\r", true);
+            openDrawer();
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
             view.restartInputGoogleIme();
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
@@ -1549,6 +1552,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
         } else {
+            mDrawer.openDrawer(GravityCompat.START);
+        }
+    }
+
+    private void openDrawer() {
+        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (!mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.openDrawer(GravityCompat.START);
         }
     }

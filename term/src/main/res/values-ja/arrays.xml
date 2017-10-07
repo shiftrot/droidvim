@@ -114,6 +114,7 @@
         <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
         <item>直接入力 : パスワード\n(Google日本語入力)</item>
+        <item>新規タブでファイルを開く(Vim)</item>
         <item>終了</item>
         <item>なし</item>
     </string-array>
