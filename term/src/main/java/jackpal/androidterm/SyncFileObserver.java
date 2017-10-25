@@ -13,6 +13,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -368,9 +369,13 @@ class SyncFileObserver extends RecursiveFileObserver {
                 b.setMessage(file);
                 b.setPositiveButton(R.string.delete_file, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        boolean result = DocumentsContract.deleteDocument(contentResolver, uri);
-                        deleteEmptyDirectory(mCacheDir);
-                        dialog.dismiss();
+                        try {
+                            boolean result = DocumentsContract.deleteDocument(contentResolver, uri);
+                            deleteEmptyDirectory(mCacheDir);
+                            dialog.dismiss();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 b.setNegativeButton(android.R.string.no, null);

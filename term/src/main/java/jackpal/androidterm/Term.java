@@ -1699,7 +1699,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         b.setPositiveButton(this.getString(R.string.delete_file), new DialogInterface.OnClickListener() {
             @SuppressLint("NewApi")
             public void onClick(DialogInterface dialog, int id) {
-                deleteDocument(getContentResolver(), uri);
+                try {
+                    deleteDocument(getContentResolver(), uri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
         b.setNegativeButton(android.R.string.no, null);
