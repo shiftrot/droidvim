@@ -111,6 +111,7 @@
    <string name="title_oneline_textbox_esc_preference">Press ESC to hide One-line text box</string>
    <string name="summary_oneline_textbox_esc_on">Move focus, send ESC and hide.</string>
    <string name="summary_oneline_textbox_esc_off">Move focus.</string>
+   <string name="title_oneline_textbox_cr_preference">Show \"Send\" button (One-line text box)</string>
 
    <string name="title_functionbar_key_preference">Function key</string>
    <string name="summary_functionbar_key_preference">Show/hide function bar\'s key</string>

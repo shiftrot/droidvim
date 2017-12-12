@@ -102,11 +102,16 @@
             android:summaryOn="@string/summary_oneline_textbox_esc_on"
             android:summaryOff="@string/summary_oneline_textbox_esc_off" />
 
+        <CheckBoxPreference
+            android:key="oneline_textbox_cr"
+            android:defaultValue="@bool/pref_one_line_textbox_cr_default"
+            android:title="@string/title_oneline_textbox_cr_preference" />
+
         <PreferenceScreen
             android:title="@string/title_functionbar_key_preference">
             <CheckBoxPreference
-                android:key="functionbar_next"
-                android:defaultValue="false"
+                android:key="functionbar_next0"
+                android:defaultValue="true"
                 android:title="@string/title_functionbar_change"/>
             <CheckBoxPreference
                 android:key="functionbar_esc"

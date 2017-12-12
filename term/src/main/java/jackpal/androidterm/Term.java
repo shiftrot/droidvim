@@ -1532,6 +1532,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (key == 1356) {
             sendKeyStrings(":tabnew\r", true);
             openDrawer();
+        } else if (key == 1357) {
+            setFunctionBar(2);
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
             view.restartInputGoogleIme();
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
@@ -2793,8 +2795,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private void setFunctionBarSize() {
         int size;
-        if (mFunctionBarId == 0) size = findViewById(R.id.view_function_bar).getHeight();
-        else size = findViewById(R.id.view_function_bar2).getHeight();
+        size = findViewById(R.id.view_function_bar).getHeight();
+        if (mFunctionBarId == 1) size += size;
         if (mViewFlipper != null) mViewFlipper.setFunctionBarSize(size);
     }
 
@@ -2839,7 +2841,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         new FunctionKey("functionbar_menu_x",       R.id.button_menu_x,            false),
         new FunctionKey("functionbar_menu_user",    R.id.button_menu_user,         true),
         new FunctionKey("functionbar_menu_quit",    R.id.button_menu_quit,         true),
-        new FunctionKey("functionbar_next",         R.id.button_next_functionbar,  false),
+        new FunctionKey("functionbar_next0",        R.id.button_next_functionbar0, true),
         new FunctionKey("functionbar_next2",        R.id.button_next_functionbar2, true),
         new FunctionKey("functionbar_prev",         R.id.button_prev_functionbar,  true),
         new FunctionKey("functionbar_prev2",        R.id.button_prev_functionbar2, true),
@@ -2882,7 +2884,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 onelineTextBoxClear();
             }
         });
-        button = (Button)findViewById(R.id.button_oneline_text_box_enter);
+
+        int visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
+        button = findViewById(R.id.button_oneline_text_box_enter);
+        button.setVisibility(visibility);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2969,6 +2974,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (id == R.id.button_menu_minus) visibility = View.GONE;
         if (id == R.id.button_menu_x)     visibility = View.GONE;
         setFunctionBarButton(id, visibility);
+
+        Button button = findViewById(R.id.button_oneline_text_box_enter);
+        visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
+        button.setVisibility(visibility);
     }
 
     static int mFunctionBarId = 0;
@@ -2977,6 +2986,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mHideFunctionBar) {
             visibility = View.GONE;
             findViewById(R.id.view_function_bar).setVisibility(visibility);
+            findViewById(R.id.view_function_bar1).setVisibility(visibility);
             findViewById(R.id.view_function_bar2).setVisibility(visibility);
             setFunctionBarSize();
             mViewFlipper.setFunctionBar(false);
@@ -2988,8 +2998,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             setFunctionKeyVisibility(prefs, fkey.key, fkey.resid, fkey.defValue);
         }
 
-        visibility = (mFunctionBar == 1 && mFunctionBarId == 0) ? View.VISIBLE : View.GONE;
+        visibility = (mFunctionBar == 1) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar).setVisibility(visibility);
+        findViewById(R.id.view_function_bar1).setVisibility(visibility);
         visibility = (mFunctionBar == 1 && mFunctionBarId == 1) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar2).setVisibility(visibility);
         setFunctionBarSize();
@@ -3106,7 +3117,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         case R.id.button_menu_hide:
             setFunctionBar(2);
             break;
-        case R.id.button_next_functionbar:
+        case R.id.button_next_functionbar0:
         case R.id.button_prev_functionbar:
         case R.id.button_prev_functionbar2:
         case R.id.button_next_functionbar2:

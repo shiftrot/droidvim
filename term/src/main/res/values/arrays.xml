@@ -109,13 +109,14 @@
         <!--<item>Create Window</item>-->
         <item>Toogle drawer</item>
         <item>Toggle soft keyboard</item>
+        <item>Toggle One-line text box</item>
+        <item>Toggle function bar</item>
         <item>Choose input method</item>
         <item>Paste</item>
         <item>Sends ESC from terminal</item>
         <item>Sends i from terminal</item>
         <item>Sends : from terminal</item>
         <item>Sends / from terminal</item>
-        <item>One-line text box</item>
         <item>IME shortcut</item>
         <item>Direct input : password</item>
         <item>Alphanumeric : URI</item>

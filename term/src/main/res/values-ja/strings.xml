@@ -108,6 +108,7 @@
    <string name="title_oneline_textbox_esc_preference">ESCで一行テキストボックスを非表示にする</string>
    <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
    <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
+   <string name="title_oneline_textbox_cr_preference">\"送出\"ボタンを表示(一行テキストボックス)</string>
 
    <string name="title_functionbar_key_preference">ファンクションキー</string>
    <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
