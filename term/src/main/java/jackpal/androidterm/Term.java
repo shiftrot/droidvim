@@ -3349,12 +3349,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
+    public static final String FKEY_LABEL = "fkey_label";
     private void setFunctionKeyVisibility(SharedPreferences prefs, String key, int id, boolean defValue) {
         int visibility = prefs.getBoolean(key, defValue) ? View.VISIBLE : View.GONE;
         if (id == R.id.button_menu_plus)  visibility = View.GONE;
         if (id == R.id.button_menu_minus) visibility = View.GONE;
         if (id == R.id.button_menu_x)     visibility = View.GONE;
-        setFunctionBarButton(id, visibility);
+        String label = prefs.getString(FKEY_LABEL+key, "");
+        setFunctionBarButton(id, visibility, label);
 
         Button button = (Button) findViewById(R.id.button_oneline_text_box_enter);
         visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
@@ -3389,8 +3391,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @SuppressLint("NewApi")
-    private void setFunctionBarButton(int id, int visibility) {
+    private void setFunctionBarButton(int id, int visibility, String label) {
         Button button = (Button)findViewById(id);
+        if (!label.equals("")) button.setText(label);
         button.setVisibility(visibility);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
