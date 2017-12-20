@@ -1703,7 +1703,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             public void onClick(DialogInterface dialog, int id) {
                 try {
                     deleteDocument(getContentResolver(), uri);
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -2886,7 +2886,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         });
 
         int visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
-        button = findViewById(R.id.button_oneline_text_box_enter);
+        button = (Button) findViewById(R.id.button_oneline_text_box_enter);
         button.setVisibility(visibility);
         button.setOnClickListener(new OnClickListener() {
             @Override
@@ -2975,7 +2975,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (id == R.id.button_menu_x)     visibility = View.GONE;
         setFunctionBarButton(id, visibility);
 
-        Button button = findViewById(R.id.button_oneline_text_box_enter);
+        Button button = (Button) findViewById(R.id.button_oneline_text_box_enter);
         visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
         button.setVisibility(visibility);
     }

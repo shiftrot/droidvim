@@ -373,7 +373,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                             boolean result = DocumentsContract.deleteDocument(contentResolver, uri);
                             deleteEmptyDirectory(mCacheDir);
                             dialog.dismiss();
-                        } catch (FileNotFoundException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
