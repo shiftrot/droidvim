@@ -17,7 +17,8 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -127,8 +129,16 @@ public class TermService extends Service implements TermSession.FinishCallback
         editor.apply();
 
         compat = new ServiceForegroundCompat(this);
+        Notification notification = showNotification();
+        if (notification != null) compat.startForeground(RUNNING_NOTIFICATION, notification);
         mTermSessions = new SessionList();
+        install();
 
+        Log.d(TermDebug.LOG_TAG, "TermService started");
+    }
+
+    public int ONGOING_NOTIFICATION_ID = 1;
+    Notification showNotification() {
         CharSequence contentText = getText(R.string.application_terminal);
         if (!BuildConfig.FLAVOR.equals("main")) {
             contentText = getText(R.string.application_term_app);
@@ -145,22 +155,53 @@ public class TermService extends Service implements TermSession.FinishCallback
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
         Drawable largeIconDrawable = ContextCompat.getDrawable(this, R.drawable.ic_launcher);
         Bitmap largeIconBitmap = ((BitmapDrawable)largeIconDrawable).getBitmap();
-        Notification notification = new NotificationCompat.Builder(getApplicationContext())
-            .setContentTitle(contentText)
-            .setContentText(getText(R.string.service_notify_text))
-            .setContentIntent(pendingIntent)
-            .setSmallIcon(statusIcon)
-            .setLargeIcon(largeIconBitmap)
-            .setPriority(priority)
-            .setOngoing(true)
-            .setAutoCancel(false)
-            .setVisibility(Notification.VISIBILITY_SECRET)
-            .build();
-        compat.startForeground(RUNNING_NOTIFICATION, notification);
 
-        install();
-
-        Log.d(TermDebug.LOG_TAG, "TermService started");
+        Notification notification;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            String NOTIFICATION_CHANNEL_ID = contentText.toString() + "_channel";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Terminal Session", NotificationManager.IMPORTANCE_LOW);
+                notificationChannel.setDescription(getText(R.string.service_notify_text).toString());
+                notificationChannel.setLightColor(Color.GREEN);
+                notificationChannel.enableLights(false);
+                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                notificationChannel.enableVibration(false);
+                if (notificationManager != null) {
+                    notificationManager.createNotificationChannel(notificationChannel);
+                }
+            }
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+            notificationBuilder
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setWhen(System.currentTimeMillis())
+                    .setTicker(contentText)
+                    .setContentTitle(contentText)
+                    .setContentText(getText(R.string.service_notify_text))
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(statusIcon)
+                    .setLargeIcon(largeIconBitmap)
+                    .setPriority(priority)
+                    .setOngoing(true)
+                    .setAutoCancel(false)
+                    .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+                    .setContentInfo("");
+            notification = notificationBuilder.build();
+            if (notificationManager != null && notification != null) notificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
+        } else {
+            notification = new NotificationCompat.Builder(getApplicationContext())
+                .setContentTitle(contentText)
+                .setContentText(getText(R.string.service_notify_text))
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(statusIcon)
+                .setLargeIcon(largeIconBitmap)
+                .setPriority(priority)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setVisibility(Notification.VISIBILITY_SECRET)
+                .build();
+        }
+        return notification;
     }
 
     @SuppressLint("NewApi")
