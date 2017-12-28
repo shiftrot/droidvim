@@ -26,6 +26,7 @@
    <string name="window_list">ウインドウ一覧</string>
    <string name="prev_window">前のウインドウ</string>
    <string name="next_window">次のウインドウ</string>
+   <string name="screen">スクリーン</string>
    <string name="reset">端末をリセット</string>
    <string name="send_email">メール送信</string>
    <string name="special_keys">特殊キー</string>

@@ -1033,6 +1033,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mStopServiceOnFinish) {
             stopService(TSIntent);
             mFunctionBar = -1;
+            mOrientation = -1;
         }
         mTermService = null;
         mTSConnection = null;
@@ -1206,7 +1207,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         }
 
-        int orientation = mSettings.getScreenOrientation();
+        int orientation = getOrientation();
         int o = 0;
         if (orientation == 0) {
             o = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
@@ -1218,6 +1219,50 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             /* Shouldn't be happened. */
         }
         setRequestedOrientation(o);
+    }
+
+    static int mOrientation = -1;
+    private int getOrientation() {
+        if (mOrientation == -1) return mSettings.getScreenOrientation();
+        return mOrientation;
+    }
+
+    private void doScreenMenu() {
+        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.reset)};
+        final Toast toast = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
+        new AlertDialog.Builder(this)
+                .setTitle(this.getString(R.string.screen))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            setCurrentOrientation();
+                        } else {
+                            doResetTerminal();
+                            updatePrefs();
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void setCurrentOrientation() {
+        final String[] items = getResources().getStringArray(R.array.entries_orientation_preference);
+        new AlertDialog.Builder(this)
+                .setTitle(this.getString(R.string.dialog_title_orientation_preference))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mOrientation = which;
+                        doResetTerminal();
+                        updatePrefs();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void setPreIMEShortsuts(EmulatorView v) {
@@ -1382,6 +1427,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (!FLAVOR_VIM) {
             menu.removeItem(R.id.menu_edit_vimrc);
         }
+        menu.removeItem(R.id.menu_reset);
         return true;
     }
 
@@ -1424,6 +1470,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 //            }
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
+        } else if (id == R.id.menu_screen) {
+            doScreenMenu();
         } else if (id == R.id.menu_reset) {
             doResetTerminal();
             updatePrefs();
@@ -1534,6 +1582,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             openDrawer();
         } else if (key == 1357) {
             setFunctionBar(2);
+        } else if (key == 1358) {
+            setCurrentOrientation();
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
             view.restartInputGoogleIme();
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
@@ -2431,6 +2481,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doPreferences() {
+        mOrientation = -1;
         mDoResetTerminal = true;
         startActivity(new Intent(this, TermPreferences.class));
     }

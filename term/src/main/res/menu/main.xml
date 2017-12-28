@@ -52,6 +52,8 @@
         android:icon="@drawable/ic_menu_preferences" />
     <item android:id="@+id/menu_tutorial"
         android:title="@string/tutorial" />
+    <item android:id="@+id/menu_screen"
+        android:title="@string/screen" />
     <item android:id="@+id/menu_reset"
         android:title="@string/reset" />
     <item android:id="@+id/menu_paste"

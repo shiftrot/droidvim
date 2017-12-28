@@ -122,6 +122,7 @@
         <item>Alphanumeric : URI</item>
         <item>Direct input : password\n(Google Japanese input)</item>
         <item>Open file in new tab (Vim)</item>
+        <item>Orientation</item>
         <item>Quit</item>
         <item>None</item>
     </string-array>

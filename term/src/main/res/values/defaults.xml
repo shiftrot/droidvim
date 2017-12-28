@@ -24,7 +24,7 @@
    <string name="pref_actionbar_x_default" translatable="false">1253</string>
    <string name="pref_actionbar_user_default" translatable="false">1355</string>
    <string name="pref_double_tap_default" translatable="false">1355</string>
-   <string name="pref_right_double_tap_default" translatable="false">999</string>
+   <string name="pref_right_double_tap_default" translatable="false">1358</string>
    <string name="pref_left_double_tap_default" translatable="false">999</string>
    <string name="pref_bottom_double_tap_default" translatable="false">1261</string>
    <string name="pref_backaction_default" translatable="false">5</string>
