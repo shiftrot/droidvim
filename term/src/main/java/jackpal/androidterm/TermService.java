@@ -148,7 +148,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (!pref.getBoolean("statusbar_icon", true)) {
             priority = Notification.PRIORITY_MIN;
-            if (AndroidCompat.SDK >= 24) statusIcon = R.drawable.ic_stat_transparent_icon;
+            if (AndroidCompat.SDK >= 24 || TermVimInstaller.OS_AMAZON) statusIcon = R.drawable.ic_stat_transparent_icon;
         }
         Intent notifyIntent = new Intent(this, Term.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

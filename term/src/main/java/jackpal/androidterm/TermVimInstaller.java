@@ -35,6 +35,7 @@ final class TermVimInstaller {
 
     static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
+    static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
     static public boolean doInstallVim = false;
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
