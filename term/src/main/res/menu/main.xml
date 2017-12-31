@@ -52,6 +52,8 @@
         android:icon="@drawable/ic_menu_preferences" />
     <item android:id="@+id/menu_tutorial"
         android:title="@string/tutorial" />
+    <item android:id="@+id/action_help"
+        android:title="@string/help" />
     <item android:id="@+id/menu_screen"
         android:title="@string/screen" />
     <item android:id="@+id/menu_reset"
@@ -68,8 +70,6 @@
         android:title="@string/enable_wifilock" />
     <item android:id="@+id/menu_update"
         android:title="@string/menu_update" />
-    <item android:id="@+id/action_help"
-        android:title="@string/help" />
     <item android:id="@+id/menu_new_window"
         android:title="@string/new_window"
         android:icon="@drawable/ic_menu_add" />
