@@ -30,10 +30,10 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.system.Os;
 import android.text.TextUtils;
-import jackpal.androidterm.compat.ActionBarCompat;
-import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.MenuItemCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
@@ -107,7 +107,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -134,7 +133,7 @@ import static android.provider.DocumentsContract.*;
  * A terminal emulator activity.
  */
 
-public class Term extends Activity implements UpdateCallback, SharedPreferences.OnSharedPreferenceChangeListener, OnClickListener {
+public class Term extends AppCompatActivity implements UpdateCallback, SharedPreferences.OnSharedPreferenceChangeListener, OnClickListener {
     /**
      * The ViewFlipper which holds the collection of EmulatorView widgets.
      */
@@ -199,7 +198,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mTermService = binder.getService();
             if (mPendingPathBroadcasts <= 0) {
                 populateViewFlipper();
-                populateWindowList();
             }
         }
 
@@ -208,63 +206,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         }
     };
 
-    private ActionBarCompat mActionBar;
-    private int mActionBarMode = TermSettings.ACTION_BAR_MODE_NONE;
-
-    private WindowListAdapter mWinListAdapter;
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         mSettings.readPrefs(sharedPreferences);
     }
-
-    private class WindowListActionBarAdapter extends WindowListAdapter implements UpdateCallback {
-        // From android.R.style in API 13
-        private static final int TextAppearance_Holo_Widget_ActionBar_Title = 0x01030112;
-
-        public WindowListActionBarAdapter(SessionList sessions) {
-            super(sessions);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView label = new TextView(Term.this);
-            String title = getSessionTitle(position, getString(R.string.window_title, position + 1));
-            label.setText(title);
-            if (AndroidCompat.SDK >= 13) {
-                label.setTextAppearance(Term.this, android.R.style.TextAppearance_Holo_Widget_ActionBar_Title);
-            } else {
-                label.setTextAppearance(Term.this, android.R.style.TextAppearance_Medium);
-            }
-            return label;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return super.getView(position, convertView, parent);
-        }
-
-        public void onUpdate() {
-            notifyDataSetChanged();
-            mActionBar.setSelectedNavigationItem(mViewFlipper.getDisplayedChild());
-        }
-    }
-
-    private ActionBarCompat.OnNavigationListener mWinListItemSelected = new ActionBarCompat.OnNavigationListener() {
-        public boolean onNavigationItemSelected(int position, long id) {
-            int oldPosition = mViewFlipper.getDisplayedChild();
-            if (position != oldPosition) {
-                if (position >= mViewFlipper.getChildCount()) {
-                    mViewFlipper.addView(createEmulatorView(mTermSessions.get(position)));
-                }
-                mViewFlipper.setDisplayedChild(position);
-                if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
-                    mActionBar.hide();
-                }
-            }
-            return true;
-        }
-    };
 
     private boolean mHaveFullHwKeyboard = false;
 
@@ -389,14 +334,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
          * Make sure the back button always leaves the application.
          */
         private boolean backkeyInterceptor(int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
-                /* We need to intercept the key event before the view sees it,
-                   otherwise the view will handle it before we get it */
-                onKeyUp(keyCode, event);
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     };
 
@@ -431,7 +369,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
                     if (mPendingPathBroadcasts <= 0 && mTermService != null) {
                         populateViewFlipper();
-                        populateWindowList();
                     }
                 }
             };
@@ -454,44 +391,19 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         TSIntent = new Intent(this, TermService.class);
         startService(TSIntent);
 
-        if (AndroidCompat.SDK >= 11) {
-            int theme = mSettings.getColorTheme();
-            int actionBarMode = mSettings.actionBarMode();
-            mActionBarMode = actionBarMode;
-            switch (actionBarMode) {
-            case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
-                if (theme == 0) {
-                    setTheme(R.style.Theme_Holo);
-                } else {
-                    setTheme(R.style.Theme_Holo_Light);
-                }
-                break;
-            case TermSettings.ACTION_BAR_MODE_HIDES+1:
-            case TermSettings.ACTION_BAR_MODE_HIDES:
-                if (theme == 0) {
-                    setTheme(R.style.Theme_Holo_ActionBarOverlay);
-                } else {
-                    setTheme(R.style.Theme_Holo_Light_ActionBarOverlay);
-                }
-                break;
-            }
+        int theme = mSettings.getColorTheme();
+        if (theme == 0) {
+            setTheme(R.style.Theme_AppCompat_NoActionBar);
         } else {
-            mActionBarMode = TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE;
+            setTheme(R.style.Theme_AppCompat_Light_NoActionBar);
         }
 
         setContentView(R.layout.term_activity);
         mViewFlipper = (TermViewFlipper) findViewById(VIEW_FLIPPER);
         setFunctionKeyListener();
 
-        ActionBarCompat actionBar = ActivityCompat.getActionBar(this);
-        if (actionBar != null) {
-            mActionBar = actionBar;
-            actionBar.setNavigationMode(ActionBarCompat.NAVIGATION_MODE_LIST);
-            actionBar.setDisplayOptions(0, ActionBarCompat.DISPLAY_SHOW_TITLE);
-            if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
-                actionBar.hide();
-            }
-        }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
         setSoftInputMode(mHaveFullHwKeyboard);
@@ -1002,26 +914,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (BuildConfig.DEBUG) return;
     }
 
-    private void populateWindowList() {
-        if (mActionBar == null) {
-            // Not needed
-            return;
-        }
-        if (mTermSessions != null) {
-            int position = mViewFlipper.getDisplayedChild();
-            if (mWinListAdapter == null) {
-                mWinListAdapter = new WindowListActionBarAdapter(mTermSessions);
-
-                mActionBar.setListNavigationCallbacks(mWinListAdapter, mWinListItemSelected);
-            } else {
-                mWinListAdapter.setSessions(mTermSessions);
-            }
-            mViewFlipper.addCallback(mWinListAdapter);
-
-            mActionBar.setSelectedNavigationItem(position);
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -1161,7 +1053,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void updatePrefs() {
-        ActivityCompat.invalidateOptionsMenu(this);
+        invalidateOptionsMenu();
         mUseKeyboardShortcuts = mSettings.getUseKeyboardShortcutsFlag();
 
         DisplayMetrics metrics = new DisplayMetrics();
@@ -1191,18 +1083,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             WindowManager.LayoutParams params = win.getAttributes();
             final int FULLSCREEN = WindowManager.LayoutParams.FLAG_FULLSCREEN;
             int desiredFlag = mSettings.showStatusBar() ? 0 : FULLSCREEN;
-            if (desiredFlag != (params.flags & FULLSCREEN) || (AndroidCompat.SDK >= 11 && mActionBarMode != mSettings.actionBarMode())) {
+            if (desiredFlag != (params.flags & FULLSCREEN)) {
                 if (mAlreadyStarted) {
                     // Can't switch to/from fullscreen after
                     // starting the activity.
                     restart();
                 } else {
                     win.setFlags(desiredFlag, FULLSCREEN);
-                    if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
-                        if (mActionBar != null) {
-                            mActionBar.hide();
-                        }
-                    }
                 }
             }
         }
@@ -1339,11 +1226,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (mTermSessions != null) {
             mTermSessions.removeCallback(this);
 
-            if (mWinListAdapter != null) {
-                mTermSessions.removeCallback(mWinListAdapter);
-                mTermSessions.removeTitleChangedListener(mWinListAdapter);
-                mViewFlipper.removeCallback(mWinListAdapter);
-            }
+//            if (mWinListAdapter != null) {
+//                mTermSessions.removeCallback(mWinListAdapter);
+//                mTermSessions.removeTitleChangedListener(mWinListAdapter);
+//                mViewFlipper.removeCallback(mWinListAdapter);
+//            }
         }
 
         mViewFlipper.removeAllViews();
@@ -1395,10 +1282,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             v.onConfigurationChangedToEmulatorView(newConfig);
         }
 
-        if (mWinListAdapter != null) {
+//        if (mWinListAdapter != null) {
             // Force Android to redraw the label in the navigation dropdown
-            mWinListAdapter.notifyDataSetChanged();
-        }
+//            mWinListAdapter.notifyDataSetChanged();
+//        }
     }
 
     @Override
@@ -1409,6 +1296,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else {
             menu.removeItem(R.id.menu_plus);
         }
+        menu.removeItem(R.id.menu_plus);
 //        if (mSettings.getActionBarMinusKeyAction() != 999) {
 //            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_minus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 //        } else {
@@ -1419,6 +1307,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else {
             menu.removeItem(R.id.menu_x);
         }
+        menu.removeItem(R.id.menu_x);
 //        if (mSettings.getActionBarUserKeyAction() != 999) {
 //            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_user), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 //        } else {
@@ -1469,7 +1358,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 //                return doSendActionBarKey(view, key);
 //            }
         } else if (id == R.id.menu_window_list) {
-            startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
+//            startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_screen) {
             doScreenMenu();
         } else if (id == R.id.menu_reset) {
@@ -1504,10 +1393,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             Intent openHelp = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(getString(R.string.help_url)));
                 startActivity(openHelp);
-        }
-        // Hide the action bar if appropriate
-        if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES) {
-            mActionBar.hide();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -2166,10 +2051,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             if (onelineTextBoxEsc()) {
                 return true;
             }
-            if (mActionBarMode >= TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
-                mActionBar.hide();
-                return true;
-            }
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 // mStopServiceOnFinish = true;
@@ -2190,12 +2071,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 return false;
             }
         case KeyEvent.KEYCODE_MENU:
-            if (mActionBar != null && !mActionBar.isShowing()) {
-                mActionBar.show();
-                return true;
-            } else {
-                return super.onKeyUp(keyCode, event);
-            }
+            return super.onKeyUp(keyCode, event);
         case 0xffffffc0:
             if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
                 sendKeyStrings("\u001b", false);
@@ -2652,43 +2528,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void doToggleWifiLock() {
     }
 
-    private void doToggleActionBar() {
-        ActionBarCompat bar = mActionBar;
-        if (bar == null) {
-            return;
-        }
-        if (bar.isShowing()) {
-            bar.hide();
-        } else {
-            bar.show();
-        }
-    }
-
     private void doUIToggle(int x, int y, int width, int height) {
-        switch (mActionBarMode) {
-        case TermSettings.ACTION_BAR_MODE_NONE:
-            if (AndroidCompat.SDK >= 11 && (mHaveFullHwKeyboard || y < height / 2)) {
-                openOptionsMenu();
-                return;
-            } else {
-                doToggleSoftKeyboard();
-            }
-            break;
-        case TermSettings.ACTION_BAR_MODE_HIDES+1:
-        case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
-            if (!mHaveFullHwKeyboard) {
-                doToggleSoftKeyboard();
-            }
-            break;
-        case TermSettings.ACTION_BAR_MODE_HIDES:
-            if (mHaveFullHwKeyboard || y < height / 2) {
-                doToggleActionBar();
-                return;
-            } else {
-                doToggleSoftKeyboard();
-            }
-            break;
-        }
+        doToggleSoftKeyboard();
         EmulatorView view = getCurrentEmulatorView();
         if (view != null) getCurrentEmulatorView().requestFocus();
     }

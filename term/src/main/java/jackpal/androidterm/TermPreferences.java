@@ -24,8 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-import jackpal.androidterm.compat.ActionBarCompat;
-import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 
 import android.app.Activity;
@@ -105,14 +103,6 @@ public class TermPreferences extends PreferenceActivity {
         Preference fnKeyPref = findPreference("fnkey");
         if ((fnKeyPref != null) && (keyboardCategory != null)) {
             keyboardCategory.removePreference(fnKeyPref);
-        }
-
-        // Display up indicator on action bar home button
-        if (AndroidCompat.V11ToV20) {
-            ActionBarCompat bar = ActivityCompat.getActionBar(this);
-            if (bar != null) {
-                bar.setDisplayOptions(ActionBarCompat.DISPLAY_HOME_AS_UP, ActionBarCompat.DISPLAY_HOME_AS_UP);
-            }
         }
 
         if (FLAVOR_VIM) {
@@ -398,17 +388,5 @@ public class TermPreferences extends PreferenceActivity {
         fontFileList.setEntries(items);
         fontFileList.setEntryValues(values);
         return fontFileList;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case ActionBarCompat.ID_HOME:
-            // Action bar home button selected
-            finish();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
     }
 }
