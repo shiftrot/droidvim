@@ -130,6 +130,10 @@
    <string name="summary_orientation_preference">Choose the screen orientation behavior.</string>
    <string name="dialog_title_orientation_preference">Screen orientation</string>
 
+   <string name="title_theme_preference">Theme</string>
+   <string name="summary_theme_preference">Restart required after setting change.</string>
+   <string name="dialog_title_theme_preference">Theme</string>
+
    <string name="title_cursorstyle_preference">Cursor style</string>
    <string name="summary_cursorstyle_preference">Choose cursor style.</string>
    <string name="dialog_title_cursorstyle_preference">Cursor style</string>

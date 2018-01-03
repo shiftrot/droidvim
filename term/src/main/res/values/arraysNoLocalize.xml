@@ -36,6 +36,11 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="entryvalues_theme_preference">
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
     <string-array name="entryvalues_cursorblink_preference">
         <item>0</item>
         <item>1</item>

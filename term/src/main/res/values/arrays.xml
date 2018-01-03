@@ -34,6 +34,11 @@
         <item>Portrait</item>
     </string-array>
 
+    <string-array name="entries_theme_preference">
+        <item>Light theme</item>
+        <item>Dark theme</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Non-blinking cursor</item>
         <item>Blinking cursor</item>
