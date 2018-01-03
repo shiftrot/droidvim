@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.util.TermSettings;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,7 +43,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.view.MenuItem;
 
 import com.droidvim.XmlUtils;
 
@@ -59,6 +59,9 @@ public class TermPreferences extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        TermSettings settings = new TermSettings(getResources(), mPrefs);
+        if (settings.getColorTheme() == 0) setTheme(R.style.Theme_AppCompat);
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource

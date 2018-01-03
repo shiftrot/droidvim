@@ -162,7 +162,7 @@
    <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
 
    <string name="title_color_preference">色</string>
-   <string name="summary_color_preference">文字の色を選択</string>
+   <string name="summary_color_preference">DroidVimを再起動すると, テキストの背景色に応じてカラーテーマが変更されます.</string>
    <string name="dialog_title_color_preference">文字の色</string>
 
    <string name="title_composingtext_preference">IMEの色</string>

@@ -165,7 +165,7 @@
    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
 
    <string name="title_color_preference">Colors</string>
-   <string name="summary_color_preference">Choose text color.</string>
+   <string name="summary_color_preference">When you restart DroidVim, the color theme will be changed according to the text background color.</string>
    <string name="dialog_title_color_preference">Text color</string>
 
    <string name="title_composingtext_preference">Input method color</string>

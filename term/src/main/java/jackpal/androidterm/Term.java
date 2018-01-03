@@ -495,12 +495,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         int visibilty = View.VISIBLE;
         if (mIabHelperDisable || !FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
+        int color = mSettings.getColorTheme() == 0 ? R.drawable.sidebar_button_dark : R.drawable.sidebar_button;
         if (mIsPremium) {
             button.setText(getString(R.string.extra_button));
-            button.setBackgroundResource(R.drawable.sidebar_button);
+            button.setBackgroundResource(color);
         } else {
             button.setText(getString(R.string.extra_button));
-            if (mIabHelper != null) button.setBackgroundResource(R.drawable.sidebar_button);
+            if (mIabHelper != null) {
+                button.setBackgroundResource(color);
+            } else if (mSettings.getColorTheme() == 0) {
+                button.setBackgroundResource(R.drawable.extra_button_dark);
+            }
         }
     }
 
@@ -508,6 +513,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!BuildConfig.DEBUG) return;
         Button button = (Button)findViewById(R.id.drawer_debug_button);
         button.setVisibility(View.VISIBLE);
+
+        if (mSettings.getColorTheme() == 0) button.setBackgroundResource(R.drawable.extra_button_dark);
     }
 
     ArrayList<String> mFilePickerItems;
@@ -643,6 +650,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         });
+        if (mSettings.getColorTheme() == 0) {
+            findViewById(R.id.drawer_app_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
+            findViewById(R.id.drawer_dropbox_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
+            findViewById(R.id.drawer_googledrive_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
+            findViewById(R.id.drawer_onedrive_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
+
+            findViewById(R.id.drawer_storage_button).setBackgroundResource(R.drawable.sidebar_button2_dark);
+            findViewById(R.id.drawer_createfile_button).setBackgroundResource(R.drawable.sidebar_button2_dark);
+            findViewById(R.id.drawer_clear_cache_button).setBackgroundResource(R.drawable.sidebar_button2_dark);
+
+            findViewById(R.id.drawer_menu_button).setBackgroundResource(R.drawable.extra_button_dark);
+            findViewById(R.id.drawer_quit_button).setBackgroundResource(R.drawable.extra_button_dark);
+        }
     }
 
     private boolean isAppInstalled(String appPackage) {
