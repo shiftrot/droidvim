@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="summary_color_preference">端末の表示色を選択する.\nVimのテキスト色はcolorscheme(256色対応)でも設定可能です.</string>
+</resources>

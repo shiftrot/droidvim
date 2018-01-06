@@ -38,7 +38,7 @@
    <string name="toast_clipboard_error">テキストが含まれていません.</string>
 
    <string name="clipboard_warning_title">クリップボードについて</string>
-   <string name="clipboard_warning">Vimへの\"貼り付け\"には、Vimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)\n\nこの \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで、送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
+   <string name="clipboard_warning">Vimへの\"貼り付け\"には, \"Share\"インテントかVimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)\n\nこの \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
 
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="text_box">一行テキスト入力</string>
@@ -99,7 +99,7 @@
    <string name="dialog_title_statusbar_preference">ステータスバー</string>
 
    <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
-   <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンを表示する. (要再起動)</string>
+   <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンを表示する (要再起動).</string>
    <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンを非表示にします (要再起動).\n通知を非表示にできないのはAndroidに編集状態を破棄されないようにするためです. 通知はAndroidの設定を利用して非表示化可能ですが, あまり重要でないメッセージが表示されなくなります.</string>
 
    <string name="title_functionbar_preference">ファンクションバー</string>
@@ -128,7 +128,7 @@
    <string name="dialog_title_orientation_preference">画面の向き</string>
 
    <string name="title_theme_preference">テーマ</string>
-   <string name="summary_theme_preference">設定変更後に再起動が必要です.</string>
+   <string name="summary_theme_preference">アプリのテーマを選択する (要再起動).</string>
    <string name="dialog_title_theme_preference">テーマ</string>
 
    <string name="title_cursorstyle_preference">カーソルのスタイル</string>
@@ -162,12 +162,12 @@
    <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfの等幅フォントファイルを選択してください.</string>
 
    <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
-   <string name="summary_ambiwidth_preference">設定変更後に再起動が必要です.</string>
+   <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (要再起動)</string>
    <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
 
    <string name="title_color_preference">色</string>
-   <string name="summary_color_preference">DroidVimを再起動すると, テキストの背景色に応じてカラーテーマが変更されます.</string>
-   <string name="dialog_title_color_preference">文字の色</string>
+   <string name="summary_color_preference">端末の色を選択する</string>
+   <string name="dialog_title_color_preference">端末の色</string>
 
    <string name="title_composingtext_preference">IMEの色</string>
    <string name="summary_composingtext_preference">変換中の文字色を選択</string>

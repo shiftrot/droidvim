@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="application_term_app">DroidVim</string>
+    <string name="summary_color_preference">Choose terminal color.\nVim\'s text colors can also be changed using colorscheme (256 colors).</string>
 </resources>

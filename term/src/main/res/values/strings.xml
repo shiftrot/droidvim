@@ -39,7 +39,7 @@
    <string name="toast_clipboard_error">Text is not included.</string>
 
    <string name="clipboard_warning_title">About the clipboard</string>
-   <string name="clipboard_warning">Please use the Vim command for yank/paste to Vim.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)\n\nThis \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
+   <string name="clipboard_warning">Please use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)\n\nThis \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
 
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="text_box">One-line text box</string>
@@ -131,7 +131,7 @@
    <string name="dialog_title_orientation_preference">Screen orientation</string>
 
    <string name="title_theme_preference">Theme</string>
-   <string name="summary_theme_preference">Restart required after setting change.</string>
+   <string name="summary_theme_preference">Choose application theme (restart required).</string>
    <string name="dialog_title_theme_preference">Theme</string>
 
    <string name="title_cursorstyle_preference">Cursor style</string>
@@ -165,12 +165,12 @@
    <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
 
    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
-   <string name="summary_ambiwidth_preference">Restart required after setting change.</string>
+   <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts (restart required).</string>
    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
 
    <string name="title_color_preference">Colors</string>
-   <string name="summary_color_preference">When you restart DroidVim, the color theme will be changed according to the text background color.</string>
-   <string name="dialog_title_color_preference">Text color</string>
+   <string name="summary_color_preference">Choose terminal color.</string>
+   <string name="dialog_title_color_preference">Terminal color</string>
 
    <string name="title_composingtext_preference">Input method color</string>
    <string name="summary_composingtext_preference">Choose input method composing text color.</string>
