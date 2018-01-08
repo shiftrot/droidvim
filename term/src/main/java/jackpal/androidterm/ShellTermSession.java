@@ -75,7 +75,7 @@ public class ShellTermSession extends GenericTermSession {
         mWatcherThread.setName("Process watcher");
     }
 
-    static boolean mFirst = true;
+    static private boolean mFirst = true;
     static private String mEnvInitialCommand = "";
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
@@ -106,11 +106,10 @@ public class ShellTermSession extends GenericTermSession {
         env[4] = "APPFILES=" + TermService.getAPPFILES();
         env[5] = "APPEXTFILES=" + TermService.getAPPEXTFILES();
         env[6] = "TMPDIR=" + TermService.getTMPDIR();
-        env[7] = "COLORFGBG=" + (settings.getColorTheme() == 0 ? "'15;0'" : "'0;15'");
+        env[7] = "COLORFGBG=" + settings.getCOLORFGBG();
 
         String[] envCmd = env;
         if (mFirst) {
-            env[7] = "COLORFGBG=" + (settings.getColorTheme() == 0 ? "'15;0'" : "'0;15'");
             for (String str : env) {
                 mEnvInitialCommand += "export " + str + "\r";
             }

@@ -447,6 +447,11 @@ public class TermSettings {
         return mTheme;
     }
 
+    public String getCOLORFGBG() {
+        int bg = COLOR_SCHEMES[mColorId][1];
+        return ((bg == TermSettings.WHITE) || (bg == TermSettings.SOLARIZED_BG)) ? "'0;15'" : "'15;0'";
+    }
+
     public int getIMEColor() {
         return mIMEColor;
     }
