@@ -182,8 +182,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
     private int mPendingPathBroadcasts = 0;
     private BroadcastReceiver mPathReceiver;
-    // Available on API 12 and later
-    private static final int FLAG_INCLUDE_STOPPED_PACKAGES = 0x20;
 
     private String mExternalApp                 = "com.example.filemanager";
     private static final String APP_DROPBOX     = "com.dropbox.android";
@@ -375,7 +373,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
             Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
             if (AndroidCompat.SDK >= 12) {
-                broadcast.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
+                broadcast.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             }
             mPendingPathBroadcasts++;
             sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
