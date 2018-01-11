@@ -85,6 +85,8 @@ class PaintRenderer extends BaseTextRenderer {
         if (blink && backColor < 8) {
             backColor += 8;
         }
+        if (backColor >= TextStyle.ciColorLength) backColor = TextStyle.ciBackground;
+        if (foreColor >= TextStyle.ciColorLength) foreColor = TextStyle.ciForeground;
         mTextPaint.setColor(mPalette[backColor]);
         if ((effect & TextStyle.fxIme) != 0) {
             mTextPaint.setColor(mImePaint.bgColor);
