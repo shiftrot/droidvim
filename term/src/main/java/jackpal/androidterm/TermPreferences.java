@@ -56,12 +56,14 @@ public class TermPreferences extends PreferenceActivity {
     private static final String CATEGORY_TEXT_KEY = "text";
 
     private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    private boolean mFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         TermSettings settings = new TermSettings(getResources(), mPrefs);
-        if (settings.getColorTheme() == 0) setTheme(R.style.Theme_AppCompat);
+        if (mFirst && settings.getColorTheme() == 0) setTheme(R.style.Theme_AppCompat);
+        mFirst = false;
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
