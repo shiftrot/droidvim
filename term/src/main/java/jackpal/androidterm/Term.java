@@ -233,12 +233,43 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return true;
         }
 
+        private float mDeltaColumnsReminder;
+        private final int mDeltaColumnsEdge = 3;
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view == null) return false;
+            if (Math.abs(distanceX) < Math.abs(distanceY)) return false;
+            if ((int) e1.getY() < view.getVisibleHeight() / mDeltaColumnsEdge) return false;
+
+            distanceX += mDeltaColumnsReminder;
+            int mCharacterWidth = view.getCharacterWidth();
+            int deltaColumns = (int) (distanceX / mCharacterWidth);
+            mDeltaColumnsReminder = distanceX - deltaColumns * mCharacterWidth;
+
+            for (; deltaColumns > 0; deltaColumns--) {
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
+            }
+            for (; deltaColumns < 0; deltaColumns++) {
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            mDeltaColumnsReminder = 0.0f;
+            return false;
+        }
+
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
 
+            mDeltaColumnsReminder = 0.0f;
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
+                if ((int) e1.getY() >= view.getVisibleHeight() / mDeltaColumnsEdge) return false;
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
                     // Left to right swipe -- previous window
@@ -249,6 +280,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 return true;
             } else {
+                if (Math.abs(velocityX) > Math.abs(velocityY)) return true;
                 return false;
             }
         }
@@ -1536,6 +1568,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             dispatchKeyEvent(event);
             event = new KeyEvent(KeyEvent.ACTION_UP, key);
             dispatchKeyEvent(event);
+
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);

@@ -1316,11 +1316,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         showContextMenu();
     }
 
+    public int getCharacterHeight() {
+        return mCharacterHeight;
+    }
+
+    public int getCharacterWidth() {
+        return mCharacterHeight;
+    }
+
     public boolean onScroll(MotionEvent e1, MotionEvent e2,
             float distanceX, float distanceY) {
         if (mExtGestureListener != null && mExtGestureListener.onScroll(e1, e2, distanceX, distanceY)) {
             return true;
         }
+        if (Math.abs(distanceX) > Math.abs(distanceY)) return true;
 
         distanceY += mScrollRemainder;
         int deltaRows = (int) (distanceY / mCharacterHeight);
@@ -1364,6 +1373,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
         }
+        if (Math.abs(velocityX) > Math.abs(velocityY)) return true;
 
         mScrollRemainder = 0.0f;
         if (isMouseTrackingActive()) {
