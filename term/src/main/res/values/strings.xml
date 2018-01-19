@@ -39,7 +39,7 @@
    <string name="toast_clipboard_error">Text is not included.</string>
 
    <string name="clipboard_warning_title">About the clipboard</string>
-   <string name="clipboard_warning">Please use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)\n\nThis \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
+   <string name="clipboard_warning">This \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.\n\nPlease use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)</string>
 
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="text_box">One-line text box</string>
@@ -52,9 +52,11 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nToggle keyboard - Use back button.\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button.</string>
-   <string name="vimrc_warning_title">About .vimrc</string>
-   <string name="vimrc_warning">If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.\n\nIf you create $HOME/.vim or a symbolic link, it is treated as a runtime path.</string>
+   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nToggle keyboard - Use back button.\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button. \n- One-line text box can be turned on/off by double tap near the bottom of the screen.\|If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.\n\nIf you create $HOME/.vim or a symbolic link, it is treated as a runtime path.</string>
+
+   <string name="external_storage_warning_title">Warnnig!</string>
+   <string name="external_storage_warning">It is necessary to install DroidVim in the internal storage to make \"EXTRA\" contents (such as Git) work properly.\nTap \"OK\" button to see how to move to internal storage (see \"Troubleshooting\").</string>
+   <string name="external_storage_warning_url">https://droidterm-e8a40.firebaseapp.com/droidvim/index.html#storage-error</string>
 
    <string name="edit_text_view_warning_title">One-line text box</string>
    <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - Delete all/Quit</string>

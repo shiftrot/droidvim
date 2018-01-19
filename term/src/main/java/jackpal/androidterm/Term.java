@@ -70,6 +70,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -999,21 +1000,63 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             });
         } else {
-            doWarningVimrc();
+            showVimTips();
             permissionCheckExternalStorage();
         }
         mFirst = false;
         return cmd;
     }
 
-    private void doWarningVimrc() {
-        if (!mVimFlavor) return;
-        final String home = TermService.getHOME();
-        if (new File(home+"/.vimrc").exists()) return;
-        doWarningDialog(this.getString(R.string.vimrc_warning_title), this.getString(R.string.vimrc_warning), "do_warning_vimrc");
+    private boolean doWarningInstallExternalStorage(final boolean useCheckBox) {
+        if (!TermService.getAPPBASE().matches("/data/.*")) {
+            String key = "do_warning_install_internal_storage";
+//            key = key + String.valueOf(BuildConfig.VERSION_CODE);
+            boolean warning = getDevBoolean(Term.this, key, true);
+            if (!useCheckBox) warning = true;
+            if (warning) {
+                final Activity activity = this;
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setTitle(activity.getString(R.string.external_storage_warning_title));
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                bld.setMessage(activity.getString(R.string.external_storage_warning));
+                LayoutInflater inflater = LayoutInflater.from(this);
+                View view = inflater.inflate(R.layout.alert_checkbox, null);
+                if (useCheckBox) bld.setView(view);
+                final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
+                final String warningKey = key;
+                dontShowAgain.setChecked(false);
+                bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        if (useCheckBox && dontShowAgain.isChecked()) {
+                            setDevBoolean(Term.this, warningKey, false);
+                        }
+                        Uri uri = Uri.parse(activity.getString(R.string.external_storage_warning_url));
+                        Intent i = new Intent(Intent.ACTION_VIEW,uri);
+                        activity.startActivity(i);
+                    }
+                });
+                bld.create().show();
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void doWarningDialog(String title, String message, String key) {
+    private static Random mRandom = new Random();
+    private void showVimTips() {
+        if (!mVimFlavor) return;
+        if (true) return;
+
+        String title = this.getString(R.string.tips_vim_title);
+        String key = "do_warning_vim_tips";
+        String[] list = this.getString(R.string.tips_vim_list).split("\\|");
+        int index = mRandom.nextInt(list.length-1) + 1;
+        String message = list[index];
+        doWarningDialog(title, message, key, false);
+    }
+
+    private void doWarningDialog(String title, String message, String key, boolean dontShowAgain) {
         boolean warning = getDevBoolean(Term.this, key, true);
         if (!warning) {
             return;
@@ -1025,12 +1068,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         LayoutInflater flater = LayoutInflater.from(this);
         View view = flater.inflate(R.layout.alert_checkbox, null);
         builder.setView(view);
-        final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
+        final CheckBox cb = (CheckBox)view.findViewById(R.id.dont_show_again);
         final String warningKey = key;
-        dontShowAgain.setChecked(true);
+        cb.setChecked(dontShowAgain);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int m) {
-                if (dontShowAgain.isChecked()) {
+                if (cb.isChecked()) {
                     setDevBoolean(Term.this, warningKey, false);
                 }
             }
@@ -1275,7 +1318,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doWarningHwKeyboard() {
         if (!mVimFlavor) return;
-        doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_hw_keyboard");
+        doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_hw_keyboard", true);
     }
 
     private void setSoftInputMode(boolean haveFullHwKeyboard) {
@@ -2671,7 +2714,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doWarningEditTextView() {
         if (!mVimFlavor) return;
-        doWarningDialog(this.getString(R.string.edit_text_view_warning_title), this.getString(R.string.edit_text_view_warning), "do_warning_edit_text_view");
+        doWarningDialog(this.getString(R.string.edit_text_view_warning_title), this.getString(R.string.edit_text_view_warning), "do_warning_edit_text_view", true);
     }
 
     final float SCALE_VIEW = (float) 1.28;
