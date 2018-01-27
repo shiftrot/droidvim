@@ -100,6 +100,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
         }
         String homePath = prefs.getString("home_path", defValue);
+        if (!new File(homePath).canWrite()) homePath = defValue;
         editor.putString("home_path", homePath);
         mHOME = homePath;
 
