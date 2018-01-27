@@ -15,6 +15,15 @@
                 <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
             </intent-filter>
         </provider>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.droidvim.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"/>
+        </provider>
     </application>
     <uses-permission android:name="android.permission.BATTERY_STATS" tools:ignore="ProtectedPermissions" tools:node="remove" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" tools:ignore="ProtectedPermissions" tools:node="remove" />

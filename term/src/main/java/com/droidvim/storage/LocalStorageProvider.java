@@ -33,7 +33,7 @@ import android.annotation.TargetApi;
 
 public class LocalStorageProvider extends DocumentsProvider {
     private static final String TAG = "LocalStorageProvider";
-    private static final String BASE_DEFAULT_DIR = "/data/data/com.droidvim/files/home";
+    private static String BASE_DEFAULT_DIR = "/data/data/com.droidvim/files/home";
 
     private static final String[] DEFAULT_ROOT_PROJECTION = new String[]{
         Root.COLUMN_ROOT_ID,
@@ -60,6 +60,7 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public boolean onCreate() {
+        BASE_DEFAULT_DIR = getContext().getFilesDir().getPath();
         return true;
     }
 

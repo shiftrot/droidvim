@@ -102,7 +102,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         return false;
     }
 
-    private static void delete(File f) {
+    public static void delete(File f) {
         if(!f.exists()) {
             return;
         }
@@ -193,7 +193,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         return hashValue;
     }
 
-    private static String digest(InputStream is)
+    public static String digest(InputStream is)
             throws NoSuchAlgorithmException, IOException, DigestException {
         MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
 

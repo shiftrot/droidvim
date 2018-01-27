@@ -409,5 +409,8 @@
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
   <string name="summary_cloud_file_picker_on_preference">Application</string>
   <string name="summary_cloud_file_picker_off_preference">Content picker</string>
+  <string name="title_alt_local_html_viewer">Alternate local html viewer</string>
+  <string name="summary_alt_local_html_viewer_on_preference">Firefox</string>
+  <string name="summary_alt_local_html_viewer_off_preference">Android html viewer</string>
 
 </resources>

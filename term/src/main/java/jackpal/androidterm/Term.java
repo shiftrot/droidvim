@@ -28,6 +28,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,8 @@ import jackpal.androidterm.util.Purchase;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -58,12 +61,16 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -188,6 +195,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_DROPBOX     = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE    = "com.microsoft.skydrive";
+    private static final String APP_FIREFOX     = "org.mozilla.firefox";
 
     private TermService mTermService;
     private ServiceConnection mTSConnection = new ServiceConnection() {
@@ -443,6 +451,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
         if (mOnelineTextBox == -1) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         initOnelineTextBox(mOnelineTextBox);
+        INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString()+"/intent";
 
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
@@ -978,6 +987,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mFunctionBar = -1;
             mOrientation = -1;
         }
+        File cacheDir = new File(INTENT_CACHE_DIR);
+        SyncFileObserver.delete(cacheDir);
         mTermService = null;
         mTSConnection = null;
         if (mIabHelper != null) {
@@ -2262,8 +2273,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
+    private String INTENT_CACHE_DIR = "/data/data/"+BuildConfig.APPLICATION_ID+"/cache/intent";
     private void doAndroidIntent(String filename) {
         if (filename == null) return;
+        TermSession session = getCurrentTermSession();
+        if (session == null) return;
         String str[] = new String[3];
         try {
             File file = new File(filename);
@@ -2281,79 +2295,152 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             e.printStackTrace();
             return;
         }
+        if (str[0] == null || str[1] == null) return;
         String action = str[0];
-        if (action == null || str[1] == null) return;
-        String mime = null;
+        if (action.equalsIgnoreCase("activity")) {
+            try {
+                startActivity(new Intent(this, Class.forName(str[1])));
+            } catch (Exception e) {
+                e.printStackTrace();
+                alert("Unknown activity:\n"+str[1]);
+            }
+            return;
+        }
+        if (str[1].matches("^%(w3m|open)%.*")) {
+            str[1] = str[1].replaceFirst("%(w3m|open)%", "");
+        }
+        if (str[1].matches("'.*'")) {
+            str[1] = str[1].replaceAll("^'|'$", "");
+        }
+        String MIME_HTML = MimeTypeMap.getSingleton().getMimeTypeFromExtension("html");
+        String mime;
+        String ext = "";
+        int ch = str[1].lastIndexOf('.');
+        ext = (ch >= 0) ? str[1].substring(ch + 1) : "";
+        ext = ext.toLowerCase();
+        ext = ext.replaceAll("(html?)#.*", "$1");
+        String path = str[1].replaceFirst("file://", "");
+        path = path.replaceFirst("(.*\\.html?)#.*", "$1");
         if (str[2] != null) {
             mime = str[2];
+        } else if (str[1].matches("^(https?|ftp)://.*")) {
+            mime = MIME_HTML;
+        } else if (str[1].matches("^www\\..*")) {
+            mime = MIME_HTML;
         } else {
-            int ch = str[1].lastIndexOf('.');
-            String ext = (ch >= 0) ?str[1].substring(ch + 1) : "";
-            if (ext != null) mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase());
+            mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
+            if (mime == null) mime = "";
         }
-        if ((str[1] != null) && (str[1].matches("^%(w3m|open)%.*"))) {
-            String url = str[1].replaceFirst("%(w3m|open)%", "");
-            if ((mime == null || mime.equals("")) && !url.matches("^http://.*")) {
-                url = "http://" + url;
-            } else if (url.matches("^file://.*")) {
-                url = url.replaceFirst("file://", "");
-            }
-            str[1] = url;
-        }
-        Uri uri = null;
-
-        TermSession session = getCurrentTermSession();
-        if (session != null) {
-            if (action.equalsIgnoreCase("activity")) {
-                try {
-                    startActivity(new Intent(this, Class.forName(str[1])));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (action.matches("^.*(VIEW|EDIT).*")) {
-                Intent intent = new Intent(action);
-                if (str[1].matches("^http://.*")) {
-                    uri = Uri.parse(str[1]);
+        File file = new File(path);
+        Uri uri;
+        if (action.matches("^.*(VIEW|EDIT).*")) {
+            Intent intent = new Intent(action);
+            if (file.canRead() || str[1].matches("^file://.*")) {
+                if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
+                    uri = Uri.fromFile(file);
                 } else {
-                    File file = new File(str[1]);
-                    if (file.exists()) {
-                        String scheme = "";
-                        scheme = "file://";
-                        uri = Uri.parse(scheme + file.getAbsolutePath());
-                    } else {
-                        alert(Term.this.getString(R.string.storage_read_error));
-                        return;
+                    if (mime.equals(MIME_HTML)) {
+                        try {
+                            intent = new Intent(this, WebViewActivity.class);
+                            intent.putExtra("url", file.toString());
+                            if (isAppInstalled(APP_FIREFOX) && mSettings.getAltLocalHtmlViewer() == 1) {
+                                try {
+                                    Intent altIntent = new Intent(action);
+                                    altIntent.setComponent(new ComponentName(APP_FIREFOX, "org.mozilla.firefox.App"));
+                                    uri = Uri.parse(path);
+                                    altIntent.setDataAndType(uri, mime);
+                                    startActivity(altIntent);
+                                    return;
+                                } catch (Exception altWebViewErr) {
+                                    Log.d(TAG, altWebViewErr.getMessage());
+                                }
+                            }
+                            startActivity(intent);
+                            return;
+                        } catch (Exception webViewErr) {
+                            Log.d(TAG, webViewErr.getMessage());
+                            return;
+                        }
+                    }
+                    try {
+                        uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".fileprovider", file);
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    } catch (Exception e) {
+                        String hash = getHashString(file.toString());
+                        if (!ext.equals("")) hash += "."+ext;
+
+                        File cacheDir = new File(INTENT_CACHE_DIR);
+                        File cache = new File(cacheDir.toString()+"/"+hash);
+                        if (cache.isDirectory()) {
+                            SyncFileObserver.delete(cache);
+                        }
+                        if (!cacheDir.isDirectory()) {
+                            cacheDir.mkdirs();
+                        }
+                        if (!copyFile(file, cache)) return;
+                        try {
+                            uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".fileprovider", cache);
+                            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        } catch (Exception makeCacheErr) {
+                            alert(this.getString(R.string.prefs_read_error_title)+"\\n"+path);
+                            return;
+                        }
                     }
                 }
-                if (mime != null && !mime.equals("")){
-                    intent.setDataAndType(uri, mime);
-                    alert(Term.this.getString(R.string.storage_read_error));
-                    return;
-                } else {
-                    intent.setData(uri);
-                }
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } else {
+                uri = Uri.parse(path);
+                if (mime.equals("")) mime = MIME_HTML;
             }
+            if (mime.equals("")) mime = "text/*";
+            intent.setDataAndType(uri, mime);
+            try {
+                intent.setAction(action);
+                startActivity(intent);
+            } catch (Exception e) {
+                alert(Term.this.getString(R.string.storage_read_error));
+            }
+        } else {
+            alert("Unknown action:\n"+action);
         }
     }
 
-    private void start(Intent intent) {
-        String action = intent.getAction();
-        String data = "";
-        String mime = intent.getType();
-        Uri uri = intent.getData();
-        if (uri != null) {
-            data = uri.toString();
-            String scheme = "text/html";
-            String cmd = "am start intent --user 0 -a "+action+" -t "+scheme+" -d "+data;
-            TermVimInstaller.shell(cmd);
-            return;
+    private boolean copyFile(File src, File dst) {
+        try {
+            InputStream is = new FileInputStream(src);
+            BufferedInputStream reader = new BufferedInputStream(is);
+
+            OutputStream os = new FileOutputStream(dst);
+            BufferedOutputStream writer = new BufferedOutputStream(os);
+            byte buf[] = new byte[4096];
+            int len;
+            while ((len = reader.read(buf)) != -1) {
+                writer.write(buf, 0, len);
+            }
+            writer.flush();
+            writer.close();
+            reader.close();
+        } catch(Exception e) {
+            return false;
         }
-        startActivity(intent);
+        return true;
+    }
+
+    private final static String HASH_ALGORITHM = "SHA-1";
+    private String getHashString(String s) {
+        try {
+            MessageDigest digest = java.security.MessageDigest.getInstance(HASH_ALGORITHM);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++) {
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private void copyFileToClipboard(String filename) {
