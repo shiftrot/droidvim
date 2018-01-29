@@ -986,6 +986,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             stopService(TSIntent);
             mFunctionBar = -1;
             mOrientation = -1;
+            final int MAX_SYNC_FILES = 100;
+            if (FLAVOR_VIM && mSyncFileObserver != null) mSyncFileObserver.clearCache(MAX_SYNC_FILES);
         }
         File cacheDir = new File(INTENT_CACHE_DIR);
         SyncFileObserver.delete(cacheDir);

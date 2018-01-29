@@ -13,7 +13,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,6 +91,12 @@ class SyncFileObserver extends RecursiveFileObserver {
         return true;
     }
 
+    boolean clearCache(int max) {
+        if (mCacheDir == null || mHashMap == null) return false;
+        if ((mHashMap.size() / 2) <= max) return false;
+        return clearCache();
+    }
+
     boolean clearCache() {
         mActive = true;
         if (mCacheDir == null) return false;
@@ -99,7 +104,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         mHashSet.clear();
         if (mCacheDir.isDirectory()) delete(mCacheDir);
         stopWatching();
-        return false;
+        return true;
     }
 
     public static void delete(File f) {
