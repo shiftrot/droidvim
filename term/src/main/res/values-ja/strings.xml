@@ -332,7 +332,7 @@
   <string name="create_or_delete">新規/削除</string>
   <string name="create_file">ファイル作成</string>
   <string name="delete_file">ファイル削除</string>
-  <string name="manage_storage">ファイル操作</string>
+  <string name="storage_manager">管理</string>
   <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
   <string name="storage_read_error">読み込めないか編集できないファイルです.\nこのファイルを他のアプリケーションで編集できる場合は, デベロッパーに連絡してください.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
