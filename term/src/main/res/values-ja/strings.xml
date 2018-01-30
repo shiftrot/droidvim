@@ -23,6 +23,7 @@
    <string name="preferences">設定</string>
    <string name="new_window">新規ウインドウ</string>
    <string name="close_window">ウインドウを閉じる</string>
+   <string name="menu_window">ウインドウ</string>
    <string name="window_list">ウインドウ一覧</string>
    <string name="prev_window">前のウインドウ</string>
    <string name="next_window">次のウインドウ</string>

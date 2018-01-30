@@ -1221,8 +1221,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doScreenMenu() {
-        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.reset)};
-        final Toast toast = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
+        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.copy_screen), this.getString(R.string.reset)};
+        final Toast toastReset = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
+        final Toast toastCopy = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.screen))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -1230,11 +1231,33 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             setCurrentOrientation();
+                        } else if (which == 1) {
+                            doCopyAll();
+                            toastCopy.setGravity(Gravity.CENTER, 0, 0);
+                            toastCopy.show();
                         } else {
                             doResetTerminal();
                             updatePrefs();
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
+                            toastReset.setGravity(Gravity.CENTER, 0, 0);
+                            toastReset.show();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void doWindowMenu() {
+        final String[] items = {this.getString(R.string.new_window), this.getString(R.string.close_window)};
+        new AlertDialog.Builder(this)
+                .setTitle(this.getString(R.string.menu_window))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            doCreateNewWindow();
+                        } else if (which == 1) {
+                            confirmCloseWindow();
                         }
                     }
                 })
@@ -1422,7 +1445,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!FLAVOR_VIM) {
             menu.removeItem(R.id.menu_edit_vimrc);
         }
+        menu.removeItem(R.id.menu_copy_screen);
         menu.removeItem(R.id.menu_reset);
+        menu.removeItem(R.id.menu_new_window);
+        menu.removeItem(R.id.menu_close_window);
         return true;
     }
 
@@ -1467,6 +1493,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 //            startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_screen) {
             doScreenMenu();
+        } else if (id == R.id.menu_window) {
+            doWindowMenu();
         } else if (id == R.id.menu_reset) {
             doResetTerminal();
             updatePrefs();
