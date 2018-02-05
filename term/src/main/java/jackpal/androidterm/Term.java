@@ -74,6 +74,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -195,7 +196,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_DROPBOX     = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE    = "com.microsoft.skydrive";
-    private static final String APP_FIREFOX     = "org.mozilla.firefox";
+    private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
+        {put("org.mozilla.firefox", "org.mozilla.firefox.App");}
+        {put("org.mozilla.firefox_beta", "org.mozilla.firefox_beta.App");}
+        {put("com.amazon.cloud9", "com.amazon.cloud9.browsing.BrowserActivity");}
+    };
 
     private TermService mTermService;
     private ServiceConnection mTSConnection = new ServiceConnection() {
@@ -2363,31 +2368,45 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Uri uri;
         if (action.matches("^.*(VIEW|EDIT).*")) {
             Intent intent = new Intent(action);
+            boolean privateStorage = path.matches("/data/.*");
+            boolean extFilesStorage = path.matches(TermService.getAPPEXTFILES()+"/.*");
             if (file.canRead() || str[1].matches("^file://.*")) {
-                if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
+                if (!mime.equals(MIME_HTML) && !(privateStorage || extFilesStorage) && AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
                     uri = Uri.fromFile(file);
                 } else {
                     if (mime.equals(MIME_HTML)) {
                         try {
-                            intent = new Intent(this, WebViewActivity.class);
-                            intent.putExtra("url", file.toString());
-                            if (isAppInstalled(APP_FIREFOX) && mSettings.getAltLocalHtmlViewer() == 1) {
-                                try {
-                                    Intent altIntent = new Intent(action);
-                                    altIntent.setComponent(new ComponentName(APP_FIREFOX, "org.mozilla.firefox.App"));
-                                    uri = Uri.parse(path);
-                                    altIntent.setDataAndType(uri, mime);
-                                    startActivity(altIntent);
-                                    return;
-                                } catch (Exception altWebViewErr) {
-                                    Log.d(TAG, altWebViewErr.getMessage());
+                            if (!privateStorage && mSettings.getAltLocalHtmlViewer() == 1) {
+                                String pkg = null;
+                                String cls = null;
+                                for (String key : mAltBrowser.keySet()) {
+                                    if (isAppInstalled(key)) {
+                                        pkg = key;
+                                        cls = mAltBrowser.get(pkg);
+                                        break;
+                                    }
+                                }
+                                if (pkg != null) {
+                                    try {
+                                        Intent altIntent = new Intent(action);
+                                        altIntent.setComponent(new ComponentName(pkg, cls));
+                                        uri = Uri.parse(path);
+                                        altIntent.setDataAndType(uri, mime);
+                                        startActivity(altIntent);
+                                        return;
+                                    } catch (Exception altWebViewErr) {
+                                        Log.d(TAG, altWebViewErr.getMessage());
+                                    }
                                 }
                             }
+                            intent = new Intent(this, WebViewActivity.class);
+                            intent.putExtra("url", file.toString());
+                            if (!mHaveFullHwKeyboard) doHideSoftKeyboard();
                             startActivity(intent);
+                            if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
                             return;
                         } catch (Exception webViewErr) {
                             Log.d(TAG, webViewErr.getMessage());
-                            return;
                         }
                     }
                     try {

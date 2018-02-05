@@ -3,6 +3,7 @@ package jackpal.androidterm;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 public class WebViewActivity extends Activity {
+    private boolean mBack = false;
     private WebView mWebView;
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
     @Override
@@ -25,10 +27,33 @@ public class WebViewActivity extends Activity {
         setContentView(R.layout.webview_activity);
         mWebView = findViewById(R.id.WebView);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new WebViewClient());
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.getSettings().setBlockNetworkImage(false);
+        mWebView.getSettings().setBlockNetworkLoads(false);
+        mWebView.getSettings().setAllowFileAccess(true);
+//        mWebView.getSettings().setCacheMode(LOAD_NO_CACHE);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (mBack && url.startsWith("file:")) {
+                    mWebView.reload();
+                    mBack = false;
+                }
+            }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
+                    return false;
+                }
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+            }
+        });
         setButtonListener();
 
         Intent intent = getIntent();
@@ -55,6 +80,7 @@ public class WebViewActivity extends Activity {
             switch (v.getId()) {
                 case R.id.webview_back:
                     if (mWebView.canGoBack()){
+                        mBack = true;
                         mWebView.goBack();
                     } else {
                         mWebView.stopLoading();
@@ -86,6 +112,7 @@ public class WebViewActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             if (mWebView.canGoBack()){
+                mBack = true;
                 mWebView.goBack();
                 return true;
             }
