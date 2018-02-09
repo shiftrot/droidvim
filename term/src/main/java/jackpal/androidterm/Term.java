@@ -964,9 +964,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 onResumeSelectWindow = -1;
             }
             mViewFlipper.onResume();
-            if (!mHaveFullHwKeyboard) {
-                doShowSoftKeyboard();
-            }
+            if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
         }
     }
 
@@ -1325,7 +1323,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void run() {
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(token, 0);
+                if (imm != null) imm.hideSoftInputFromWindow(token, 0);
             }
         }.start();
     }
@@ -1693,7 +1691,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (view == null) {
             return;
         }
-        if (mTermSessions.size() == 1) {
+        if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
             doHideSoftKeyboard();
         }
         TermSession session = mTermSessions.remove(mViewFlipper.getDisplayedChild());
@@ -2166,7 +2164,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             // fall into next
         case 0xffffffff:
-            if (mTermSessions.size() == 1) {
+            if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
                 doHideSoftKeyboard();
             }
             doCloseWindow();
@@ -2722,21 +2720,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doToggleSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)
             getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-
+        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
     private void doShowSoftKeyboard() {
         if (getCurrentEmulatorView() == null) return;
         Activity activity = this;
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
+        if (imm != null) imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
     }
 
     private void doHideSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)
-            getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (imm != null && view != null) imm.hideSoftInputFromWindow(view.getWindowToken(),0);
     }
 
     private void doToggleWakeLock() {
@@ -3174,9 +3172,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             break;
         case R.id.button_i:
             sendKeyStrings("i", false);
-            if (!mHaveFullHwKeyboard) {
-                doShowSoftKeyboard();
-            }
+            if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
             break;
         case R.id.button_colon:
             sendKeyStrings(":", false);
