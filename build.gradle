@@ -1,13 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-task wrapper (type:Wrapper) {
-    gradleVersion = '3.1.0'
-    distributionUrl = 'https://services.gradle.org/distributions/gradle-3.1-all.zip'
-}
-
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
         google()
     }
     dependencies {
