@@ -1236,7 +1236,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             toastCopy.setGravity(Gravity.CENTER, 0, 0);
                             toastCopy.show();
                         } else {
-                            doResetTerminal();
+                            doResetTerminal(true);
                             updatePrefs();
                             toastReset.setGravity(Gravity.CENTER, 0, 0);
                             toastReset.show();
@@ -1496,7 +1496,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_window) {
             doWindowMenu();
         } else if (id == R.id.menu_reset) {
-            doResetTerminal();
+            doResetTerminal(true);
             updatePrefs();
             Toast toast = Toast.makeText(this,R.string.reset_toast_notification,Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
@@ -2575,11 +2575,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     boolean mDoResetTerminal = false;
     private void doResetTerminal() {
+        doResetTerminal(false);
+    }
+
+    private void doResetTerminal(boolean keyboard) {
+        if (keyboard && !mHaveFullHwKeyboard) doHideSoftKeyboard();
         TermSession session = getCurrentTermSession();
         if (session != null) {
             session.reset();
             sendKeyStrings("\u001b\u000c", false);
         }
+        if (keyboard && !mHaveFullHwKeyboard) doShowSoftKeyboard();
         mDoResetTerminal = false;
     }
 
