@@ -21,9 +21,11 @@
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
 
     <application android:icon="@drawable/ic_launcher"
-                android:label="@string/application_terminal"
-                android:hardwareAccelerated="true"
-                android:theme="@style/ThemeLightDefault">
+                 android:label="@string/application_terminal"
+                 android:hardwareAccelerated="true"
+                 android:theme="@style/ThemeLightDefault"
+                 android:allowBackup="true"
+                 android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name="Term"
                 android:launchMode="singleTask"
                 android:immersive="false"
