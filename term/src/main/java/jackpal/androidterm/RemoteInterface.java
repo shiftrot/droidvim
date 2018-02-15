@@ -173,8 +173,13 @@ public class RemoteInterface extends Activity {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     command = "\u001b"+String.format(intentCommand, path);
                 } else if (getContentResolver() != null) {
-                    Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
-                    path = Term.handleOpenDocument(uri, cursor);
+                    try {
+                        Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+                        path = Term.handleOpenDocument(uri, cursor);
+                    } catch (Exception e) {
+                        alert(e.toString() + "\n" + this.getString(R.string.storage_read_error));
+                        finish();
+                    }
                     if (path == null) {
                         alert(this.getString(R.string.storage_read_error));
                         finish();
