@@ -27,6 +27,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
@@ -810,8 +812,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
-    public static final int REQUEST_STORAGE = 10000;
-
+    public static final int REQUEST_STORAGE        = 10000;
+    public static final int REQUEST_STORAGE_DELETE = 10001;
+    public static final int REQUEST_STORAGE_CREATE = 10002;
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
         if (AndroidCompat.SDK < 23) return;
@@ -822,7 +825,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     @SuppressLint("NewApi")
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
         case REQUEST_STORAGE:
             for (int i = 0; i < permissions.length ; i++) {
@@ -830,15 +833,41 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         // do something
                     } else {
-                        // Toast.makeText(this, "permission does not granted", Toast.LENGTH_SHORT).show();
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
+                        }
                     }
+                    break;
                 }
             }
             break;
         case REQUEST_FILE_PICKER:
+        case REQUEST_STORAGE_DELETE:
+        case REQUEST_STORAGE_CREATE:
             for (int i = 0; i < permissions.length ; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    intentFilePicker();
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            Toast toast = Toast.makeText(this, this.getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                        } else {
+                            doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
+                        }
+                    }
+                    switch (requestCode) {
+                    case REQUEST_FILE_PICKER:
+                        intentFilePicker();
+                        break;
+                    case REQUEST_STORAGE_DELETE:
+                        doFileDelete();
+                        break;
+                    case REQUEST_STORAGE_CREATE:
+                        doFileCreate();
+                        break;
+                    default:
+                        break;
+                    }
                 }
             }
             break;
@@ -1716,6 +1745,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void filePicker() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FILE_PICKER);
@@ -1724,6 +1754,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void intentFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -1757,8 +1788,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }).show();
 }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileDelete() {
-        permissionCheckExternalStorage();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_DELETE);
+        } else {
+            doFileDelete();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void doFileDelete() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
@@ -1793,8 +1833,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         b.show();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileCreate() {
-        permissionCheckExternalStorage();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_CREATE);
+        } else {
+            doFileCreate();
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void doFileCreate() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");

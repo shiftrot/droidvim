@@ -335,6 +335,8 @@
   <string name="delete_file">ファイル削除</string>
   <string name="storage_manager">管理</string>
   <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
+  <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
+  <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
   <string name="storage_read_error">読み込めないか編集できないファイルです.\nこのファイルを他のアプリケーションで編集できる場合は, デベロッパーに連絡してください.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
   <string name="storage_write_error">以下をチェックしてください\n\n・このファイルは外部ストレージに存在しません.\nファイルが存在している場合は\"Storage\"ボタンから再度ファイルを開いてください.\n\n・このファイルは書き込みを許可していません.\nこのファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません. 別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>

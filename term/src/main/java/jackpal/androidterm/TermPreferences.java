@@ -27,11 +27,14 @@ import java.util.Map;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +46,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 
 import com.droidvim.XmlUtils;
 
@@ -163,9 +167,21 @@ public class TermPreferences extends PreferenceActivity {
 
     }
 
-    public static final int REQUEST_FONT_PICKER = 16;
-    public static final int REQUEST_PREFS_READ_PICKER = REQUEST_FONT_PICKER + 1;
-    private void prefsPicker() {
+    public static final int REQUEST_FONT_PICKER          = 16;
+    public static final int REQUEST_PREFS_READ_PICKER    = REQUEST_FONT_PICKER + 1;
+    public static final int REQUEST_STORAGE_FONT_PICKER  = REQUEST_FONT_PICKER + 2;
+    public static final int REQUEST_STORAGE_PREFS_PICKER = REQUEST_FONT_PICKER + 3;
+    @SuppressLint("NewApi")
+    void prefsPicker() {
+        if (AndroidCompat.SDK >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PREFS_PICKER);
+        } else {
+            doPrefsPicker();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void doPrefsPicker() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setMessage(this.getString(R.string.prefs_dialog_rw));
@@ -299,6 +315,50 @@ public class TermPreferences extends PreferenceActivity {
         return edit;
     }
 
+    @SuppressLint("NewApi")
+    void filePicker() {
+        if (AndroidCompat.SDK >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_FONT_PICKER);
+        } else {
+            doFilePicker();
+        }
+    }
+
+    @Override
+    @SuppressLint("NewApi")
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_STORAGE_FONT_PICKER:
+            case REQUEST_STORAGE_PREFS_PICKER:
+                for (int i = 0; i < permissions.length; i++) {
+                    if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            switch (requestCode) {
+                                case REQUEST_STORAGE_FONT_PICKER:
+                                    doFilePicker();
+                                    break;
+                                case REQUEST_STORAGE_PREFS_PICKER:
+                                    doPrefsPicker();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
+                            bld.setMessage(this.getString(R.string.storage_permission_error));
+                            bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                            bld.create().show();
+                        }
+                    }
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+        }
+    }
+
     static final String FONT_FILENAME = "font_filename";
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
@@ -334,7 +394,7 @@ public class TermPreferences extends PreferenceActivity {
         }
     }
 
-    private void filePicker() {
+    private void doFilePicker() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setMessage(this.getString(R.string.font_file_error));
