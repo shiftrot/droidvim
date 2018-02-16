@@ -1367,7 +1367,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public void onResume() {
         super.onResume();
-        if (mDoResetTerminal) doResetTerminal();
 
         registerReceiver(mBroadcastReceiever, new IntentFilter(PURCHASES_UPDATED));
         RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
@@ -1380,6 +1379,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 // for promotion code
                 if (isConnected(this.getApplicationContext())) mIabHelper.queryInventoryAsync(mGotInventoryListener);
             }
+        }
+
+        EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
+        if (v != null) {
+            v.updateSize(true);
+            doResetTerminal();
         }
     }
 
@@ -2642,7 +2647,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doPreferences() {
         mOrientation = -1;
-        mDoResetTerminal = true;
         startActivity(new Intent(this, TermPreferences.class));
     }
 
