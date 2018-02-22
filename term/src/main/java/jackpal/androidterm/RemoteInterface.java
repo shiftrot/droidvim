@@ -45,8 +45,8 @@ import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
 public class RemoteInterface extends Activity {
-    protected static final String PRIVACT_OPEN_NEW_WINDOW = "jackpal.androidterm.private.OPEN_NEW_WINDOW";
-    protected static final String PRIVACT_SWITCH_WINDOW = "jackpal.androidterm.private.SWITCH_WINDOW";
+    protected static final String PRIVACT_OPEN_NEW_WINDOW = "shiftrot.androidterm.private.OPEN_NEW_WINDOW";
+    protected static final String PRIVACT_SWITCH_WINDOW = "shiftrot.androidterm.private.SWITCH_WINDOW";
 
     private static String mHandle = null;
     private static String mFname = null;

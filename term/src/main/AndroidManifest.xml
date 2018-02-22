@@ -41,11 +41,11 @@
                 android:targetActivity="Term"
                 android:exported="false">
             <intent-filter>
-                <action android:name="jackpal.androidterm.private.OPEN_NEW_WINDOW" />
+                <action android:name="shiftrot.androidterm.private.OPEN_NEW_WINDOW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="jackpal.androidterm.private.SWITCH_WINDOW" />
+                <action android:name="shiftrot.androidterm.private.SWITCH_WINDOW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity-alias>
