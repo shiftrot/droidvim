@@ -102,7 +102,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -184,8 +183,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
-
-    private PowerManager.WakeLock mWakeLock;
 
     private boolean mBackKeyPressed;
 
@@ -452,8 +449,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
         setSoftInputMode(mHaveFullHwKeyboard);
@@ -1031,9 +1026,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         SyncFileObserver.delete(cacheDir);
         mTermService = null;
         mTSConnection = null;
-        if (mWakeLock.isHeld()) {
-            mWakeLock.release();
-        }
         if (mIabHelper != null) {
             mIabHelper.dispose();
             mIabHelper = null;
@@ -1262,12 +1254,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doScreenMenu() {
-        String wakeLockItem;
-        if (mWakeLock.isHeld()) {
-            wakeLockItem = this.getString(R.string.disable_wakelock);
-        } else {
-            wakeLockItem = this.getString(R.string.enable_wakelock);
-        }
         String screenLockItem;
         boolean keepScreen = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
         if (keepScreen) {
@@ -1275,7 +1261,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             screenLockItem = this.getString(R.string.enable_keepscreen);
         }
-        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.copy_screen), screenLockItem, wakeLockItem, this.getString(R.string.reset)};
+        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
         final Toast toastReset = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
         final Toast toastCopy = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
         new AlertDialog.Builder(this)
@@ -1291,8 +1277,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             toastCopy.show();
                         } else if (which == 2) {
                             doToggleKeepScreen();
-                        } else if (which == 3) {
-                            doToggleWakeLock();
                         } else {
                             doResetTerminal(true);
                             updatePrefs();
@@ -2171,14 +2155,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         MenuItem wakeLockItem = menu.findItem(R.id.menu_toggle_wakelock);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
-        if (mWakeLock.isHeld()) {
-            wakeLockItem.setTitle(R.string.disable_wakelock);
-        } else {
-            menu.removeItem(R.id.menu_toggle_wakelock);
-        }
         MenuItem KeepScreenItem = menu.findItem(R.id.menu_disable_keepscreen);
         boolean keepScreen = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
         KeepScreenItem.setVisible(keepScreen);
+        menu.removeItem(R.id.menu_toggle_wakelock);
         menu.removeItem(R.id.menu_toggle_wifilock);
         menu.removeItem(R.id.menu_window_list);
         menu.removeItem(R.id.menu_toggle_soft_keyboard);
@@ -2850,14 +2830,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     final int WAKELOCK_TIMEOUT = 30; /* minutes */
     private void doToggleWakeLock() {
-        if (mWakeLock.isHeld()) {
-            mWakeLock.release();
-        } else {
-            mWakeLock.acquire(WAKELOCK_TIMEOUT*60*1000L);
-            String mes = this.getString(R.string.enable_wakelock) + " (%d min)" ;
-            alert(String.format(mes, WAKELOCK_TIMEOUT));
-        }
-        this.invalidateOptionsMenu();
     }
 
     final Handler handler = new Handler();
