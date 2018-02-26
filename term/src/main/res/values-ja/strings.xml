@@ -75,7 +75,7 @@
    <string name="edit_text">テキスト編集</string>
    <string name="select_text">テキスト選択</string>
    <string name="copy_all">すべてコピー</string>
-   <string name="copy_screen">画面をコピー</string>
+   <string name="copy_screen">画面のテキストをコピー</string>
    <string name="copy_screen_current">現画面</string>
    <string name="copy_screen_buffer">スクリーンバッファ</string>
    <string name="paste">貼り付け</string>
@@ -286,6 +286,13 @@
   <string name="email_transcript_chooser_title">メール転写の選択:</string>
   <string name="email_transcript_no_email_activity_found">転写を送信するEメール用アクティビティが選択できませんでした.</string>
 
+  <string name="share_title">共有</string>
+  <string name="share_buffer_text">現バッファ</string>
+  <string name="share_visual_text">選択テキスト</string>
+  <string name="share_unnamed_text">無名レジスタ</string>
+  <string name="share_screen_text">画面のテキストを共有</string>
+  <string name="share_file">ファイル</string>
+
   <string name="alt_sends_esc">AltキーでESCを送出</string>
   <string name="alt_sends_esc_summary_on">AltキーでESCを送出する</string>
   <string name="alt_sends_esc_summary_off">AltキーでESCを送出しない</string>
@@ -344,7 +351,7 @@
   <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
   <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
   <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
-  <string name="storage_read_error">読み込めないか編集できないファイルです.\nこのファイルを他のアプリケーションで編集できる場合は, デベロッパーに連絡してください.</string>
+  <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
   <string name="storage_write_error">以下をチェックしてください\n\n・このファイルは外部ストレージに存在しません.\nファイルが存在している場合は\"Storage\"ボタンから再度ファイルを開いてください.\n\n・このファイルは書き込みを許可していません.\nこのファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません. 別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>
   <string name="storage_hash_error_title">ハッシュエラー</string>

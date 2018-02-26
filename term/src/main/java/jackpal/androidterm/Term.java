@@ -1243,7 +1243,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             screenLockItem = this.getString(R.string.enable_keepscreen);
         }
-        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
+        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.share_screen_text), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
         final Toast toastReset = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.screen))
@@ -1253,8 +1253,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         if (which == 0) {
                             setCurrentOrientation();
                         } else if (which == 1) {
-                            doCopyAll();
+                            doShareAll();
                         } else if (which == 2) {
+                            doCopyAll();
+                        } else if (which == 3) {
                             doToggleKeepScreen();
                         } else {
                             doResetTerminal(true);
@@ -1464,6 +1466,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         menu.removeItem(R.id.menu_update);
         menu.removeItem(R.id.menu_window_list);
         menu.removeItem(R.id.menu_x);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_share_text);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
@@ -1533,6 +1536,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             Toast toast = Toast.makeText(this,R.string.reset_toast_notification,Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
+        } else if (id == R.id.menu_share_text) {
+            shareIntentTextDialog();
         } else if (id == R.id.menu_send_email) {
             doEmailTranscript();
         } else if (id == R.id.menu_special_keys) {
@@ -2382,6 +2387,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return;
         }
         if (str1 == null) return;
+        if (action.equalsIgnoreCase("share.text")) {
+            doShareIntentTextFile(str1);
+            return;
+        }
         if (action.equalsIgnoreCase("activity")) {
             try {
                 startActivity(new Intent(this, Class.forName(str1)));
@@ -2392,6 +2401,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return;
         } else if (str1.matches("^%(w3m|open)%.*")) {
             str1 = str1.replaceFirst("%(w3m|open)%", "");
+        } else if (action.equalsIgnoreCase("share.file")) {
+            File file = new File(str1);
+            if (!file.canRead()) {
+                alert(this.getString(R.string.storage_read_error)+"\n"+str1);
+                return;
+            }
+            action = "android.intent.action.VIEW";
         }
         if (str1.matches("'.*'")) {
             str1 = str1.replaceAll("^'|'$", "");
@@ -2480,7 +2496,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".fileprovider", cache);
                             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         } catch (Exception makeCacheErr) {
-                            alert(this.getString(R.string.prefs_read_error_title)+"\\n"+path);
+                            alert(this.getString(R.string.prefs_read_error_title)+"\n"+path);
                             return;
                         }
                     }
@@ -2686,6 +2702,90 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    private boolean doShareIntentClipboard() {
+        if (canPaste()) {
+            ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                    .getManager(getApplicationContext());
+            String str = clip.getText().toString();
+            doShareIntentText(str);
+            return true;
+        }
+        return false;
+    }
+
+    private void shareIntentTextDialog(){
+        final String[] items = { this.getString(R.string.share_buffer_text), this.getString(R.string.share_visual_text), this.getString(R.string.share_unnamed_text), this.getString(R.string.share_file)};
+        new AlertDialog.Builder(this)
+                .setTitle(this.getString(R.string.share_title))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                sendKeyStrings(":ShareIntent\r", true);
+                                break;
+                            case 1:
+                                sendKeyStrings(":ShareIntent!\r", true);
+                                break;
+                            case 2:
+                                sendKeyStrings(":ShareIntent u\r", true);
+                                break;
+                            case 3:
+                                sendKeyStrings(":ShareIntent file\r", true);
+                                break;
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private boolean doShareIntentTextFile(String filename) {
+        File file = new File(filename);
+        if (!file.canRead()) return false;
+        String str = getStringFromFile(file);
+        if (str != null) doShareIntentText(str);
+        return true;
+    }
+
+    private String getStringFromFile(File file) {
+        if (!file.canRead()) return null;
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file.toString()));
+            String string = reader.readLine();
+            while (string != null) {
+                builder.append(string).append(System.getProperty("line.separator"));
+                string = reader.readLine();
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return builder.toString();
+    }
+
+    private void doShareIntentText(String text) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "Share"));
+    }
+
+    private void doShareAll() {
+        final String[] items = {this.getString(R.string.copy_screen_current), this.getString(R.string.copy_screen_buffer)};
+        new AlertDialog.Builder(this)
+                .setTitle(this.getString(R.string.share_screen_text))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        doCopyAll(which+2);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
     private void doCopyAll() {
         final String[] items = {this.getString(R.string.copy_screen_current), this.getString(R.string.copy_screen_buffer)};
         new AlertDialog.Builder(this)
@@ -2704,15 +2804,27 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
         String str;
+        String mes;
         if (mode == 0) {
             str = getCurrentEmulatorView().getTranscriptCurrentText();
+            clip.setText(str);
+            mes = Term.this.getString(R.string.toast_clipboard);
         } else if (mode == 1) {
             str = getCurrentEmulatorView().getTranscriptText();
+            clip.setText(str);
+            mes = Term.this.getString(R.string.toast_clipboard);
+        } else if (mode == 2) {
+            str = getCurrentEmulatorView().getTranscriptCurrentText();
+            doShareIntentText(str);
+            return;
+        } else if (mode == 3) {
+            str = getCurrentEmulatorView().getTranscriptText();
+            doShareIntentText(str);
+            return;
         } else {
             return;
         }
-        clip.setText(str);
-        final Toast toastCopy = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
+        final Toast toastCopy = Toast.makeText(this, mes, Toast.LENGTH_LONG);
         toastCopy.setGravity(Gravity.CENTER, 0, 0);
         toastCopy.show();
     }
