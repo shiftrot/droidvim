@@ -1760,6 +1760,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    public boolean checkImplicitIntent(Context context, Intent intent) {
+        PackageManager pm = context.getPackageManager();
+        List<ResolveInfo> apps = pm.queryIntentActivities(intent, 0);
+        if (apps.size() < 1) {
+            alert(this.getString(R.string.storage_intent_error));
+            return false;
+        }
+        return true;
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void filePicker() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -1774,7 +1784,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        startActivityForResult(intent, REQUEST_FILE_PICKER);
+        if (checkImplicitIntent(this, intent)) startActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
     private void chooseFilePicker() {
@@ -1817,7 +1827,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        startActivityForResult(intent, REQUEST_FILE_DELETE);
+        if (checkImplicitIntent(this, intent)) startActivityForResult(intent, REQUEST_FILE_DELETE);
     }
 
     private void confirmDelete(final Uri uri) {
@@ -1862,7 +1872,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
-        startActivityForResult(intent, REQUEST_FILE_PICKER);
+        if (checkImplicitIntent(this, intent)) startActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
     private void fileReload() {

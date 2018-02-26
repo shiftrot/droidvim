@@ -341,6 +341,7 @@
   <string name="create_or_delete">新規/削除</string>
   <string name="create_file">ファイル作成</string>
   <string name="delete_file">ファイル削除</string>
+  <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
   <string name="storage_manager">管理</string>
   <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
   <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
