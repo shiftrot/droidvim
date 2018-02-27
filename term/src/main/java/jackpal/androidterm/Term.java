@@ -1470,36 +1470,36 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        if (mSettings.getActionBarPlusKeyAction() != 999) {
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_plus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        } else {
-            menu.removeItem(R.id.menu_plus);
-        }
-        menu.removeItem(R.id.menu_plus);
-//        if (mSettings.getActionBarMinusKeyAction() != 999) {
-//            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_minus), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-//        } else {
-//            menu.removeItem(R.id.menu_minus);
-//        }
-        if (mSettings.getActionBarXKeyAction() != 999) {
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_x), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        } else {
-            menu.removeItem(R.id.menu_x);
-        }
-        menu.removeItem(R.id.menu_x);
-//        if (mSettings.getActionBarUserKeyAction() != 999) {
-//            MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_user), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-//        } else {
-//            menu.removeItem(R.id.menu_user);
-//        }
-        if (!FLAVOR_VIM) {
-            menu.removeItem(R.id.menu_edit_vimrc);
-        }
-        menu.removeItem(R.id.menu_copy_screen);
-        menu.removeItem(R.id.menu_reset);
-        menu.removeItem(R.id.menu_new_window);
         menu.removeItem(R.id.menu_close_window);
+        menu.removeItem(R.id.menu_copy_screen);
+        menu.removeItem(R.id.menu_new_window);
+        menu.removeItem(R.id.menu_plus);
+        menu.removeItem(R.id.menu_reset);
+        menu.removeItem(R.id.menu_send_email);
+        menu.removeItem(R.id.menu_special_keys);
+        menu.removeItem(R.id.menu_toggle_wakelock);
+        menu.removeItem(R.id.menu_toggle_wifilock);
+        menu.removeItem(R.id.menu_update);
+        menu.removeItem(R.id.menu_window_list);
+        menu.removeItem(R.id.menu_x);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item;
+        boolean visibility;
+        item = menu.findItem(R.id.menu_toggle_soft_keyboard);
+        visibility = (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME)
+                  && (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME_ESC);
+        item.setVisible(visibility);
+        item = menu.findItem(R.id.menu_disable_keepscreen);
+        visibility = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
+        item.setVisible(visibility);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -2155,25 +2155,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 break;
         }
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem wakeLockItem = menu.findItem(R.id.menu_toggle_wakelock);
-        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
-        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
-        MenuItem KeepScreenItem = menu.findItem(R.id.menu_disable_keepscreen);
-        boolean keepScreen = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
-        KeepScreenItem.setVisible(keepScreen);
-        menu.removeItem(R.id.menu_toggle_wakelock);
-        menu.removeItem(R.id.menu_toggle_wifilock);
-        menu.removeItem(R.id.menu_window_list);
-        menu.removeItem(R.id.menu_toggle_soft_keyboard);
-        menu.removeItem(R.id.menu_special_keys);
-        menu.removeItem(R.id.menu_send_email);
-        menu.removeItem(R.id.menu_update);
-        menu.removeItem(R.id.action_help);
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
