@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 public class WebViewActivity extends Activity {
+    private static int mFontSize = 140;
     private boolean mBack = false;
     private WebView mWebView;
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
@@ -33,6 +34,7 @@ public class WebViewActivity extends Activity {
         mWebView.getSettings().setBlockNetworkImage(false);
         mWebView.getSettings().setBlockNetworkLoads(false);
         mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.getSettings().setTextZoom(mFontSize);
 //        mWebView.getSettings().setCacheMode(LOAD_NO_CACHE);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -59,8 +61,15 @@ public class WebViewActivity extends Activity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
+            try {
+                String size = bundle.getString("size");
+                if (size != null) mFontSize = Integer.parseInt(size);
+                mWebView.getSettings().setTextZoom(mFontSize);
+            } catch (Exception e) {
+                Log.d("WevViewAcitivity", e.toString());
+            }
             String url = bundle.getString("url");
-            if (!load(mWebView, url, mWebView.getUrl())) {
+            if ((url == null) || (!load(mWebView, url, mWebView.getUrl()))) {
                 Log.d("WevViewAcitivity", "Load error : "+url);
             }
         }
@@ -72,6 +81,8 @@ public class WebViewActivity extends Activity {
         findViewById(R.id.webview_reload).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_abort).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_quit).setOnClickListener(mButtonListener);
+        findViewById(R.id.webview_plus).setOnClickListener(mButtonListener);
+        findViewById(R.id.webview_minus).setOnClickListener(mButtonListener);
     }
 
     View.OnClickListener mButtonListener = new View.OnClickListener() {
@@ -102,11 +113,27 @@ public class WebViewActivity extends Activity {
                     mWebView.stopLoading();
                     finish();
                     break;
+                case R.id.webview_plus:
+                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + 10);
+                    mFontSize = mWebView.getSettings().getTextZoom();
+                    break;
+                case R.id.webview_minus:
+                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - 10);
+                    mFontSize = mWebView.getSettings().getTextZoom();
+                    break;
                 default:
                     break;
             }
         }
     };
+
+    static public void setFontSize(int size) {
+        mFontSize = size;
+    }
+
+    static public int getFontSize() {
+        return mFontSize;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

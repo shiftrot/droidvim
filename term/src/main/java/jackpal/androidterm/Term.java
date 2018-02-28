@@ -458,6 +458,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         initOnelineTextBox(mOnelineTextBox);
         INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString()+"/intent";
 
+        WebViewActivity.setFontSize(new PrefValue(this).getInt("mWebViewSize", 140));
+
         updatePrefs();
         mIabHelperDisable = !existsPlayStore();
         if (!mAlreadyStarted && !mIabHelperDisable && mIabHelper == null) iabSetupFirst();
@@ -1368,6 +1370,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mViewFlipper.removeAllViews();
 
         unbindService(mTSConnection);
+
+        int webViewSize = WebViewActivity.getFontSize();
+        PrefValue pv = new PrefValue(this);
+        if (webViewSize != pv.getInt("mWebViewSize", 140)) {
+            pv.setInt("mWebViewSize", webViewSize);
+        }
 
         super.onStop();
     }
