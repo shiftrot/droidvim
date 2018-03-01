@@ -1263,7 +1263,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
         final Toast toastReset = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
-        final Toast toastCopy = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.screen))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -1273,8 +1272,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             setCurrentOrientation();
                         } else if (which == 1) {
                             doCopyAll();
-                            toastCopy.setGravity(Gravity.CENTER, 0, 0);
-                            toastCopy.show();
                         } else if (which == 2) {
                             doToggleKeepScreen();
                         } else {
@@ -2719,9 +2716,34 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doCopyAll() {
+        final String[] items = {this.getString(R.string.copy_screen_current), this.getString(R.string.copy_screen_buffer)};
+        new AlertDialog.Builder(this)
+            .setTitle(this.getString(R.string.copy_screen))
+            .setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    doCopyAll(which);
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
+    }
+
+    private void doCopyAll(int mode) {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        clip.setText(getCurrentEmulatorView().getTranscriptScreenText());
+        String str;
+        if (mode == 0) {
+            str = getCurrentEmulatorView().getTranscriptCurrentText();
+        } else if (mode == 1) {
+            str = getCurrentEmulatorView().getTranscriptText();
+        } else {
+            return;
+        }
+        clip.setText(str);
+        final Toast toastCopy = Toast.makeText(this,R.string.toast_clipboard, Toast.LENGTH_LONG);
+        toastCopy.setGravity(Gravity.CENTER, 0, 0);
+        toastCopy.show();
     }
 
     private static boolean mVimPaste = false;
