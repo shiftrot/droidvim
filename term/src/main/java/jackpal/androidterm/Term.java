@@ -1061,7 +1061,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!TermService.getAPPBASE().matches("/data/.*")) {
             String key = "do_warning_install_internal_storage";
 //            key = key + String.valueOf(BuildConfig.VERSION_CODE);
-            boolean warning = getDevBoolean(Term.this, key, true);
+            boolean warning = getPrefBoolean(Term.this, key, true);
             if (!useCheckBox) warning = true;
             if (warning) {
                 final Activity activity = this;
@@ -1079,7 +1079,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         if (useCheckBox && dontShowAgain.isChecked()) {
-                            setDevBoolean(Term.this, warningKey, false);
+                            setPrefBoolean(Term.this, warningKey, false);
                         }
                         Uri uri = Uri.parse(activity.getString(R.string.external_storage_warning_url));
                         Intent i = new Intent(Intent.ACTION_VIEW,uri);
@@ -1107,7 +1107,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doWarningDialog(String title, String message, String key, boolean dontShowAgain) {
-        boolean warning = getDevBoolean(Term.this, key, true);
+        boolean warning = getPrefBoolean(Term.this, key, true);
         if (!warning) {
             return;
         }
@@ -1124,7 +1124,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int m) {
                 if (cb.isChecked()) {
-                    setDevBoolean(Term.this, warningKey, false);
+                    setPrefBoolean(Term.this, warningKey, false);
                 }
             }
         });
@@ -2678,7 +2678,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doTermPaste();
             return;
         }
-        boolean warning = getDevBoolean(Term.this, "do_warning_before_paste", true);
+        boolean warning = getPrefBoolean(Term.this, "do_warning_before_paste", true);
         if (!warning) {
             doTermPaste();
             return;
@@ -2696,7 +2696,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
                     if (dontShowAgain.isChecked()) {
-                        setDevBoolean(Term.this, "do_warning_before_paste", false);
+                        setPrefBoolean(Term.this, "do_warning_before_paste", false);
                     }
                     doTermPaste();
                 }
@@ -2791,23 +2791,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             startActivity(openLink);
     }
 
-    public boolean setDevBoolean(Context context, String key, boolean value) {
-        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(key, value);
-        editor.apply();
-        return value;
+    public void setPrefBoolean(Context context, String key, boolean value) {
+        PrefValue pv = new PrefValue(context);
+        pv.setBoolean(key, value);
     }
 
-    public boolean getDevBoolean(Context context, String key, boolean defValue) {
-        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        boolean res;
-        try {
-            res = pref.getBoolean(key, defValue);
-        } catch (Exception e) {
-            res = defValue;
-        }
-        return res;
+    public boolean getPrefBoolean(Context context, String key, boolean defValue) {
+        PrefValue pv = new PrefValue(context);
+        return pv.getBoolean(key, defValue);
     }
 
     private int mOnelineTextBox = -1;

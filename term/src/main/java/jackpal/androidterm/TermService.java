@@ -289,23 +289,10 @@ public class TermService extends Service implements TermSession.FinishCallback
     }
 
     private boolean getInstallStatus(String scriptFile, String zipFile) {
-        if (!TermVimInstaller.TERMVIM_VERSION.equals(getDevString(this, "versionName", ""))) return false;
+        if (!TermVimInstaller.TERMVIM_VERSION.equals(new PrefValue(this).getString("versionName", ""))) return false;
         if (!(new File(scriptFile).exists())) return false;
         return true;
     }
-
-    public String setDevString(Context context, String key, String value) {
-        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(key, value);
-        editor.apply();
-        return value;
-    }
-
-    public String getDevString(Context context, String key, String defValue) {
-        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        return pref.getString(key, defValue);
-     }
 
     @Override
     public void onDestroy() {

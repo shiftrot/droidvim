@@ -100,7 +100,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         mChildParams = new LayoutParams(visible.width(), visible.height(),
             Gravity.TOP|Gravity.LEFT);
         // FIXME
-        mFunctionBarSize = getDevInt(context, "functinbar_size", mFunctionBarSize);
+        mFunctionBarSize = new PrefValue(context).getInt( "functinbar_size", mFunctionBarSize);
     }
 
     public void updatePrefs(TermSettings settings) {
@@ -311,7 +311,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private boolean mEditTextView = false;
     public void setEditTextViewSize(int size) {
         if (size > 0) {
-            if (getDevInt(context, "edit_text_view_size", mEditTextViewSize) != size) setDevInt(context, "edit_text_view_size", size);
+            PrefValue pv = new PrefValue(context);
+            if (pv.getInt("edit_text_view_size", mEditTextViewSize) != size) pv.setInt("edit_text_view_size", size);
             mEditTextViewSize = size;
         }
     }
@@ -326,7 +327,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private boolean mFunctionBar = true;
     public void setFunctionBarSize(int size) {
         if (size > 0) {
-            if (getDevInt(context, "functinbar_size", mFunctionBarSize) != size) setDevInt(context, "functinbar_size", size);
+            PrefValue pv = new PrefValue(context);
+            if (pv.getInt("functinbar_size", mFunctionBarSize) != size) pv.setInt("functinbar_size", size);
             mFunctionBarSize = size;
         }
     }
@@ -337,16 +339,4 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         adjustChildSize();
     }
 
-    public int setDevInt(Context context, String key, int value) {
-        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(key, value);
-        editor.apply();
-        return value;
-    }
-
-    public int getDevInt(Context context, String key, int defValue) {
-        SharedPreferences pref = context.getSharedPreferences("dev", Context.MODE_PRIVATE);
-        return pref.getInt(key, defValue);
-    }
 }

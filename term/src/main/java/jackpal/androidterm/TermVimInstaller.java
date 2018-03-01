@@ -120,7 +120,7 @@ final class TermVimInstaller {
                 File fontPath = new File(TermPreferences.FONTPATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
             }
-            if (!FLAVOR_VIM) setDevString(activity, "versionName", TERMVIM_VERSION);
+            if (!FLAVOR_VIM) new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
             return true;
         }
         return false;
@@ -176,7 +176,7 @@ final class TermVimInstaller {
                     installZip(path, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity, id, sdcard+"/version");
-                    setDevString(activity, "versionName", TERMVIM_VERSION);
+                    new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
                         activity.runOnUiThread(new Runnable() {
@@ -244,14 +244,6 @@ final class TermVimInstaller {
             return 1;
         }
         return 0;
-    }
-
-    static private String setDevString(Context context, String key, String value) {
-        SharedPreferences pref = context.getSharedPreferences("dev", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(key, value);
-        editor.apply();
-        return value;
     }
 
     static private InputStream getInputStream(final Activity activity, int id) {
