@@ -167,6 +167,12 @@ final class TermVimInstaller {
                     installZip(sdcard, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("bin", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
+                    if (AndroidCompat.SDK >= android.os.Build.VERSION_CODES.O) {
+                        id = activity.getResources().getIdentifier("bin_26", "raw", activity.getPackageName());
+                        installZip(path, getInputStream(activity, id));
+                        id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
+                        copyScript(activity.getResources().openRawResource(id),TermService.getAPPFILES()+"/usr/bin/am");
+                    }
                     String arch = getArch().contains("arm") ? "arm" : "x86";
                     String bin = "bin_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
@@ -175,7 +181,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
-                    copyScript(activity, id, sdcard+"/version");
+                    copyScript(activity.getResources().openRawResource(id), sdcard+"/version");
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
@@ -222,16 +228,21 @@ final class TermVimInstaller {
         });
     }
 
-    static private int copyScript(Activity activity,int id, String fname) {
-        if (id == 0) return -1;
+    static private int copyScript(InputStream is, String fname) {
+        if (is == null) return -1;
         BufferedReader br = null;
         try {
             try {
-                InputStream is = activity.getResources().openRawResource(id);
+                String appBase     = TermService.getAPPBASE();
+                String appFiles    = TermService.getAPPFILES();
+                String appExtFiles = TermService.getAPPEXTFILES();
                 br = new BufferedReader(new InputStreamReader(is));
                 PrintWriter writer = new PrintWriter(new FileOutputStream(fname));
                 String str;
                 while ((str = br.readLine()) != null) {
+                    str = str.replaceAll("%APPBASE%", appBase);
+                    str = str.replaceAll("%APPFILES%", appFiles);
+                    str = str.replaceAll("%APPEXTFILES%", appExtFiles);
                     writer.print(str+"\n");
                 }
                 writer.close();

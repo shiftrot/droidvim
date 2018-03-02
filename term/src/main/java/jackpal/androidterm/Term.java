@@ -907,19 +907,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private static String RELOAD_STYLE_ACTION = "com.termux.app.reload_style";
+    private static String AM_INTENT_ACTION = "com.droidterm.am.intent.action";
     private static String PURCHASES_UPDATED = "com.android.vending.billing.PURCHASES_UPDATED";
     private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
-            if (action.equals(RELOAD_STYLE_ACTION)) {
-                String stringExtra = intent.getStringExtra(RELOAD_STYLE_ACTION);
-                if (stringExtra.equals("storage")) {
-                    setupStorageSymlinks(Term.this);
-                    return;
-                }
+            if (action.equals(AM_INTENT_ACTION)) {
+                doAndroidIntent(intent.getStringExtra("action"), intent.getStringExtra("param"), intent.getStringExtra("mime"));
             } else if (action.equals(PURCHASES_UPDATED)) {
                 if (mIabHelper != null) mIabHelper.queryInventoryAsync(mGotInventoryListener);
             }
@@ -1356,6 +1351,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mBackKeyPressed = false;
         }
 
+
         /* Explicitly close the input method
            Otherwise, the soft keyboard could cover up whatever activity takes
            our place */
@@ -1374,8 +1370,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         super.onResume();
 
         registerReceiver(mBroadcastReceiever, new IntentFilter(PURCHASES_UPDATED));
-        RELOAD_STYLE_ACTION = getPackageName()+".app.reload_style";
-        registerReceiver(mBroadcastReceiever, new IntentFilter(RELOAD_STYLE_ACTION));
+        registerReceiver(mBroadcastReceiever, new IntentFilter(AM_INTENT_ACTION));
 
         if (existsPlayStore()) {
             if (mIabHelper == null) {
@@ -2324,7 +2319,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             clearClipBoard();
             return true;
         case 0xfffffffb:
-            doAndroidIntent(mSettings.getHomePath() + "/.intent");
+            AndroidIntent(mSettings.getHomePath() + "/.intent");
             return true;
         case 0xfffffffc:
             networkUpdate();
@@ -2368,7 +2363,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private String INTENT_CACHE_DIR = "/data/data/"+BuildConfig.APPLICATION_ID+"/cache/intent";
-    private void doAndroidIntent(String filename) {
+    private void AndroidIntent(String filename) {
         if (filename == null) return;
         TermSession session = getCurrentTermSession();
         if (session == null) return;
@@ -2382,6 +2377,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (str[i] == null) break;
             }
             br.close();
+            doAndroidIntent(str[0], str[1], str[2]);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return;
@@ -2389,37 +2385,46 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             e.printStackTrace();
             return;
         }
-        if (str[0] == null || str[1] == null) return;
-        String action = str[0];
-        if (action.equalsIgnoreCase("activity")) {
-            try {
-                startActivity(new Intent(this, Class.forName(str[1])));
-            } catch (Exception e) {
-                e.printStackTrace();
-                alert("Unknown activity:\n"+str[1]);
+    }
+
+    private void doAndroidIntent(String str0, String str1, String str2) {
+        if (str0 == null) return;
+        String action = str0;
+        if (action.equalsIgnoreCase("symlinks")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setupStorageSymlinks(this);
             }
             return;
         }
-        if (str[1].matches("^%(w3m|open)%.*")) {
-            str[1] = str[1].replaceFirst("%(w3m|open)%", "");
+        if (str1 == null) return;
+        if (action.equalsIgnoreCase("activity")) {
+            try {
+                startActivity(new Intent(this, Class.forName(str1)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                alert("Unknown activity:\n"+str1);
+            }
+            return;
+        } else if (str1.matches("^%(w3m|open)%.*")) {
+            str1 = str1.replaceFirst("%(w3m|open)%", "");
         }
-        if (str[1].matches("'.*'")) {
-            str[1] = str[1].replaceAll("^'|'$", "");
+        if (str1.matches("'.*'")) {
+            str1 = str1.replaceAll("^'|'$", "");
         }
         String MIME_HTML = MimeTypeMap.getSingleton().getMimeTypeFromExtension("html");
         String mime;
         String ext = "";
-        int ch = str[1].lastIndexOf('.');
-        ext = (ch >= 0) ? str[1].substring(ch + 1) : "";
+        int ch = str1.lastIndexOf('.');
+        ext = (ch >= 0) ? str1.substring(ch + 1) : "";
         ext = ext.toLowerCase();
         ext = ext.replaceAll("(html?)#.*", "$1");
-        String path = str[1].replaceFirst("file://", "");
+        String path = str1.replaceFirst("file://", "");
         path = path.replaceFirst("(.*\\.html?)#.*", "$1");
-        if (str[2] != null) {
-            mime = str[2];
-        } else if (str[1].matches("^(https?|ftp)://.*")) {
+        if (str2 != null) {
+            mime = str2;
+        } else if (str1.matches("^(https?|ftp)://.*")) {
             mime = MIME_HTML;
-        } else if (str[1].matches("^www\\..*")) {
+        } else if (str1.matches("^www\\..*")) {
             mime = MIME_HTML;
         } else {
             mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
@@ -2431,7 +2436,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             Intent intent = new Intent(action);
             boolean privateStorage = path.matches("/data/.*");
             boolean extFilesStorage = path.matches(TermService.getAPPEXTFILES()+"/.*");
-            if (file.canRead() || str[1].matches("^file://.*")) {
+            if (file.canRead() || str1.matches("^file://.*")) {
                 if (!mime.equals(MIME_HTML) && !(privateStorage || extFilesStorage) && AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
                     uri = Uri.fromFile(file);
                 } else {

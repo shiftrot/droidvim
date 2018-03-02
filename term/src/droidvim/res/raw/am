@@ -1,0 +1,5 @@
+#!/system/bin/sh
+export CLASSPATH=%APPFILES%/usr/bin/am.apk
+unset LD_LIBRARY_PATH LD_PRELOAD
+exec /system/bin/app_process / com.example.termuxam.Am "$@"
+
