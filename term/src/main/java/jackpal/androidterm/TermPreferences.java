@@ -87,8 +87,17 @@ public class TermPreferences extends PreferenceActivity {
                     return true;
                 }
             });
-        }
 
+            final String LICENSE_KEY = "license";
+            Preference licensePrefs = getPreferenceScreen().findPreference(LICENSE_KEY);
+            licensePrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    licensePrefs();
+                    return true;
+                }
+            });
+        }
 
         // Remove the action bar pref on older platforms without an action bar
         Preference actionBarPref = findPreference(ACTIONBAR_KEY);
@@ -165,6 +174,26 @@ public class TermPreferences extends PreferenceActivity {
             textCategory.removePreference(fontPref);
         }
 
+    }
+
+    void licensePrefs() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(this.getString(R.string.license_text));
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        bld.setNeutralButton(this.getString(R.string.github), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                Intent openUrl = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.github_url)));
+                    startActivity(openUrl);
+            }
+        });
+        bld.create().show();
     }
 
     public static final int REQUEST_FONT_PICKER          = 16;

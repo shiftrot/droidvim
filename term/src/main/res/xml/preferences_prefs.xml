@@ -27,4 +27,14 @@
 
     </PreferenceCategory>
 
+     <PreferenceCategory
+            android:title="@string/prefs_about"
+            android:key="about">
+
+        <Preference
+                android:key="license"
+                android:title="@string/title_license" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
