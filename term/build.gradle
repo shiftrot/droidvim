@@ -51,9 +51,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:support-annotations:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:support-annotations:27.1.0'
+    compile 'com.android.support:support-v4:27.1.0'
     compile project(':emulatorview')
     compile project(':libtermexec')
 }
