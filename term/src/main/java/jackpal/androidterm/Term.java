@@ -1174,10 +1174,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private TermSession getCurrentTermSession() {
         SessionList sessions = mTermSessions;
-        if (sessions == null) {
+        if (sessions == null || sessions.size() == 0) {
             return null;
         } else {
-            if (mViewFlipper != null) return sessions.get(mViewFlipper.getDisplayedChild());
+            if (mViewFlipper != null) {
+                int disp = mViewFlipper.getDisplayedChild();
+                if (disp < sessions.size()) return sessions.get(disp);
+            }
         }
         return null;
     }
