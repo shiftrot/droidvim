@@ -27,7 +27,7 @@
    <string name="window_list">ウインドウ一覧</string>
    <string name="prev_window">前のウインドウ</string>
    <string name="next_window">次のウインドウ</string>
-   <string name="screen">スクリーン</string>
+   <string name="screen">画面</string>
    <string name="reset">端末をリセット</string>
    <string name="send_email">メール送信</string>
    <string name="special_keys">特殊キー</string>
@@ -51,11 +51,7 @@
    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
 
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Backボタンでキーボードをトグル\n\n▼Vimチュートリアル\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.\n\n▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力は画面下端付近でのダブルタップでON/OFF可能です. 予測変換入力、音声入力または絵文字の入力で便利です.\|あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.\n\n$HOME/.vimまたはシンボリックリンクを作成すると、ランタイムパスとして扱われます.</string>
-
-   <string name="external_storage_warning_title">警告!</string>
-   <string name="external_storage_warning">追加機能のGit等を動作させるためにはDroidVimを内部ストレージにインストールする必要があります.\n\"OK\"ボタンをタップして内部ストレージへの移動方法を確認してください (\"トラブルシューティング\"を参照).</string>
-   <string name="external_storage_warning_url">https://droidterm-e8a40.firebaseapp.com/droidvim/ja-JP/index.html#storage-error</string>
+   <string name="tips_vim_list">▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Backボタンでキーボードをトグル\n\n▼Vimチュートリアル\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.\n\n▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力は画面下端付近でのダブルタップでON/OFF可能です. 予測変換入力、音声入力または絵文字の入力で便利です.\n\n▼クリップボード\n- Vimへの\"貼り付け\"には, \"Share\"インテントかVimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)\|あなた独自の.vimrcが必要な場合は以下を参照してください.\n\n.vimrcを編集:\n- \":e $HOME/.vimrc\"を入力.\n- 長押しメニューから\".vimrcを編集\"を選択.\n\n$HOME/.vimまたはシンボリックリンクを作成すると、ランタイムパスとして扱われます.\n\n</string>
 
    <string name="edit_text_view_warning_title">一行テキストボックス</string>
    <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 全削除/一行テキストボックスから移動</string>

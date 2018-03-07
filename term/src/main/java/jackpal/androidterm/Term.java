@@ -1086,42 +1086,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return cmd;
     }
 
-    private boolean doWarningInstallExternalStorage(final boolean useCheckBox) {
-        if (!TermService.getAPPBASE().matches("/data/.*")) {
-            String key = "do_warning_install_internal_storage";
-//            key = key + String.valueOf(BuildConfig.VERSION_CODE);
-            boolean warning = getPrefBoolean(Term.this, key, true);
-            if (!useCheckBox) warning = true;
-            if (warning) {
-                final Activity activity = this;
-                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                bld.setTitle(activity.getString(R.string.external_storage_warning_title));
-                bld.setIcon(android.R.drawable.ic_dialog_alert);
-                bld.setMessage(activity.getString(R.string.external_storage_warning));
-                LayoutInflater inflater = LayoutInflater.from(this);
-                View view = inflater.inflate(R.layout.alert_checkbox, null);
-                if (useCheckBox) bld.setView(view);
-                final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
-                final String warningKey = key;
-                dontShowAgain.setChecked(false);
-                bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        if (useCheckBox && dontShowAgain.isChecked()) {
-                            setPrefBoolean(Term.this, warningKey, false);
-                        }
-                        Uri uri = Uri.parse(activity.getString(R.string.external_storage_warning_url));
-                        Intent i = new Intent(Intent.ACTION_VIEW,uri);
-                        activity.startActivity(i);
-                    }
-                });
-                bld.create().show();
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static Random mRandom = new Random();
     private void showVimTips() {
         if (!mVimFlavor) return;
