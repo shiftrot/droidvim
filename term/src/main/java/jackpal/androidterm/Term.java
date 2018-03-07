@@ -1066,7 +1066,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             TermVimInstaller.installVim(Term.this, new Runnable(){
                 @Override
                 public void run() {
-                    if (vimApp) sendKeyStrings("vim.app\n", false);
+                    if (vimApp) {
+                        if (getCurrentTermSession() != null) {
+                            sendKeyStrings("vim.app\n", false);
+                        } else {
+                            ShellTermSession.setPostCmd("vim.app\n");
+                        }
+                    }
                     permissionCheckExternalStorage();
                     mIabHelperDisable = !existsPlayStore();
                     if (!mIabHelperDisable) setExtraButton();
@@ -1685,13 +1691,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void sendKeyStrings(String str, boolean esc) {
+    private boolean sendKeyStrings(String str, boolean esc) {
         TermSession session = getCurrentTermSession();
-        if (session != null) {
-            if (esc) str = "\u001b"+str;
-            session.write(str);
-        }
-        return;
+        if (session == null) return false;
+        if (esc) str = "\u001b"+str;
+        session.write(str);
+        return true;
     }
 
     private void doCreateNewWindow() {

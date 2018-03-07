@@ -133,12 +133,21 @@ public class ShellTermSession extends GenericTermSession {
         return checkedPath.substring(0, checkedPath.length()-1);
     }
 
+    static private String mPostCmd = null;
     @Override
     public void initializeEmulator(int columns, int rows) {
         super.initializeEmulator(columns, rows);
 
         mWatcherThread.start();
         sendInitialCommand(mInitialCommand);
+        if (mPostCmd != null) {
+            sendInitialCommand(mPostCmd);
+            mPostCmd = null;
+        }
+    }
+
+    static public void setPostCmd(String cmd) {
+        mPostCmd = cmd;
     }
 
     private void sendInitialCommand(final String initialCommand) {
