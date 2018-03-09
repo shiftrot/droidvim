@@ -66,11 +66,11 @@ public class WebViewActivity extends Activity {
                 if (size != null) mFontSize = Integer.parseInt(size);
                 mWebView.getSettings().setTextZoom(mFontSize);
             } catch (Exception e) {
-                Log.d("WevViewAcitivity", e.toString());
+                Log.d("WebViewAcitivity", e.toString());
             }
             String url = bundle.getString("url");
             if ((url == null) || (!load(mWebView, url, mWebView.getUrl()))) {
-                Log.d("WevViewAcitivity", "Load error : "+url);
+                Log.d("WebViewAcitivity", "Load error : "+url);
             }
         }
     }
@@ -165,7 +165,7 @@ public class WebViewActivity extends Activity {
             webView.loadDataWithBaseURL("file://"+url, data, "text/html", "UTF-8", prev);
             return true;
         } catch (Exception e) {
-            Log.d("WevViewAcitivity", e.getMessage());
+            Log.d("WebViewAcitivity", e.getMessage());
         }
         return false;
     }
