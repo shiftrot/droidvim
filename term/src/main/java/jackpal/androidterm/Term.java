@@ -37,7 +37,6 @@ import android.support.v7.widget.Toolbar;
 import android.system.Os;
 import android.text.TextUtils;
 import jackpal.androidterm.compat.AndroidCompat;
-import jackpal.androidterm.compat.MenuItemCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;

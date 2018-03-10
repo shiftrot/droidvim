@@ -29,8 +29,6 @@ import java.util.zip.ZipInputStream;
 
 import jackpal.androidterm.compat.AndroidCompat;
 
-import static android.content.Context.MODE_PRIVATE;
-
 final class TermVimInstaller {
 
     static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");

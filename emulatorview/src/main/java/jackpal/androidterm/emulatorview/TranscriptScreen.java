@@ -495,7 +495,7 @@ class TranscriptScreen implements Screen {
                 if (c == 0) {
                     break;
                 }
-                
+
                 int style = defaultColor;
                 try {
                     if (rowColorBuffer != null) {
