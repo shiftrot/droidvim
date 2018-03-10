@@ -161,7 +161,9 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     private int createSubprocess(String shell, String[] env) throws IOException {
-        if (shell == null || shell.equals("")) {
+        if ("system".equals(shell)) {
+            shell = "/system/bin/sh -";
+        } else if (shell == null || shell.equals("") || (!shell.matches("/.*"))) {
             shell = (AndroidCompat.SDK >= 21) ? mSettings.getLibShPath() : mSettings.getFailsafeShell();
             if (shell == null) shell = "/system/bin/sh -";
         }

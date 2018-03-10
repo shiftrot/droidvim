@@ -122,7 +122,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         File tmpdir = new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
 
-        String libShPath = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir) + "/libsh.so";
+        String libShPath = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir) + "/libsh.so -";
         editor.putString("lib_sh_path", libShPath);
         defValue = AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
         String defshell = prefs.getString("shell_path", defValue);
