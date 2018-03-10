@@ -1646,7 +1646,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 ((Activity)this.getContext()).onKeyUp(0xfffffff5, null);
                 break;
             case 50:
-                setIMEInputType(0);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
                 break;
             case 51:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -1656,6 +1656,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 53:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
+                break;
+            case 54:
+                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
                 break;
             case 55:
                 doImeShortcutsAction();
@@ -1679,28 +1682,55 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (mEmulator != null) setIME(mEmulator);
                 break;
             case 500:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
                 break;
             case 501:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
                 break;
             case 502:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 break;
             case 503:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
                 break;
             case 504:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER);
                 break;
             case 505:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_LONG_MESSAGE);
                 break;
             case 506:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
                 break;
             case 507:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD, mIMEGoogleInput);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                break;
+            case 508:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME);
+                break;
+            case 509:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC);
+                break;
+            case 510:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+                break;
+            case 511:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+                break;
+            case 512:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                break;
+            case 513:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                break;
+            case 514:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
+                break;
+            case 515:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
+                break;
+            case 516:
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
                 break;
             case 6:
                 doInputMethodPicker();
@@ -1869,14 +1899,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void restartInput() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.restartInput(this);
+        if (imm != null) imm.restartInput(this);
     }
 
     public void restartInputGoogleIme() {
         if (mIme != 4 || mIMEGoogleInput) return;
-        Activity activity = (Activity)this.getContext();
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.restartInput(this);
+        restartInput();
     }
 
     private void doShowSoftKeyboard() {
@@ -1944,7 +1972,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return super.onKeyPreIme(keyCode, event);
     };
 
-    private boolean preIMEShortcuts(int keyCode, KeyEvent event) {
+    public boolean preIMEShortcuts(int keyCode, KeyEvent event) {
+        boolean focus = this.hasFocus();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
         boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
         boolean metaOn = (event.getMetaState() & (KeyEvent.META_META_ON)) != 0;
@@ -1964,9 +1993,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
         boolean cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metashiftOn);
         if (((ag || ae || zh || sc || grave || cj) && event.getAction() == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && event.getAction() == KeyEvent.ACTION_UP)) {
+            if (!focus) return true;
             doImeShortcutsAction();
             return true;
         }
+        if (!focus) return false;
         if (((ag || ae || zh || sc || grave || cj) && event.getAction() == KeyEvent.ACTION_UP)) return true;
         if (((as || cs || ss) && event.getAction() == KeyEvent.ACTION_DOWN)) return true;
         if ((mAltEsc || mAltSpace || mAltGrave) && altPressed) return true;
@@ -2001,6 +2032,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 53:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
+                break;
+            case 54:
+                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT, true);
                 break;
             default:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);

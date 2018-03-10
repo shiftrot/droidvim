@@ -27,6 +27,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -2899,6 +2900,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final EditText editText = (EditText) findViewById(R.id.text_input);
         editText.setText("");
         setEditTextView(mode);
+        editText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -2913,6 +2915,35 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     v.setText("");
                 }
                 return true;
+            }
+        });
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (getCurrentEmulatorView().preIMEShortcuts(keyCode, event)) {
+                    int action = mSettings.getImeShortcutsAction();
+                    if (action == 0) {
+                        doToggleSoftKeyboard();
+                    } else if (action == 1261) {
+                        setEditTextViewFocus(2);
+                    } else {
+                        int inputType = editText.getInputType();
+                        if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
+                            String defime = Settings.Secure.getString(editText.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+                            final String IME_GOOGLE = ".*/.MozcService.*";
+                            if (defime.matches(IME_GOOGLE)) {
+                                inputType = EditorInfo.TYPE_TEXT_VARIATION_URI;
+                            } else {
+                                inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                            }
+                        } else {
+                            inputType = EditorInfo.TYPE_CLASS_TEXT;
+                        }
+                        editText.setInputType(inputType);
+                    }
+                    return true;
+                }
+                return false;
             }
         });
     }
