@@ -1527,6 +1527,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
+        if (keyCode == KeyEvent.KEYCODE_ESCAPE) {
+            ((Activity)this.getContext()).onKeyUp(0xffffffc1, null);
+            return true;
+        }
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             ((Activity)this.getContext()).onKeyUp(0xfffffff3, null);
             return true;

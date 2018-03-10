@@ -1572,6 +1572,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean doSendActionBarKey(EmulatorView view, int key) {
+        if (view == null) return false;
         if (key == 999) {
             // do nothing
         } else if (key == 1002) {
@@ -1629,12 +1630,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key == 1358) {
             setCurrentOrientation();
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
+            if (onelineTextBoxEsc()) return true;
             view.restartInputGoogleIme();
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);
             event = new KeyEvent(KeyEvent.ACTION_UP, key);
             dispatchKeyEvent(event);
-
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);
@@ -2247,6 +2248,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
                 sendKeyStrings("\u001b", false);
             }
+            break;
+        case 0xffffffc1:
+            if (onelineTextBoxEsc()) break;
+            sendKeyStrings("\u001b", false);
             break;
         case 0xfffffff1:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
@@ -3239,7 +3244,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         EmulatorView view = getCurrentEmulatorView();
         switch (v.getId()) {
         case R.id.button_esc:
-            if (onelineTextBoxEsc()) break;
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
             break;
         case R.id.button_ctrl:
