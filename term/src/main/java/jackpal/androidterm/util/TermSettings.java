@@ -592,6 +592,7 @@ public class TermSettings {
     }
 
     public String getShell() {
+        if (mShell == null) return AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
         if  (AndroidCompat.SDK >= 24 && mShell.matches("/system/bin/sh.*")) return "";
         return mShell;
     }

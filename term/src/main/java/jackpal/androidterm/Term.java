@@ -1020,9 +1020,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         SyncFileObserver.delete(cacheDir);
         mTermService = null;
         mTSConnection = null;
+
         if (mIabHelper != null) {
-            mIabHelper.dispose();
-            mIabHelper = null;
+            try {
+                mIabHelper.dispose();
+            } catch (Exception e) {
+                Log.w(TermDebug.LOG_TAG, e.toString());
+            } finally {
+                mIabHelper = null;
+            }
         }
     }
 
