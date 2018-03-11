@@ -381,6 +381,7 @@
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
   <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
   <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
+  <string name="title_alt_local_html_viewer">ローカルHTMLビューワ</string>
   <string name="summary_alt_local_html_viewer_on_preference">自動設定</string>
 
 </resources>

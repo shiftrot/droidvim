@@ -198,8 +198,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE    = "com.microsoft.skydrive";
     private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
-        {put("org.mozilla.firefox", "org.mozilla.firefox.App");}
         {put("org.mozilla.firefox_beta", "org.mozilla.firefox_beta.App");}
+        {put("org.mozilla.firefox", "org.mozilla.firefox.App");}
         {put("com.amazon.cloud9", "com.amazon.cloud9.browsing.BrowserActivity");}
     };
 
