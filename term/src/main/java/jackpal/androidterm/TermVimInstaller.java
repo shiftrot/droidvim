@@ -165,11 +165,11 @@ final class TermVimInstaller {
                     installZip(sdcard, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("bin", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    if (AndroidCompat.SDK >= android.os.Build.VERSION_CODES.O) {
-                        id = activity.getResources().getIdentifier("bin_26", "raw", activity.getPackageName());
+                    if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
+                        id = activity.getResources().getIdentifier("bin_am", "raw", activity.getPackageName());
                         installZip(path, getInputStream(activity, id));
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
-                        copyScript(activity.getResources().openRawResource(id),TermService.getAPPFILES()+"/usr/bin/am");
+                        copyScript(activity.getResources().openRawResource(id),TermService.getAPPFILES()+"/bin/am");
                     }
                     String arch = getArch().contains("arm") ? "arm" : "x86";
                     String bin = "bin_" + arch;
