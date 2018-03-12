@@ -348,9 +348,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (event.getAction() != KeyEvent.ACTION_DOWN) {
                 return false;
             }
+
+            if (keyCode == KeycodeConstants.KEYCODE_ESCAPE) {
+                if (onelineTextBoxEsc()) return true;
+                sendKeyStrings("\u001b", false);
+                return true;
+            }
+
             if (!mUseKeyboardShortcuts) {
                 return false;
             }
+
             boolean isCtrlPressed = (event.getMetaState() & KeycodeConstants.META_CTRL_ON) != 0;
             boolean isShiftPressed = (event.getMetaState() & KeycodeConstants.META_SHIFT_ON) != 0;
 
@@ -913,9 +921,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(AM_INTENT_ACTION)) {
+            if (AM_INTENT_ACTION.equals(action)) {
                 doAndroidIntent(intent.getStringExtra("action"), intent.getStringExtra("param"), intent.getStringExtra("mime"));
-            } else if (action.equals(PURCHASES_UPDATED)) {
+            } else if (PURCHASES_UPDATED.equals(action)) {
                 if (mIabHelper != null) mIabHelper.queryInventoryAsync(mGotInventoryListener);
             }
         }
@@ -2198,12 +2206,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
-        case 0xfffffffe:
+        case 0xffff0998:
             if (mTermSessions.size() > 1) {
                 return true;
             }
             // fall into next
-        case 0xffffffff:
+        case 0xffff0999:
             if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
                 doHideSoftKeyboard();
             }
@@ -2244,67 +2252,61 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return false;
             }
         case KeyEvent.KEYCODE_MENU:
-            return super.onKeyUp(keyCode, event);
+            openOptionsMenu();
+            break;
         case 0xffffffc0:
             if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
                 sendKeyStrings("\u001b", false);
             }
             break;
-        case 0xffffffc1:
-            if (onelineTextBoxEsc()) break;
-            sendKeyStrings("\u001b", false);
-            break;
-        case 0xfffffff1:
+        case 0xffff0003:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
             return true;
-        case 0xffffffe0:
+        case 0xffff1010:
             setFunctionBar(0);
             return true;
-        case 0xffffffe1:
+        case 0xffff1011:
             setFunctionBar(1);
             return true;
-        case 0xfffffff2:
+        case 0xffff1002:
             setFunctionBar(2);
             return true;
-        case 0xfffffff3:
-            openOptionsMenu();
-            return true;
-        case 0xfffffff4:
-        case 0xfffffff5:
+        case 0xffff0033:
+        case 0xffff0333:
             if (!canPaste()) {
                 alert(Term.this.getString(R.string.toast_clipboard_error));
                 return true;
             }
             copyClipboardToFile(mSettings.getHomePath()+"/.clipboard");
-            if (keyCode == 0xfffffff5) sendKeyStrings(":ATEMod _paste\r", true);
+            if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
             return true;
-        case 0xfffffff6:
-        case 0xfffffff7:
-            mVimPaste = (keyCode == 0xfffffff6) ? true : false;
+        case 0xffff1006:
+        case 0xffff1007:
+            mVimPaste = (keyCode == 0xffff1006) ? true : false;
             return true;
-        case 0xfffffff8:
+        case 0xffff1008:
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 setupStorageSymlinks(this);
             }
             return true;
-        case 0xfffffff9:
+        case 0xffff1009:
             return true;
-        case 0xffffff56:
+        case 0xffff0056:
             setEditTextViewFocus(0);
             return true;
-        case 0xffffff57:
+        case 0xffff0057:
             setEditTextViewFocus(1);
             return true;
-        case 0xffffff58:
+        case 0xffff0058:
             setEditTextViewFocus(2);
             return true;
-        case 0xfffffffa:
+        case 0xffff0030:
             clearClipBoard();
             return true;
-        case 0xfffffffb:
+        case 0xffff1001:
             AndroidIntent(mSettings.getHomePath() + "/.intent");
             return true;
-        case 0xfffffffc:
+        case 0xffff9998:
             networkUpdate();
             return true;
         default:
