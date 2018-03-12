@@ -273,6 +273,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         @Override
         public boolean onDown(MotionEvent e) {
             mDeltaColumnsReminder = 0.0f;
+            onLastKey();
             return false;
         }
 
@@ -338,6 +339,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
      */
     private View.OnKeyListener mKeyListener = new View.OnKeyListener() {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
+            onLastKey();
             return backkeyInterceptor(keyCode, event) || keyboardShortcuts(keyCode, event);
         }
 
@@ -390,6 +392,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return false;
         }
     };
+
+    long mLastKeyPress = System.currentTimeMillis();
+    private void onLastKey() {
+        mLastKeyPress = System.currentTimeMillis();
+        if (mKeepScreenEnableAuto) {
+            boolean keepScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
+            if (!keepScreen) doToggleKeepScreen();
+        }
+    }
 
     private Handler mHandler = new Handler();
     private SyncFileObserver mSyncFileObserver = null;
@@ -1024,6 +1035,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mOrientation = -1;
             final int MAX_SYNC_FILES = 100;
             if (FLAVOR_VIM && mSyncFileObserver != null) mSyncFileObserver.clearCache(MAX_SYNC_FILES);
+            mKeepScreenHandler.removeCallbacksAndMessages(null);
         }
         File cacheDir = new File(INTENT_CACHE_DIR);
         SyncFileObserver.delete(cacheDir);
@@ -1237,7 +1249,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doScreenMenu() {
         String screenLockItem;
-        boolean keepScreen = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
+        final boolean keepScreen = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
         if (keepScreen) {
             screenLockItem = this.getString(R.string.disable_keepscreen);
         } else {
@@ -1257,7 +1269,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else if (which == 2) {
                             doCopyAll();
                         } else if (which == 3) {
+                            if (keepScreen) mKeepScreenEnableAuto = false;
                             doToggleKeepScreen();
+                            if (!keepScreen) mKeepScreenEnableAuto = true;
                         } else {
                             doResetTerminal(true);
                             updatePrefs();
@@ -1553,6 +1567,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_toggle_wakelock) {
             doToggleWakeLock();
         } else if (id == R.id.menu_disable_keepscreen) {
+            mKeepScreenEnableAuto = false;
             doToggleKeepScreen();
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
@@ -2947,31 +2962,43 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doToggleWakeLock() {
     }
 
-    final Handler handler = new Handler();
+    private final Handler mKeepScreenHandler = new Handler();
+    private boolean mKeepScreenEnableAuto = false;
     private void doToggleKeepScreen() {
         boolean keepScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
         if (keepScreen) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            mKeepScreenHandler.removeCallbacksAndMessages(null);
             final Toast toast = Toast.makeText(this, this.getString(R.string.keepscreen_deacitvated), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            if (!mKeepScreenEnableAuto) toast.show();
         } else {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             final int timeout = mSettings.getKeepScreenTime();
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             String mes = String.format(this.getString(R.string.keepscreen_notice), timeout);
-            alert(mes);
+            if (!mKeepScreenEnableAuto) alert(mes);
             final Toast toast = Toast.makeText(this, this.getString(R.string.keepscreen_deacitvated), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             final Runnable r = new Runnable() {
                 @Override
                 public void run() {
+                    mKeepScreenHandler.removeCallbacks(this);
                     boolean keepScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-                    if (keepScreen) getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    handler.removeCallbacks(this);
-                    toast.show();
+                    final long timeoutMills = mSettings.getKeepScreenTime()*60L*1000L;
+                    final long currentTimeMillis = System.currentTimeMillis();
+                    if (keepScreen) {
+                        if (currentTimeMillis >= mLastKeyPress + timeoutMills) {
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                            if (!mKeepScreenEnableAuto) toast.show();
+                        } else {
+                            mKeepScreenHandler.postDelayed(this, timeoutMills - (currentTimeMillis - mLastKeyPress));
+                        }
+                    }
                 }
             };
-            handler.postDelayed(r, timeout*60*1000L);
+            mKeepScreenHandler.removeCallbacksAndMessages(null);
+            long timeoutMills = mSettings.getKeepScreenTime()*60L*1000L;
+            mKeepScreenHandler.postDelayed(r, timeoutMills);
         }
     }
 
@@ -3034,6 +3061,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                onLastKey();
                 if (getCurrentEmulatorView().preIMEShortcuts(keyCode, event)) {
                     int action = mSettings.getImeShortcutsAction();
                     if (action == 0) {
