@@ -107,13 +107,15 @@ final class TermVimInstaller {
 
     static boolean doInstallTerm(final Activity activity) {
         final String sdcard = TermService.getAPPEXTFILES();
+        final String appFiles = TermService.getAPPFILES();
+
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
-        File dir = new File(sdcard+"/terminfo");
+        File dir = new File(appFiles+"/terminfo");
         boolean doInstall = !dir.isDirectory() || !pref.getString("versionName", "").equals(TERMVIM_VERSION);
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo", "raw", activity.getPackageName());
-            installZip(sdcard, getInputStream(activity, id));
+            installZip(appFiles, getInputStream(activity, id));
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                 File fontPath = new File(TermPreferences.FONTPATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
