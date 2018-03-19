@@ -37,13 +37,13 @@ android.libraryVariants.all { variant ->
         into "$buildDir/intermediates/bundles/${variant.dirName}/aidl/"
     }
 
-    variant.javaCompile.dependsOn packageAidl
+    variant.javaCompiler.dependsOn packageAidl
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support:support-annotations:27.1.0'
-    compile 'com.android.support:support-v4:27.1.0'
+    implementation('com.android.support:appcompat-v7:27.1.0')
+    implementation('com.android.support:support-annotations:27.1.0')
+    implementation('com.android.support:support-v4:27.1.0')
 }
