@@ -1026,6 +1026,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         saveSyncFileObserver();
         if (mStopServiceOnFinish) {
             stopService(TSIntent);
+            mFirstInputtype = true;
             mFunctionBar = -1;
             mOrientation = -1;
             final int MAX_SYNC_FILES = 100;
@@ -2672,6 +2673,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doResetTerminal(boolean keyboard) {
+        doRestartSoftKeyboard();
         if (keyboard && !mHaveFullHwKeyboard) doHideSoftKeyboard();
         TermSession session = getCurrentTermSession();
         if (session != null) {
@@ -2931,6 +2933,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
          String template = r.getString(enabledId);
          String result = template.replaceAll(regex, keyName);
          return result;
+    }
+
+    private void doRestartSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+            getSystemService(Context.INPUT_METHOD_SERVICE);
+        EmulatorView view = getCurrentEmulatorView();
+        if (imm != null && view != null) imm.restartInput(view);
     }
 
     private void doToggleSoftKeyboard() {

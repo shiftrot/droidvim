@@ -512,7 +512,7 @@ class TermKeyListener {
 
         if (result > -1) {
             mAltKey.adjustAfterKeypress();
-            mCapKey.adjustAfterKeypress();
+            // mCapKey.adjustAfterKeypress();
             mControlKey.adjustAfterKeypress();
             mFnKey.adjustAfterKeypress();
             updateCursorMode();
@@ -549,11 +549,7 @@ class TermKeyListener {
 
         case KeyEvent.KEYCODE_SHIFT_LEFT:
         case KeyEvent.KEYCODE_SHIFT_RIGHT:
-            if (allowToggle) {
-                mCapKey.onPress();
-                updateCursorMode();
-            }
-            break;
+            return;
 
         case KEYCODE_CTRL_LEFT:
         case KEYCODE_CTRL_RIGHT:
@@ -575,8 +571,7 @@ class TermKeyListener {
         default: {
             int metaState = event.getMetaState();
             chordedCtrl = ((META_CTRL_ON & metaState) != 0);
-            boolean effectiveCaps = allowToggle &&
-                    (mCapKey.isActive());
+            boolean effectiveCaps = allowToggle && (mCapKey.isActive());
             boolean effectiveAlt = allowToggle && mAltKey.isActive();
             int effectiveMetaState = metaState & (~META_CTRL_MASK);
             if (effectiveCaps) {
@@ -788,11 +783,7 @@ class TermKeyListener {
             break;
         case KeyEvent.KEYCODE_SHIFT_LEFT:
         case KeyEvent.KEYCODE_SHIFT_RIGHT:
-            if (allowToggle) {
-                mCapKey.onRelease();
-                updateCursorMode();
-            }
-            break;
+            return;
 
         case KEYCODE_CTRL_LEFT:
         case KEYCODE_CTRL_RIGHT:

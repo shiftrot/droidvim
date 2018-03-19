@@ -153,6 +153,11 @@ class TranscriptScreen implements Screen {
         mData.blockSet(sx, sy, w, h, val, style);
     }
 
+    static private int mForceFlush = 128;
+    static public final void setForceFlush(int chr) {
+        mForceFlush = chr;
+    }
+
     /**
      * Draw a row of text. Out-of-bounds rows are blank, not errors.
      *
@@ -273,7 +278,7 @@ class TranscriptScreen implements Screen {
             runWidth += width;
             nextColumn += width;
             index += incr;
-            if (width > 1) {
+            if (line[index-incr] >= mForceFlush) {
                 /* We cannot draw two or more East Asian wide characters in the
                    same run, because we need to make each wide character take
                    up two columns, which may not match the font's idea of the
@@ -300,20 +305,27 @@ class TranscriptScreen implements Screen {
             if ((imeColor <= IME_UNDERLINE) || (imeSpannableString == null)) {
                 int underline = imeSpannableString == null ? 0 : splitComposingText(imeSpannableString);
                 int textStyle = underline == 0 ? TextStyle.fxUnderline : TextStyle.fxNormal;
-                if (imeColor == IME_NONE) {
+                int fg = 0x0f;
+                int bg = 0x00;
+                boolean selectionStyle = true;
+                if (imeSpannableString == null) {
+                    fg = 256;
+                    bg = 257;
+                    selectionStyle = false;
+                } else if (imeColor == IME_NONE) {
                     underline = 0;
                     textStyle = TextStyle.fxNormal;
                 }
 
                 renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                        imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, textStyle),
+                        imeOffset, imeLength, selectionStyle, TextStyle.encode(fg, bg, textStyle),
                         -1, 0, 0, 0, 0);
                 if (underline > 0) {
                     imeText = imeText.substring(0, underline);
                     int uimeLength = Math.min(columns, imeText.length());
                     int uimeOffset = imeText.length() - uimeLength;
                     renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                            uimeOffset, uimeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxUnderline),
+                            uimeOffset, uimeLength, selectionStyle, TextStyle.encode(fg, bg, TextStyle.fxUnderline),
                             -1, 0, 0, 0, 0);
                 }
             } else {
@@ -377,7 +389,7 @@ class TranscriptScreen implements Screen {
     }
 
     public void setIME(int ime) {
-        mIMEDetect = ime;
+        mIMEDetect = (ime == IME_GBOARD) ? IME_GOOGLE : ime;
     }
 
     private int getStringWidth(String text) {

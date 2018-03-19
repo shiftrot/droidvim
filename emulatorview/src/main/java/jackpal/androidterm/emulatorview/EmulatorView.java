@@ -20,10 +20,8 @@ import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
-import jackpal.androidterm.emulatorview.compat.Patterns;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Hashtable;
 
 import android.annotation.SuppressLint;
@@ -43,7 +41,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
@@ -475,6 +472,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         outAttrs.inputType = mUseCookedIme ?
                 EditorInfo.TYPE_CLASS_TEXT | mIMEInputType:
                 EditorInfo.TYPE_NULL;
+        outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN;
         return new BaseInputConnection(this, true) {
             /**
              * Used to handle composing text requests
@@ -509,9 +507,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "error writing ", e);
-                }
-                if (n > 0 && mIme == 4 && mIMEGoogleInput) {
-                    restartInput();
                 }
             }
 
@@ -563,53 +558,53 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 clearSpecialKeyStatus();
             }
 
+            @Override
             public boolean beginBatchEdit() {
                 if (LOG_IME) {
                     Log.w(TAG, "beginBatchEdit");
                 }
-                if (IMECtrlBeginBatchEditDisable() == true) {
-                    return true;
-                }
-                setImeBuffer("");
-                mCursor = 0;
-                mComposingTextStart = 0;
-                mComposingTextEnd = 0;
-                return true;
+                return super.beginBatchEdit();
             }
 
+            @Override
             public boolean clearMetaKeyStates(int arg0) {
                 if (LOG_IME) {
                     Log.w(TAG, "clearMetaKeyStates " + arg0);
                 }
-                return false;
+                return true;
             }
 
+            @Override
             public boolean commitCompletion(CompletionInfo arg0) {
                 if (LOG_IME) {
                     Log.w(TAG, "commitCompletion " + arg0);
                 }
-                return false;
+                return super.commitCompletion(arg0);
             }
 
+            @Override
             public boolean endBatchEdit() {
                 if (LOG_IME) {
                     Log.w(TAG, "endBatchEdit");
                 }
-                return true;
+                return super.endBatchEdit();
             }
 
+            @Override
             public boolean finishComposingText() {
                 if (LOG_IME) {
                     Log.w(TAG, "finishComposingText");
                 }
                 sendText(mImeBuffer);
                 setImeBuffer("");
+                mImeSpannableString = null;
                 mComposingTextStart = 0;
                 mComposingTextEnd = 0;
                 mCursor = 0;
                 return true;
             }
 
+            @Override
             public int getCursorCapsMode(int reqModes) {
                 if (LOG_IME) {
                     Log.w(TAG, "getCursorCapsMode(" + reqModes + ")");
@@ -621,14 +616,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return mode;
             }
 
-            public ExtractedText getExtractedText(ExtractedTextRequest arg0,
-                    int arg1) {
+            @Override
+            public ExtractedText getExtractedText(ExtractedTextRequest arg0, int arg1) {
                 if (LOG_IME) {
                     Log.w(TAG, "getExtractedText" + arg0 + "," + arg1);
                 }
-                return null;
+                ExtractedText et = new ExtractedText();
+                et.text = mImeBuffer;
+                return et;
             }
 
+            @Override
             public CharSequence getTextAfterCursor(int n, int flags) {
                 if (LOG_IME) {
                     Log.w(TAG, "getTextAfterCursor(" + n + "," + flags + ")");
@@ -640,6 +638,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return mImeBuffer.substring(mCursor, mCursor + len);
             }
 
+            @Override
             public CharSequence getTextBeforeCursor(int n, int flags) {
                 if (LOG_IME) {
                     Log.w(TAG, "getTextBeforeCursor(" + n + "," + flags + ")");
@@ -651,6 +650,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return mImeBuffer.substring(mCursor-len, mCursor);
             }
 
+            @Override
             public boolean performContextMenuAction(int arg0) {
                 if (LOG_IME) {
                     Log.w(TAG, "performContextMenuAction" + arg0);
@@ -658,6 +658,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
+            @Override
             public boolean performPrivateCommand(String arg0, Bundle arg1) {
                 if (LOG_IME) {
                     Log.w(TAG, "performPrivateCommand" + arg0 + "," + arg1);
@@ -665,6 +666,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
+            @Override
             public boolean reportFullscreenMode(boolean arg0) {
                 if (LOG_IME) {
                     Log.w(TAG, "reportFullscreenMode" + arg0);
@@ -672,13 +674,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
+            @Override
             public boolean commitCorrection (CorrectionInfo correctionInfo) {
                 if (LOG_IME) {
                     Log.w(TAG, "commitCorrection");
                 }
-                return true;
+                return false;
             }
 
+            @Override
             public boolean commitText(CharSequence text, int newCursorPosition) {
                 if (LOG_IME) {
                     Log.w(TAG, "commitText(\"" + text + "\", " + newCursorPosition + ")");
@@ -687,6 +691,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 sendText(text);
                 setImeBuffer("");
                 mCursor = 0;
+                if (mIme == IME_ID_SWIFT && text.toString().equals(" ")) {
+                    restartInput();
+                }
                 return true;
             }
 
@@ -706,8 +713,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     mCursor -= mComposingTextEnd - mComposingTextStart;
                 }
                 mComposingTextEnd = mComposingTextStart = 0;
+                mImeSpannableString = null;
             }
 
+            @Override
             public boolean deleteSurroundingText(int leftLength, int rightLength) {
                 if (LOG_IME) {
                     Log.w(TAG, "deleteSurroundingText(" + leftLength +
@@ -723,14 +732,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     sendKeyEvent(
                         new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                 }
-                if (mIme == 5 && mComposingTextStart == 0 && mComposingTextEnd == 0) {
-                    clearComposingText();
-                    restartInput();
-                }
                 // TODO: handle forward deletes.
                 return true;
             }
 
+            @Override
             public boolean performEditorAction(int actionCode) {
                 if (LOG_IME) {
                     Log.w(TAG, "performEditorAction(" + actionCode + ")");
@@ -740,15 +746,16 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     String text = mImeBuffer;
                     if ("".equals(text)) {
                         text = "\r";
+                        if (mIme == IME_ID_SWIFT) setImeBuffer("");
                     } else {
                         clearComposingText();
-                        restartInput();
                     }
                     sendText(text);
                 }
                 return true;
             }
 
+            @Override
             public boolean sendKeyEvent(KeyEvent event) {
                 if (LOG_IME) {
                     Log.w(TAG, "sendKeyEvent(" + event + ")");
@@ -761,6 +768,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
+            @Override
             public boolean setComposingText(CharSequence text, int newCursorPosition) {
                 if (LOG_IME) {
                     Log.w(TAG, "setComposingText(\"" + text + "\", " + newCursorPosition + ")");
@@ -774,19 +782,23 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mComposingTextEnd = mComposingTextStart + text.length();
                 mCursor = newCursorPosition > 0 ? mComposingTextEnd + newCursorPosition - 1
                         : mComposingTextStart - newCursorPosition;
-                if (text instanceof SpannableString) {
+                if (mIme != IME_ID_GOOGLE_JA && text.length() == 0) {
+                    mImeSpannableString = null;
+                } else if (text instanceof SpannableString) {
                     mImeSpannableString = (SpannableString)text;
                 }
-                if (mIme == 4 && mIMEGoogleInput) {
+                if (mIme == IME_ID_GOOGLE_JA && mIMEGoogleInput) {
                     if (text.length() > 0) {
                         clearComposingText();
                         sendText(text);
+                        restartInput();
                     }
                 }
                 invalidate();
                 return true;
             }
 
+            @Override
             public boolean setSelection(int start, int end) {
                 if (LOG_IME) {
                     Log.w(TAG, "setSelection" + start + "," + end);
@@ -803,18 +815,26 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
+            @Override
             public boolean setComposingRegion(int start, int end) {
                 if (LOG_IME) {
                     Log.w(TAG, "setComposingRegion " + start + "," + end);
                 }
-                if (start < end && start > 0 && end < mImeBuffer.length()) {
+                if (mIme == IME_ID_GBOARD) {
+                    restartInput();
+                    return true;
+                }
+                int s = start < end ? start : end;
+                int e = start > end ? start : end;
+                if (s < e && start > 0 && e < mImeBuffer.length()) {
                     clearComposingText();
-                    mComposingTextStart = start;
-                    mComposingTextEnd = end;
+                    mComposingTextStart = s;
+                    mComposingTextEnd = e;
                 }
                 return true;
             }
 
+            @Override
             public CharSequence getSelectedText(int flags) {
                 if (LOG_IME) {
                     Log.w(TAG, "getSelectedText " + flags);
@@ -905,7 +925,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIMECtrlBeginBatchEditDisable = getDevBoolean(this.getContext(), "BatchEditDisable", true);
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
 
-        IME_GOOGLE_CLONE = getDevString(this.getContext(), "IME_GOOGLE_CLONE", "");
         setIME(mEmulator);
         requestFocus();
     }
@@ -1290,6 +1309,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
+
         // Translate the keyCode into an ASCII character.
 
         try {
@@ -1474,15 +1494,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 58:
                 ((Activity)this.getContext()).onKeyUp(0xffff0058, null);
                 break;
-            case 63:
-                String ime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
-                if (getDevString(this.getContext(), "IME_GOOGLE_CLONE", "").equals(ime)) {
-                    ime = "";
-                }
-                setDevString(this.getContext(), "IME_GOOGLE_CLONE", ime);
-                IME_GOOGLE_CLONE = ime;
-                if (mEmulator != null) setIME(mEmulator);
-                break;
             case 500:
                 setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
                 break;
@@ -1636,8 +1647,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // com.justsystems.atokmobile.tv.service/.AtokInputMethodService
     private final static String IME_ATOK = "com.justsystems.atokmobile..*";
     // com.google.android.inputmethod.japanese/.MozcService
-    private final static String IME_GOOGLE = ".*/.MozcService.*";
-    private static String IME_GOOGLE_CLONE = "";
+    private final static String IME_GOOGLE_JA = ".*/.MozcService.*";
+    private final static String IME_SWIFT = "com.touchtype.swiftkey.*";
+    private static String IME_GOOGLE_JA_CLONE = "";
+    private final int IME_ID_ERROR     = 0;
+    private final int IME_ID_NONE      = 1;
+    private final int IME_ID_NORMAL    = 2;
+    private final int IME_ID_ATOK      = 3;
+    private final int IME_ID_GOOGLE_JA = 4;
+    private final int IME_ID_GBOARD    = 5;
+    private final int IME_ID_WNNLAB    = 6;
+    private final int IME_ID_SWIFT     = 7;
     // jp.co.omronsoft.openwnn/.OpenWnnJAJP
     // jp.co.omronsoft.wnnlab/.standardcommon.IWnnLanguageSwitcher
     // jp.co.omronsoft.iwnnime.ml/.standardcommon.IWnnLanguageSwitcher
@@ -1645,19 +1665,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static String IME_WNNLAB = "jp.co.omronsoft.wnnlab.*";
     private static int mIme = -1;
     private int setIME(TerminalEmulator view) {
-        if (view == null) return 0;
+        if (view == null) return IME_ID_ERROR;
         String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
-        int ime = 2;
-        if (!IME_GOOGLE_CLONE.equals("")  && defime.matches(IME_GOOGLE_CLONE)) {
-            ime = 4;
-        } else if (defime.matches(IME_ATOK)) {
-            ime = 3;
-        } else if (defime.matches(IME_GOOGLE)) {
-            ime = 4;
-        } else if (defime.matches(IME_GBOARD)) {
-            ime = 5;
-        } else if (defime.matches(IME_WNNLAB)) {
-            ime = 6;
+        int ime = IME_ID_NORMAL;
+        if (defime.matches(IME_GBOARD)) {
+            ime = IME_ID_GBOARD;
+        } else if (defime.matches(IME_SWIFT)) {
+            ime = IME_ID_SWIFT;
+        } else if (defime.matches(IME_GOOGLE_JA)) {
+            ime = IME_ID_GOOGLE_JA;
         }
         if (mIme != ime) {
             TranscriptScreen transcriptScreen = view.getScreen();
@@ -1701,32 +1717,32 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public void restartInputGoogleIme() {
-        if (mIme != 4 || mIMEGoogleInput) return;
+        if (mIme != IME_ID_GOOGLE_JA || mIMEGoogleInput) return;
         restartInput();
     }
 
     private void doShowSoftKeyboard() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
+        if (imm != null) imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
     }
 
     private void doHideSoftKeyboard() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+        if (imm != null) imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
     private void doToggleSoftKeyboard() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
     private void doInputMethodPicker() {
         Activity activity = (Activity)this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showInputMethodPicker();
+        if (imm != null) imm.showInputMethodPicker();
     }
 
     @Override
@@ -1771,6 +1787,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     };
 
     public boolean preIMEShortcuts(int keyCode, KeyEvent event) {
+        int keyAction = event.getAction();
         boolean focus = this.hasFocus();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
         boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
@@ -1790,14 +1807,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean grave = mGrave && (keyCode == KeycodeConstants.KEYCODE_GRAVE) && (!ctrlOn && !altOn && !metashiftOn);
         boolean sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
         boolean cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metashiftOn);
-        if (((ag || ae || zh || sc || grave || cj) && event.getAction() == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && event.getAction() == KeyEvent.ACTION_UP)) {
+        if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && keyAction == KeyEvent.ACTION_UP)) {
             if (!focus) return true;
             doImeShortcutsAction();
             return true;
         }
         if (!focus) return false;
-        if (((ag || ae || zh || sc || grave || cj) && event.getAction() == KeyEvent.ACTION_UP)) return true;
-        if (((as || cs || ss) && event.getAction() == KeyEvent.ACTION_DOWN)) return true;
+        if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_UP)) return true;
+        if (((as || cs || ss) && keyAction == KeyEvent.ACTION_DOWN)) return true;
         if ((mAltEsc || mAltSpace || mAltGrave) && altPressed) return true;
         return false;
     }
