@@ -46,7 +46,7 @@
         <item>1</item>
     </string-array>
 
-    <string-array name="entryvalues_cursorstyle_preference">
+    <string-array name="entryvalues_alt_cursorstyle_preference">
         <item>0</item>
         <item>1</item>
         <item>2</item>

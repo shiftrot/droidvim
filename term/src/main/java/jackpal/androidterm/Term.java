@@ -1196,10 +1196,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             ((EmulatorView) v).setDensity(metrics);
             ((TermView) v).updatePrefs(mSettings);
             setPreIMEShortsuts((EmulatorView) v);
-            if (mSettings.useCookedIME() == false) {
+            if (!mSettings.useCookedIME()) {
                 ((EmulatorView) v).setIMECtrlBeginBatchEditDisable(false);
             }
         }
+        EmulatorView.setCursorHeight(mSettings.getCursorStyle());
 
         if (mTermSessions != null) {
             for (TermSession session : mTermSessions) {

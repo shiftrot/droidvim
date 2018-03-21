@@ -2173,6 +2173,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mKeyListener.setmIgnoreXoff(flag);
     }
 
+    static public void setCursorHeight(int height) {
+        PaintRenderer.setCursorHeight(height);
+    }
+
     /**
      * Set the keycode corresponding to the Ctrl key.
      */

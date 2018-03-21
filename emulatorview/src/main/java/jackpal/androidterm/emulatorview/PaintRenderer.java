@@ -105,6 +105,7 @@ class PaintRenderer extends BaseTextRenderer {
         if (cursorVisible) {
             cursorX = x + cursorOffset * mCharWidth;
             drawCursorImp(canvas, (int) cursorX, y, cursorWidth * mCharWidth, mCharHeight, cursorMode);
+            if (mCursorHeightMode == 1) cursorVisible = false;
         }
 
         boolean invisible = (effect & TextStyle.fxInvisible) != 0;
@@ -132,22 +133,27 @@ class PaintRenderer extends BaseTextRenderer {
             float textOriginY = y - mCharDescent;
 
             if (cursorVisible) {
-                // Text before cursor
-                int countBeforeCursor = cursorIndex - index;
-                int countAfterCursor = count - (countBeforeCursor + cursorIncr);
-                if (countBeforeCursor > 0){
-                    canvas.drawText(text, index, countBeforeCursor, left, textOriginY, mTextPaint);
-                }
-                // Text at cursor
-                mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
-                canvas.drawText(text, cursorIndex, cursorIncr, cursorX,
-                        textOriginY, mTextPaint);
-                // Text after cursor
-                if (countAfterCursor > 0) {
-                    mTextPaint.setColor(textPaintColor);
-                    canvas.drawText(text, cursorIndex + cursorIncr, countAfterCursor,
-                            cursorX + cursorWidth * mCharWidth,
-                            textOriginY, mTextPaint);
+                if (mCursorHeightMode == 2) {
+                    // Text before cursor
+                    int countBeforeCursor = cursorIndex - index;
+                    int countAfterCursor = count - (countBeforeCursor + cursorIncr);
+                    if (countBeforeCursor > 0){
+                        canvas.drawText(text, index, countBeforeCursor, left, textOriginY, mTextPaint);
+                    }
+                    // Text at cursor
+                    mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
+                    canvas.drawText(text, cursorIndex, cursorIncr, cursorX, textOriginY, mTextPaint);
+                    // Text after cursor
+                    if (countAfterCursor > 0) {
+                        mTextPaint.setColor(textPaintColor);
+                        canvas.drawText(text, cursorIndex + cursorIncr, countAfterCursor,
+                                cursorX + cursorWidth * mCharWidth, textOriginY, mTextPaint);
+                    }
+                } else {
+                    canvas.drawText(text, index, count, left, textOriginY, mTextPaint);
+                    drawCursorImp(canvas, (int) cursorX, y, cursorWidth * mCharWidth, mCharHeight, cursorMode);
+                    mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
+                    canvas.drawText(text, cursorIndex, cursorIncr, cursorX, textOriginY, mTextPaint);
                 }
             } else {
                 canvas.drawText(text, index, count, left, textOriginY, mTextPaint);

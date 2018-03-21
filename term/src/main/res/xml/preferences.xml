@@ -81,6 +81,15 @@
                 android:entryValues="@array/entryvalues_composingtext_preference"
                 android:dialogTitle="@string/dialog_title_composingtext_preference" />
 
+        <ListPreference
+                android:key="cursorstyle"
+                android:defaultValue="@string/pref_cursorstyle_default"
+                android:title="@string/title_cursorstyle_preference"
+                android:summary="@string/summary_cursorstyle_preference"
+                android:entries="@array/entries_alt_cursorstyle_preference"
+                android:entryValues="@array/entryvalues_alt_cursorstyle_preference"
+                android:dialogTitle="@string/dialog_title_cursorstyle_preference" />
+
         <EditTextPreference
                 android:key="keepscreentime"
                 android:defaultValue="@string/pref_keep_screen_default"
@@ -90,15 +99,6 @@
                 android:inputType="number" />
 
 <!--
-        <ListPreference
-                android:key="cursorstyle"
-                android:defaultValue="@string/pref_cursorstyle_default"
-                android:title="@string/title_cursorstyle_preference"
-                android:summary="@string/summary_cursorstyle_preference"
-                android:entries="@array/entries_cursorstyle_preference"
-                android:entryValues="@array/entryvalues_cursorstyle_preference"
-                android:dialogTitle="@string/dialog_title_cursorstyle_preference" />
-
         <ListPreference
                 android:key="cursorblink"
                 android:defaultValue="@string/pref_cursorblink_default"

@@ -50,6 +50,11 @@
         <item>Vertical bar</item>
     </string-array>
 
+    <string-array name="entries_alt_cursorstyle_preference">
+        <item>Rectangle</item>
+        <item>Underline</item>
+    </string-array>
+
     <string-array name="entries_fontsize_preference">
         <item>4 x 8 pixels</item>
         <item>6 pt</item>

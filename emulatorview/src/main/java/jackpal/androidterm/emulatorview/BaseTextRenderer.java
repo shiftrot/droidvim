@@ -376,6 +376,13 @@ abstract class BaseTextRenderer implements TextRenderer {
         mReverseVideo = reverseVideo;
     }
 
+    static float mCursorHeight = 1.0f;
+    static int mCursorHeightMode = 0;
+    static public void setCursorHeight(int cursorHeight) {
+        mCursorHeightMode = cursorHeight;
+        mCursorHeight = mCursorHeightMode == 1 ? 3.0f : 1.0f;
+    }
+
     private void setDefaultColors(ColorScheme scheme) {
         mPalette = cloneDefaultColors();
         mPalette[TextStyle.ciForeground] = scheme.getForeColor();
@@ -394,7 +401,7 @@ abstract class BaseTextRenderer implements TextRenderer {
     protected void drawCursorImp(Canvas canvas, float x, float y, float charWidth, float charHeight,
             int cursorMode) {
         if (cursorMode == 0) {
-            canvas.drawRect(x,  y - charHeight, x + charWidth, y, mCursorScreenPaint);
+            canvas.drawRect(x,  y - charHeight/mCursorHeight, x + charWidth, y, mCursorScreenPaint);
             return;
         }
 

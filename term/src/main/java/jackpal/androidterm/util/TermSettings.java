@@ -99,6 +99,7 @@ public class TermSettings {
     private static final String ONELINE_TEXTBOX_CR_KEY = "oneline_textbox_cr";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
+    private static final String CURSORSTYLE_KEY = "cursorstyle";
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String FONTLEADING_KEY = "fontleading";
     private static final String FONTFILE_KEY = "fontfile";
@@ -288,7 +289,7 @@ public class TermSettings {
         mOnelineTextBoxCr = readBooleanPref(ONELINE_TEXTBOX_CR_KEY, mOnelineTextBoxCr);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
-        // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
+        mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 1);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readFloatPref(FONTSIZE_KEY, mFontSize, 288.0f);
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);
