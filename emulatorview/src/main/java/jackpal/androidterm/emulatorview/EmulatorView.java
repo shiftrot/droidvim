@@ -2177,6 +2177,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         PaintRenderer.setCursorHeight(height);
     }
 
+    static public void setForceFlush(boolean flush) {
+        int chr = flush ? -1 : 128;
+        TranscriptScreen.setForceFlush(chr);
+    }
+
     /**
      * Set the keycode corresponding to the Ctrl key.
      */

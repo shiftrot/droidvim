@@ -53,6 +53,8 @@
     <string-array name="entries_alt_cursorstyle_preference">
         <item>Rectangle</item>
         <item>Underline</item>
+        <item>Rectangle (Experimental)</item>
+        <item>Underline (Experimental)</item>
     </string-array>
 
     <string-array name="entries_fontsize_preference">

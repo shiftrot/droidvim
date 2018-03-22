@@ -289,7 +289,7 @@ public class TermSettings {
         mOnelineTextBoxCr = readBooleanPref(ONELINE_TEXTBOX_CR_KEY, mOnelineTextBoxCr);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
-        mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 1);
+        mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 3);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readFloatPref(FONTSIZE_KEY, mFontSize, 288.0f);
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);

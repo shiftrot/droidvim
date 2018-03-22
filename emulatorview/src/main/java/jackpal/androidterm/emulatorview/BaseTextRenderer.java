@@ -380,7 +380,7 @@ abstract class BaseTextRenderer implements TextRenderer {
     static int mCursorHeightMode = 0;
     static public void setCursorHeight(int cursorHeight) {
         mCursorHeightMode = cursorHeight;
-        mCursorHeight = mCursorHeightMode == 1 ? 3.0f : 1.0f;
+        mCursorHeight = (mCursorHeightMode == 1 || mCursorHeightMode == 3) ? 3.0f : 1.0f;
     }
 
     private void setDefaultColors(ColorScheme scheme) {

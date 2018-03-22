@@ -140,9 +140,9 @@
    <string name="summary_theme_preference">アプリのテーマを選択する (要再起動).</string>
    <string name="dialog_title_theme_preference">テーマ</string>
 
-   <string name="title_cursorstyle_preference">カーソルのスタイル</string>
-   <string name="summary_cursorstyle_preference">カーソルスタイルの選択</string>
-   <string name="dialog_title_cursorstyle_preference">カーソルスタイル</string>
+   <string name="title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>
+   <string name="summary_cursorstyle_preference">カーソルスタイルとレンダリングモードの選択</string>
+   <string name="dialog_title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>
 
    <string name="title_cursorblink_preference">カーソルの点滅</string>
    <string name="summary_cursorblink_preference">カーソルの点滅を選択</string>
