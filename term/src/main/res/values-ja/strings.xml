@@ -171,7 +171,7 @@
    <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfの等幅フォントファイルを選択してください.</string>
 
    <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
-   <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (要再起動)</string>
+   <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う.</string>
    <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
 
    <string name="title_color_preference">色</string>

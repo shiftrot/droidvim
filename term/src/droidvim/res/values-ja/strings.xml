@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="summary_color_preference">端末の表示色を選択する.\nVimのテキスト色はcolorscheme(256色対応)でも設定可能です.</string>
+    <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (:help ambiwidth)</string>
 </resources>

@@ -180,7 +180,7 @@
    <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
 
    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
-   <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts (restart required).</string>
+   <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts.</string>
    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
 
    <string name="title_color_preference">Colors</string>
