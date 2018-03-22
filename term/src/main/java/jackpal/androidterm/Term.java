@@ -238,12 +238,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             // Let the EmulatorView handle taps if mouse tracking is active
             if (view.isMouseTrackingActive()) return false;
 
-            //Check for link at tap location
-            String link = view.getURLat(e.getX(), e.getY());
-            if(link != null)
-                execURL(link);
-            else
-                doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
+            doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
             return true;
         }
 
