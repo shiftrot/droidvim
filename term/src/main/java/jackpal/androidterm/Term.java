@@ -75,6 +75,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -178,8 +179,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_FILE_PICKER = 2;
     public static final int REQUEST_FILE_DELETE = 3;
     public static final int REQUEST_BILLING = 4;
-    public static final int REQUEST_DROPBOX = 5;
-    public static final int REQUEST_GOOGLEDRIVE = 6;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -598,20 +597,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     button.setText(R.string.title_app_button);
                 }
             }
+            String launchApp = this.getString(R.string.launch_app);
             if (isAppInstalled(APP_DROPBOX)) {
                 button = (Button)findViewById(R.id.drawer_dropbox_button);
                 button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(this.getString(R.string.dropbox));
+                mFilePickerItems.add(this.getString(R.string.dropbox)+launchApp);
             }
             if (isAppInstalled(APP_GOOGLEDRIVE)) {
                 button = (Button) findViewById(R.id.drawer_googledrive_button);
                 button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(this.getString(R.string.googledrive));
+                mFilePickerItems.add(this.getString(R.string.googledrive)+launchApp);
             }
             if (isAppInstalled(APP_ONEDRIVE)) {
-                // button = (Button) findViewById(R.id.drawer_onedrive_button);
-                // button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(this.getString(R.string.onedrive));
+                 button = (Button) findViewById(R.id.drawer_onedrive_button);
+                 button.setVisibility(View.VISIBLE);
+                 mFilePickerItems.add(this.getString(R.string.onedrive)+launchApp);
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 button = (Button)findViewById(R.id.drawer_storage_button);
@@ -651,20 +651,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dropboxFilePicker(mSettings.getDropboxFilePicker())) getDrawer().closeDrawers();
+                if (externalAppFilePicker(mSettings.getDropboxFilePicker(), APP_DROPBOX)) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_googledrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (googleDriveFilePicker(mSettings.getGoogleDriveFilePicker())) getDrawer().closeDrawers();
+                if (externalAppFilePicker(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE)) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                intentMainActivity(APP_ONEDRIVE);
+                if (externalAppFilePicker(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE)) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
@@ -733,25 +733,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return (intent != null);
     }
 
+    private static final Map<String, String> mAppClassName= new HashMap<String, String>() {
+        {put(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");}
+        {put(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");}
+        {put(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");}
+    };
     private void intentMainActivity(String app) {
         PackageManager pm = this.getApplicationContext().getPackageManager();
         Intent intent = pm.getLaunchIntentForPackage(app);
         if (intent == null) {
             intent = new Intent(Intent.ACTION_MAIN);
             intent.setAction("android.intent.category.LAUNCHER");
-            switch (app) {
-                case APP_DROPBOX:
-                    intent.setClassName(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");
-                    break;
-                case APP_GOOGLEDRIVE:
-                    intent.setClassName(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");
-                    break;
-                case APP_ONEDRIVE:
-                    intent.setClassName(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");
-                    break;
-                default:
-                    break;
-            }
+            intent.setClassName(app, mAppClassName.get(app));
         }
         startActivity(intent);
     }
@@ -761,40 +754,27 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @SuppressLint("NewApi")
-    private boolean dropboxFilePicker(int mode) {
+    private boolean externalAppFilePicker(int mode, String appId) {
         try {
             if (mode == 0) {
-                intentMainActivity(APP_DROPBOX);
+                intentMainActivity(appId);
             } else {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setPackage(APP_DROPBOX);
+                intent.setPackage(appId);
                 intent.setType("*/*");
-                startActivityForResult(intent, REQUEST_DROPBOX);
+                startActivityForResult(intent, REQUEST_FILE_PICKER);
             }
         } catch (Exception e) {
-            alert(this.getString(R.string.activity_not_found));
+            try {
+                intentMainActivity(appId);
+            } catch (Exception ea) {
+                alert(this.getString(R.string.activity_not_found));
+            }
             return false;
         }
         return true;
     }
 
-    @SuppressLint("NewApi")
-    private boolean googleDriveFilePicker(int mode) {
-        try {
-            if (mode == 0) {
-                intentMainActivity(APP_GOOGLEDRIVE);
-            } else {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setPackage(APP_GOOGLEDRIVE);
-                intent.setType("*/*");
-                startActivityForResult(intent, REQUEST_GOOGLEDRIVE);
-            }
-        } catch (Exception e) {
-            alert(this.getString(R.string.activity_not_found));
-            return false;
-        }
-        return true;
-    }
 
     private boolean installGit() {
         return true;
@@ -1926,8 +1906,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     confirmDelete(uri);
                 }
                 break;
-            case REQUEST_DROPBOX:
-            case REQUEST_GOOGLEDRIVE:
             case REQUEST_FILE_PICKER:
                 String path = null;
                 if (result == RESULT_OK && data != null) {

@@ -384,6 +384,7 @@
   <string name="dropbox">Dropbox</string>
   <string name="googledrive">GoogleDrive</string>
   <string name="onedrive">OneDrive</string>
+  <string name="launch_app">\ (Launch application)</string>
   <string name="activity_not_found">Activity not found.\nPlease try again.</string>
   <string name="external_storage">Storage</string>
   <string name="create_or_delete">Create/Delete</string>
@@ -430,6 +431,7 @@
   <string name="title_app_button_preference">External app button</string>
   <string name="title_cloud_dropbox_preference">Dropbox</string>
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
+  <string name="title_cloud_onedrive_preference">OneDrive</string>
   <string name="summary_cloud_file_picker_on_preference">Application</string>
   <string name="summary_cloud_file_picker_off_preference">Content picker</string>
   <string name="title_alt_local_html_viewer">Alternate local html viewer</string>

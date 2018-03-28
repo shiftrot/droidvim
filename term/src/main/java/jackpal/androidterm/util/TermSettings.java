@@ -65,6 +65,7 @@ public class TermSettings {
     private int mUseCookedIME;
     private boolean mDropboxFilePicker;
     private boolean mGoogleDriveFilePicker;
+    private boolean mOneDriveFilePicker;
     private boolean mAltLocalHtmlViewer;
     private String mShell;
     private String mFailsafeShell;
@@ -125,6 +126,7 @@ public class TermSettings {
     private static final String IME_KEY = "ime";
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox";
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive";
+    private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive";
     private static final String ALT_LOCAL_HTML_VIEWER_KEY = "alt_local_html_viewer";
     private static final String SHELL_KEY = "shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
@@ -255,6 +257,7 @@ public class TermSettings {
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mDropboxFilePicker = res.getBoolean(R.bool.pref_cloud_dropbox_default);
         mGoogleDriveFilePicker = res.getBoolean(R.bool.pref_cloud_googledrive_default);
+        mOneDriveFilePicker = res.getBoolean(R.bool.pref_cloud_onedrive_default);
         mAltLocalHtmlViewer = res.getBoolean(R.bool.pref_alt_local_html_viewer_default);
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
@@ -318,6 +321,7 @@ public class TermSettings {
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mDropboxFilePicker = readBooleanPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker);
         mGoogleDriveFilePicker = readBooleanPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker);
+        mOneDriveFilePicker = readBooleanPref(ONEDRIVE_FILE_PICKER_KEY, mOneDriveFilePicker);
         mAltLocalHtmlViewer = readBooleanPref(ALT_LOCAL_HTML_VIEWER_KEY, mAltLocalHtmlViewer);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
@@ -582,6 +586,10 @@ public class TermSettings {
 
     public int getGoogleDriveFilePicker() {
         return mGoogleDriveFilePicker ? 0 : 1;
+    }
+
+    public int getOneDriveFilePicker() {
+        return mOneDriveFilePicker ? 0 : 1;
     }
 
     public int getAltLocalHtmlViewer() {

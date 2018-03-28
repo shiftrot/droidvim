@@ -51,5 +51,6 @@
    <integer name="pref_ime_inputtype_default">53</integer>
    <bool name="pref_cloud_dropbox_default">false</bool>
    <bool name="pref_cloud_googledrive_default">false</bool>
+   <bool name="pref_cloud_onedrive_default">false</bool>
    <bool name="pref_alt_local_html_viewer_default">false</bool>
 </resources>

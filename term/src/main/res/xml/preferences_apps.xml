@@ -36,6 +36,13 @@
                 android:summaryOff="@string/summary_cloud_file_picker_off_preference"/>
 
         <CheckBoxPreference
+                android:key="cloud_onedrive"
+                android:defaultValue="@bool/pref_cloud_onedrive_default"
+                android:title="@string/title_cloud_onedrive_preference"
+                android:summaryOn="@string/summary_cloud_file_picker_on_preference"
+                android:summaryOff="@string/summary_cloud_file_picker_off_preference"/>
+
+        <CheckBoxPreference
                 android:key="alt_local_html_viewer"
                 android:defaultValue="@bool/pref_alt_local_html_viewer_default"
                 android:title="@string/title_alt_local_html_viewer"
