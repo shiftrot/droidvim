@@ -222,4 +222,11 @@
         <item>Alphanumeric : URI</item>
         <item>Direct input : Password\n(Google Japanese input)</item>
     </string-array>
+
+    <string-array name="entries_app_filepicker_preference">
+        <item>Hide</item>
+        <item>Content picker</item>
+        <item>Application</item>
+    </string-array>
+
 </resources>

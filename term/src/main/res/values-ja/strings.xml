@@ -348,7 +348,7 @@
   <string name="delete_file">ファイル削除</string>
   <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
   <string name="storage_manager">管理</string>
-  <string name="launch_app">\ (アプリ起動)</string>
+  <string name="launch_app">%s (アプリ起動)</string>
   <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
   <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
   <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
@@ -388,6 +388,7 @@
   <string name="title_cloud_dropbox_preference">Dropbox</string>
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
   <string name="title_cloud_onedrive_preference">OneDrive</string>
+  <string name="summary_app_filepicker_on_drawer">ドロワー上のアプリボタンの振舞いを選択する.</string>
   <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
   <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
   <string name="title_alt_local_html_viewer">ローカルHTMLビューワ</string>

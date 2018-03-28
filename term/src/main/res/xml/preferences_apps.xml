@@ -21,26 +21,32 @@
             android:title="@string/external_apps_preferences"
             android:key="categoryApps">
 
-        <CheckBoxPreference
-                android:key="cloud_dropbox"
-                android:defaultValue="@bool/pref_cloud_dropbox_default"
+        <ListPreference
+                android:key="cloud_dropbox_filepicker"
+                android:defaultValue="@string/pref_cloud_dropbox_filepicker_default"
                 android:title="@string/title_cloud_dropbox_preference"
-                android:summaryOn="@string/summary_cloud_file_picker_on_preference"
-                android:summaryOff="@string/summary_cloud_file_picker_off_preference"/>
+                android:summary="@string/summary_app_filepicker_on_drawer"
+                android:entries="@array/entries_app_filepicker_preference"
+                android:entryValues="@array/entryvalues_app_filepicker_preference"
+                android:dialogTitle="@string/title_cloud_dropbox_preference" />
 
-        <CheckBoxPreference
-                android:key="cloud_googledrive"
-                android:defaultValue="@bool/pref_cloud_googledrive_default"
+        <ListPreference
+                android:key="cloud_googledrive_filepicker"
+                android:defaultValue="@string/pref_cloud_googledrive_filepicker_default"
                 android:title="@string/title_cloud_googledrive_preference"
-                android:summaryOn="@string/summary_cloud_file_picker_on_preference"
-                android:summaryOff="@string/summary_cloud_file_picker_off_preference"/>
+                android:summary="@string/summary_app_filepicker_on_drawer"
+                android:entries="@array/entries_app_filepicker_preference"
+                android:entryValues="@array/entryvalues_app_filepicker_preference"
+                android:dialogTitle="@string/title_cloud_googledrive_preference" />
 
-        <CheckBoxPreference
-                android:key="cloud_onedrive"
-                android:defaultValue="@bool/pref_cloud_onedrive_default"
+        <ListPreference
+                android:key="cloud_onedrive_filepicker"
+                android:defaultValue="@string/pref_cloud_onedrive_filepicker_default"
                 android:title="@string/title_cloud_onedrive_preference"
-                android:summaryOn="@string/summary_cloud_file_picker_on_preference"
-                android:summaryOff="@string/summary_cloud_file_picker_off_preference"/>
+                android:summary="@string/summary_app_filepicker_on_drawer"
+                android:entries="@array/entries_app_filepicker_preference"
+                android:entryValues="@array/entryvalues_app_filepicker_preference"
+                android:dialogTitle="@string/title_cloud_onedrive_preference" />
 
         <CheckBoxPreference
                 android:key="alt_local_html_viewer"

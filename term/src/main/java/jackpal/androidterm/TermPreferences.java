@@ -65,7 +65,7 @@ public class TermPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        TermSettings settings = new TermSettings(getResources(), mPrefs);
+        final TermSettings settings = new TermSettings(getResources(), mPrefs);
         if (mFirst && settings.getColorTheme() == 0) setTheme(R.style.Theme_AppCompat);
         mFirst = false;
         super.onCreate(savedInstanceState);
@@ -74,6 +74,39 @@ public class TermPreferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
         if (FLAVOR_VIM) {
             addPreferencesFromResource(R.xml.preferences_apps);
+
+            Resources res = getResources();
+            String[] array = res.getStringArray(R.array.entries_app_filepicker_preference);
+
+            OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Resources res = getResources();
+                    String[] array = res.getStringArray(R.array.entries_app_filepicker_preference);
+                    int value = Integer.valueOf((String) newValue);
+                    String summary = array[value];
+                    preference.setSummary(summary);
+                    return true;
+                }
+            };
+
+            String id = "cloud_dropbox_filepicker";
+            Preference filePicker = findPreference(id);
+            String summary = array[settings.getDropboxFilePicker()];
+            filePicker.setSummary(summary);
+            filePicker.setOnPreferenceChangeListener(listener);
+
+            id = "cloud_googledrive_filepicker";
+            filePicker = findPreference(id);
+            summary = array[settings.getGoogleDriveFilePicker()];
+            filePicker.setSummary(summary);
+            filePicker.setOnPreferenceChangeListener(listener);
+
+            id = "cloud_onedrive_filepicker";
+            filePicker = findPreference(id);
+            summary = array[settings.getOneDriveFilePicker()];
+            filePicker.setSummary(summary);
+            filePicker.setOnPreferenceChangeListener(listener);
         }
 
         if (AndroidCompat.SDK >= 19) {

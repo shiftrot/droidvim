@@ -63,9 +63,9 @@ public class TermSettings {
     private int mControlKeyId;
     private int mFnKeyId;
     private int mUseCookedIME;
-    private boolean mDropboxFilePicker;
-    private boolean mGoogleDriveFilePicker;
-    private boolean mOneDriveFilePicker;
+    private int mDropboxFilePicker;
+    private int mGoogleDriveFilePicker;
+    private int mOneDriveFilePicker;
     private boolean mAltLocalHtmlViewer;
     private String mShell;
     private String mFailsafeShell;
@@ -124,9 +124,9 @@ public class TermSettings {
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
-    private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox";
-    private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive";
-    private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive";
+    private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
+    private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
+    private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive_filepicker";
     private static final String ALT_LOCAL_HTML_VIEWER_KEY = "alt_local_html_viewer";
     private static final String SHELL_KEY = "shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
@@ -255,9 +255,9 @@ public class TermSettings {
         mRightDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_right_double_tap_default));
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
-        mDropboxFilePicker = res.getBoolean(R.bool.pref_cloud_dropbox_default);
-        mGoogleDriveFilePicker = res.getBoolean(R.bool.pref_cloud_googledrive_default);
-        mOneDriveFilePicker = res.getBoolean(R.bool.pref_cloud_onedrive_default);
+        mDropboxFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_dropbox_filepicker_default));
+        mGoogleDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_googledrive_filepicker_default));
+        mOneDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_onedrive_filepicker_default));
         mAltLocalHtmlViewer = res.getBoolean(R.bool.pref_alt_local_html_viewer_default);
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
@@ -319,9 +319,9 @@ public class TermSettings {
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId,
                 FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
-        mDropboxFilePicker = readBooleanPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker);
-        mGoogleDriveFilePicker = readBooleanPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker);
-        mOneDriveFilePicker = readBooleanPref(ONEDRIVE_FILE_PICKER_KEY, mOneDriveFilePicker);
+        mDropboxFilePicker = readIntPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker, 2);
+        mGoogleDriveFilePicker = readIntPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker, 2);
+        mOneDriveFilePicker = readIntPref(ONEDRIVE_FILE_PICKER_KEY, mOneDriveFilePicker, 2);
         mAltLocalHtmlViewer = readBooleanPref(ALT_LOCAL_HTML_VIEWER_KEY, mAltLocalHtmlViewer);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
@@ -581,15 +581,27 @@ public class TermSettings {
     }
 
     public int getDropboxFilePicker() {
-        return mDropboxFilePicker ? 0 : 1;
+        return mDropboxFilePicker;
+    }
+
+    public void setDropboxFilePicker(int value) {
+        mDropboxFilePicker = value;
     }
 
     public int getGoogleDriveFilePicker() {
-        return mGoogleDriveFilePicker ? 0 : 1;
+        return mGoogleDriveFilePicker;
+    }
+
+    public void setGoogleDriveFilePicker(int value) {
+        mGoogleDriveFilePicker = value;
     }
 
     public int getOneDriveFilePicker() {
-        return mOneDriveFilePicker ? 0 : 1;
+        return mOneDriveFilePicker;
+    }
+
+    public void setOneDriveFilePicker(int value) {
+        mOneDriveFilePicker = value;
     }
 
     public int getAltLocalHtmlViewer() {

@@ -221,6 +221,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         mSettings.readPrefs(sharedPreferences);
+        setDrawerButtons();
     }
 
     private boolean mHaveFullHwKeyboard = false;
@@ -599,19 +600,22 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             String launchApp = this.getString(R.string.launch_app);
             if (isAppInstalled(APP_DROPBOX)) {
+                int visiblity = mSettings.getDropboxFilePicker() > 0 ? View.VISIBLE : View.GONE;
                 button = (Button)findViewById(R.id.drawer_dropbox_button);
-                button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(this.getString(R.string.dropbox)+launchApp);
+                button.setVisibility(visiblity);
+                mFilePickerItems.add(String.format(launchApp, this.getString(R.string.dropbox)));
             }
             if (isAppInstalled(APP_GOOGLEDRIVE)) {
-                button = (Button) findViewById(R.id.drawer_googledrive_button);
-                button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(this.getString(R.string.googledrive)+launchApp);
+                int visiblity = mSettings.getGoogleDriveFilePicker() > 0 ? View.VISIBLE : View.GONE;
+                button = (Button)findViewById(R.id.drawer_googledrive_button);
+                button.setVisibility(visiblity);
+                mFilePickerItems.add(String.format(launchApp, this.getString(R.string.googledrive)));
             }
             if (isAppInstalled(APP_ONEDRIVE)) {
-                 button = (Button) findViewById(R.id.drawer_onedrive_button);
-                 button.setVisibility(View.VISIBLE);
-                 mFilePickerItems.add(this.getString(R.string.onedrive)+launchApp);
+                int visiblity = mSettings.getOneDriveFilePicker() > 0 ? View.VISIBLE : View.GONE;
+                button = (Button)findViewById(R.id.drawer_onedrive_button);
+                button.setVisibility(visiblity);
+                mFilePickerItems.add(String.format(launchApp, this.getString(R.string.onedrive)));
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 button = (Button)findViewById(R.id.drawer_storage_button);
@@ -756,7 +760,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("NewApi")
     private boolean externalAppFilePicker(int mode, String appId) {
         try {
-            if (mode == 0) {
+            if (mode == 2) {
                 intentMainActivity(appId);
             } else {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -1773,15 +1777,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String item = items[which];
-                if (Term.this.getString(R.string.create_file).equals(item)) {
+                if (item == null) {
+                    // do nothing
+                } else if (Term.this.getString(R.string.create_file).equals(item)) {
                     fileCreate();
                 } else if (Term.this.getString(R.string.delete_file).equals(item)) {
                     fileDelete();
-                } else if (Term.this.getString(R.string.dropbox).equals(item)) {
+                } else if (item.matches(".*"+Term.this.getString(R.string.dropbox)+".*")) {
                     intentMainActivity(APP_DROPBOX);
-                } else if (Term.this.getString(R.string.googledrive).equals(item)) {
+                } else if (item.matches(".*"+Term.this.getString(R.string.googledrive)+".*")) {
                     intentMainActivity(APP_GOOGLEDRIVE);
-                } else if (Term.this.getString(R.string.onedrive).equals(item)) {
+                } else if (item.matches(".*"+Term.this.getString(R.string.onedrive)+".*")) {
                     intentMainActivity(APP_ONEDRIVE);
                 } else if (Term.this.getString(R.string.clear_cache).equals(item)) {
                     confirmClearCache(false);

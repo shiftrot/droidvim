@@ -216,4 +216,11 @@
         <item>英数入力 : URI</item>
         <item>直接入力 : パスワード\n(Google日本語入力)</item>
     </string-array>
+
+    <string-array name="entries_app_filepicker_preference">
+        <item>非表示</item>
+        <item>コンテントピッカー</item>
+        <item>アプリ起動</item>
+    </string-array>
+
 </resources>

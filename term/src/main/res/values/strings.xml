@@ -384,7 +384,8 @@
   <string name="dropbox">Dropbox</string>
   <string name="googledrive">GoogleDrive</string>
   <string name="onedrive">OneDrive</string>
-  <string name="launch_app">\ (Launch application)</string>
+  <string name="summary_app_filepicker_on_drawer">Choose the behavior of the application button on the drawer.</string>
+  <string name="launch_app">\Launch %s</string>
   <string name="activity_not_found">Activity not found.\nPlease try again.</string>
   <string name="external_storage">Storage</string>
   <string name="create_or_delete">Create/Delete</string>
