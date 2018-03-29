@@ -438,7 +438,7 @@ public class TermPreferences extends PreferenceActivity {
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
                     path = getPath(this, uri);
-                    if (path != null && path.matches(".*\\.(ttf|otf)")) {
+                    if (path != null && path.matches(".*\\.(?i)(ttf|ttc|otf)")) {
                         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
                         sp.edit().putString(FONT_FILENAME, path).apply();
                     } else {
