@@ -1,21 +1,23 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    android:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"/>
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:visibility="visible"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true" >
+        tools:context=".mainScreen">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +47,6 @@
                     android:maxLines="1"
                     android:layout_weight="1"
                     android:inputType="text" />
-
                 <Button
                     android:id="@+id/button_oneline_text_box_clear"
                     android:visibility="visible"
@@ -56,7 +57,6 @@
                     android:minHeight="44dp"
                     android:minWidth="56dp"
                     android:text="×"/>
-
                 <Button
                     android:id="@+id/button_oneline_text_box_enter"
                     android:visibility="invisible"
@@ -69,11 +69,13 @@
                     android:text="↲"/>
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/view_function_bar"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp" >
+
                 <Button
                     android:id="@+id/button_next_functionbar0"
                     android:layout_width="wrap_content"
@@ -93,11 +95,13 @@
                     android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
+
                     <LinearLayout
                         android:id="@+id/view_function_bar_keys"
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp" >
+
                         <Button
                             android:id="@+id/button_ctrl"
                             android:layout_width="wrap_content"
@@ -310,10 +314,12 @@
                 android:id="@+id/view_function_bar2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp" >
+
                     <Button
                         android:id="@+id/button_prev_functionbar"
                         android:layout_width="wrap_content"
@@ -415,209 +421,194 @@
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fillViewport="true"
+        android:background="?attr/colorPrimary" >
 
         <LinearLayout
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
+            android:descendantFocusability="blocksDescendants"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"
-            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="top"
-                android:layout_weight="1"
-                android:choiceMode="singleChoice"
-                android:longClickable="true" />
-
-            <LinearLayout
+            <Button
+                android:id="@+id/drawer_extra_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="25dp"
+                android:visibility="visible"
+                android:textColor="@android:color/white"
+                android:background="@drawable/extra_button"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="@string/extra" />
 
-                <Button
-                    android:id="@+id/drawer_extra_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="25dp"
-                    android:visibility="visible"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/extra_button"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/extra" />
+            <Button
+                android:id="@+id/drawer_debug_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="25dp"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:background="@drawable/extra_button"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/debug" />
 
-                <Button
-                    android:id="@+id/drawer_debug_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="25dp"
-                    android:visibility="gone"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/extra_button"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/debug" />
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
 
-                <View
-                    android:layout_weight="10000"
-                    android:visibility="visible"
-                    android:layout_width="0dp"
-                    android:layout_height="10000dp" />
+            <Button
+                android:id="@+id/drawer_app_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button3"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_app_button" />
 
-                <Button
-                    android:id="@+id/drawer_app_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button3"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_app_button" />
+            <Button
+                android:id="@+id/drawer_dropbox_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button3"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dropbox" />
 
-                <Button
-                    android:id="@+id/drawer_dropbox_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button3"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dropbox" />
+            <Button
+                android:id="@+id/drawer_googledrive_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button3"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/googledrive" />
 
-                <Button
-                    android:id="@+id/drawer_googledrive_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button3"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/googledrive" />
+            <Button
+                android:id="@+id/drawer_onedrive_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button3"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/onedrive" />
 
-                <Button
-                    android:id="@+id/drawer_onedrive_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button3"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/onedrive" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="8dp" />
 
-                <View
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp" />
+            <Button
+                android:id="@+id/drawer_storage_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button2"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/external_storage" />
 
-                <Button
-                    android:id="@+id/drawer_storage_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button2"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/external_storage" />
+            <Button
+                android:id="@+id/drawer_createfile_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button2"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_or_delete" />
 
-                <Button
-                    android:id="@+id/drawer_createfile_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button2"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/create_or_delete" />
+            <Button
+                android:id="@+id/drawer_clear_cache_button"
+                android:visibility="gone"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button2"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_cache" />
 
-                <Button
-                    android:id="@+id/drawer_clear_cache_button"
-                    android:visibility="gone"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button2"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/clear_cache" />
+            <Button
+                android:id="@+id/drawer_keyboard_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:visibility="gone"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/softkeyboard" />
 
-                <View
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="8dp" />
 
-                <Button
-                    android:id="@+id/drawer_keyboard_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:visibility="gone"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/sidebar_button"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/softkeyboard" />
+            <Button
+                android:id="@+id/drawer_menu_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/extra_button"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_functionbar_menu" />
+            <Button
+                android:id="@+id/drawer_quit_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="35dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/extra_button"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quit" />
 
-                <Button
-                    android:id="@+id/drawer_menu_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/extra_button"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_functionbar_menu" />
-
-                <Button
-                    android:id="@+id/drawer_quit_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:minHeight="35dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/extra_button"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Quit" />
-
-                <View
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp" />
-
-            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="8dp" />
 
         </LinearLayout>
-
-    </android.support.v4.widget.DrawerLayout>
-</RelativeLayout>
+    </ScrollView>
+</android.support.v4.widget.DrawerLayout>
