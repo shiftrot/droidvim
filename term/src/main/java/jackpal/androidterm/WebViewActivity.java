@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -18,6 +19,8 @@ import java.io.InputStreamReader;
 
 public class WebViewActivity extends Activity {
     private static int mFontSize = 140;
+    private static int mInitialInterval = 0;
+    private static int mNormalInterval = 100;
     private boolean mBack = false;
     private WebView mWebView;
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
@@ -46,7 +49,8 @@ public class WebViewActivity extends Activity {
                 }
             }
             @Override
-            public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+            public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
+                String url = request.getUrl().toString();
                 if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
                     return false;
                 }
@@ -81,8 +85,13 @@ public class WebViewActivity extends Activity {
         findViewById(R.id.webview_reload).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_abort).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_quit).setOnClickListener(mButtonListener);
-        findViewById(R.id.webview_plus).setOnClickListener(mButtonListener);
-        findViewById(R.id.webview_minus).setOnClickListener(mButtonListener);
+        if (mInitialInterval == 0) {
+            findViewById(R.id.webview_plus).setOnClickListener(mButtonListener);
+            findViewById(R.id.webview_minus).setOnClickListener(mButtonListener);
+        } else {
+            findViewById(R.id.webview_plus).setOnTouchListener(new RepeatListener(mInitialInterval, mNormalInterval, mButtonListener));
+            findViewById(R.id.webview_minus).setOnTouchListener(new RepeatListener(mInitialInterval, mNormalInterval, mButtonListener));
+        }
     }
 
     View.OnClickListener mButtonListener = new View.OnClickListener() {
@@ -135,6 +144,11 @@ public class WebViewActivity extends Activity {
         return mFontSize;
     }
 
+    static public void setRepeatInterval(int initial, int normal) {
+        mInitialInterval = initial;
+        mNormalInterval = normal;
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
@@ -159,7 +173,7 @@ public class WebViewActivity extends Activity {
             String str;
             while ((str = reader.readLine()) != null) {
                 buffer.append(str);
-                buffer.append("\n");
+                buffer.append(System.getProperty("line.separator"));
             }
             String data = buffer.toString();
             webView.loadDataWithBaseURL("file://"+url, data, "text/html", "UTF-8", prev);
