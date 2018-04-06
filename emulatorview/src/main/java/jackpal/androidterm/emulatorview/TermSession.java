@@ -650,7 +650,7 @@ public class TermSession {
      */
     public void finish() {
         mIsRunning = false;
-        mEmulator.finish();
+        if (mEmulator != null) mEmulator.finish();
         if (mTranscriptScreen != null) {
             mTranscriptScreen.finish();
         }
