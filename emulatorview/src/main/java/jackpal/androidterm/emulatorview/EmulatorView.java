@@ -1787,14 +1787,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     };
 
     private boolean preIMEShortcuts(int keyCode, KeyEvent event) {
-        if (getPreIMEShortcutsStatus(keyCode, event)) {
+        int stat = getPreIMEShortcutsStatus(keyCode, event);
+        if (stat == PREIME_SHORTCUT_ACTION) {
             doImeShortcutsAction();
-            return true;
         }
-        return false;
+        return  (stat > PREIME_SHORTCUT_ACTION_NULL);
     }
 
-    static public boolean getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
+    public final static int PREIME_SHORTCUT_ACTION_NULL = 0;
+    public final static int PREIME_SHORTCUT_ACTION = 1;
+    public final static int PREIME_SHORTCUT_ACTION_DONE = 2;
+    static public int getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
         int keyAction = event.getAction();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
         boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
@@ -1815,12 +1818,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
         boolean cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metashiftOn);
         if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && keyAction == KeyEvent.ACTION_UP)) {
-            return true;
+            return PREIME_SHORTCUT_ACTION;
         }
-        if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_UP)) return true;
-        if (((as || cs || ss) && keyAction == KeyEvent.ACTION_DOWN)) return true;
-        if ((mAltEsc || mAltSpace || mAltGrave) && altPressed) return true;
-        return false;
+        if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_UP)) return PREIME_SHORTCUT_ACTION_DONE;
+        if (((as || cs || ss) && keyAction == KeyEvent.ACTION_DOWN)) return PREIME_SHORTCUT_ACTION_DONE;
+        if ((mAltEsc || mAltSpace || mAltGrave) && altPressed) return PREIME_SHORTCUT_ACTION_DONE;
+        return PREIME_SHORTCUT_ACTION_NULL;
     }
 
     public void doImeShortcutsAction() {

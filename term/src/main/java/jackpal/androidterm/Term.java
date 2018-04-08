@@ -3052,21 +3052,34 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
                 onLastKey();
-                if (EmulatorView.getPreIMEShortcutsStatus(keyCode, event)) {
+                int inputType = editText.getInputType();
+                if (keyCode == KeycodeConstants.KEYCODE_TAB) {
+                    return true;
+                }
+                if (EmulatorView.getPreIMEShortcutsStatus(keyCode, event) == EmulatorView.PREIME_SHORTCUT_ACTION) {
                     int action = mSettings.getImeShortcutsAction();
                     if (action == 0) {
                         doToggleSoftKeyboard();
                     } else if (action == 1261) {
                         setEditTextViewFocus(2);
+                    } else if (!BuildConfig.DEBUG) {
+                        // Currently there are some glitches so do not change input type.
+                        return false;
                     } else {
-                        int inputType = editText.getInputType();
                         if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
-                            String defime = Settings.Secure.getString(editText.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
-                            final String IME_GOOGLE = ".*/.MozcService.*";
-                            if (defime.matches(IME_GOOGLE)) {
-                                inputType = EditorInfo.TYPE_TEXT_VARIATION_URI;
-                            } else {
-                                inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                            switch (action) {
+                                case 51:
+                                    inputType = EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
+                                    break;
+                                case 52:
+                                    inputType = EditorInfo.TYPE_TEXT_VARIATION_URI;
+                                    break;
+                                case 53:
+                                    inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                                    break;
+                                default:
+                                    inputType = EditorInfo.TYPE_CLASS_TEXT;
+                                    break;
                             }
                         } else {
                             inputType = EditorInfo.TYPE_CLASS_TEXT;
