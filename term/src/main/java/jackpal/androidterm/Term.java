@@ -3050,9 +3050,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
                 onLastKey();
-                if (getCurrentEmulatorView().preIMEShortcuts(keyCode, event)) {
+                if (EmulatorView.getPreIMEShortcutsStatus(keyCode, event)) {
                     int action = mSettings.getImeShortcutsAction();
                     if (action == 0) {
                         doToggleSoftKeyboard();

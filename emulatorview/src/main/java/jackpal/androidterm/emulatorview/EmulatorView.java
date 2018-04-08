@@ -1786,9 +1786,16 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return super.onKeyPreIme(keyCode, event);
     };
 
-    public boolean preIMEShortcuts(int keyCode, KeyEvent event) {
+    private boolean preIMEShortcuts(int keyCode, KeyEvent event) {
+        if (getPreIMEShortcutsStatus(keyCode, event)) {
+            doImeShortcutsAction();
+            return true;
+        }
+        return false;
+    }
+
+    static public boolean getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
         int keyAction = event.getAction();
-        boolean focus = this.hasFocus();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
         boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
         boolean metaOn = (event.getMetaState() & (KeyEvent.META_META_ON)) != 0;
@@ -1808,11 +1815,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
         boolean cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metashiftOn);
         if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && keyAction == KeyEvent.ACTION_UP)) {
-            if (!focus) return true;
-            doImeShortcutsAction();
             return true;
         }
-        if (!focus) return false;
         if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_UP)) return true;
         if (((as || cs || ss) && keyAction == KeyEvent.ACTION_DOWN)) return true;
         if ((mAltEsc || mAltSpace || mAltGrave) && altPressed) return true;
