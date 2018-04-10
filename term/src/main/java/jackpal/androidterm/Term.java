@@ -3027,12 +3027,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private int mOnelineTextBox = -1;
+    private EditText mEditText;
     private void initOnelineTextBox(int mode) {
-        final EditText editText = (EditText) findViewById(R.id.text_input);
-        editText.setText("");
+        mEditText = (EditText) findViewById(R.id.text_input);
+        mEditText.setText("");
         setEditTextView(mode);
-        editText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mEditText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -3048,11 +3049,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return true;
             }
         });
-        editText.setOnKeyListener(new View.OnKeyListener() {
+        mEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
                 onLastKey();
-                int inputType = editText.getInputType();
                 if (keyCode == KeycodeConstants.KEYCODE_TAB) {
                     return true;
                 }
@@ -3066,6 +3066,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         // Currently there are some glitches so do not change input type.
                         return false;
                     } else {
+                        int inputType = mEditText.getInputType();
                         if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
                             switch (action) {
                                 case 51:
@@ -3084,7 +3085,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else {
                             inputType = EditorInfo.TYPE_CLASS_TEXT;
                         }
-                        editText.setInputType(inputType);
+                        mEditText.setInputType(inputType);
                     }
                     return true;
                 }
@@ -3104,8 +3105,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 view.restartInputGoogleIme();
             }
             mEditTextView = mode == 1;
-            final EditText editText = (EditText) findViewById(R.id.text_input);
-            if (mode == 0) editText.setText("");
+            if (mode == 0 && mEditText != null) mEditText.setText("");
         }
         if (mAlreadyStarted) updatePrefs();
     }
@@ -3114,9 +3114,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         setEditTextView(mode);
         int focus = mode;
         if (mode == 2) focus = mEditTextView ? 1 : 0;
-        final EditText editText = (EditText) findViewById(R.id.text_input);
-        if (focus == 1 && mEditTextView && editText != null) {
-            editText.requestFocus();
+        if (focus == 1 && mEditTextView && mEditText != null) {
+            mEditText.requestFocus();
         } else {
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) view.requestFocus();
@@ -3124,8 +3123,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean setEditTextAltCmd() {
-        EditText editText = (EditText) findViewById(R.id.text_input);
-        if (mEditTextView && editText != null && editText.isFocused()) {
+        if (mEditTextView && mEditText != null && mEditText.isFocused()) {
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) view.requestFocus();
             return true;
@@ -3135,7 +3133,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setEditTextVisibility() {
-        final EditText editText = (EditText) findViewById(R.id.text_input);
         final View layout = findViewById(R.id.oneline_text_box);
         int visibility = mEditTextView ? View.VISIBLE : View.GONE;
         if (mHideFunctionBar) visibility = View.GONE;
@@ -3144,7 +3141,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         layout.setVisibility(visibility);
         if (visibility == View.VISIBLE) {
             if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
-            editText.requestFocus();
+            if (mEditText != null) mEditText.requestFocus();
 //            doWarningEditTextView();
         } else {
             if (view != null) view.requestFocus();
@@ -3296,20 +3293,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean onelineTextBoxClear(){
         if (mEditTextView) {
-            EditText editText = (EditText) findViewById(R.id.text_input);
-            if (editText != null) {
-                String str = editText.getText().toString();
+            if (mEditText != null) {
+                String str = mEditText.getText().toString();
                 EmulatorView view = getCurrentEmulatorView();
-                if (editText.isFocused()) {
+                if (mEditText.isFocused()) {
                     if (!str.equals("")) {
                         if (view != null) view.restartInputGoogleIme();
-                        editText.setText("");
+                        mEditText.setText("");
                     } else {
                         setEditTextView(0);
                     }
                 } else {
-                    editText.requestFocus();
-                    editText.setText("");
+                    mEditText.requestFocus();
+                    mEditText.setText("");
                 }
                 return true;
             }
@@ -3319,8 +3315,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean onelineTextBoxEsc(){
         if (mEditTextView) {
-            EditText editText = (EditText) findViewById(R.id.text_input);
-            if (editText != null && editText.isFocused()) {
+            if (mEditText != null && mEditText.isFocused()) {
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) view.requestFocus();
                 if (mSettings.getOneLineTextBoxEsc()) {
@@ -3335,8 +3330,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean onelineTextBoxTab(){
         if (mEditTextView) {
-            EditText editText = (EditText) findViewById(R.id.text_input);
-            if (editText != null && editText.isFocused()) {
+            if (mEditText != null && mEditText.isFocused()) {
                 sendKeyStrings("\t", false);
                 return true;
             }
@@ -3346,15 +3340,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean onelineTextBoxEnter(boolean force){
         if (mEditTextView) {
-            EditText editText = (EditText) findViewById(R.id.text_input);
-            if (editText != null && (force || editText.isFocused())) {
-                String str = editText.getText().toString();
+            if (mEditText != null && (force || mEditText.isFocused())) {
+                String str = mEditText.getText().toString();
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) {
                     view.restartInputGoogleIme();
                     if (str.equals("")) str = "\r";
                     sendKeyStrings(str, false);
-                    editText.setText("");
+                    mEditText.setText("");
                     return true;
                 }
             }
