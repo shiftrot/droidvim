@@ -1753,7 +1753,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void filePicker() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FILE_PICKER);
         } else {
             intentFilePicker();
@@ -1798,7 +1798,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileDelete() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_DELETE);
         } else {
             doFileDelete();
@@ -1843,7 +1843,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileCreate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_CREATE);
         } else {
             doFileCreate();
