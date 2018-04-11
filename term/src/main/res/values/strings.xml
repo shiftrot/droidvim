@@ -33,7 +33,7 @@
    <string name="send_email">Email to</string>
    <string name="special_keys">Special keys</string>
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
-   <string name="toggle_function_bar">Toggle function bar</string>
+   <string name="toggle_function_bar">Function bar</string>
 
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
    <string name="toast_clipboard">Text copied to clipboard.</string>

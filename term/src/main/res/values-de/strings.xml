@@ -140,7 +140,7 @@
     <string name="fsnavigator_no_external_storage">Externer Speicher nicht verfügbar</string>
     <string name="fsnavigator_optional_enter_path">Oder hier einen Pfad eingeben.</string>
     <string name="fsnavigator_title">DATEI AUSWÄHLEN</string>
-    <string name="help">Hife</string>
+    <string name="help">Hilfe</string>
     <string name="perm_append_to_path">Befehle zum Terminal Emulator hinzufügen</string>
     <string name="perm_prepend_to_path">Befehle im Terminal Emulator Überschreiben</string>
     <string name="permdesc_append_to_path">Erlaubt es Applikationen dem Terminal Emulator für Android zusätzliche Befehle zur Verfügung zu stellen (fügt Verzeichnisse an die PATH Valriable an).</string>
