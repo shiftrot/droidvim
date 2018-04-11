@@ -1867,6 +1867,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doFileCreate();
         }
     }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void doFileCreate() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
