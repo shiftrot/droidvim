@@ -546,7 +546,7 @@ public class TermSettings {
         return mImeShortcutsAction;
     }
 
-    public int getmImeDefaultInputtype() {
+    public int getImeDefaultInputtype() {
         return mImeDefaultInputtype;
     }
 
