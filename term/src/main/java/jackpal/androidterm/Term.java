@@ -3303,6 +3303,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     } else {
                         setEditTextView(0);
                     }
+                } else if (str.equals("")) {
+                    setEditTextView(0);
                 } else {
                     mEditText.requestFocus();
                     mEditText.setText("");
