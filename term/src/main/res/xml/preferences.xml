@@ -596,15 +596,6 @@
                 android:entryValues="@array/entryvalues_fnkey_preference"
                 android:dialogTitle="@string/dialog_title_fnkey_preference" />
 
-        <ListPreference
-                android:key="ime"
-                android:defaultValue="@string/pref_ime_default"
-                android:title="@string/title_ime_preference"
-                android:summary="@string/summary_ime_preference"
-                android:entries="@array/entries_ime_preference"
-                android:entryValues="@array/entryvalues_ime_preference"
-                android:dialogTitle="@string/dialog_title_ime_preference" />
-
         <CheckBoxPreference android:title="@string/alt_sends_esc"
                 android:key="alt_sends_esc"
                 android:defaultValue="@bool/pref_alt_sends_esc_default" />
@@ -614,6 +605,15 @@
                 android:defaultValue="@bool/pref_ignore_xoff_default"
                 android:summaryOn="@string/ignore_xoff_summary_on"
                 android:summaryOff="@string/ignore_xoff_summary_off" />
+
+        <ListPreference
+                android:key="ime"
+                android:defaultValue="@string/pref_ime_default"
+                android:title="@string/title_ime_preference"
+                android:summary="@string/summary_ime_preference"
+                android:entries="@array/entries_ime_preference"
+                android:entryValues="@array/entryvalues_ime_preference"
+                android:dialogTitle="@string/dialog_title_ime_preference" />
 
     </PreferenceCategory>
 
