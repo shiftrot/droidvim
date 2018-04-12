@@ -297,6 +297,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private String mImeBuffer = "";
     private SpannableString mImeSpannableString = null;
+    private boolean mRestartInput = false;
 
     /**
      * Our message handler class. Implements a periodic callback.
@@ -588,7 +589,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (LOG_IME) {
                     Log.w(TAG, "endBatchEdit");
                 }
-                return super.endBatchEdit();
+                boolean result = super.endBatchEdit();
+                if (mRestartInput) {
+                    restartInput();
+                    mRestartInput = false;
+                }
+                return true;
             }
 
             @Override
@@ -692,7 +698,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 sendText(text);
                 setImeBuffer("");
                 mCursor = 0;
-                if (mIme == IME_ID_SWIFT && text.toString().equals(" ")) {
+                if ((mIme == IME_ID_SWIFT) && text.toString().matches("[-']")) {
                     restartInput();
                 }
                 return true;
@@ -1301,6 +1307,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
         }
+        if (mIme == IME_ID_SWIFT && !mHaveFullHwKeyboard && keyCode == KeyEvent.KEYCODE_DEL) {
+            mTermSession.write("\u007f");
+            restartInput();
+            return true;
+        }
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             mInputConnection.performEditorAction(EditorInfo.IME_ACTION_UNSPECIFIED);
             restartInput();
@@ -1354,6 +1365,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyUp " + keyCode);
         }
+        if (mIme == IME_ID_SWIFT && mHaveFullHwKeyboard &&keyCode == KeyEvent.KEYCODE_DEL) {
+            return true;
+        }
         if (handleControlKey(keyCode, false)) {
             return true;
         } else if (handleFnKey(keyCode, false)) {
@@ -1390,6 +1404,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void onConfigurationChangedToEmulatorView(Configuration newConfig) {
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
+        if (mIme == IME_ID_SWIFT && mHaveFullHwKeyboard) {
+            setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
+            if (mIMEShortcutsAction >= 50 && mIMEShortcutsAction <= 59) doImeShortcutsAction();
+        }
     }
 
     private boolean checkHaveFullHwKeyboard(Configuration c) {
