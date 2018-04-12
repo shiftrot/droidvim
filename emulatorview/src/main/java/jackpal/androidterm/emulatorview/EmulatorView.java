@@ -200,6 +200,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * This test should be refined as we learn more.
      */
     private final static boolean sTrapAltAndMeta = Build.MODEL.contains("Transformer TF101");
+    private static InputConnection mInputConnection;
 
     private Runnable mBlinkCursor = new Runnable() {
         public void run() {
@@ -473,7 +474,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 EditorInfo.TYPE_CLASS_TEXT | mIMEInputType:
                 EditorInfo.TYPE_NULL;
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN;
-        return new BaseInputConnection(this, true) {
+        mInputConnection = new BaseInputConnection(this, true) {
             /**
              * Used to handle composing text requests
              */
@@ -847,6 +848,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
 
         };
+        return mInputConnection;
     }
 
     private void setImeBuffer(String buffer) {
@@ -1299,7 +1301,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
         }
-        if (handleControlKey(keyCode, true)) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            mInputConnection.performEditorAction(EditorInfo.IME_ACTION_UNSPECIFIED);
+            restartInput();
+            return true;
+        } else if (handleControlKey(keyCode, true)) {
             return true;
         } else if (handleFnKey(keyCode, true)) {
             return true;
