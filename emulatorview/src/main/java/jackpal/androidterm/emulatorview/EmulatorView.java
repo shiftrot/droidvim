@@ -1070,6 +1070,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setUseCookedIME(boolean useCookedIME) {
         mUseCookedIme = useCookedIME;
+        TermKeyListener.setUseCookedIme(useCookedIME);
     }
 
     /**

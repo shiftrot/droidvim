@@ -629,7 +629,8 @@ class TermKeyListener {
             }
         }
 
-        boolean effectiveControl = chordedCtrl || mAltControlKey || mHardwareControlKey || (allowToggle && mControlKey.isActive());
+        boolean allowToggleCtrl = allowToggle || !mUseCookedIme;
+        boolean effectiveControl = chordedCtrl || mAltControlKey || mHardwareControlKey || (allowToggleCtrl && mControlKey.isActive());
         boolean effectiveFn = allowToggle && mFnKey.isActive();
 
         result = mapControlChar(effectiveControl, effectiveFn, result);
@@ -806,5 +807,10 @@ class TermKeyListener {
 
     public boolean isCtrlActive() {
         return mControlKey.isActive();
+    }
+
+    private static boolean mUseCookedIme = true;
+    static public void setUseCookedIme(boolean flag) {
+        mUseCookedIme = flag;
     }
 }
