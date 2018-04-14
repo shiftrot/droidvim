@@ -133,6 +133,7 @@
         <item>Direct input : password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : password\n(Google Japanese input)</item>
+        <item>Direct input : Raw</item>
         <item>Open file in new tab (Vim)</item>
         <item>Orientation</item>
         <item>Quit</item>
@@ -213,6 +214,7 @@
         <item>Direct input : Password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : Password\n(Google Japanese input)</item>
+        <item>Direct input : Raw</item>
         <item>One-line text box</item>
     </string-array>
 
@@ -221,6 +223,7 @@
         <item>Direct input : Password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : Password\n(Google Japanese input)</item>
+        <item>Direct input : Raw</item>
     </string-array>
 
     <string-array name="entries_app_filepicker_preference">

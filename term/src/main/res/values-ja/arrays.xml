@@ -127,6 +127,7 @@
         <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
         <item>直接入力 : パスワード\n(Google日本語入力)</item>
+        <item>直接入力 : Raw</item>
         <item>新規タブでファイルを開く(Vim)</item>
         <item>画面の向き</item>
         <item>終了</item>
@@ -207,6 +208,7 @@
         <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
         <item>直接入力 : パスワード\n(Google日本語入力)</item>
+        <item>直接入力 : Raw</item>
         <item>一行テキスト入力</item>
     </string-array>
 
@@ -215,6 +217,7 @@
         <item>直接入力 : パスワード</item>
         <item>英数入力 : URI</item>
         <item>直接入力 : パスワード\n(Google日本語入力)</item>
+        <item>直接入力 : Raw</item>
     </string-array>
 
     <string-array name="entries_app_filepicker_preference">

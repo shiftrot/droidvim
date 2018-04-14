@@ -465,13 +465,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
-    private static int mIMEInputType = 0;
+    private static int mIMEInputType = EditorInfo.TYPE_CLASS_TEXT;
     private static boolean mIgnoreXoff = false;
 
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         if (mEmulator != null) setIME(mEmulator);
-        outAttrs.inputType = mUseCookedIme ?
+        outAttrs.inputType = mUseCookedIme && mIMEInputType != EditorInfo.TYPE_NULL ?
                 EditorInfo.TYPE_CLASS_TEXT | mIMEInputType:
                 EditorInfo.TYPE_NULL;
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN;
@@ -1493,7 +1493,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 ((Activity)this.getContext()).onKeyUp(0xffff0333, null);
                 break;
             case 50:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
                 break;
             case 51:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -1505,7 +1505,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
                 break;
             case 54:
-                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
+                setIMEInputType(EditorInfo.TYPE_NULL);
                 break;
             case 55:
                 doImeShortcutsAction();
@@ -1861,16 +1861,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else if (action == 1261) {
             ((Activity)this.getContext()).onKeyUp(0xffff0058, null);
         } else {
-            if (mIMEInputType == 0) {
+            if (mIMEInputType == EditorInfo.TYPE_CLASS_TEXT) {
                 setImeShortcutsAction(action);
             } else {
-                setIMEInputType(0);
+                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
             }
         }
     }
 
     public void setImeShortcutsAction(int action) {
         switch (action) {
+            case 50:
+                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
+                break;
             case 51:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
                 break;
@@ -1881,10 +1884,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
                 break;
             case 54:
-                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT, true);
+                setIMEInputType(EditorInfo.TYPE_NULL);
                 break;
             default:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
                 break;
         }
     }

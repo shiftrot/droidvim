@@ -130,6 +130,7 @@
         <item>1351</item>
         <item>1352</item>
         <item>1353</item>
+        <item>1354</item>
         <item>1356</item>
         <item>1358</item>
         <item>1253</item>
@@ -195,6 +196,7 @@
         <item>51</item>
         <item>52</item>
         <item>53</item>
+        <item>54</item>
     </string-array>
 
     <string-array name="entryvalues_ime_shortcuts_action_preference">
@@ -202,6 +204,7 @@
         <item>51</item>
         <item>52</item>
         <item>53</item>
+        <item>54</item>
         <item>1261</item>
     </string-array>
 

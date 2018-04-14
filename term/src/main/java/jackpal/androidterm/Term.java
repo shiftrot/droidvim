@@ -1628,7 +1628,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return true;
         } else if (key == 1261) {
             setEditTextView(2);
-        } else if (key >= 1351 && key <= 1353) {
+        } else if (key >= 1351 && key <= 1354) {
             if (setEditTextAltCmd()) return true;
             view.doImeShortcutsAction(key-1300);
         } else if (key == 1355) {
@@ -3077,6 +3077,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                     break;
                                 case 53:
                                     inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                                    break;
+                                case 54:
+                                    inputType = EditorInfo.TYPE_NULL;
                                     break;
                                 default:
                                     inputType = EditorInfo.TYPE_CLASS_TEXT;
