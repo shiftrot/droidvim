@@ -1646,8 +1646,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key == 1358) {
             setCurrentOrientation();
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
-            if (onelineTextBoxEsc()) return true;
             view.restartInputGoogleIme();
+            if (onelineTextBoxEsc()) return true;
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);
             event = new KeyEvent(KeyEvent.ACTION_UP, key);
@@ -2236,9 +2236,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 mBackKeyPressed = false;
             }
-            if (onelineTextBoxEsc()) {
-                return true;
-            }
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 // mStopServiceOnFinish = true;
@@ -2299,12 +2296,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         case 0xffff1009:
             return true;
         case 0xffff0056:
-            mEditTextAction = 1;
             doEditTextFocusAction();
             setEditTextInputType(50);
             return true;
         case 0xffff0057:
-            mEditTextAction = 0;
             setEditTextViewFocus(0);
             return true;
         case 0xffff0058:
@@ -3036,7 +3031,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private int mOnelineTextBox = -1;
     private EditText mEditText;
-    private int mEditTextAction = 0;
     private void initOnelineTextBox(int mode) {
         mEditText = (EditText) findViewById(R.id.text_input);
         mEditText.setText("");
@@ -3069,9 +3063,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     int action = mSettings.getImeShortcutsAction();
                     if (action == 0) {
                         doToggleSoftKeyboard();
-                    } else if (action == 1261 || mEditTextAction == 1) {
-                        setEditTextViewFocus(0);
-                        setEditTextView(0);
+                    } else if (action == 1261) {
+                        doEditTextFocusAction();
                     } else {
                         int inputType = mEditText.getInputType();
                         if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
@@ -3342,6 +3335,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean onelineTextBoxEsc(){
         if (mEditTextView) {
             if (mEditText != null && mEditText.isFocused()) {
+                if (mHaveFullHwKeyboard) return false;
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) view.requestFocus();
                 if (mSettings.getOneLineTextBoxEsc()) {

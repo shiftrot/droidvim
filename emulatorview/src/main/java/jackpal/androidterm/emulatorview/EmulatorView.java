@@ -934,7 +934,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIMECtrlBeginBatchEditDisableHwKbdChk = getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
 
         setIME(mEmulator);
-        requestFocus();
+        requestFocusFromTouch();
     }
 
     public void setAmbiWidth(int width) {
@@ -1130,7 +1130,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             sendMouseEventCode(e, 3); // release
         }
 
-        requestFocus();
+        requestFocusFromTouch();
         return false;
     }
 
