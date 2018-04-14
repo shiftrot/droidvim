@@ -182,7 +182,7 @@
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Character-based</item>
+        <item>Direct input : Raw</item>
         <item>Word-based</item>
     </string-array>
 
@@ -220,7 +220,7 @@
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">
-        <item>Normal</item>
+        <item>Normal input</item>
         <item>Direct input : Password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : Password\n(Google Japanese input)</item>

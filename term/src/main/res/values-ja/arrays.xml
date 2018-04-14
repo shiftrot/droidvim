@@ -176,7 +176,7 @@
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>文字ベース</item>
+        <item>直接入力 : Raw</item>
         <item>単語ベース</item>
     </string-array>
 

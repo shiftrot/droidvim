@@ -90,6 +90,11 @@
                 android:entryValues="@array/entryvalues_alt_cursorstyle_preference"
                 android:dialogTitle="@string/dialog_title_cursorstyle_preference" />
 
+        <CheckBoxPreference
+                android:key="hw_acceleration_by_default"
+                android:defaultValue="@bool/pref_hw_acceleration_by_default"
+                android:title="@string/title_hw_acceleration_by_default_preference" />
+
         <EditTextPreference
                 android:key="keepscreentime"
                 android:defaultValue="@string/pref_keep_screen_default"
@@ -383,6 +388,20 @@
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/ime_input_method_preferences">
+
+        <ListPreference
+                android:key="ime_default_inputtype"
+                android:defaultValue="@integer/pref_ime_inputtype_default"
+                android:title="@string/title_ime_inputtype_preference"
+                android:summary="@string/summary_ime_inputtype_preference"
+                android:entries="@array/entries_ime_inputtype_preference"
+                android:entryValues="@array/entryvalues_ime_inputtype_preference"
+                android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
+
         <PreferenceScreen
                 android:title="@string/title_pre_ime_shortcuts"
                 android:summary="@string/summary_title_pre_ime_shortcuts">
@@ -428,6 +447,15 @@
                     android:title="@string/pref_ctrl_j"/>
         </PreferenceScreen>
 
+        <ListPreference
+                android:key="ime"
+                android:defaultValue="@string/pref_ime_default"
+                android:title="@string/title_ime_preference"
+                android:summary="@string/summary_ime_preference"
+                android:entries="@array/entries_ime_preference"
+                android:entryValues="@array/entryvalues_ime_preference"
+                android:dialogTitle="@string/dialog_title_ime_preference" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -472,15 +500,6 @@
             android:key="text">
 
         <ListPreference
-                android:key="ime_default_inputtype"
-                android:defaultValue="@integer/pref_ime_inputtype_default"
-                android:title="@string/title_ime_inputtype_preference"
-                android:summary="@string/summary_ime_inputtype_preference"
-                android:entries="@array/entries_ime_inputtype_preference"
-                android:entryValues="@array/entryvalues_ime_inputtype_preference"
-                android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
-
-        <ListPreference
                 android:key="fontfile"
                 android:defaultValue="@string/pref_fontfile_default"
                 android:title="@string/title_fontfile_preference"
@@ -517,11 +536,6 @@
                 android:entryValues="@array/entryvalues_ambiwidth_preference"
                 android:dialogTitle="@string/dialog_title_ambiwidth_preference"
                 android:inputType="number" />
-
-        <CheckBoxPreference
-                android:key="hw_acceleration_by_default"
-                android:defaultValue="@bool/pref_hw_acceleration_by_default"
-                android:title="@string/title_hw_acceleration_by_default_preference" />
 
     </PreferenceCategory>
 
@@ -605,15 +619,6 @@
                 android:defaultValue="@bool/pref_ignore_xoff_default"
                 android:summaryOn="@string/ignore_xoff_summary_on"
                 android:summaryOff="@string/ignore_xoff_summary_off" />
-
-        <ListPreference
-                android:key="ime"
-                android:defaultValue="@string/pref_ime_default"
-                android:title="@string/title_ime_preference"
-                android:summary="@string/summary_ime_preference"
-                android:entries="@array/entries_ime_preference"
-                android:entryValues="@array/entryvalues_ime_preference"
-                android:dialogTitle="@string/dialog_title_ime_preference" />
 
     </PreferenceCategory>
 
