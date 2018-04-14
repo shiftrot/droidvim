@@ -311,16 +311,16 @@
   <string name="title_auto_hide_functionbar">ファンクションバーを隠す</string>
   <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す.</string>
 
-  <string name="title_pre_ime_shortcuts">IMEショートカット</string>
-  <string name="summary_title_pre_ime_shortcuts">ハードウェアキーボードショートカットで入力モードを切り替える.</string>
+  <string name="title_pre_ime_shortcuts">IMEアクション</string>
+  <string name="summary_title_pre_ime_shortcuts">ハードウェアキーボードショートカット/ファンクションキーで入力モードを切り替える.</string>
   <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
   <string name="pref_zenkaku_hankaku">[半/全]</string>
   <string name="pref_grave">[`]</string>
   <string name="pref_switch_charset">[漢字]</string>
 
   <string name="title_ime_shortcuts_action_preference">機能割当</string>
-  <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
-  <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
+  <string name="summary_ime_shortcuts_action_preference">IMEアクションに割り当てる機能を選択する</string>
+  <string name="dialog_titleime_shortcuts_action_preference">IMEアクション設定</string>
 
   <string name="title_ime_inputtype_preference">起動時の入力モード</string>
   <string name="summary_ime_inputtype_preference">起動時に英数直接入力を有効化する</string>
@@ -340,7 +340,7 @@
   <string name="button_no">いいえ</string>
   <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
   <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
-  <string name="keyboard_warning">ハードウェアキーボードからキーボード入力モードを切り替える必要がある場合は「環境設定」からIMEショートカットを適切に設定し,IMEショートカットを使用します.</string>
+  <string name="keyboard_warning">ハードウェアキーボードからキーボード入力モードを切り替える必要がある場合は「環境設定」からIMEアクションを適切に設定し,IMEアクションを使用します.</string>
 
   <string name="external_storage">ストレージ</string>
   <string name="create_or_delete">新規/削除</string>
