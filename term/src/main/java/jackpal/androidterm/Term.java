@@ -1621,10 +1621,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key == 1255) {
             setFunctionBar(2);
         } else if (key == 1260) {
-            if (mSettings.getImeShortcutsAction() != 1261) {
-                if (setEditTextAltCmd()) return true;
+            int action = mSettings.getImeShortcutsAction();
+            if (action == 0) {
+                doToggleSoftKeyboard();
+            } else if (action == 1261) {
+                doEditTextFocusAction();
+            } else {
+                setEditTextAltCmd();
+                view.doImeShortcutsAction();
             }
-            view.doImeShortcutsAction();
             return true;
         } else if (key == 1261) {
             setEditTextView(2);
