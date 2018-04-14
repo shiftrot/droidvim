@@ -1632,7 +1632,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             return true;
         } else if (key == 1261) {
-            setEditTextView(2);
+            doEditTextFocusAction();
         } else if (key >= 1351 && key <= 1354) {
             if (setEditTextAltCmd()) return true;
             view.doImeShortcutsAction(key-1300);
@@ -2299,13 +2299,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         case 0xffff1009:
             return true;
         case 0xffff0056:
-            setEditTextViewFocus(0);
+            mEditTextAction = 1;
+            doEditTextFocusAction();
+            setEditTextInputType(50);
             return true;
         case 0xffff0057:
-            setEditTextViewFocus(1);
+            mEditTextAction = 0;
+            setEditTextViewFocus(0);
             return true;
         case 0xffff0058:
-            setEditTextViewFocus(2);
+            setEditTextViewFocus(1);
             return true;
         case 0xffff0030:
             clearClipBoard();
@@ -3033,6 +3036,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private int mOnelineTextBox = -1;
     private EditText mEditText;
+    private int mEditTextAction = 0;
     private void initOnelineTextBox(int mode) {
         mEditText = (EditText) findViewById(R.id.text_input);
         mEditText.setText("");
@@ -3065,41 +3069,45 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     int action = mSettings.getImeShortcutsAction();
                     if (action == 0) {
                         doToggleSoftKeyboard();
-                    } else if (action == 1261) {
-                        setEditTextViewFocus(2);
-                    } else if (!BuildConfig.DEBUG) {
-                        // Currently there are some glitches so do not change input type.
-                        return false;
+                    } else if (action == 1261 || mEditTextAction == 1) {
+                        setEditTextViewFocus(0);
+                        setEditTextView(0);
                     } else {
                         int inputType = mEditText.getInputType();
                         if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
-                            switch (action) {
-                                case 51:
-                                    inputType = EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
-                                    break;
-                                case 52:
-                                    inputType = EditorInfo.TYPE_TEXT_VARIATION_URI;
-                                    break;
-                                case 53:
-                                    inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
-                                    break;
-                                case 54:
-                                    inputType = EditorInfo.TYPE_NULL;
-                                    break;
-                                default:
-                                    inputType = EditorInfo.TYPE_CLASS_TEXT;
-                                    break;
-                            }
+                            setEditTextInputType(action);
                         } else {
                             inputType = EditorInfo.TYPE_CLASS_TEXT;
+                            mEditText.setInputType(inputType);
                         }
-                        mEditText.setInputType(inputType);
                     }
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    private void setEditTextInputType(int action) {
+        int inputType;
+        switch (action) {
+            case 51:
+                inputType = EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
+                break;
+            case 52:
+                inputType = EditorInfo.TYPE_TEXT_VARIATION_URI;
+                break;
+            case 53:
+                inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                break;
+            case 54:
+                inputType = EditorInfo.TYPE_NULL;
+                break;
+            default:
+                inputType = EditorInfo.TYPE_CLASS_TEXT;
+                break;
+        }
+        mEditText.setInputType(inputType);
     }
 
     private static boolean mEditTextView = false;
@@ -3116,6 +3124,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (mode == 0 && mEditText != null) mEditText.setText("");
         }
         if (mAlreadyStarted) updatePrefs();
+    }
+
+    private void doEditTextFocusAction() {
+        boolean focus = false;
+        if (mEditText != null && mEditTextView) focus = !mEditText.hasFocus();
+        if (focus) {
+            mEditText.requestFocus();
+        } else setEditTextViewFocus(2);
     }
 
     private void setEditTextViewFocus(int mode) {

@@ -121,8 +121,8 @@
         <!--<item>Create Window</item>-->
         <item>Toogle drawer</item>
         <item>Toggle soft keyboard</item>
-        <item>Toggle One-line text box</item>
         <item>Toggle function bar</item>
+        <item>One-line text box</item>
         <item>Choose input method</item>
         <item>Paste</item>
         <item>Sends ESC from terminal</item>
@@ -134,6 +134,7 @@
         <item>Alphanumeric : URI</item>
         <item>Direct input : password\n(Google Japanese input)</item>
         <item>Direct input : Raw</item>
+        <item>One-line text box</item>
         <item>Open file in new tab (Vim)</item>
         <item>Orientation</item>
         <item>Quit</item>

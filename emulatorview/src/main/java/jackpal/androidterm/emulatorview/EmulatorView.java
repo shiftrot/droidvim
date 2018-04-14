@@ -1859,7 +1859,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (action == 0) {
             doToggleSoftKeyboard();
         } else if (action == 1261) {
-            ((Activity)this.getContext()).onKeyUp(0xffff0058, null);
+            ((Activity)this.getContext()).onKeyUp(0xffff0056, null);
         } else {
             if (mIMEInputType == EditorInfo.TYPE_CLASS_TEXT) {
                 setImeShortcutsAction(action);
