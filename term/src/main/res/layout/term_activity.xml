@@ -34,6 +34,8 @@
 
             <LinearLayout
                 android:id="@+id/oneline_text_box"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,25 +46,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionSend|flagNoFullscreen"
+                    android:nextFocusDown="@+id/text_input"
+                    android:nextFocusLeft="@+id/text_input"
+                    android:nextFocusRight="@+id/text_input"
+                    android:nextFocusUp="@+id/text_input"
                     android:maxLines="1"
                     android:layout_weight="1"
                     android:inputType="text" />
                 <Button
                     android:id="@+id/button_oneline_text_box_clear"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:layout_weight="0.15"
                     android:minHeight="44dp"
                     android:minWidth="56dp"
                     android:text="×"/>
                 <Button
                     android:id="@+id/button_oneline_text_box_enter"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:layout_weight="0.1"
                     android:minHeight="44dp"
                     android:minWidth="56dp"
@@ -73,11 +81,15 @@
             <LinearLayout
                 android:id="@+id/view_function_bar"
                 android:orientation="horizontal"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp" >
 
                 <Button
                     android:id="@+id/button_next_functionbar0"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
@@ -85,6 +97,8 @@
                     android:text="↓"/>
                 <Button
                     android:id="@+id/button_esc"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
@@ -92,18 +106,24 @@
                     android:text="Esc"/>
                 <HorizontalScrollView
                     android:id="@+id/view_function_bar1"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
 
                     <LinearLayout
                         android:id="@+id/view_function_bar_keys"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp" >
 
                         <Button
                             android:id="@+id/button_ctrl"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -111,6 +131,8 @@
                             android:text="Ctrl"/>
                         <Button
                             android:id="@+id/button_alt"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -118,6 +140,8 @@
                             android:text="Alt"/>
                         <Button
                             android:id="@+id/button_tab"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -125,6 +149,8 @@
                             android:text="Tab"/>
                         <Button
                             android:id="@+id/button_up"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -132,6 +158,8 @@
                             android:text="▲"/>
                         <Button
                             android:id="@+id/button_down"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -139,6 +167,8 @@
                             android:text="▼"/>
                         <Button
                             android:id="@+id/button_left"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -146,6 +176,8 @@
                             android:text="◀"/>
                         <Button
                             android:id="@+id/button_right"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -153,6 +185,8 @@
                             android:text="▶"/>
                         <Button
                             android:id="@+id/button_page_up"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -160,6 +194,8 @@
                             android:text="PU"/>
                         <Button
                             android:id="@+id/button_page_down"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -167,6 +203,8 @@
                             android:text="PD"/>
                         <Button
                             android:id="@+id/button_backspace"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -174,6 +212,8 @@
                             android:text="BS"/>
                         <Button
                             android:id="@+id/button_enter"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -181,6 +221,8 @@
                             android:text="↲"/>
                         <Button
                             android:id="@+id/button_i"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -188,6 +230,8 @@
                             android:text="i"/>
                         <Button
                             android:id="@+id/button_colon"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -195,6 +239,8 @@
                             android:text=":"/>
                         <Button
                             android:id="@+id/button_softkeyboard"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -202,6 +248,8 @@
                             android:text="◇"/>
                         <Button
                             android:id="@+id/button_menu_user"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -209,6 +257,8 @@
                             android:text="□"/>
                         <Button
                             android:id="@+id/button_slash"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -216,6 +266,8 @@
                             android:text="/"/>
                         <Button
                             android:id="@+id/button_minus"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -223,6 +275,8 @@
                             android:text="-"/>
                         <Button
                             android:id="@+id/button_equal"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -230,6 +284,8 @@
                             android:text="="/>
                         <Button
                             android:id="@+id/button_asterisk"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -237,6 +293,8 @@
                             android:text="*"/>
                         <Button
                             android:id="@+id/button_pipe"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -244,6 +302,8 @@
                             android:text="|"/>
                         <Button
                             android:id="@+id/button_vim_paste"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -251,6 +311,8 @@
                             android:text="&quot;*p"/>
                         <Button
                             android:id="@+id/button_vim_yank"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -258,6 +320,8 @@
                             android:text="&quot;*yy"/>
                         <Button
                             android:id="@+id/button_menu_plus"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -265,6 +329,8 @@
                             android:text="[＋]"/>
                         <Button
                             android:id="@+id/button_menu_minus"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -272,6 +338,8 @@
                             android:text="[－]"/>
                         <Button
                             android:id="@+id/button_menu_x"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -279,6 +347,8 @@
                             android:text="[×]"/>
                         <Button
                             android:id="@+id/button_menu_quit"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -286,6 +356,8 @@
                             android:text="[Q]"/>
                         <Button
                             android:id="@+id/button_menu"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -293,6 +365,8 @@
                             android:text="≡"/>
                         <Button
                             android:id="@+id/button_menu_hide"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="44dp"
@@ -300,6 +374,8 @@
                             android:text="▽"/>
                         <Button
                             android:id="@+id/button_next_functionbar2"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -312,16 +388,22 @@
 
             <HorizontalScrollView
                 android:id="@+id/view_function_bar2"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
                 <LinearLayout
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp" >
 
                     <Button
                         android:id="@+id/button_prev_functionbar"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -329,6 +411,8 @@
                         android:text="↑"/>
                     <Button
                         android:id="@+id/button_m1"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -336,6 +420,8 @@
                         android:text="F1"/>
                     <Button
                         android:id="@+id/button_m2"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -343,6 +429,8 @@
                         android:text="F2"/>
                     <Button
                         android:id="@+id/button_m3"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -350,6 +438,8 @@
                         android:text="F3"/>
                     <Button
                         android:id="@+id/button_m4"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -357,6 +447,8 @@
                         android:text="F4"/>
                     <Button
                         android:id="@+id/button_m5"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -364,6 +456,8 @@
                         android:text="F5"/>
                     <Button
                         android:id="@+id/button_m6"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -371,6 +465,8 @@
                         android:text="F6"/>
                     <Button
                         android:id="@+id/button_m7"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -378,6 +474,8 @@
                         android:text="F7"/>
                     <Button
                         android:id="@+id/button_m8"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -385,6 +483,8 @@
                         android:text="F8"/>
                     <Button
                         android:id="@+id/button_m9"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -392,6 +492,8 @@
                         android:text="F9"/>
                     <Button
                         android:id="@+id/button_m10"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -399,6 +501,8 @@
                         android:text="F10"/>
                     <Button
                         android:id="@+id/button_m11"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -406,6 +510,8 @@
                         android:text="F11"/>
                     <Button
                         android:id="@+id/button_m12"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
@@ -413,6 +519,8 @@
                         android:text="F12"/>
                     <Button
                         android:id="@+id/button_prev_functionbar2"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
