@@ -3480,7 +3480,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             sendKeyStrings("\"*p", false);
             break;
         case R.id.button_vim_yank:
-            sendKeyStrings("\"*yy", false);
+            sendKeyStrings("\"*yy"+"\u001b", false);
             break;
         case R.id.button_menu_plus:
             doSendActionBarKey(view, mSettings.getActionBarPlusKeyAction());
