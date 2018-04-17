@@ -104,6 +104,16 @@
                     android:minHeight="44dp"
                     android:minWidth="56dp"
                     android:text="Esc"/>
+                <Button
+                    android:id="@+id/button_ctrl"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="44dp"
+                    android:minWidth="56dp"
+                    android:text="Ctrl"/>
+
                 <HorizontalScrollView
                     android:id="@+id/view_function_bar1"
                     android:focusable="false"
@@ -120,15 +130,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="45dp" >
 
-                        <Button
-                            android:id="@+id/button_ctrl"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minHeight="44dp"
-                            android:minWidth="56dp"
-                            android:text="Ctrl"/>
                         <Button
                             android:id="@+id/button_alt"
                             android:focusable="false"
