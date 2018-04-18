@@ -346,12 +346,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return false;
             }
 
-            if (keyCode == KeycodeConstants.KEYCODE_ESCAPE) {
-                if (onelineTextBoxEsc()) return true;
-                sendKeyStrings("\u001b", false);
-                return true;
-            }
-
             if (!mUseKeyboardShortcuts) {
                 return false;
             }
