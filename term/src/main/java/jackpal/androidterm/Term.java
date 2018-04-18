@@ -3001,7 +3001,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doUIToggle(int x, int y, int width, int height) {
         doToggleSoftKeyboard();
         EmulatorView view = getCurrentEmulatorView();
-        if (view != null) getCurrentEmulatorView().requestFocus();
+        if (view != null) getCurrentEmulatorView().requestFocusFromTouch();
     }
 
     /**
@@ -3123,7 +3123,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         boolean focus = false;
         if (mEditText != null && mEditTextView) focus = !mEditText.hasFocus();
         if (focus) {
-            mEditText.requestFocus();
+            mEditText.requestFocusFromTouch();
         } else setEditTextViewFocus(2);
     }
 
@@ -3132,17 +3132,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         int focus = mode;
         if (mode == 2) focus = mEditTextView ? 1 : 0;
         if (focus == 1 && mEditTextView && mEditText != null) {
-            mEditText.requestFocus();
+            mEditText.requestFocusFromTouch();
         } else {
             EmulatorView view = getCurrentEmulatorView();
-            if (view != null) view.requestFocus();
+            if (view != null) view.requestFocusFromTouch();
         }
     }
 
     private boolean setEditTextAltCmd() {
         if (mEditTextView && mEditText != null && mEditText.isFocused()) {
             EmulatorView view = getCurrentEmulatorView();
-            if (view != null) view.requestFocus();
+            if (view != null) view.requestFocusFromTouch();
             return true;
         } else {
             return false;
@@ -3158,10 +3158,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         layout.setVisibility(visibility);
         if (visibility == View.VISIBLE) {
             if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
-            if (mEditText != null) mEditText.requestFocus();
+            if (mEditText != null) mEditText.requestFocusFromTouch();
 //            doWarningEditTextView();
         } else {
-            if (view != null) view.requestFocus();
+            if (view != null) view.requestFocusFromTouch();
         }
         setEditTextViewSize();
         if (mViewFlipper != null) mViewFlipper.setEditTextView(visibility == View.VISIBLE);
@@ -3323,7 +3323,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 } else if (str.equals("")) {
                     setEditTextView(0);
                 } else {
-                    mEditText.requestFocus();
+                    mEditText.requestFocusFromTouch();
                     mEditText.setText("");
                 }
                 return true;
@@ -3337,7 +3337,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (mEditText != null && mEditText.isFocused()) {
                 if (mHaveFullHwKeyboard) return false;
                 EmulatorView view = getCurrentEmulatorView();
-                if (view != null) view.requestFocus();
+                if (view != null) view.requestFocusFromTouch();
                 if (mSettings.getOneLineTextBoxEsc()) {
                     setEditTextView(0);
                     return false;
