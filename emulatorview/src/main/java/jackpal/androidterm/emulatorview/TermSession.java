@@ -629,7 +629,7 @@ public class TermSession {
      * Reset the terminal emulator's state.
      */
     public void reset() {
-        mEmulator.reset();
+        if (mEmulator != null) mEmulator.reset();
         notifyUpdate();
     }
 
