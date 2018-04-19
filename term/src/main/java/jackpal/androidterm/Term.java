@@ -3059,7 +3059,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (keyCode == KeycodeConstants.KEYCODE_TAB) {
                     return true;
                 }
-                if (EmulatorView.getPreIMEShortcutsStatus(keyCode, event) == EmulatorView.PREIME_SHORTCUT_ACTION) {
+                int shortcut = EmulatorView.getPreIMEShortcutsStatus(keyCode, event);
+                if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION) {
                     int action = mSettings.getImeShortcutsAction();
                     if (action == 0) {
                         doToggleSoftKeyboard();

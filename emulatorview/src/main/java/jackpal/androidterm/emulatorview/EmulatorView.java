@@ -1820,8 +1820,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public final static int PREIME_SHORTCUT_ACTION_NULL = 0;
-    public final static int PREIME_SHORTCUT_ACTION = 1;
-    public final static int PREIME_SHORTCUT_ACTION_DONE = 2;
+    public final static int PREIME_SHORTCUT_ACTION_DONE = 1;
+    public final static int PREIME_SHORTCUT_ACTION = 2;
     static public int getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
         int keyAction = event.getAction();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
