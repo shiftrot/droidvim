@@ -1815,13 +1815,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int stat = getPreIMEShortcutsStatus(keyCode, event);
         if (stat == PREIME_SHORTCUT_ACTION) {
             doImeShortcutsAction();
+        } else if (stat == PREIME_SHORTCUT_ACTION2) {
+            doImeShortcutsAction(1261);
+        } else if (stat == PREIME_SHORTCUT_ACTION_MENU) {
+            ((Activity)this.getContext()).onKeyUp(stat, null);
         }
         return  (stat > PREIME_SHORTCUT_ACTION_NULL);
     }
 
     public final static int PREIME_SHORTCUT_ACTION_NULL = 0;
     public final static int PREIME_SHORTCUT_ACTION_DONE = 1;
-    public final static int PREIME_SHORTCUT_ACTION = 2;
+    public final static int PREIME_SHORTCUT_ACTION      = 2;
+    public final static int PREIME_SHORTCUT_ACTION2     = 3;
+    public final static int PREIME_SHORTCUT_ACTION_MENU = KeyEvent.KEYCODE_MENU;
     static public int getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
         int keyAction = event.getAction();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
@@ -1836,12 +1842,27 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean aesc = (keyCode == KeycodeConstants.KEYCODE_ESCAPE) && (altOn && !ctrlOn && !metashiftOn);
         boolean ae = mAltEsc && aesc;
         boolean as = mAltSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (altOn && !ctrlOn && !metashiftOn);
+        boolean cesc = (keyCode == KeycodeConstants.KEYCODE_ESCAPE) && (!altOn && ctrlOn && !metashiftOn);
         boolean cs = mCtrlSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (!altOn && ctrlOn && !metashiftOn);
         boolean ss = mShiftSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (!altOn && !ctrlOn && shiftOn && !metaOn);
         boolean zh = mZenkakuHankaku && (keyCode == 211) && (!ctrlOn && !altOn && !metashiftOn);  // KeyEvent.KEYCODE_ZENKAKU_HANKAKU;
         boolean grave = mGrave && (keyCode == KeycodeConstants.KEYCODE_GRAVE) && (!ctrlOn && !altOn && !metashiftOn);
         boolean sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
         boolean cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metashiftOn);
+        if (cesc) {
+            if (keyAction == KeyEvent.ACTION_DOWN) return PREIME_SHORTCUT_ACTION_MENU;
+            return PREIME_SHORTCUT_ACTION_DONE;
+        }
+        if (!mAltEsc && aesc) {
+            if (keyAction == KeyEvent.ACTION_UP) return PREIME_SHORTCUT_ACTION2;
+            return PREIME_SHORTCUT_ACTION_DONE;
+        }
+        if (metaOn && !altOn && !ctrlOn && !shiftOn) {
+            if (keyCode == KeycodeConstants.KEYCODE_ESCAPE) {
+                if (keyAction == KeyEvent.ACTION_UP) return PREIME_SHORTCUT_ACTION2;
+                return PREIME_SHORTCUT_ACTION_DONE;
+            }
+        }
         if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && keyAction == KeyEvent.ACTION_UP)) {
             return PREIME_SHORTCUT_ACTION;
         }

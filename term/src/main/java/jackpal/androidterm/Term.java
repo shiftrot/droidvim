@@ -3076,6 +3076,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         }
                     }
                     return true;
+                } else if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION2) {
+                    doEditTextFocusAction();
+                    return true;
                 }
                 return false;
             }
