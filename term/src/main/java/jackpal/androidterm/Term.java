@@ -1557,6 +1557,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             sendKeyStrings(":exe $MYVIMRC == '' ? 'e $HOME/.vimrc' : 'e $MYVIMRC'\r", true);
         } else if (id == R.id.menu_text_box) {
             setEditTextView(2);
+        } else if (id == R.id.menu_drawer) {
+            toggleDrawer();
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if  (id == R.id.action_help) {

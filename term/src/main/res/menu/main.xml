@@ -41,6 +41,8 @@
         android:title="@string/toggle_function_bar" />
     <item android:id="@+id/menu_text_box"
         android:title="@string/text_box" />
+    <item android:id="@+id/menu_drawer"
+        android:title="@string/menu_drawer" />
     <item android:id="@+id/menu_special_keys"
         android:title="@string/special_keys" />
     <item android:id="@+id/menu_reload"
