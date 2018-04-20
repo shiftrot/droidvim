@@ -18,7 +18,6 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
@@ -27,7 +26,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -44,10 +42,6 @@ import jackpal.androidterm.emulatorview.UpdateCallback;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
-import jackpal.androidterm.util.IabHelper;
-import jackpal.androidterm.util.IabResult;
-import jackpal.androidterm.util.Inventory;
-import jackpal.androidterm.util.Purchase;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
@@ -178,7 +172,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final int REQUEST_FILE_PICKER = 2;
     public static final int REQUEST_FILE_DELETE = 3;
-    public static final int REQUEST_BILLING = 4;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -190,7 +183,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String PERMISSION_PATH_BROADCAST = "jackpal.androidterm.permission.APPEND_TO_PATH";
     private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
     private int mPendingPathBroadcasts = 0;
-    private BroadcastReceiver mPathReceiver;
 
     private String mExternalApp                 = "com.example.filemanager";
     private static final String APP_DROPBOX     = "com.dropbox.android";
@@ -306,19 +298,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            Log.w(TAG, "onSingleTapConfirmed");
+            Log.w(TermDebug.LOG_TAG, "onSingleTapConfirmed");
             return false;
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            Log.w(TAG, "onDoubleTapEvent");
+            Log.w(TermDebug.LOG_TAG, "onDoubleTapEvent");
             return doDoubleTapAction(e);
         }
 
         @Override
         public boolean onDoubleTapEvent(MotionEvent e) {
-            Log.w(TAG, "onDoubleTapEvent");
+            Log.w(TermDebug.LOG_TAG, "onDoubleTapEvent");
             return false;
         }
 
@@ -410,7 +402,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
         if (!mVimFlavor && mSettings.doPathExtensions()) {
-            mPathReceiver = new BroadcastReceiver() {
+            BroadcastReceiver mPathReceiver = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
                     String path = makePathFromBundle(getResultExtras(false));
                     if (intent.getAction().equals(ACTION_PATH_PREPEND_BROADCAST)) {
@@ -470,8 +462,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         WebViewActivity.setFontSize(new PrefValue(this).getInt("mWebViewSize", 140));
 
         updatePrefs();
-        mIabHelperDisable = !existsPlayStore();
-        // if (!mAlreadyStarted && !mIabHelperDisable && mIabHelper == null) iabSetupFirst();
         setDrawerButtons();
         restoreSyncFileObserver();
         mAlreadyStarted = true;
@@ -548,21 +538,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setExtraButton() {
         Button button = (Button)findViewById(R.id.drawer_extra_button);
-        int visibilty = View.VISIBLE;
-        if (mIabHelperDisable || !FLAVOR_VIM) visibilty = View.GONE;
+        int visibilty = View.GONE;
         button.setVisibility(visibilty);
-        int color = mSettings.getColorTheme() == 0 ? R.drawable.sidebar_button_dark : R.drawable.sidebar_button;
-        if (mIsPremium) {
-            button.setText(getString(R.string.extra_button));
-            button.setBackgroundResource(color);
-        } else {
-            button.setText(getString(R.string.extra_button));
-            if (mIabHelper != null) {
-                button.setBackgroundResource(color);
-            } else if (mSettings.getColorTheme() == 0) {
-                button.setBackgroundResource(R.drawable.extra_button_dark);
-            }
-        }
     }
 
     private void setDebugButton() {
@@ -784,11 +761,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-
-    private boolean installGit() {
-        return true;
-    }
-
     private void confirmClearCache(final boolean clearAll) {
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
@@ -911,15 +883,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private static String AM_INTENT_ACTION = "com.droidterm.am.intent.action";
-    private static String PURCHASES_UPDATED = "com.android.vending.billing.PURCHASES_UPDATED";
     private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (AM_INTENT_ACTION.equals(action)) {
                 doAndroidIntent(intent.getStringExtra("action"), intent.getStringExtra("param"), intent.getStringExtra("mime"));
-            } else if (PURCHASES_UPDATED.equals(action)) {
-                if (mIabHelper != null) mIabHelper.queryInventoryAsync(mGotInventoryListener);
             }
         }
     };
@@ -1026,16 +995,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         SyncFileObserver.delete(cacheDir);
         mTermService = null;
         mTSConnection = null;
-
-        if (mIabHelper != null) {
-            try {
-                mIabHelper.dispose();
-            } catch (Exception e) {
-                Log.w(TermDebug.LOG_TAG, e.toString());
-            } finally {
-                mIabHelper = null;
-            }
-        }
     }
 
     @SuppressLint("NewApi")
@@ -1071,7 +1030,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             TermVimInstaller.doInstallTerm(Term.this);
             permissionCheckExternalStorage();
         } else if (TermVimInstaller.doInstallVim) {
-            mIabHelperDisable = true;
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
             cmd = cmd.replaceAll("\n-?vim.app", "");
             TermVimInstaller.installVim(Term.this, new Runnable(){
@@ -1085,8 +1043,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         }
                     }
                     permissionCheckExternalStorage();
-                    mIabHelperDisable = !existsPlayStore();
-                    if (!mIabHelperDisable) setExtraButton();
                 }
             });
         } else {
@@ -1359,17 +1315,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onResume() {
         super.onResume();
 
-        registerReceiver(mBroadcastReceiever, new IntentFilter(PURCHASES_UPDATED));
         registerReceiver(mBroadcastReceiever, new IntentFilter(AM_INTENT_ACTION));
-
-        if (existsPlayStore()) {
-            if (mIabHelper == null) {
-                iabSetup();
-            } else {
-                // for promotion code
-                if (isConnected(this.getApplicationContext())) mIabHelper.queryInventoryAsync(mGotInventoryListener);
-            }
-        }
 
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
@@ -1976,20 +1922,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                 }
                 break;
-            case REQUEST_BILLING:
-                Log.d(TAG, "onActivityResult(" + request + "," + result + "," + data);
-                if (mIabHelper == null) return;
-
-                // Pass on the activity result to the helper for handling
-                if (!mIabHelper.handleActivityResult(request, result, data)) {
-                    // not handled, so handle it ourselves (here's where you'd
-                    // perform any handling of activity results not related to in-app
-                    // billing...
-                    super.onActivityResult(request, result, data);
-                } else {
-                    Log.d(TAG, "onActivityResult handled by IABUtil.");
-                }
-                break;
         }
     }
 
@@ -2064,7 +1996,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         try {
             boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
             // DocumentProvider
-            Log.e(TAG,"uri:" + uri.getAuthority());
+            Log.e(TermDebug.LOG_TAG,"uri:" + uri.getAuthority());
             if (isAfterKitKat && isDocumentUri(context, uri)) {
                 if ("com.android.externalstorage.documents".equals(
                         uri.getAuthority())) { // ExternalStorageProvider
@@ -2470,7 +2402,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                         startActivity(altIntent);
                                         return;
                                     } catch (Exception altWebViewErr) {
-                                        Log.d(TAG, altWebViewErr.getMessage());
+                                        Log.d(TermDebug.LOG_TAG, altWebViewErr.getMessage());
                                     }
                                 }
                             }
@@ -2481,7 +2413,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
                             return;
                         } catch (Exception webViewErr) {
-                            Log.d(TAG, webViewErr.getMessage());
+                            Log.d(TermDebug.LOG_TAG, webViewErr.getMessage());
                         }
                     }
                     try {
@@ -3669,90 +3601,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return "com.microsoft.skydrive.content.StorageAccessProvider".equals(uri.getAuthority());
     }
 
-    IabHelper mIabHelper = null;
-    boolean mIabHelperDisable = false;
-    static final String TAG = "In App Billing";
-    private void iabSetup() {
-        if (!isConnected(this.getApplicationContext())) return;
-        if (mIabHelperDisable) {
-            alert(Term.this.getString(R.string.iab_null));
-            return;
-        }
-        String base64EncodedPublicKey = BuildConfig.BASE64_PUBLIC_KEY;
-
-        final ProgressDialog pd = ProgressDialog.show(Term.this, null, Term.this.getString(R.string.iab_wait), true, false);
-        if (mIabHelper == null) mIabHelper = new IabHelper(this, base64EncodedPublicKey);
-        if (mIabHelper == null) {
-            pd.dismiss();
-            confirmRetryIabSetup();
-        } else {
-            pd.dismiss();
-            if (mIabSetupFirst) return;
-            mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
-                    pd.dismiss();
-                    Log.d(TAG, "Setup finished.");
-                    if (!result.isSuccess()) {
-                        // Oh noes, there was a problem.
-                        // complain("Problem setting up in-app billing: " + result);
-                        showAds(true);
-                        return;
-                    }
-
-                    // Have we been disposed of in the meantime? If so, quit.
-                    if (mIabHelper == null) return;
-
-                    // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                    Log.d(TAG, "Setup successful. Querying inventory.");
-                    mIabHelper.queryInventoryAsync(mGotInventoryListener);
-                }
-            });
-        }
-    }
-
-    boolean mIabSetupFirst = false;
-    public void iabSetupFirst() {
-        try {
-            if (!isConnected(this.getApplicationContext())) return;
-            String base64EncodedPublicKey = BuildConfig.BASE64_PUBLIC_KEY;
-            if (mIabHelper == null) {
-                mIabHelper = new IabHelper(this, base64EncodedPublicKey);
-                if (mIabHelper == null) return;
-                mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                    public void onIabSetupFinished(IabResult result) {
-                        Log.d(TAG, "Setup finished.");
-                        if (!result.isSuccess()) return;
-                        if (mIabHelper != null) {
-                            Log.d(TAG, "Setup successful. Querying inventory.");
-                            mIabSetupFirst = true;
-                            mIabHelper.queryInventoryAsync(mGotInventoryListener);
-                        }
-                    }
-                });
-            }
-        } catch (Exception e) {
-            // do nothing
-        }
-    }
-
-    private void confirmRetryIabSetup() {
-        final AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setIcon(android.R.drawable.ic_dialog_alert);
-        b.setMessage(this.getString(R.string.iabsetup_try_again));
-        b.setPositiveButton(this.getString(R.string.installer_try_again_button), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                iabSetup();
-            }
-        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                mOnExtraButtonClicked = false;
-            }
-        });
-        b.create().show();
-    }
-
     public static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
@@ -3766,76 +3614,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    boolean mIsPremium = false;
-    static final String SKU_PREMIUM = "com.droidvim.premium.git";
-
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-            // Have we been disposed of in the meantime? If so, quit.
-            if (mIabHelper == null) {
-                mOnExtraButtonClicked = false;
-                return;
-            }
-
-            // Is it a failure?
-            if (result.isFailure()) {
-                // complain("Failed to query inventory: " + result);
-                mOnExtraButtonClicked = false;
-                return;
-            }
-
-            Log.d(TAG, "Query inventory was successful.");
-
-            // Do we have the premium upgrade?
-            Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
-            mIsPremium = (premiumPurchase != null && verifyDeveloperPayload(premiumPurchase));
-            Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
-            // if (!mIsPremium) showAds(true);
-            setExtraButton();
-
-            updateUi();
-            setWaitScreen(false);
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-            if (mOnExtraButtonClicked) {
-                mOnExtraButtonClicked = false;
-                onExtraButtonClicked(null);
-            }
-        }
-    };
-
-    IabHelper.OnConsumeFinishedListener mGotConsumeInventoryListener = new IabHelper.OnConsumeFinishedListener() {
-        @Override
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            if (result.isSuccess()) {
-               // provision the in-app purchase to the user
-                Log.d(TAG, "Consume Successl : " + purchase.getSku());
-            } else {
-                Log.d(TAG, "Consume failed : " + purchase.getSku());
-               // handle error
-            }
-        }
-    };
-
-    /** Verifies the developer payload of a purchase. */
-    boolean verifyDeveloperPayload(Purchase p) {
-        return true;
-        // String payload = p.getDeveloperPayload();
-        // // FIXME: https://github.com/googlesamples/android-play-billing/issues/7
-        // // for promotion code
-        // if (payload.equals("")) return true;
-        // String source = getPayload();
-        // return payload.equals(source);
-    }
-
-    private String getPayload() {
-        /* TODO: for security, generate your payload here for verification. See the comments on
-         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
-         *        an empty string, but on a production app you should carefully generate this. */
-        String property = "";
-        return property;
-    }
-
     public void onDebugButtonClicked(View arg0) {
     }
 
@@ -3846,82 +3624,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             alert(this.getString(R.string.network_error));
             return;
         }
-        if (mIsPremium) {
-            installGit();
-        } else if (mIabHelper == null) {
-            mOnExtraButtonClicked = true;
-            iabSetup();
-        } else {
-            confirmDonation(this);
-        }
     }
-
-    private void confirmDonation(final Activity activity) {
-        final AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setIcon(android.R.drawable.ic_dialog_info);
-        String title = this.getString(R.string.donate_confirm_title);
-        String summary = "";
-        if (TermVimInstaller.getArch() == null) {
-            summary = this.getString(R.string.donate_confirm_summary_no_payed_function);
-        } else {
-            summary = this.getString(R.string.donate_confirm_summary);
-        }
-        b.setTitle(title);
-        b.setMessage(summary);
-        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                if (mIabHelper != null) {
-                    String payload = getPayload();
-
-                    launchPurchaseFlow(activity, SKU_PREMIUM, REQUEST_BILLING, mPurchaseFinishedListener, payload);
-                }
-            }
-        });
-        b.setNegativeButton(android.R.string.no, null);
-        b.show();
-    }
-
-    private void launchPurchaseFlow(Activity activity, String sku, int requestCode, IabHelper.OnIabPurchaseFinishedListener listener, String extraData) {
-        try {
-            mIabHelper.launchPurchaseFlow(activity, sku, requestCode, listener, extraData);
-        } catch (Exception e) {
-            // do nothing
-        }
-    }
-
-    // Callback for when a purchase is finished
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
-
-            // if we were disposed of in the meantime, quit.
-            if (mIabHelper == null) return;
-
-            if (result.isFailure()) {
-                if (BuildConfig.DEBUG) complain("Error purchasing: " + result);
-                setWaitScreen(false);
-                return;
-            }
-            if (!verifyDeveloperPayload(purchase)) {
-                complain("Error purchasing. Authenticity verification failed.");
-                setWaitScreen(false);
-                return;
-            }
-
-            Log.d(TAG, "Purchase successful.");
-
-            if (purchase.getSku().equals(SKU_PREMIUM)) {
-                // bought the premium upgrade!
-                Log.d(TAG, "Purchase is premium upgrade. Congratulating user.");
-                alert(Term.this.getString(R.string.donate_premium_purchase));
-                mIsPremium = true;
-                updateUi();
-                setWaitScreen(false);
-                installGit();
-            }
-        }
-    };
 
     public void updateUi() {
         setExtraButton();
@@ -3934,7 +3637,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     void complain(String message) {
-        Log.e(TAG, "**** Error: " + message);
+        Log.e(TermDebug.LOG_TAG, "**** Error: " + message);
         alert("Error: " + message);
     }
 
@@ -3942,7 +3645,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setMessage(message);
         bld.setPositiveButton(android.R.string.ok, null);
-        Log.d(TAG, "Showing alert dialog: " + message);
+        Log.d(TermDebug.LOG_TAG, "Showing alert dialog: " + message);
         bld.create().show();
     }
 
