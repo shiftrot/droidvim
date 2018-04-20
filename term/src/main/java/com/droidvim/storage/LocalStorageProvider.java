@@ -80,7 +80,7 @@ public class LocalStorageProvider extends DocumentsProvider {
         row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_TITLE, title);
         row.add(Root.COLUMN_SUMMARY, getContext().getString(R.string.title_home_path_preference));
-        row.add(Root.COLUMN_ICON, R.drawable.ic_launcher);
+        row.add(Root.COLUMN_ICON, R.mipmap.ic_launcher);
         row.add(Root.COLUMN_FLAGS, Root.FLAG_SUPPORTS_CREATE | Root.FLAG_SUPPORTS_SEARCH);
         row.add(Root.COLUMN_MIME_TYPES, "*/*");
         row.add(Root.COLUMN_AVAILABLE_BYTES, homeDir.getFreeSpace());
@@ -152,7 +152,7 @@ public class LocalStorageProvider extends DocumentsProvider {
         row.add(Document.COLUMN_MIME_TYPE, mimeType);
         row.add(Document.COLUMN_LAST_MODIFIED, file.lastModified());
         row.add(Document.COLUMN_FLAGS, flags);
-        row.add(Document.COLUMN_ICON, R.drawable.ic_launcher);
+        row.add(Document.COLUMN_ICON, R.mipmap.ic_launcher);
     }
 
     private static String getMimeType(File file) {

@@ -29,9 +29,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.*;
 import android.os.Binder;
@@ -167,7 +166,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             contentText = getText(R.string.application_term_app);
         }
         int priority = Notification.PRIORITY_DEFAULT;
-        int statusIcon = R.drawable.ic_stat_service_notification_icon;
+        int statusIcon = R.mipmap.ic_stat_service_notification_icon;
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (!pref.getBoolean("statusbar_icon", true)) {
             priority = Notification.PRIORITY_MIN;
@@ -176,8 +175,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         Intent notifyIntent = new Intent(this, Term.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
-        Drawable largeIconDrawable = ContextCompat.getDrawable(this, R.drawable.ic_launcher);
-        Bitmap largeIconBitmap = ((BitmapDrawable)largeIconDrawable).getBitmap();
+        Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
         Notification notification;
 
