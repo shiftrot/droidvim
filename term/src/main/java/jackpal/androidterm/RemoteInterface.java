@@ -30,6 +30,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -152,13 +153,16 @@ public class RemoteInterface extends Activity {
             } else {
                 uri = myIntent.getData();
             }
-            String intentCommand = mSettings.getIntentCommand();
+            String intentCommand = "sh ";
+            if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*")) {
+                intentCommand = ":e ";
+            }
             boolean flavorVim = intentCommand.matches("^:.*");
             if (uri != null && uri.toString().matches("^file:///.*") && flavorVim) {
                 String path = uri.getPath();
                 if (new File(path).canRead()) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    String command = "\u001b"+String.format(intentCommand, path);
+                    String command = "\u001b"+intentCommand + path;
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -171,7 +175,7 @@ public class RemoteInterface extends Activity {
                 String path = Term.getPath(context, uri);
                 if (path != null) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+String.format(intentCommand, path);
+                    command = "\u001b"+intentCommand + path;
                 } else if (getContentResolver() != null) {
                     try {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
@@ -194,7 +198,7 @@ public class RemoteInterface extends Activity {
                             finish();
                         }
                         path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                        command = "\u001b"+String.format(intentCommand, path);
+                        command = "\u001b"+intentCommand + path;
                     }
                 }
                 // Find the target window
@@ -208,21 +212,24 @@ public class RemoteInterface extends Activity {
                 if (myIntent.getData() != null) url = myIntent.getData().getPath();
             }
             if (url != null) {
-                String command = mSettings.getIntentCommand();
+                String command = "sh ";
+                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*")) {
+                    command = ":e ";
+                }
                 if (command.matches("^:.*")) {
                     url = url.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+String.format(command, url);
+                    command = "\u001b"+command + url;
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
                     mReplace = false;
                  } else if ((mHandle != null) && (url.equals(mFname))) {
                     // Target the request at an existing window if open
-                    command = String.format(command, url);
+                    command = command + url;
                     mHandle = switchToWindow(mHandle, command);
                 } else {
                     // Open a new window
-                    command = String.format(command, url);
+                    command = command + url;
                     mHandle = openNewWindow(command);
                 }
                 mFname = url;
@@ -256,7 +263,7 @@ public class RemoteInterface extends Activity {
             if (FLAVOR_VIM) {
                 String filename = mSettings.getHomePath()+"/.clipboard";
                 Term.writeStringToFile(filename, "\n"+str.toString());
-                String command = "\u001b"+String.format(":ATEMod _paste");
+                String command = "\u001b"+":ATEMod _paste";
                 // Find the target window
                 mReplace = true;
                 mHandle = switchToWindow(mHandle, command);

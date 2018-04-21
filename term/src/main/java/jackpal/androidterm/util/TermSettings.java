@@ -130,7 +130,7 @@ public class TermSettings {
     private static final String ALT_LOCAL_HTML_VIEWER_KEY = "alt_local_html_viewer";
     private static final String SHELL_KEY = "shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
-    private static final String INTENTCOMMAND_KEY = "intentcommand";
+    private static final String INTENTCOMMAND_KEY = "intent_command";
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
     private static final String VERIFYPATH_KEY = "verify_path";
@@ -266,7 +266,7 @@ public class TermSettings {
         mFailsafeShell = res.getString(R.string.pref_shell_default);
         // the mShell default is set dynamically in readPrefs()
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
-        mIntentCommand = res.getString(R.string.pref_intentcommand_default);
+        mIntentCommand = res.getString(R.string.pref_intent_command_default);
         mTermType = res.getString(R.string.pref_termtype_default);
         mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
         mVerifyPath = res.getBoolean(R.bool.pref_verify_path_default);

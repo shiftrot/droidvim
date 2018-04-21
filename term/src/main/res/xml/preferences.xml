@@ -639,8 +639,8 @@
             android:summary="@string/summary_initialcommand_preference"
             android:dialogTitle="@string/dialog_title_initialcommand_preference" />
     <EditTextPreference
-            android:key="intentcommand"
-            android:defaultValue="@string/pref_intentcommand_default"
+            android:key="intent_command"
+            android:defaultValue="@string/pref_intent_command_default"
             android:title="@string/title_intentcommand_preference"
             android:summary="@string/summary_intentcommand_preference"
             android:dialogTitle="@string/dialog_title_intentcommand_preference" />

@@ -256,7 +256,7 @@
 
    <string name="title_intentcommand_preference">Intent command</string>
    <string name="summary_intentcommand_preference">Command for intent.</string>
-   <string name="dialog_title_intentcommand_preference">Intent Command(%s:filename)</string>
+   <string name="dialog_title_intentcommand_preference">Intent Command</string>
 
    <string name="title_termtype_preference">Terminal type</string>
    <string name="summary_termtype_preference">What terminal type to report to the shell.</string>

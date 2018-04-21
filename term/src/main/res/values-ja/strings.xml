@@ -247,7 +247,7 @@
 
    <string name="title_intentcommand_preference">インテントコマンド</string>
    <string name="summary_intentcommand_preference">インテント呼出時に実行するコマンド</string>
-   <string name="dialog_title_intentcommand_preference">インテントコマンド\n(%s:ファイル名)</string>
+   <string name="dialog_title_intentcommand_preference">インテントコマンド</string>
 
    <string name="title_termtype_preference">ターミナルタイプ</string>
    <string name="summary_termtype_preference">シェルに設定するターミナルタイプ</string>
