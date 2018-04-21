@@ -402,7 +402,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
         if (!mVimFlavor && mSettings.doPathExtensions()) {
-            BroadcastReceiver mPathReceiver = new BroadcastReceiver() {
+            BroadcastReceiver pathReceiver = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
                     String path = makePathFromBundle(getResultExtras(false));
                     if (intent.getAction().equals(ACTION_PATH_PREPEND_BROADCAST)) {
@@ -423,13 +423,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 broadcast.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             }
             mPendingPathBroadcasts++;
-            sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+            sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, pathReceiver, null, RESULT_OK, null, null);
 
             if (!mVimFlavor && mSettings.allowPathPrepend()) {
                 broadcast = new Intent(broadcast);
                 broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
                 mPendingPathBroadcasts++;
-                sendOrderedBroadcast(broadcast, PERMISSION_PATH_PREPEND_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+                sendOrderedBroadcast(broadcast, PERMISSION_PATH_PREPEND_BROADCAST, pathReceiver, null, RESULT_OK, null, null);
             }
         }
 
