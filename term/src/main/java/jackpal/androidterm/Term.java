@@ -2176,6 +2176,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 mBackKeyPressed = false;
             }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 // mStopServiceOnFinish = true;
