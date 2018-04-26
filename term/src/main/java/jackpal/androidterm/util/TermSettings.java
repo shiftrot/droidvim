@@ -111,7 +111,7 @@ public class TermSettings {
     private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";
-    private static final String ACTIONBAR_ICON_KEY = "actionbar_icon_action";
+    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
     private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
@@ -246,7 +246,7 @@ public class TermSettings {
         mIMEColor = Integer.parseInt(res.getString(R.string.pref_composingtext_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
         mHwAcceleration = res.getBoolean(R.bool.pref_hw_acceleration_by_default);
-        mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_icon_default));
+        mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_diamond_default));
         mActionBarPlusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_plus_default));
         mActionBarMinusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_minus_default));
         mActionBarXAction = Integer.parseInt(res.getString(R.string.pref_actionbar_x_default));

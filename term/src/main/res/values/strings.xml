@@ -326,7 +326,7 @@
 
   <string name="ime_input_method_preferences">Text input mode</string>
   <string name="title_pre_ime_shortcuts">IME action</string>
-  <string name="summary_title_pre_ime_shortcuts">Switch between direct input and normal input.\n(◇ Button or physical keyboard)</string>
+  <string name="summary_title_pre_ime_shortcuts">Switch between direct input and normal input via the physical keyboard.\n(By default, it works like ◇ button)</string>
   <string name="pref_alt_grave">Alt + [`]</string>
   <string name="pref_alt_esc">Alt + [Esc]</string>
   <string name="pref_alt_space">Alt + [Space]</string>
