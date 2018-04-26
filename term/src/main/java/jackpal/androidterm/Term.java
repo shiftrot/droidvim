@@ -643,6 +643,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 onExtraButtonClicked(v);
             }
         });
+        findViewById(R.id.drawer_preference_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDrawer().closeDrawers();
+                doPreferences();
+            }
+        });
+        Button button = (Button)findViewById(R.id.drawer_preference_button);
+        if (mSettings.getColorTheme() == 0) {
+            button.setBackgroundResource(R.drawable.sidebar_button_dark);
+        }
         setDebugButton();
         findViewById(R.id.drawer_debug_button).setOnClickListener(new OnClickListener() {
             @Override

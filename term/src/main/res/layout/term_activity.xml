@@ -562,6 +562,19 @@
                 android:text="@string/extra" />
 
             <Button
+                android:id="@+id/drawer_preference_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:minHeight="25dp"
+                android:visibility="visible"
+                android:textColor="@android:color/white"
+                android:background="@drawable/sidebar_button"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/preferences" />
+
+            <Button
                 android:id="@+id/drawer_debug_button"
                 style="?android:attr/buttonBarButtonStyle"
                 android:minHeight="25dp"
