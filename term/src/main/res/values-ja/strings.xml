@@ -317,16 +317,16 @@
   <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す.</string>
 
   <string name="ime_input_method_preferences">テキスト入力モード</string>
-  <string name="title_pre_ime_shortcuts">IMEアクション</string>
+  <string name="title_pre_ime_shortcuts">IMEショートカット</string>
   <string name="summary_title_pre_ime_shortcuts">直接入力/通常入力モード等をハードウェアキーボードから切り替える.\n(デフォルトでは◇ボタンのように機能します)</string>
   <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
   <string name="pref_zenkaku_hankaku">[半/全]</string>
   <string name="pref_grave">[`]</string>
   <string name="pref_switch_charset">[漢字]</string>
 
-  <string name="title_ime_shortcuts_action_preference">機能割当</string>
-  <string name="summary_ime_shortcuts_action_preference">IMEアクションに割り当てる機能を選択する</string>
-  <string name="dialog_titleime_shortcuts_action_preference">IMEアクション設定</string>
+  <string name="title_ime_shortcuts_action_preference">IMEショートカット設定</string>
+  <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
+  <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
 
   <string name="tutorial">Vimチュートリアル</string>
   <string name="help">ヘルプ</string>
@@ -342,7 +342,7 @@
   <string name="button_no">いいえ</string>
   <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
   <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
-  <string name="keyboard_warning">ハードウェアキーボードからキーボード入力モードを切り替える必要がある場合は「環境設定」からIMEアクションを適切に設定し,IMEアクションを使用します.</string>
+  <string name="keyboard_warning">デフォルトでは直接入力を強制しているため、ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更</string>
 
   <string name="external_storage">ストレージ</string>
   <string name="create_or_delete">新規/削除</string>

@@ -1085,7 +1085,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         });
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positive.requestFocus();
     }
 
     static boolean mFirstInputtype = true;
@@ -1364,7 +1367,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doWarningHwKeyboard() {
         if (!mVimFlavor) return;
-        doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_hw_keyboard", true);
+        doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_physical_keyboard", false);
     }
 
     private void setSoftInputMode(boolean haveFullHwKeyboard) {

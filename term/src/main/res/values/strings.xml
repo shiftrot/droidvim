@@ -326,7 +326,7 @@
   <string name="auto_hide_functionbar_summary">Hide functionbar if physical keyboard is connected.</string>
 
   <string name="ime_input_method_preferences">Text input mode</string>
-  <string name="title_pre_ime_shortcuts">IME action</string>
+  <string name="title_pre_ime_shortcuts">IME shortcuts</string>
   <string name="summary_title_pre_ime_shortcuts">Switch between direct input and normal input via the physical keyboard.\n(By default, it works like ◇ button)</string>
   <string name="pref_alt_grave">Alt + [`]</string>
   <string name="pref_alt_esc">Alt + [Esc]</string>
@@ -338,9 +338,9 @@
   <string name="pref_switch_charset">[Kanji]</string>
   <string name="pref_ctrl_j">Ctrl + [j]</string>
 
-  <string name="title_ime_shortcuts_action_preference">IME Action</string>
-  <string name="summary_ime_shortcuts_action_preference">Choose IME action</string>
-  <string name="dialog_titleime_shortcuts_action_preference">IME action</string>
+  <string name="title_ime_shortcuts_action_preference">IME shortcut action</string>
+  <string name="summary_ime_shortcuts_action_preference">Choose IME shortcut action</string>
+  <string name="dialog_titleime_shortcuts_action_preference">IME shortcut action</string>
 
   <string name="tutorial">Vim tutorial</string>
   <string name="help">Help</string>
@@ -379,7 +379,7 @@
   <string name="button_no">No</string>
   <string name="install_runtime_doc_message">Would you like to install help files?</string>
   <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
-  <string name="keyboard_warning">If you need to switch keyboard input mode from physical keyboard, set \"IME action\" appropriately from \"Preferences\" and use IME action.</string>
+  <string name="keyboard_warning">By default direct input is forced, so you may not be able to input your language from the physical keyboard.\nIn that case please try the following:\n\n- ◇ Button\n- IME shortcuts\n- Change \"Input mode at startup\" to \"Normal input\"</string>
 
   <string name="extra">Extra</string>
   <string name="debug">Debug</string>

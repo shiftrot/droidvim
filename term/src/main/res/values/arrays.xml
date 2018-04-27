@@ -129,7 +129,7 @@
         <item>Sends i from terminal</item>
         <item>Sends : from terminal</item>
         <item>Sends / from terminal</item>
-        <item>IME action</item>
+        <item>IME shortcut</item>
         <item>Direct input : password</item>
         <item>Alphanumeric : URI</item>
         <item>Direct input : password\n(Google Japanese input)</item>
@@ -182,7 +182,7 @@
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Direct input : Raw</item>
+        <item>Raw</item>
         <item>Word-based</item>
     </string-array>
 
