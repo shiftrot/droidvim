@@ -621,10 +621,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 doPreferences();
             }
         });
-        Button button = (Button)findViewById(R.id.drawer_preference_button);
-        if (mSettings.getColorTheme() == 0) {
-            button.setBackgroundResource(R.drawable.sidebar_button_dark);
-        }
         setDebugButton();
         findViewById(R.id.drawer_debug_button).setOnClickListener(new OnClickListener() {
             @Override
@@ -709,6 +705,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             findViewById(R.id.drawer_clear_cache_button).setBackgroundResource(R.drawable.sidebar_button2_dark);
 
             findViewById(R.id.drawer_menu_button).setBackgroundResource(R.drawable.extra_button_dark);
+            findViewById(R.id.drawer_preference_button).setBackgroundResource(R.drawable.extra_button_dark);
             findViewById(R.id.drawer_quit_button).setBackgroundResource(R.drawable.extra_button_dark);
         }
     }
