@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 import java.text.SimpleDateFormat
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 16
@@ -13,7 +12,7 @@ android {
         versionCode 1
 
         buildConfigField "String", "WHATS_NEW", '""'
-        buildConfigField "String", "BASE64_PUBLIC_KEY", String.format('"%s"', file('base64-public-key.txt').getText().replaceAll("[\r\n].*", ""));
+        buildConfigField "String", "BASE64_PUBLIC_KEY", String.format('"%s"', file('base64-public-key.txt').getText().replaceAll("[\r\n].*", ""))
 
         externalNativeBuild {
             ndkBuild {
@@ -47,11 +46,11 @@ android {
         flavorDimensions "default"
         main {
             dimension "default"
+            versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date())+".dev"
         }
         droidvim {
             dimension "default"
             setApplicationId("com.droidvim")
-            // versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date())+".dev"
         }
     }
 }
