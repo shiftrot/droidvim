@@ -119,7 +119,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mTextLeading = 0;
     private String mTextFont;
 
-    private int mCursorBlink;
+    private int mCursorBlink = 0;
 
     /**
      * Color scheme (default foreground/background colors).
