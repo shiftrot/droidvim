@@ -111,7 +111,7 @@ public class TermSettings {
     private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";
-    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action";
+    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev2";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
     private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
@@ -143,7 +143,7 @@ public class TermSettings {
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
     private static final String AUTO_HIDE_FUNCTIONBAR = "auto_hide_functionbar";
-    private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action";
+    private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action_rev2";
     private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
 
     public static final int WHITE               = 0xffffffff;
@@ -349,14 +349,14 @@ public class TermSettings {
         boolean first = mPrefs.getBoolean(FIRST_KEY, true);
         if (!first) return;
         SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putBoolean(FIRST_KEY, false);
-        editor.apply();
         Locale locale = Locale.getDefault();
         String language = locale.getLanguage();
         if (language.equals("ja")) {
             editor.putString(AMBIWIDTH_KEY, "2");
-            editor.apply();
+            editor.putString(IME_DEFAULT_INPUTTYPE, "53");
         }
+        editor.putBoolean(FIRST_KEY, false);
+        editor.apply();
     }
 
     private int readIntPref(String key, int defaultValue, int maxValue) {

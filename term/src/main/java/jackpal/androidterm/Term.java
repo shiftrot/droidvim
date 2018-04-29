@@ -1103,6 +1103,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         registerForContextMenu(emulatorView);
 
         if (mFirstInputtype) {
+            emulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
             emulatorView.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             mFirstInputtype = false;
         }
@@ -1147,6 +1148,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         EmulatorView.setCursorHeight(mSettings.getCursorStyle());
         EmulatorView.setForceFlush(mSettings.getCursorStyle() >= 2);
+        EmulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
 
         if (mTermSessions != null) {
             for (TermSession session : mTermSessions) {
@@ -1586,7 +1588,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return true;
         } else if (key == 1261) {
             doEditTextFocusAction();
-        } else if (key >= 1351 && key <= 1354) {
+        } else if (key == 1360 || (key >= 1351 && key <= 1354)) {
             if (setEditTextAltCmd()) return true;
             view.doImeShortcutsAction(key-1300);
         } else if (key == 1355) {

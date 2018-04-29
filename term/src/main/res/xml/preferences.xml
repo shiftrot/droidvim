@@ -365,7 +365,7 @@
         </PreferenceScreen>
 
         <ListPreference
-            android:key="functionbar_diamond_action"
+            android:key="functionbar_diamond_action_rev2"
             android:defaultValue="@string/pref_actionbar_diamond_default"
             android:title="@string/title_actionbar_icon_preference"
             android:entries="@array/entries_actionbar_icon_preference"
@@ -406,7 +406,7 @@
                 android:title="@string/title_pre_ime_shortcuts"
                 android:summary="@string/summary_title_pre_ime_shortcuts">
                 <ListPreference
-                    android:key="ime_shortcuts_action"
+                    android:key="ime_shortcuts_action_rev2"
                     android:defaultValue="@integer/pref_ime_shortcuts_action_default"
                     android:title="@string/title_ime_shortcuts_action_preference"
                     android:summary="@string/summary_ime_shortcuts_action_preference"

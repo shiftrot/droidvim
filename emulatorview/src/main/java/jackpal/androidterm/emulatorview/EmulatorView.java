@@ -466,6 +466,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private static int mIMEInputType = EditorInfo.TYPE_CLASS_TEXT;
+    private static int mIMEInputTypeDefault = 54;
     private static boolean mIgnoreXoff = false;
 
     @Override
@@ -1404,9 +1405,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void onConfigurationChangedToEmulatorView(Configuration newConfig) {
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
+        // FIXME: SwiftKey's physicla keyboard handling is too buggy.
         if (mIme == IME_ID_SWIFT && mHaveFullHwKeyboard) {
             setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
-            if (mIMEShortcutsAction >= 50 && mIMEShortcutsAction <= 59) doImeShortcutsAction();
+            if (mIMEShortcutsAction >= 50 && mIMEShortcutsAction <= 60) doImeShortcutsAction();
         }
     }
 
@@ -1731,6 +1733,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         restartInput();
     }
 
+    static public void setIMEInputTypeDefault(int attr) {
+        mIMEInputTypeDefault = attr;
+    }
+
     private void setIMEInputType(int attr) {
         setIMEInputType(attr, false);
     }
@@ -1891,6 +1897,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public void setImeShortcutsAction(int action) {
+        if (action == 60 || action == 1360) {
+            action = mIMEInputTypeDefault;
+        }
         switch (action) {
             case 50:
                 setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);

@@ -112,10 +112,6 @@
     </string-array>
 
     <string-array name="entryvalues_actionbar_icon_preference">
-        <!--<item>111</item>-->
-        <!--<item>113</item>-->
-        <!--<item>61</item>-->
-        <!--<item>1250</item>-->
         <item>1355</item>
         <item>1002</item>
         <item>1357</item>
@@ -127,10 +123,7 @@
         <item>1247</item>
         <item>76</item>
         <item>1260</item>
-        <item>1351</item>
-        <item>1352</item>
-        <item>1353</item>
-        <item>1354</item>
+        <item>1360</item>
         <item>1261</item>
         <item>1356</item>
         <item>1358</item>
@@ -202,10 +195,7 @@
 
     <string-array name="entryvalues_ime_shortcuts_action_preference">
         <item>0</item>
-        <item>51</item>
-        <item>52</item>
-        <item>53</item>
-        <item>54</item>
+        <item>60</item>
         <item>1261</item>
     </string-array>
 

@@ -130,10 +130,7 @@
         <item>Sends : from terminal</item>
         <item>Sends / from terminal</item>
         <item>IME shortcut</item>
-        <item>Direct input : password</item>
-        <item>Alphanumeric : URI</item>
-        <item>Direct input : password\n(Google Japanese input)</item>
-        <item>Direct input : Raw</item>
+        <item>Direct/Normal input</item>
         <item>One-line text box</item>
         <item>Open file in new tab (Vim)</item>
         <item>Orientation</item>
@@ -212,10 +209,7 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>Toggle softkeyboard</item>
-        <item>Direct input : Password</item>
-        <item>Alphanumeric : URI</item>
-        <item>Direct input : Password\n(Google Japanese input)</item>
-        <item>Direct input : Raw</item>
+        <item>Direct/Normal input</item>
         <item>One-line text box</item>
     </string-array>
 

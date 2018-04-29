@@ -109,10 +109,6 @@
     </string-array>
 
     <string-array name="entries_actionbar_icon_preference">
-        <!--<item>ターミナルにESCを送出</item>-->
-        <!--<item>ターミナルにCTRLを送出</item>-->
-        <!--<item>ターミナルにTABを送出</item>-->
-        <!--<item>ウィンドウ作成</item>-->
         <item>ドロワーのトグル</item>
         <item>IMEのトグル</item>
         <item>ファンクションバーのトグル</item>
@@ -124,10 +120,7 @@
         <item>ターミナルから : を送出</item>
         <item>ターミナルから / を送出</item>
         <item>IMEアクション</item>
-        <item>直接入力 : パスワード</item>
-        <item>英数入力 : URI</item>
-        <item>直接入力 : パスワード\n(Google日本語入力)</item>
-        <item>直接入力 : Raw</item>
+        <item>直接入力/通常入力</item>
         <item>一行テキスト入力</item>
         <item>新規タブでファイルを開く(Vim)</item>
         <item>画面の向き</item>
@@ -206,10 +199,7 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>IMEのトグル</item>
-        <item>直接入力 : パスワード</item>
-        <item>英数入力 : URI</item>
-        <item>直接入力 : パスワード\n(Google日本語入力)</item>
-        <item>直接入力 : Raw</item>
+        <item>直接入力/通常入力</item>
         <item>一行テキスト入力</item>
     </string-array>
 
