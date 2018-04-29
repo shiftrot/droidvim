@@ -471,8 +471,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         if (mEmulator != null) setIME(mEmulator);
-        outAttrs.inputType = mUseCookedIme && mIMEInputType != EditorInfo.TYPE_NULL ?
-                EditorInfo.TYPE_CLASS_TEXT | mIMEInputType:
+        outAttrs.inputType = (mUseCookedIme && (mIMEInputType != EditorInfo.TYPE_NULL)) ?
+                (EditorInfo.TYPE_CLASS_TEXT | mIMEInputType) :
                 EditorInfo.TYPE_NULL;
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN;
         mInputConnection = new BaseInputConnection(this, true) {
