@@ -3223,7 +3223,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case R.id.button_down:
             case R.id.button_left:
             case R.id.button_right:
-                findViewById(fkey.resid).setOnTouchListener(new RepeatListener(400, 100, new OnClickListener() {
+                findViewById(fkey.resid).setOnTouchListener(new RepeatListener(400, 25, new OnClickListener() {
                     public void onClick(View v) {
                         Term.this.onClick(v);
                     }
