@@ -1518,6 +1518,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             Intent openHelp = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(getString(R.string.help_url)));
                 startActivity(openHelp);
+        } else if (id == R.id.menu_quit) {
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
         }
         return super.onOptionsItemSelected(item);
     }

@@ -33,6 +33,7 @@
    <string name="special_keys">特殊キー</string>
    <string name="toggle_soft_keyboard">ソフトキーボード</string>
    <string name="toggle_function_bar">ファンクションバー</string>
+   <string name="quit">終了</string>
 
    <string name="reset_toast_notification">このウインドウのターミナル状態はリセットされました.</string>
    <string name="toast_clipboard">テキストをクリップボードへコピーしました.</string>
