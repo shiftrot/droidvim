@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fillViewport="true"
+    android:background="?attr/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:descendantFocusability="blocksDescendants"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/drawer_extra_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="25dp"
+            android:visibility="visible"
+            android:textColor="@android:color/white"
+            android:background="@drawable/extra_button"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/extra" />
+
+        <Button
+            android:id="@+id/drawer_debug_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="25dp"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:background="@drawable/extra_button"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debug" />
+
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/drawer_app_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button3"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_app_button" />
+
+        <Button
+            android:id="@+id/drawer_dropbox_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button3"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dropbox" />
+
+        <Button
+            android:id="@+id/drawer_googledrive_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button3"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/googledrive" />
+
+        <Button
+            android:id="@+id/drawer_onedrive_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button3"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onedrive" />
+
+        <Button
+            android:id="@+id/drawer_storage_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button2"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/external_storage" />
+
+        <Button
+            android:id="@+id/drawer_createfile_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button2"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_or_delete" />
+
+        <Button
+            android:id="@+id/drawer_clear_cache_button"
+            android:visibility="gone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button2"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_cache" />
+
+        <Button
+            android:id="@+id/drawer_keyboard_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:visibility="gone"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/sidebar_button"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/softkeyboard" />
+
+        <Button
+            android:id="@+id/drawer_menu_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/extra_button"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_functionbar_menu" />
+        <Button
+            android:id="@+id/drawer_preference_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/extra_button"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/preferences" />
+        <Button
+            android:id="@+id/drawer_quit_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:minHeight="38dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/extra_button"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/quit" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="8dp" />
+
+    </LinearLayout>
+</ScrollView>
