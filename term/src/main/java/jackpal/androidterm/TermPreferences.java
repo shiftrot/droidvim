@@ -22,7 +22,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
@@ -31,9 +33,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -62,6 +67,7 @@ public class TermPreferences extends PreferenceActivity {
     private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
     private boolean mFirst = true;
 
+    static final String EXTERNAL_APP_BUTTON = "external_app_button";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -107,6 +113,37 @@ public class TermPreferences extends PreferenceActivity {
             summary = array[settings.getOneDriveFilePicker()];
             filePicker.setSummary(summary);
             filePicker.setOnPreferenceChangeListener(listener);
+
+            id = "external_app_button";
+            filePicker = findPreference(id);
+            final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            OnPreferenceChangeListener AppButtonListener = new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    sp.edit().putBoolean(EXTERNAL_APP_BUTTON, (Boolean) newValue).apply();
+                    return true;
+                }
+            };
+            filePicker.setOnPreferenceChangeListener(AppButtonListener);
+
+            id = "external_app_package_name";
+            Preference pref = getPreferenceScreen().findPreference(id);
+            String appId = mPrefs.getString(id, "");
+            setAppPickerLabel(pref, appId);
+            new Thread() {
+                @Override
+                public void run() {
+                    setAppPickerList();
+                }
+            }.start();
+            pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    setAppPickerLabel(preference, (String) newValue);
+                    return true;
+                }
+            });
+
         }
 
         if (AndroidCompat.SDK >= 19) {
@@ -384,6 +421,35 @@ public class TermPreferences extends PreferenceActivity {
         } else {
             doFilePicker();
         }
+    }
+
+    private void setAppPickerLabel(Preference pref, String appId) {
+        try {
+            PackageManager pm = getPackageManager();
+            PackageInfo packageInfo = pm.getPackageInfo(appId, 0);
+            String label = packageInfo.applicationInfo.loadLabel(pm).toString();
+            pref.setSummary(label);
+        } catch (Exception e) {
+        }
+    }
+
+    private void setAppPickerList() {
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        final List<ApplicationInfo> installedAppList = pm.getInstalledApplications(0);
+        final TreeMap<String, String> items = new TreeMap<>();
+        for (ApplicationInfo app : installedAppList) {
+            Intent intent = pm.getLaunchIntentForPackage(app.packageName);
+            if (intent != null) items.put(app.loadLabel(pm).toString(), app.packageName);
+        }
+        List<String> list = new ArrayList<>(items.keySet());
+        final String labels[] = list.toArray(new String[list.size()]);
+        list = new ArrayList<>(items.values());
+        final String packageNames[] = list.toArray(new String[list.size()]);
+
+        String id = "external_app_package_name";
+        ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
+        packageName.setEntries(labels);
+        packageName.setEntryValues(packageNames);
     }
 
     @Override

@@ -227,4 +227,7 @@
         <item>Application</item>
     </string-array>
 
+    <string-array name="entries_preference">
+    </string-array>
+
 </resources>

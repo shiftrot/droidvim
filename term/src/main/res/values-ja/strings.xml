@@ -386,8 +386,12 @@
   <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
 
   <string name="external_apps_preferences">外部アプリ</string>
-  <string name="title_app_button">外部アプリ</string>
-  <string name="title_app_button_preference">外部アプリボタン</string>
+  <string name="external_app_button">外部アプリ</string>
+  <string name="title_external_app_button_preference">外部アプリボタン</string>
+  <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
+  <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>
+  <string name="title_external_app_id_preference">外部アプリ</string>
+  <string name="external_app_id_error">アプリケーションIDが正しくないか, 設定されていません.\n環境設定から設定してください.</string>
   <string name="title_cloud_dropbox_preference">Dropbox</string>
   <string name="title_cloud_googledrive_preference">GoogleDrive</string>
   <string name="title_cloud_onedrive_preference">OneDrive</string>
