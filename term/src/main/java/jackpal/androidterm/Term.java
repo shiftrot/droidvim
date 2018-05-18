@@ -1931,6 +1931,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return null;
         }
+        if (uri == null) return null;
         if (isDocumentUri(context, uri)) {
             try {
                 File file = new File(getDocumentId(uri));
