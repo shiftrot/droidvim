@@ -922,16 +922,10 @@ class UnicodeTranscript {
         {0x1f6f3, 0x1f6f3}
     };
 
-    // Sorted list of non-overlapping intervals of Emoji
-    private static final int[][] ANDROID_EMOJI_WIDTH = {
-        {0x1f1e6, 0x1f1ff},
-    };
-
     private static int vimCharWidth(int codePoint) {
         if (intable(codePoint, DOUBLE_WIDTH)) return 2;
         if (intable(codePoint, AMBIGUOUS_WIDTH)) return mAmbiWidth;
         if (intable(codePoint, EMOJI_WIDTH)) return 2;
-        if (intable(codePoint, ANDROID_EMOJI_WIDTH)) return 2;
         return 1;
     }
 
