@@ -18,13 +18,16 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Instrumentation;
 import android.content.ContentUris;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -1600,6 +1603,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key == 1360 || (key >= 1351 && key <= 1354)) {
             if (setEditTextAltCmd()) return true;
             view.doImeShortcutsAction(key-1300);
+        } else if (key == 1361) {
+            keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
+        } else if (key == 1362) {
+            keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
         } else if (key == 1355) {
             toggleDrawer();
         } else if (key == 1356) {
@@ -2261,6 +2268,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return true;
         case 0xffff0058:
             setEditTextViewFocus(1);
+            return true;
+        case 0xffff0061:
+            keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
+            return true;
+        case 0xffff0062:
+            keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
             return true;
         case 0xffff0030:
             clearClipBoard();
@@ -3023,6 +3036,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         doToggleSoftKeyboard();
                     } else if (action == 1261) {
                         doEditTextFocusAction();
+                    } else if (action == 1361) {
+                        keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
+                    } else if (action == 1362) {
+                        keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
                     } else {
                         int inputType = mEditText.getInputType();
                         if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
@@ -3677,4 +3694,33 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dialog.show();
     }
 
+    private void keyEventSender(int key) {
+        mSenderKeyEvent = key;
+        keyEventSenderAction.run();
+    }
+
+    static final private int KEYEVENT_SENDER_SHIFT_SPACE = -1;
+    static final private int KEYEVENT_SENDER_ALT_SPACE = -2;
+    static private int mSenderKeyEvent = KEYEVENT_SENDER_SHIFT_SPACE;
+    static private final Runnable keyEventSenderAction = new Runnable() {
+        public void run() {
+            KeyEventSender sender = new KeyEventSender();
+            sender.execute(mSenderKeyEvent);
+        }
+    };
+
+    static private class KeyEventSender extends AsyncTask<Integer, Integer, Integer> {
+      @Override
+      protected Integer doInBackground(Integer... params) {
+          Instrumentation inst = new Instrumentation();
+          if (params[0] == KEYEVENT_SENDER_SHIFT_SPACE) {
+              inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
+          } else if (params[0] == KEYEVENT_SENDER_ALT_SPACE) {
+              inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
+          } else {
+              inst.sendKeyDownUpSync(params[0]);
+          }
+          return null;
+      }
+    }
 }

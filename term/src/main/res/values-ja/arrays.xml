@@ -120,8 +120,9 @@
         <item>ターミナルから : を送出</item>
         <item>ターミナルから / を送出</item>
         <item>IMEアクション</item>
-        <item>直接入力/通常入力</item>
-        <item>一行テキスト入力</item>
+        <item>「通常入力」/「起動時の入力モード」のトグル</item>
+        <item>言語切替 (Shift+Space)</item>
+        <item>言語切替 (Alt+Space)</item>
         <item>新規タブでファイルを開く(Vim)</item>
         <item>画面の向き</item>
         <item>終了</item>
@@ -199,8 +200,10 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>IMEのトグル</item>
-        <item>直接入力/通常入力</item>
+        <item>「通常入力」/「起動時の入力モード」のトグル</item>
         <item>一行テキスト入力</item>
+        <item>言語切替 (Shift+Space)</item>
+        <item>言語切替 (Alt+Space)</item>
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">

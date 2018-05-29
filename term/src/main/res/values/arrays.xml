@@ -115,10 +115,6 @@
     </string-array>
 
     <string-array name="entries_actionbar_icon_preference">
-        <!--<item>Sends ESC to terminal</item>-->
-        <!--<item>Sends CTRL to terminal</item>-->
-        <!--<item>Sends TAB to terminal</item>-->
-        <!--<item>Create Window</item>-->
         <item>Toogle drawer</item>
         <item>Toggle soft keyboard</item>
         <item>Toggle function bar</item>
@@ -130,8 +126,9 @@
         <item>Sends : from terminal</item>
         <item>Sends / from terminal</item>
         <item>IME shortcut</item>
-        <item>Direct/Normal input</item>
-        <item>One-line text box</item>
+        <item>Toggle \"Normal input\"/\"Input mode at startup\"</item>
+        <item>Language switch (Shift+Space)</item>
+        <item>Language switch (Alt+Space)</item>
         <item>Open file in new tab (Vim)</item>
         <item>Orientation</item>
         <item>Quit</item>
@@ -209,8 +206,10 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>Toggle softkeyboard</item>
-        <item>Direct/Normal input</item>
+        <item>Toggle \"Normal input\"/\"Input mode at startup\"</item>
         <item>One-line text box</item>
+        <item>language switch (Shift+Space)</item>
+        <item>language switch (Alt+Space)</item>
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">

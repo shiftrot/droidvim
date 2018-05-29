@@ -124,7 +124,8 @@
         <item>76</item>
         <item>1260</item>
         <item>1360</item>
-        <item>1261</item>
+        <item>1361</item>
+        <item>1362</item>
         <item>1356</item>
         <item>1358</item>
         <item>1253</item>
@@ -197,6 +198,8 @@
         <item>0</item>
         <item>60</item>
         <item>1261</item>
+        <item>1361</item>
+        <item>1362</item>
     </string-array>
 
     <string-array name="entryvalues_app_filepicker_preference">

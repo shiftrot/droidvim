@@ -1521,6 +1521,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 58:
                 ((Activity)this.getContext()).onKeyUp(0xffff0058, null);
                 break;
+            case 61:
+                ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
+                break;
+            case 62:
+                ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
+                break;
             case 500:
                 setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
                 break;
@@ -1887,6 +1893,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             doToggleSoftKeyboard();
         } else if (action == 1261) {
             ((Activity)this.getContext()).onKeyUp(0xffff0056, null);
+        } else if (action == 1361) {
+            ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
+        } else if (action == 1362) {
+            ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
         } else {
             if (mIMEInputType == EditorInfo.TYPE_CLASS_TEXT) {
                 setImeShortcutsAction(action);
