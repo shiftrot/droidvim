@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ComponentName;
@@ -27,12 +29,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -44,6 +49,8 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
+
+import static jackpal.androidterm.Term.REQUEST_FOREGROUND_SERVICE_PERMISSION;
 
 public class RemoteInterface extends Activity {
     protected static final String PRIVACT_OPEN_NEW_WINDOW = "shiftrot.androidterm.private.OPEN_NEW_WINDOW";
@@ -83,7 +90,15 @@ public class RemoteInterface extends Activity {
 
         Intent TSIntent = new Intent(this, TermService.class);
         mTSIntent = TSIntent;
-        startService(TSIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+                this.getApplicationContext().startForegroundService(TSIntent);
+            } else {
+                requestPermissions(new String[]{Manifest.permission.FOREGROUND_SERVICE}, REQUEST_FOREGROUND_SERVICE_PERMISSION);
+            }
+        } else {
+            startService(TSIntent);
+        }
         if (!bindService(TSIntent, mTSConnection, BIND_AUTO_CREATE)) {
             Log.e(TermDebug.LOG_TAG, "bind to service failed!");
             finish();
@@ -109,6 +124,28 @@ public class RemoteInterface extends Activity {
             mTermService = null;
         }
         super.finish();
+    }
+
+    @Override
+    @SuppressLint("NewApi")
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_FOREGROUND_SERVICE_PERMISSION:
+                for (int i = 0; i < permissions.length ; i++) {
+                    if (permissions[i].equals(Manifest.permission.FOREGROUND_SERVICE)) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            this.getApplicationContext().startForegroundService(mTSIntent);
+                        } else {
+                            startService(mTSIntent);
+                        }
+                        break;
+                    }
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+        }
     }
 
     protected TermService getTermService() {

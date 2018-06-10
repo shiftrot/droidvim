@@ -16,6 +16,7 @@
 
 package jackpal.androidterm;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -129,16 +130,34 @@ public class TermService extends Service implements TermSession.FinishCallback
         editor.putString("shell_path", defshell);
         editor.apply();
 
-        compat = new ServiceForegroundCompat(this);
-        Notification notification = showNotification();
-        if (notification != null) compat.startForeground(RUNNING_NOTIFICATION, notification);
         mTermSessions = new SessionList();
         install();
 
         Log.d(TermDebug.LOG_TAG, "TermService started");
     }
 
-    public int ONGOING_NOTIFICATION_ID = 1;
+    private boolean useNotificationForgroundService() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED));
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        try {
+            if (useNotificationForgroundService()) {
+                Notification notification = showNotification();
+                startForeground(RUNNING_NOTIFICATION, notification);
+            } else {
+                compat = new ServiceForegroundCompat(this);
+                Notification notification = showNotification();
+                if (notification != null) compat.startForeground(RUNNING_NOTIFICATION, notification);
+            }
+        } catch (Exception e) {
+            Log.e("TermService", e.toString());
+        }
+        return START_STICKY;
+    }
+
     Notification showNotification() {
         CharSequence contentText = getText(R.string.application_terminal);
         if (!BuildConfig.FLAVOR.equals("main")) {
@@ -158,19 +177,18 @@ public class TermService extends Service implements TermSession.FinishCallback
         Bitmap largeIconBitmap = ((BitmapDrawable)largeIconDrawable).getBitmap();
 
         Notification notification;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && useNotificationForgroundService()) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             String NOTIFICATION_CHANNEL_ID = contentText.toString() + "_channel";
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Terminal Session", NotificationManager.IMPORTANCE_LOW);
-                notificationChannel.setDescription(getText(R.string.service_notify_text).toString());
-                notificationChannel.setLightColor(Color.GREEN);
-                notificationChannel.enableLights(false);
-                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-                notificationChannel.enableVibration(false);
-                if (notificationManager != null) {
-                    notificationManager.createNotificationChannel(notificationChannel);
-                }
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Terminal Session", NotificationManager.IMPORTANCE_LOW);
+            notificationChannel.setDescription(getText(R.string.service_notify_text).toString());
+            notificationChannel.setLightColor(Color.GREEN);
+            notificationChannel.enableLights(false);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(false);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(notificationChannel);
             }
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
             notificationBuilder
@@ -188,7 +206,6 @@ public class TermService extends Service implements TermSession.FinishCallback
                     .setVisibility(NotificationCompat.VISIBILITY_SECRET)
                     .setContentInfo("");
             notification = notificationBuilder.build();
-            if (notificationManager != null && notification != null) notificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
         } else {
             notification = new NotificationCompat.Builder(getApplicationContext())
                 .setContentTitle(contentText)
@@ -296,7 +313,11 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     @Override
     public void onDestroy() {
-        compat.stopForeground(true);
+        if (useNotificationForgroundService()) {
+            stopSelf();
+        } else {
+            compat.stopForeground(true);
+        }
         for (TermSession session : mTermSessions) {
             /* Don't automatically remove from list of sessions -- we clear the
              * list below anyway and we could trigger

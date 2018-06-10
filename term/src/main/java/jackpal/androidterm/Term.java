@@ -437,7 +437,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         TSIntent = new Intent(this, TermService.class);
-        startService(TSIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+                this.getApplicationContext().startForegroundService(TSIntent);
+            } else {
+                requestPermissions(new String[]{Manifest.permission.FOREGROUND_SERVICE}, REQUEST_FOREGROUND_SERVICE_PERMISSION);
+            }
+        } else {
+            startService(TSIntent);
+        }
 
         int theme = mSettings.getColorTheme();
         if (theme == 0) {
@@ -795,6 +803,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_STORAGE        = 10000;
     public static final int REQUEST_STORAGE_DELETE = 10001;
     public static final int REQUEST_STORAGE_CREATE = 10002;
+    public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
         if (AndroidCompat.SDK < 23) return;
@@ -848,6 +857,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     default:
                         break;
                     }
+                }
+            }
+            break;
+        case REQUEST_FOREGROUND_SERVICE_PERMISSION:
+            for (int i = 0; i < permissions.length ; i++) {
+                if (permissions[i].equals(Manifest.permission.FOREGROUND_SERVICE)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        this.getApplicationContext().startForegroundService(TSIntent);
+                    } else {
+                        startService(TSIntent);
+                    }
+                    break;
                 }
             }
             break;
