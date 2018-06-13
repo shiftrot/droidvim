@@ -59,6 +59,17 @@ public class WebViewActivity extends Activity {
                 startActivity(intent);
                 return true;
             }
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView wevView, String url) {
+                if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
+                    return false;
+                }
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+            }
         });
         setButtonListener();
 
