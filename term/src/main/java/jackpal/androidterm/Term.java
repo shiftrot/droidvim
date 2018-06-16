@@ -1895,21 +1895,27 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     Uri uri = data.getData();
                     path = getPath(this, uri);
                     if (path == null) {
-                        Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
-                        if (mSyncFileObserver != null) {
-                            path = handleOpenDocument(uri, cursor);
-                            if (path == null) {
-                                alert(this.getString(R.string.storage_read_error));
-                                break;
-                            }
-                            String fname = new File(path).getName();
-                            if (path != null && mSyncFileObserver != null) {
-                                path = mSyncFileObserver.getObserverDir() + path;
-                                if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
-                                    alert(fname+"\n"+this.getString(R.string.storage_read_error));
+                        try {
+                            Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+                            if (mSyncFileObserver != null) {
+                                path = handleOpenDocument(uri, cursor);
+                                if (path == null) {
+                                    alert(this.getString(R.string.storage_read_error));
                                     break;
                                 }
+                                String fname = new File(path).getName();
+                                if (path != null && mSyncFileObserver != null) {
+                                    path = mSyncFileObserver.getObserverDir() + path;
+                                    if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
+                                        alert(fname+"\n"+this.getString(R.string.storage_read_error));
+                                        break;
+                                    }
+                                }
                             }
+                        } catch (Exception e){
+                            Log.d("FilePicker", e.toString());
+                            alert(this.getString(R.string.storage_read_error)+"\n"+e.toString());
+                            break;
                         }
                     }
                 }
