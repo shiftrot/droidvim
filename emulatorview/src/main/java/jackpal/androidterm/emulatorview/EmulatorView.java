@@ -119,7 +119,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mTextLeading = 0;
     private String mTextFont;
 
-    private int mCursorBlink = 0;
+    static private int mCursorBlink = 0;
 
     /**
      * Color scheme (default foreground/background colors).
@@ -205,7 +205,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private Runnable mBlinkCursor = new Runnable() {
         public void run() {
             if (mCursorBlink != 0) {
-                mCursorVisible = ! mCursorVisible;
+                if (!mImeBuffer.equals("")) {
+                    mCursorVisible = true;
+                } else {
+                    mCursorVisible = !mCursorVisible;
+                }
+                mHandler.removeCallbacks(this);
                 mHandler.postDelayed(this, CURSOR_BLINK_PERIOD);
             } else {
                 mCursorVisible = true;
@@ -2246,6 +2251,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setIgnoreXoff(boolean flag) {
         mIgnoreXoff = flag;
         mKeyListener.setmIgnoreXoff(flag);
+    }
+
+    static public void setCursorBlink(int blink) {
+        mCursorBlink = blink;
     }
 
     static public void setCursorHeight(int height) {

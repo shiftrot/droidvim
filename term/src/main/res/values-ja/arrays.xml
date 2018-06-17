@@ -53,8 +53,8 @@
     <string-array name="entries_alt_cursorstyle_preference">
         <item>四角</item>
         <item>下線</item>
-        <item>四角(実験的)</item>
-        <item>下線(実験的)</item>
+        <item>四角+点滅</item>
+        <item>下線+点滅</item>
     </string-array>
 
     <string-array name="entries_fontsize_preference">

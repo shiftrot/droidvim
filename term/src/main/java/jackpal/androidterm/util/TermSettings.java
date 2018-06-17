@@ -103,6 +103,7 @@ public class TermSettings {
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
+    private static final String CURSORBLINK_KEY = "cursorblink";
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String FONTLEADING_KEY = "fontleading";
     private static final String FONTFILE_KEY = "fontfile";
@@ -299,7 +300,7 @@ public class TermSettings {
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 3);
-        // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
+        mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readFloatPref(FONTSIZE_KEY, mFontSize, 288.0f);
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
@@ -423,11 +424,12 @@ public class TermSettings {
     }
 
     public int getCursorStyle() {
-        return mCursorStyle;
+        return mCursorStyle%2;
     }
 
     public int getCursorBlink() {
-        return mCursorBlink;
+        return mCursorStyle >= 2 ? 1 : 0;
+        // return mCursorBlink;
     }
 
     public float getFontSize() {
