@@ -358,7 +358,6 @@ public class TermSettings {
         String language = locale.getLanguage();
         if (language.equals("ja")) {
             editor.putString(AMBIWIDTH_KEY, "2");
-            editor.putString(IME_DEFAULT_INPUTTYPE, "53");
         }
         editor.putBoolean(FIRST_KEY, false);
         editor.apply();
