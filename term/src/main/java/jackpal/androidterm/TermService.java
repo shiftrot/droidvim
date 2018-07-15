@@ -178,7 +178,7 @@ public class TermService extends Service implements TermSession.FinishCallback
 
         Notification notification;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && useNotificationForgroundService()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             String NOTIFICATION_CHANNEL_ID = contentText.toString() + "_channel";
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Terminal Session", NotificationManager.IMPORTANCE_LOW);
