@@ -437,7 +437,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         TSIntent = new Intent(this, TermService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
                 this.getApplicationContext().startForegroundService(TSIntent);
             } else {

@@ -137,7 +137,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     }
 
     private boolean useNotificationForgroundService() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED));
     }
 

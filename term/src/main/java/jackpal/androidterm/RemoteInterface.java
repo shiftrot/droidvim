@@ -90,7 +90,7 @@ public class RemoteInterface extends Activity {
 
         Intent TSIntent = new Intent(this, TermService.class);
         mTSIntent = TSIntent;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
                 this.getApplicationContext().startForegroundService(TSIntent);
             } else {
