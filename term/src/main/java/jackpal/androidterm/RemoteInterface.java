@@ -277,7 +277,6 @@ public class RemoteInterface extends Activity {
             }
         } else if (action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_TEXT)) {
             openText(myIntent.getExtras().getCharSequence(Intent.EXTRA_TEXT));
-        } else {
         }
 
         finish();

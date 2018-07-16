@@ -63,8 +63,6 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     private SessionList mTermSessions;
 
-    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
-
     public class TSBinder extends Binder {
         TermService getService() {
             Log.i("TermService", "Activity binding to service");
