@@ -41,6 +41,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -505,8 +507,18 @@ public class TermPreferences extends PreferenceActivity {
                     Uri uri = data.getData();
                     path = getPath(this, uri);
                     if (path != null && path.matches(".*\\.(?i)(ttf|ttc|otf)")) {
-                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-                        sp.edit().putString(FONT_FILENAME, path).apply();
+                        try {
+                            File file = new File(path);
+                            new Paint().setTypeface(Typeface.createFromFile(file));
+                            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                            sp.edit().putString(FONT_FILENAME, path).apply();
+                        } catch (Exception e) {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
+                            bld.setMessage(this.getString(R.string.font_file_invalid)+"\n\n"+path);
+                            bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                            bld.create().show();
+                        }
                     } else {
                         AlertDialog.Builder bld = new AlertDialog.Builder(this);
                         bld.setIcon(android.R.drawable.ic_dialog_alert);

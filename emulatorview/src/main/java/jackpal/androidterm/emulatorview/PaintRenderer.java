@@ -43,7 +43,11 @@ class PaintRenderer extends BaseTextRenderer {
             }
             File file = new File(fontPath);
             if (file.canRead()) {
-                mTextPaint.setTypeface(Typeface.createFromFile(file));
+                try {
+                    mTextPaint.setTypeface(Typeface.createFromFile(file));
+                } catch (Exception e) {
+                    mTextPaint.setTypeface(Typeface.MONOSPACE);
+                }
             } else {
                 mTextPaint.setTypeface(Typeface.MONOSPACE);
             }
