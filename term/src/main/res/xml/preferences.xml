@@ -499,6 +499,15 @@
             android:title="@string/text_preferences"
             android:key="text">
 
+        <EditTextPreference
+                android:key="fontsize"
+                android:defaultValue="@string/pref_fontsize_default"
+                android:title="@string/title_fontsize_preference"
+                android:entries="@array/entries_fontsize_preference"
+                android:entryValues="@array/entryvalues_fontsize_preference"
+                android:dialogTitle="@string/dialog_title_fontsize_preference"
+                android:inputType="numberDecimal" />
+
         <ListPreference
                 android:key="fontfile"
                 android:defaultValue="@string/pref_fontfile_default"
@@ -510,15 +519,6 @@
         <Preference
                 android:key="fontfile_picker"
                 android:title="@string/title_fontfile_preference" />
-
-        <EditTextPreference
-                android:key="fontsize"
-                android:defaultValue="@string/pref_fontsize_default"
-                android:title="@string/title_fontsize_preference"
-                android:entries="@array/entries_fontsize_preference"
-                android:entryValues="@array/entryvalues_fontsize_preference"
-                android:dialogTitle="@string/dialog_title_fontsize_preference"
-                android:inputType="numberDecimal" />
 
         <EditTextPreference
                 android:key="fontleading"

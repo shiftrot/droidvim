@@ -21,6 +21,13 @@
             android:title="@string/external_apps_preferences"
             android:key="categoryApps">
 
+        <CheckBoxPreference
+                android:key="external_app_button"
+                android:defaultValue="@bool/pref_external_app_button_default"
+                android:summaryOn="@string/summary_external_app_button_on_preference"
+                android:summaryOff="@string/summary_external_app_button_off_preference"
+                android:title="@string/title_external_app_button_preference" />
+
         <ListPreference
                 android:key="external_app_package_name"
                 android:defaultValue="@string/pref_external_app_id_default"
@@ -28,13 +35,6 @@
                 android:entries="@array/entries_preference"
                 android:entryValues="@array/entries_preference"
                 android:dialogTitle="@string/title_external_app_id_preference" />
-
-        <CheckBoxPreference
-                android:key="external_app_button"
-                android:defaultValue="@bool/pref_external_app_button_default"
-                android:summaryOn="@string/summary_external_app_button_on_preference"
-                android:summaryOff="@string/summary_external_app_button_off_preference"
-                android:title="@string/title_external_app_button_preference" />
 
         <ListPreference
                 android:key="cloud_dropbox_filepicker"
