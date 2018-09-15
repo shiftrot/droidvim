@@ -184,7 +184,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             notificationChannel.setLightColor(Color.GREEN);
             notificationChannel.enableLights(false);
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-            notificationChannel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setImportance(NotificationManager.IMPORTANCE_MIN);
             notificationChannel.enableVibration(false);
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(notificationChannel);

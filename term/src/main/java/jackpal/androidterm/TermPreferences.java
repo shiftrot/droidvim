@@ -284,7 +284,8 @@ public class TermPreferences extends PreferenceActivity {
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + getPackageName()));
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
         startActivity(intent);
     }
 
