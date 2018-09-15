@@ -45,6 +45,12 @@
                 android:summaryOn="@string/summary_statusbar_icon_on_preference"
                 android:summaryOff="@string/summary_statusbar_icon_off_preference"/>
 
+        <Preference
+                android:key="notification"
+                android:title="@string/title_notification_preference"
+                android:summary="@string/summary_notification_preference"
+                />
+
         <ListPreference
                 android:key="actionbar"
                 android:defaultValue="@integer/pref_actionbar_default"

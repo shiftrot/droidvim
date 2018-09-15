@@ -184,25 +184,26 @@ public class TermService extends Service implements TermSession.FinishCallback
             notificationChannel.setLightColor(Color.GREEN);
             notificationChannel.enableLights(false);
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.enableVibration(false);
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
             notificationBuilder
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setWhen(System.currentTimeMillis())
-                    .setTicker(contentText)
-                    .setContentTitle(contentText)
-                    .setContentText(getText(R.string.service_notify_text))
-                    .setContentIntent(pendingIntent)
-                    .setSmallIcon(statusIcon)
-                    .setLargeIcon(largeIconBitmap)
-                    .setPriority(priority)
-                    .setOngoing(true)
-                    .setAutoCancel(false)
-                    .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                    .setContentInfo("");
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setTicker(contentText)
+                .setContentTitle(contentText)
+                .setContentText(getText(R.string.service_notify_text))
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(statusIcon)
+                .setLargeIcon(largeIconBitmap)
+                .setPriority(priority)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+                .setContentInfo("");
             notification = notificationBuilder.build();
         } else {
             notification = new NotificationCompat.Builder(getApplicationContext())

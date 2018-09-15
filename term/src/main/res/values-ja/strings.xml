@@ -109,9 +109,12 @@
    <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
    <string name="dialog_title_statusbar_preference">ステータスバー</string>
 
+   <string name="title_notification_preference">アプリ情報</string>
+   <string name="summary_notification_preference">通知はアプリ情報から非表示にすることができますが, 重要度の低いメッセージは表示されなくなります.</string>
+
    <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
-   <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンを表示する (要再起動).</string>
-   <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンを非表示にします (要再起動).\n通知を非表示にできないのはAndroidに編集状態を破棄されないようにするためです. 通知はAndroidの設定を利用して非表示化可能ですが, あまり重要でないメッセージが表示されなくなります.</string>
+   <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
+   <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
 
    <string name="title_functionbar_preference">ファンクションバー</string>
    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>

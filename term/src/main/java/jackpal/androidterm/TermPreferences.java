@@ -33,7 +33,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,6 +43,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
@@ -53,6 +53,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import com.droidvim.XmlUtils;
@@ -184,6 +185,16 @@ public class TermPreferences extends PreferenceActivity {
             screenCategory.removePreference(statusBarPref);
         }
 
+        final String NOTIFICATION_KEY = "notification";
+        Preference notificationPrefs = getPreferenceScreen().findPreference(NOTIFICATION_KEY);
+        notificationPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                notificationPrefs();
+                return true;
+            }
+        });
+
         PreferenceCategory keyboardCategory =
                 (PreferenceCategory) findPreference("categoryKeyboard");
         Preference controlKeyPref = findPreference("controlkey");
@@ -266,6 +277,15 @@ public class TermPreferences extends PreferenceActivity {
             }
         });
         bld.create().show();
+    }
+
+    void notificationPrefs() {
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
     }
 
     public static final int REQUEST_FONT_PICKER          = 16;
