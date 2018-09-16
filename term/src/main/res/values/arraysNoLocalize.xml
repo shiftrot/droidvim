@@ -194,6 +194,13 @@
         <item>54</item>
     </string-array>
 
+    <string-array name="entryvalues_vi_cooperative_mode_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="entryvalues_ime_shortcuts_action_preference">
         <item>0</item>
         <item>60</item>

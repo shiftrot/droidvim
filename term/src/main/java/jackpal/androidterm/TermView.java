@@ -58,6 +58,7 @@ public class TermView extends EmulatorView {
         setTermType(settings.getTermType());
         setMouseTracking(settings.getMouseTrackingFlag());
         setPreIMEShortcutsAction(settings.getImeShortcutsAction());
+        setViCooperativeMode(settings.getViCooperativeMode());
     }
 
     public void updatePrefs(TermSettings settings) {

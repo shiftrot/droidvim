@@ -250,6 +250,10 @@
    <string name="summary_ime_preference">Choose input method for normal input.</string>
    <string name="dialog_title_ime_preference">Choose input method</string>
 
+   <string name="title_vi_cooperative_mode_preference">vi-cooperative mode</string>
+   <string name="summary_vi_cooperative_mode">Reset to \"input mode at startup\" with the ESC button.</string>
+   <string name="dialog_title_vi_cooperative_mode_preference">Choose vi-cooperative mode.</string>
+
    <string name="shell_preferences">Shell</string>
    <string name="title_shell_preference">Command line</string>
    <string name="summary_shell_preference">Specify the shell command line.</string>

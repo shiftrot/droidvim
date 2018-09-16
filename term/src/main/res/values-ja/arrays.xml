@@ -214,6 +214,13 @@
         <item>直接入力 : Raw</item>
     </string-array>
 
+    <string-array name="entries_vi_cooperative_mode_preference">
+        <item>無効</item>
+        <item>ソフトキーボード</item>
+        <item>物理キーボード</item>
+        <item>ソフトキーボード/物理キーボード</item>
+    </string-array>
+
     <string-array name="entries_app_filepicker_preference">
         <item>非表示</item>
         <item>コンテントピッカー</item>

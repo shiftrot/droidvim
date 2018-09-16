@@ -220,6 +220,13 @@
         <item>Direct input : Raw</item>
     </string-array>
 
+    <string-array name="entries_vi_cooperative_mode_preference">
+        <item>Disable</item>
+        <item>Soft keyboard</item>
+        <item>Physical keyboard</item>
+        <item>Soft keyboard/Physical keyboard</item>
+    </string-array>
+
     <string-array name="entries_app_filepicker_preference">
         <item>Hide</item>
         <item>Content picker</item>

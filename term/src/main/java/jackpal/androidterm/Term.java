@@ -1645,6 +1645,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             dispatchKeyEvent(event);
             event = new KeyEvent(KeyEvent.ACTION_UP, key);
             dispatchKeyEvent(event);
+            if ((mSettings.getViCooperativeMode() & 1) != 0) {
+                view.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
+            }
         } else if (key > 0) {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);

@@ -1387,6 +1387,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         mKeyListener.keyUp(keyCode, event);
         clearSpecialKeyStatus();
+        if (keyCode == KeycodeConstants.KEYCODE_ESCAPE && mViCooperativeMode) {
+            setImeShortcutsAction(mIMEInputTypeDefault);
+        }
         return true;
     }
 
@@ -1961,6 +1964,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setPreIMEShortcutsAction(int action) {
         mIMEShortcutsAction = action;
+    }
+
+    private static boolean mViCooperativeMode = false;
+    public void setViCooperativeMode(int value) {
+       mViCooperativeMode = ((value & 2) != 0);
     }
 
     public boolean setDevBoolean(Context context, String key, boolean value) {
