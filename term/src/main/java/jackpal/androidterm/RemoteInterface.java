@@ -190,16 +190,17 @@ public class RemoteInterface extends Activity {
             } else {
                 uri = myIntent.getData();
             }
-            String intentCommand = "sh ";
-            if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*")) {
-                intentCommand = ":e ";
+            String intentCommand = mSettings.getIntentCommand();
+            boolean flavorVim = mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*");
+            if (intentCommand.equals("")) {
+                intentCommand = "sh";
+                if (flavorVim) intentCommand = ":e";
             }
-            boolean flavorVim = intentCommand.matches("^:.*");
             if (uri != null && uri.toString().matches("^file:///.*") && flavorVim) {
                 String path = uri.getPath();
                 if (new File(path).canRead()) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    String command = "\u001b"+intentCommand + path;
+                    String command = "\u001b"+intentCommand + " " + path;
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -212,7 +213,7 @@ public class RemoteInterface extends Activity {
                 String path = Term.getPath(context, uri);
                 if (path != null) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+intentCommand + path;
+                    command = "\u001b"+intentCommand + " " +path;
                 } else if (getContentResolver() != null) {
                     try {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
@@ -235,7 +236,7 @@ public class RemoteInterface extends Activity {
                             finish();
                         }
                         path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                        command = "\u001b"+intentCommand + path;
+                        command = "\u001b"+intentCommand + " " + path;
                     }
                 }
                 // Find the target window
@@ -249,24 +250,25 @@ public class RemoteInterface extends Activity {
                 if (myIntent.getData() != null) url = myIntent.getData().getPath();
             }
             if (url != null) {
-                String command = "sh ";
-                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*")) {
-                    command = ":e ";
+                String command = mSettings.getIntentCommand();
+                if (command.equals("")) {
+                    command = "sh";
+                    if (flavorVim) command = ":e";
                 }
                 if (command.matches("^:.*")) {
                     url = url.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+command + url;
+                    command = "\u001b"+command + " " + url;
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
                     mReplace = false;
                  } else if ((mHandle != null) && (url.equals(mFname))) {
                     // Target the request at an existing window if open
-                    command = command + url;
+                    command = command + " " + url;
                     mHandle = switchToWindow(mHandle, command);
                 } else {
                     // Open a new window
-                    command = command + url;
+                    command = command + " " + url;
                     mHandle = openNewWindow(command);
                 }
                 mFname = url;
