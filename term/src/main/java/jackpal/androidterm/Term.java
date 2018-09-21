@@ -699,7 +699,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
                     sendKeyStrings(":confirm qa\r", true);
                 } else {
                     confirmCloseWindow();
@@ -1583,7 +1583,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doCreateNewWindow();
         } else if (key == 1251) {
             if (mTermSessions != null) {
-                if (FLAVOR_VIM && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
                     sendKeyStrings(":confirm qa\r", true);
                 } else {
                     confirmCloseWindow();
@@ -1594,7 +1594,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showInputMethodPicker();
         } else if (key == 1253) {
-            if (FLAVOR_VIM) {
+            if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
                 sendKeyStrings(":confirm qa\r", true);
             } else {
                 confirmCloseWindow();
