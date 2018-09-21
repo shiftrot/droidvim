@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
@@ -126,9 +125,16 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         for (UpdateCallback callback : callbacks) {
             callback.onUpdate();
         }
+        mCurrentDisplayChild = getDisplayedChild();
+    }
+
+    private static int mCurrentDisplayChild = 0;
+    static public int getCurrentDisplayChild() {
+        return  mCurrentDisplayChild;
     }
 
     public void onPause() {
+        mCurrentDisplayChild = getDisplayedChild();
         if (mbPollForWindowSizeChange) {
             mHandler.removeCallbacks(mCheckSize);
         }
@@ -140,6 +146,9 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             mCheckSize.run();
         }
         resumeCurrentView();
+        if (mCurrentDisplayChild >= 0 && getChildCount() >= mCurrentDisplayChild) {
+            setDisplayedChild(mCurrentDisplayChild);
+        }
     }
 
     public void pauseCurrentView() {
@@ -160,7 +169,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     private void showTitle() {
-        if (getChildCount() == 0) {
+        if (getChildCount() <= 1) {
             return;
         }
 

@@ -425,6 +425,14 @@ public class RemoteInterface extends Activity {
                 break;
             }
         }
+        int displayChild = TermViewFlipper.getCurrentDisplayChild();
+        if (displayChild > 0 && displayChild < sessions.size()) {
+            ShellTermSession session = (ShellTermSession) sessions.get(displayChild);
+            if (session != null) {
+                index = displayChild;
+                target = session;
+            }
+        }
 
         if (target == null) {
             if (sessions.isEmpty() || iInitialCommand == null) return openNewWindow(iInitialCommand);
