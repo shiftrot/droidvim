@@ -312,20 +312,35 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     @Override
     public void onDestroy() {
-        if (useNotificationForgroundService()) {
-            stopSelf();
-        } else {
-            compat.stopForeground(true);
+        stopNotificationService();
+        destroySessions();
+    }
+
+    private void stopNotificationService() {
+        try {
+            if (useNotificationForgroundService()) {
+                stopSelf();
+            } else {
+                compat.stopForeground(true);
+            }
+        } catch (Exception e) {
+            Log.e("TermService", "Failed to destory: " + e.toString());
         }
-        for (TermSession session : mTermSessions) {
-            /* Don't automatically remove from list of sessions -- we clear the
-             * list below anyway and we could trigger
-             * ConcurrentModificationException if we do */
-            session.setFinishCallback(null);
-            session.finish();
+    }
+
+    private void destroySessions() {
+        try {
+            for (TermSession session : mTermSessions) {
+                /* Don't automatically remove from list of sessions -- we clear the
+                 * list below anyway and we could trigger
+                 * ConcurrentModificationException if we do */
+                session.setFinishCallback(null);
+                session.finish();
+            }
+            mTermSessions.clear();
+        } catch (Exception e) {
+            Log.e("TermService", "Failed to close sessions: " + e.toString());
         }
-        mTermSessions.clear();
-        return;
     }
 
     public SessionList getSessions() {
