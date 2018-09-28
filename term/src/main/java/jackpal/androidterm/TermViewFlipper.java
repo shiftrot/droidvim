@@ -18,6 +18,7 @@ package jackpal.androidterm;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -182,17 +183,14 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             return;
         }
 
-        String title = context.getString(R.string.window_title,getDisplayedChild()+1);
+        String title = String.format(Locale.getDefault(), context.getString(R.string.window_title)+" %1$d", getDisplayedChild()+1);
         if (session instanceof GenericTermSession) {
             title = ((GenericTermSession) session).getTitle(title);
         }
 
-        if (mToast == null) {
-            mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
-            mToast.setGravity(Gravity.CENTER, 0, 0);
-        } else {
-            mToast.setText(title);
-        }
+        if (mToast != null) mToast.cancel();
+        mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
+        mToast.setGravity(Gravity.CENTER, 0, 0);
         mToast.show();
     }
 

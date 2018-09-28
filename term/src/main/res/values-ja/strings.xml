@@ -84,7 +84,7 @@
    <string name="send_control_key">コントールキー送信</string>
    <string name="send_fn_key">fnキー送信</string>
 
-   <string name="window_title">ウインドウ %1$d</string>
+   <string name="window_title">ウインドウ</string>
 
    <string name="service_notify_text">ターミナルセッション実行中</string>
 
