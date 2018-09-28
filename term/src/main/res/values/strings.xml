@@ -36,6 +36,8 @@
    <string name="toggle_function_bar">Function bar</string>
    <string name="quit">Quit</string>
 
+   <string name="switch_windows_warning">Swipe the upper half of the screen to switch windows.</string>
+
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
    <string name="toast_clipboard">Text copied to clipboard.</string>
    <string name="toast_clipboard_error">Text is not included.</string>

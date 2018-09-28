@@ -1697,6 +1697,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
             mViewFlipper.addView(view);
             mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
+            doWarningDialog(null, this.getString(R.string.switch_windows_warning), "switch_window", false);
         } catch (IOException e) {
             Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT).show();
         }

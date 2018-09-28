@@ -35,6 +35,8 @@
    <string name="toggle_function_bar">ファンクションバー</string>
    <string name="quit">終了</string>
 
+   <string name="switch_windows_warning">画面の上半分をスワイプしてウィンドウを切り替えます.</string>
+
    <string name="reset_toast_notification">このウインドウのターミナル状態はリセットされました.</string>
    <string name="toast_clipboard">テキストをクリップボードへコピーしました.</string>
    <string name="toast_clipboard_error">テキストが含まれていません.</string>
