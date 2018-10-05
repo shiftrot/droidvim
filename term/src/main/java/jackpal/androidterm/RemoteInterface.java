@@ -191,7 +191,7 @@ public class RemoteInterface extends Activity {
                 uri = myIntent.getData();
             }
             String intentCommand = mSettings.getIntentCommand();
-            boolean flavorVim = mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*");
+            boolean flavorVim = mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*");
             if (intentCommand.equals("")) {
                 intentCommand = "sh";
                 if (flavorVim) intentCommand = ":e";

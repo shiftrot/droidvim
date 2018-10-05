@@ -2834,7 +2834,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private static boolean mVimPaste = false;
     private void doPaste() {
-        if (mVimPaste && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-vim\\.app(.|\n)*") && mTermSessions.size() == 1) {
+        if (mVimPaste && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
             sendKeyStrings("\"*p", false);
             return;
         }
