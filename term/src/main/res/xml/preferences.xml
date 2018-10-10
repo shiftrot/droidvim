@@ -397,6 +397,43 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/gesture_preferences">
+
+        <ListPreference
+            android:key="double_tap_action"
+            android:defaultValue="@string/pref_double_tap_default"
+            android:title="@string/title_double_tap_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_double_tap_preference" />
+
+        <ListPreference
+            android:key="right_double_tap_action"
+            android:defaultValue="@string/pref_right_double_tap_default"
+            android:title="@string/title_right_double_tap_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_right_double_tap_preference" />
+
+        <ListPreference
+            android:key="left_double_tap_action"
+            android:defaultValue="@string/pref_left_double_tap_default"
+            android:title="@string/title_left_double_tap_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_left_double_tap_preference" />
+
+        <ListPreference
+            android:key="bottom_double_tap_action"
+            android:defaultValue="@string/pref_bottom_double_tap_default"
+            android:title="@string/title_bottom_double_tap_preference"
+            android:entries="@array/entries_actionbar_icon_preference"
+            android:entryValues="@array/entryvalues_actionbar_icon_preference"
+            android:dialogTitle="@string/dialog_title_bottom_double_tap_preference" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/ime_input_method_preferences">
 
         <ListPreference
@@ -470,43 +507,6 @@
                 android:entries="@array/entries_ime_preference"
                 android:entryValues="@array/entryvalues_ime_preference"
                 android:dialogTitle="@string/dialog_title_ime_preference" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/gesture_preferences">
-
-        <ListPreference
-            android:key="double_tap_action"
-            android:defaultValue="@string/pref_double_tap_default"
-            android:title="@string/title_double_tap_preference"
-            android:entries="@array/entries_actionbar_icon_preference"
-            android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_double_tap_preference" />
-
-        <ListPreference
-            android:key="right_double_tap_action"
-            android:defaultValue="@string/pref_right_double_tap_default"
-            android:title="@string/title_right_double_tap_preference"
-            android:entries="@array/entries_actionbar_icon_preference"
-            android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_right_double_tap_preference" />
-
-        <ListPreference
-            android:key="left_double_tap_action"
-            android:defaultValue="@string/pref_left_double_tap_default"
-            android:title="@string/title_left_double_tap_preference"
-            android:entries="@array/entries_actionbar_icon_preference"
-            android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_left_double_tap_preference" />
-
-        <ListPreference
-            android:key="bottom_double_tap_action"
-            android:defaultValue="@string/pref_bottom_double_tap_default"
-            android:title="@string/title_bottom_double_tap_preference"
-            android:entries="@array/entries_actionbar_icon_preference"
-            android:entryValues="@array/entryvalues_actionbar_icon_preference"
-            android:dialogTitle="@string/dialog_title_bottom_double_tap_preference" />
 
     </PreferenceCategory>
 
