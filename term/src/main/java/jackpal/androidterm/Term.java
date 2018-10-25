@@ -1947,9 +1947,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 if (path != null) {
                     String intentCommand = mSettings.getIntentCommand();
-                    if (!intentCommand.matches("^:.*")) intentCommand = ":e %s";
+                    if (!intentCommand.matches("^:.*")) intentCommand = ":e ";
                     path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
-                    path = String.format(intentCommand+"\r", path);
+                    path = intentCommand+" "+path+"\r";
                     sendKeyStrings(path, true);
                 }
                 break;
