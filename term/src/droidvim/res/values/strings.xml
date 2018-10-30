@@ -3,4 +3,5 @@
     <string name="application_term_app">DroidVim</string>
     <string name="summary_color_preference">Choose terminal color.\nVim\'s text colors can also be changed using colorscheme (256 colors).</string>
     <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts. (:help ambiwidth)</string>
+    <string name="summary_home_dir_chooser_preference">`.vimrc` and `.vim` are read from `$HOME` and the startup directory is set to `$HOME`</string>
 </resources>

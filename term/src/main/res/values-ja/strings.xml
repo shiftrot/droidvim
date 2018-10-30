@@ -339,6 +339,19 @@
   <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
   <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
 
+  <string name="title_home_dir_chooser_preference">ホームディレクトリ</string>
+  <string name="set_home_directory">ホームディレクトリは, 次の場所に設定されました.\n\n</string>
+  <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
+  <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
+
+  <string name="choose_home_directory_message">ホームディレクトリ:\n`.vimrc`と`.vim`は`$HOME`から読み込まれ、起動時のディレクトリも`$HOME`に設定されます.\n\nvim and .vimrc:\n`$HOME`はアンインストール時に消去されます.このため`.vim`と`.vimrc`は内部ストレージに作成してシンボリックリンクを張ることをおすすめします.\n\n 1. `:shell` or Ctrl-z\n 2. ln -s /path/to/.vim $HOME/.vim\n 3. ln -s /path/to/.vimrc $HOME/.vimrc\n(内部ストレージのパス : `/storage/emulated/0` や `/sdcard`など)\n\nホームディレクトリの変更:\n\"選択\"ボタンを使用してホームディレクトリを変更することができます.\nただしホームディレクトリを変更すると、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
+  <string name="select_directory_message">ディレクトリを選択</string>
+  <string name="invalid_directory">書き込めないか, 不正なディレクトリです.</string>
+  <string name="copy_startup_dir">選択したパスがクリップボードへコピーされました.\n起動時のディレクトリを指定したい場合は, `.vimrc`に以下を追加してみてください.\n\ncd </string>
+  <string name="select_directory">選択</string>
+  <string name="reset_directory">デフォルト</string>
+  <string name="choose_directory">Choose</string>
+
   <string name="tutorial">Vimチュートリアル</string>
   <string name="help">ヘルプ</string>
   <string name="help_url">http://example.com</string>

@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+repositories {
+    maven { url "https://jitpack.io" }
+}
 
 import java.text.SimpleDateFormat
 android {
@@ -61,5 +64,6 @@ dependencies {
     implementation('com.android.support:support-v4:27.1.0')
     implementation project(':emulatorview')
     implementation project(':libtermexec')
+    implementation 'com.github.hedzr:android-file-chooser:master-SNAPSHOT'
 }
 

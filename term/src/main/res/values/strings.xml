@@ -110,7 +110,7 @@
 
    <string name="prefs_about">About</string>
    <string name="title_license">Open source licenses</string>
-   <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・android-async-http\n・Terminal Emulator for Android\n・TermuxAm\n\n\nThis software is an open source project.</string>
+   <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・android-async-http\n・hedzr/android-file-chooser\n・Terminal Emulator for Android\n・TermuxAm\n\n\nThis software is an open source project.</string>
    <string name="github">github</string>
    <string name="github_url">https://github.com/shiftrot/droidvim</string>
 
@@ -352,6 +352,20 @@
   <string name="title_ime_shortcuts_action_preference">IME shortcut action</string>
   <string name="summary_ime_shortcuts_action_preference">Choose IME shortcut action</string>
   <string name="dialog_titleime_shortcuts_action_preference">IME shortcut action</string>
+
+  <string name="title_home_dir_chooser_preference">Home directory</string>
+  <string name="set_home_directory">The home directory has been set to the following location:\n\n</string>
+  <string name="summary_home_dir_chooser_preference"></string>
+  <string name="title_startup_chooser_preference">Startup directory</string>
+  <string name="summary_startup_chooser_preference">Choose startup directory</string>
+
+  <string name="choose_home_directory_message">HOME directory:\n`.vimrc` and `.vim` are read from `$HOME` and the startup directory is set to `$HOME`.\n\n.vim and .vimrc:\n`$HOME` is deleted when uninstalling. So we recommended copy `.vim` and `.vimrc` to internal storage (It can be accessed via filer app) and make a symbolic link.\n\n 1. `:shell` or Ctrl-z\n 2. ln -s /path/to/.vim $HOME/.vim\n 3. ln -s /path/to/.vimrc $HOME/.vimrc\n(Internal storage path : `/storage/emulated/0` or `/sdcard`)\n\nChange HOME:\nYou can use the \"SELECT\" button to change the HOME directory.\nHowever, if you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default value by pressing \"Default\" button.</string>
+  <string name="select_directory_message">Chooose directory</string>
+  <string name="invalid_directory">Directory without write permission or invalid directory.</string>
+  <string name="copy_startup_dir">The selected path has been copied to the clipboard.\nIf you want to specify the directory at startup, try adding the following to your `.vimrc`: \n\ncd </string>
+  <string name="select_directory">Select</string>
+  <string name="reset_directory">Default</string>
+  <string name="choose_directory">Choose</string>
 
   <string name="tutorial">Vim tutorial</string>
   <string name="help">Help</string>

@@ -2,4 +2,5 @@
 <resources>
     <string name="summary_color_preference">端末の表示色を選択する.\nVimのテキスト色はcolorscheme(256色対応)でも設定可能です.</string>
     <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (:help ambiwidth)</string>
+    <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれ、起動時のディレクトリが`$HOME`に設定されます</string>
 </resources>

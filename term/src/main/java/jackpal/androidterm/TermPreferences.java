@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
 
 import android.Manifest;
@@ -57,6 +59,7 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import com.droidvim.XmlUtils;
+import com.obsez.android.lib.filechooser.ChooserDialog;
 
 import static jackpal.androidterm.Term.getPath;
 
@@ -257,6 +260,131 @@ public class TermPreferences extends PreferenceActivity {
             textCategory.removePreference(fontPref);
         }
 
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences.Editor editor = prefs.edit();
+        final Activity activity = this;
+        final String HOME_DIR_KEY = "home_dir_chooser";
+        Preference homeDirPrefs = getPreferenceScreen().findPreference(HOME_DIR_KEY);
+        homeDirPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                directoryPicker(activity.getString(R.string.choose_home_directory_message),
+                    new ChooserDialog.Result() {
+                        @Override
+                        public void onChoosePath(String path, File pathFile) {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                            if (path == null) {
+                                path = TermService.getAPPFILES() + "/home";
+                                pathFile = new File(path);
+                                if (!pathFile.exists()) pathFile.mkdir();
+                                editor.putString("home_path", path);
+                                editor.apply();
+                                bld.setIcon(android.R.drawable.ic_dialog_info);
+                                bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                            } else if (new File(path).canWrite()) {
+                                editor.putString("home_path", path);
+                                editor.apply();
+                                bld.setIcon(android.R.drawable.ic_dialog_info);
+                                bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                            } else {
+                                bld.setIcon(android.R.drawable.stat_notify_error);
+                                bld.setMessage(activity.getString(R.string.invalid_directory));
+                            }
+                            bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                            bld.create().show();
+                        }
+                    });
+                return true;
+            }
+        });
+
+        PreferenceCategory shellCategory =
+                (PreferenceCategory) findPreference("categoryShell");
+        Preference editHomeDirPref = findPreference("home_path");
+        if ((editHomeDirPref != null) && (shellCategory != null)) {
+            shellCategory.removePreference(editHomeDirPref);
+        }
+        final String STARTUP_DIR_KEY = "startup_dir_chooser";
+        Preference startupDirPrefs = getPreferenceScreen().findPreference(STARTUP_DIR_KEY);
+        Preference startupDirPref = findPreference("startup_dir_chooser");
+        if (FLAVOR_VIM) {
+            final ChooserDialog.Result r =  new ChooserDialog.Result() {
+                @Override
+                public void onChoosePath(String path, File pathFile) {
+                    String p = path;
+                    if (path != null && new File(path).canWrite()) {
+                        ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(getApplicationContext());
+                        clip.setText(path);
+                        AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                        bld.setIcon(android.R.drawable.ic_dialog_info);
+                        bld.setTitle(activity.getString(R.string.title_startup_chooser_preference));
+                        bld.setMessage(activity.getString(R.string.copy_startup_dir)+" "+path);
+                        bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                        bld.create().show();
+                    } else {
+                        AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                        bld.setIcon(android.R.drawable.stat_notify_error);
+                        bld.setMessage(activity.getString(R.string.invalid_directory));
+                        bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                        bld.create().show();
+                    }
+                }
+            };
+            startupDirPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new ChooserDialog().with(activity)
+                            .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
+                            .enableOptions(true)
+                            .withFilter(true, false)
+                            .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
+                            .withChosenListener(r)
+                            .build()
+                            .show();
+                    return true;
+                }
+            });
+        } else {
+            if ((startupDirPref != null) && (shellCategory != null)) {
+                shellCategory.removePreference(startupDirPref);
+            }
+        }
+
+    }
+
+    private void directoryPicker(String mes, final ChooserDialog.Result r) {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(mes);
+        bld.setPositiveButton(this.getString(R.string.select_directory), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                internalStoragePicker(r);
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        bld.setNeutralButton(this.getString(R.string.reset_directory), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                r.onChoosePath(null, null);
+            }
+        });
+        bld.create().show();
+    }
+
+    private void internalStoragePicker(ChooserDialog.Result r) {
+        new ChooserDialog().with(this)
+            .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
+            .enableOptions(true)
+            .withFilter(true, false)
+            .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
+            .withChosenListener(r)
+            .build()
+            .show();
     }
 
     void licensePrefs() {
