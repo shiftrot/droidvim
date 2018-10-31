@@ -230,7 +230,7 @@
    <string name="functionbar_preferences">Functionbar</string>
    <string name="gesture_preferences">Gesture</string>
 
-   <string name="keyboard_preferences">Physical Keyboard</string>
+   <string name="keyboard_preferences">Keyboard</string>
 
    <string name="title_backaction_preference">Back button</string>
    <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
