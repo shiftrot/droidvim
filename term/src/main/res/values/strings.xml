@@ -322,6 +322,9 @@
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
   <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
+  <string name="back_as_esc">Back button as ESC</string>
+  <string name="summary_back_as_esc_preference">Enable it if ESC key of physical keyboard is handled as Back button.</string>
+
   <string name="ignore_xoff">Ignore XOFF flow control</string>
   <string name="ignore_xoff_summary_on">Ignore Ctrl-s.</string>
   <string name="ignore_xoff_summary_off">Ctrl-s sends xoff.</string>

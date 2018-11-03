@@ -87,6 +87,7 @@ public class TermSettings {
     private boolean mAltSendsEsc;
 
     private boolean mIgnoreXoff;
+    private boolean mBackAsEsc;
 
     private boolean mMouseTracking;
 
@@ -146,6 +147,7 @@ public class TermSettings {
     private static final String LIB_SHPATH_KEY = "lib_sh_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String IGNORE_XON = "ignore_xoff";
+    private static final String BACK_AS_ESC = "back_as_esc";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
     private static final String AUTO_HIDE_FUNCTIONBAR = "auto_hide_functionbar";
@@ -285,6 +287,7 @@ public class TermSettings {
         // the mHomePath default is set dynamically in readPrefs()
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mIgnoreXoff = res.getBoolean(R.bool.pref_ignore_xoff_default);
+        mBackAsEsc = res.getBoolean(R.bool.pref_back_as_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
         mAutoHideFunctionbar = res.getBoolean(R.bool.pref_auto_hide_functionbar_default);
@@ -346,6 +349,7 @@ public class TermSettings {
         mLibShPath = readStringPref(LIB_SHPATH_KEY, mLibShPath);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mIgnoreXoff = readBooleanPref(IGNORE_XON, mIgnoreXoff);
+        mBackAsEsc = readBooleanPref(BACK_AS_ESC, mBackAsEsc);
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS, mUseKeyboardShortcuts);
         mAutoHideFunctionbar = readBooleanPref(AUTO_HIDE_FUNCTIONBAR, mAutoHideFunctionbar);
@@ -539,6 +543,10 @@ public class TermSettings {
 
     public boolean getIgnoreXoff() {
         return mIgnoreXoff;
+    }
+
+    public boolean getBackAsEscFlag() {
+        return mBackAsEsc;
     }
 
     public boolean getMouseTrackingFlag() {

@@ -2232,6 +2232,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
+            if (mHaveFullHwKeyboard && mSettings.getBackAsEscFlag()) {
+                sendKeyStrings("\u001b", false);
+                return true;
+            }
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 // mStopServiceOnFinish = true;
