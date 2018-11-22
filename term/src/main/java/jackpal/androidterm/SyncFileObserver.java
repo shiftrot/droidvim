@@ -188,7 +188,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                 byte[] digest = md.digest();
                 hashValue = toHexString(digest);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             mActive = true;
             return HASH_ERROR;
