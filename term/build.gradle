@@ -32,7 +32,7 @@ android {
     }
 
     sourceSets {
-        original {
+        origin {
             jniLibs.srcDirs = ['src/main/jniLibs']
         }
     }
@@ -47,7 +47,7 @@ android {
 
     productFlavors {
         flavorDimensions "default"
-        original {
+        origin {
             dimension "default"
             versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date())+".dev"
         }
