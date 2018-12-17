@@ -57,7 +57,8 @@
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim_list">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nToggle keyboard\n- Back button.\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button. \n- One-line text box can be turned on/off by double tap near the bottom of the screen.\n\nClipboard:\n- Please use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)\|If you need your own .vimrc, see below.\n\nEdit .vimrc:\n- Type \":e $HOME/.vimrc\".\n- Choose \"Edit .vimrc\" from the long press menu.\n\nIf you create $HOME/.vim or a symbolic link, it is treated as a runtime path.</string>
+   <string name="tips_vim"></string>
+   <string name="tips_vim_list"></string>
 
    <string name="edit_text_view_warning_title">One-line text box</string>
    <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - Delete all/Quit</string>
@@ -362,7 +363,7 @@
   <string name="title_startup_chooser_preference">Startup directory</string>
   <string name="summary_startup_chooser_preference">Choose startup directory</string>
 
-  <string name="choose_home_directory_message">HOME directory:\n`.vimrc` and `.vim` are read from `$HOME` and the startup directory is set to `$HOME`.\n\n.vim and .vimrc:\n`$HOME` is deleted when uninstalling. So we recommended copy `.vim` and `.vimrc` to internal storage (It can be accessed via filer app) and make a symbolic link.\n\n 1. `:shell` or Ctrl-z\n 2. ln -s /path/to/.vim $HOME/.vim\n 3. ln -s /path/to/.vimrc $HOME/.vimrc\n(Internal storage path : `/storage/emulated/0` or `/sdcard`)\n\nChange HOME:\nYou can use the \"SELECT\" button to change the HOME directory.\nHowever, if you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default value by pressing \"Default\" button.</string>
+  <string name="choose_home_directory_message">HOME directory:\nYou can use the \"SELECT\" button to change the HOME directory.\nHowever, if you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default value by pressing \"Default\" button.</string>
   <string name="select_directory_message">Chooose directory</string>
   <string name="invalid_directory">Directory without write permission or invalid directory.</string>
   <string name="copy_startup_dir">The selected path has been copied to the clipboard.\nIf you want to specify the directory at startup, try adding the following to your `.vimrc`: \n\ncd </string>
