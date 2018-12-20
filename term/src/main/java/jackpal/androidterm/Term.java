@@ -2084,7 +2084,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return uri.getPath();
             }
         } catch (Exception e) {
-            // do nothing
+            AlertDialog.Builder bld = new AlertDialog.Builder(context);
+            bld.setMessage(e.getMessage());
+            bld.setPositiveButton(android.R.string.ok, null);
+            Log.d(TermDebug.LOG_TAG, "Showing alert dialog: " + e.toString());
+            bld.create().show();
         }
         return null;
     }
