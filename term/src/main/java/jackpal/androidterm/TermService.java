@@ -112,6 +112,12 @@ public class TermService extends Service implements TermSession.FinishCallback
             File[] dirs = this.getApplicationContext().getExternalFilesDirs(null);
             mAPPEXTFILES = dirs[sdcard].toString();
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            mEXTSTORAGE = Environment.getExternalStorageDirectory().toString();
+        } else {
+            mEXTSTORAGE = mHOME;
+        }
         mTMPDIR = getCacheDir(this, sdcard) + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES+"/usr/lib";
         String model = TermVimInstaller.getProp("ro.product.model");
@@ -232,6 +238,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     private static String mAPPBASE;
     private static String mAPPFILES;
     private static String mAPPEXTFILES;
+    private static String mEXTSTORAGE;
     private static String mLD_LIBRARY_PATH;
     private static String mTMPDIR;
     private static String mHOME;
@@ -241,6 +248,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
+        cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
         cmd = cmd.replaceAll("\n#.*\n|\n\n", "\n");
@@ -298,6 +306,10 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     static public String getAPPEXTFILES() {
         return mAPPEXTFILES;
+    }
+
+    static public String getEXTSTORAGE() {
+        return mEXTSTORAGE;
     }
 
     static public String getLD_LIBRARY_PATH() {

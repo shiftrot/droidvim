@@ -3,7 +3,7 @@
     <string name="application_term_app">DroidVim</string>
     <string name="summary_color_preference">Choose terminal color.\nVim\'s text colors can also be changed using colorscheme (256 colors).</string>
     <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts. (:help ambiwidth)</string>
-    <string name="summary_home_dir_chooser_preference">`.vimrc` and `.vim` are read from `$HOME` and the startup directory is set to `$HOME`</string>
+    <string name="summary_home_dir_chooser_preference">`.vimrc` and `.vim` are read from `$HOME`</string>
   <string name="choose_home_directory_message">HOME directory:\nYou can use the \"SELECT\" button to change the HOME directory.\nHowever, if you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default value by pressing \"Default\" button.\n\nviminfo:\nSince viminfo requires an attribute change, please add `set viminfo+=n$APPFILES/home/.viminfo` to .vimrc.</string>
 
   <string name="tips_vim">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nToggle keyboard\n- Back button.\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button. \n- One-line text box can be turned on/off by double tap near the bottom of the screen.\n\nClipboard:\n- Please use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)</string>

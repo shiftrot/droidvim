@@ -2,7 +2,7 @@
 <resources>
     <string name="summary_color_preference">端末の表示色を選択する.\nVimのテキスト色はcolorscheme(256色対応)でも設定可能です.</string>
     <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (:help ambiwidth)</string>
-    <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれ、起動時のディレクトリが`$HOME`に設定されます</string>
+    <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれます.</string>
     <string name="choose_home_directory_message">ホームディレクトリ:\n\"選択\"ボタンを使用してホームディレクトリを変更することができます.\nただしホームディレクトリを変更すると、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.\n\nviminfo:\nviminfoは属性変更を必要としますので`set viminfo+=n$APPFILES/home/.viminfo`を.vimrcに追加してください.</string>
    <string name="tips_vim_title">Tips</string>
    <string name="tips_vim">▼終了方法\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼Backボタンでキーボードをトグル\n\n▼Vimチュートリアル\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.\n\n▼直接入力\n- \"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力は画面下端付近でのダブルタップでON/OFF可能です. 予測変換入力、音声入力または絵文字の入力で便利です.\n\n▼クリップボード\n- Vimへの\"貼り付け\"には, \"Share\"インテントかVimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)</string>
