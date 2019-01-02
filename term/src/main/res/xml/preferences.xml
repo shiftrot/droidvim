@@ -610,9 +610,14 @@
                 android:dialogTitle="@string/dialog_title_backaction_preference" />
 
         <CheckBoxPreference android:title="@string/back_as_esc"
-                            android:key="back_as_esc"
-                            android:defaultValue="@bool/pref_back_as_esc_default"
-                            android:summary="@string/summary_back_as_esc_preference" />
+                android:key="back_as_esc"
+                android:defaultValue="@bool/pref_back_as_esc_default"
+                android:summary="@string/summary_back_as_esc_preference" />
+
+        <CheckBoxPreference android:title="@string/title_mouse_tracking_preference"
+                android:key="mouse_tracking"
+                android:defaultValue="@bool/pref_mouse_tracking_default"
+                android:summary="@string/summary_mouse_tracking_preference" />
 
         <ListPreference
                 android:key="controlkey"
@@ -672,10 +677,6 @@
             android:entries="@array/entries_termtype_preference"
             android:entryValues="@array/entries_termtype_preference"
             android:dialogTitle="@string/dialog_title_termtype_preference" />
-    <CheckBoxPreference android:title="@string/title_mouse_tracking_preference"
-            android:key="mouse_tracking"
-            android:defaultValue="@bool/pref_mouse_tracking_default"
-            android:summary="@string/summary_mouse_tracking_preference" />
     <CheckBoxPreference
             android:key="verify_path"
             android:defaultValue="@bool/pref_verify_path_default"
