@@ -1003,8 +1003,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
 
@@ -1022,6 +1020,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         SyncFileObserver.delete(cacheDir);
         mTermService = null;
         mTSConnection = null;
+        super.onDestroy();
     }
 
     @SuppressLint("NewApi")
