@@ -179,6 +179,18 @@ final class TermVimInstaller {
                     bin = "vim_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
+                    id = activity.getResources().getIdentifier("suvim", "raw", activity.getPackageName());
+                    String dst = TermService.getAPPFILES()+"/bin/suvim";
+                    copyScript(activity.getResources().openRawResource(id), dst);
+                    shell("chmod 755 "+ dst);
+                    id = activity.getResources().getIdentifier("suvim_sh", "raw", activity.getPackageName());
+                    dst = TermService.getAPPFILES()+"/bin/vim.sh";
+                    copyScript(activity.getResources().openRawResource(id), dst);
+                    shell("chmod 755 "+ dst);
+                    id = activity.getResources().getIdentifier("suvim_app", "raw", activity.getPackageName());
+                    dst = TermService.getAPPFILES()+"/bin/suvim.app";
+                    copyScript(activity.getResources().openRawResource(id), dst);
+                    shell("chmod 755 "+ dst);
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), sdcard+"/version");
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
@@ -235,6 +247,7 @@ final class TermVimInstaller {
                 String appBase     = TermService.getAPPBASE();
                 String appFiles    = TermService.getAPPFILES();
                 String appExtFiles = TermService.getAPPEXTFILES();
+                String internalStorage = TermService.getEXTSTORAGE();
                 br = new BufferedReader(new InputStreamReader(is));
                 PrintWriter writer = new PrintWriter(new FileOutputStream(fname));
                 String str;
@@ -242,6 +255,7 @@ final class TermVimInstaller {
                     str = str.replaceAll("%APPBASE%", appBase);
                     str = str.replaceAll("%APPFILES%", appFiles);
                     str = str.replaceAll("%APPEXTFILES%", appExtFiles);
+                    str = str.replaceAll("%INTERNAL_STORAGE%", internalStorage);
                     writer.print(str+"\n");
                 }
                 writer.close();

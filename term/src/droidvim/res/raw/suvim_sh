@@ -1,0 +1,17 @@
+export APPBASE=%APPBASE%
+export APPFILES=%APPFILES%
+export APPEXTFILES=%APPEXTFILES%
+export INTERNAL_STORAGE=%INTERNAL_STORAGE%
+
+export PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH
+export TERMINFO=$APPFILES/terminfo
+export VIMRUNTIME=$APPEXTFILES/runtime
+export VIM=$APPEXTFILES
+if [ -z $TERM ]; then
+  export TERM=screen-256color
+fi
+vim $@
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+

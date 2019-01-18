@@ -1,0 +1,2 @@
+su -c %APPFILES%/bin/vim.sh
+echo -n -e "\0033[999t"
