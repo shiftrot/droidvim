@@ -162,6 +162,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("runtimetutor", "raw", activity.getPackageName());
                     installZip(sdcard, getInputStream(activity, id));
                     setMessage(activity, pd, "binaries");
+                    shell("rm "+ sdcard + "/.vimrc.default");
                     id = activity.getResources().getIdentifier("extra", "raw", activity.getPackageName());
                     installZip(sdcard, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("bin", "raw", activity.getPackageName());
