@@ -27,16 +27,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
-// by default recent plugin version does not copy any AIDL files "to avoid publishing too much"
-android.libraryVariants.all { variant ->
-    Sync packageAidl = project.tasks.create("addPublic${variant.name.capitalize()}Aidl", Sync) { sync ->
-        from "$project.projectDir/src/main/aidl/"
-        into "$buildDir/intermediates/bundles/${variant.dirName}/aidl/"
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
-
-    variant.javaCompiler.dependsOn packageAidl
 }
 
 dependencies {
