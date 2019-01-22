@@ -2,7 +2,7 @@ package jackpal.androidterm;
 
 import android.annotation.TargetApi;
 import android.os.*;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Field;
