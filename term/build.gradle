@@ -39,7 +39,7 @@ android {
 
     buildTypes {
         release {
-            shrinkResources=true
+            shrinkResources = true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -49,7 +49,7 @@ android {
         flavorDimensions "default"
         origin {
             dimension "default"
-            versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date())+".dev"
+            versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date()) + ".dev"
         }
         droidvim {
             dimension "default"
