@@ -51,7 +51,7 @@
             </intent-filter>
         </activity-alias>
         <activity android:name="RemoteInterface"
-                android:excludeFromRecents="true">
+                android:excludeFromRecents="false">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
