@@ -2207,6 +2207,29 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
+        case 0xffff0990:
+            String cmd = "vim.app\n";
+            if (RemoteInterface.IntentCommand != null) {
+                cmd += "\u001b"+RemoteInterface.IntentCommand+"\n";
+            }
+            if (RemoteInterface.ShareText != null) {
+                String filename = mSettings.getHomePath()+"/.clipboard";
+                Term.writeStringToFile(filename, "\n"+RemoteInterface.ShareText.toString());
+                cmd += "\u001b"+":ATEMod _paste\n";
+            }
+            final String riCmd = cmd;
+            TermVimInstaller.doInstallVim(Term.this, new Runnable(){
+                @Override
+                public void run() {
+                    if (getCurrentTermSession() != null) {
+                        sendKeyStrings(riCmd, false);
+                    } else {
+                        ShellTermSession.setPostCmd(riCmd);
+                    }
+                    permissionCheckExternalStorage();
+                }
+            }, true);
+            return true;
         case 0xffff0998:
             if (mTermSessions.size() > 1) {
                 return true;

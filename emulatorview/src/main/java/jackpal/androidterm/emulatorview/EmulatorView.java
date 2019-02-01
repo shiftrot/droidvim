@@ -1633,11 +1633,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 setDevBoolean(this.getContext(), "JpYenRo", yr);
                 if (mKeyListener != null) mKeyListener.setJpYenRo(yr);
                 break;
+            case 990:
+                ((Activity)this.getContext()).onKeyUp(0xffff0990, null);
+                break;
             case 998:
             case 999:
-                Activity activity = (Activity)this.getContext();
                 int key = ctrl == 998 ? 0xffff0998 : 0xffff0999;
-                activity.onKeyUp(key, null);
+                ((Activity)this.getContext()).onKeyUp(key, null);
                 break;
             case 1000:
                 ((Activity)this.getContext()).onKeyUp(0xffff0000, null);

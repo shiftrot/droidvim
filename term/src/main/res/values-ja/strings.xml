@@ -384,7 +384,7 @@
   <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
   <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
-  <string name="storage_write_error">以下をチェックしてください\n\n・このファイルは外部ストレージに存在しません.\nファイルが存在している場合は\"Storage\"ボタンから再度ファイルを開いてください.\n\n・このファイルは書き込みを許可していません.\nこのファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません. 別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>
+  <string name="storage_write_error">以下をチェックしてください\n\n・ストレージアクセス許可を与えていますか？\n\n・このファイルは外部ストレージに存在しません.\nファイルが存在している場合は\"Storage\"ボタンから再度ファイルを開いてください.\n\n・このファイルは書き込みを許可していません.\nこのファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません. 別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>
   <string name="storage_hash_error_title">ハッシュエラー</string>
   <string name="storage_hash_error">外部ストレージ上でファイルが変更された可能性があるため, 外部ストレージへの書き込みを中止します.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
   <string name="storage_hash_overwrite">上書き</string>

@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
@@ -37,6 +36,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,7 +52,7 @@ import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.Term.REQUEST_FOREGROUND_SERVICE_PERMISSION;
 
-public class RemoteInterface extends Activity {
+public class RemoteInterface extends AppCompatActivity {
     protected static final String PRIVACT_OPEN_NEW_WINDOW = "shiftrot.androidterm.private.OPEN_NEW_WINDOW";
     protected static final String PRIVACT_SWITCH_WINDOW = "shiftrot.androidterm.private.SWITCH_WINDOW";
 
@@ -69,10 +69,16 @@ public class RemoteInterface extends Activity {
 
     private TermService mTermService;
     private Intent mTSIntent;
+    public static String IntentCommand= null;
+    public static CharSequence ShareText = null;
+    private boolean mDoInstall = false;
+    private final String DO_INSTALL = "echo -n -e \"\\0033[990t\"";
+
     private ServiceConnection mTSConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
+            mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(TermService.getAPPEXTFILES() + "/vimrc").exists();
             handleIntent();
         }
 
@@ -161,6 +167,8 @@ public class RemoteInterface extends Activity {
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
+        IntentCommand = null;
+        ShareText = null;
 
         if (action == null) {
             finish();
@@ -178,7 +186,8 @@ public class RemoteInterface extends Activity {
             if (clipData != null) {
                 uri = clipData.getItemAt(0).getUri();
                 if (uri == null) {
-                    openText(clipData.getItemAt(0).getText());
+                    ShareText = clipData.getItemAt(0).getText();
+                    shareText(ShareText);
                     finish();
                     return;
                 }
@@ -201,6 +210,10 @@ public class RemoteInterface extends Activity {
                 if (new File(path).canRead()) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     String command = "\u001b"+intentCommand + " " + path;
+                    if (mDoInstall) {
+                        IntentCommand = command;
+                        command = DO_INSTALL;
+                    }
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -214,6 +227,10 @@ public class RemoteInterface extends Activity {
                 if (path != null) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     command = "\u001b"+intentCommand + " " +path;
+                    if (mDoInstall) {
+                        IntentCommand = command;
+                        command = DO_INSTALL;
+                    }
                 } else if (getContentResolver() != null) {
                     try {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
@@ -237,6 +254,10 @@ public class RemoteInterface extends Activity {
                         }
                         path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                         command = "\u001b"+intentCommand + " " + path;
+                        if (mDoInstall) {
+                            IntentCommand = command;
+                            command = DO_INSTALL;
+                        }
                     }
                 }
                 // Find the target window
@@ -258,6 +279,10 @@ public class RemoteInterface extends Activity {
                 if (command.matches("^:.*")) {
                     url = url.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     command = "\u001b"+command + " " + url;
+                    if (mDoInstall) {
+                        IntentCommand = command;
+                        command = DO_INSTALL;
+                    }
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -265,10 +290,18 @@ public class RemoteInterface extends Activity {
                  } else if ((mHandle != null) && (url.equals(mFname))) {
                     // Target the request at an existing window if open
                     command = command + " " + url;
+                    if (mDoInstall) {
+                        IntentCommand = command;
+                        command = DO_INSTALL;
+                    }
                     mHandle = switchToWindow(mHandle, command);
                 } else {
                     // Open a new window
                     command = command + " " + url;
+                    if (mDoInstall) {
+                        IntentCommand = command;
+                        command = DO_INSTALL;
+                    }
                     mHandle = openNewWindow(command);
                 }
                 mFname = url;
@@ -278,7 +311,8 @@ public class RemoteInterface extends Activity {
                 setResult(RESULT_OK, result);
             }
         } else if (action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_TEXT)) {
-            openText(myIntent.getExtras().getCharSequence(Intent.EXTRA_TEXT));
+            ShareText = myIntent.getExtras().getCharSequence(Intent.EXTRA_TEXT);
+            shareText(ShareText);
         }
 
         finish();
@@ -290,7 +324,7 @@ public class RemoteInterface extends Activity {
         toast.show();
     }
 
-    private void openText(CharSequence str) {
+    public void shareText(CharSequence str) {
         if (str == null) {
             alert(this.getString(R.string.toast_clipboard_error));
             return;
@@ -302,6 +336,7 @@ public class RemoteInterface extends Activity {
                 String filename = mSettings.getHomePath()+"/.clipboard";
                 Term.writeStringToFile(filename, "\n"+str.toString());
                 String command = "\u001b"+":ATEMod _paste";
+                if (mDoInstall) command = DO_INSTALL;
                 // Find the target window
                 mReplace = true;
                 mHandle = switchToWindow(mHandle, command);
