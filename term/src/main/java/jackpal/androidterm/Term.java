@@ -1795,7 +1795,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         }).show();
-}
+    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileDelete() {
