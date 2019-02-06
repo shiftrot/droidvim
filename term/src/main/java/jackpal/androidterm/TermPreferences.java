@@ -19,8 +19,10 @@ package jackpal.androidterm;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -456,23 +458,9 @@ public class TermPreferences extends PreferenceActivity {
     private void confirmWritePrefs() {
         File pathExternalPublicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String downloadDir = pathExternalPublicDir.getPath();
-        final String filename = downloadDir + "/"+ BuildConfig.APPLICATION_ID + ".xml";
-        if (new File(filename).exists()) {
-            AlertDialog.Builder bld = new AlertDialog.Builder(this);
-            bld.setIcon(android.R.drawable.ic_dialog_info);
-            bld.setMessage(this.getString(R.string.prefs_write_confirm));
-            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    writePrefs(filename);
-                }
-            });
-            bld.setNegativeButton(this.getString(android.R.string.no), null);
-            bld.create().show();
-        } else {
-            writePrefs(filename);
-            return;
-        }
+        @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+        final String filename = downloadDir + "/"+ BuildConfig.APPLICATION_ID + "-" + timestamp + ".xml";
+        writePrefs(filename);
     }
 
     private boolean writePrefs(String filename) {
