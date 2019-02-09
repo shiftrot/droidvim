@@ -218,7 +218,7 @@ public class TermService extends Service implements TermSession.FinishCallback
                 .setPriority(priority)
                 .setOngoing(true)
                 .setAutoCancel(false)
-                .setVisibility(Notification.VISIBILITY_SECRET)
+                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
                 .build();
         }
         return notification;
