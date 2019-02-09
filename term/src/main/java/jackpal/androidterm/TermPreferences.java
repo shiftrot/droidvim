@@ -301,18 +301,22 @@ public class TermPreferences extends PreferenceActivity {
 
         PreferenceCategory shellCategory =
                 (PreferenceCategory) findPreference("categoryShell");
-        Preference editHomeDirPref = findPreference("home_path");
+        Preference editHomeDirPref;
+        if (AndroidCompat.SDK >= 21) {
+            editHomeDirPref = findPreference("home_path");
+        } else {
+            editHomeDirPref = findPreference("home_dir_chooser");
+        }
         if ((editHomeDirPref != null) && (shellCategory != null)) {
             shellCategory.removePreference(editHomeDirPref);
         }
+
         final String STARTUP_DIR_KEY = "startup_dir_chooser";
         Preference startupDirPrefs = getPreferenceScreen().findPreference(STARTUP_DIR_KEY);
-        Preference startupDirPref = findPreference("startup_dir_chooser");
-        if (FLAVOR_VIM) {
-            final ChooserDialog.Result r =  new ChooserDialog.Result() {
+        if (FLAVOR_VIM && AndroidCompat.SDK >= 21) {
+            final ChooserDialog.Result r = new ChooserDialog.Result() {
                 @Override
                 public void onChoosePath(String path, File pathFile) {
-                    String p = path;
                     if (path != null && new File(path).canWrite()) {
                         ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(getApplicationContext());
                         clip.setText(path);
@@ -346,6 +350,7 @@ public class TermPreferences extends PreferenceActivity {
                 }
             });
         } else {
+            Preference startupDirPref = findPreference("startup_dir_chooser");
             if ((startupDirPref != null) && (shellCategory != null)) {
                 shellCategory.removePreference(startupDirPref);
             }
