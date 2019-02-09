@@ -303,7 +303,7 @@
   <string name="email_transcript_chooser_title">メール転写の選択:</string>
   <string name="email_transcript_no_email_activity_found">転写を送信するEメール用アクティビティが選択できませんでした.</string>
 
-  <string name="share_title">共有</string>
+  <string name="share_title">共有...</string>
   <string name="share_buffer_text">現バッファ</string>
   <string name="share_visual_text">選択テキスト</string>
   <string name="share_unnamed_text">無名レジスタ</string>
@@ -370,7 +370,7 @@
   <string name="button_no">いいえ</string>
   <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
   <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
-  <string name="keyboard_warning">デフォルトでは直接入力を強制しているため、ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更</string>
+  <string name="keyboard_warning">デフォルトでは直接入力を強制しているため、ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
 
   <string name="external_storage">ストレージ</string>
   <string name="create_or_delete">新規/削除</string>
@@ -384,7 +384,7 @@
   <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
   <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
-  <string name="storage_write_error">以下をチェックしてください\n\n・ストレージアクセス許可を与えていますか？\n\n・このファイルは外部ストレージに存在しません.\nファイルが存在している場合は\"Storage\"ボタンから再度ファイルを開いてください.\n\n・このファイルは書き込みを許可していません.\nこのファイルはAndroid Storage Access Frameworkを介した書き込みを許可していません. 別のファイラーアプリケーションまたはクラウドストレージクライアント経由で開いてください.</string>
+  <string name="storage_write_error">以下をチェックしてください\n\n・ストレージアクセス許可を与えていますか？\n\n・このファイルはまだ外部ストレージまたはオンラインストレージに存在しますか？\n\n・DroidVimの\"ストレージ\"ボタンからファイルを開いてください.\nファイラーまたはクラウドストレージアプリケーションによっては\"共有（または[プログラムから開く]）\"メニューからファイルを開くと, 読み取り専用に設定される場合があります.</string>
   <string name="storage_hash_error_title">ハッシュエラー</string>
   <string name="storage_hash_error">外部ストレージ上でファイルが変更された可能性があるため, 外部ストレージへの書き込みを中止します.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
   <string name="storage_hash_overwrite">上書き</string>
