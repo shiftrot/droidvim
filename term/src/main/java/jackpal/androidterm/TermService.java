@@ -116,7 +116,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             mEXTSTORAGE = mHOME;
         }
-        mTMPDIR = getCacheDir(this, sdcard) + "/tmp";
+        mTMPDIR = getCacheDir() + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES+"/usr/lib";
         String model = TermVimInstaller.getProp("ro.product.model");
         if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
@@ -283,6 +283,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     public void clearTMPDIR() {
         File tmpdir = new File(mTMPDIR);
         if (tmpdir.exists()) TermVimInstaller.deleteFileOrFolder(tmpdir);
+        if (!tmpdir.exists()) tmpdir.mkdir();
     }
 
     static public String getTMPDIR() {

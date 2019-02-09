@@ -679,7 +679,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                confirmClearCache(false);
+                confirmClearCache();
             }
         });
         findViewById(R.id.drawer_keyboard_button).setOnClickListener(new OnClickListener() {
@@ -775,14 +775,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-    private void confirmClearCache(final boolean clearAll) {
+    private void confirmClearCache() {
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_clear_cache_message);
         final Runnable clearCache = new Runnable() {
             public void run() {
                 if (mSyncFileObserver != null) mSyncFileObserver.clearCache();
-                if (mTermService != null && clearAll) mTermService.clearTMPDIR();
+                if (mTermService != null) mTermService.clearTMPDIR();
             }
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -1791,7 +1791,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 } else if (item.matches(".*"+Term.this.getString(R.string.onedrive)+".*")) {
                     intentMainActivity(APP_ONEDRIVE);
                 } else if (Term.this.getString(R.string.clear_cache).equals(item)) {
-                    confirmClearCache(false);
+                    confirmClearCache();
                 }
             }
         }).show();
