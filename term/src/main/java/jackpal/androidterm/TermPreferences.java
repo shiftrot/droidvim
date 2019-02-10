@@ -126,6 +126,25 @@ public class TermPreferences extends PreferenceActivity {
             filePicker.setSummary(summary);
             filePicker.setOnPreferenceChangeListener(listener);
 
+            array = res.getStringArray(R.array.entries_html_viewer_mode_preference);
+            listener = new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Resources res = getResources();
+                    String[] array = res.getStringArray(R.array.entries_html_viewer_mode_preference);
+                    int value = Integer.valueOf((String) newValue);
+                    String summary = array[value];
+                    preference.setSummary(summary);
+                    return true;
+                }
+            };
+
+            id = "html_viewer_mode";
+            filePicker = findPreference(id);
+            summary = array[settings.getHtmlViewerMode()];
+            filePicker.setSummary(summary);
+            filePicker.setOnPreferenceChangeListener(listener);
+
             id = "external_app_package_name";
             Preference pref = getPreferenceScreen().findPreference(id);
             String appId = mPrefs.getString(id, "");

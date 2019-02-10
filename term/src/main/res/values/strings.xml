@@ -54,6 +54,7 @@
    <string name="reload_file">Reload (+Encoding)</string>
    <string name="reload_file_title">Reload this file</string>
    <string name="force_encoding">Choose encoding if you need.</string>
+   <string name="webview_local_file_error">Local file can not be \"opened with intent\".</string>
 
    <string name="whats_new_title">What\'s new</string>
    <string name="tips_vim_title">Tips</string>
@@ -96,6 +97,9 @@
    <string name="process_exit_message">Terminal session finished</string>
 
    <string name="do_not_show">Do not show again</string>
+
+   <string name="reloading">Reloading this page.</string>
+   <string name="stop_loading">Stop loading this page.</string>
 
    <!-- Preference dialog -->
    <string name="prefs_preferences">User Settings</string>
@@ -371,6 +375,9 @@
   <string name="reset_directory">Default</string>
   <string name="choose_directory">Choose</string>
 
+  <string name="open_in_browser">Open in browser</string>
+  <string name="scroll_to_top">Top</string>
+  <string name="scroll_to_bottom">Bottom</string>
   <string name="tutorial">Vim tutorial</string>
   <string name="help">Help</string>
   <string name="help_url">http://example.com</string>
@@ -471,8 +478,7 @@
   <string name="title_cloud_onedrive_preference">OneDrive</string>
   <string name="summary_cloud_file_picker_on_preference">Application</string>
   <string name="summary_cloud_file_picker_off_preference">Content picker</string>
-  <string name="title_alt_local_html_viewer">Alternate local html viewer</string>
-  <string name="summary_alt_local_html_viewer_on_preference">Auto detect</string>
-  <string name="summary_alt_local_html_viewer_off_preference">Android html viewer</string>
+  <string name="title_html_viewer_mode_preference">Html viewer</string>
+  <string name="summary_html_viewer_mode">Default</string>
 
 </resources>

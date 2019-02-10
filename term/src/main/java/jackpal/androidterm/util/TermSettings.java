@@ -69,7 +69,7 @@ public class TermSettings {
     private int mDropboxFilePicker;
     private int mGoogleDriveFilePicker;
     private int mOneDriveFilePicker;
-    private boolean mAltLocalHtmlViewer;
+    private int mHtmlViewerMode;
     private String mShell;
     private String mFailsafeShell;
     private String mInitialCommand;
@@ -136,7 +136,7 @@ public class TermSettings {
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
     private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive_filepicker";
-    private static final String ALT_LOCAL_HTML_VIEWER_KEY = "alt_local_html_viewer";
+    private static final String HTML_VIEWER_MODE_KEY = "html_viewer_mode";
     private static final String SHELL_KEY = "shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
     private static final String INTENTCOMMAND_KEY = "intent_command";
@@ -273,7 +273,7 @@ public class TermSettings {
         mDropboxFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_dropbox_filepicker_default));
         mGoogleDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_googledrive_filepicker_default));
         mOneDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_onedrive_filepicker_default));
-        mAltLocalHtmlViewer = res.getBoolean(R.bool.pref_alt_local_html_viewer_default);
+        mHtmlViewerMode = Integer.parseInt(res.getString(R.string.pref_html_viewer_mode_default));
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
         mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
@@ -340,7 +340,7 @@ public class TermSettings {
         mDropboxFilePicker = readIntPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker, 2);
         mGoogleDriveFilePicker = readIntPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker, 2);
         mOneDriveFilePicker = readIntPref(ONEDRIVE_FILE_PICKER_KEY, mOneDriveFilePicker, 2);
-        mAltLocalHtmlViewer = readBooleanPref(ALT_LOCAL_HTML_VIEWER_KEY, mAltLocalHtmlViewer);
+        mHtmlViewerMode = readIntPref(HTML_VIEWER_MODE_KEY, mHtmlViewerMode, 2);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
         mIntentCommand = readStringPref(INTENTCOMMAND_KEY, mIntentCommand);
@@ -645,8 +645,8 @@ public class TermSettings {
         mOneDriveFilePicker = value;
     }
 
-    public int getAltLocalHtmlViewer() {
-        return mAltLocalHtmlViewer ? 1 : 0;
+    public int getHtmlViewerMode() {
+        return mHtmlViewerMode;
     }
 
     public boolean useCookedIME() {

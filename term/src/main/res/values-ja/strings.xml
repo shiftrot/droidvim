@@ -53,6 +53,7 @@
    <string name="reload_file">エンコーディング指定</string>
    <string name="reload_file_title">ファイル再読込</string>
    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
+   <string name="webview_local_file_error">ローカルファイルを「インテントで開く」ことはできません.</string>
 
    <string name="tips_vim_title">Tips</string>
    <string name="tips_vim"></string>
@@ -94,6 +95,9 @@
    <string name="process_exit_message">ターミナルセッション終了</string>
 
    <string name="do_not_show">次回から表示しない</string>
+
+   <string name="reloading">このページを再読込しています</string>
+   <string name="stop_loading">このページの読込を中止</string>
 
    <!-- Preference dialog -->
    <string name="prefs_preferences">設定</string>
@@ -356,6 +360,9 @@
   <string name="reset_directory">デフォルト</string>
   <string name="choose_directory">Choose</string>
 
+  <string name="open_in_browser">ブラウザで開く</string>
+  <string name="scroll_to_top">先頭</string>
+  <string name="scroll_to_bottom">末尾</string>
   <string name="tutorial">Vimチュートリアル</string>
   <string name="help">ヘルプ</string>
   <string name="help_url">http://example.com</string>
@@ -426,7 +433,7 @@
   <string name="summary_app_filepicker_on_drawer">ドロワー上のアプリボタンの振舞いを選択する.</string>
   <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
   <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
-  <string name="title_alt_local_html_viewer">ローカルHTMLビューワ</string>
-  <string name="summary_alt_local_html_viewer_on_preference">自動設定</string>
+
+  <string name="title_html_viewer_mode_preference">HTMLビューア</string>
 
 </resources>

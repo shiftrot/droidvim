@@ -215,4 +215,12 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="entries_preference"></string-array>
+
+    <string-array name="entryvalues_html_viewer_mode_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

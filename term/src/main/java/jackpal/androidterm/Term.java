@@ -1549,9 +1549,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if  (id == R.id.action_help) {
-            Intent openHelp = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(getString(R.string.help_url)));
-                startActivity(openHelp);
+            Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
+            startActivity(openHelp);
         } else if (id == R.id.menu_quit) {
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
@@ -2479,7 +2478,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 } else {
                     if (mime.equals(MIME_HTML)) {
                         try {
-                            if (!privateStorage && mSettings.getAltLocalHtmlViewer() == 1) {
+                            if ((mSettings.getHtmlViewerMode() == 2) && (!privateStorage)) {
                                 String pkg = null;
                                 String cls = null;
                                 for (String key : mAltBrowser.keySet()) {
@@ -2504,9 +2503,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             }
                             intent = new Intent(this, WebViewActivity.class);
                             intent.putExtra("url", file.toString());
-                            if (!mHaveFullHwKeyboard) doHideSoftKeyboard();
                             startActivity(intent);
-                            if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
                             return;
                         } catch (Exception webViewErr) {
                             Log.d(TermDebug.LOG_TAG, webViewErr.getMessage());
@@ -2544,8 +2541,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (mime.equals("")) mime = "text/*";
             intent.setDataAndType(uri, mime);
             try {
-                intent.setAction(action);
-                startActivity(intent);
+                if (mSettings.getHtmlViewerMode() == 1) {
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", uri.toString());
+                    startActivity(intent);
+                } else {
+                    intent.setAction(action);
+                    startActivity(intent);
+                }
             } catch (Exception e) {
                 alert(Term.this.getString(R.string.storage_read_error));
             }

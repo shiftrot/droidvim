@@ -2,20 +2,32 @@ package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WebViewActivity extends Activity {
     private static int mFontSize = 140;
@@ -51,27 +63,23 @@ public class WebViewActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
-                    return false;
-                }
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-                return true;
+                return overrideUrlLoading(webView, url);
             }
             @SuppressWarnings("deprecation")
             @Override
-            public boolean shouldOverrideUrlLoading(WebView wevView, String url) {
-                if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
-                    return false;
-                }
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-                return true;
+            public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                return overrideUrlLoading(webView, url);
             }
         });
         setButtonListener();
+        mWebView.setDownloadListener(new DownloadListener() {
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimetype, long contentLength) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -90,12 +98,24 @@ public class WebViewActivity extends Activity {
         }
     }
 
+    private boolean overrideUrlLoading(WebView view, String url) {
+        if (openSettings(url)) return true;
+        if (openPlayStorePage(url)) return true;
+        if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
+            return false;
+        }
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+        return true;
+    }
+
     private void setButtonListener() {
         findViewById(R.id.webview_back).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_forward).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_reload).setOnClickListener(mButtonListener);
         findViewById(R.id.webview_abort).setOnClickListener(mButtonListener);
-        findViewById(R.id.webview_quit).setOnClickListener(mButtonListener);
+        findViewById(R.id.webview_menu).setOnClickListener(mButtonListener);
         if (mInitialInterval == 0) {
             findViewById(R.id.webview_plus).setOnClickListener(mButtonListener);
             findViewById(R.id.webview_minus).setOnClickListener(mButtonListener);
@@ -125,13 +145,14 @@ public class WebViewActivity extends Activity {
                     break;
                 case R.id.webview_reload:
                     mWebView.reload();
+                    Toast.makeText(mWebView.getContext(), R.string.reloading, Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.webview_abort:
                     mWebView.stopLoading();
+                    Toast.makeText(mWebView.getContext(), R.string.stop_loading, Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.webview_quit:
-                    mWebView.stopLoading();
-                    finish();
+                case R.id.webview_menu:
+                    menu();
                     break;
                 case R.id.webview_plus:
                     mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + 10);
@@ -146,6 +167,48 @@ public class WebViewActivity extends Activity {
             }
         }
     };
+
+    private void menu() {
+        String[] items = {getString(R.string.scroll_to_top), getString(R.string.scroll_to_bottom), getString(R.string.open_in_browser), getString(R.string.quit)};
+        final int quit = items.length-1;
+        new AlertDialog.Builder(mWebView.getContext())
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == quit) {
+                            mWebView.stopLoading();
+                            finish();
+                        } else if (which == 0) {
+                            mWebView.scrollTo(0,0);
+                        } else if (which == 1) {
+                            mWebView.scrollTo(0,mWebView.getContentHeight());
+                        } else if (which == 2) {
+                            execURL(mWebView.getUrl());
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void execURL(String link)
+    {
+        Uri webLink = Uri.parse(link);
+        String url = webLink.toString();
+        if (!(url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:"))) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setMessage(R.string.webview_local_file_error);
+            builder.setPositiveButton(android.R.string.yes, null);
+            builder.create().show();
+            return;
+        }
+        Intent openLink = new Intent(Intent.ACTION_VIEW, webLink);
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> handlers = pm.queryIntentActivities(openLink, 0);
+        if(handlers.size() > 0) startActivity(openLink);
+    }
 
     static public void setFontSize(int size) {
         mFontSize = size;
@@ -193,5 +256,69 @@ public class WebViewActivity extends Activity {
             Log.d("WebViewAcitivity", e.getMessage());
         }
         return false;
+    }
+
+    private boolean openPlayStorePage(String url) {
+        if (!url.matches("https?://play.google.com/store/apps/details\\?id=.*")) {
+            return false;
+        }
+        String pname = url.replaceFirst("https?://.*/details\\?id=", "");
+        Uri uri = Uri.parse("market://details?id=" + pname);
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(url)));
+        }
+        return true;
+    }
+
+    /*
+     *  Open Android Settings
+     *  If there is a link starting with "file:///android_asset/ACTION_SETTINGS/", open the corresponding setting screen.
+     *  E.g. <a href="file:///android_asset/ACTION_SETTINGS/ACTION_HARD_KEYBOARD_SETTINGS">Physical Keyboard settings&</a>
+     */
+    static final private Map<String, String> mSettingsAction = new HashMap<String, String>() {
+        {
+            put("ACTION_SETTINGS", Settings.ACTION_SETTINGS);
+            put("ACTION_INPUT_METHOD_SETTINGS", Settings.ACTION_INPUT_METHOD_SETTINGS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                put("ACTION_HARD_KEYBOARD_SETTINGS", Settings.ACTION_HARD_KEYBOARD_SETTINGS);
+            }
+        }
+    };
+
+    private boolean openSettings(String url) {
+        final String ANDROID_SETTINGS = "file:///android_asset/ACTION_SETTINGS";
+        if (!url.startsWith(ANDROID_SETTINGS)) {
+            return false;
+        }
+        url = url.replaceFirst(ANDROID_SETTINGS+"/?", "");
+        String action = getSettingsAction(url);
+        Intent intent = new Intent(action);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return startIntent(intent);
+    }
+
+    private String getSettingsAction(String action) {
+        String settingsAction = Settings.ACTION_SETTINGS;
+        if ((action.equals("ACTION_HARD_KEYBOARD_SETTINGS") && (Build.VERSION.SDK_INT < Build.VERSION_CODES.N))) {
+            action = "ACTION_INPUT_METHOD_SETTINGS";
+        }
+        if (mSettingsAction.containsKey(action)) return mSettingsAction.get(action);
+        return settingsAction;
+    }
+
+    private boolean startIntent(Intent intent) {
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

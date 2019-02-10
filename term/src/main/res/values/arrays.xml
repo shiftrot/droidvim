@@ -233,7 +233,10 @@
         <item>Application</item>
     </string-array>
 
-    <string-array name="entries_preference">
+    <string-array name="entries_html_viewer_mode_preference">
+        <item>Default</item>
+        <item>Internal browser</item>
+        <item>Auto detect</item>
     </string-array>
 
 </resources>

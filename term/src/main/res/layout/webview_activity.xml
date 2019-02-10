@@ -22,13 +22,6 @@
             android:layout_weight="1"
             android:text="▶" />
         <Button
-            android:id="@+id/webview_plus"
-            android:minHeight="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="+" />
-        <Button
             android:id="@+id/webview_minus"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
@@ -36,26 +29,33 @@
             android:layout_weight="1"
             android:text="-" />
         <Button
+            android:id="@+id/webview_plus"
+            android:minHeight="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="+" />
+        <Button
             android:id="@+id/webview_reload"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="[R]" />
+            android:text="R" />
         <Button
             android:id="@+id/webview_abort"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="[X]" />
+            android:text="X" />
         <Button
-            android:id="@+id/webview_quit"
+            android:id="@+id/webview_menu"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="[Q]" />
+            android:text="≡" />
     </LinearLayout>
     <WebView
         android:id="@+id/WebView"

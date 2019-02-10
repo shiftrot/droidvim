@@ -25,6 +25,7 @@
                  android:label="@string/application_terminal"
                  android:hardwareAccelerated="true"
                  android:theme="@style/ThemeLightDefault"
+                 android:usesCleartextTraffic="true"
                  android:allowBackup="true"
                  android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name="Term"

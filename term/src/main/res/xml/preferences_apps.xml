@@ -65,12 +65,13 @@
                 android:entryValues="@array/entryvalues_app_filepicker_preference"
                 android:dialogTitle="@string/title_cloud_onedrive_preference" />
 
-        <CheckBoxPreference
-                android:key="alt_local_html_viewer"
-                android:defaultValue="@bool/pref_alt_local_html_viewer_default"
-                android:title="@string/title_alt_local_html_viewer"
-                android:summaryOn="@string/summary_alt_local_html_viewer_on_preference"
-                android:summaryOff="@string/summary_alt_local_html_viewer_off_preference"/>
+        <ListPreference
+                android:key="html_viewer_mode"
+                android:defaultValue="@string/pref_html_viewer_mode_default"
+                android:title="@string/title_html_viewer_mode_preference"
+                android:summary="@string/summary_html_viewer_mode"
+                android:entries="@array/entries_html_viewer_mode_preference"
+                android:entryValues="@array/entryvalues_html_viewer_mode_preference" />
     </PreferenceCategory>
 
 </PreferenceScreen>
