@@ -77,6 +77,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
@@ -187,6 +188,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
     private int mPendingPathBroadcasts = 0;
 
+    private static       int mExternalAppMode   = 1;
     private static       String mExternalApp    = "";
     private static final String APP_DROPBOX     = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
@@ -567,10 +569,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mFilePickerItems = new ArrayList<>();
             mFilePickerItems.add(this.getString(R.string.create_file));
             mFilePickerItems.add(this.getString(R.string.delete_file));
-            int visiblity = mSettings.getExternalAppButton() ? View.VISIBLE : View.GONE;
+            int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
             Button button = (Button) findViewById(R.id.drawer_app_button);
             button.setVisibility(visiblity);
             mExternalApp = mSettings.getExternalAppId();
+            mExternalAppMode = mSettings.getExternalAppButtonMode();
             if (visiblity == View.VISIBLE) {
                 try {
                     PackageManager pm = this.getApplicationContext().getPackageManager();
@@ -645,20 +648,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (externalAppFilePicker(mSettings.getDropboxFilePicker(), APP_DROPBOX)) getDrawer().closeDrawers();
+                if (launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX)) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_googledrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (externalAppFilePicker(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE)) getDrawer().closeDrawers();
+                if (launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE)) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                if (externalAppFilePicker(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE)) getDrawer().closeDrawers();
+                if (launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE)) getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
@@ -728,37 +731,38 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return (intent != null);
     }
 
-    private static final Map<String, String> mAppClassName= new HashMap<String, String>() {
-        {put(APP_DROPBOX, "com.dropbox.android.activity.DropboxBrowser");}
-        {put(APP_GOOGLEDRIVE, "com.google.android.apps.docs.app.NewMainProxyActivity");}
-        {put(APP_ONEDRIVE, "com.microsoft.skydrive.MainActivity");}
-    };
     private boolean intentMainActivity(String app) {
         if (app == null || app.equals("")) return false;
         PackageManager pm = this.getApplicationContext().getPackageManager();
         Intent intent = pm.getLaunchIntentForPackage(app);
         if (intent == null) {
             intent = new Intent(Intent.ACTION_MAIN);
-            intent.setAction("android.intent.category.LAUNCHER");
-            intent.setClassName(app, mAppClassName.get(app));
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            try {
+                String className;
+                className = Objects.requireNonNull(Objects.requireNonNull(pm.getLaunchIntentForPackage(app)).getComponent()).getClassName()+"";
+                intent.setClassName(app, Objects.requireNonNull(className));
+            } catch (Exception e) {
+                alert(app+"\n"+this.getString(R.string.external_app_activity_error));
+                return true;
+            }
         }
         startActivity(intent);
         return true;
     }
 
     private void externalApp() {
-        if (mExternalApp.equals("") || !intentMainActivity(mExternalApp)) {
+        if (mExternalApp.equals("") || !launchExternalApp(mExternalAppMode, mExternalApp)) {
             alert(this.getString(R.string.external_app_id_error));
-            return;
         }
     }
 
     @SuppressLint("NewApi")
-    private boolean externalAppFilePicker(int mode, String appId) {
+    private boolean launchExternalApp(int mode, String appId) {
         try {
             if (mode == 2) {
                 intentMainActivity(appId);
-            } else {
+            } else if (mode == 1){
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setPackage(appId);
                 intent.setType("*/*");
@@ -769,8 +773,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 intentMainActivity(appId);
             } catch (Exception ea) {
                 alert(this.getString(R.string.activity_not_found));
+                return false;
             }
-            return false;
         }
         return true;
     }

@@ -53,6 +53,7 @@
    <integer name="pref_ime_inputtype_default">53</integer>
    <string name="pref_external_app_id_default"></string>
    <bool name="pref_external_app_button_default">true</bool>
+   <string name="pref_external_app_button_mode_default" translatable="false">1</string>
    <bool name="pref_cloud_dropbox_default">false</bool>
    <bool name="pref_cloud_googledrive_default">false</bool>
    <bool name="pref_cloud_onedrive_default">false</bool>

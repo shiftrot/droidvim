@@ -65,6 +65,7 @@ public class TermSettings {
     private int mUseCookedIME;
     private String mExternalAppId;
     private boolean mExternalAppButton;
+    private int mExternalAppButtonMode;
     private int mDropboxFilePicker;
     private int mGoogleDriveFilePicker;
     private int mOneDriveFilePicker;
@@ -130,6 +131,7 @@ public class TermSettings {
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
+    private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_button_mode";
     private static final String EXTERNAL_APP_BUTTON_KEY = "external_app_button";
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
@@ -266,6 +268,7 @@ public class TermSettings {
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mExternalAppId = res.getString(R.string.pref_external_app_id_default);
+        mExternalAppButtonMode = Integer.parseInt(res.getString(R.string.pref_external_app_button_mode_default));
         mExternalAppButton = res.getBoolean(R.bool.pref_external_app_button_default);
         mDropboxFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_dropbox_filepicker_default));
         mGoogleDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_googledrive_filepicker_default));
@@ -332,6 +335,7 @@ public class TermSettings {
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId, FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY , mExternalAppId);
+        mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
         mExternalAppButton = readBooleanPref(EXTERNAL_APP_BUTTON_KEY, mExternalAppButton);
         mDropboxFilePicker = readIntPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker, 2);
         mGoogleDriveFilePicker = readIntPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker, 2);
@@ -607,6 +611,10 @@ public class TermSettings {
 
     public boolean getExternalAppButton() {
         return mExternalAppButton;
+    }
+
+    public int getExternalAppButtonMode() {
+        return mExternalAppButtonMode;
     }
 
     public void setExternalAppButton(boolean enable) {

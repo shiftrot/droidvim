@@ -74,7 +74,6 @@ public class TermPreferences extends PreferenceActivity {
     private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
     private boolean mFirst = true;
 
-    static final String EXTERNAL_APP_BUTTON = "external_app_button";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -103,9 +102,15 @@ public class TermPreferences extends PreferenceActivity {
                 }
             };
 
-            String id = "cloud_dropbox_filepicker";
+            String id = "external_app_button_mode";
             Preference filePicker = findPreference(id);
-            String summary = array[settings.getDropboxFilePicker()];
+            String summary = array[settings.getExternalAppButtonMode()];
+            filePicker.setSummary(summary);
+            filePicker.setOnPreferenceChangeListener(listener);
+
+            id = "cloud_dropbox_filepicker";
+            filePicker = findPreference(id);
+            summary = array[settings.getDropboxFilePicker()];
             filePicker.setSummary(summary);
             filePicker.setOnPreferenceChangeListener(listener);
 
@@ -120,18 +125,6 @@ public class TermPreferences extends PreferenceActivity {
             summary = array[settings.getOneDriveFilePicker()];
             filePicker.setSummary(summary);
             filePicker.setOnPreferenceChangeListener(listener);
-
-            id = "external_app_button";
-            filePicker = findPreference(id);
-            final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-            OnPreferenceChangeListener AppButtonListener = new OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    sp.edit().putBoolean(EXTERNAL_APP_BUTTON, (Boolean) newValue).apply();
-                    return true;
-                }
-            };
-            filePicker.setOnPreferenceChangeListener(AppButtonListener);
 
             id = "external_app_package_name";
             Preference pref = getPreferenceScreen().findPreference(id);
