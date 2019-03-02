@@ -65,8 +65,9 @@
    <string name="menu_update">アップデート</string>
    <string name="menu_update_latest">アプリは最新です</string>
 
-   <string name="title_prefs_keepscreen">キープスクリーン</string>
-   <string name="summary_keepscreen_preference">スリープまでの時間を一時的に変更.</string>
+   <string name="title_prefs_keepscreen_at_startup">\"キープスクリーン\"を起動時から有効にする</string>
+   <string name="title_prefs_keepscreen">\"キープスクリーン\"の時間</string>
+   <string name="summary_keepscreen_preference">このアプリの使用中はスリープまでの時間を変更.</string>
    <string name="dialog_prefs_keepscreen">スリープまでの時間 (0-120分)</string>
    <string name="enable_keepscreen">キープスクリーン有効化</string>
    <string name="disable_keepscreen">キープスクリーン解除</string>

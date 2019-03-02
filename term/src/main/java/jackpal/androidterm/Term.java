@@ -1218,6 +1218,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             /* Shouldn't be happened. */
         }
         setRequestedOrientation(o);
+        mKeepScreenEnableAuto = mSettings.getKeepScreenAtStartup();
     }
 
     static int mOrientation = -1;

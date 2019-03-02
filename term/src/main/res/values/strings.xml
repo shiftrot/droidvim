@@ -67,8 +67,9 @@
    <string name="menu_update">Update</string>
    <string name="menu_update_latest">Already updated.</string>
 
-   <string name="title_prefs_keepscreen">Keep screen</string>
-   <string name="summary_keepscreen_preference">Temporarily change the time to sleep</string>
+   <string name="title_prefs_keepscreen_at_startup">\"Keep screen\" at startup</string>
+   <string name="summary_keepscreen_preference">Change the time to sleep while using this application.</string>
+   <string name="title_prefs_keepscreen">\"Keep screen\" time</string>
    <string name="dialog_prefs_keepscreen">Time to sleep (0-120min)</string>
    <string name="enable_keepscreen">\"Keep screen\" ON</string>
    <string name="disable_keepscreen">\"Keep screen\" OFF</string>

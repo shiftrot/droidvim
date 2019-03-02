@@ -101,11 +101,16 @@
                 android:defaultValue="@bool/pref_hw_acceleration_by_default"
                 android:title="@string/title_hw_acceleration_by_default_preference" />
 
+        <CheckBoxPreference
+                android:key="keepscreen_at_startup"
+                android:defaultValue="@bool/pref_keepscreen_at_startup_default"
+                android:title="@string/title_prefs_keepscreen_at_startup"
+                android:summary="@string/summary_keepscreen_preference" />
+
         <EditTextPreference
                 android:key="keepscreentime"
                 android:defaultValue="@string/pref_keep_screen_default"
                 android:title="@string/title_prefs_keepscreen"
-                android:summary="@string/summary_keepscreen_preference"
                 android:dialogTitle="@string/dialog_prefs_keepscreen"
                 android:inputType="number" />
 
