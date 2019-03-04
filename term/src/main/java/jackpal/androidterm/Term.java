@@ -1549,8 +1549,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if  (id == R.id.action_help) {
-            Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
-            startActivity(openHelp);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", getString(R.string.help_url));
+                startActivity(intent);
+            } else {
+                Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
+                startActivity(openHelp);
+            }
         } else if (id == R.id.menu_quit) {
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
