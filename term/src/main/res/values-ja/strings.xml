@@ -35,6 +35,9 @@
    <string name="toggle_function_bar">ファンクションバー</string>
    <string name="quit">終了</string>
 
+   <string name="faild_to_bind_to_termservice">TermServiceへの接続に失敗しました</string>
+   <string name="please_restart">このアプリを再起動してください.</string>
+
    <string name="switch_windows_warning">画面の上半分をスワイプしてウィンドウを切り替えます.</string>
 
    <string name="reset_toast_notification">このウインドウのターミナル状態はリセットされました.</string>

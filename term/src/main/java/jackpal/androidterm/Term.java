@@ -907,10 +907,39 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (!bindService(TSIntent, mTSConnection, BIND_AUTO_CREATE)) {
-            throw new IllegalStateException("Failed to bind to TermService!");
+        if (!bindTermService(TSIntent, mTSConnection, BIND_AUTO_CREATE)) {
+            final String MESSAGE = this.getString(R.string.faild_to_bind_to_termservice);
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setIcon(android.R.drawable.ic_dialog_alert);
+            bld.setTitle(MESSAGE);
+            bld.setMessage(R.string.please_restart);
+            bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    throw new IllegalStateException(MESSAGE);
+                }
+            });
+            AlertDialog dialog = bld.create();
+            dialog.show();
         }
+    }
+
+    private boolean bindTermService(Intent service, ServiceConnection conn, int flags) {
+        return bindTermServiceLoop(service, conn, flags, 0);
+    }
+
+    private boolean bindTermServiceLoop(Intent service, ServiceConnection conn, int flags, int loop) {
+        if (!bindService(service, conn, flags)) {
+            final int END_OF_LOOP = 3;
+            if (loop >= END_OF_LOOP) return false;
+            try {
+                Thread.sleep(1000);
+                return bindTermServiceLoop(service, conn, flags, loop+1);
+            } catch (InterruptedException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static String AM_INTENT_ACTION = "com.droidterm.am.intent.action";
