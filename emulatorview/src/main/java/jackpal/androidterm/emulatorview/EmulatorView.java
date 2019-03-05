@@ -471,7 +471,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private static int mIMEInputType = EditorInfo.TYPE_CLASS_TEXT;
-    private static int mIMEInputTypeDefault = 54;
+    private static int mIMEInputTypeDefault = 53;
     private static boolean mIgnoreXoff = false;
 
     @Override

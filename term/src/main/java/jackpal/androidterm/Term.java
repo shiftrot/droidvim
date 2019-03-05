@@ -2283,6 +2283,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         case 0xffff0000:
             setFunctionBar(2);
             return true;
+        case KeyEvent.KEYCODE_ESCAPE:
+            if (onelineTextBoxEsc()) return true;
+            break;
         case KeyEvent.KEYCODE_BACK:
             if (AndroidCompat.SDK < 5) {
                 if (!mBackKeyPressed) {
@@ -3418,7 +3421,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean onelineTextBoxEsc(){
         if (mEditTextView) {
             if (mEditText != null && mEditText.isFocused()) {
-                if (mHaveFullHwKeyboard) return false;
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) view.requestFocusFromTouch();
                 if (mSettings.getOneLineTextBoxEsc()) {
