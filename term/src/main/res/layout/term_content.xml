@@ -168,6 +168,15 @@
                         android:minWidth="56dp"
                         android:text="▶"/>
                     <Button
+                        android:id="@+id/button_softkeyboard"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="56dp"
+                        android:text="◇"/>
+                    <Button
                         android:id="@+id/button_page_up"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -222,14 +231,14 @@
                         android:minWidth="56dp"
                         android:text=":"/>
                     <Button
-                        android:id="@+id/button_softkeyboard"
+                        android:id="@+id/button_invert"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="56dp"
-                        android:text="◇"/>
+                        android:text="○"/>
                     <Button
                         android:id="@+id/button_menu_user"
                         android:focusable="false"

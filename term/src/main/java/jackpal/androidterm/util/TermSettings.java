@@ -56,6 +56,7 @@ public class TermSettings {
     private int mActionBarPlusAction;
     private int mActionBarMinusAction;
     private int mActionBarXAction;
+    private int mActionBarInvertAction;
     private int mActionBarUserAction;
     private int mDoubleTapAction;
     private int mRightDoubleTapAction;
@@ -126,6 +127,7 @@ public class TermSettings {
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
     private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
     private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
+    private static final String ACTIONBAR_INVERT_KEY = "actionbar_invert_action";
     private static final String DOUBLE_TAP_KEY = "double_tap_action";
     private static final String RIGHT_DOUBLE_TAP_KEY = "right_double_tap_action";
     private static final String LEFT_DOUBLE_TAP_KEY = "left_double_tap_action";
@@ -269,6 +271,7 @@ public class TermSettings {
         mActionBarMinusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_minus_default));
         mActionBarXAction = Integer.parseInt(res.getString(R.string.pref_actionbar_x_default));
         mActionBarUserAction = Integer.parseInt(res.getString(R.string.pref_actionbar_user_default));
+        mActionBarInvertAction = Integer.parseInt(res.getString(R.string.pref_actionbar_invert_default));
         mDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_double_tap_default));
         mRightDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_right_double_tap_default));
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
@@ -334,6 +337,7 @@ public class TermSettings {
         mActionBarMinusAction = readIntPref(ACTIONBAR_MINUS_KEY, mActionBarMinusAction, ACTIONBAR_KEY_MAX);
         mActionBarXAction    = readIntPref(ACTIONBAR_X_KEY,    mActionBarXAction,    ACTIONBAR_KEY_MAX);
         mActionBarUserAction = readIntPref(ACTIONBAR_USER_KEY, mActionBarUserAction, ACTIONBAR_KEY_MAX);
+        mActionBarInvertAction = readIntPref(ACTIONBAR_INVERT_KEY, mActionBarInvertAction, ACTIONBAR_KEY_MAX);
         mDoubleTapAction = readIntPref(DOUBLE_TAP_KEY, mDoubleTapAction, ACTIONBAR_KEY_MAX);
         mRightDoubleTapAction = readIntPref(RIGHT_DOUBLE_TAP_KEY, mRightDoubleTapAction, ACTIONBAR_KEY_MAX);
         mLeftDoubleTapAction = readIntPref(LEFT_DOUBLE_TAP_KEY, mLeftDoubleTapAction, ACTIONBAR_KEY_MAX);
@@ -526,6 +530,10 @@ public class TermSettings {
 
     public int getActionBarUserKeyAction() {
         return mActionBarUserAction;
+    }
+
+    public int getActionBarInvertKeyAction() {
+        return mActionBarInvertAction;
     }
 
     public int getDoubleTapAction() {

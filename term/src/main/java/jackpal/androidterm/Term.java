@@ -3378,6 +3378,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         new FunctionKey("functionbar_vim_paste",    R.id.button_vim_paste,         true),
         new FunctionKey("functionbar_vim_yank",     R.id.button_vim_yank,          false),
         new FunctionKey("functionbar_softkeyboard", R.id.button_softkeyboard,      true),
+        new FunctionKey("functionbar_invert",       R.id.button_invert,            true),
         new FunctionKey("functionbar_menu",         R.id.button_menu,              true),
         new FunctionKey("functionbar_menu_hide",    R.id.button_menu_hide,         true),
         new FunctionKey("functionbar_menu_plus",    R.id.button_menu_plus,         false),
@@ -3688,6 +3689,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             break;
         case R.id.button_softkeyboard:
             doSendActionBarKey(view, mSettings.getActionBarIconKeyAction());
+            break;
+        case R.id.button_invert:
+            doSendActionBarKey(view, mSettings.getActionBarInvertKeyAction());
             break;
         case R.id.button_menu:
             openOptionsMenu();

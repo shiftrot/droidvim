@@ -214,6 +214,9 @@
    <string name="title_actionbar_icon_preference">◇ button</string>
    <string name="summary_actionbar_icon_preference">Choose what pressing the ◇ button does.</string>
    <string name="dialog_title_actionbar_icon_preference">◇ button</string>
+   <string name="title_actionbar_invert_preference">○ button</string>
+   <string name="summary_actionbar_invert_preference">Choose what pressing the ○ button does.</string>
+   <string name="dialog_title_actionbar_invert_preference">○ button</string>
    <string name="title_actionbar_plus_preference">+ button</string>
    <string name="summary_actionbar_plus_preference">Choose what pressing the + button does.</string>
    <string name="dialog_title_actionbar_plus_preference">+ button</string>

@@ -25,6 +25,7 @@
    <string name="pref_actionbar_plus_default" translatable="false">1250</string>
    <string name="pref_actionbar_minus_default" translatable="false">999</string>
    <string name="pref_actionbar_x_default" translatable="false">1253</string>
+   <string name="pref_actionbar_invert_default" translatable="false">1363</string>
    <string name="pref_actionbar_user_default" translatable="false">1355</string>
    <string name="pref_double_tap_default" translatable="false">1355</string>
    <string name="pref_right_double_tap_default" translatable="false">1358</string>
