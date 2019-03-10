@@ -49,6 +49,8 @@
    <string name="clipboard_warning">This \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.\n\nPlease use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)</string>
 
    <string name="edit_vimrc">Edit .vimrc</string>
+   <string name="title_cursor_direction_ctrl_mode_preference">Change the cursor direction</string>
+   <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
    <string name="text_box">One-line text box</string>
    <string name="menu_drawer">Drawer</string>
    <string name="update_message">Updating binaries and libraries.</string>

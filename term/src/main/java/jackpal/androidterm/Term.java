@@ -165,6 +165,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private final static int SEND_FUNCTION_BAR_ID = 5;
     private final static int SEND_MENU_ID = 6;
 
+    private final static int UNPRESSED = 0;
+    private final static int PRESSED   = 1;
+    private final static int RELEASED  = 2;
+    private final static int USED      = 3;
+    private final static int LOCKED    = 4;
+
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
 
@@ -1667,6 +1673,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
         } else if (key == 1362) {
             keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
+        } else if (key == 1363) {
+            mInvertCursorDirection = !mInvertCursorDirection;
+            mDefaultInvertCursorDirection = mInvertCursorDirection;
+            setCursorDirectionLabel();
+        } else if (key == 1364) {
+            if (getInvertCursorDirection() != getDefaultInvertCursorDirection()) {
+                mInvertCursorDirection = getDefaultInvertCursorDirection();
+                setCursorDirectionLabel();
+            }
         } else if (key == 1355) {
             toggleDrawer();
         } else if (key == 1356) {
@@ -1687,12 +1702,44 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 view.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             }
         } else if (key > 0) {
+            int state = view.getControlKeyState();
+            if ((key == KeycodeConstants.KEYCODE_DPAD_UP) ||
+                (key == KeycodeConstants.KEYCODE_DPAD_DOWN) ||
+                (key == KeycodeConstants.KEYCODE_DPAD_LEFT) ||
+                (key == KeycodeConstants.KEYCODE_DPAD_RIGHT)) {
+                    view.setControlKeyState(UNPRESSED);
+            }
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);
             event = new KeyEvent(KeyEvent.ACTION_UP, key);
             dispatchKeyEvent(event);
+            view.setControlKeyState(state);
         }
         return true;
+    }
+
+    private static boolean mInvertCursorDirection = false;
+    private boolean getInvertCursorDirection() {
+        return mInvertCursorDirection;
+    }
+
+    private static boolean mDefaultInvertCursorDirection = false;
+    private boolean getDefaultInvertCursorDirection() {
+        return mDefaultInvertCursorDirection;
+    }
+
+    private void setCursorDirectionLabel() {
+        if (!getInvertCursorDirection()) {
+            ((Button)findViewById(R.id.button_right)).setText("▶");
+            ((Button)findViewById(R.id.button_left)).setText("◀");
+            ((Button)findViewById(R.id.button_up)).setText("▲");
+            ((Button)findViewById(R.id.button_down)).setText("▼");
+        } else {
+            ((Button)findViewById(R.id.button_right)).setText("▼");
+            ((Button)findViewById(R.id.button_left)).setText("▲");
+            ((Button)findViewById(R.id.button_up)).setText("◀");
+            ((Button)findViewById(R.id.button_down)).setText("▶");
+        }
     }
 
     private void toggleDrawer() {
@@ -2362,6 +2409,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             return true;
         case 0xffff1009:
+            return true;
+        case 0xffff1364:
+            doSendActionBarKey(getCurrentEmulatorView(), 1364);
             return true;
         case 0xffff0056:
             doEditTextFocusAction();
@@ -3472,6 +3522,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Button button = (Button) findViewById(R.id.button_oneline_text_box_enter);
         visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
         button.setVisibility(visibility);
+
+        setCursorDirectionLabel();
     }
 
     static int mFunctionBarId = 0;
@@ -3521,9 +3573,30 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         EmulatorView view = getCurrentEmulatorView();
         switch (v.getId()) {
         case R.id.button_esc:
+            if (view.getControlKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
+                mInvertCursorDirection = getDefaultInvertCursorDirection();
+                setCursorDirectionLabel();
+                view.setControlKeyState(0);
+                break;
+            }
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
             break;
         case R.id.button_ctrl:
+            int ctrl = view.getControlKeyState();
+            if (ctrl == LOCKED) {
+                mInvertCursorDirection = getDefaultInvertCursorDirection();
+                setCursorDirectionLabel();
+            } else if (mSettings.getCursorDirectionControlMode() == 3) {
+                if (ctrl == RELEASED) {
+                    mInvertCursorDirection = !getInvertCursorDirection();
+                    setCursorDirectionLabel();
+                }
+            } else if (mSettings.getCursorDirectionControlMode() > 0) {
+                if (ctrl == UNPRESSED) {
+                    mInvertCursorDirection = !getInvertCursorDirection();
+                    setCursorDirectionLabel();
+                }
+            }
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_CTRL_LEFT);
             break;
         case R.id.button_alt:
@@ -3534,16 +3607,29 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
             break;
         case R.id.button_up:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_UP);
-            break;
         case R.id.button_down:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_DOWN);
-            break;
         case R.id.button_left:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
-            break;
         case R.id.button_right:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
+            int state = view.getControlKeyState();
+            boolean invert = getInvertCursorDirection();
+            if ((!invert && v.getId() == R.id.button_up) ||
+                 (invert && v.getId() == R.id.button_left)) {
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_UP);
+            } else if ((!invert  && v.getId() == R.id.button_down) ||
+                        (invert  && v.getId() == R.id.button_right)) {
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_DOWN);
+            } else if ((!invert  && v.getId() == R.id.button_left) ||
+                        (invert  && v.getId() == R.id.button_up)) {
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
+            } else if ((!invert  && v.getId() == R.id.button_right) ||
+                        (invert  && v.getId() == R.id.button_down)) {
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
+            }
+            if (state == RELEASED && mSettings.getCursorDirectionControlMode() == 1) {
+                view.setControlKeyState(UNPRESSED);
+                mInvertCursorDirection = getDefaultInvertCursorDirection();
+                setCursorDirectionLabel();
+            }
             break;
         case R.id.button_page_up:
             doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_UP);

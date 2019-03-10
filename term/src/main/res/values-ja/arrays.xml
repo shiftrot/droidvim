@@ -121,6 +121,7 @@
         <item>ターミナルから / を送出</item>
         <item>IMEアクション</item>
         <item>「通常入力」/「起動時の入力モード」のトグル</item>
+        <item>ファンクションバーのカーソルキーの方向をトグル"</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
         <item>新規タブでファイルを開く(Vim)</item>
@@ -231,6 +232,13 @@
         <item>デフォルト</item>
         <item>内部ブラウザ</item>
         <item>自動選択</item>
+    </string-array>
+
+    <string-array name="entries_cursor_direction_ctrl_mode_preference">
+        <item>何もしない</item>
+        <item>Ctrlボタンと同期</item>
+        <item>Ctrlボタンがアクティブな間</item>
+        <item>Ctrlボタンがロックモードの間</item>
     </string-array>
 
 </resources>

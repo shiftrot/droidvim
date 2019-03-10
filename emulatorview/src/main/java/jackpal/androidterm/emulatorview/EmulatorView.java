@@ -1449,6 +1449,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
     }
 
+    public int getControlKeyState() {
+        return mKeyListener.getControlKeyState();
+    }
+
+    public void setControlKeyState(int state) {
+        mKeyListener.setControlKeyState(state);
+        invalidate();
+    }
+
     private void pasteClipboard() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(this.getContext());
         if (clip.hasText() == false) {
@@ -2126,6 +2135,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *
      * @param canvas The {@link Canvas} to draw the view to.
      */
+    final int CTRL_MODE_MASK = 3 << TextRenderer.MODE_CTRL_SHIFT;
     @Override
     protected void onDraw(Canvas canvas) {
         updateSize(false);
@@ -2156,6 +2166,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             effectiveImeBuffer += String.valueOf((char) combiningAccent);
         }
         int cursorStyle = mKeyListener.getCursorMode();
+        if ((cursorStyle & CTRL_MODE_MASK) == 0) {
+            ((Activity)this.getContext()).onKeyUp(0xffff1364, null);
+        }
 
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;

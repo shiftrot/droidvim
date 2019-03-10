@@ -381,6 +381,14 @@
             android:entryValues="@array/entryvalues_actionbar_icon_preference"
             android:dialogTitle="@string/dialog_title_actionbar_x_preference" />
 
+        <ListPreference
+            android:key="cursor_direction_ctrl_mode"
+            android:defaultValue="@string/pref_cursor_direction_ctrl_mode_default"
+            android:title="@string/title_cursor_direction_ctrl_mode_preference"
+            android:entries="@array/entries_cursor_direction_ctrl_mode_preference"
+            android:entryValues="@array/entryvalues_cursor_direction_ctrl_mode_preference"
+            android:summary="@string/summary_cursor_direction_ctrl_mode_preference" />
+
         <CheckBoxPreference
             android:key="oneline_textbox"
             android:defaultValue="@bool/pref_one_line_textbox_default"

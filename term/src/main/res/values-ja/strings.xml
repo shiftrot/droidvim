@@ -48,6 +48,8 @@
    <string name="clipboard_warning">この \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.\n\nVimへの\"貼り付け\"には, \"Share\"インテントかVimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)</string>
 
    <string name="edit_vimrc">.vimrcを編集</string>
+   <string name="title_cursor_direction_ctrl_mode_preference">カーソルキーの方向を変更</string>
+   <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
    <string name="text_box">一行テキスト入力</string>
    <string name="menu_drawer">ドロワー</string>
    <string name="update_message">実行ファイルとライブラリをアップデートしています.</string>

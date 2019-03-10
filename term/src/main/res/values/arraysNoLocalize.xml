@@ -124,6 +124,7 @@
         <item>76</item>
         <item>1260</item>
         <item>1360</item>
+        <item>1363</item>
         <item>1361</item>
         <item>1362</item>
         <item>1356</item>
@@ -221,6 +222,13 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+
+    <string-array name="entryvalues_cursor_direction_ctrl_mode_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
 </resources>

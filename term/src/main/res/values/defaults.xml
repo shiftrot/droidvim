@@ -34,6 +34,7 @@
    <string name="pref_controlkey_default" translatable="false">7</string>
    <string name="pref_fnkey_default" translatable="false">7</string>
    <string name="pref_ime_default" translatable="false">1</string>
+   <string name="pref_cursor_direction_ctrl_mode_default" translatable="false">1</string>
    <integer name="pref_vi_cooperative_mode_default">3</integer>
    <bool name="pref_alt_sends_esc_default">false</bool>
    <bool name="pref_ignore_xoff_default">true</bool>

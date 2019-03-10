@@ -805,6 +805,15 @@ class TermKeyListener {
         return mAltKey.isActive();
     }
 
+    public int getControlKeyState() {
+        return mControlKey.mState;
+    }
+
+    public void setControlKeyState(int state) {
+        mControlKey.mState = state;
+        updateCursorMode();
+    }
+
     public boolean isCtrlActive() {
         return mControlKey.isActive();
     }
