@@ -21,34 +21,35 @@
     <uses-permission android:name="android.permission.SIGNAL_PERSISTENT_PROCESSES" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
 
-    <application android:icon="@mipmap/ic_launcher"
-                 android:label="@string/application_terminal"
-                 android:hardwareAccelerated="true"
-                 android:theme="@style/ThemeLightDefault"
-                 android:usesCleartextTraffic="true"
-                 android:allowBackup="true"
-                 android:fullBackupContent="@xml/backup_descriptor">
+ <application android:icon="@mipmap/ic_launcher"
+            android:label="@string/application_terminal"
+            android:hardwareAccelerated="true"
+            android:theme="@style/ThemeLightDefault"
+            android:usesCleartextTraffic="true"
+            android:resizeableActivity="true"
+            android:allowBackup="true"
+            android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name="Term"
                 android:launchMode="singleTask"
                 android:immersive="false"
                 android:configChanges="keyboard|keyboardHidden|orientation"
                 android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                    <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity-alias android:name="TermInternal"
                 android:targetActivity="Term"
                 android:exported="false">
             <intent-filter>
-                <action android:name="shiftrot.androidterm.private.OPEN_NEW_WINDOW" />
-                <category android:name="android.intent.category.DEFAULT" />
+                    <action android:name="shiftrot.androidterm.private.OPEN_NEW_WINDOW" />
+                    <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="shiftrot.androidterm.private.SWITCH_WINDOW" />
-                <category android:name="android.intent.category.DEFAULT" />
+                    <action android:name="shiftrot.androidterm.private.SWITCH_WINDOW" />
+                    <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity-alias>
         <activity android:name="RemoteInterface"
