@@ -759,7 +759,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void externalApp() {
         if (mExternalApp.equals("") || !launchExternalApp(mExternalAppMode, mExternalApp)) {
-            alert(this.getString(R.string.external_app_id_error));
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setMessage(R.string.external_app_id_error);
+            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    doPreferences();
+                }
+            });
+            bld.create().show();
         }
     }
 
