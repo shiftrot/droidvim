@@ -23,6 +23,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -99,8 +100,6 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         Rect visible = mVisibleRect;
         mChildParams = new LayoutParams(visible.width(), visible.height(),
             Gravity.TOP|Gravity.LEFT);
-        // FIXME
-        mFunctionBarSize = new PrefValue(context).getInt( "functinbar_size", mFunctionBarSize);
     }
 
     public void updatePrefs(TermSettings settings) {
@@ -243,31 +242,6 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         /* Get rectangle representing visible area of this window (takes
            IME into account, but not other views in the layout) */
         getWindowVisibleDisplayFrame(window);
-        /* Work around bug in getWindowVisibleDisplayFrame on API < 10, and
-           avoid a distracting height change as status bar hides otherwise */
-        if (!mStatusBarVisible) {
-            window.top = 0;
-        }
-
-        // Clip visible rectangle's top to the visible portion of the window
-        if (visible.width() == 0 && visible.height() == 0) {
-            visible.left = window.left;
-            visible.top = window.top;
-        } else {
-            if (visible.left < window.left) {
-                visible.left = window.left;
-            }
-            if (visible.top < window.top) {
-                visible.top = window.top;
-            }
-        }
-        // Always set the bottom of the rectangle to the window bottom
-        /* XXX This breaks with a split action bar, but if we don't do this,
-           it's possible that the view won't resize correctly on IME hide */
-        visible.right = window.right;
-        visible.bottom = window.bottom;
-        visible.bottom -= mEditTextView ? mEditTextViewSize : 0;
-        visible.bottom -= mFunctionBar ? mFunctionBarSize : 0;
     }
 
     private void adjustChildSize() {
@@ -305,45 +279,19 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    Rect mRect = new Rect();
     @Override
     protected void onDraw(Canvas canvas) {
+        getGlobalVisibleRect(mRect);
+        if (!mVisibleRect.equals(mRect)) {
+            adjustChildSize();
+        }
+
         if (mRedoLayout) {
             requestLayout();
             mRedoLayout = false;
         }
         super.onDraw(canvas);
-    }
-
-    private int mEditTextViewSize = 0;
-    private boolean mEditTextView = false;
-    public void setEditTextViewSize(int size) {
-        if (size > 0) {
-            PrefValue pv = new PrefValue(context);
-            if (pv.getInt("edit_text_view_size", mEditTextViewSize) != size) pv.setInt("edit_text_view_size", size);
-            mEditTextViewSize = size;
-        }
-    }
-
-    public void setEditTextView(boolean bool) {
-        if (mEditTextView == bool) return;
-        mEditTextView = bool;
-        adjustChildSize();
-    }
-
-    private int mFunctionBarSize = 0;
-    private boolean mFunctionBar = true;
-    public void setFunctionBarSize(int size) {
-        if (size > 0) {
-            PrefValue pv = new PrefValue(context);
-            if (pv.getInt("functinbar_size", mFunctionBarSize) != size) pv.setInt("functinbar_size", size);
-            mFunctionBarSize = size;
-        }
-    }
-
-    public void setFunctionBar(boolean bool) {
-        if (mFunctionBar == bool) return;
-        mFunctionBar = bool;
-        adjustChildSize();
     }
 
 }
