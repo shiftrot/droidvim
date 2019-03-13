@@ -180,9 +180,9 @@ public class WebViewActivity extends Activity {
                             mWebView.stopLoading();
                             finish();
                         } else if (which == 0) {
-                            mWebView.scrollTo(0,0);
+                            mWebView.pageUp(true);
                         } else if (which == 1) {
-                            mWebView.scrollTo(0,mWebView.getContentHeight());
+                            mWebView.pageDown(true);
                         } else if (which == 2) {
                             execURL(mWebView.getUrl());
                         }
