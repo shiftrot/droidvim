@@ -2389,6 +2389,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         case 0xffff0003:
             copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
             return true;
+        case 0xffff0004:
+            setEditTextView(0);
+            return true;
+        case 0xffff0005:
+            setEditTextView(1);
+            return true;
+        case 0xffff0006:
+            setEditTextView(2);
+            return true;
         case 0xffff1010:
             setFunctionBar(0);
             return true;

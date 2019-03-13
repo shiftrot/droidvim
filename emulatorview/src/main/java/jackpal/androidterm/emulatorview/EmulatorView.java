@@ -1502,6 +1502,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             case 3:
                 ((Activity)this.getContext()).onKeyUp(0xffff0003, null);
                 break;
+            case 4:
+                ((Activity)this.getContext()).onKeyUp(0xffff0004, null);
+                break;
+            case 5:
+                ((Activity)this.getContext()).onKeyUp(0xffff0005, null);
+                break;
+            case 6:
+                ((Activity)this.getContext()).onKeyUp(0xffff0006, null);
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
             case 30:
                 ((Activity)this.getContext()).onKeyUp(0xffff0030, null);
                 break;
@@ -1594,18 +1609,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 516:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
-                break;
-            case 6:
-                doInputMethodPicker();
-                break;
-            case 7:
-                doHideSoftKeyboard();
-                break;
-            case 8:
-                doShowSoftKeyboard();
-                break;
-            case 9:
-                doToggleSoftKeyboard();
                 break;
             case 10:
                 pasteClipboard();
