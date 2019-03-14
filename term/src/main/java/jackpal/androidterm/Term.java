@@ -1420,7 +1420,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         mViewFlipper.removeAllViews();
 
-        unbindService(mTSConnection);
+        try {
+            unbindService(mTSConnection);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         int webViewSize = WebViewActivity.getFontSize();
         PrefValue pv = new PrefValue(this);
