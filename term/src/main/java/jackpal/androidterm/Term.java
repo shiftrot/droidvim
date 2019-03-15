@@ -1402,6 +1402,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             v.updateSize(true);
             doResetTerminal();
         }
+        mSyncFileObserver.setActivity(this);
     }
 
     @Override
