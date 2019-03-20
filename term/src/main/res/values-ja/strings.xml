@@ -48,10 +48,10 @@
    <string name="clipboard_warning">この \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.\n\nVimへの\"貼り付け\"には, \"Share\"インテントかVimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)</string>
 
    <string name="edit_vimrc">.vimrcを編集</string>
-   <string name="title_cursor_direction_ctrl_mode_preference">カーソルキーの方向を変更</string>
+   <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
    <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
    <string name="text_box">一行テキスト入力</string>
-   <string name="menu_drawer">ドロワー</string>
+   <string name="menu_drawer">ドロワーメニュー</string>
    <string name="update_message">実行ファイルとライブラリをアップデートしています.</string>
    <string name="update_warning">アップデート中にこのアプリをバックグラウンドで動作させたり強制的に画面を回転させないでください.</string>
    <string name="update_vim_warning">(もしダイアログが表示されなくなっても, Vimが起動するまで待ってください)</string>
@@ -167,6 +167,7 @@
    <string name="dialog_title_cursorblink_preference">カーソルの点滅</string>
 
    <string name="text_preferences">テキスト</string>
+   <string name="font_preferences">フォント</string>
 
    <string name="title_utf8_by_default_preference">デフォルトをUTF-8にする</string>
    <string name="summary_utf8_by_default_preference">エンコーディングをUTF-8に設定する</string>
@@ -230,6 +231,7 @@
    <string name="summary_bottom_double_tap_preference">画面下端でのダブルタップの振舞いを選択</string>
    <string name="dialog_title_bottom_double_tap_preference">画面下端でのダブルクリック</string>
    <string name="functionbar_preferences">ファンクションバー</string>
+   <string name="summary_functionbar_preferences">使用したいファンクションキーを選択</string>
    <string name="gesture_preferences">ジェスチャー</string>
 
    <string name="keyboard_preferences">キーボード</string>
@@ -247,7 +249,7 @@
    <string name="dialog_title_fnkey_preference">Fnキー</string>
 
    <string name="title_ime_inputtype_preference">起動時の入力モード</string>
-   <string name="summary_ime_inputtype_preference">起動時に英数直接入力を有効化する/しない</string>
+   <string name="summary_ime_inputtype_preference">起動時に英数直接入力を有効化する\n(◇ボタンで日本語入力と切り替えます)</string>
    <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
 
    <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
@@ -343,7 +345,7 @@
 
   <string name="ime_input_method_preferences">テキスト入力モード</string>
   <string name="title_pre_ime_shortcuts">IMEショートカット</string>
-  <string name="summary_title_pre_ime_shortcuts">直接入力/通常入力モード等をハードウェアキーボードから切り替える.\n(デフォルトでは◇ボタンのように機能します)</string>
+  <string name="summary_title_pre_ime_shortcuts">IME制御のための物理キーボードショートカット.</string>
   <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
   <string name="pref_zenkaku_hankaku">[半/全]</string>
   <string name="pref_grave">[`]</string>
@@ -358,9 +360,9 @@
   <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
   <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
 
-  <string name="choose_home_directory_message">ホームディレクトリ:\n\"選択\"ボタンを使用してホームディレクトリを変更することができます.\nただしホームディレクトリを変更すると、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
+  <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
   <string name="select_directory_message">ディレクトリを選択</string>
-  <string name="invalid_directory">書き込めないか, 不正なディレクトリです.</string>
+  <string name="invalid_directory">書き込めないか, 不正なディレクトリです.\n内部ストレージのディレクトリを選択してください.</string>
   <string name="copy_startup_dir">選択したパスがクリップボードへコピーされました.\n起動時のディレクトリを指定したい場合は, `.vimrc`に以下を追加してみてください.\n\ncd </string>
   <string name="select_directory">選択</string>
   <string name="reset_directory">デフォルト</string>
