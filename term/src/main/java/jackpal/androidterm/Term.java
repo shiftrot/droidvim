@@ -2722,13 +2722,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
                 clip.setText(str);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                alert(e.toString());
             }
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            alert(e.toString());
         }
     }
 
