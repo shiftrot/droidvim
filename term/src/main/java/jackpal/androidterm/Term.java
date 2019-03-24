@@ -1366,8 +1366,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     public void onPause() {
-        super.onPause();
-
         unregisterReceiver(mBroadcastReceiever);
 
         if (AndroidCompat.SDK < 5) {
@@ -1377,7 +1375,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mBackKeyPressed = false;
         }
 
-
         /* Explicitly close the input method
            Otherwise, the soft keyboard could cover up whatever activity takes
            our place */
@@ -1386,9 +1383,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void run() {
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (imm != null) imm.hideSoftInputFromWindow(token, 0);
+                if (imm != null && token != null) imm.hideSoftInputFromWindow(token, 0);
             }
         }.start();
+
+        super.onPause();
     }
 
     @Override
@@ -1402,12 +1401,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             v.updateSize(true);
             doResetTerminal();
         }
-        mSyncFileObserver.setActivity(this);
+        if (mSyncFileObserver != null) {
+            mSyncFileObserver.setActivity(this);
+        } else {
+            restoreSyncFileObserver();
+        }
     }
 
     @Override
     protected void onStop() {
-        mViewFlipper.onPause();
+        if (mViewFlipper != null) mViewFlipper.onPause();
         if (mTermSessions != null) {
             mTermSessions.removeCallback(this);
 
@@ -1418,7 +1421,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 //            }
         }
 
-        mViewFlipper.removeAllViews();
+        if (mViewFlipper != null) mViewFlipper.removeAllViews();
 
         try {
             unbindService(mTSConnection);
