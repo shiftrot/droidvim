@@ -3315,7 +3315,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void setEditTextVisibility() {
         final View layout = findViewById(R.id.oneline_text_box);
         int visibility = mEditTextView ? View.VISIBLE : View.GONE;
-        if (mHideFunctionBar) visibility = View.GONE;
         EmulatorView view = getCurrentEmulatorView();
         if (view != null) view.restartInputGoogleIme();
         layout.setVisibility(visibility);
