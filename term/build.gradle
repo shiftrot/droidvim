@@ -28,6 +28,7 @@ android {
             sourceCompatibility 1.8
             targetCompatibility 1.8
         }
+        vectorDrawables.useSupportLibrary = true
     }
 
     externalNativeBuild {
@@ -66,6 +67,7 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.annotation:annotation:1.0.2'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0-alpha01'
     implementation project(':emulatorview')
     implementation project(':libtermexec')
     implementation 'com.github.hedzr:android-file-chooser:1.1.11'

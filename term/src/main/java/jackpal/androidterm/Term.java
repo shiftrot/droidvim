@@ -483,6 +483,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         updatePrefs();
         setDrawerButtons();
         restoreSyncFileObserver();
+        TermPreferences.setAppPickerList(this);
         mAlreadyStarted = true;
     }
 

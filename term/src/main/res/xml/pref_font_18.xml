@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="fontfile"
+        android:defaultValue="@string/pref_fontfile_default"
+        android:title="@string/title_fontfile_preference"
+        android:entries="@array/entries_fontfile_preference"
+        android:entryValues="@array/entries_fontfile_preference"
+        android:dialogTitle="@string/dialog_title_fontfile_preference" />
+
+    <EditTextPreference
+        android:key="fontsize"
+        android:defaultValue="@string/pref_fontsize_default"
+        android:title="@string/title_fontsize_preference"
+        android:entries="@array/entries_fontsize_preference"
+        android:entryValues="@array/entryvalues_fontsize_preference"
+        android:dialogTitle="@string/dialog_title_fontsize_preference"
+        android:inputType="numberDecimal" />
+
+    <EditTextPreference
+        android:key="fontleading"
+        android:defaultValue="@string/pref_fontleading_default"
+        android:title="@string/title_fontleading_preference"
+        android:dialogTitle="@string/dialog_title_fontleading_preference"
+        android:inputType="number" />
+
+    <ListPreference
+        android:key="ambiwidth"
+        android:title="@string/title_ambiwidth_preference"
+        android:summary="@string/summary_ambiwidth_preference"
+        android:entries="@array/entries_ambiwidth_preference"
+        android:defaultValue="@string/pref_ambiguous_width_default"
+        android:entryValues="@array/entryvalues_ambiwidth_preference"
+        android:dialogTitle="@string/dialog_title_ambiwidth_preference"
+        android:inputType="number" />
+
+</PreferenceScreen>

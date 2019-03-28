@@ -1,0 +1,39 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$ImePreferenceFragment"
+        android:title="@string/ime_input_method_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$FunctionbarPreferenceFragment"
+        android:title="@string/functionbar_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$GesturePreferenceFragment"
+        android:title="@string/gesture_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$ScreenPreferenceFragment"
+        android:title="@string/screen_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$FontPreferenceFragment"
+        android:title="@string/font_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$KeyboardPreferenceFragment"
+        android:title="@string/keyboard_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$ShellPreferenceFragment"
+        android:title="@string/shell_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$AppsPreferenceFragment"
+        android:title="@string/external_apps_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$PrefsPreferenceFragment"
+        android:title="@string/prefs_preferences"/>
+
+</preference-headers>

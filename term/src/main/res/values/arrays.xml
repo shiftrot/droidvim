@@ -214,11 +214,11 @@
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">
-        <item>Normal input</item>
         <item>Direct input : Password</item>
-        <item>Alphanumeric : URI</item>
+        <item>Direct input : URI</item>
         <item>Direct input : Default</item>
-        <item>Direct input : Raw</item>
+        <item>Normal input : Raw</item>
+        <item>Normal input : Word-based</item>
     </string-array>
 
     <string-array name="entries_vi_cooperative_mode_preference">

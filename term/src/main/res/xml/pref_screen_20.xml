@@ -1,0 +1,82 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="orientation"
+        android:defaultValue="@integer/pref_orientation_default"
+        android:title="@string/title_orientation_preference"
+        android:entries="@array/entries_orientation_preference"
+        android:entryValues="@array/entryvalues_orientation_preference"
+        android:dialogTitle="@string/dialog_title_orientation_preference"/>
+
+    <PreferenceScreen
+        android:title="@string/keepscreen"
+        android:summary="@string/summary_keepscreen_preference">
+
+        <CheckBoxPreference
+            android:key="keepscreen_at_startup"
+            android:defaultValue="@bool/pref_keepscreen_at_startup_default"
+            android:title="@string/title_prefs_keepscreen_at_startup"/>
+
+        <EditTextPreference
+            android:key="keepscreentime"
+            android:defaultValue="@string/pref_keep_screen_default"
+            android:title="@string/title_prefs_keepscreen"
+            android:dialogTitle="@string/dialog_prefs_keepscreen"
+            android:inputType="number"/>
+
+    </PreferenceScreen>
+
+    <ListPreference
+        android:key="cursorstyle"
+        android:defaultValue="@string/pref_cursorstyle_default"
+        android:title="@string/title_cursorstyle_preference"
+        android:summary="@string/summary_cursorstyle_preference"
+        android:entries="@array/entries_alt_cursorstyle_preference"
+        android:entryValues="@array/entryvalues_alt_cursorstyle_preference"
+        android:dialogTitle="@string/dialog_title_cursorstyle_preference"/>
+
+    <ListPreference
+        android:key="color"
+        android:defaultValue="@string/pref_color_default"
+        android:title="@string/title_color_preference"
+        android:summary="@string/summary_color_preference"
+        android:entries="@array/entries_color_preference"
+        android:entryValues="@array/entryvalues_color_preference"
+        android:dialogTitle="@string/dialog_title_color_preference"/>
+
+    <ListPreference
+        android:key="composingtext"
+        android:defaultValue="@string/pref_composingtext_default"
+        android:title="@string/title_composingtext_preference"
+        android:summary="@string/summary_composingtext_preference"
+        android:entries="@array/entries_composingtext_preference"
+        android:entryValues="@array/entryvalues_composingtext_preference"
+        android:dialogTitle="@string/dialog_title_composingtext_preference"/>
+
+    <ListPreference
+        android:key="theme"
+        android:defaultValue="@string/pref_theme_default"
+        android:title="@string/title_theme_preference"
+        android:summary="@string/summary_theme_preference"
+        android:entries="@array/entries_theme_preference"
+        android:entryValues="@array/entryvalues_theme_preference"
+        android:dialogTitle="@string/dialog_title_theme_preference"/>
+
+    <CheckBoxPreference
+        android:key="statusbar_icon"
+        android:defaultValue="true"
+        android:title="@string/title_statusbar_icon_preference"
+        android:summaryOn="@string/summary_statusbar_icon_on_preference"
+        android:summaryOff="@string/summary_statusbar_icon_off_preference"/>
+
+    <Preference
+        android:key="notification"
+        android:title="@string/title_notification_preference"
+        android:summary="@string/summary_notification_preference"/>
+
+    <CheckBoxPreference
+        android:key="hw_acceleration_by_default"
+        android:defaultValue="@bool/pref_hw_acceleration_by_default"
+        android:title="@string/title_hw_acceleration_by_default_preference"/>
+
+</PreferenceScreen>

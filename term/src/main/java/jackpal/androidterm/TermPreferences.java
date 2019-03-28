@@ -1,380 +1,285 @@
-/*
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package jackpal.androidterm;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import androidx.core.content.ContextCompat;
+import android.view.MenuItem;
 
 import com.droidvim.XmlUtils;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import static jackpal.androidterm.Term.getPath;
 
-public class TermPreferences extends PreferenceActivity {
-    private static final String STATUSBAR_KEY = "statusbar";
-    private static final String ACTIONBAR_KEY = "actionbar";
-    private static final String CATEGORY_SCREEN_KEY = "screen";
-    static final String FONTPATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
-    private static final String CATEGORY_TEXT_KEY = "text";
+/**
+ * A {@link PreferenceActivity} that presents a set of application settings. On
+ * handset devices, settings are presented as a single list. On tablets,
+ * settings are split by category, with category headers shown to the left of
+ * the list of settings.
+ * <p>
+ * See <a href="http://developer.android.com/design/patterns/settings.html">
+ * Android Design: Settings</a> for design guidelines and the <a
+ * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
+ * API Guide</a> for more information on developing a Settings UI.
+ */
+public class TermPreferences extends AppCompatPreferenceActivity {
+    public static TermPreferences mTermPreference = null;
 
-    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
-    private boolean mFirst = true;
+    public static final String FONT_FILENAME = "font_filename";
+    public static final String FONT_PATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
+
+    /**
+     * A preference value change listener that updates the preference's summary
+     * to reflect its new value.
+     */
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object value) {
+            String stringValue = value.toString();
+
+            if (preference instanceof ListPreference) {
+                // For list preferences, look up the correct display value in
+                // the preference's 'entries' list.
+                ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue(stringValue);
+
+                // Set the summary to reflect the new value.
+                preference.setSummary(
+                        index >= 0
+                                ? listPreference.getEntries()[index]
+                                : null);
+            } else {
+                // For all other preferences, set the summary to the value's
+                // simple string representation.
+                preference.setSummary(stringValue);
+            }
+            return true;
+        }
+    };
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Helper method to determine if the device has an extra-large screen. For
+     * example, 10" tablets are extra-large.
+     */
+    private static boolean isXLargeTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    /**
+     * Binds a preference's summary to its value. More specifically, when the
+     * preference's value is changed, its summary (line of text below the
+     * preference title) is updated to reflect the value. The summary is also
+     * immediately updated upon calling this method. The exact display format is
+     * dependent on the type of preference.
+     *
+     * @see #sBindPreferenceSummaryToValueListener
+     */
+    private static void bindPreferenceSummaryToValue(Preference preference) {
+        // Set the listener to watch for value changes.
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+        // Trigger the listener immediately with the preference's
+        // current value.
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager
+                        .getDefaultSharedPreferences(preference.getContext())
+                        .getString(preference.getKey(), ""));
+    }
+
+    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final TermSettings settings = new TermSettings(getResources(), mPrefs);
-        if (mFirst && settings.getColorTheme() == 0) setTheme(R.style.Theme_AppCompat);
-        mFirst = false;
+        setAppPickerList(this);
+        setupTheme();
+        setupActionBar();
+        mTermPreference = this;
+
         super.onCreate(savedInstanceState);
+    }
 
-        // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
-        if (FLAVOR_VIM) {
-            addPreferencesFromResource(R.xml.preferences_apps);
-
-            Resources res = getResources();
-            String[] array = res.getStringArray(R.array.entries_app_filepicker_preference);
-
-            OnPreferenceChangeListener listener = new OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Resources res = getResources();
-                    String[] array = res.getStringArray(R.array.entries_app_filepicker_preference);
-                    int value = Integer.valueOf((String) newValue);
-                    String summary = array[value];
-                    preference.setSummary(summary);
-                    return true;
-                }
-            };
-
-            String id = "external_app_button_mode";
-            Preference filePicker = findPreference(id);
-            String summary = array[settings.getExternalAppButtonMode()];
-            filePicker.setSummary(summary);
-            filePicker.setOnPreferenceChangeListener(listener);
-
-            id = "cloud_dropbox_filepicker";
-            filePicker = findPreference(id);
-            summary = array[settings.getDropboxFilePicker()];
-            filePicker.setSummary(summary);
-            filePicker.setOnPreferenceChangeListener(listener);
-
-            id = "cloud_googledrive_filepicker";
-            filePicker = findPreference(id);
-            summary = array[settings.getGoogleDriveFilePicker()];
-            filePicker.setSummary(summary);
-            filePicker.setOnPreferenceChangeListener(listener);
-
-            id = "cloud_onedrive_filepicker";
-            filePicker = findPreference(id);
-            summary = array[settings.getOneDriveFilePicker()];
-            filePicker.setSummary(summary);
-            filePicker.setOnPreferenceChangeListener(listener);
-
-            array = res.getStringArray(R.array.entries_html_viewer_mode_preference);
-            listener = new OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Resources res = getResources();
-                    String[] array = res.getStringArray(R.array.entries_html_viewer_mode_preference);
-                    int value = Integer.valueOf((String) newValue);
-                    String summary = array[value];
-                    preference.setSummary(summary);
-                    return true;
-                }
-            };
-
-            id = "html_viewer_mode";
-            filePicker = findPreference(id);
-            summary = array[settings.getHtmlViewerMode()];
-            filePicker.setSummary(summary);
-            filePicker.setOnPreferenceChangeListener(listener);
-
-            id = "external_app_package_name";
-            Preference pref = getPreferenceScreen().findPreference(id);
-            String appId = mPrefs.getString(id, "");
-            setAppPickerLabel(pref, appId);
+    private static String mLabels[] = null;
+    private static String mPackageNames[] = null;
+    public static void setAppPickerList(Activity activity) {
+        try {
+            final PackageManager pm = activity.getApplicationContext().getPackageManager();
             new Thread() {
                 @Override
                 public void run() {
-                    setAppPickerList();
+                    final List<ApplicationInfo> installedAppList = pm.getInstalledApplications(0);
+                    final TreeMap<String, String> items = new TreeMap<>();
+                    for (ApplicationInfo app : installedAppList) {
+                        Intent intent = pm.getLaunchIntentForPackage(app.packageName);
+                        if (intent != null) items.put(app.loadLabel(pm).toString(), app.packageName);
+                    }
+                    List<String> list = new ArrayList<>(items.keySet());
+                    mLabels = list.toArray(new String[0]);
+                    list = new ArrayList<>(items.values());
+                    mPackageNames = list.toArray(new String[0]);
                 }
             }.start();
-            pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    setAppPickerLabel(preference, (String) newValue);
-                    return true;
-                }
-            });
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        if (AndroidCompat.SDK >= 19) {
-            addPreferencesFromResource(R.xml.preferences_prefs);
-            final String PREFS_KEY = "prefs_rw";
-            Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
-            prefsPicker.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    prefsPicker();
-                    return true;
-                }
-            });
-
-            final String LICENSE_KEY = "license";
-            Preference licensePrefs = getPreferenceScreen().findPreference(LICENSE_KEY);
-            licensePrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    licensePrefs();
-                    return true;
-                }
-            });
-        }
-
-        // Remove the action bar pref on older platforms without an action bar
-        Preference actionBarPref = findPreference(ACTIONBAR_KEY);
-        PreferenceCategory screenCategory =
-               (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
-        if ((actionBarPref != null) && (screenCategory != null)) {
-            screenCategory.removePreference(actionBarPref);
-        }
-
-        Preference statusBarPref = findPreference(STATUSBAR_KEY);
-        if ((statusBarPref != null) && (screenCategory != null)) {
-            screenCategory.removePreference(statusBarPref);
-        }
-
-        final String NOTIFICATION_KEY = "notification";
-        Preference notificationPrefs = getPreferenceScreen().findPreference(NOTIFICATION_KEY);
-        notificationPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                notificationPrefs();
-                return true;
-            }
-        });
-
-        PreferenceCategory keyboardCategory =
-                (PreferenceCategory) findPreference("categoryKeyboard");
-        Preference controlKeyPref = findPreference("controlkey");
-        if ((controlKeyPref != null) && (keyboardCategory != null)) {
-            keyboardCategory.removePreference(controlKeyPref);
-        }
-        Preference fnKeyPref = findPreference("fnkey");
-        if ((fnKeyPref != null) && (keyboardCategory != null)) {
-            keyboardCategory.removePreference(fnKeyPref);
-        }
-
-        if (FLAVOR_VIM) {
-            findPreference("functionbar_vim_paste").setDefaultValue(true);
-        }
-
-        // FIXME:
-        if (AndroidCompat.SDK < 19 && !new File(FONTPATH).exists()) new File(FONTPATH).mkdirs();
-        Preference fontPicker = getPreferenceScreen().findPreference("fontfile_picker");
-        fontPicker.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                filePicker();
-                return true;
-            }
-        });
-
-        ListPreference fontFileList= (ListPreference) getPreferenceScreen().findPreference("fontfile");
-        setFontList(fontFileList);
-
-        Preference fontSelect = findPreference("fontfile");
-        Resources res = getResources();
-        fontSelect.setSummary(res.getString(R.string.summary_fontfile_preference)+String.format(" (%s)", FONTPATH));
-        fontSelect.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ListPreference fontFileList = (ListPreference) preference;
-                setFontList(fontFileList);
-                return true;
-            }
-        });
-
-        fontSelect.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                ListPreference fontFileList = (ListPreference) preference;
-                setFontList(fontFileList);
-                fontFileList.setDefaultValue(newValue);
-                return true;
-            }
-        });
-
-        PreferenceCategory textCategory = (PreferenceCategory) findPreference(CATEGORY_TEXT_KEY);
-        Preference fontPref;
-        if (AndroidCompat.SDK >= 19) {
-            fontPref = findPreference("fontfile");
+    private void setupTheme() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final TermSettings settings = new TermSettings(getResources(), prefs);
+        if (settings.getColorTheme() == 0) {
+            setTheme(R.style.Theme_AppCompat);
         } else {
-            fontPref = findPreference("fontfile_picker");
+            setTheme(R.style.Theme_AppCompat_Light);
         }
-        if ((fontPref != null) && (textCategory != null)) {
-            textCategory.removePreference(fontPref);
-        }
+    }
 
+    /**
+     * Set up the {@link android.app.ActionBar}, if the API is available.
+     */
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean onIsMultiPane() {
+        return isXLargeTablet(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void onBuildHeaders(List<Header> target) {
+        if (FLAVOR_VIM && AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
+            loadHeadersFromResource(R.xml.pref_headers_vim, target);
+        } else {
+            loadHeadersFromResource(R.xml.pref_headers, target);
+        }
+    }
+
+    /**
+     * This method stops fragment injection in malicious applications.
+     * Make sure to deny any unknown fragments here.
+     */
+    protected boolean isValidFragment(String fragmentName) {
+        return PreferenceFragment.class.getName().equals(fragmentName)
+                || ImePreferenceFragment.class.getName().equals(fragmentName)
+                || FunctionbarPreferenceFragment.class.getName().equals(fragmentName)
+                || GesturePreferenceFragment.class.getName().equals(fragmentName)
+                || ScreenPreferenceFragment.class.getName().equals(fragmentName)
+                || FontPreferenceFragment.class.getName().equals(fragmentName)
+                || KeyboardPreferenceFragment.class.getName().equals(fragmentName)
+                || ShellPreferenceFragment.class.getName().equals(fragmentName)
+                || AppsPreferenceFragment.class.getName().equals(fragmentName)
+                || PrefsPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    private void documentTreePicker(int requestCode) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            startActivityForResult(intent, requestCode);
+        }
+    }
+
+    private void directoryPicker(String mes) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
         final Activity activity = this;
-        final String HOME_DIR_KEY = "home_dir_chooser";
-        Preference homeDirPrefs = getPreferenceScreen().findPreference(HOME_DIR_KEY);
-        homeDirPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+        directoryPicker(mes, new ChooserDialog.Result() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                directoryPicker(activity.getString(R.string.choose_home_directory_message),
-                    new ChooserDialog.Result() {
-                        @Override
-                        public void onChoosePath(String path, File pathFile) {
-                            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                            if (path == null) {
-                                path = TermService.getAPPFILES() + "/home";
-                                pathFile = new File(path);
-                                if (!pathFile.exists()) pathFile.mkdir();
-                                editor.putString("home_path", path);
-                                editor.apply();
-                                bld.setIcon(android.R.drawable.ic_dialog_info);
-                                bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
-                            } else if (new File(path).canWrite()) {
-                                editor.putString("home_path", path);
-                                editor.apply();
-                                bld.setIcon(android.R.drawable.ic_dialog_info);
-                                bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
-                            } else {
-                                bld.setIcon(android.R.drawable.stat_notify_error);
-                                bld.setMessage(activity.getString(R.string.invalid_directory));
-                            }
-                            bld.setPositiveButton(activity.getString(android.R.string.ok), null);
-                            bld.create().show();
-                        }
-                    });
-                return true;
+            public void onChoosePath(String path, File pathFile) {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                if (path == null) {
+                    path = TermService.getAPPFILES() + "/home";
+                    pathFile = new File(path);
+                    if (!pathFile.exists()) pathFile.mkdir();
+                    editor.putString("home_path", path);
+                    editor.apply();
+                    bld.setIcon(android.R.drawable.ic_dialog_info);
+                    bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                } else if (new File(path).canWrite()) {
+                    editor.putString("home_path", path);
+                    editor.apply();
+                    bld.setIcon(android.R.drawable.ic_dialog_info);
+                    bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                } else {
+                    bld.setIcon(android.R.drawable.stat_notify_error);
+                    bld.setMessage(activity.getString(R.string.invalid_directory));
+                }
+                bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                bld.create().show();
             }
         });
-
-        PreferenceCategory shellCategory =
-                (PreferenceCategory) findPreference("categoryShell");
-        Preference editHomeDirPref;
-        if (AndroidCompat.SDK >= 21) {
-            editHomeDirPref = findPreference("home_path");
-        } else {
-            editHomeDirPref = findPreference("home_dir_chooser");
-        }
-        if ((editHomeDirPref != null) && (shellCategory != null)) {
-            shellCategory.removePreference(editHomeDirPref);
-        }
-
-        final String STARTUP_DIR_KEY = "startup_dir_chooser";
-        Preference startupDirPrefs = getPreferenceScreen().findPreference(STARTUP_DIR_KEY);
-        if (FLAVOR_VIM && AndroidCompat.SDK >= 21) {
-            final ChooserDialog.Result r = new ChooserDialog.Result() {
-                @Override
-                public void onChoosePath(String path, File pathFile) {
-                    if (path != null && new File(path).canWrite()) {
-                        ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(getApplicationContext());
-                        clip.setText(path);
-                        AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                        bld.setIcon(android.R.drawable.ic_dialog_info);
-                        bld.setTitle(activity.getString(R.string.title_startup_chooser_preference));
-                        bld.setMessage(activity.getString(R.string.copy_startup_dir)+" "+path);
-                        bld.setPositiveButton(activity.getString(android.R.string.ok), null);
-                        bld.create().show();
-                    } else {
-                        AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                        bld.setIcon(android.R.drawable.stat_notify_error);
-                        bld.setMessage(activity.getString(R.string.invalid_directory));
-                        bld.setPositiveButton(activity.getString(android.R.string.ok), null);
-                        bld.create().show();
-                    }
-                }
-            };
-            startupDirPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    new ChooserDialog().with(activity)
-                            .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
-                            .enableOptions(true)
-                            .withFilter(true, true)
-                            .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
-                            .withChosenListener(r)
-                            .build()
-                            .show();
-                    return true;
-                }
-            });
-        } else {
-            Preference startupDirPref = findPreference("startup_dir_chooser");
-            if ((startupDirPref != null) && (shellCategory != null)) {
-                shellCategory.removePreference(startupDirPref);
-            }
-        }
-
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void directoryPicker(String mes, final ChooserDialog.Result r) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setMessage(mes);
-        bld.setPositiveButton(this.getString(R.string.select_directory), new DialogInterface.OnClickListener() {
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
                 internalStoragePicker(r);
@@ -396,13 +301,23 @@ public class TermPreferences extends PreferenceActivity {
 
     private void internalStoragePicker(ChooserDialog.Result r) {
         new ChooserDialog().with(this)
-            .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
-            .enableOptions(true)
-            .withFilter(true, true)
-            .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
-            .withChosenListener(r)
-            .build()
-            .show();
+                .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
+                .enableOptions(true)
+                .withFilter(true, true)
+                .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
+                .withChosenListener(r)
+                .build()
+                .show();
+    }
+
+    void notificationPrefs() {
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 
     void licensePrefs() {
@@ -418,30 +333,16 @@ public class TermPreferences extends PreferenceActivity {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
                 Intent openUrl = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(getString(R.string.github_url)));
-                    startActivity(openUrl);
+                        Uri.parse(getString(R.string.github_url)));
+                startActivity(openUrl);
             }
         });
         bld.create().show();
     }
 
-    void notificationPrefs() {
-        Intent intent = new Intent();
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-    }
-
-    public static final int REQUEST_FONT_PICKER          = 16;
-    public static final int REQUEST_PREFS_READ_PICKER    = REQUEST_FONT_PICKER + 1;
-    public static final int REQUEST_STORAGE_FONT_PICKER  = REQUEST_FONT_PICKER + 2;
-    public static final int REQUEST_STORAGE_PREFS_PICKER = REQUEST_FONT_PICKER + 3;
     @SuppressLint("NewApi")
     void prefsPicker() {
-        if (AndroidCompat.SDK >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (AndroidCompat.SDK >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PREFS_PICKER);
         } else {
             doPrefsPicker();
@@ -570,43 +471,48 @@ public class TermPreferences extends PreferenceActivity {
     }
 
     @SuppressLint("NewApi")
-    void filePicker() {
-        if (AndroidCompat.SDK >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    private void filePicker() {
+        if (AndroidCompat.SDK >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_FONT_PICKER);
         } else {
             doFilePicker();
         }
     }
 
-    private void setAppPickerLabel(Preference pref, String appId) {
-        try {
-            PackageManager pm = getPackageManager();
-            PackageInfo packageInfo = pm.getPackageInfo(appId, 0);
-            String label = packageInfo.applicationInfo.loadLabel(pm).toString();
-            pref.setSummary(label);
-        } catch (Exception e) {
-        }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void doFilePicker() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(this.getString(R.string.font_file_error));
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("application/octet-stream");
+                startActivityForResult(intent, REQUEST_FONT_PICKER);
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.no), null);
+        final Activity activity = this;
+        bld.setNeutralButton(this.getString(R.string.entry_fontfile_default), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+                sp.edit().putString(FONT_FILENAME, activity.getString(R.string.entry_fontfile_default)).apply();
+            }
+        });
+        bld.create().show();
     }
 
-    private void setAppPickerList() {
-        PackageManager pm = this.getApplicationContext().getPackageManager();
-        final List<ApplicationInfo> installedAppList = pm.getInstalledApplications(0);
-        final TreeMap<String, String> items = new TreeMap<>();
-        for (ApplicationInfo app : installedAppList) {
-            Intent intent = pm.getLaunchIntentForPackage(app.packageName);
-            if (intent != null) items.put(app.loadLabel(pm).toString(), app.packageName);
-        }
-        List<String> list = new ArrayList<>(items.keySet());
-        final String labels[] = list.toArray(new String[list.size()]);
-        list = new ArrayList<>(items.values());
-        final String packageNames[] = list.toArray(new String[list.size()]);
-
-        String id = "external_app_package_name";
-        ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
-        packageName.setEntries(labels);
-        packageName.setEntryValues(packageNames);
-    }
-
+    public static final boolean DOCUMENT_TREE_PICKER_VER = (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+    public static final boolean USE_DOCUMENT_TREE_PICKER = false && DOCUMENT_TREE_PICKER_VER;
+    public static final int REQUEST_FONT_PICKER          = 16;
+    public static final int REQUEST_PREFS_READ_PICKER    = REQUEST_FONT_PICKER + 1;
+    public static final int REQUEST_STORAGE_FONT_PICKER  = REQUEST_FONT_PICKER + 2;
+    public static final int REQUEST_STORAGE_PREFS_PICKER = REQUEST_FONT_PICKER + 3;
+    public static final int REQUEST_HOME_DIRECTORY       = REQUEST_FONT_PICKER + 4;
+    public static final int REQUEST_STARTUP_DIRECTORY    = REQUEST_FONT_PICKER + 5;
     @Override
     @SuppressLint("NewApi")
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -642,11 +548,66 @@ public class TermPreferences extends PreferenceActivity {
         }
     }
 
-    static final String FONT_FILENAME = "font_filename";
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         switch (request) {
+            case REQUEST_STARTUP_DIRECTORY:
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    String path = getDirectory(uri);
+                    if (path != null && new File(path).canWrite()) {
+                        ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(getApplicationContext());
+                        clip.setText(path);
+                        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                        bld.setIcon(android.R.drawable.ic_dialog_info);
+                        bld.setTitle(this.getString(R.string.title_startup_chooser_preference));
+                        bld.setMessage(this.getString(R.string.copy_startup_dir)+" "+path);
+                        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                        bld.create().show();
+                    } else {
+                        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                        bld.setIcon(android.R.drawable.stat_notify_error);
+                        bld.setMessage(this.getString(R.string.invalid_directory));
+                        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                        bld.create().show();
+                    }
+                }
+                break;
+            case REQUEST_HOME_DIRECTORY:
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    String path;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        path = getDirectory(uri);
+                        File pathFile;
+                        final Activity activity = this;
+                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        final SharedPreferences.Editor editor = prefs.edit();
+                        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                        if (path == null) {
+                            path = TermService.getAPPFILES() + "/home";
+                            pathFile = new File(path);
+                            if (!pathFile.exists()) pathFile.mkdir();
+                            editor.putString("home_path", path);
+                            editor.apply();
+                            bld.setIcon(android.R.drawable.ic_dialog_info);
+                            bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                        } else if (new File(path).canWrite()) {
+                            editor.putString("home_path", path);
+                            editor.apply();
+                            bld.setIcon(android.R.drawable.ic_dialog_info);
+                            bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                        } else {
+                            bld.setIcon(android.R.drawable.stat_notify_error);
+                            bld.setMessage(activity.getString(R.string.invalid_directory));
+                        }
+                        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                        bld.create().show();
+                        break;
+                    }
+                }
+                break;
             case REQUEST_PREFS_READ_PICKER:
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
@@ -687,38 +648,40 @@ public class TermPreferences extends PreferenceActivity {
         }
     }
 
-    private void doFilePicker() {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_info);
-        bld.setMessage(this.getString(R.string.font_file_error));
-        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("application/octet-stream");
-                startActivityForResult(intent, REQUEST_FONT_PICKER);
+    public static String getDirectory(Uri uri) {
+        if (uri == null) return null;
+        String path = null;
+        String scheme = uri.getScheme();
+        if ("file".equals(scheme)) {
+            path = uri.getPath();
+        } else if("content".equals(scheme)) {
+            try {
+                if ("com.android.externalstorage.documents".equals( uri.getAuthority())) { // ExternalStorageProvider
+                    path = uri.getEncodedPath();
+                    path = URLDecoder.decode(path, "UTF-8");
+                    final String[] split = path.split(":");
+                    final String type = split[0];
+                    if ("/tree/primary".equalsIgnoreCase(type)) {
+                        if (split.length == 1) return Environment.getExternalStorageDirectory().getAbsolutePath();
+                        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + split[1];
+                    } else {
+                        return "/stroage/" + type +  "/" + split[1];
+                    }
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-        });
-        bld.setNegativeButton(this.getString(android.R.string.no), null);
-        final Activity activity = this;
-        bld.setNeutralButton(this.getString(R.string.entry_fontfile_default), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-                sp.edit().putString(FONT_FILENAME, activity.getString(R.string.entry_fontfile_default)).apply();
-            }
-        });
-        bld.create().show();
+        }
+        return path;
     }
 
     private ListPreference setFontList(ListPreference fontFileList) {
-        File files[] = new File(FONTPATH).listFiles();
+        File files[] = new File(FONT_PATH).listFiles();
         ArrayList<File> fonts = new ArrayList<File>();
 
         if (files != null) {
             for (File file : files) {
-                if (file.isFile() == true && file.getName().matches(".*\\.(?i)(ttf|ttc|otf)") && file.isHidden() == false) {
+                if (file.isFile() && file.getName().matches(".*\\.(?i)(ttf|ttc|otf)") && !file.isHidden()) {
                     fonts.add(file);
                 }
             }
@@ -735,9 +698,7 @@ public class TermPreferences extends PreferenceActivity {
         values[i] = systemFontName;
         i++;
 
-        Iterator<File> itr = fonts.iterator();
-        while (itr.hasNext()) {
-            File file = itr.next();
+        for (File file : fonts) {
             items[i] = file.getName();
             values[i] = file.getName();
             i++;
@@ -747,4 +708,365 @@ public class TermPreferences extends PreferenceActivity {
         fontFileList.setEntryValues(values);
         return fontFileList;
     }
+
+    public static class ImePreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_ime);
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("ime"));
+            bindPreferenceSummaryToValue(findPreference("ime_shortcuts_action_rev2"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class FunctionbarPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                addPreferencesFromResource(R.xml.pref_functionbar);
+            } else {
+                addPreferencesFromResource(R.xml.pref_functionbar_20);
+            }
+            if (FLAVOR_VIM) {
+                findPreference("functionbar_vim_paste").setDefaultValue(true);
+            }
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("functionbar_diamond_action_rev2"));
+            bindPreferenceSummaryToValue(findPreference("actionbar_invert_action"));
+            bindPreferenceSummaryToValue(findPreference("actionbar_user_action"));
+            bindPreferenceSummaryToValue(findPreference("actionbar_x_action"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class GesturePreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                addPreferencesFromResource(R.xml.pref_gesture);
+            } else {
+                addPreferencesFromResource(R.xml.pref_gesture_20);
+            }
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("double_tap_action"));
+            bindPreferenceSummaryToValue(findPreference("right_double_tap_action"));
+            bindPreferenceSummaryToValue(findPreference("left_double_tap_action"));
+            bindPreferenceSummaryToValue(findPreference("bottom_double_tap_action"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class ScreenPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                addPreferencesFromResource(R.xml.pref_screen);
+            } else {
+                addPreferencesFromResource(R.xml.pref_screen_20);
+            }
+            final String APP_INFO_KEY = "notification";
+            Preference appInfoPref = getPreferenceScreen().findPreference(APP_INFO_KEY);
+            appInfoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.notificationPrefs();
+                    return true;
+                }
+            });
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("orientation"));
+            bindPreferenceSummaryToValue(findPreference("cursorstyle"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class FontPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
+                addPreferencesFromResource(R.xml.pref_font);
+                final String FONT_FILE_PICKER_KEY = "fontfile_picker";
+                Preference fontPrefs = getPreferenceScreen().findPreference(FONT_FILE_PICKER_KEY);
+                fontPrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) mTermPreference.filePicker();
+                        return true;
+                    }
+                });
+            } else {
+                addPreferencesFromResource(R.xml.pref_font_18);
+                final String FONTFILE = "fontfile";
+                ListPreference fontFileList= (ListPreference) findPreference(FONTFILE);
+                if (mTermPreference != null) mTermPreference.setFontList(fontFileList);
+
+                Preference fontSelect = findPreference(FONTFILE);
+                Resources res = getResources();
+                fontSelect.setSummary(res.getString(R.string.summary_fontfile_preference)+String.format(" (%s)", FONT_PATH));
+                fontSelect.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        ListPreference fontFileList = (ListPreference) preference;
+                        if (mTermPreference != null) mTermPreference.setFontList(fontFileList);
+                        return true;
+                    }
+                });
+                fontSelect.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        ListPreference fontFileList = (ListPreference) preference;
+                        if (mTermPreference != null) {
+                            mTermPreference.setFontList(fontFileList);
+                            fontFileList.setDefaultValue(newValue);
+                        }
+                        return true;
+                    }
+                });
+            }
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class KeyboardPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                addPreferencesFromResource(R.xml.pref_keyboard);
+            } else {
+                addPreferencesFromResource(R.xml.pref_keyboard_20);
+            }
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("backaction"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class ShellPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
+                if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                    addPreferencesFromResource(R.xml.pref_shell);
+                } else {
+                    addPreferencesFromResource(R.xml.pref_shell_20);
+                }
+                final String HOME_KEY = "home_dir_chooser";
+                Preference prefsHome = getPreferenceScreen().findPreference(HOME_KEY);
+                prefsHome.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) {
+                            if (USE_DOCUMENT_TREE_PICKER) {
+                                mTermPreference.documentTreePicker(REQUEST_HOME_DIRECTORY);
+                                return true;
+                            }
+                            mTermPreference.directoryPicker(getActivity().getString(R.string.choose_home_directory_message));
+                        }
+                        return true;
+                    }
+                });
+                final String STARTUP_KEY = "startup_dir_chooser";
+                Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
+                Activity activity = getActivity();
+                final ChooserDialog.Result r = new ChooserDialog.Result() {
+                    @Override
+                    public void onChoosePath(String path, File pathFile) {
+                        if (path != null && new File(path).canWrite()) {
+                            ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(activity.getApplicationContext());
+                            clip.setText(path);
+                            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                            bld.setIcon(android.R.drawable.ic_dialog_info);
+                            bld.setTitle(activity.getString(R.string.title_startup_chooser_preference));
+                            bld.setMessage(activity.getString(R.string.copy_startup_dir) + " " + path);
+                            bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                            bld.create().show();
+                        } else {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                            bld.setIcon(android.R.drawable.stat_notify_error);
+                            bld.setMessage(activity.getString(R.string.invalid_directory));
+                            bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                            bld.create().show();
+                        }
+                    }
+                };
+                prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (USE_DOCUMENT_TREE_PICKER && mTermPreference != null) {
+                            mTermPreference.documentTreePicker(REQUEST_STARTUP_DIRECTORY);
+                            return true;
+                        }
+                        new ChooserDialog().with(activity)
+                                .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
+                                .enableOptions(true)
+                                .withFilter(true, true)
+                                .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
+                                .withChosenListener(r)
+                                .build()
+                                .show();
+                        return true;
+                    }
+                });
+            } else {
+                addPreferencesFromResource(R.xml.pref_shell_18);
+            }
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("termtype"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class AppsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_apps);
+
+            String id = "external_app_package_name";
+            ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
+            if (mTermPreference != null) {
+                if (mLabels != null) packageName.setEntries(mLabels);
+                if (mPackageNames != null) packageName.setEntryValues(mPackageNames);
+            }
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
+            bindPreferenceSummaryToValue(findPreference("external_app_button_mode"));
+            bindPreferenceSummaryToValue(findPreference("cloud_dropbox_filepicker"));
+            bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
+            bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));
+            bindPreferenceSummaryToValue(findPreference("html_viewer_mode"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class PrefsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (FLAVOR_VIM && AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
+                addPreferencesFromResource(R.xml.pref_user_setting);
+                final String PREFS_KEY = "prefs_rw";
+                Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
+                prefsPicker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) mTermPreference.prefsPicker();
+                        return true;
+                    }
+                });
+            } else {
+                addPreferencesFromResource(R.xml.pref_user_setting_18);
+            }
+
+            final String LICENSE_KEY = "license";
+            Preference licensePrefs = getPreferenceScreen().findPreference(LICENSE_KEY);
+            licensePrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.licensePrefs();
+                    return true;
+                }
+            });
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), TermPreferences.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

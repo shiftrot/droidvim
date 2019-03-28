@@ -80,6 +80,7 @@
    <string name="disable_keepscreen">\"Keep screen\" OFF</string>
    <string name="keepscreen_notice">Keep the screen awake while this application running in the foreground.\nThis state lasts for% d minutes after the key was last pressed.</string>
    <string name="keepscreen_deacitvated">\"Keep screen\" has been deactivated.</string>
+   <string name="keepscreen">Keep screen</string>
 
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
@@ -147,7 +148,8 @@
    <string name="summary_oneline_textbox_esc_off">Move focus.</string>
    <string name="title_oneline_textbox_cr_preference">\"Send\" button (One-line text box)</string>
 
-   <string name="title_functionbar_key_preference">Function key</string>
+   <string name="title_functionbar_key_preference">Function key (1st column)</string>
+   <string name="title_functionbar_key_2_preference">Function key (2nd column)</string>
    <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
 
    <string name="title_functionbar_menu">Menu</string>
@@ -261,10 +263,11 @@
    <string name="dialog_title_fnkey_preference">Fn key</string>
 
    <string name="title_ime_inputtype_preference">Input mode at startup</string>
-   <string name="summary_ime_inputtype_preference">Force direct input at startup.\n(Switch to the normal input mode with ◇ button.)</string>
+   <string name="summary_ime_inputtype_preference">Switch to \"Normal input\" with ◇ button.</string>
    <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
-   <string name="title_ime_preference">Input method</string>
+   <string name="title_ime_direct_input_method_preference">Input method for \"Direct input\"</string>
+   <string name="title_ime_preference">Input method for \"Normal input\"</string>
    <string name="summary_ime_preference">Choose input method for normal input.</string>
    <string name="dialog_title_ime_preference">Choose input method</string>
 
@@ -357,6 +360,7 @@
 
   <string name="ime_input_method_preferences">Text input mode</string>
   <string name="title_pre_ime_shortcuts">IME shortcuts</string>
+  <string name="summary_title_pre_ime_shortcuts_select">Select a physical keyboard shortcut.</string>
   <string name="summary_title_pre_ime_shortcuts">Physical Keyboard Shortcuts for IME Control.</string>
   <string name="pref_alt_grave">Alt + [`]</string>
   <string name="pref_alt_esc">Alt + [Esc]</string>

@@ -116,7 +116,7 @@ final class TermVimInstaller {
             int id = activity.getResources().getIdentifier("terminfo", "raw", activity.getPackageName());
             installZip(appFiles, getInputStream(activity, id));
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                File fontPath = new File(TermPreferences.FONTPATH);
+                File fontPath = new File(TermPreferences.FONT_PATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
             }
             if (!FLAVOR_VIM) new PrefValue(activity).setString("versionName", TERMVIM_VERSION);

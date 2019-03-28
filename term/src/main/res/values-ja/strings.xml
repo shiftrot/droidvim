@@ -78,6 +78,7 @@
    <string name="disable_keepscreen">キープスクリーン解除</string>
    <string name="keepscreen_notice">フォアグラウンドでこのアプリケーションを実行していると, 画面がスリープしなくなります.\nこの状態は最後にキーが押されてから%d分間続きます.</string>
    <string name="keepscreen_deacitvated">キープスクリーンが解除されました.</string>
+   <string name="keepscreen">キープスクリーン</string>
 
    <string name="enable_wakelock">WakeLockを取得</string>
    <string name="disable_wakelock">WakeLockを解除</string>
@@ -138,7 +139,8 @@
    <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
    <string name="title_oneline_textbox_cr_preference">\"送出\"ボタンを表示(一行テキストボックス)</string>
 
-   <string name="title_functionbar_key_preference">ファンクションキー</string>
+   <string name="title_functionbar_key_preference">ファンクションキー (1列目)</string>
+   <string name="title_functionbar_key_2_preference">ファンクションキー (2列目)</string>
    <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
 
    <string name="title_functionbar_menu">メニュー</string>
@@ -249,15 +251,16 @@
    <string name="dialog_title_fnkey_preference">Fnキー</string>
 
    <string name="title_ime_inputtype_preference">起動時の入力モード</string>
-   <string name="summary_ime_inputtype_preference">起動時に英数直接入力を有効化する\n(◇ボタンで日本語入力と切り替えます)</string>
+   <string name="summary_ime_inputtype_preference">◇ボタンで「通常入力」と切り替えます</string>
    <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
 
    <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
-   <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へ入力モードをリセットします.</string>
+   <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へリセットします.</string>
    <string name="dialog_title_vi_cooperative_mode_preference">vi協調モードを有効にするキーボードを選択.</string>
 
-   <string name="title_ime_preference">インプットメソッド</string>
-   <string name="summary_ime_preference">通常入力時のインプットメソッドを選択</string>
+   <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>
+   <string name="title_ime_preference">「通常入力」のインプットメソッド</string>
+   <string name="summary_ime_preference">「通常入力」のインプットメソッドを選択</string>
    <string name="dialog_title_ime_preference">インプットメソッドを選択</string>
 
    <string name="shell_preferences">シェル</string>
@@ -345,6 +348,7 @@
 
   <string name="ime_input_method_preferences">テキスト入力モード</string>
   <string name="title_pre_ime_shortcuts">IMEショートカット</string>
+  <string name="summary_title_pre_ime_shortcuts_select">IMEショートカットを選択します</string>
   <string name="summary_title_pre_ime_shortcuts">IME制御のための物理キーボードショートカット.</string>
   <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
   <string name="pref_zenkaku_hankaku">[半/全]</string>

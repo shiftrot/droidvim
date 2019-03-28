@@ -1,0 +1,91 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="ime_default_inputtype"
+        android:defaultValue="@integer/pref_ime_inputtype_default"
+        android:title="@string/title_ime_inputtype_preference"
+        android:summary="@string/summary_ime_inputtype_preference"
+        android:entries="@array/entries_ime_inputtype_preference"
+        android:entryValues="@array/entryvalues_ime_inputtype_preference"
+        android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
+
+    <ListPreference
+        android:key="ime"
+        android:defaultValue="@string/pref_ime_default"
+        android:title="@string/title_ime_preference"
+        android:summary="@string/summary_ime_preference"
+        android:entries="@array/entries_ime_preference"
+        android:entryValues="@array/entryvalues_ime_preference"
+        android:dialogTitle="@string/dialog_title_ime_preference" />
+
+    <ListPreference
+        android:key="vi_cooperative_mode"
+        android:defaultValue="@integer/pref_vi_cooperative_mode_default"
+        android:title="@string/title_vi_cooperative_mode_preference"
+        android:summary="@string/summary_vi_cooperative_mode"
+        android:entries="@array/entries_vi_cooperative_mode_preference"
+        android:entryValues="@array/entryvalues_vi_cooperative_mode_preference"
+        android:dialogTitle="@string/dialog_title_vi_cooperative_mode_preference" />
+
+    <PreferenceScreen
+        android:title="@string/title_pre_ime_shortcuts"
+        android:summary="@string/summary_title_pre_ime_shortcuts">
+
+        <ListPreference
+            android:key="ime_shortcuts_action_rev2"
+            android:defaultValue="@integer/pref_ime_shortcuts_action_default"
+            android:title="@string/title_ime_shortcuts_action_preference"
+            android:summary="@string/summary_ime_shortcuts_action_preference"
+            android:entries="@array/entries_ime_shortcuts_action_preference"
+            android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
+            android:dialogTitle="@string/dialog_titleime_shortcuts_action_preference" />
+
+        <PreferenceScreen
+            android:title="@string/title_pre_ime_shortcuts"
+            android:summary="@string/summary_title_pre_ime_shortcuts_select">
+
+            <CheckBoxPreference
+                android:key="AltGrave"
+                android:defaultValue="false"
+                android:title="@string/pref_alt_grave"/>
+
+            <CheckBoxPreference
+                android:key="AltEsc"
+                android:defaultValue="false"
+                android:title="@string/pref_alt_esc"/>
+
+            <CheckBoxPreference
+                android:key="AltSpace"
+                android:defaultValue="false"
+                android:title="@string/pref_alt_space"/>
+
+            <CheckBoxPreference
+                android:key="CtrlSpace"
+                android:defaultValue="false"
+                android:title="@string/pref_ctrl_space"/>
+
+            <CheckBoxPreference
+                android:key="ShiftSpace"
+                android:defaultValue="false"
+                android:title="@string/pref_shift_space"/>
+
+            <CheckBoxPreference
+                android:key="ZENKAKU_HANKAKU"
+                android:defaultValue="false"
+                android:title="@string/pref_zenkaku_hankaku"/>
+
+            <CheckBoxPreference
+                android:key="GRAVE"
+                android:defaultValue="false"
+                android:title="@string/pref_grave"/>
+
+            <CheckBoxPreference
+                android:key="CtrlJ"
+                android:defaultValue="false"
+                android:title="@string/pref_ctrl_j"/>
+
+        </PreferenceScreen>
+
+    </PreferenceScreen>
+
+</PreferenceScreen>
