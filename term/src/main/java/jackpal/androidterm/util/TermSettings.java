@@ -66,6 +66,7 @@ public class TermSettings {
     private int mControlKeyId;
     private int mFnKeyId;
     private int mUseCookedIME;
+    private int mUseDirectCookedIME;
     private String mExternalAppId;
     private boolean mExternalAppButton;
     private int mExternalAppButtonMode;
@@ -136,6 +137,7 @@ public class TermSettings {
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
+    private static final String IME_DIRECT_KEY = "ime_direct_input_method";
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
     private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_button_mode";
     private static final String EXTERNAL_APP_BUTTON_KEY = "external_app_button";
@@ -287,6 +289,7 @@ public class TermSettings {
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
         mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
         mUseCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
+        mUseDirectCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
         mFailsafeShell = res.getString(R.string.pref_shell_default);
         // the mShell default is set dynamically in readPrefs()
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
@@ -346,6 +349,7 @@ public class TermSettings {
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId, CONTROL_KEY_SCHEMES.length - 1);
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId, FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
+        mUseDirectCookedIME = readIntPref(IME_DIRECT_KEY, mUseDirectCookedIME, 1);
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY , mExternalAppId);
         mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
         mExternalAppButton = readBooleanPref(EXTERNAL_APP_BUTTON_KEY, mExternalAppButton);
@@ -675,6 +679,10 @@ public class TermSettings {
 
     public boolean useCookedIME() {
         return (mUseCookedIME != 0);
+    }
+
+    public boolean useDirectCookedIME() {
+        return (mUseDirectCookedIME != 0);
     }
 
     public String getShell() {

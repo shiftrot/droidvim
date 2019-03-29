@@ -131,6 +131,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private Paint mBackgroundPaint;
 
     private boolean mUseCookedIme;
+    private boolean mUseDirectCookedIme;
 
     /**
      * Our terminal emulator.
@@ -477,9 +478,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
         if (mEmulator != null) setIME(mEmulator);
-        outAttrs.inputType = (mUseCookedIme && (mIMEInputType != EditorInfo.TYPE_NULL)) ?
-                (EditorInfo.TYPE_CLASS_TEXT | mIMEInputType) :
-                EditorInfo.TYPE_NULL;
+        if (mIMEInputType == EditorInfo.TYPE_CLASS_TEXT || mIMEInputType == EditorInfo.IME_NULL) {
+            outAttrs.inputType = mIMEInputType;
+        } else {
+            outAttrs.inputType = mIMEInputType | (mUseDirectCookedIme ? EditorInfo.TYPE_CLASS_TEXT : EditorInfo.TYPE_NULL);
+        }
+        TermKeyListener.setUseCookedIme((outAttrs.inputType & EditorInfo.TYPE_CLASS_TEXT) > 0);
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN;
         mInputConnection = new BaseInputConnection(this, true) {
             /**
@@ -1084,9 +1088,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setUseCookedIME(boolean useCookedIME) {
         mUseCookedIme = useCookedIME;
-        TermKeyListener.setUseCookedIme(useCookedIME);
     }
 
+    public void setUseDirectCookedIME(boolean useCookedIME) {
+        mUseDirectCookedIme = useCookedIME;
+    }
     /**
      * Returns true if mouse events are being sent as escape sequences to the terminal.
      */
@@ -1920,10 +1926,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else if (action == 1362) {
             ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
         } else {
-            if (mIMEInputType == EditorInfo.TYPE_CLASS_TEXT) {
+            int imeType = mUseCookedIme ? EditorInfo.TYPE_CLASS_TEXT : EditorInfo.TYPE_NULL;
+            if (mIMEInputType == imeType) {
                 setImeShortcutsAction(action);
             } else {
-                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
+                setIMEInputType(imeType);
             }
         }
     }

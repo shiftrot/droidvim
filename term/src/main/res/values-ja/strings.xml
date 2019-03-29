@@ -261,6 +261,7 @@
    <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>
    <string name="title_ime_preference">「通常入力」のインプットメソッド</string>
    <string name="summary_ime_preference">「通常入力」のインプットメソッドを選択</string>
+   <string name="summary_ime_direct_input_method_preference">「直接入力」のインプットメソッドを選択</string>
    <string name="dialog_title_ime_preference">インプットメソッドを選択</string>
 
    <string name="shell_preferences">シェル</string>

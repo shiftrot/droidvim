@@ -269,6 +269,7 @@
    <string name="title_ime_direct_input_method_preference">Input method for \"Direct input\"</string>
    <string name="title_ime_preference">Input method for \"Normal input\"</string>
    <string name="summary_ime_preference">Choose input method for normal input.</string>
+   <string name="summary_ime_direct_input_method_preference">Choose input method for direct input.</string>
    <string name="dialog_title_ime_preference">Choose input method</string>
 
    <string name="title_vi_cooperative_mode_preference">vi-cooperative mode</string>

@@ -717,6 +717,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("ime"));
+            bindPreferenceSummaryToValue(findPreference("ime_direct_input_method"));
             bindPreferenceSummaryToValue(findPreference("ime_shortcuts_action_rev2"));
         }
 
