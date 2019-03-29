@@ -69,13 +69,13 @@
         android:title="@string/enable_wifilock" />
     <item android:id="@+id/menu_update"
         android:title="@string/menu_update" />
-    <item android:id="@+id/menu_tutorial"
-        android:title="@string/tutorial" />
-    <item android:id="@+id/action_help"
-        android:title="@string/help" />
     <item android:id="@+id/menu_preferences"
         android:title="@string/preferences"
         android:icon="@drawable/ic_menu_preferences" />
+    <item android:id="@+id/action_help"
+        android:title="@string/help" />
+    <item android:id="@+id/menu_tutorial"
+        android:title="@string/tutorial" />
     <item android:id="@+id/menu_window"
         android:title="@string/menu_window" />
     <item android:id="@+id/menu_new_window"

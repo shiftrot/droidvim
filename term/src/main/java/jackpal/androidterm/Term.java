@@ -1505,6 +1505,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
+        if (!FLAVOR_VIM || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT)) menu.removeItem(R.id.menu_drawer);
         return true;
     }
 
@@ -1597,7 +1598,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_text_box) {
             setEditTextView(2);
         } else if (id == R.id.menu_drawer) {
-            toggleDrawer();
+            drawerMenu();
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if  (id == R.id.action_help) {
@@ -1896,7 +1897,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     confirmClearCache();
                 }
             }
-        }).show();
+        }).setNegativeButton(android.R.string.cancel, null)
+        .show();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -2869,6 +2871,82 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
+    private void drawerMenu(){
+        String externalApp = null;
+        if (mSettings.getExternalAppButtonMode() > 0) {
+            externalApp = getString(R.string.external_app_button);
+            try {
+                String appId = mSettings.getExternalAppId();
+                PackageManager pm = this.getApplicationContext().getPackageManager();
+                PackageInfo packageInfo = pm.getPackageInfo(appId, 0);
+                externalApp = packageInfo.applicationInfo.loadLabel(pm).toString();
+            } catch (Exception e) {
+                // Do nothing
+            }
+        }
+        final String[] externalApps = externalApp != null ? new String[]{externalApp} : new String[]{};
+
+        final Map<String, String> apps = new LinkedHashMap<String, String>() {
+            {put(getString(R.string.dropbox),     APP_DROPBOX);}
+            {put(getString(R.string.googledrive), APP_GOOGLEDRIVE);}
+            {put(getString(R.string.onedrive),    APP_ONEDRIVE);}
+        };
+        String[] appLabels = new String[apps.size()];
+        int storages = 0;
+        for (Map.Entry<String, String> entry : apps.entrySet()) {
+            String app = entry.getValue();
+            if (APP_DROPBOX.equals(app) && mSettings.getDropboxFilePicker() == 0) continue;
+            if (APP_GOOGLEDRIVE.equals(app) && mSettings.getGoogleDriveFilePicker() == 0) continue;
+            if (APP_ONEDRIVE.equals(app) && mSettings.getOneDriveFilePicker() == 0) continue;
+            if (isAppInstalled(entry.getValue())) {
+                appLabels[storages] = entry.getKey();
+                storages++;
+            }
+        }
+        final String[] storageApps = new String[storages];
+        System.arraycopy(appLabels, 0, storageApps, 0, storages);
+
+        final String[] base = {
+            this.getString(R.string.external_storage),
+            this.getString(R.string.create_or_delete),
+            this.getString(R.string.preferences)
+        };
+
+        final String[] items = new String[externalApps.length+storageApps.length+base.length];
+        System.arraycopy(externalApps, 0, items, 0, externalApps.length);
+        System.arraycopy(appLabels, 0, items, externalApps.length, storageApps.length);
+        System.arraycopy(base, 0, items, externalApps.length+storageApps.length, base.length);
+
+        new AlertDialog.Builder(this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (externalApps.length > 0 && which < externalApps.length) {
+                            externalApp();
+                        } else if (which < externalApps.length+storageApps.length) {
+                            int id = which - externalApps.length;
+                            if (getString(R.string.dropbox).equals(storageApps[id])) {
+                                launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX);
+                            } else if (getString(R.string.googledrive).equals(storageApps[id])) {
+                                launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE);
+                            } else if (getString(R.string.onedrive).equals(storageApps[id])) {
+                                launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE);
+                            }
+                        } else {
+                            int id = which - externalApps.length - storageApps.length;
+                            if (id == 0) {
+                                filePicker();
+                            } else if (id == 1) {
+                                chooseFilePicker();
+                            } else if (id == 2) {
+                                doPreferences();
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
     private void shareIntentTextDialog(){
         final String[] items = { this.getString(R.string.share_buffer_text), this.getString(R.string.share_visual_text), this.getString(R.string.share_unnamed_text), this.getString(R.string.share_file)};
         new AlertDialog.Builder(this)
