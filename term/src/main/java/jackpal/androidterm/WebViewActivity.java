@@ -50,13 +50,12 @@ public class WebViewActivity extends Activity {
         mWebView.getSettings().setBlockNetworkLoads(false);
         mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setTextZoom(mFontSize);
-//        mWebView.getSettings().setCacheMode(LOAD_NO_CACHE);
+        // mWebView.getSettings().setCacheMode(LOAD_NO_CACHE);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if (mBack && url.startsWith("file:")) {
-                    mWebView.reload();
                     mBack = false;
                 }
             }
