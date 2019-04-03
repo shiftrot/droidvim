@@ -37,7 +37,7 @@ final class TermVimInstaller {
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
 
-        String cpu = System.getProperty("os.arch").toLowerCase();
+        String cpu = getArch();
         if ((AndroidCompat.SDK < 16) || ((AndroidCompat.SDK < 18) && (cpu.contains("x86") || cpu.contains("i686")))) {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -383,14 +383,17 @@ final class TermVimInstaller {
                 }
             }
             // FIXME: for Kindle
+            String manufacturer = getProp("ro.product.manufacturer");
+            if (manufacturer != null && manufacturer.equals("Amazon")) {
             cpu = getProp("ro.product.cpu.abi");
-            if (cpu != null) {
-                cpu = cpu.toLowerCase();
-                if (cpu.contains("arm64")) {
-                    return "arm64";
-                }
-                if (cpu.contains("x86_64")) {
-                    return "x86_64";
+                if (cpu != null) {
+                    cpu = cpu.toLowerCase();
+                    if (cpu.contains("arm64")) {
+                        return "arm64";
+                    }
+                    if (cpu.contains("x86_64")) {
+                        return "x86_64";
+                    }
                 }
             }
             for (String androidArch : Build.SUPPORTED_32_BIT_ABIS) {
