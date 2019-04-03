@@ -411,7 +411,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             int error = 0;
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 if (!prefs.contains(entry.getKey())) error += 1;
-                if (error > 3) throw new Exception();
             }
             if (clearPrefs && error == 0) prefEdit.clear();
 
