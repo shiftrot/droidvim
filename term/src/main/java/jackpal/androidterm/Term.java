@@ -2826,6 +2826,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doResetTerminal(boolean keyboard) {
         doRestartSoftKeyboard();
         if (keyboard && !mHaveFullHwKeyboard) doHideSoftKeyboard();
+        if (mViewFlipper != null) mViewFlipper.redraw();
         TermSession session = getCurrentTermSession();
         if (session != null) {
             session.reset();
@@ -3173,6 +3174,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         InputMethodManager imm = (InputMethodManager)
             getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        redrawViewFlipper();
     }
 
     private void doShowSoftKeyboard() {
@@ -3180,6 +3182,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Activity activity = this;
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
+        redrawViewFlipper();
     }
 
     private void doHideSoftKeyboard() {
@@ -3187,6 +3190,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         View view = getCurrentFocus();
         if (imm != null && view != null) imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        redrawViewFlipper();
+    }
+
+    private void redrawViewFlipper() {
+        // mViewFlipper.redraw();
     }
 
     final int WAKELOCK_TIMEOUT = 30; /* minutes */

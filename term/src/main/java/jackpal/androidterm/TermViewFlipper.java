@@ -245,12 +245,16 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     private void adjustChildSize() {
+        adjustChildSize(false);
+    }
+
+    private void adjustChildSize(boolean force) {
         updateVisibleRect();
         Rect visible = mVisibleRect;
         int width = visible.width();
         int height = visible.height();
 
-        if (mCurWidth != width || mCurHeight != height) {
+        if (force || mCurWidth != width || mCurHeight != height) {
             mCurWidth = width;
             mCurHeight = height;
 
@@ -279,19 +283,22 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    Rect mRect = new Rect();
     @Override
     protected void onDraw(Canvas canvas) {
-        getGlobalVisibleRect(mRect);
-        if (!mVisibleRect.equals(mRect)) {
-            adjustChildSize();
-        }
+        adjustChildSize(mRedraw);
+        mRedraw = false;
 
         if (mRedoLayout) {
             requestLayout();
             mRedoLayout = false;
         }
         super.onDraw(canvas);
+    }
+
+    private boolean mRedraw = false;
+    public void redraw() {
+        mRedraw = true;
+        invalidate();
     }
 
 }
