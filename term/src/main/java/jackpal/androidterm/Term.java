@@ -1367,7 +1367,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     public void onPause() {
-        unregisterReceiver(mBroadcastReceiever);
+        try {
+            unregisterReceiver(mBroadcastReceiever);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (AndroidCompat.SDK < 5) {
             /* If we lose focus between a back key down and a back key up,
@@ -3983,13 +3987,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     static private class KeyEventSender extends AsyncTask<Integer, Integer, Integer> {
       @Override
       protected Integer doInBackground(Integer... params) {
-          Instrumentation inst = new Instrumentation();
-          if (params[0] == KEYEVENT_SENDER_SHIFT_SPACE) {
-              inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
-          } else if (params[0] == KEYEVENT_SENDER_ALT_SPACE) {
-              inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
-          } else {
-              inst.sendKeyDownUpSync(params[0]);
+          try {
+              Instrumentation inst = new Instrumentation();
+              if (params[0] == KEYEVENT_SENDER_SHIFT_SPACE) {
+                  inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
+              } else if (params[0] == KEYEVENT_SENDER_ALT_SPACE) {
+                  inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
+              } else {
+                  inst.sendKeyDownUpSync(params[0]);
+              }
+          } catch (Exception e) {
+              // Do nothing
           }
           return null;
       }

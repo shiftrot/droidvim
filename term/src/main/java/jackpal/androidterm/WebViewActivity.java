@@ -193,7 +193,9 @@ public class WebViewActivity extends Activity {
 
     private void execURL(String link)
     {
+        if (link == null) return;
         Uri webLink = Uri.parse(link);
+        if (webLink == null) return;
         String url = webLink.toString();
         if (!(url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:"))) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
