@@ -310,7 +310,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 .show();
     }
 
-    void notificationPrefs() {
+    void applicationInfo() {
         Intent intent = new Intent();
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
@@ -804,7 +804,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             appInfoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    if (mTermPreference != null) mTermPreference.notificationPrefs();
+                    if (mTermPreference != null) mTermPreference.applicationInfo();
                     return true;
                 }
             });
@@ -1046,6 +1046,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 addPreferencesFromResource(R.xml.pref_user_setting_18);
             }
 
+            final String APP_INFO_KEY = "app_info";
+            Preference appInfoPref = getPreferenceScreen().findPreference(APP_INFO_KEY);
+            appInfoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.applicationInfo();
+                    return true;
+                }
+            });
             final String LICENSE_KEY = "license";
             Preference licensePrefs = getPreferenceScreen().findPreference(LICENSE_KEY);
             licensePrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

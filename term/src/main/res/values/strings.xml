@@ -133,6 +133,7 @@
    <string name="dialog_title_statusbar_preference">Status bar</string>
 
    <string name="title_notification_preference">App info</string>
+   <string name="title_app_info_preference">App info</string>
    <string name="summary_notification_preference">Notifications can be hidden via App info. However, messages with low importance will not be shown.</string>
 
    <string name="title_statusbar_icon_preference">Status bar icon</string>

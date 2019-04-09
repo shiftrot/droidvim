@@ -1,5 +1,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+g   <Preference
+        android:key="app_info"
+        android:title="@string/title_app_info_preference" />
+
     <Preference
         android:key="license"
         android:title="@string/title_license" />

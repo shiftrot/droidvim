@@ -124,6 +124,7 @@
    <string name="dialog_title_statusbar_preference">ステータスバー</string>
 
    <string name="title_notification_preference">アプリ情報</string>
+   <string name="title_app_info_preference">アプリ情報</string>
    <string name="summary_notification_preference">通知はアプリ情報から非表示にすることができますが, 重要度の低いメッセージは表示されなくなります.</string>
 
    <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
