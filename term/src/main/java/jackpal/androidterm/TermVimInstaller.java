@@ -177,6 +177,12 @@ final class TermVimInstaller {
                     String bin = "bin_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
+                    String defaultVim = TermService.getAPPFILES()+"/bin/vim.default";
+                    String vimsh = TermService.getAPPFILES()+"/bin/vim";
+                    if ((!new File(defaultVim).exists()) || (!new File(vimsh).exists())) {
+                        shell("cat "+TermService.getAPPFILES()+"/usr/etc/src.vim.default"+" > "+vimsh);
+                        shell("chmod 755 "+ vimsh);
+                    }
                     bin = "vim_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
