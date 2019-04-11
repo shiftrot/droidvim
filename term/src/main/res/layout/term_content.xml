@@ -168,6 +168,15 @@
                         android:minWidth="56dp"
                         android:text="▶"/>
                     <Button
+                        android:id="@+id/button_colon"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="56dp"
+                        android:text=":"/>
+                    <Button
                         android:id="@+id/button_softkeyboard"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -176,24 +185,6 @@
                         android:minHeight="44dp"
                         android:minWidth="56dp"
                         android:text="◇"/>
-                    <Button
-                        android:id="@+id/button_page_up"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="44dp"
-                        android:minWidth="56dp"
-                        android:text="PU"/>
-                    <Button
-                        android:id="@+id/button_page_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="44dp"
-                        android:minWidth="56dp"
-                        android:text="PD"/>
                     <Button
                         android:id="@+id/button_backspace"
                         android:focusable="false"
@@ -213,6 +204,24 @@
                         android:minWidth="56dp"
                         android:text="↲"/>
                     <Button
+                        android:id="@+id/button_page_up"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="56dp"
+                        android:text="PU"/>
+                    <Button
+                        android:id="@+id/button_page_down"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="56dp"
+                        android:text="PD"/>
+                    <Button
                         android:id="@+id/button_i"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -221,33 +230,6 @@
                         android:minHeight="44dp"
                         android:minWidth="56dp"
                         android:text="i"/>
-                    <Button
-                        android:id="@+id/button_colon"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="44dp"
-                        android:minWidth="56dp"
-                        android:text=":"/>
-                    <Button
-                        android:id="@+id/button_invert"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="44dp"
-                        android:minWidth="56dp"
-                        android:text="○"/>
-                    <Button
-                        android:id="@+id/button_menu_user"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="44dp"
-                        android:minWidth="56dp"
-                        android:text="□"/>
                     <Button
                         android:id="@+id/button_slash"
                         android:focusable="false"
@@ -293,6 +275,24 @@
                         android:minHeight="44dp"
                         android:minWidth="56dp"
                         android:text="|"/>
+                    <Button
+                        android:id="@+id/button_invert"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="56dp"
+                        android:text="○"/>
+                    <Button
+                        android:id="@+id/button_menu_user"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="56dp"
+                        android:text="□"/>
                     <Button
                         android:id="@+id/button_vim_paste"
                         android:focusable="false"
