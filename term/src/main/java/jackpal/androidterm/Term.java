@@ -396,6 +396,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private Handler mHandler = new Handler();
     private SyncFileObserver mSyncFileObserver = null;
+    private static String BASH = "bash\n";
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -558,7 +559,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setExtraButton() {
         Button button = (Button)findViewById(R.id.drawer_extra_button);
-        int visibilty = View.GONE;
+        int visibilty = View.VISIBLE;
+        if (!FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
     }
 
@@ -1109,11 +1111,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             TermVimInstaller.installVim(Term.this, new Runnable(){
                 @Override
                 public void run() {
+                    final String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
+                            new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
+                            ? BASH : "";
                     if (vimApp) {
                         if (getCurrentTermSession() != null) {
-                            sendKeyStrings("vim.app\n", false);
+                            sendKeyStrings(bash+"vim.app\n", false);
                         } else {
-                            ShellTermSession.setPostCmd("vim.app\n");
+                            ShellTermSession.setPostCmd(bash+"vim.app\n");
                         }
                     }
                     permissionCheckExternalStorage();
@@ -1121,6 +1126,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             });
         } else {
             showVimTips();
+            final String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
+                    new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
+                    ? BASH : "";
+            cmd = cmd.replaceAll("\n(-?vim.app)", "\n"+bash+"$1");
             permissionCheckExternalStorage();
         }
         mFirst = false;
@@ -2330,10 +2339,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             TermVimInstaller.doInstallVim(Term.this, new Runnable(){
                 @Override
                 public void run() {
+                    String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
+                            new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
+                            ? BASH : "";
+                    String cmd = bash+riCmd;
                     if (getCurrentTermSession() != null) {
-                        sendKeyStrings(riCmd, false);
+                        sendKeyStrings(cmd, false);
                     } else {
-                        ShellTermSession.setPostCmd(riCmd);
+                        ShellTermSession.setPostCmd(cmd);
                     }
                     permissionCheckExternalStorage();
                 }

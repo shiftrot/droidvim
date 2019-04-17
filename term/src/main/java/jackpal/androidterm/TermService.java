@@ -233,6 +233,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     private static String mTMPDIR;
     private static String mHOME;
     public String getInitialCommand(String cmd, boolean bFirst) {
+        if (cmd == null || cmd.equals("")) return cmd;
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1"+ replace);
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
