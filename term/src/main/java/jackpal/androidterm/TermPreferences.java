@@ -441,15 +441,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             return edit.putLong(key, (Long) val);
         else if (val instanceof String) {
             String loadVal = (String)val;
-            if (key.equals("lib_sh_path")) {
-                if (!new File(loadVal).canRead()) loadVal = new File(getApplicationContext().getApplicationInfo().nativeLibraryDir) + "/libsh.so";
-                return edit.putString(key, loadVal);
-            }
-            if (key.equals("shell_path")) {
-                loadVal = loadVal.replaceFirst(" .*$", "");
-                if (!loadVal.equals("") && !new File(loadVal).canRead()) loadVal = AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
-                return edit.putString(key, loadVal);
-            }
             if (key.equals("home_path")) {
                 if (!new File(loadVal).canWrite()) {
                     String defValue;

@@ -84,7 +84,6 @@ public class TermSettings {
     private boolean mDoPathExtensions;
     private boolean mAllowPathPrepend;
     private String mHomePath;
-    private String mLibShPath;
 
     private String mPrependPath = null;
     private String mAppendPath = null;
@@ -145,7 +144,7 @@ public class TermSettings {
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
     private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive_filepicker";
     private static final String HTML_VIEWER_MODE_KEY = "html_viewer_mode";
-    private static final String SHELL_KEY = "shell_path";
+    private static final String SHELL_KEY = "android_shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
     private static final String INTENTCOMMAND_KEY = "intent_command";
     private static final String TERMTYPE_KEY = "termtype";
@@ -154,7 +153,6 @@ public class TermSettings {
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
     private static final String HOMEPATH_KEY = "home_path";
-    private static final String LIB_SHPATH_KEY = "lib_sh_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String IGNORE_XON = "ignore_xoff";
     private static final String BACK_AS_ESC = "back_as_esc";
@@ -291,7 +289,7 @@ public class TermSettings {
         mUseCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
         mUseDirectCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
         mFailsafeShell = res.getString(R.string.pref_shell_default);
-        // the mShell default is set dynamically in readPrefs()
+        mShell = res.getString(R.string.pref_shell_default);
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
         mIntentCommand = res.getString(R.string.pref_intent_command_default);
         mTermType = res.getString(R.string.pref_termtype_default);
@@ -366,7 +364,6 @@ public class TermSettings {
         mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
-        mLibShPath = readStringPref(LIB_SHPATH_KEY, mLibShPath);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mIgnoreXoff = readBooleanPref(IGNORE_XON, mIgnoreXoff);
         mBackAsEsc = readBooleanPref(BACK_AS_ESC, mBackAsEsc);
@@ -686,8 +683,6 @@ public class TermSettings {
     }
 
     public String getShell() {
-        if (mShell == null) return AndroidCompat.SDK >= 24 ? "" : "/system/bin/sh -";
-        if  (AndroidCompat.SDK >= 24 && mShell.matches("/system/bin/sh.*")) return "";
         return mShell;
     }
 
@@ -747,7 +742,4 @@ public class TermSettings {
         return mHomePath;
     }
 
-    public String getLibShPath() {
-        return mLibShPath;
-    }
 }

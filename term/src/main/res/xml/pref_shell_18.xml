@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        android:key="shell_path"
+        android:key="android_shell_path"
         android:defaultValue="@string/pref_shell_default"
         android:title="@string/title_shell_preference"
         android:summary="@string/summary_shell_preference"

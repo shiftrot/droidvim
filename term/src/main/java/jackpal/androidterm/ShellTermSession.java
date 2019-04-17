@@ -118,7 +118,8 @@ public class ShellTermSession extends GenericTermSession {
             envCmd[0] = "";
         }
 
-        mProcId = createSubprocess(settings.getShell(), envCmd);
+        String shell = settings.getShell();
+        mProcId = createSubprocess(shell, envCmd);
     }
 
     private String checkPath(String path) {
@@ -162,11 +163,8 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     private int createSubprocess(String shell, String[] env) throws IOException {
-        if ("system".equals(shell)) {
+        if (shell == null || "system".equals(shell)  || "".equals(shell) || !shell.matches("/.*")) {
             shell = "/system/bin/sh -";
-        } else if (shell == null || shell.equals("") || (!shell.matches("/.*"))) {
-            shell = (AndroidCompat.SDK >= 21) ? mSettings.getLibShPath() : mSettings.getFailsafeShell();
-            if (shell == null) shell = "/system/bin/sh -";
         }
 
         ArrayList<String> argList = parse(shell);
