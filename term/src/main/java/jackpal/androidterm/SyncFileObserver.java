@@ -290,7 +290,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         }
     }
 
-    private void hashErrorDialog(Activity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
+    private void hashErrorDialog(final Activity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -329,7 +329,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void writeErrorDialog(Activity activity) {
+    private void writeErrorDialog(final Activity activity) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -364,7 +364,7 @@ class SyncFileObserver extends RecursiveFileObserver {
     @SuppressLint("NewApi")
     private void confirmDelete(final Uri uri, final File path, final ContentResolver contentResolver) {
         if (!mDeleteFromStorage || mObjectActivity == null) return;
-        Activity activity = (Activity) mObjectActivity;
+        final Activity activity = (Activity) mObjectActivity;
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
             return;
         }

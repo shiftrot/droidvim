@@ -24,10 +24,6 @@ android {
             }
         }
 
-        compileOptions {
-            sourceCompatibility 1.8
-            targetCompatibility 1.8
-        }
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -45,14 +41,14 @@ android {
 
     buildTypes {
         release {
-            shrinkResources = true
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
+    flavorDimensions "default"
     productFlavors {
-        flavorDimensions "default"
         origin {
             dimension "default"
             versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date()) + ".dev"

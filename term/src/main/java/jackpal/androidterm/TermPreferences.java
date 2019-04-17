@@ -941,7 +941,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 });
                 final String STARTUP_KEY = "startup_dir_chooser";
                 Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
-                Activity activity = getActivity();
+                final Activity activity = getActivity();
                 final ChooserDialog.Result r = new ChooserDialog.Result() {
                     @Override
                     public void onChoosePath(String path, File pathFile) {
