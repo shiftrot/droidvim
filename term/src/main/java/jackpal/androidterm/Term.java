@@ -1507,7 +1507,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         menu.removeItem(R.id.menu_copy_screen);
         menu.removeItem(R.id.menu_new_window);
         menu.removeItem(R.id.menu_plus);
-        menu.removeItem(R.id.menu_reset);
+        // menu.removeItem(R.id.menu_reset);
         menu.removeItem(R.id.menu_send_email);
         menu.removeItem(R.id.menu_special_keys);
         menu.removeItem(R.id.menu_toggle_wakelock);
