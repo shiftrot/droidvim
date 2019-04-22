@@ -1066,6 +1066,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (FLAVOR_VIM && mSyncFileObserver != null) mSyncFileObserver.clearCache(MAX_SYNC_FILES);
             mKeepScreenHandler.removeCallbacksAndMessages(null);
         }
+        new File(TermService.getAPPFILES()+"/.clipboard").delete();
         File cacheDir = new File(INTENT_CACHE_DIR);
         SyncFileObserver.delete(cacheDir);
         mTermService = null;
@@ -2331,7 +2332,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 cmd += "\u001b"+RemoteInterface.IntentCommand+"\n";
             }
             if (RemoteInterface.ShareText != null) {
-                String filename = mSettings.getHomePath()+"/.clipboard";
+                String filename = TermService.getAPPFILES()+"/.clipboard";
                 Term.writeStringToFile(filename, "\n"+RemoteInterface.ShareText.toString());
                 cmd += "\u001b"+":ATEMod _paste\n";
             }
@@ -2415,7 +2416,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             break;
         case 0xffff0003:
-            copyFileToClipboard(mSettings.getHomePath()+"/.clipboard");
+            copyFileToClipboard(TermService.getAPPFILES()+"/.clipboard");
             return true;
         case 0xffff0004:
             setEditTextView(0);
@@ -2441,7 +2442,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 alert(Term.this.getString(R.string.toast_clipboard_error));
                 return true;
             }
-            copyClipboardToFile(mSettings.getHomePath()+"/.clipboard");
+            copyClipboardToFile(TermService.getAPPFILES()+"/.clipboard");
             if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
             return true;
         case 0xffff1006:
