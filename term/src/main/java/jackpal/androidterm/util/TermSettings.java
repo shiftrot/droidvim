@@ -17,6 +17,7 @@
 package jackpal.androidterm.util;
 
 import jackpal.androidterm.R;
+import jackpal.androidterm.TermService;
 import jackpal.androidterm.compat.AndroidCompat;
 
 import android.content.SharedPreferences;
@@ -739,6 +740,7 @@ public class TermSettings {
     }
 
     public String getHomePath() {
+        if (mHomePath == null) return TermService.getHOME();
         return mHomePath;
     }
 
