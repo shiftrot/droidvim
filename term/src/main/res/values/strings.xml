@@ -206,6 +206,9 @@
    <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts.</string>
    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
 
+   <string name="title_force_flush_drawtext_preference">Use proportional font</string>
+   <string name="summary_force_flush_drawtext_preference">Fix screen glitches on proportional font or non-single-byte character set. Drawing speed will be slower.</string>
+
    <string name="title_color_preference">Colors</string>
    <string name="summary_color_preference">Choose terminal color.</string>
    <string name="dialog_title_color_preference">Terminal color</string>

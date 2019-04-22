@@ -2295,7 +2295,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     static public void setForceFlush(boolean flush) {
-        int chr = flush ? -1 : 128;
+        int chr = flush ? 0 : 128;
         TranscriptScreen.setForceFlush(chr);
     }
 

@@ -197,6 +197,9 @@
    <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う.</string>
    <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
 
+   <string name="title_force_flush_drawtext_preference">プロポーショナルフォントを使用</string>
+   <string name="summary_force_flush_drawtext_preference">プロポーショナルフォントを使用しても画面が乱れなくなります. 描画速度は遅くなります.</string>
+
    <string name="title_color_preference">色</string>
    <string name="summary_color_preference">端末の色を選択する</string>
    <string name="dialog_title_color_preference">端末の色</string>

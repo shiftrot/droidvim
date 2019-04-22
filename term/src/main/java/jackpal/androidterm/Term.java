@@ -1235,7 +1235,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         EmulatorView.setCursorHeight(mSettings.getCursorStyle());
         EmulatorView.setCursorBlink(mSettings.getCursorBlink());
-        EmulatorView.setForceFlush(mSettings.getCursorStyle() >= 2);
+        EmulatorView.setForceFlush(mSettings.getForceFlushDrawText());
         EmulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
 
         if (mTermSessions != null) {

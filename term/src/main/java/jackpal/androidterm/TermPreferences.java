@@ -821,7 +821,11 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_font);
+                if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                    addPreferencesFromResource(R.xml.pref_font);
+                } else {
+                    addPreferencesFromResource(R.xml.pref_font_20);
+                }
                 final String FONT_FILE_PICKER_KEY = "fontfile_picker";
                 Preference fontPrefs = getPreferenceScreen().findPreference(FONT_FILE_PICKER_KEY);
                 fontPrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

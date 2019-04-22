@@ -47,6 +47,7 @@ public class TermSettings {
     private String mFontFile;
     private int mAmbiWidth;
     private boolean mHwAcceleration;
+    private boolean mForceFlushDrawText;
     private int mTheme;
     private int mColorId;
     private int mKeepScreenTime;
@@ -116,6 +117,7 @@ public class TermSettings {
     private static final String FONTLEADING_KEY = "fontleading";
     private static final String FONTFILE_KEY = "fontfile";
     private static final String AMBIWIDTH_KEY = "ambiwidth";
+    private static final String FORCE_FLUSH_DRAW_KEY = "force_flush_drawtext";
     private static final String THEME_KEY = "theme";
     private static final String KEEP_SCREEN_AT_STARTUP_KEY = "keepscreen_at_startup";
     private static final String KEEP_SCREEN_TIME_KEY = "keepscreentime";
@@ -267,6 +269,7 @@ public class TermSettings {
         mIMEColor = Integer.parseInt(res.getString(R.string.pref_composingtext_default));
         mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
         mHwAcceleration = res.getBoolean(R.bool.pref_hw_acceleration_by_default);
+        mForceFlushDrawText = res.getBoolean(R.bool.pref_force_flush_drawtext);
         mActionBarIconAction = Integer.parseInt(res.getString(R.string.pref_actionbar_diamond_default));
         mActionBarPlusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_plus_default));
         mActionBarMinusAction = Integer.parseInt(res.getString(R.string.pref_actionbar_minus_default));
@@ -334,6 +337,7 @@ public class TermSettings {
         mIMEColor = readIntPref(IMECOLOR_KEY, mIMEColor, 100);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mHwAcceleration = readBooleanPref(HWACCELERATION_KEY, mHwAcceleration);
+        mForceFlushDrawText = readBooleanPref(FORCE_FLUSH_DRAW_KEY, mForceFlushDrawText);
         mActionBarIconAction = readIntPref(ACTIONBAR_ICON_KEY, mActionBarIconAction, ACTIONBAR_KEY_MAX);
         mActionBarPlusAction = readIntPref(ACTIONBAR_PLUS_KEY, mActionBarPlusAction, ACTIONBAR_KEY_MAX);
         mActionBarMinusAction = readIntPref(ACTIONBAR_MINUS_KEY, mActionBarMinusAction, ACTIONBAR_KEY_MAX);
@@ -477,6 +481,10 @@ public class TermSettings {
 
     public int getAmbiWidth() {
         return mAmbiWidth;
+    }
+
+    public boolean getForceFlushDrawText() {
+        return mForceFlushDrawText;
     }
 
     public boolean getHwAcceleration() {
