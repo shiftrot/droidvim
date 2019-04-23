@@ -3454,11 +3454,31 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             if (view != null) view.requestFocusFromTouch();
         }
+        setEditTextViewSize();
+        if (mViewFlipper != null) mViewFlipper.setEditTextView(visibility == View.VISIBLE);
     }
 
     private void doWarningEditTextView() {
         if (!mVimFlavor) return;
         doWarningDialog(this.getString(R.string.edit_text_view_warning_title), this.getString(R.string.edit_text_view_warning), "do_warning_edit_text_view", true);
+    }
+
+    final float SCALE_VIEW = (float) 1.28;
+    private void setEditTextViewSize() {
+        int size = 0;
+        if (mEditTextView) {
+            // FIXME: cannot get EditText size at first time.
+            size = findViewById(R.id.oneline_text_box).getHeight();
+            if (size == 0) {
+                size = findViewById(R.id.view_function_bar).getHeight();
+                if (size <= 0) {
+                    final TextView  textView = (TextView)findViewById((R.id.text_input));
+                    float sp = SCALE_VIEW * textView.getTextSize() * getApplicationContext().getResources().getDisplayMetrics().scaledDensity;
+                    size = (int) Math.ceil(sp);
+                }
+            }
+        }
+       if (mViewFlipper != null) mViewFlipper.setEditTextViewSize(size);
     }
 
     private static int mFunctionBar = -1;
@@ -3470,6 +3490,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         else mFunctionBar = mode;
         if (mAlreadyStarted) updatePrefs();
+    }
+
+    private void setFunctionBarSize() {
+        int size;
+        size = findViewById(R.id.view_function_bar).getHeight();
+        if (mFunctionBarId == 1) size += size;
+        if (mViewFlipper != null) mViewFlipper.setFunctionBarSize(size);
     }
 
     class FunctionKey {
@@ -3663,6 +3690,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             findViewById(R.id.view_function_bar).setVisibility(visibility);
             findViewById(R.id.view_function_bar1).setVisibility(visibility);
             findViewById(R.id.view_function_bar2).setVisibility(visibility);
+            setFunctionBarSize();
+            mViewFlipper.setFunctionBar(false);
             return;
         }
 
@@ -3676,6 +3705,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.view_function_bar1).setVisibility(visibility);
         visibility = (mFunctionBar == 1 && mFunctionBarId == 1) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar2).setVisibility(visibility);
+        setFunctionBarSize();
+        mViewFlipper.setFunctionBar(mFunctionBar == 1);
     }
 
     @SuppressLint("NewApi")
