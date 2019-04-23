@@ -238,7 +238,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void documentTreePicker(int requestCode) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            startActivityForResult(intent, requestCode);
+            doStartActivityForResult(intent, requestCode);
         }
     }
 
@@ -265,7 +265,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     bld.setIcon(android.R.drawable.ic_dialog_info);
                     bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
                 } else {
-                    bld.setIcon(android.R.drawable.stat_notify_error);
+                    bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setMessage(activity.getString(R.string.invalid_directory));
                 }
                 bld.setPositiveButton(activity.getString(android.R.string.ok), null);
@@ -278,11 +278,16 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void directoryPicker(String mes, final ChooserDialog.Result r) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setTitle(getString(R.string.select_directory_message));
         bld.setMessage(mes);
         bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                internalStoragePicker(r);
+                if (USE_DOCUMENT_TREE_PICKER) {
+                    mTermPreference.documentTreePicker(REQUEST_HOME_DIRECTORY);
+                } else {
+                    internalStoragePicker(r);
+                }
             }
         });
         bld.setNegativeButton(this.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
@@ -366,7 +371,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("text/xml");
-                startActivityForResult(intent, REQUEST_PREFS_READ_PICKER);
+                doStartActivityForResult(intent, REQUEST_PREFS_READ_PICKER);
             }
         });
         bld.setNegativeButton(this.getString(android.R.string.no), null);
@@ -480,7 +485,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("application/octet-stream");
-                startActivityForResult(intent, REQUEST_FONT_PICKER);
+                doStartActivityForResult(intent, REQUEST_FONT_PICKER);
             }
         });
         bld.setNegativeButton(this.getString(android.R.string.no), null);
@@ -495,8 +500,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         bld.create().show();
     }
 
-    public static final boolean DOCUMENT_TREE_PICKER_VER = (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-    public static final boolean USE_DOCUMENT_TREE_PICKER = false && DOCUMENT_TREE_PICKER_VER;
+    public static final boolean USE_DOCUMENT_TREE_PICKER = (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     public static final int REQUEST_FONT_PICKER          = 16;
     public static final int REQUEST_PREFS_READ_PICKER    = REQUEST_FONT_PICKER + 1;
     public static final int REQUEST_STORAGE_FONT_PICKER  = REQUEST_FONT_PICKER + 2;
@@ -570,26 +574,20 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     String path;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         path = getDirectory(uri);
-                        File pathFile;
                         final Activity activity = this;
                         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         final SharedPreferences.Editor editor = prefs.edit();
                         AlertDialog.Builder bld = new AlertDialog.Builder(this);
                         if (path == null) {
-                            path = TermService.getAPPFILES() + "/home";
-                            pathFile = new File(path);
-                            if (!pathFile.exists()) pathFile.mkdir();
-                            editor.putString("home_path", path);
-                            editor.apply();
-                            bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
+                            bld.setMessage(activity.getString(R.string.invalid_directory));
                         } else if (new File(path).canWrite()) {
                             editor.putString("home_path", path);
                             editor.apply();
                             bld.setIcon(android.R.drawable.ic_dialog_info);
                             bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
                         } else {
-                            bld.setIcon(android.R.drawable.stat_notify_error);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
                             bld.setMessage(activity.getString(R.string.invalid_directory));
                         }
                         bld.setPositiveButton(this.getString(android.R.string.ok), null);
@@ -636,6 +634,13 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             default:
                 break;
         }
+    }
+
+    private void doStartActivityForResult(Intent intent, int requestCode) {
+        intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+        intent.putExtra("android.content.extra.FANCY", true);
+        intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+        startActivityForResult(intent, requestCode);
     }
 
     public static String getDirectory(Uri uri) {
@@ -919,10 +924,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         if (mTermPreference != null) {
-                            if (USE_DOCUMENT_TREE_PICKER) {
-                                mTermPreference.documentTreePicker(REQUEST_HOME_DIRECTORY);
-                                return true;
-                            }
                             mTermPreference.directoryPicker(getActivity().getString(R.string.choose_home_directory_message));
                         }
                         return true;
@@ -945,7 +946,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             bld.create().show();
                         } else {
                             AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                            bld.setIcon(android.R.drawable.stat_notify_error);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
                             bld.setMessage(activity.getString(R.string.invalid_directory));
                             bld.setPositiveButton(activity.getString(android.R.string.ok), null);
                             bld.create().show();

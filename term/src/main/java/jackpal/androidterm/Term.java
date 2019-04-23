@@ -182,6 +182,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final int REQUEST_FILE_PICKER = 2;
     public static final int REQUEST_FILE_DELETE = 3;
+    public static final int REQUEST_DOCUMENT_TREE = 10;
+
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -783,7 +785,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setPackage(appId);
                 intent.setType("*/*");
-                startActivityForResult(intent, REQUEST_FILE_PICKER);
+                doStartActivityForResult(intent, REQUEST_FILE_PICKER);
             }
         } catch (Exception e) {
             try {
@@ -1879,12 +1881,26 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    private void documentTreePicker(int requestCode) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            doStartActivityForResult(intent, requestCode);
+        }
+    }
+
+    private void doStartActivityForResult(Intent intent, int requestCode) {
+        intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+        intent.putExtra("android.content.extra.FANCY", true);
+        intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+        startActivityForResult(intent, requestCode);
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void intentFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        if (checkImplicitIntent(this, intent)) startActivityForResult(intent, REQUEST_FILE_PICKER);
+        if (checkImplicitIntent(this, intent)) doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
     private void chooseFilePicker() {
@@ -1930,7 +1946,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        if (checkImplicitIntent(this, intent)) startActivityForResult(intent, REQUEST_FILE_DELETE);
+        if (checkImplicitIntent(this, intent)) doStartActivityForResult(intent, REQUEST_FILE_DELETE);
     }
 
     private void confirmDelete(final Uri uri) {
@@ -1976,7 +1992,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
-        if (checkImplicitIntent(this, intent)) startActivityForResult(intent, REQUEST_FILE_PICKER);
+        if (checkImplicitIntent(this, intent)) doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
     private void fileReload() {
@@ -2027,6 +2043,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         switch (request) {
+            case REQUEST_DOCUMENT_TREE:
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                }
+                break;
             case REQUEST_FILE_DELETE:
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
