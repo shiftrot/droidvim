@@ -843,7 +843,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             for (int i = 0; i < permissions.length ; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        // do something
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                alert(getString(R.string.storage_permission_granted));
+                            }
+                        });
                     } else {
                         if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                             doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);

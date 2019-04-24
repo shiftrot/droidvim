@@ -405,6 +405,7 @@
   <string name="launch_app">%s (アプリ起動)</string>
   <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
   <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
+  <string name="storage_permission_granted">ストレージ権限が有効になりました.\n設定を有効にするため, このアプリを再起動してください.</string>
   <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
   <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
