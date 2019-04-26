@@ -4009,7 +4009,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    public void onDebugButtonClicked(View arg0) {
+    public void onDebugButtonClicked(final View arg0) {
     }
 
     private boolean mOnExtraButtonClicked = false;
@@ -4071,21 +4071,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     };
 
     static private class KeyEventSender extends AsyncTask<Integer, Integer, Integer> {
-      @Override
-      protected Integer doInBackground(Integer... params) {
-          try {
-              Instrumentation inst = new Instrumentation();
-              if (params[0] == KEYEVENT_SENDER_SHIFT_SPACE) {
-                  inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
-              } else if (params[0] == KEYEVENT_SENDER_ALT_SPACE) {
-                  inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
-              } else {
-                  inst.sendKeyDownUpSync(params[0]);
-              }
-          } catch (Exception e) {
-              // Do nothing
-          }
-          return null;
-      }
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            try {
+                Instrumentation inst = new Instrumentation();
+                if (params[0] == KEYEVENT_SENDER_SHIFT_SPACE) {
+                    inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
+                } else if (params[0] == KEYEVENT_SENDER_ALT_SPACE) {
+                    inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
+                } else {
+                    inst.sendKeyDownUpSync(params[0]);
+                }
+            } catch (Exception e) {
+                // Do nothing
+            }
+            return null;
+        }
     }
 }
