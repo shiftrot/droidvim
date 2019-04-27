@@ -77,7 +77,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
@@ -744,21 +743,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean intentMainActivity(String app) {
         if (app == null || app.equals("")) return false;
-        PackageManager pm = this.getApplicationContext().getPackageManager();
-        Intent intent = pm.getLaunchIntentForPackage(app);
-        if (intent == null) {
-            intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            try {
-                String className;
-                className = Objects.requireNonNull(Objects.requireNonNull(pm.getLaunchIntentForPackage(app)).getComponent()).getClassName()+"";
-                intent.setClassName(app, Objects.requireNonNull(className));
-            } catch (Exception e) {
-                alert(app+"\n"+this.getString(R.string.external_app_activity_error));
-                return true;
-            }
+        try {
+            PackageManager pm = this.getApplicationContext().getPackageManager();
+            Intent intent = pm.getLaunchIntentForPackage(app);
+            if (intent == null) throw new NullPointerException();
+            startActivity(intent);
+        } catch (Exception e) {
+            alert(app+"\n"+this.getString(R.string.external_app_activity_error));
+            return true;
         }
-        startActivity(intent);
         return true;
     }
 
