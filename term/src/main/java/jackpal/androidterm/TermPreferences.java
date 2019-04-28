@@ -500,7 +500,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         bld.create().show();
     }
 
-    public static final boolean USE_DOCUMENT_TREE_PICKER = (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+    public static final boolean USE_DOCUMENT_TREE_PICKER = false && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     public static final int REQUEST_FONT_PICKER          = 16;
     public static final int REQUEST_PREFS_READ_PICKER    = REQUEST_FONT_PICKER + 1;
     public static final int REQUEST_STORAGE_FONT_PICKER  = REQUEST_FONT_PICKER + 2;
@@ -549,7 +549,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             case REQUEST_STARTUP_DIRECTORY:
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
-                    String path = getDirectory(uri);
+                    String path = getDirectory(this, uri);
                     if (path != null && new File(path).canWrite()) {
                         ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(getApplicationContext());
                         clip.setText(path);
@@ -573,7 +573,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     Uri uri = data.getData();
                     String path;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        path = getDirectory(uri);
+                        path = getDirectory(this, uri);
                         final Activity activity = this;
                         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         final SharedPreferences.Editor editor = prefs.edit();
@@ -643,9 +643,11 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         startActivityForResult(intent, requestCode);
     }
 
-    public static String getDirectory(Uri uri) {
+    public static String getDirectory(Activity activity, Uri uri) {
         if (uri == null) return null;
         String path = null;
+        path = UriToPath.getPath(activity.getApplicationContext(), uri);
+        if (path != null && new File(path).canWrite()) return path;
         String scheme = uri.getScheme();
         if ("file".equals(scheme)) {
             path = uri.getPath();
@@ -660,7 +662,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         if (split.length == 1) return Environment.getExternalStorageDirectory().getAbsolutePath();
                         return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + split[1];
                     } else {
-                        return "/stroage/" + type +  "/" + split[1];
+                        try {
+                             if (split.length > 1) {
+                                 return "/stroage/" + type +  "/" + split[1];
+                             } else {
+                                 return "/stroage/" + type;
+                             }
+                        } catch (Exception e) {
+                            return null;
+                        }
                     }
                 }
             } catch (UnsupportedEncodingException e) {
