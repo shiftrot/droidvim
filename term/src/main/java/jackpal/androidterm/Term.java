@@ -3040,11 +3040,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doShareIntentText(String text) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-        sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent, "Share"));
+        try {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, "Share"));
+        } catch (Exception e) {
+            complain("ShareIntent Text: " + e.toString());
+        }
     }
 
     private void doShareAll() {
