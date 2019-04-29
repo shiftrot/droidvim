@@ -585,7 +585,7 @@ class UnicodeTranscript {
         return 1;
     }
     // from vim/src/mbyte.c
-    private static final int AMBIGUOUS_WIDTH[][] =
+    private static final int ambiguous[][] =
     {
         {0x00a1, 0x00a1},
         {0x00a4, 0x00a4},
@@ -769,7 +769,7 @@ class UnicodeTranscript {
     };
 
     // from vim/src/mbyte.c
-    private static final int[][] DOUBLE_WIDTH =
+    private static final int[][] doublewidth =
     {
         {0x1100, 0x115f},
         {0x231a, 0x231b},
@@ -813,7 +813,7 @@ class UnicodeTranscript {
         {0x3000, 0x303e},
         {0x3041, 0x3096},
         {0x3099, 0x30ff},
-        {0x3105, 0x312e},
+        {0x3105, 0x312f},
         {0x3131, 0x318e},
         {0x3190, 0x31ba},
         {0x31c0, 0x31e3},
@@ -832,10 +832,12 @@ class UnicodeTranscript {
         {0xfe68, 0xfe6b},
         {0xff01, 0xff60},
         {0xffe0, 0xffe6},
-        {0x16fe0, 0x16fe1},
-        {0x17000, 0x187ec},
+        {0x16fe0, 0x16fe3},
+        {0x17000, 0x187f7},
         {0x18800, 0x18af2},
         {0x1b000, 0x1b11e},
+        {0x1b150, 0x1b152},
+        {0x1b164, 0x1b167},
         {0x1b170, 0x1b2fb},
         {0x1f004, 0x1f004},
         {0x1f0cf, 0x1f0cf},
@@ -867,20 +869,26 @@ class UnicodeTranscript {
         {0x1f680, 0x1f6c5},
         {0x1f6cc, 0x1f6cc},
         {0x1f6d0, 0x1f6d2},
+        {0x1f6d5, 0x1f6d5},
         {0x1f6eb, 0x1f6ec},
-        {0x1f6f4, 0x1f6f8},
-        {0x1f910, 0x1f93e},
-        {0x1f940, 0x1f94c},
-        {0x1f950, 0x1f96b},
-        {0x1f980, 0x1f997},
-        {0x1f9c0, 0x1f9c0},
-        {0x1f9d0, 0x1f9e6},
+        {0x1f6f4, 0x1f6fa},
+        {0x1f7e0, 0x1f7eb},
+        {0x1f90d, 0x1f971},
+        {0x1f973, 0x1f976},
+        {0x1f97a, 0x1f9a2},
+        {0x1f9a5, 0x1f9aa},
+        {0x1f9ae, 0x1f9ca},
+        {0x1f9cd, 0x1f9ff},
+        {0x1fa70, 0x1fa73},
+        {0x1fa78, 0x1fa7a},
+        {0x1fa80, 0x1fa82},
+        {0x1fa90, 0x1fa95},
         {0x20000, 0x2fffd},
         {0x30000, 0x3fffd}
     };
 
     // * based on http://unicode.org/emoji/charts/emoji-list.html */
-    private static final int[][] EMOJI_WIDTH = {
+    private static final int[][] emoji_width = {
         {0x1f1e6, 0x1f1ff},
         {0x1f321, 0x1f321},
         {0x1f324, 0x1f32c},
@@ -923,15 +931,15 @@ class UnicodeTranscript {
     };
 
     private static int vimCharWidth(int codePoint) {
-        if (intable(codePoint, DOUBLE_WIDTH)) return 2;
-        if (intable(codePoint, AMBIGUOUS_WIDTH)) return mAmbiWidth;
-        if (intable(codePoint, EMOJI_WIDTH)) return 2;
+        if (intable(codePoint, doublewidth)) return 2;
+        if (intable(codePoint, ambiguous)) return mAmbiWidth;
+        if (intable(codePoint, emoji_width)) return 2;
         return 1;
     }
 
     private static int unicode9CharWidth(int codePoint) {
-        if (intable(codePoint, DOUBLE_WIDTH)) return 2;
-        if (intable(codePoint, AMBIGUOUS_WIDTH)) return mAmbiWidth;
+        if (intable(codePoint, doublewidth)) return 2;
+        if (intable(codePoint, ambiguous)) return mAmbiWidth;
         return 1;
     }
 
