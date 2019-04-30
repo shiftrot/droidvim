@@ -42,7 +42,7 @@
    <bool name="pref_ignore_xoff_default">true</bool>
    <bool name="pref_back_as_esc_default">false</bool>
    <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
-   <string name="pref_initialcommand_default" translatable="false">cd $HOME\nexport PATH=$APPFILES/bin:$APPFILES/usr/bin:$PATH\nexport TERMINFO=$APPFILES/terminfo\n-clear</string>
+   <string name="pref_initialcommand_default" translatable="false">cd $HOME\nexport PATH=%PATH%:$PATH\nexport TERMINFO=%TERMINFO%\n-clear</string>
    <string name="pref_intent_command_default" translatable="false"></string>
    <string name="pref_termtype_default" translatable="false">screen-256color</string>
    <bool name="pref_close_window_on_process_exit_default">true</bool>

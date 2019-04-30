@@ -232,8 +232,16 @@ public class TermService extends Service implements TermSession.FinishCallback
     private static String mLD_LIBRARY_PATH;
     private static String mTMPDIR;
     private static String mHOME;
+
     public String getInitialCommand(String cmd, boolean bFirst) {
         if (cmd == null || cmd.equals("")) return cmd;
+
+        String mPATH = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin";
+        String mTERMINFO=mAPPFILES+"/terminfo";
+        String mVIMRUNTIME=mAPPEXTFILES+"/runtime";
+        String mVIM=mVIMRUNTIME+"/etc";
+        String mSTARTUPDIR=mEXTSTORAGE;
+
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1"+ replace);
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
@@ -242,6 +250,11 @@ public class TermService extends Service implements TermSession.FinishCallback
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
+        cmd = cmd.replaceAll("%PATH%", mPATH);
+        cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUPDIR);
+        cmd = cmd.replaceAll("%TERMINFO%", mTERMINFO);
+        cmd = cmd.replaceAll("%VIMRUNTIME%", mVIMRUNTIME);
+        cmd = cmd.replaceAll("%VIM%", mVIM);
         cmd = cmd.replaceAll("\n#.*\n|\n\n", "\n");
         cmd = cmd.replaceAll("^#.*\n|\n#.*$|\n$", "");
         return cmd;
