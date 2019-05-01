@@ -50,7 +50,7 @@
     <item android:id="@+id/menu_edit_vimrc"
         android:title="@string/edit_vimrc" />
     <item android:id="@+id/menu_paste"
-        android:title="@string/paste" />
+        android:title="@string/clipboard" />
     <item android:id="@+id/menu_share_text"
         android:title="@string/share_title" />
     <item android:id="@+id/menu_screen"

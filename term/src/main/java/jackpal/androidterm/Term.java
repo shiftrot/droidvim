@@ -3108,18 +3108,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private static boolean mVimPaste = false;
     private void doPaste() {
-        if (mVimPaste && mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-            sendKeyStrings("\"*p", false);
-            return;
-        }
-        if (!canPaste()) {
-            alert(Term.this.getString(R.string.toast_clipboard_error));
-            return;
-        }
         doWarningBeforePaste();
     }
 
     private void doTermPaste() {
+        if (!canPaste()) {
+            alert(Term.this.getString(R.string.toast_clipboard_error));
+            return;
+        }
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
         if (clip == null) return;
@@ -3134,27 +3130,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doTermPaste();
             return;
         }
-        boolean warning = getPrefBoolean(Term.this, "do_warning_before_paste", true);
-        if (!warning) {
-            doTermPaste();
-            return;
-        }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setTitle(R.string.clipboard_warning_title);
             builder.setMessage(R.string.clipboard_warning);
-            LayoutInflater flater = LayoutInflater.from(this);
-            View view = flater.inflate(R.layout.alert_checkbox, null);
-            builder.setView(view);
-            final CheckBox dontShowAgain = (CheckBox)view.findViewById(R.id.dont_show_again);
-            dontShowAgain.setChecked(false);
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getString(R.string.paste), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
-                    if (dontShowAgain.isChecked()) {
-                        setPrefBoolean(Term.this, "do_warning_before_paste", false);
-                    }
                     doTermPaste();
+                }
+            });
+            builder.setNeutralButton(getString(R.string.share_title), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    shareIntentTextDialog();
                 }
             });
             builder.setNegativeButton(android.R.string.no, null);

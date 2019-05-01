@@ -46,7 +46,7 @@
    <string name="toast_clipboard_error">Text is not included.</string>
 
    <string name="clipboard_warning_title">About the clipboard</string>
-   <string name="clipboard_warning">This \"paste\" command is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.\n\nPlease use \"Share\" intent or Vim command for paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim)</string>
+   <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)\n\n\"Paste\" button is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
 
    <string name="edit_vimrc">Edit .vimrc</string>
    <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
@@ -94,6 +94,7 @@
    <string name="copy_screen_current">Current screen</string>
    <string name="copy_screen_buffer">Screen buffer</string>
    <string name="paste">Paste</string>
+   <string name="clipboard">Clipboard</string>
    <string name="send_control_key">Send control key</string>
    <string name="send_fn_key">Send fn key</string>
 
@@ -337,7 +338,7 @@
 
   <string name="share_title">Share...</string>
   <string name="share_buffer_text">Current Buffer</string>
-  <string name="share_visual_text">Visually selected text</string>
+  <string name="share_visual_text">Selected text (Visual mode)</string>
   <string name="share_unnamed_text">Unnamed register</string>
   <string name="share_screen_text">Share screen text</string>
   <string name="share_file">File</string>

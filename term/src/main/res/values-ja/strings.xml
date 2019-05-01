@@ -45,7 +45,7 @@
    <string name="toast_clipboard_error">テキストが含まれていません.</string>
 
    <string name="clipboard_warning_title">クリップボードについて</string>
-   <string name="clipboard_warning">この \"貼り付け\" コマンドはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.\n\nVimへの\"貼り付け\"には, \"Share\"インテントかVimコマンドを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ)</string>
+   <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)\n\n \"貼り付け\"ボタンはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
 
    <string name="edit_vimrc">.vimrcを編集</string>
    <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
@@ -92,6 +92,7 @@
    <string name="copy_screen_current">現画面</string>
    <string name="copy_screen_buffer">スクリーンバッファ</string>
    <string name="paste">貼り付け</string>
+   <string name="clipboard">クリップボード</string>
    <string name="send_control_key">コントールキー送信</string>
    <string name="send_fn_key">fnキー送信</string>
 
@@ -325,7 +326,7 @@
 
   <string name="share_title">共有...</string>
   <string name="share_buffer_text">現バッファ</string>
-  <string name="share_visual_text">選択テキスト</string>
+  <string name="share_visual_text">選択テキスト (ビジュアルモード)</string>
   <string name="share_unnamed_text">無名レジスタ</string>
   <string name="share_screen_text">画面のテキストを共有</string>
   <string name="share_file">ファイル</string>
