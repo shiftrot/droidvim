@@ -37,13 +37,13 @@
         android:summary="@string/summary_verify_path_preference" />
 
     <Preference
-        android:key="home_dir_chooser"
-        android:title="@string/title_home_dir_chooser_preference"
-        android:summary="@string/summary_home_dir_chooser_preference" />
-
-    <Preference
         android:key="startup_dir_chooser"
         android:title="@string/title_startup_chooser_preference"
         android:summary="@string/summary_startup_chooser_preference" />
+
+    <Preference
+        android:key="home_dir_chooser"
+        android:title="@string/title_home_dir_chooser_preference"
+        android:summary="@string/summary_home_dir_chooser_preference" />
 
 </PreferenceScreen>
