@@ -34,6 +34,7 @@ import android.annotation.TargetApi;
 public class LocalStorageProvider extends DocumentsProvider {
     private static final String TAG = "LocalStorageProvider";
     private static String BASE_DEFAULT_DIR = "/data/data/com.droidvim/files/home";
+    private static String mBASEDIR = BASE_DEFAULT_DIR;
 
     private static final String[] DEFAULT_ROOT_PROJECTION = new String[]{
         Root.COLUMN_ROOT_ID,
@@ -60,7 +61,13 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public boolean onCreate() {
-        BASE_DEFAULT_DIR = getContext().getFilesDir().getPath();
+        try {
+            if (getContext() != null) mBASEDIR = getContext().getFilesDir().getPath();
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+            mBASEDIR = pref.getString("home_path", BASE_DEFAULT_DIR);
+        } catch (Exception e) {
+            // Do nothing
+        }
         return true;
     }
 
@@ -74,8 +81,11 @@ public class LocalStorageProvider extends DocumentsProvider {
         }
 
         row = result.newRow();
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        File homeDir = new File(pref.getString("home_path", BASE_DEFAULT_DIR));
+        if (getContext() != null) {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+            mBASEDIR = pref.getString("home_path", mBASEDIR);
+        }
+        File homeDir = new File(mBASEDIR);
         row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_TITLE, title);
