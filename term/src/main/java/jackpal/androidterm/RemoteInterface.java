@@ -79,7 +79,7 @@ public class RemoteInterface extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
-            mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(TermService.getAPPEXTFILES() + "/vimrc").exists();
+            mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(TermService.getVImRuntimeInstallDir() + "/runtime/etc/vimrc").exists();
             handleIntent();
         }
 

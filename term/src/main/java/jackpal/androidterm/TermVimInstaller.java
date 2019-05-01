@@ -115,12 +115,13 @@ final class TermVimInstaller {
         final String appFiles = TermService.getAPPFILES();
 
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
-        File dir = new File(appFiles+"/terminfo_min");
+        String terminfoDir = TermService.getTerminfoInstallDir();
+        File dir = new File(terminfoDir+"/terminfo");
         boolean doInstall = !dir.isDirectory() || !pref.getString("versionName", "").equals(TERMVIM_VERSION);
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
-            installZip(appFiles, getInputStream(activity, id));
+            installZip(terminfoDir, getInputStream(activity, id));
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                 File fontPath = new File(TermPreferences.FONT_PATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
@@ -210,33 +211,30 @@ final class TermVimInstaller {
                     copyScript(activity.getResources().openRawResource(id), dst);
                     shell("chmod 755 "+ dst);
 
-                    setMessage(activity, pd, "terminfo");
-                    id = activity.getResources().getIdentifier("terminfo", "raw", activity.getPackageName());
-                    installTar(path, getInputStream(activity, id));
-
+                    String runtimeDir = TermService.getVImRuntimeInstallDir();
                     setMessage(activity, pd, "runtime");
                     id = activity.getResources().getIdentifier("runtime", "raw", activity.getPackageName());
-                    installTar(sdcard, getInputStream(activity, id));
+                    installTar(runtimeDir, getInputStream(activity, id));
                     setMessage(activity, pd, "lang");
                     id = activity.getResources().getIdentifier("runtimelang", "raw", activity.getPackageName());
-                    installTar(sdcard, getInputStream(activity, id));
+                    installTar(runtimeDir, getInputStream(activity, id));
                     setMessage(activity, pd, "spell");
                     id = activity.getResources().getIdentifier("runtimespell", "raw", activity.getPackageName());
-                    installTar(sdcard, getInputStream(activity, id));
+                    installTar(runtimeDir, getInputStream(activity, id));
                     setMessage(activity, pd, "syntax");
                     id = activity.getResources().getIdentifier("runtimesyntax", "raw", activity.getPackageName());
-                    installTar(sdcard, getInputStream(activity, id));
+                    installTar(runtimeDir, getInputStream(activity, id));
                     if (installHelp) {
                         setMessage(activity, pd, "doc");
                         id = activity.getResources().getIdentifier("runtimedoc", "raw", activity.getPackageName());
-                        installTar(sdcard, getInputStream(activity, id));
+                        installTar(runtimeDir, getInputStream(activity, id));
                     }
                     setMessage(activity, pd, "tutor");
                     id = activity.getResources().getIdentifier("runtimetutor", "raw", activity.getPackageName());
-                    installTar(sdcard, getInputStream(activity, id));
+                    installTar(runtimeDir, getInputStream(activity, id));
 
                     id = activity.getResources().getIdentifier("extra", "raw", activity.getPackageName());
-                    installZip(sdcard, getInputStream(activity, id));
+                    installZip(runtimeDir, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), sdcard+"/version");
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
