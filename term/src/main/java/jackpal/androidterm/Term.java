@@ -2036,7 +2036,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     }
 
-    public final static String SHELL_ESCAPE = "([ ()%#&$|])";
+    public final static String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
@@ -3934,7 +3934,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 path = uri.toString().replaceFirst("content://[^/]+/", "/");
             }
             if (path != null) {
-                path = "/"+path.replaceAll("%2F", "/");
+                path = "/"+path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
                 String fname = new File(path).getName();
                 if (displayName != null && !(fname == null || fname.equals(displayName))) path = path+"/"+displayName;
                 path = path.replaceAll(":|\\|", "-");
