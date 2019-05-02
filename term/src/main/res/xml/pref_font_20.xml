@@ -30,7 +30,7 @@
         android:dialogTitle="@string/dialog_title_ambiwidth_preference"
         android:inputType="number" />
 
-    <CheckboxPreference android:title="@string/title_force_flush_drawtext_preference"
+    <CheckBoxPreference android:title="@string/title_force_flush_drawtext_preference"
         android:key="force_flush_drawtext"
         android:defaultValue="@bool/pref_force_flush_drawtext"
         android:summary="@string/summary_force_flush_drawtext_preference" />
