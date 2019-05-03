@@ -237,6 +237,7 @@ final class TermVimInstaller {
                     installZip(runtimeDir, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), sdcard+"/version");
+                    setupStorageSymlinks(activity.getApplicationContext());
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
@@ -305,19 +306,19 @@ final class TermVimInstaller {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     static private void setupStorageSymlinks(final Context context) {
-        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            return;
-        }
         try {
             File storageDir = new File(TermService.getHOME());
 
-            if (new File(storageDir.getAbsolutePath()+"/internal").exists()) {
+            if (new File(storageDir.getAbsolutePath()+"/internalStorage").exists()) {
                 return;
             }
             File internalDir = Environment.getExternalStorageDirectory();
-            Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, "internal").getAbsolutePath());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, "internal").getAbsolutePath());
+            } else {
+                shell(TermService.getAPPFILES()+"/usr/bin/busybox ln -s "+internalDir.getAbsolutePath()+" " + storageDir.getAbsolutePath()+"/internalStorage");
+            }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
         }
