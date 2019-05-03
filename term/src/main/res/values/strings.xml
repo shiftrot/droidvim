@@ -386,9 +386,11 @@
   <string name="set_home_directory">The home directory has been set to the following location:\n\n</string>
   <string name="summary_home_dir_chooser_preference"></string>
   <string name="title_startup_chooser_preference">Startup directory</string>
+  <string name="set_startup_directory">The startup directory has been set to the following location:\n\n</string>
   <string name="summary_startup_chooser_preference">Choose startup directory</string>
 
   <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default by pressing \"Default\" button.</string>
+  <string name="choose_startup_directory_message">Choose startup directory.\n\"Default\" button to set startup directory as home directory.</string>
   <string name="select_directory_message">Chooose directory</string>
   <string name="invalid_directory">Directory without write permission or invalid directory.\nPlease choose internal storage directory.</string>
   <string name="copy_startup_dir">The selected path has been copied to the clipboard.\nIf you want to specify the directory at startup, try adding the following to your `.vimrc`: \n\ncd </string>

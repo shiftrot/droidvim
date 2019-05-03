@@ -242,7 +242,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    private void directoryPicker(String mes) {
+    private void homeDirectoryPicker(String mes) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
         final Activity activity = this;
@@ -252,7 +252,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             public void onChoosePath(String path, File pathFile) {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                 if (path == null) {
-                    path = TermService.getAPPFILES() + "/home";
+                    path = TermService.getHOME();
                     pathFile = new File(path);
                     if (!pathFile.exists()) pathFile.mkdir();
                     editor.putString("home_path", path);
@@ -264,6 +264,38 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     editor.apply();
                     bld.setIcon(android.R.drawable.ic_dialog_info);
                     bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                } else {
+                    bld.setIcon(android.R.drawable.ic_dialog_alert);
+                    bld.setMessage(activity.getString(R.string.invalid_directory));
+                }
+                bld.setPositiveButton(activity.getString(android.R.string.ok), null);
+                bld.create().show();
+            }
+        });
+    }
+
+    private void startupDirectoryPicker(String mes) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences.Editor editor = prefs.edit();
+        final Activity activity = this;
+
+        directoryPicker(mes, new ChooserDialog.Result() {
+            @Override
+            public void onChoosePath(String path, File pathFile) {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                if (path == null) {
+                    path = TermService.getHOME();
+                    pathFile = new File(path);
+                    if (!pathFile.exists()) pathFile.mkdir();
+                    editor.putString("startup_path", path);
+                    editor.apply();
+                    bld.setIcon(android.R.drawable.ic_dialog_info);
+                    bld.setMessage(activity.getString(R.string.set_startup_directory)+" "+path);
+                } else if (new File(path).canWrite()) {
+                    editor.putString("startup_path", path);
+                    editor.apply();
+                    bld.setIcon(android.R.drawable.ic_dialog_info);
+                    bld.setMessage(activity.getString(R.string.set_startup_directory)+" "+path);
                 } else {
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setMessage(activity.getString(R.string.invalid_directory));
@@ -934,50 +966,19 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         if (mTermPreference != null) {
-                            mTermPreference.directoryPicker(getActivity().getString(R.string.choose_home_directory_message));
+                            mTermPreference.homeDirectoryPicker(getActivity().getString(R.string.choose_home_directory_message));
                         }
                         return true;
                     }
                 });
                 final String STARTUP_KEY = "startup_dir_chooser";
                 Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
-                final Activity activity = getActivity();
-                final ChooserDialog.Result r = new ChooserDialog.Result() {
-                    @Override
-                    public void onChoosePath(String path, File pathFile) {
-                        if (path != null && new File(path).canWrite()) {
-                            ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(activity.getApplicationContext());
-                            clip.setText(path);
-                            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                            bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setTitle(activity.getString(R.string.title_startup_chooser_preference));
-                            bld.setMessage(activity.getString(R.string.copy_startup_dir) + " " + path);
-                            bld.setPositiveButton(activity.getString(android.R.string.ok), null);
-                            bld.create().show();
-                        } else {
-                            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                            bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(activity.getString(R.string.invalid_directory));
-                            bld.setPositiveButton(activity.getString(android.R.string.ok), null);
-                            bld.create().show();
-                        }
-                    }
-                };
                 prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        if (USE_DOCUMENT_TREE_PICKER && mTermPreference != null) {
-                            mTermPreference.documentTreePicker(REQUEST_STARTUP_DIRECTORY);
-                            return true;
+                        if (mTermPreference != null) {
+                            mTermPreference.startupDirectoryPicker(getActivity().getString(R.string.choose_startup_directory_message));
                         }
-                        new ChooserDialog().with(activity)
-                                .withResources(R.string.select_directory_message, R.string.select_directory, android.R.string.cancel)
-                                .enableOptions(true)
-                                .withFilter(true, true)
-                                .withStartFile(Environment.getExternalStorageDirectory().getAbsolutePath())
-                                .withChosenListener(r)
-                                .build()
-                                .show();
                         return true;
                     }
                 });

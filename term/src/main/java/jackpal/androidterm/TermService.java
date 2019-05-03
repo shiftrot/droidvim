@@ -102,6 +102,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         editor.putString("home_path", homePath);
         editor.apply();
         mHOME = homePath;
+        mSTARTUP_DIR = prefs.getString("startup_path", homePath);
 
         mAPPBASE = this.getApplicationInfo().dataDir;
         mAPPFILES = this.getFilesDir().toString();
@@ -233,6 +234,7 @@ public class TermService extends Service implements TermSession.FinishCallback
     private static String mLD_LIBRARY_PATH;
     private static String mTMPDIR;
     private static String mHOME;
+    private static String mSTARTUP_DIR;
     private static String mTERMINFO_INSTALL_DIR;
     private static String mVIMRUNTIME_INSTALL_DIR;
 
@@ -241,7 +243,6 @@ public class TermService extends Service implements TermSession.FinishCallback
 
         mTERMINFO_INSTALL_DIR = mAPPFILES+"/usr/share";
         mVIMRUNTIME_INSTALL_DIR = mAPPEXTFILES;
-        String startupDir = mHOME;
         String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin";
         String terminfo = mTERMINFO_INSTALL_DIR+"/terminfo";
         String vimruntime = mVIMRUNTIME_INSTALL_DIR+"/runtime";
@@ -256,7 +257,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
         cmd = cmd.replaceAll("%PATH%", path);
-        cmd = cmd.replaceAll("%STARTUP_DIR%", startupDir);
+        cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUP_DIR);
         cmd = cmd.replaceAll("%TERMINFO%", terminfo);
         cmd = cmd.replaceAll("%VIMRUNTIME%", vimruntime);
         cmd = cmd.replaceAll("%VIM%", vim);
