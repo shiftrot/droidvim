@@ -17,74 +17,15 @@
 package jackpal.androidterm;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Instrumentation;
-import android.content.ContentUris;
-import android.content.pm.PackageInfo;
-import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
-import android.os.SystemClock;
-import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.system.Os;
-import android.text.TextUtils;
-import jackpal.androidterm.compat.AndroidCompat;
-import jackpal.androidterm.emulatorview.EmulatorView;
-import jackpal.androidterm.emulatorview.TermSession;
-import jackpal.androidterm.emulatorview.UpdateCallback;
-import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
-import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
-import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
-import jackpal.androidterm.util.SessionList;
-import jackpal.androidterm.util.TermSettings;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.URLDecoder;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Instrumentation;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -92,15 +33,26 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.system.Os;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -135,7 +87,57 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.provider.DocumentsContract.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.emulatorview.EmulatorView;
+import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.UpdateCallback;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
+import jackpal.androidterm.util.SessionList;
+import jackpal.androidterm.util.TermSettings;
+
+import static android.provider.DocumentsContract.Document;
+import static android.provider.DocumentsContract.deleteDocument;
+import static android.provider.DocumentsContract.getDocumentId;
+import static android.provider.DocumentsContract.isDocumentUri;
 
 /**
  * A terminal emulator activity.
@@ -165,10 +167,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private final static int SEND_MENU_ID = 6;
 
     private final static int UNPRESSED = 0;
-    private final static int PRESSED   = 1;
-    private final static int RELEASED  = 2;
-    private final static int USED      = 3;
-    private final static int LOCKED    = 4;
+    private final static int PRESSED = 1;
+    private final static int RELEASED = 2;
+    private final static int USED = 3;
+    private final static int LOCKED = 4;
 
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
@@ -195,15 +197,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
     private int mPendingPathBroadcasts = 0;
 
-    private static       int mExternalAppMode   = 1;
-    private static       String mExternalApp    = "";
-    private static final String APP_DROPBOX     = "com.dropbox.android";
+    private static int mExternalAppMode = 1;
+    private static String mExternalApp = "";
+    private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
-    private static final String APP_ONEDRIVE    = "com.microsoft.skydrive";
+    private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
     private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
-        {put("org.mozilla.firefox_beta", "org.mozilla.firefox_beta.App");}
-        {put("org.mozilla.firefox", "org.mozilla.firefox.App");}
-        {put("com.amazon.cloud9", "com.amazon.cloud9.browsing.BrowserActivity");}
+        {
+            put("org.mozilla.firefox_beta", "org.mozilla.firefox_beta.App");
+        }
+
+        {
+            put("org.mozilla.firefox", "org.mozilla.firefox.App");
+        }
+
+        {
+            put("com.amazon.cloud9", "com.amazon.cloud9.browsing.BrowserActivity");
+        }
     };
 
     private TermService mTermService;
@@ -248,6 +258,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         private float mDeltaColumnsReminder;
         private final int mDeltaColumnsEdge = 3;
+
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             EmulatorView view = getCurrentEmulatorView();
@@ -387,6 +398,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     };
 
     long mLastKeyPress = System.currentTimeMillis();
+
     private void onLastKey() {
         mLastKeyPress = System.currentTimeMillis();
         if (mKeepScreenEnableAuto) {
@@ -478,7 +490,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
         if (mOnelineTextBox == -1) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         initOnelineTextBox(mOnelineTextBox);
-        INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString()+"/intent";
+        INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString() + "/intent";
 
         WebViewActivity.setFontSize(new PrefValue(this).getInt("mWebViewSize", 140));
 
@@ -492,16 +504,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static File getScratchCacheDir(Activity activity) {
         int sdcard = TermService.getSDCard(activity.getApplicationContext());
         String cacheDir = TermService.getCacheDir(activity.getApplicationContext(), sdcard);
-        return new File(cacheDir+"/scratch");
+        return new File(cacheDir + "/scratch");
     }
 
     private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
+
     private void restoreSyncFileObserver() {
         if (!FLAVOR_VIM) return;
         File dir = getScratchCacheDir(this);
         mSyncFileObserver = new SyncFileObserver(dir.toString());
         mSyncFileObserver.deleteFromStorage(true);
-        File sfofile = new File(dir.toString()+"/"+mSyncFileObserverFile);
+        File sfofile = new File(dir.toString() + "/" + mSyncFileObserverFile);
         if (sfofile.exists()) {
             try {
                 FileInputStream fis = new FileInputStream(sfofile.toString());
@@ -533,13 +546,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mSyncFileObserver.stopWatching();
         try {
             String dir = mSyncFileObserver.getObserverDir();
-            File sfofile = new File(dir +"/"+mSyncFileObserverFile);
+            File sfofile = new File(dir + "/" + mSyncFileObserverFile);
 
             JSONObject jsonObject = new JSONObject();
             JSONArray jsonArary = new JSONArray();
 
             Map<String, String> hashMap = mSyncFileObserver.getHashMap();
-            for(Map.Entry<String, String> entry : hashMap.entrySet()) {
+            for (Map.Entry<String, String> entry : hashMap.entrySet()) {
                 JSONObject jsonOneData;
                 jsonOneData = new JSONObject();
                 jsonOneData.put("path", entry.getKey());
@@ -559,7 +572,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setExtraButton() {
-        Button button = (Button)findViewById(R.id.drawer_extra_button);
+        Button button = (Button) findViewById(R.id.drawer_extra_button);
         int visibilty = View.VISIBLE;
         if (!FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
@@ -567,13 +580,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setDebugButton() {
         if (!BuildConfig.DEBUG) return;
-        Button button = (Button)findViewById(R.id.drawer_debug_button);
+        Button button = (Button) findViewById(R.id.drawer_debug_button);
         button.setVisibility(View.VISIBLE);
 
-        if (mSettings.getColorTheme() == 0) button.setBackgroundResource(R.drawable.extra_button_dark);
+        if (mSettings.getColorTheme() == 0)
+            button.setBackgroundResource(R.drawable.extra_button_dark);
     }
 
     ArrayList<String> mFilePickerItems;
+
     private void setDrawerButtons() {
         if (FLAVOR_VIM) {
             mFilePickerItems = new ArrayList<>();
@@ -597,30 +612,30 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             String launchApp = this.getString(R.string.launch_app);
             if (isAppInstalled(APP_DROPBOX)) {
                 visiblity = mSettings.getDropboxFilePicker() > 0 ? View.VISIBLE : View.GONE;
-                button = (Button)findViewById(R.id.drawer_dropbox_button);
+                button = (Button) findViewById(R.id.drawer_dropbox_button);
                 button.setVisibility(visiblity);
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.dropbox)));
             }
             if (isAppInstalled(APP_GOOGLEDRIVE)) {
                 visiblity = mSettings.getGoogleDriveFilePicker() > 0 ? View.VISIBLE : View.GONE;
-                button = (Button)findViewById(R.id.drawer_googledrive_button);
+                button = (Button) findViewById(R.id.drawer_googledrive_button);
                 button.setVisibility(visiblity);
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.googledrive)));
             }
             if (isAppInstalled(APP_ONEDRIVE)) {
                 visiblity = mSettings.getOneDriveFilePicker() > 0 ? View.VISIBLE : View.GONE;
-                button = (Button)findViewById(R.id.drawer_onedrive_button);
+                button = (Button) findViewById(R.id.drawer_onedrive_button);
                 button.setVisibility(visiblity);
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.onedrive)));
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                button = (Button)findViewById(R.id.drawer_storage_button);
+                button = (Button) findViewById(R.id.drawer_storage_button);
                 button.setVisibility(View.VISIBLE);
-                button = (Button)findViewById(R.id.drawer_createfile_button);
+                button = (Button) findViewById(R.id.drawer_createfile_button);
                 button.setVisibility(View.VISIBLE);
                 mFilePickerItems.add(this.getString(R.string.clear_cache));
             } else {
-                button = (Button)findViewById(R.id.drawer_clear_cache_button);
+                button = (Button) findViewById(R.id.drawer_clear_cache_button);
                 button.setVisibility(View.VISIBLE);
             }
         }
@@ -658,20 +673,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX)) getDrawer().closeDrawers();
+                if (launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX))
+                    getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_googledrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE)) getDrawer().closeDrawers();
+                if (launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE))
+                    getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_onedrive_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                if (launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE)) getDrawer().closeDrawers();
+                if (launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE))
+                    getDrawer().closeDrawers();
             }
         });
         findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
@@ -749,7 +767,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (intent == null) throw new NullPointerException();
             startActivity(intent);
         } catch (Exception e) {
-            alert(app+"\n"+this.getString(R.string.external_app_activity_error));
+            alert(app + "\n" + this.getString(R.string.external_app_activity_error));
             return true;
         }
         return true;
@@ -774,7 +792,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         try {
             if (mode == 2) {
                 intentMainActivity(appId);
-            } else if (mode == 1){
+            } else if (mode == 1) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setPackage(appId);
                 intent.setType("*/*");
@@ -816,10 +834,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
-    public static final int REQUEST_STORAGE        = 10000;
+    public static final int REQUEST_STORAGE = 10000;
     public static final int REQUEST_STORAGE_DELETE = 10001;
     public static final int REQUEST_STORAGE_CREATE = 10002;
     public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
+
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
         if (AndroidCompat.SDK < 23) return;
@@ -832,70 +851,70 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("NewApi")
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-        case REQUEST_STORAGE:
-            for (int i = 0; i < permissions.length ; i++) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                alert(getString(R.string.storage_permission_granted));
-                            }
-                        });
-                    } else {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                            doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
-                        }
-                    }
-                    break;
-                }
-            }
-            break;
-        case REQUEST_FILE_PICKER:
-        case REQUEST_STORAGE_DELETE:
-        case REQUEST_STORAGE_CREATE:
-            for (int i = 0; i < permissions.length ; i++) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                            Toast toast = Toast.makeText(this, this.getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
+            case REQUEST_STORAGE:
+                for (int i = 0; i < permissions.length; i++) {
+                    if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    alert(getString(R.string.storage_permission_granted));
+                                }
+                            });
                         } else {
-                            doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            case REQUEST_FILE_PICKER:
+            case REQUEST_STORAGE_DELETE:
+            case REQUEST_STORAGE_CREATE:
+                for (int i = 0; i < permissions.length; i++) {
+                    if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                Toast toast = Toast.makeText(this, this.getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                            } else {
+                                doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
+                            }
+                        }
+                        switch (requestCode) {
+                            case REQUEST_FILE_PICKER:
+                                intentFilePicker();
+                                break;
+                            case REQUEST_STORAGE_DELETE:
+                                doFileDelete();
+                                break;
+                            case REQUEST_STORAGE_CREATE:
+                                doFileCreate();
+                                break;
+                            default:
+                                break;
                         }
                     }
-                    switch (requestCode) {
-                    case REQUEST_FILE_PICKER:
-                        intentFilePicker();
-                        break;
-                    case REQUEST_STORAGE_DELETE:
-                        doFileDelete();
-                        break;
-                    case REQUEST_STORAGE_CREATE:
-                        doFileCreate();
-                        break;
-                    default:
+                }
+                break;
+            case REQUEST_FOREGROUND_SERVICE_PERMISSION:
+                for (int i = 0; i < permissions.length; i++) {
+                    if (permissions[i].equals(Manifest.permission.FOREGROUND_SERVICE)) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            this.getApplicationContext().startForegroundService(TSIntent);
+                        } else {
+                            startService(TSIntent);
+                        }
                         break;
                     }
                 }
-            }
-            break;
-        case REQUEST_FOREGROUND_SERVICE_PERMISSION:
-            for (int i = 0; i < permissions.length ; i++) {
-                if (permissions[i].equals(Manifest.permission.FOREGROUND_SERVICE)) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        this.getApplicationContext().startForegroundService(TSIntent);
-                    } else {
-                        startService(TSIntent);
-                    }
-                    break;
-                }
-            }
-            break;
-        default:
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            break;
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
         }
     }
 
@@ -918,7 +937,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
 
-        return path.substring(0, path.length()-1);
+        return path.substring(0, path.length() - 1);
     }
 
     @Override
@@ -951,7 +970,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (loop >= END_OF_LOOP) return false;
             try {
                 Thread.sleep(1000);
-                return bindTermServiceLoop(service, conn, flags, loop+1);
+                return bindTermServiceLoop(service, conn, flags, loop + 1);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -1063,10 +1082,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mFunctionBar = -1;
             mOrientation = -1;
             final int MAX_SYNC_FILES = 100;
-            if (FLAVOR_VIM && mSyncFileObserver != null) mSyncFileObserver.clearCache(MAX_SYNC_FILES);
+            if (FLAVOR_VIM && mSyncFileObserver != null)
+                mSyncFileObserver.clearCache(MAX_SYNC_FILES);
             mKeepScreenHandler.removeCallbacksAndMessages(null);
         }
-        new File(TermService.getAPPFILES()+"/.clipboard").delete();
+        new File(TermService.getAPPFILES() + "/.clipboard").delete();
         File cacheDir = new File(INTENT_CACHE_DIR);
         SyncFileObserver.delete(cacheDir);
         mTermService = null;
@@ -1100,6 +1120,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     boolean mFirst = true;
+
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
@@ -1109,17 +1130,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (TermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
             cmd = cmd.replaceAll("\n-?vim.app", "");
-            TermVimInstaller.installVim(Term.this, new Runnable(){
+            TermVimInstaller.installVim(Term.this, new Runnable() {
                 @Override
                 public void run() {
                     final String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
-                            new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
+                            new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute())
                             ? BASH : "";
                     if (vimApp) {
                         if (getCurrentTermSession() != null) {
-                            sendKeyStrings(bash+"vim.app\n", false);
+                            sendKeyStrings(bash + "vim.app\n", false);
                         } else {
-                            ShellTermSession.setPostCmd(bash+"vim.app\n");
+                            ShellTermSession.setPostCmd(bash + "vim.app\n");
                         }
                     }
                     permissionCheckExternalStorage();
@@ -1128,9 +1149,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             showVimTips();
             final String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
-                    new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
+                    new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute())
                     ? BASH : "";
-            cmd = cmd.replaceAll("\n(-?vim.app)", "\n"+bash+"$1");
+            cmd = cmd.replaceAll("\n(-?vim.app)", "\n" + bash + "$1");
             permissionCheckExternalStorage();
         }
         mFirst = false;
@@ -1138,6 +1159,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private static Random mRandom = new Random();
+
     private void showVimTips() {
         if (!mVimFlavor) return;
         if (true) return;
@@ -1145,7 +1167,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String title = this.getString(R.string.tips_vim_title);
         String key = "do_warning_vim_tips";
         String[] list = this.getString(R.string.tips_vim_list).split("\\|");
-        int index = mRandom.nextInt(list.length-1) + 1;
+        int index = mRandom.nextInt(list.length - 1) + 1;
         String message = list[index];
         doWarningDialog(title, message, key, false);
     }
@@ -1162,7 +1184,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         LayoutInflater flater = LayoutInflater.from(this);
         View view = flater.inflate(R.layout.alert_checkbox, null);
         builder.setView(view);
-        final CheckBox cb = (CheckBox)view.findViewById(R.id.dont_show_again);
+        final CheckBox cb = (CheckBox) view.findViewById(R.id.dont_show_again);
         final String warningKey = key;
         cb.setChecked(dontShowAgain);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -1179,6 +1201,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static boolean mFirstInputtype = true;
+
     private TermView createEmulatorView(TermSession session) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -1276,6 +1299,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static int mOrientation = -1;
+
     private int getOrientation() {
         if (mOrientation == -1) return mSettings.getScreenOrientation();
         return mOrientation;
@@ -1290,7 +1314,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             screenLockItem = this.getString(R.string.enable_keepscreen);
         }
         final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.share_screen_text), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
-        final Toast toastReset = Toast.makeText(this,R.string.reset_toast_notification, Toast.LENGTH_LONG);
+        final Toast toastReset = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.screen))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -1455,9 +1479,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private int mPrevHaveFullHwKeyboard = -1;
     private boolean mHideFunctionBar = false;
+
     private boolean checkHaveFullHwKeyboard(Configuration c) {
-        boolean haveFullHwKeyboard =  (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
-                                            (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
+        boolean haveFullHwKeyboard = (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
+                (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
         if (mPrevHaveFullHwKeyboard == -1 || (haveFullHwKeyboard != (mPrevHaveFullHwKeyboard == 1))) {
             mHideFunctionBar = haveFullHwKeyboard && mSettings.getAutoHideFunctionbar();
             if (!haveFullHwKeyboard) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
@@ -1496,7 +1521,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
 //        if (mWinListAdapter != null) {
-            // Force Android to redraw the label in the navigation dropdown
+        // Force Android to redraw the label in the navigation dropdown
 //            mWinListAdapter.notifyDataSetChanged();
 //        }
     }
@@ -1520,7 +1545,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
-        if (!FLAVOR_VIM || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT)) menu.removeItem(R.id.menu_drawer);
+        if (!FLAVOR_VIM || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT))
+            menu.removeItem(R.id.menu_drawer);
         return true;
     }
 
@@ -1530,7 +1556,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         boolean visibility;
         item = menu.findItem(R.id.menu_toggle_soft_keyboard);
         visibility = (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME)
-                  && (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME_ESC);
+                && (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME_ESC);
         item.setVisible(visibility);
         item = menu.findItem(R.id.menu_disable_keepscreen);
         visibility = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
@@ -1584,7 +1610,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_reset) {
             doResetTerminal(true);
             updatePrefs();
-            Toast toast = Toast.makeText(this,R.string.reset_toast_notification,Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if (id == R.id.menu_share_text) {
@@ -1616,7 +1642,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             drawerMenu();
         } else if (id == R.id.menu_reload) {
             fileReload();
-        } else if  (id == R.id.action_help) {
+        } else if (id == R.id.action_help) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra("url", getString(R.string.help_url));
@@ -1667,7 +1693,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         } else if (key == 1252) {
             InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showInputMethodPicker();
         } else if (key == 1253) {
             if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
@@ -1700,7 +1726,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doEditTextFocusAction();
         } else if (key == 1360 || (key >= 1351 && key <= 1354)) {
             if (setEditTextAltCmd()) return true;
-            view.doImeShortcutsAction(key-1300);
+            view.doImeShortcutsAction(key - 1300);
         } else if (key == 1361) {
             keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
         } else if (key == 1362) {
@@ -1736,10 +1762,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key > 0) {
             int state = view.getControlKeyState();
             if ((key == KeycodeConstants.KEYCODE_DPAD_UP) ||
-                (key == KeycodeConstants.KEYCODE_DPAD_DOWN) ||
-                (key == KeycodeConstants.KEYCODE_DPAD_LEFT) ||
-                (key == KeycodeConstants.KEYCODE_DPAD_RIGHT)) {
-                    view.setControlKeyState(UNPRESSED);
+                    (key == KeycodeConstants.KEYCODE_DPAD_DOWN) ||
+                    (key == KeycodeConstants.KEYCODE_DPAD_LEFT) ||
+                    (key == KeycodeConstants.KEYCODE_DPAD_RIGHT)) {
+                view.setControlKeyState(UNPRESSED);
             }
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
             dispatchKeyEvent(event);
@@ -1751,26 +1777,28 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private static boolean mInvertCursorDirection = false;
+
     private boolean getInvertCursorDirection() {
         return mInvertCursorDirection;
     }
 
     private static boolean mDefaultInvertCursorDirection = false;
+
     private boolean getDefaultInvertCursorDirection() {
         return mDefaultInvertCursorDirection;
     }
 
     private void setCursorDirectionLabel() {
         if (!getInvertCursorDirection()) {
-            ((Button)findViewById(R.id.button_right)).setText("▶");
-            ((Button)findViewById(R.id.button_left)).setText("◀");
-            ((Button)findViewById(R.id.button_up)).setText("▲");
-            ((Button)findViewById(R.id.button_down)).setText("▼");
+            ((Button) findViewById(R.id.button_right)).setText("▶");
+            ((Button) findViewById(R.id.button_left)).setText("◀");
+            ((Button) findViewById(R.id.button_up)).setText("▲");
+            ((Button) findViewById(R.id.button_down)).setText("▼");
         } else {
-            ((Button)findViewById(R.id.button_right)).setText("▼");
-            ((Button)findViewById(R.id.button_left)).setText("▲");
-            ((Button)findViewById(R.id.button_up)).setText("◀");
-            ((Button)findViewById(R.id.button_down)).setText("▶");
+            ((Button) findViewById(R.id.button_right)).setText("▼");
+            ((Button) findViewById(R.id.button_left)).setText("▲");
+            ((Button) findViewById(R.id.button_up)).setText("◀");
+            ((Button) findViewById(R.id.button_down)).setText("▶");
         }
     }
 
@@ -1793,7 +1821,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean sendKeyStrings(String str, boolean esc) {
         TermSession session = getCurrentTermSession();
         if (session == null) return false;
-        if (esc) str = "\u001b"+str;
+        if (esc) str = "\u001b" + str;
         session.write(str);
         return true;
     }
@@ -1813,7 +1841,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             view.updatePrefs(mSettings);
 
             mViewFlipper.addView(view);
-            mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
+            mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount() - 1);
             doWarningDialog(null, this.getString(R.string.switch_windows_warning), "switch_window", false);
         } catch (IOException e) {
             Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT).show();
@@ -1830,10 +1858,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog, int id) {
-               dialog.dismiss();
-               mHandler.post(closeWindow);
-           }
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                mHandler.post(closeWindow);
+            }
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
@@ -1898,7 +1926,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        if (checkImplicitIntent(this, intent)) doStartActivityForResult(intent, REQUEST_FILE_PICKER);
+        if (checkImplicitIntent(this, intent))
+            doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
     private void chooseFilePicker() {
@@ -1916,18 +1945,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     fileCreate();
                 } else if (Term.this.getString(R.string.delete_file).equals(item)) {
                     fileDelete();
-                } else if (item.matches(".*"+Term.this.getString(R.string.dropbox)+".*")) {
+                } else if (item.matches(".*" + Term.this.getString(R.string.dropbox) + ".*")) {
                     intentMainActivity(APP_DROPBOX);
-                } else if (item.matches(".*"+Term.this.getString(R.string.googledrive)+".*")) {
+                } else if (item.matches(".*" + Term.this.getString(R.string.googledrive) + ".*")) {
                     intentMainActivity(APP_GOOGLEDRIVE);
-                } else if (item.matches(".*"+Term.this.getString(R.string.onedrive)+".*")) {
+                } else if (item.matches(".*" + Term.this.getString(R.string.onedrive) + ".*")) {
                     intentMainActivity(APP_ONEDRIVE);
                 } else if (Term.this.getString(R.string.clear_cache).equals(item)) {
                     confirmClearCache();
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
-        .show();
+                .show();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -1944,7 +1973,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        if (checkImplicitIntent(this, intent)) doStartActivityForResult(intent, REQUEST_FILE_DELETE);
+        if (checkImplicitIntent(this, intent))
+            doStartActivityForResult(intent, REQUEST_FILE_DELETE);
     }
 
     private void confirmDelete(final Uri uri) {
@@ -1990,7 +2020,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
-        if (checkImplicitIntent(this, intent)) doStartActivityForResult(intent, REQUEST_FILE_PICKER);
+        if (checkImplicitIntent(this, intent))
+            doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
     private void fileReload() {
@@ -1998,9 +2029,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         builder.setIcon(android.R.drawable.ic_dialog_info);
         builder.setTitle(this.getString(R.string.reload_file_title));
 
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout_encoding = inflater.inflate(R.layout.force_encoding, null);
-        final AutoCompleteTextView  textView = (AutoCompleteTextView)layout_encoding.findViewById((R.id.autocomplete_encoding));
+        final AutoCompleteTextView textView = (AutoCompleteTextView) layout_encoding.findViewById((R.id.autocomplete_encoding));
 
         ArrayAdapter<String> ac_adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, IconvHelper.encodings);
         textView.setAdapter(ac_adapter);
@@ -2016,8 +2047,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             public void onClick(DialogInterface d, int m) {
                 String encoding = textView.getText().toString();
                 String cmd = ":e!";
-                if (!encoding.equals("")) cmd += " ++enc="+encoding;
-                sendKeyStrings(cmd+"\r", true);
+                if (!encoding.equals("")) cmd += " ++enc=" + encoding;
+                sendKeyStrings(cmd + "\r", true);
             }
         });
         builder.setNegativeButton(android.R.string.no, null);
@@ -2028,6 +2059,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 textView.setText(IconvHelper.encodings[position], null);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 textView.setText("", null);
@@ -2037,6 +2069,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public final static String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
+
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
@@ -2070,14 +2103,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                 if (path != null && mSyncFileObserver != null) {
                                     path = mSyncFileObserver.getObserverDir() + path;
                                     if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
-                                        alert(fname+"\n"+this.getString(R.string.storage_read_error));
+                                        alert(fname + "\n" + this.getString(R.string.storage_read_error));
                                         break;
                                     }
                                 }
                             }
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             Log.d("FilePicker", e.toString());
-                            alert(this.getString(R.string.storage_read_error)+"\n"+e.toString());
+                            alert(this.getString(R.string.storage_read_error) + "\n" + e.toString());
                             break;
                         }
                     }
@@ -2086,7 +2119,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     String intentCommand = mSettings.getIntentCommand();
                     if (!intentCommand.matches("^:.*")) intentCommand = ":e ";
                     path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
-                    path = intentCommand+" "+path+"\r";
+                    path = intentCommand + " " + path + "\r";
                     sendKeyStrings(path, true);
                 }
                 break;
@@ -2123,7 +2156,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             try {
                 File file = new File(getDocumentId(uri));
                 if (file.exists()) return file.toString();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.d("FilePicker", e.toString());
             }
             if (isExternalStorageDocument(uri)) {
@@ -2172,8 +2205,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         String path = Uri.decode(uri.toString());
         final String AUTHORITY_TRESORIT = "content://com.tresorit.mobile.provider/external_files/";
-        if (path != null && path.matches("^"+AUTHORITY_TRESORIT +".*$")) {
-            path = Environment.getExternalStorageDirectory().toString()+path.substring(AUTHORITY_TRESORIT.length()-1);
+        if (path != null && path.matches("^" + AUTHORITY_TRESORIT + ".*$")) {
+            path = Environment.getExternalStorageDirectory().toString() + path.substring(AUTHORITY_TRESORIT.length() - 1);
             if (new File(path).exists()) return path;
         }
         return null;
@@ -2184,7 +2217,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         try {
             boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
             // DocumentProvider
-            Log.e(TermDebug.LOG_TAG,"uri:" + uri.getAuthority());
+            Log.e(TermDebug.LOG_TAG, "uri:" + uri.getAuthority());
             if (isAfterKitKat && isDocumentUri(context, uri)) {
                 if ("com.android.externalstorage.documents".equals(
                         uri.getAuthority())) { // ExternalStorageProvider
@@ -2194,14 +2227,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if ("primary".equalsIgnoreCase(type)) {
                         return Environment.getExternalStorageDirectory() + "/" + split[1];
                     } else {
-                        return "/stroage/" + type +  "/" + split[1];
+                        return "/stroage/" + type + "/" + split[1];
                     }
                 } else if ("com.android.providers.downloads.documents".equals(
                         uri.getAuthority())) { // DownloadsProvider
-                        final String id = getDocumentId(uri);
-                        final Uri contentUri = ContentUris.withAppendedId(
-                                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                        return getDataColumn(context, contentUri, null, null);
+                    final String id = getDocumentId(uri);
+                    final Uri contentUri = ContentUris.withAppendedId(
+                            Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                    return getDataColumn(context, contentUri, null, null);
                 } else if ("com.android.providers.media.documents".equals(
                         uri.getAuthority())) { // MediaProvider
                     final String docId = getDocumentId(uri);
@@ -2210,7 +2243,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     Uri contentUri = null;
                     contentUri = MediaStore.Files.getContentUri("external");
                     final String selection = "_id=?";
-                    final String[] selectionArgs = new String[] {
+                    final String[] selectionArgs = new String[]{
                             split[1]
                     };
                     return getDataColumn(context, contentUri, selection, selectionArgs);
@@ -2233,7 +2266,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String[] projection = {
-            MediaStore.Files.FileColumns.DATA
+                MediaStore.Files.FileColumns.DATA
         };
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
@@ -2280,50 +2313,50 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenuInfo menuInfo) {
-       openOptionsMenu();
-       // super.onCreateContextMenu(menu, v, menuInfo);
-       // menu.setHeaderTitle(R.string.edit_text);
-       // menu.add(0, PASTE_ID, 0, R.string.paste);
-       // menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
-       // // menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
-       // // menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
-       // // menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
-       // menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
-       // menu.add(0, SEND_MENU_ID, 0, R.string.title_functionbar_menu);
-       // if (!canPaste()) {
-       //   menu.getItem(PASTE_ID).setEnabled(false);
-       // }
+                                    ContextMenuInfo menuInfo) {
+        openOptionsMenu();
+        // super.onCreateContextMenu(menu, v, menuInfo);
+        // menu.setHeaderTitle(R.string.edit_text);
+        // menu.add(0, PASTE_ID, 0, R.string.paste);
+        // menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
+        // // menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
+        // // menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
+        // // menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
+        // menu.add(0, SEND_FUNCTION_BAR_ID, 0, R.string.toggle_function_bar);
+        // menu.add(0, SEND_MENU_ID, 0, R.string.title_functionbar_menu);
+        // if (!canPaste()) {
+        //   menu.getItem(PASTE_ID).setEnabled(false);
+        // }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-          switch (item.getItemId()) {
-          case SELECT_TEXT_ID:
-            getCurrentEmulatorView().toggleSelectingText();
-            return true;
-          case COPY_ALL_ID:
-            doCopyAll();
-            return true;
-          case PASTE_ID:
-            doPaste();
-            return true;
-          case SEND_CONTROL_KEY_ID:
-            doSendControlKey();
-            return true;
-          case SEND_FN_KEY_ID:
-            doSendFnKey();
-            return true;
-          case SEND_MENU_ID:
-              openOptionsMenu();
-              return true;
-          case SEND_FUNCTION_BAR_ID:
-            setFunctionBar(2);
-            return true;
-          default:
-            return super.onContextItemSelected(item);
-          }
+        switch (item.getItemId()) {
+            case SELECT_TEXT_ID:
+                getCurrentEmulatorView().toggleSelectingText();
+                return true;
+            case COPY_ALL_ID:
+                doCopyAll();
+                return true;
+            case PASTE_ID:
+                doPaste();
+                return true;
+            case SEND_CONTROL_KEY_ID:
+                doSendControlKey();
+                return true;
+            case SEND_FN_KEY_ID:
+                doSendFnKey();
+                return true;
+            case SEND_MENU_ID:
+                openOptionsMenu();
+                return true;
+            case SEND_FUNCTION_BAR_ID:
+                setFunctionBar(2);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -2345,177 +2378,178 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
-        case 0xffff0990:
-            String cmd = "vim.app\n";
-            if (RemoteInterface.IntentCommand != null) {
-                cmd += "\u001b"+RemoteInterface.IntentCommand+"\n";
-            }
-            if (RemoteInterface.ShareText != null) {
-                String filename = TermService.getAPPFILES()+"/.clipboard";
-                Term.writeStringToFile(filename, "\n"+RemoteInterface.ShareText.toString());
-                cmd += "\u001b"+":ATEMod _paste\n";
-            }
-            final String riCmd = cmd;
-            TermVimInstaller.doInstallVim(Term.this, new Runnable(){
-                @Override
-                public void run() {
-                    String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
-                            new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
-                            ? BASH : "";
-                    String cmd = bash+riCmd;
-                    if (getCurrentTermSession() != null) {
-                        sendKeyStrings(cmd, false);
-                    } else {
-                        ShellTermSession.setPostCmd(cmd);
-                    }
-                    permissionCheckExternalStorage();
+            case 0xffff0990:
+                String cmd = "vim.app\n";
+                if (RemoteInterface.IntentCommand != null) {
+                    cmd += "\u001b" + RemoteInterface.IntentCommand + "\n";
                 }
-            }, true);
-            return true;
-        case 0xffff0998:
-            if (mTermSessions.size() > 1) {
+                if (RemoteInterface.ShareText != null) {
+                    String filename = TermService.getAPPFILES() + "/.clipboard";
+                    Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
+                    cmd += "\u001b" + ":ATEMod _paste\n";
+                }
+                final String riCmd = cmd;
+                TermVimInstaller.doInstallVim(Term.this, new Runnable() {
+                    @Override
+                    public void run() {
+                        String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
+                                new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute())
+                                ? BASH : "";
+                        String cmd = bash + riCmd;
+                        if (getCurrentTermSession() != null) {
+                            sendKeyStrings(cmd, false);
+                        } else {
+                            ShellTermSession.setPostCmd(cmd);
+                        }
+                        permissionCheckExternalStorage();
+                    }
+                }, true);
                 return true;
-            }
-            // fall into next
-        case 0xffff0999:
-            if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
-                doHideSoftKeyboard();
-            }
-            doCloseWindow();
-            return true;
-        case 0xffff0000:
-            setFunctionBar(2);
-            return true;
-        case KeyEvent.KEYCODE_ESCAPE:
-            if (onelineTextBoxEsc()) return true;
-            break;
-        case KeyEvent.KEYCODE_BACK:
-            if (AndroidCompat.SDK < 5) {
-                if (!mBackKeyPressed) {
+            case 0xffff0998:
+                if (mTermSessions.size() > 1) {
+                    return true;
+                }
+                // fall into next
+            case 0xffff0999:
+                if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
+                    doHideSoftKeyboard();
+                }
+                doCloseWindow();
+                return true;
+            case 0xffff0000:
+                setFunctionBar(2);
+                return true;
+            case KeyEvent.KEYCODE_ESCAPE:
+                if (onelineTextBoxEsc()) return true;
+                break;
+            case KeyEvent.KEYCODE_BACK:
+                if (AndroidCompat.SDK < 5) {
+                    if (!mBackKeyPressed) {
                     /* This key up event might correspond to a key down
                        delivered to another activity -- ignore */
-                    return false;
+                        return false;
+                    }
+                    mBackKeyPressed = false;
                 }
-                mBackKeyPressed = false;
-            }
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+                if (mHaveFullHwKeyboard && mSettings.getBackAsEscFlag()) {
+                    sendKeyStrings("\u001b", false);
+                    return true;
+                }
+                switch (mSettings.getBackKeyAction()) {
+                    case TermSettings.BACK_KEY_STOPS_SERVICE:
+                        // mStopServiceOnFinish = true;
+                        // finish();
+                        doSendActionBarKey(getCurrentEmulatorView(), 1251);
+                        return true;
+                    case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
+                        finish();
+                        return true;
+                    case TermSettings.BACK_KEY_CLOSES_WINDOW:
+                        doSendActionBarKey(getCurrentEmulatorView(), 1251);
+                        return true;
+                    case TermSettings.BACK_KEY_TOGGLE_IME:
+                    case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
+                        doToggleSoftKeyboard();
+                        return true;
+                    default:
+                        return false;
+                }
+            case KeyEvent.KEYCODE_MENU:
+                openOptionsMenu();
+                break;
+            case 0xffffffc0:
+                if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
+                    sendKeyStrings("\u001b", false);
+                }
+                break;
+            case 0xffff0003:
+                copyFileToClipboard(TermService.getAPPFILES() + "/.clipboard");
                 return true;
-            }
-            if (mHaveFullHwKeyboard && mSettings.getBackAsEscFlag()) {
-                sendKeyStrings("\u001b", false);
+            case 0xffff0004:
+                setEditTextView(0);
                 return true;
-            }
-            switch (mSettings.getBackKeyAction()) {
-            case TermSettings.BACK_KEY_STOPS_SERVICE:
-                // mStopServiceOnFinish = true;
-                // finish();
-                doSendActionBarKey(getCurrentEmulatorView(), 1251);
+            case 0xffff0005:
+                setEditTextView(1);
                 return true;
-            case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
-                finish();
+            case 0xffff0006:
+                setEditTextView(2);
                 return true;
-            case TermSettings.BACK_KEY_CLOSES_WINDOW:
-                doSendActionBarKey(getCurrentEmulatorView(), 1251);
+            case 0xffff1010:
+                setFunctionBar(0);
                 return true;
-            case TermSettings.BACK_KEY_TOGGLE_IME:
-            case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
-                doToggleSoftKeyboard();
+            case 0xffff1011:
+                setFunctionBar(1);
+                return true;
+            case 0xffff1002:
+                setFunctionBar(2);
+                return true;
+            case 0xffff0033:
+            case 0xffff0333:
+                if (!canPaste()) {
+                    alert(Term.this.getString(R.string.toast_clipboard_error));
+                    return true;
+                }
+                copyClipboardToFile(TermService.getAPPFILES() + "/.clipboard");
+                if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
+                return true;
+            case 0xffff1006:
+            case 0xffff1007:
+                mVimPaste = (keyCode == 0xffff1006) ? true : false;
+                return true;
+            case 0xffff1008:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setupStorageSymlinks(this);
+                }
+                return true;
+            case 0xffff1009:
+                return true;
+            case 0xffff1364:
+                doSendActionBarKey(getCurrentEmulatorView(), 1364);
+                return true;
+            case 0xffff0056:
+                doEditTextFocusAction();
+                setEditTextInputType(50);
+                return true;
+            case 0xffff0057:
+                setEditTextViewFocus(0);
+                return true;
+            case 0xffff0058:
+                setEditTextViewFocus(1);
+                return true;
+            case 0xffff0061:
+                keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
+                return true;
+            case 0xffff0062:
+                keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
+                return true;
+            case 0xffff0030:
+                clearClipBoard();
+                return true;
+            case 0xffff1001:
+                AndroidIntent(mSettings.getHomePath() + "/.intent");
+                return true;
+            case 0xffff9998:
+                networkUpdate();
                 return true;
             default:
-                return false;
-            }
-        case KeyEvent.KEYCODE_MENU:
-            openOptionsMenu();
-            break;
-        case 0xffffffc0:
-            if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
-                sendKeyStrings("\u001b", false);
-            }
-            break;
-        case 0xffff0003:
-            copyFileToClipboard(TermService.getAPPFILES()+"/.clipboard");
-            return true;
-        case 0xffff0004:
-            setEditTextView(0);
-            return true;
-        case 0xffff0005:
-            setEditTextView(1);
-            return true;
-        case 0xffff0006:
-            setEditTextView(2);
-            return true;
-        case 0xffff1010:
-            setFunctionBar(0);
-            return true;
-        case 0xffff1011:
-            setFunctionBar(1);
-            return true;
-        case 0xffff1002:
-            setFunctionBar(2);
-            return true;
-        case 0xffff0033:
-        case 0xffff0333:
-            if (!canPaste()) {
-                alert(Term.this.getString(R.string.toast_clipboard_error));
-                return true;
-            }
-            copyClipboardToFile(TermService.getAPPFILES()+"/.clipboard");
-            if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
-            return true;
-        case 0xffff1006:
-        case 0xffff1007:
-            mVimPaste = (keyCode == 0xffff1006) ? true : false;
-            return true;
-        case 0xffff1008:
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                setupStorageSymlinks(this);
-            }
-            return true;
-        case 0xffff1009:
-            return true;
-        case 0xffff1364:
-            doSendActionBarKey(getCurrentEmulatorView(), 1364);
-            return true;
-        case 0xffff0056:
-            doEditTextFocusAction();
-            setEditTextInputType(50);
-            return true;
-        case 0xffff0057:
-            setEditTextViewFocus(0);
-            return true;
-        case 0xffff0058:
-            setEditTextViewFocus(1);
-            return true;
-        case 0xffff0061:
-            keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
-            return true;
-        case 0xffff0062:
-            keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
-            return true;
-        case 0xffff0030:
-            clearClipBoard();
-            return true;
-        case 0xffff1001:
-            AndroidIntent(mSettings.getHomePath() + "/.intent");
-            return true;
-        case 0xffff9998:
-            networkUpdate();
-            return true;
-        default:
-            return super.onKeyUp(keyCode, event);
+                return super.onKeyUp(keyCode, event);
         }
         return super.onKeyUp(keyCode, event);
     }
 
     private final float EDGE = (float) 50.0;
+
     private boolean doDoubleTapAction(MotionEvent me) {
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
             Resources resources = getApplicationContext().getResources();
             DisplayMetrics metrics = resources.getDisplayMetrics();
-            float px = EDGE * (metrics.densityDpi/160.0f);
+            float px = EDGE * (metrics.densityDpi / 160.0f);
             int size = (int) Math.ceil(px);
 
             int height = getCurrentEmulatorView().getVisibleHeight();
@@ -2541,7 +2575,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    private String INTENT_CACHE_DIR = "/data/data/"+BuildConfig.APPLICATION_ID+"/cache/intent";
+    private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
+
     private void AndroidIntent(String filename) {
         if (filename == null) return;
         TermSession session = getCurrentTermSession();
@@ -2585,7 +2620,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 startActivity(new Intent(this, Class.forName(str1)));
             } catch (Exception e) {
                 e.printStackTrace();
-                alert("Unknown activity:\n"+str1);
+                alert("Unknown activity:\n" + str1);
             }
             return;
         } else if (str1.matches("^%(w3m|open)%.*")) {
@@ -2593,7 +2628,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (action.equalsIgnoreCase("share.file")) {
             File file = new File(str1);
             if (!file.canRead()) {
-                alert(this.getString(R.string.storage_read_error)+"\n"+str1);
+                alert(this.getString(R.string.storage_read_error) + "\n" + str1);
                 return;
             }
             action = "android.intent.action.VIEW";
@@ -2625,7 +2660,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (action.matches("^.*(VIEW|EDIT).*")) {
             Intent intent = new Intent(action);
             boolean privateStorage = path.matches("/data/.*");
-            boolean extFilesStorage = path.matches(TermService.getAPPEXTFILES()+"/.*");
+            boolean extFilesStorage = path.matches(TermService.getAPPEXTFILES() + "/.*");
             if (file.canRead() || str1.matches("^file://.*")) {
                 if (!mime.equals(MIME_HTML) && !(privateStorage || extFilesStorage) && AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
                     uri = Uri.fromFile(file);
@@ -2668,10 +2703,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     } catch (Exception e) {
                         String hash = getHashString(file.toString());
-                        if (!ext.equals("")) hash += "."+ext;
+                        if (!ext.equals("")) hash += "." + ext;
 
                         File cacheDir = new File(INTENT_CACHE_DIR);
-                        File cache = new File(cacheDir.toString()+"/"+hash);
+                        File cache = new File(cacheDir.toString() + "/" + hash);
                         if (cache.isDirectory()) {
                             SyncFileObserver.delete(cache);
                         }
@@ -2683,7 +2718,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".fileprovider", cache);
                             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         } catch (Exception makeCacheErr) {
-                            alert(this.getString(R.string.prefs_read_error_title)+"\n"+path);
+                            alert(this.getString(R.string.prefs_read_error_title) + "\n" + path);
                             return;
                         }
                     }
@@ -2707,7 +2742,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 alert(Term.this.getString(R.string.storage_read_error));
             }
         } else {
-            alert("Unknown action:\n"+action);
+            alert("Unknown action:\n" + action);
         }
     }
 
@@ -2726,13 +2761,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             writer.flush();
             writer.close();
             reader.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
     private final static String HASH_ALGORITHM = "SHA-1";
+
     private String getHashString(String s) {
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance(HASH_ALGORITHM);
@@ -2852,6 +2888,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     boolean mDoResetTerminal = false;
+
     private void doResetTerminal() {
         doResetTerminal(false);
     }
@@ -2910,7 +2947,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    private void drawerMenu(){
+    private void drawerMenu() {
         String externalApp = null;
         if (mSettings.getExternalAppButtonMode() > 0) {
             externalApp = getString(R.string.external_app_button);
@@ -2926,9 +2963,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] externalApps = externalApp != null ? new String[]{externalApp} : new String[]{};
 
         final Map<String, String> apps = new LinkedHashMap<String, String>() {
-            {put(getString(R.string.dropbox),     APP_DROPBOX);}
-            {put(getString(R.string.googledrive), APP_GOOGLEDRIVE);}
-            {put(getString(R.string.onedrive),    APP_ONEDRIVE);}
+            {
+                put(getString(R.string.dropbox), APP_DROPBOX);
+            }
+
+            {
+                put(getString(R.string.googledrive), APP_GOOGLEDRIVE);
+            }
+
+            {
+                put(getString(R.string.onedrive), APP_ONEDRIVE);
+            }
         };
         String[] appLabels = new String[apps.size()];
         int storages = 0;
@@ -2946,15 +2991,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         System.arraycopy(appLabels, 0, storageApps, 0, storages);
 
         final String[] base = {
-            this.getString(R.string.external_storage),
-            this.getString(R.string.create_or_delete),
-            this.getString(R.string.preferences)
+                this.getString(R.string.external_storage),
+                this.getString(R.string.create_or_delete),
+                this.getString(R.string.preferences)
         };
 
-        final String[] items = new String[externalApps.length+storageApps.length+base.length];
+        final String[] items = new String[externalApps.length + storageApps.length + base.length];
         System.arraycopy(externalApps, 0, items, 0, externalApps.length);
         System.arraycopy(appLabels, 0, items, externalApps.length, storageApps.length);
-        System.arraycopy(base, 0, items, externalApps.length+storageApps.length, base.length);
+        System.arraycopy(base, 0, items, externalApps.length + storageApps.length, base.length);
 
         new AlertDialog.Builder(this)
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -2962,7 +3007,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     public void onClick(DialogInterface dialog, int which) {
                         if (externalApps.length > 0 && which < externalApps.length) {
                             externalApp();
-                        } else if (which < externalApps.length+storageApps.length) {
+                        } else if (which < externalApps.length + storageApps.length) {
                             int id = which - externalApps.length;
                             if (getString(R.string.dropbox).equals(storageApps[id])) {
                                 launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX);
@@ -2986,8 +3031,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
-    private void shareIntentTextDialog(){
-        final String[] items = { this.getString(R.string.share_buffer_text), this.getString(R.string.share_visual_text), this.getString(R.string.share_unnamed_text), this.getString(R.string.share_file)};
+
+    private void shareIntentTextDialog() {
+        final String[] items = {this.getString(R.string.share_buffer_text), this.getString(R.string.share_visual_text), this.getString(R.string.share_unnamed_text), this.getString(R.string.share_file)};
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.share_title))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -3056,7 +3102,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        doCopyAll(which+2);
+                        doCopyAll(which + 2);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -3066,15 +3112,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doCopyAll() {
         final String[] items = {this.getString(R.string.copy_screen_current), this.getString(R.string.copy_screen_buffer)};
         new AlertDialog.Builder(this)
-            .setTitle(this.getString(R.string.copy_screen))
-            .setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    doCopyAll(which);
-                }
-            })
-            .setNegativeButton(android.R.string.cancel, null)
-            .show();
+                .setTitle(this.getString(R.string.copy_screen))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        doCopyAll(which);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void doCopyAll(int mode) {
@@ -3107,6 +3153,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private static boolean mVimPaste = false;
+
     private void doPaste() {
         doWarningBeforePaste();
     }
@@ -3131,21 +3178,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.setTitle(R.string.clipboard_warning_title);
-            builder.setMessage(R.string.clipboard_warning);
-            builder.setPositiveButton(getString(R.string.paste), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    doTermPaste();
-                }
-            });
-            builder.setNeutralButton(getString(R.string.share_title), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    shareIntentTextDialog();
-                }
-            });
-            builder.setNegativeButton(android.R.string.no, null);
-            builder.create().show();
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setTitle(R.string.clipboard_warning_title);
+        builder.setMessage(R.string.clipboard_warning);
+        builder.setPositiveButton(getString(R.string.paste), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface d, int m) {
+                doTermPaste();
+            }
+        });
+        builder.setNeutralButton(getString(R.string.share_title), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface d, int m) {
+                shareIntentTextDialog();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.create().show();
     }
 
     private void doSendControlKey() {
@@ -3161,43 +3208,43 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Resources r = getResources();
         dialog.setTitle(r.getString(R.string.control_key_dialog_title));
         dialog.setMessage(
-            formatMessage(mSettings.getControlKeyId(), TermSettings.CONTROL_KEY_ID_NONE,
-                r, R.array.control_keys_short_names,
-                R.string.control_key_dialog_control_text,
-                R.string.control_key_dialog_control_disabled_text, "CTRLKEY")
-            + "\n\n" +
-            formatMessage(mSettings.getFnKeyId(), TermSettings.FN_KEY_ID_NONE,
-                r, R.array.fn_keys_short_names,
-                R.string.control_key_dialog_fn_text,
-                R.string.control_key_dialog_fn_disabled_text, "FNKEY"));
-         dialog.show();
-     }
+                formatMessage(mSettings.getControlKeyId(), TermSettings.CONTROL_KEY_ID_NONE,
+                        r, R.array.control_keys_short_names,
+                        R.string.control_key_dialog_control_text,
+                        R.string.control_key_dialog_control_disabled_text, "CTRLKEY")
+                        + "\n\n" +
+                        formatMessage(mSettings.getFnKeyId(), TermSettings.FN_KEY_ID_NONE,
+                                r, R.array.fn_keys_short_names,
+                                R.string.control_key_dialog_fn_text,
+                                R.string.control_key_dialog_fn_disabled_text, "FNKEY"));
+        dialog.show();
+    }
 
-     private String formatMessage(int keyId, int disabledKeyId,
-         Resources r, int arrayId,
-         int enabledId,
-         int disabledId, String regex) {
-         if (keyId == disabledKeyId) {
-             return r.getString(disabledId);
-         }
-         String[] keyNames = r.getStringArray(arrayId);
-         String keyName = keyNames[keyId];
-         String template = r.getString(enabledId);
-         String result = template.replaceAll(regex, keyName);
-         return result;
+    private String formatMessage(int keyId, int disabledKeyId,
+                                 Resources r, int arrayId,
+                                 int enabledId,
+                                 int disabledId, String regex) {
+        if (keyId == disabledKeyId) {
+            return r.getString(disabledId);
+        }
+        String[] keyNames = r.getStringArray(arrayId);
+        String keyName = keyNames[keyId];
+        String template = r.getString(enabledId);
+        String result = template.replaceAll(regex, keyName);
+        return result;
     }
 
     private void doRestartSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)
-            getSystemService(Context.INPUT_METHOD_SERVICE);
+                getSystemService(Context.INPUT_METHOD_SERVICE);
         EmulatorView view = getCurrentEmulatorView();
         if (imm != null && view != null) imm.restartInput(view);
     }
 
     private void doToggleSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)
-            getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         requestFocusView();
     }
 
@@ -3205,7 +3252,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (getCurrentEmulatorView() == null) return;
         Activity activity = this;
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
+        if (imm != null)
+            imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
         requestFocusView();
     }
 
@@ -3213,7 +3261,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         View view = getCurrentFocus();
-        if (imm != null && view != null) imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        if (imm != null && view != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         requestFocusView();
     }
 
@@ -3225,11 +3273,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     final int WAKELOCK_TIMEOUT = 30; /* minutes */
+
     private void doToggleWakeLock() {
     }
 
     private final Handler mKeepScreenHandler = new Handler();
     private boolean mKeepScreenEnableAuto = false;
+
     private void doToggleKeepScreen() {
         boolean keepScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
         if (keepScreen) {
@@ -3250,7 +3300,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 public void run() {
                     mKeepScreenHandler.removeCallbacks(this);
                     boolean keepScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0;
-                    final long timeoutMills = mSettings.getKeepScreenTime()*60L*1000L;
+                    final long timeoutMills = mSettings.getKeepScreenTime() * 60L * 1000L;
                     final long currentTimeMillis = System.currentTimeMillis();
                     if (keepScreen) {
                         if (currentTimeMillis >= mLastKeyPress + timeoutMills) {
@@ -3263,7 +3313,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             };
             mKeepScreenHandler.removeCallbacksAndMessages(null);
-            long timeoutMills = mSettings.getKeepScreenTime()*60L*1000L;
+            long timeoutMills = mSettings.getKeepScreenTime() * 60L * 1000L;
             mKeepScreenHandler.postDelayed(r, timeoutMills);
         }
     }
@@ -3278,17 +3328,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     /**
-     *
      * Send a URL up to Android to be handled by a browser.
+     *
      * @param link The URL to be opened.
      */
-    private void execURL(String link)
-    {
+    private void execURL(String link) {
         Uri webLink = Uri.parse(link);
         Intent openLink = new Intent(Intent.ACTION_VIEW, webLink);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> handlers = pm.queryIntentActivities(openLink, 0);
-        if(handlers.size() > 0)
+        if (handlers.size() > 0)
             startActivity(openLink);
     }
 
@@ -3304,6 +3353,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private int mOnelineTextBox = -1;
     private EditText mEditText;
+
     private void initOnelineTextBox(int mode) {
         mEditText = (EditText) findViewById(R.id.text_input);
         mEditText.setText("");
@@ -3385,6 +3435,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private static boolean mEditTextView = false;
+
     private void setEditTextView(int mode) {
         EmulatorView view = getCurrentEmulatorView();
         if (mode == 2) {
@@ -3453,6 +3504,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     final float SCALE_VIEW = (float) 1.28;
+
     private void setEditTextViewSize() {
         int size = 0;
         if (mEditTextView) {
@@ -3461,23 +3513,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (size == 0) {
                 size = findViewById(R.id.view_function_bar).getHeight();
                 if (size <= 0) {
-                    final TextView  textView = (TextView)findViewById((R.id.text_input));
+                    final TextView textView = (TextView) findViewById((R.id.text_input));
                     float sp = SCALE_VIEW * textView.getTextSize() * getApplicationContext().getResources().getDisplayMetrics().scaledDensity;
                     size = (int) Math.ceil(sp);
                 }
             }
         }
-       if (mViewFlipper != null) mViewFlipper.setEditTextViewSize(size);
+        if (mViewFlipper != null) mViewFlipper.setEditTextViewSize(size);
     }
 
     private static int mFunctionBar = -1;
+
     private void setFunctionBar(int mode) {
         if (mode == 2) {
             mFunctionBar = mFunctionBar == 0 ? 1 : 0;
             if (mHideFunctionBar) mFunctionBar = 1;
             mHideFunctionBar = false;
-        }
-        else mFunctionBar = mode;
+        } else mFunctionBar = mode;
         if (mAlreadyStarted) updatePrefs();
     }
 
@@ -3492,6 +3544,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         public String key;
         public int resid;
         public boolean defValue;
+
         FunctionKey(String k, int i, boolean v) {
             key = k;
             resid = i;
@@ -3500,73 +3553,73 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     FunctionKey[] FunctionKeys = {
-        new FunctionKey("functionbar_esc",          R.id.button_esc,               true),
-        new FunctionKey("functionbar_ctrl",         R.id.button_ctrl,              true),
-        new FunctionKey("functionbar_alt",          R.id.button_alt,               false),
-        new FunctionKey("functionbar_tab",          R.id.button_tab,               true),
-        new FunctionKey("functionbar_up",           R.id.button_up,                true),
-        new FunctionKey("functionbar_down",         R.id.button_down,              true),
-        new FunctionKey("functionbar_left",         R.id.button_left,              false),
-        new FunctionKey("functionbar_right",        R.id.button_right,             false),
-        new FunctionKey("functionbar_page_up",      R.id.button_page_up,           false),
-        new FunctionKey("functionbar_page_down",    R.id.button_page_down,         false),
-        new FunctionKey("functionbar_backspace",    R.id.button_backspace,         false),
-        new FunctionKey("functionbar_enter",        R.id.button_enter,             false),
-        new FunctionKey("functionbar_i",            R.id.button_i,                 false),
-        new FunctionKey("functionbar_colon",        R.id.button_colon,             true),
-        new FunctionKey("functionbar_slash",        R.id.button_slash,             false),
-        new FunctionKey("functionbar_equal",        R.id.button_equal,             false),
-        new FunctionKey("functionbar_asterisk",     R.id.button_asterisk,          false),
-        new FunctionKey("functionbar_pipe",         R.id.button_pipe,              false),
-        new FunctionKey("functionbar_minus",        R.id.button_minus,             false),
-        new FunctionKey("functionbar_vim_paste",    R.id.button_vim_paste,         true),
-        new FunctionKey("functionbar_vim_yank",     R.id.button_vim_yank,          false),
-        new FunctionKey("functionbar_softkeyboard", R.id.button_softkeyboard,      true),
-        new FunctionKey("functionbar_invert",       R.id.button_invert,            true),
-        new FunctionKey("functionbar_menu",         R.id.button_menu,              true),
-        new FunctionKey("functionbar_menu_hide",    R.id.button_menu_hide,         true),
-        new FunctionKey("functionbar_menu_plus",    R.id.button_menu_plus,         false),
-        new FunctionKey("functionbar_menu_minus",   R.id.button_menu_minus,        false),
-        new FunctionKey("functionbar_menu_x",       R.id.button_menu_x,            false),
-        new FunctionKey("functionbar_menu_user",    R.id.button_menu_user,         true),
-        new FunctionKey("functionbar_menu_quit",    R.id.button_menu_quit,         true),
-        new FunctionKey("functionbar_next0",        R.id.button_next_functionbar0, true),
-        new FunctionKey("functionbar_next2",        R.id.button_next_functionbar2, true),
-        new FunctionKey("functionbar_prev",         R.id.button_prev_functionbar,  true),
-        new FunctionKey("functionbar_prev2",        R.id.button_prev_functionbar2, true),
-        new FunctionKey("functionbar_m1",           R.id.button_m1,                true),
-        new FunctionKey("functionbar_m2",           R.id.button_m2,                true),
-        new FunctionKey("functionbar_m3",           R.id.button_m3,                true),
-        new FunctionKey("functionbar_m4",           R.id.button_m4,                true),
-        new FunctionKey("functionbar_m5",           R.id.button_m5,                true),
-        new FunctionKey("functionbar_m6",           R.id.button_m6,                true),
-        new FunctionKey("functionbar_m7",           R.id.button_m7,                true),
-        new FunctionKey("functionbar_m8",           R.id.button_m8,                true),
-        new FunctionKey("functionbar_m9",           R.id.button_m9,                true),
-        new FunctionKey("functionbar_m10",          R.id.button_m10,               true),
-        new FunctionKey("functionbar_m11",          R.id.button_m11,               true),
-        new FunctionKey("functionbar_m12",          R.id.button_m12,               true),
+            new FunctionKey("functionbar_esc", R.id.button_esc, true),
+            new FunctionKey("functionbar_ctrl", R.id.button_ctrl, true),
+            new FunctionKey("functionbar_alt", R.id.button_alt, false),
+            new FunctionKey("functionbar_tab", R.id.button_tab, true),
+            new FunctionKey("functionbar_up", R.id.button_up, true),
+            new FunctionKey("functionbar_down", R.id.button_down, true),
+            new FunctionKey("functionbar_left", R.id.button_left, false),
+            new FunctionKey("functionbar_right", R.id.button_right, false),
+            new FunctionKey("functionbar_page_up", R.id.button_page_up, false),
+            new FunctionKey("functionbar_page_down", R.id.button_page_down, false),
+            new FunctionKey("functionbar_backspace", R.id.button_backspace, false),
+            new FunctionKey("functionbar_enter", R.id.button_enter, false),
+            new FunctionKey("functionbar_i", R.id.button_i, false),
+            new FunctionKey("functionbar_colon", R.id.button_colon, true),
+            new FunctionKey("functionbar_slash", R.id.button_slash, false),
+            new FunctionKey("functionbar_equal", R.id.button_equal, false),
+            new FunctionKey("functionbar_asterisk", R.id.button_asterisk, false),
+            new FunctionKey("functionbar_pipe", R.id.button_pipe, false),
+            new FunctionKey("functionbar_minus", R.id.button_minus, false),
+            new FunctionKey("functionbar_vim_paste", R.id.button_vim_paste, true),
+            new FunctionKey("functionbar_vim_yank", R.id.button_vim_yank, false),
+            new FunctionKey("functionbar_softkeyboard", R.id.button_softkeyboard, true),
+            new FunctionKey("functionbar_invert", R.id.button_invert, true),
+            new FunctionKey("functionbar_menu", R.id.button_menu, true),
+            new FunctionKey("functionbar_menu_hide", R.id.button_menu_hide, true),
+            new FunctionKey("functionbar_menu_plus", R.id.button_menu_plus, false),
+            new FunctionKey("functionbar_menu_minus", R.id.button_menu_minus, false),
+            new FunctionKey("functionbar_menu_x", R.id.button_menu_x, false),
+            new FunctionKey("functionbar_menu_user", R.id.button_menu_user, true),
+            new FunctionKey("functionbar_menu_quit", R.id.button_menu_quit, true),
+            new FunctionKey("functionbar_next0", R.id.button_next_functionbar0, true),
+            new FunctionKey("functionbar_next2", R.id.button_next_functionbar2, true),
+            new FunctionKey("functionbar_prev", R.id.button_prev_functionbar, true),
+            new FunctionKey("functionbar_prev2", R.id.button_prev_functionbar2, true),
+            new FunctionKey("functionbar_m1", R.id.button_m1, true),
+            new FunctionKey("functionbar_m2", R.id.button_m2, true),
+            new FunctionKey("functionbar_m3", R.id.button_m3, true),
+            new FunctionKey("functionbar_m4", R.id.button_m4, true),
+            new FunctionKey("functionbar_m5", R.id.button_m5, true),
+            new FunctionKey("functionbar_m6", R.id.button_m6, true),
+            new FunctionKey("functionbar_m7", R.id.button_m7, true),
+            new FunctionKey("functionbar_m8", R.id.button_m8, true),
+            new FunctionKey("functionbar_m9", R.id.button_m9, true),
+            new FunctionKey("functionbar_m10", R.id.button_m10, true),
+            new FunctionKey("functionbar_m11", R.id.button_m11, true),
+            new FunctionKey("functionbar_m12", R.id.button_m12, true),
     };
 
     private void setFunctionKeyListener() {
-        for (FunctionKey fkey: FunctionKeys) {
+        for (FunctionKey fkey : FunctionKeys) {
             switch (fkey.resid) {
-            case R.id.button_up:
-            case R.id.button_down:
-            case R.id.button_left:
-            case R.id.button_right:
-                findViewById(fkey.resid).setOnTouchListener(new RepeatListener(400, 25, new OnClickListener() {
-                    public void onClick(View v) {
-                        Term.this.onClick(v);
-                    }
-                }));
-                break;
-            default:
-                findViewById(fkey.resid).setOnClickListener(this);
-                break;
+                case R.id.button_up:
+                case R.id.button_down:
+                case R.id.button_left:
+                case R.id.button_right:
+                    findViewById(fkey.resid).setOnTouchListener(new RepeatListener(400, 25, new OnClickListener() {
+                        public void onClick(View v) {
+                            Term.this.onClick(v);
+                        }
+                    }));
+                    break;
+                default:
+                    findViewById(fkey.resid).setOnClickListener(this);
+                    break;
             }
         }
-        Button button = (Button)findViewById(R.id.button_oneline_text_box_clear);
+        Button button = (Button) findViewById(R.id.button_oneline_text_box_clear);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3585,11 +3638,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
         final String label = "⏎";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
-        button = (Button)findViewById(R.id.button_enter);
+        button = (Button) findViewById(R.id.button_enter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
     }
 
-    private boolean onelineTextBoxClear(){
+    private boolean onelineTextBoxClear() {
         if (mEditTextView) {
             if (mEditText != null) {
                 String str = mEditText.getText().toString();
@@ -3613,7 +3666,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    private boolean onelineTextBoxEsc(){
+    private boolean onelineTextBoxEsc() {
         if (mEditTextView) {
             if (mEditText != null && mEditText.isFocused()) {
                 EmulatorView view = getCurrentEmulatorView();
@@ -3628,7 +3681,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    private boolean onelineTextBoxTab(){
+    private boolean onelineTextBoxTab() {
         if (mEditTextView) {
             if (mEditText != null && mEditText.isFocused()) {
                 sendKeyStrings("\t", false);
@@ -3638,7 +3691,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    private boolean onelineTextBoxEnter(boolean force){
+    private boolean onelineTextBoxEnter(boolean force) {
         if (mEditTextView) {
             if (mEditText != null && (force || mEditText.isFocused())) {
                 String str = mEditText.getText().toString();
@@ -3656,12 +3709,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public static final String FKEY_LABEL = "fkey_label";
+
     private void setFunctionKeyVisibility(SharedPreferences prefs, String key, int id, boolean defValue) {
         int visibility = prefs.getBoolean(key, defValue) ? View.VISIBLE : View.GONE;
-        if (id == R.id.button_menu_plus)  visibility = View.GONE;
+        if (id == R.id.button_menu_plus) visibility = View.GONE;
         if (id == R.id.button_menu_minus) visibility = View.GONE;
-        if (id == R.id.button_menu_x)     visibility = View.GONE;
-        String label = prefs.getString(FKEY_LABEL+key, "");
+        if (id == R.id.button_menu_x) visibility = View.GONE;
+        String label = prefs.getString(FKEY_LABEL + key, "");
         setFunctionBarButton(id, visibility, label);
 
         Button button = (Button) findViewById(R.id.button_oneline_text_box_enter);
@@ -3672,6 +3726,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static int mFunctionBarId = 0;
+
     private void setFunctionKeyVisibility() {
         int visibility;
         if (mHideFunctionBar) {
@@ -3685,7 +3740,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        for (FunctionKey fkey: FunctionKeys) {
+        for (FunctionKey fkey : FunctionKeys) {
             setFunctionKeyVisibility(prefs, fkey.key, fkey.resid, fkey.defValue);
         }
 
@@ -3700,7 +3755,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("NewApi")
     private void setFunctionBarButton(int id, int visibility, String label) {
-        Button button = (Button)findViewById(id);
+        Button button = (Button) findViewById(id);
         if (!label.equals("")) button.setText(label);
         button.setVisibility(visibility);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -3717,175 +3772,175 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onClick(View v) {
         EmulatorView view = getCurrentEmulatorView();
         switch (v.getId()) {
-        case R.id.button_esc:
-            if (view.getControlKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
-                mInvertCursorDirection = getDefaultInvertCursorDirection();
-                setCursorDirectionLabel();
-                view.setControlKeyState(0);
+            case R.id.button_esc:
+                if (view.getControlKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
+                    mInvertCursorDirection = getDefaultInvertCursorDirection();
+                    setCursorDirectionLabel();
+                    view.setControlKeyState(0);
+                    break;
+                }
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
                 break;
-            }
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
-            break;
-        case R.id.button_ctrl:
-            int ctrl = view.getControlKeyState();
-            if (ctrl == LOCKED) {
-                mInvertCursorDirection = getDefaultInvertCursorDirection();
-                setCursorDirectionLabel();
-            } else if (mSettings.getCursorDirectionControlMode() == 3) {
-                if (ctrl == RELEASED) {
-                    mInvertCursorDirection = !getInvertCursorDirection();
+            case R.id.button_ctrl:
+                int ctrl = view.getControlKeyState();
+                if (ctrl == LOCKED) {
+                    mInvertCursorDirection = getDefaultInvertCursorDirection();
+                    setCursorDirectionLabel();
+                } else if (mSettings.getCursorDirectionControlMode() == 3) {
+                    if (ctrl == RELEASED) {
+                        mInvertCursorDirection = !getInvertCursorDirection();
+                        setCursorDirectionLabel();
+                    }
+                } else if (mSettings.getCursorDirectionControlMode() > 0) {
+                    if (ctrl == UNPRESSED) {
+                        mInvertCursorDirection = !getInvertCursorDirection();
+                        setCursorDirectionLabel();
+                    }
+                }
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_CTRL_LEFT);
+                break;
+            case R.id.button_alt:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
+                break;
+            case R.id.button_tab:
+                if (onelineTextBoxTab()) break;
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
+                break;
+            case R.id.button_up:
+            case R.id.button_down:
+            case R.id.button_left:
+            case R.id.button_right:
+                int state = view.getControlKeyState();
+                boolean invert = getInvertCursorDirection();
+                if ((!invert && v.getId() == R.id.button_up) ||
+                        (invert && v.getId() == R.id.button_left)) {
+                    doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_UP);
+                } else if ((!invert && v.getId() == R.id.button_down) ||
+                        (invert && v.getId() == R.id.button_right)) {
+                    doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_DOWN);
+                } else if ((!invert && v.getId() == R.id.button_left) ||
+                        (invert && v.getId() == R.id.button_up)) {
+                    doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
+                } else if ((!invert && v.getId() == R.id.button_right) ||
+                        (invert && v.getId() == R.id.button_down)) {
+                    doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
+                }
+                if (state == RELEASED && mSettings.getCursorDirectionControlMode() == 1) {
+                    view.setControlKeyState(UNPRESSED);
+                    mInvertCursorDirection = getDefaultInvertCursorDirection();
                     setCursorDirectionLabel();
                 }
-            } else if (mSettings.getCursorDirectionControlMode() > 0) {
-                if (ctrl == UNPRESSED) {
-                    mInvertCursorDirection = !getInvertCursorDirection();
-                    setCursorDirectionLabel();
-                }
-            }
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_CTRL_LEFT);
-            break;
-        case R.id.button_alt:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
-            break;
-        case R.id.button_tab:
-            if (onelineTextBoxTab()) break;
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
-            break;
-        case R.id.button_up:
-        case R.id.button_down:
-        case R.id.button_left:
-        case R.id.button_right:
-            int state = view.getControlKeyState();
-            boolean invert = getInvertCursorDirection();
-            if ((!invert && v.getId() == R.id.button_up) ||
-                 (invert && v.getId() == R.id.button_left)) {
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_UP);
-            } else if ((!invert  && v.getId() == R.id.button_down) ||
-                        (invert  && v.getId() == R.id.button_right)) {
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_DOWN);
-            } else if ((!invert  && v.getId() == R.id.button_left) ||
-                        (invert  && v.getId() == R.id.button_up)) {
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
-            } else if ((!invert  && v.getId() == R.id.button_right) ||
-                        (invert  && v.getId() == R.id.button_down)) {
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
-            }
-            if (state == RELEASED && mSettings.getCursorDirectionControlMode() == 1) {
-                view.setControlKeyState(UNPRESSED);
-                mInvertCursorDirection = getDefaultInvertCursorDirection();
-                setCursorDirectionLabel();
-            }
-            break;
-        case R.id.button_page_up:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_UP);
-            break;
-        case R.id.button_page_down:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_DOWN);
-            break;
-        case R.id.button_backspace:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_DEL);
-            break;
-        case R.id.button_enter:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_ENTER);
-            break;
-        case R.id.button_i:
-            sendKeyStrings("i", false);
-            if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
-            break;
-        case R.id.button_colon:
-            sendKeyStrings(":", false);
-            break;
-        case R.id.button_slash:
-            sendKeyStrings("/", false);
-            break;
-        case R.id.button_equal:
-            sendKeyStrings("=", false);
-            break;
-        case R.id.button_asterisk:
-            sendKeyStrings("*", false);
-            break;
-        case R.id.button_pipe:
-            sendKeyStrings("|", false);
-            break;
-        case R.id.button_minus:
-            sendKeyStrings("-", false);
-            break;
-        case R.id.button_vim_paste:
-            sendKeyStrings("\"*p", false);
-            break;
-        case R.id.button_vim_yank:
-            sendKeyStrings("\"*yy"+"\u001b", false);
-            break;
-        case R.id.button_menu_plus:
-            doSendActionBarKey(view, mSettings.getActionBarPlusKeyAction());
-            break;
-        case R.id.button_menu_minus:
-            doSendActionBarKey(view, mSettings.getActionBarMinusKeyAction());
-            break;
-        case R.id.button_menu_x:
-            doSendActionBarKey(view, mSettings.getActionBarXKeyAction());
-            break;
-        case R.id.button_menu_user:
-            doSendActionBarKey(view, mSettings.getActionBarUserKeyAction());
-            break;
-        case R.id.button_menu_quit:
-            doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
-            break;
-        case R.id.button_softkeyboard:
-            doSendActionBarKey(view, mSettings.getActionBarIconKeyAction());
-            break;
-        case R.id.button_invert:
-            doSendActionBarKey(view, mSettings.getActionBarInvertKeyAction());
-            break;
-        case R.id.button_menu:
-            openOptionsMenu();
-            break;
-        case R.id.button_menu_hide:
-            setFunctionBar(2);
-            break;
-        case R.id.button_next_functionbar0:
-        case R.id.button_prev_functionbar:
-        case R.id.button_prev_functionbar2:
-        case R.id.button_next_functionbar2:
-            mFunctionBarId = mFunctionBarId == 0 ? 1 : 0;
-            setFunctionKeyVisibility();
-            break;
-        case R.id.button_m1:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F1);
-            break;
-        case R.id.button_m2:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F2);
-            break;
-        case R.id.button_m3:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F3);
-            break;
-        case R.id.button_m4:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F4);
-            break;
-        case R.id.button_m5:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F5);
-            break;
-        case R.id.button_m6:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F6);
-            break;
-        case R.id.button_m7:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F7);
-            break;
-        case R.id.button_m8:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F8);
-            break;
-        case R.id.button_m9:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F9);
-            break;
-        case R.id.button_m10:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F10);
-            break;
-        case R.id.button_m11:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F11);
-            break;
-        case R.id.button_m12:
-            doSendActionBarKey(view, KeycodeConstants.KEYCODE_F12);
-            break;
+                break;
+            case R.id.button_page_up:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_UP);
+                break;
+            case R.id.button_page_down:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_DOWN);
+                break;
+            case R.id.button_backspace:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_DEL);
+                break;
+            case R.id.button_enter:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_ENTER);
+                break;
+            case R.id.button_i:
+                sendKeyStrings("i", false);
+                if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
+                break;
+            case R.id.button_colon:
+                sendKeyStrings(":", false);
+                break;
+            case R.id.button_slash:
+                sendKeyStrings("/", false);
+                break;
+            case R.id.button_equal:
+                sendKeyStrings("=", false);
+                break;
+            case R.id.button_asterisk:
+                sendKeyStrings("*", false);
+                break;
+            case R.id.button_pipe:
+                sendKeyStrings("|", false);
+                break;
+            case R.id.button_minus:
+                sendKeyStrings("-", false);
+                break;
+            case R.id.button_vim_paste:
+                sendKeyStrings("\"*p", false);
+                break;
+            case R.id.button_vim_yank:
+                sendKeyStrings("\"*yy" + "\u001b", false);
+                break;
+            case R.id.button_menu_plus:
+                doSendActionBarKey(view, mSettings.getActionBarPlusKeyAction());
+                break;
+            case R.id.button_menu_minus:
+                doSendActionBarKey(view, mSettings.getActionBarMinusKeyAction());
+                break;
+            case R.id.button_menu_x:
+                doSendActionBarKey(view, mSettings.getActionBarXKeyAction());
+                break;
+            case R.id.button_menu_user:
+                doSendActionBarKey(view, mSettings.getActionBarUserKeyAction());
+                break;
+            case R.id.button_menu_quit:
+                doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
+                break;
+            case R.id.button_softkeyboard:
+                doSendActionBarKey(view, mSettings.getActionBarIconKeyAction());
+                break;
+            case R.id.button_invert:
+                doSendActionBarKey(view, mSettings.getActionBarInvertKeyAction());
+                break;
+            case R.id.button_menu:
+                openOptionsMenu();
+                break;
+            case R.id.button_menu_hide:
+                setFunctionBar(2);
+                break;
+            case R.id.button_next_functionbar0:
+            case R.id.button_prev_functionbar:
+            case R.id.button_prev_functionbar2:
+            case R.id.button_next_functionbar2:
+                mFunctionBarId = mFunctionBarId == 0 ? 1 : 0;
+                setFunctionKeyVisibility();
+                break;
+            case R.id.button_m1:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F1);
+                break;
+            case R.id.button_m2:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F2);
+                break;
+            case R.id.button_m3:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F3);
+                break;
+            case R.id.button_m4:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F4);
+                break;
+            case R.id.button_m5:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F5);
+                break;
+            case R.id.button_m6:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F6);
+                break;
+            case R.id.button_m7:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F7);
+                break;
+            case R.id.button_m8:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F8);
+                break;
+            case R.id.button_m9:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F9);
+                break;
+            case R.id.button_m10:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F10);
+                break;
+            case R.id.button_m11:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F11);
+                break;
+            case R.id.button_m12:
+                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F12);
+                break;
         }
     }
 
@@ -3934,9 +3989,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 path = uri.toString().replaceFirst("content://[^/]+/", "/");
             }
             if (path != null) {
-                path = "/"+path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
+                path = "/" + path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
                 String fname = new File(path).getName();
-                if (displayName != null && !(fname == null || fname.equals(displayName))) path = path+"/"+displayName;
+                if (displayName != null && !(fname == null || fname.equals(displayName)))
+                    path = path + "/" + displayName;
                 path = path.replaceAll(":|\\|", "-");
                 path = path.replaceAll("//+", "/");
             }
@@ -3993,6 +4049,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean mOnExtraButtonClicked = false;
+
     // User clicked the "Upgrade to Premium" button.
     public void onExtraButtonClicked(View arg0) {
         if (!isConnected(this.getApplicationContext())) {
@@ -4027,7 +4084,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void showImageDialog(AlertDialog dialog, String mes, int id) {
         LayoutInflater inflater = getLayoutInflater();
         final View view = inflater.inflate(R.layout.image_dialog, null);
-        ImageView iv = (ImageView)view.findViewById(R.id.iv_image_dialog);
+        ImageView iv = (ImageView) view.findViewById(R.id.iv_image_dialog);
         iv.setImageResource(id);
         dialog.setMessage(mes);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

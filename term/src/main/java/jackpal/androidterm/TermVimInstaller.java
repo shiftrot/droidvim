@@ -1,6 +1,5 @@
 package jackpal.androidterm;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -40,6 +39,7 @@ final class TermVimInstaller {
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
     static public boolean doInstallVim = false;
+
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
 
@@ -62,7 +62,7 @@ final class TermVimInstaller {
         } else {
             final AlertDialog.Builder b = new AlertDialog.Builder(activity);
             b.setIcon(android.R.drawable.ic_dialog_info);
-    //        b.setTitle(activity.getString(R.string.install_runtime_doc_dialog_title));
+            //        b.setTitle(activity.getString(R.string.install_runtime_doc_dialog_title));
             b.setMessage(activity.getString(R.string.install_runtime_doc_message));
             b.setPositiveButton(activity.getString(R.string.button_yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -107,7 +107,7 @@ final class TermVimInstaller {
 
     static String getInstallVersionFile(final Service service) {
         String sdcard = TermService.getAPPEXTFILES();
-        return sdcard+"/version";
+        return sdcard + "/version";
     }
 
     static boolean doInstallTerm(final Activity activity) {
@@ -116,7 +116,7 @@ final class TermVimInstaller {
 
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
         String terminfoDir = TermService.getTerminfoInstallDir();
-        File dir = new File(terminfoDir+"/terminfo");
+        File dir = new File(terminfoDir + "/terminfo");
         boolean doInstall = !dir.isDirectory() || !pref.getString("versionName", "").equals(TERMVIM_VERSION);
 
         if (doInstall) {
@@ -136,8 +136,8 @@ final class TermVimInstaller {
         final String path = TermService.getAPPFILES();
         final String sdcard = TermService.getAPPEXTFILES();
         INSTALL_ZIP = activity.getString(R.string.update_message);
-        INSTALL_WARNING = "\n\n"+activity.getString(R.string.update_warning);
-        if (FLAVOR_VIM) INSTALL_WARNING += "\n"+activity.getString(R.string.update_vim_warning);
+        INSTALL_WARNING = "\n\n" + activity.getString(R.string.update_warning);
+        if (FLAVOR_VIM) INSTALL_WARNING += "\n" + activity.getString(R.string.update_vim_warning);
         final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_message), true, false);
         new Thread() {
             @Override
@@ -145,7 +145,7 @@ final class TermVimInstaller {
                 final int orientation = activity.getRequestedOrientation();
                 fixOrientation(activity, orientationLock(activity));
                 try {
-                    boolean first = !new File(sdcard+"/vimrc").exists();
+                    boolean first = !new File(sdcard + "/vimrc").exists();
                     showWhatsNew(activity, first);
                     setMessage(activity, pd, "scripts");
                     doInstallTerm(activity);
@@ -155,22 +155,22 @@ final class TermVimInstaller {
                         id = activity.getResources().getIdentifier("bin_am", "raw", activity.getPackageName());
                         installZip(path, getInputStream(activity, id));
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
-                        copyScript(activity.getResources().openRawResource(id),TermService.getAPPFILES()+"/bin/am");
+                        copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
                     }
                     String arch = getArch().contains("arm") ? "arm" : "x86";
                     String bin = "bin_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    String defaultVim = TermService.getAPPFILES()+"/bin/vim.default";
-                    String vimsh = TermService.getAPPFILES()+"/bin/vim";
+                    String defaultVim = TermService.getAPPFILES() + "/bin/vim.default";
+                    String vimsh = TermService.getAPPFILES() + "/bin/vim";
                     if ((!new File(defaultVim).exists()) || (!new File(vimsh).exists())) {
-                        shell("cat "+TermService.getAPPFILES()+"/usr/etc/src.vim.default"+" > "+vimsh);
-                        shell("chmod 755 "+ vimsh);
+                        shell("cat " + TermService.getAPPFILES() + "/usr/etc/src.vim.default" + " > " + vimsh);
+                        shell("chmod 755 " + vimsh);
                     }
                     setMessage(activity, pd, "binaries");
                     arch = getArch().contains("86") ? "x86" : "arm";
                     bin = "busybox_" + arch;
-                    if (!new File(TermService.getAPPFILES()+"/usr/bin/busybox").exists()) {
+                    if (!new File(TermService.getAPPFILES() + "/usr/bin/busybox").exists()) {
                         id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                         installZip(path, getInputStream(activity, id));
                     }
@@ -183,33 +183,33 @@ final class TermVimInstaller {
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         arch = getArch();
-                        String local = sdcard+"/version.bash";
-                        String target = TermService.getTMPDIR()+"/version";
+                        String local = sdcard + "/version.bash";
+                        String target = TermService.getTMPDIR() + "/version";
                         id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
                         copyScript(activity.getResources().openRawResource(id), target);
                         File targetVer = new File(target);
                         File localVer = new File(local);
                         if (isNeedUpdate(targetVer, localVer)) {
-                            id = activity.getResources().getIdentifier("bash_"+arch, "raw", activity.getPackageName());
+                            id = activity.getResources().getIdentifier("bash_" + arch, "raw", activity.getPackageName());
                             installTar(path, getInputStream(activity, id));
-                            if (!new File(TermService.getHOME()+"/.bashrc").exists()) {
-                                shell("cat "+TermService.getAPPFILES()+"/usr/etc/bash.bashrc > "+TermService.getHOME()+"/.bashrc");
+                            if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
+                                shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                             }
                             id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
-                            copyScript(activity.getResources().openRawResource(id), sdcard+"/version.bash");
+                            copyScript(activity.getResources().openRawResource(id), sdcard + "/version.bash");
                         }
                         targetVer.delete();
 
                         String bin_am = "bin_am";
-                        id = activity.getResources().getIdentifier(bin_am,"raw", activity.getPackageName());
+                        id = activity.getResources().getIdentifier(bin_am, "raw", activity.getPackageName());
                         installZip(path, getInputStream(activity, id));
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
-                        copyScript(activity.getResources().openRawResource(id),TermService.getAPPFILES()+"/bin/am");
+                        copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
                     }
                     id = activity.getResources().getIdentifier("suvim", "raw", activity.getPackageName());
-                    String dst = TermService.getAPPFILES()+"/bin/suvim";
+                    String dst = TermService.getAPPFILES() + "/bin/suvim";
                     copyScript(activity.getResources().openRawResource(id), dst);
-                    shell("chmod 755 "+ dst);
+                    shell("chmod 755 " + dst);
 
                     String runtimeDir = TermService.getVImRuntimeInstallDir();
                     setMessage(activity, pd, "runtime");
@@ -236,7 +236,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("extra", "raw", activity.getPackageName());
                     installZip(runtimeDir, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
-                    copyScript(activity.getResources().openRawResource(id), sdcard+"/version");
+                    copyScript(activity.getResources().openRawResource(id), sdcard + "/version");
                     setupStorageSymlinks(activity.getApplicationContext());
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
                 } finally {
@@ -284,11 +284,12 @@ final class TermVimInstaller {
         target.delete();
         return needUpdate;
     }
+
     static private void installTar(String path, InputStream is) {
         if (is == null) return;
         try {
             String type = "tar.xz";
-            String local = TermService.getTMPDIR()+"/tmp."+type;
+            String local = TermService.getTMPDIR() + "/tmp." + type;
             FileOutputStream fileOutputStream = new FileOutputStream(local);
             byte[] buffer = new byte[1024];
             int length = 0;
@@ -299,7 +300,7 @@ final class TermVimInstaller {
             is.close();
             String opt = local.matches(".*.xz$") ? "xf" : "Jxf";
 
-            shell(TermService.getAPPFILES()+"/usr/bin/busybox tar "+opt+" "+ local + " -C "+path);
+            shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + local + " -C " + path);
             new File(local).delete();
         } catch (IOException e) {
             e.printStackTrace();
@@ -310,14 +311,14 @@ final class TermVimInstaller {
         try {
             File storageDir = new File(TermService.getHOME());
 
-            if (new File(storageDir.getAbsolutePath()+"/internalStorage").exists()) {
+            if (new File(storageDir.getAbsolutePath() + "/internalStorage").exists()) {
                 return;
             }
             File internalDir = Environment.getExternalStorageDirectory();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, "internal").getAbsolutePath());
             } else {
-                shell(TermService.getAPPFILES()+"/usr/bin/busybox ln -s "+internalDir.getAbsolutePath()+" " + storageDir.getAbsolutePath()+"/internalStorage");
+                shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/internalStorage");
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
@@ -354,8 +355,8 @@ final class TermVimInstaller {
         BufferedReader br = null;
         try {
             try {
-                String appBase     = TermService.getAPPBASE();
-                String appFiles    = TermService.getAPPFILES();
+                String appBase = TermService.getAPPBASE();
+                String appFiles = TermService.getAPPFILES();
                 String appExtFiles = TermService.getAPPEXTFILES();
                 String internalStorage = TermService.getEXTSTORAGE();
                 br = new BufferedReader(new InputStreamReader(is));
@@ -366,7 +367,7 @@ final class TermVimInstaller {
                     str = str.replaceAll("%APPFILES%", appFiles);
                     str = str.replaceAll("%APPEXTFILES%", appExtFiles);
                     str = str.replaceAll("%INTERNAL_STORAGE%", internalStorage);
-                    writer.print(str+"\n");
+                    writer.print(str + "\n");
                 }
                 writer.close();
             } catch (IOException e) {
@@ -384,7 +385,7 @@ final class TermVimInstaller {
         InputStream is = null;
         try {
             is = activity.getResources().openRawResource(id);
-        } catch(Exception e) {
+        } catch (Exception e) {
             // do nothing
         }
         return is;
@@ -402,13 +403,13 @@ final class TermVimInstaller {
         }
     }
 
-    static public void shell(String...strings) {
-        try{
+    static public void shell(String... strings) {
+        try {
             Process shell = Runtime.getRuntime().exec("sh");
             DataOutputStream sh = new DataOutputStream(shell.getOutputStream());
 
             for (String s : strings) {
-                sh.writeBytes(s+"\n");
+                sh.writeBytes(s + "\n");
                 sh.flush();
             }
 
@@ -420,13 +421,14 @@ final class TermVimInstaller {
                 e.printStackTrace();
             }
             sh.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     static private String INSTALL_ZIP = "";
     static private String INSTALL_WARNING = "";
+
     static private void setMessage(final Activity activity, final ProgressDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
             activity.runOnUiThread(new Runnable() {
@@ -450,10 +452,10 @@ final class TermVimInstaller {
         try {
             while ((ze = zin.getNextEntry()) != null) {
                 if (ze.isDirectory()) {
-                    File file = new File(path+"/"+ze.getName());
+                    File file = new File(path + "/" + ze.getName());
                     if (!file.isDirectory()) file.mkdirs();
                 } else {
-                    File file = new File(path+"/"+ze.getName());
+                    File file = new File(path + "/" + ze.getName());
                     File parentFile = file.getParentFile();
                     parentFile.mkdirs();
 
@@ -494,7 +496,7 @@ final class TermVimInstaller {
             // FIXME: for Kindle
             String manufacturer = getProp("ro.product.manufacturer");
             if (manufacturer != null && manufacturer.equals("Amazon")) {
-            cpu = getProp("ro.product.cpu.abi");
+                cpu = getProp("ro.product.cpu.abi");
                 if (cpu != null) {
                     cpu = cpu.toLowerCase();
                     if (cpu.contains("arm64")) {
@@ -519,7 +521,7 @@ final class TermVimInstaller {
             if (cpu.contains("arm")) {
                 return "arm";
             } else if (cpu.contains("x86") || cpu.contains("i686")) {
-                return  "x86";
+                return "x86";
             }
         }
         return "arm";
@@ -536,15 +538,15 @@ final class TermVimInstaller {
             return bufferedReader.readLine();
         } catch (Exception e) {
             return null;
-        } finally{
-            if (bufferedReader != null){
+        } finally {
+            if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
                     // do nothing
                 }
             }
-            if (process != null){
+            if (process != null) {
                 process.destroy();
             }
         }

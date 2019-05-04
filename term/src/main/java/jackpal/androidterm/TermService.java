@@ -18,8 +18,10 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,31 +34,32 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.*;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.ParcelFileDescriptor;
+import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.app.Notification;
-import android.app.PendingIntent;
 
 import java.io.File;
+import java.util.UUID;
 
-import jackpal.androidterm.emulatorview.TermSession;
-
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.ServiceForegroundCompat;
-import jackpal.androidterm.libtermexec.v1.*;
+import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.libtermexec.v1.ITerminal;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
-import java.util.UUID;
-
-public class TermService extends Service implements TermSession.FinishCallback
-{
+public class TermService extends Service implements TermSession.FinishCallback {
     private static final int RUNNING_NOTIFICATION = 1;
     private ServiceForegroundCompat compat;
 
@@ -68,6 +71,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             return TermService.this;
         }
     }
+
     private final IBinder mTSBinder = new TSBinder();
 
     @Override
@@ -119,10 +123,10 @@ public class TermService extends Service implements TermSession.FinishCallback
             mEXTSTORAGE = mHOME;
         }
         mTMPDIR = getCacheDir() + "/tmp";
-        mLD_LIBRARY_PATH = mAPPFILES+"/usr/lib";
+        mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
         String model = TermVimInstaller.getProp("ro.product.model");
         if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
-            mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:"+mLD_LIBRARY_PATH;
+            mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:" + mLD_LIBRARY_PATH;
         }
         File tmpdir = new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
@@ -147,7 +151,8 @@ public class TermService extends Service implements TermSession.FinishCallback
             } else {
                 compat = new ServiceForegroundCompat(this);
                 Notification notification = showNotification();
-                if (notification != null) compat.startForeground(RUNNING_NOTIFICATION, notification);
+                if (notification != null)
+                    compat.startForeground(RUNNING_NOTIFICATION, notification);
             }
         } catch (Exception e) {
             Log.e("TermService", e.toString());
@@ -165,7 +170,8 @@ public class TermService extends Service implements TermSession.FinishCallback
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (!pref.getBoolean("statusbar_icon", true)) {
             priority = Notification.PRIORITY_MIN;
-            if (AndroidCompat.SDK >= 24 || TermVimInstaller.OS_AMAZON) statusIcon = R.drawable.ic_stat_transparent_icon;
+            if (AndroidCompat.SDK >= 24 || TermVimInstaller.OS_AMAZON)
+                statusIcon = R.drawable.ic_stat_transparent_icon;
         }
         Intent notifyIntent = new Intent(this, Term.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -189,32 +195,32 @@ public class TermService extends Service implements TermSession.FinishCallback
             }
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
             notificationBuilder
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setTicker(contentText)
-                .setContentTitle(contentText)
-                .setContentText(getText(R.string.service_notify_text))
-                .setContentIntent(pendingIntent)
-                .setSmallIcon(statusIcon)
-                .setLargeIcon(largeIconBitmap)
-                .setPriority(priority)
-                .setOngoing(true)
-                .setAutoCancel(false)
-                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                .setContentInfo("");
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setWhen(System.currentTimeMillis())
+                    .setTicker(contentText)
+                    .setContentTitle(contentText)
+                    .setContentText(getText(R.string.service_notify_text))
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(statusIcon)
+                    .setLargeIcon(largeIconBitmap)
+                    .setPriority(priority)
+                    .setOngoing(true)
+                    .setAutoCancel(false)
+                    .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+                    .setContentInfo("");
             notification = notificationBuilder.build();
         } else {
             notification = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle(contentText)
-                .setContentText(getText(R.string.service_notify_text))
-                .setContentIntent(pendingIntent)
-                .setSmallIcon(statusIcon)
-                .setLargeIcon(largeIconBitmap)
-                .setPriority(priority)
-                .setOngoing(true)
-                .setAutoCancel(false)
-                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                .build();
+                    .setContentTitle(contentText)
+                    .setContentText(getText(R.string.service_notify_text))
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(statusIcon)
+                    .setLargeIcon(largeIconBitmap)
+                    .setPriority(priority)
+                    .setOngoing(true)
+                    .setAutoCancel(false)
+                    .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+                    .build();
         }
         return notification;
     }
@@ -241,15 +247,15 @@ public class TermService extends Service implements TermSession.FinishCallback
     public String getInitialCommand(String cmd, boolean bFirst) {
         if (cmd == null || cmd.equals("")) return cmd;
 
-        mTERMINFO_INSTALL_DIR = mAPPFILES+"/usr/share";
+        mTERMINFO_INSTALL_DIR = mAPPFILES + "/usr/share";
         mVIMRUNTIME_INSTALL_DIR = mAPPEXTFILES;
         String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin";
-        String terminfo = mTERMINFO_INSTALL_DIR+"/terminfo";
-        String vimruntime = mVIMRUNTIME_INSTALL_DIR+"/runtime";
-        String vim = vimruntime+"/etc";
+        String terminfo = mTERMINFO_INSTALL_DIR + "/terminfo";
+        String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
+        String vim = vimruntime + "/etc";
 
         String replace = bFirst ? "" : "#";
-        cmd = cmd.replaceAll("(^|\n)-+", "$1"+ replace);
+        cmd = cmd.replaceAll("(^|\n)-+", "$1" + replace);
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
@@ -273,7 +279,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             if (dirs.length > 1) {
                 for (int i = 1; i < dirs.length; i++) {
                     File dir = dirs[i];
-                    if (dir != null && dir.canWrite() && new File(dir.toString()+"/terminfo").isDirectory()) {
+                    if (dir != null && dir.canWrite() && new File(dir.toString() + "/terminfo").isDirectory()) {
                         sdcard = i;
                         break;
                     }
@@ -336,7 +342,8 @@ public class TermService extends Service implements TermSession.FinishCallback
     }
 
     private boolean getInstallStatus(String scriptFile, String zipFile) {
-        if (!TermVimInstaller.TERMVIM_VERSION.equals(new PrefValue(this).getString("versionName", ""))) return false;
+        if (!TermVimInstaller.TERMVIM_VERSION.equals(new PrefValue(this).getString("versionName", "")))
+            return false;
         if (!(new File(scriptFile).exists())) return false;
         return true;
     }
@@ -403,7 +410,7 @@ public class TermService extends Service implements TermSession.FinishCallback
             if (pkgs == null || pkgs.length == 0)
                 return null;
 
-            for (String packageName:pkgs) {
+            for (String packageName : pkgs) {
                 try {
                     final PackageInfo pkgInfo = pm.getPackageInfo(packageName, 0);
 
@@ -445,7 +452,8 @@ public class TermService extends Service implements TermSession.FinishCallback
 
                         return result.getIntentSender();
                     }
-                } catch (PackageManager.NameNotFoundException ignore) {}
+                } catch (PackageManager.NameNotFoundException ignore) {
+                }
             }
 
             return null;

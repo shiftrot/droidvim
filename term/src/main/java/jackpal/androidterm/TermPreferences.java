@@ -21,16 +21,6 @@ import android.os.Environment;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import jackpal.androidterm.compat.AndroidCompat;
-import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
-import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
-import jackpal.androidterm.util.TermSettings;
-
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -52,6 +42,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.util.TermSettings;
+
 import static jackpal.androidterm.Term.getPath;
 
 /**
@@ -69,7 +68,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     public static TermPreferences mTermPreference = null;
 
     public static final String FONT_FILENAME = "font_filename";
-    public static final String FONT_PATH = Environment.getExternalStorageDirectory().getPath()+"/fonts";
+    public static final String FONT_PATH = Environment.getExternalStorageDirectory().getPath() + "/fonts";
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -141,6 +140,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setAppPickerList(this);
@@ -153,6 +153,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     private static String mLabels[] = null;
     private static String mPackageNames[] = null;
+
     public static void setAppPickerList(Activity activity) {
         try {
             final PackageManager pm = activity.getApplicationContext().getPackageManager();
@@ -163,7 +164,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     final TreeMap<String, String> items = new TreeMap<>();
                     for (ApplicationInfo app : installedAppList) {
                         Intent intent = pm.getLaunchIntentForPackage(app.packageName);
-                        if (intent != null) items.put(app.loadLabel(pm).toString(), app.packageName);
+                        if (intent != null)
+                            items.put(app.loadLabel(pm).toString(), app.packageName);
                     }
                     List<String> list = new ArrayList<>(items.keySet());
                     mLabels = list.toArray(new String[0]);
@@ -258,12 +260,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     editor.putString("home_path", path);
                     editor.apply();
                     bld.setIcon(android.R.drawable.ic_dialog_info);
-                    bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                    bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path);
                 } else if (new File(path).canWrite()) {
                     editor.putString("home_path", path);
                     editor.apply();
                     bld.setIcon(android.R.drawable.ic_dialog_info);
-                    bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                    bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path);
                 } else {
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setMessage(activity.getString(R.string.invalid_directory));
@@ -290,12 +292,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     editor.putString("startup_path", path);
                     editor.apply();
                     bld.setIcon(android.R.drawable.ic_dialog_info);
-                    bld.setMessage(activity.getString(R.string.set_startup_directory)+" "+path);
+                    bld.setMessage(activity.getString(R.string.set_startup_directory) + " " + path);
                 } else if (new File(path).canWrite()) {
                     editor.putString("startup_path", path);
                     editor.apply();
                     bld.setIcon(android.R.drawable.ic_dialog_info);
-                    bld.setMessage(activity.getString(R.string.set_startup_directory)+" "+path);
+                    bld.setMessage(activity.getString(R.string.set_startup_directory) + " " + path);
                 } else {
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setMessage(activity.getString(R.string.invalid_directory));
@@ -414,7 +416,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         File pathExternalPublicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String downloadDir = pathExternalPublicDir.getPath();
         @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-        final String filename = downloadDir + "/"+ BuildConfig.APPLICATION_ID + "-" + timestamp + ".xml";
+        final String filename = downloadDir + "/" + BuildConfig.APPLICATION_ID + "-" + timestamp + ".xml";
         writePrefs(filename);
     }
 
@@ -432,7 +434,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             bld.create().show();
             return false;
         }
-        bld.setMessage(this.getString(R.string.prefs_write_info_success)+"\n\n"+filename);
+        bld.setMessage(this.getString(R.string.prefs_write_info_success) + "\n\n" + filename);
         bld.create().show();
         return true;
     }
@@ -477,7 +479,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         else if (val instanceof Long)
             return edit.putLong(key, (Long) val);
         else if (val instanceof String) {
-            String loadVal = (String)val;
+            String loadVal = (String) val;
             if (key.equals("home_path")) {
                 if (!new File(loadVal).canWrite()) {
                     String defValue;
@@ -492,7 +494,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 }
                 return edit.putString(key, loadVal);
             }
-            return edit.putString(key, ((String)val));
+            return edit.putString(key, ((String) val));
         }
         return edit;
     }
@@ -533,12 +535,13 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     public static final boolean USE_DOCUMENT_TREE_PICKER = false && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-    public static final int REQUEST_FONT_PICKER          = 16;
-    public static final int REQUEST_PREFS_READ_PICKER    = REQUEST_FONT_PICKER + 1;
-    public static final int REQUEST_STORAGE_FONT_PICKER  = REQUEST_FONT_PICKER + 2;
+    public static final int REQUEST_FONT_PICKER = 16;
+    public static final int REQUEST_PREFS_READ_PICKER = REQUEST_FONT_PICKER + 1;
+    public static final int REQUEST_STORAGE_FONT_PICKER = REQUEST_FONT_PICKER + 2;
     public static final int REQUEST_STORAGE_PREFS_PICKER = REQUEST_FONT_PICKER + 3;
-    public static final int REQUEST_HOME_DIRECTORY       = REQUEST_FONT_PICKER + 4;
-    public static final int REQUEST_STARTUP_DIRECTORY    = REQUEST_FONT_PICKER + 5;
+    public static final int REQUEST_HOME_DIRECTORY = REQUEST_FONT_PICKER + 4;
+    public static final int REQUEST_STARTUP_DIRECTORY = REQUEST_FONT_PICKER + 5;
+
     @Override
     @SuppressLint("NewApi")
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -588,7 +591,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         AlertDialog.Builder bld = new AlertDialog.Builder(this);
                         bld.setIcon(android.R.drawable.ic_dialog_info);
                         bld.setTitle(this.getString(R.string.title_startup_chooser_preference));
-                        bld.setMessage(this.getString(R.string.copy_startup_dir)+" "+path);
+                        bld.setMessage(this.getString(R.string.copy_startup_dir) + " " + path);
                         bld.setPositiveButton(this.getString(android.R.string.ok), null);
                         bld.create().show();
                     } else {
@@ -617,7 +620,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             editor.putString("home_path", path);
                             editor.apply();
                             bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(activity.getString(R.string.set_home_directory)+" "+path);
+                            bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path);
                         } else {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
                             bld.setMessage(activity.getString(R.string.invalid_directory));
@@ -649,7 +652,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         } catch (Exception e) {
                             AlertDialog.Builder bld = new AlertDialog.Builder(this);
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(this.getString(R.string.font_file_invalid)+"\n\n"+path);
+                            bld.setMessage(this.getString(R.string.font_file_invalid) + "\n\n" + path);
                             bld.setPositiveButton(this.getString(android.R.string.ok), null);
                             bld.create().show();
                         }
@@ -683,23 +686,24 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         String scheme = uri.getScheme();
         if ("file".equals(scheme)) {
             path = uri.getPath();
-        } else if("content".equals(scheme)) {
+        } else if ("content".equals(scheme)) {
             try {
-                if ("com.android.externalstorage.documents".equals( uri.getAuthority())) { // ExternalStorageProvider
+                if ("com.android.externalstorage.documents".equals(uri.getAuthority())) { // ExternalStorageProvider
                     path = uri.getEncodedPath();
                     path = URLDecoder.decode(path, "UTF-8");
                     final String[] split = path.split(":");
                     final String type = split[0];
                     if ("/tree/primary".equalsIgnoreCase(type)) {
-                        if (split.length == 1) return Environment.getExternalStorageDirectory().getAbsolutePath();
+                        if (split.length == 1)
+                            return Environment.getExternalStorageDirectory().getAbsolutePath();
                         return Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + split[1];
                     } else {
                         try {
-                             if (split.length > 1) {
-                                 return "/stroage/" + type +  "/" + split[1];
-                             } else {
-                                 return "/stroage/" + type;
-                             }
+                            if (split.length > 1) {
+                                return "/stroage/" + type + "/" + split[1];
+                            } else {
+                                return "/stroage/" + type;
+                            }
                         } catch (Exception e) {
                             return null;
                         }
@@ -885,12 +889,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             } else {
                 addPreferencesFromResource(R.xml.pref_font_18);
                 final String FONTFILE = "fontfile";
-                ListPreference fontFileList= (ListPreference) findPreference(FONTFILE);
+                ListPreference fontFileList = (ListPreference) findPreference(FONTFILE);
                 if (mTermPreference != null) mTermPreference.setFontList(fontFileList);
 
                 Preference fontSelect = findPreference(FONTFILE);
                 Resources res = getResources();
-                fontSelect.setSummary(res.getString(R.string.summary_fontfile_preference)+String.format(" (%s)", FONT_PATH));
+                fontSelect.setSummary(res.getString(R.string.summary_fontfile_preference) + String.format(" (%s)", FONT_PATH));
                 fontSelect.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
