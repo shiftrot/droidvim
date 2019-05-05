@@ -310,15 +310,16 @@ final class TermVimInstaller {
     static private void setupStorageSymlinks(final Context context) {
         try {
             File storageDir = new File(TermService.getHOME());
+            String symlink = "internalStorage";
 
-            if (new File(storageDir.getAbsolutePath() + "/internalStorage").exists()) {
+            if (new File(storageDir.getAbsolutePath() + "/" + symlink).exists()) {
                 return;
             }
             File internalDir = Environment.getExternalStorageDirectory();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, "internal").getAbsolutePath());
+                Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
             } else {
-                shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/internalStorage");
+                shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
