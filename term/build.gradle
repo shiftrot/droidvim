@@ -37,6 +37,9 @@ android {
         origin {
             jniLibs.srcDirs = ['src/main/jniLibs']
         }
+        droidvim {
+            jniLibs.srcDirs = ['src/droidvim/jniLibs']
+        }
     }
 
     buildTypes {

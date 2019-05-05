@@ -12,6 +12,7 @@ Thumbs.db
 obj/
 
 # Built application files
+*.aab
 *.apk
 *.ap_
 

@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -180,6 +181,7 @@ final class TermVimInstaller {
                     bin = "vim_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installTar(path, getInputStream(activity, id));
+                    installSoTar(path, "vim");
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         arch = getArch();
@@ -190,8 +192,7 @@ final class TermVimInstaller {
                         File targetVer = new File(target);
                         File localVer = new File(local);
                         if (isNeedUpdate(targetVer, localVer)) {
-                            id = activity.getResources().getIdentifier("bash_" + arch, "raw", activity.getPackageName());
-                            installTar(path, getInputStream(activity, id));
+                            installSoTar(path, "bash");
                             if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                                 shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                             }
@@ -285,6 +286,16 @@ final class TermVimInstaller {
         return needUpdate;
     }
 
+    static private void installSoTar(String path, String soLib) {
+        final String SOLIB_PATH = TermService.getAPPBASE() + "/lib";
+        try {
+            File soFile = new File(SOLIB_PATH + "/lib" + soLib + ".so");
+            installTar(path, new FileInputStream(soFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     static private void installTar(String path, InputStream is) {
         if (is == null) return;
         try {
@@ -298,7 +309,7 @@ final class TermVimInstaller {
             }
             fileOutputStream.close();
             is.close();
-            String opt = local.matches(".*.xz$") ? "xf" : "Jxf";
+            String opt = local.matches(".*.xz$|.*.so$") ? "Jxf" : "xf";
 
             shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + local + " -C " + path);
             new File(local).delete();
