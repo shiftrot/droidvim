@@ -153,7 +153,7 @@ final class TermVimInstaller {
                 final int orientation = activity.getRequestedOrientation();
                 fixOrientation(activity, orientationLock(activity));
                 try {
-                    boolean first = !new File(sdcard + "/vimrc").exists();
+                    boolean first = !new File(TermService.getAPPFILES() + "/bin").isDirectory();
                     showWhatsNew(activity, first);
                     setMessage(activity, pd, "scripts");
                     doInstallTerm(activity);
