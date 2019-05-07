@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -415,27 +416,34 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void confirmWritePrefs() {
         File pathExternalPublicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String downloadDir = pathExternalPublicDir.getPath();
+        if (!new File(downloadDir).isDirectory()) {
+            downloadDir = Environment.getExternalStorageDirectory().getPath();
+        }
         @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-        final String filename = downloadDir + "/" + BuildConfig.APPLICATION_ID + "-" + timestamp + ".xml";
-        writePrefs(filename);
+        final String fileName = downloadDir + "/" + BuildConfig.APPLICATION_ID + "-" + timestamp + ".xml";
+        writePrefs(fileName);
     }
 
-    private boolean writePrefs(String filename) {
+    private boolean writePrefs(String fileName) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setPositiveButton(this.getString(android.R.string.ok), null);
         FileOutputStream fos;
         try {
-            fos = new FileOutputStream(filename);
+            File file = new File(fileName);
+            fos = new FileOutputStream(file);
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
             XmlUtils.writeMapXml(pref.getAll(), fos);
+            DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+            downloadManager.addCompletedDownload(file.getName(), file.getName(), true, "text/xml", file.getAbsolutePath(), file.length(), true);
         } catch (Exception e) {
             bld.setMessage(this.getString(R.string.prefs_write_info_failure));
             bld.create().show();
             return false;
         }
-        bld.setMessage(this.getString(R.string.prefs_write_info_success) + "\n\n" + filename);
+        bld.setMessage(this.getString(R.string.prefs_write_info_success) + "\n\n" + fileName);
         bld.create().show();
+
         return true;
     }
 
