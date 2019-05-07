@@ -59,6 +59,8 @@ import jackpal.androidterm.libtermexec.v1.ITerminal;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.TermVimInstaller.getProp;
+
 public class TermService extends Service implements TermSession.FinishCallback {
     private static final int RUNNING_NOTIFICATION = 1;
     private ServiceForegroundCompat compat;
@@ -108,6 +110,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         mHOME = homePath;
         mSTARTUP_DIR = prefs.getString("startup_path", homePath);
 
+        mAPPLIB = this.getApplicationInfo().nativeLibraryDir;
+        mARCH = getArch();
         mAPPBASE = this.getApplicationInfo().dataDir;
         mAPPFILES = this.getFilesDir().toString();
         File externalFiles = this.getExternalFilesDir(null);
@@ -124,7 +128,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         }
         mTMPDIR = getCacheDir() + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
-        String model = TermVimInstaller.getProp("ro.product.model");
+        String model = getProp("ro.product.model");
         if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
             mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:" + mLD_LIBRARY_PATH;
         }
@@ -135,6 +139,60 @@ public class TermService extends Service implements TermSession.FinishCallback {
         install();
 
         Log.d(TermDebug.LOG_TAG, "TermService started");
+    }
+
+    static public String getArch() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // FIXME: for Kindle Fire
+            if (System.getenv("AMAZON_COMPONENT_LIST") != null) {
+                String cpu = getProp("ro.product.cpu.abi");
+                if (cpu != null) {
+                    cpu = cpu.toLowerCase();
+                    if (cpu.contains("arm64")) {
+                        return "arm64";
+                    }
+                    if (cpu.contains("x86_64")) {
+                        return "x86_64";
+                    }
+                }
+            }
+        }
+
+        String libPath = getAPPLIB();
+        if (new File(libPath + "/libarm64.so").exists()) return "arm64";
+        if (new File(libPath + "/libarm.so").exists()) return "arm";
+        if (new File(libPath + "/libx86.so").exists()) return "x86";
+        if (new File(libPath + "/libx86_64.so").exists()) return "x86_64";
+
+        String cpu;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            for (String androidArch : Build.SUPPORTED_64_BIT_ABIS) {
+                cpu = androidArch.toLowerCase();
+                if (cpu.contains("arm64")) {
+                    return "arm64";
+                }
+                if (cpu.contains("x86_64")) {
+                    return "x86_64";
+                }
+            }
+            for (String androidArch : Build.SUPPORTED_32_BIT_ABIS) {
+                cpu = androidArch.toLowerCase();
+                if (cpu.contains("arm")) {
+                    return "arm";
+                }
+                if (cpu.contains("x86") || cpu.contains("i686")) {
+                    return "x86";
+                }
+            }
+        } else {
+            cpu = System.getProperty("os.arch").toLowerCase();
+            if (cpu.contains("arm")) {
+                return "arm";
+            } else if (cpu.contains("x86") || cpu.contains("i686")) {
+                return "x86";
+            }
+        }
+        return "arm64";
     }
 
     private boolean useNotificationForgroundService() {
@@ -233,6 +291,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     @SuppressLint("NewApi")
+    private static String mARCH;
+    private static String mAPPLIB;
     private static String mAPPBASE;
     private static String mAPPFILES;
     private static String mAPPEXTFILES;
@@ -319,6 +379,15 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static public String getHOME() {
         return mHOME;
+    }
+
+    static public String getARCH() {
+        return mARCH;
+    }
+
+    static public String getAPPLIB() {
+        if (mAPPLIB == null) return "/data/data/"+BuildConfig.APPLICATION_ID+"/lib";
+        return mAPPLIB;
     }
 
     static public String getAPPBASE() {

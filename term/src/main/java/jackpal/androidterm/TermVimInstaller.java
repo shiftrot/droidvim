@@ -14,6 +14,12 @@ import android.os.Environment;
 import android.system.Os;
 import android.util.Log;
 
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
+import org.apache.commons.compress.utils.IOUtils;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -25,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Locale;
@@ -193,6 +200,8 @@ final class TermVimInstaller {
                         File localVer = new File(local);
                         if (isNeedUpdate(targetVer, localVer)) {
                             installSoTar(path, "bash");
+                            id = activity.getResources().getIdentifier("bash_" + getArch(), "raw", activity.getPackageName());
+                            installTar(path, getInputStream(activity, id));
                             if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                                 shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                             }
@@ -287,7 +296,7 @@ final class TermVimInstaller {
     }
 
     static private void installSoTar(String path, String soLib) {
-        final String SOLIB_PATH = TermService.getAPPBASE() + "/lib";
+        final String SOLIB_PATH = TermService.getAPPLIB();
         try {
             File soFile = new File(SOLIB_PATH + "/lib" + soLib + ".so");
             installTar(path, new FileInputStream(soFile));
@@ -309,11 +318,77 @@ final class TermVimInstaller {
             }
             fileOutputStream.close();
             is.close();
-            String opt = local.matches(".*.xz$|.*.so$") ? "Jxf" : "xf";
 
-            shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + local + " -C " + path);
+            extractXZ(local, path);
             new File(local).delete();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void extractXZ(String in, String outDir) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            String opt = (in.matches(".*.tar.xz|.*.so$")) ? " Jxf " : " xf ";
+            shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + new File(in).getAbsolutePath() + " -C " + outDir);
+            return;
+        }
+        try {
+            TarArchiveInputStream fin;
+            FileInputStream is = new FileInputStream(in);
+            if (in.matches(".*.tar.xz|.*.so$")) {
+                XZCompressorInputStream xzIn = new XZCompressorInputStream(is);
+                fin = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", xzIn);
+            } else {
+                fin = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+            }
+            TarArchiveEntry entry;
+            while ((entry = fin.getNextTarEntry()) != null) {
+                final File file = new File(outDir, entry.getName());
+                if (entry.isDirectory()) {
+                    if (!file.exists()) file.mkdirs();
+                } else if (entry.isFile()) {
+                    file.delete();
+                    final OutputStream outputFileStream = new FileOutputStream(file);
+                    IOUtils.copy(fin, outputFileStream);
+                    outputFileStream.close();
+                    int mode = entry.getMode();
+                    if ((mode & 0x49) != 0) {
+                        file.setExecutable(true, false);
+                    }
+                    if (file.getName().matches(".*/?bin/.*")) {
+                        file.setExecutable(true, false);
+                    }
+                    if (file.getName().matches(".*\\.so\\.?.*")) {
+                        file.setExecutable(true, false);
+                    }
+                }
+            }
+            fin.close();
+            is = new FileInputStream(in);
+            if (in.matches(".*.tar.xz|.*.so$")) {
+                XZCompressorInputStream xzIn = new XZCompressorInputStream(is);
+                fin = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", xzIn);
+            } else {
+                fin = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+            }
+            while ((entry = fin.getNextTarEntry()) != null) {
+                final File file = new File(outDir, entry.getName());
+                if (entry.isSymbolicLink()) {
+                    try {
+                        String symlink = file.getAbsolutePath();
+                        String target = file.getAbsoluteFile().getParent() + "/" + entry.getLinkName();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Os.symlink(target, symlink);
+                        } else {
+                            shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + file.getAbsolutePath() + " " + symlink);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            fin.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -471,6 +546,7 @@ final class TermVimInstaller {
                     File parentFile = file.getParentFile();
                     parentFile.mkdirs();
 
+                    file.delete();
                     FileOutputStream fout = new FileOutputStream(file);
                     BufferedOutputStream bufferOut = new BufferedOutputStream(fout, buffer.length);
                     while ((size = zin.read(buffer, 0, buffer.length)) != -1) {
@@ -479,6 +555,9 @@ final class TermVimInstaller {
                     bufferOut.flush();
                     bufferOut.close();
                     if (ze.getName().matches(".*/?bin/.*")) {
+                        if (AndroidCompat.SDK >= 9) file.setExecutable(true, false);
+                    }
+                    if (ze.getName().matches(".*/?lib/.*")) {
                         if (AndroidCompat.SDK >= 9) file.setExecutable(true, false);
                     }
                 }
@@ -494,49 +573,7 @@ final class TermVimInstaller {
     }
 
     static String getArch() {
-        String cpu;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (String androidArch : Build.SUPPORTED_64_BIT_ABIS) {
-                cpu = androidArch.toLowerCase();
-                if (cpu.contains("arm64")) {
-                    return "arm64";
-                }
-                if (cpu.contains("x86_64")) {
-                    return "x86_64";
-                }
-            }
-            // FIXME: for Kindle
-            String manufacturer = getProp("ro.product.manufacturer");
-            if (manufacturer != null && manufacturer.equals("Amazon")) {
-                cpu = getProp("ro.product.cpu.abi");
-                if (cpu != null) {
-                    cpu = cpu.toLowerCase();
-                    if (cpu.contains("arm64")) {
-                        return "arm64";
-                    }
-                    if (cpu.contains("x86_64")) {
-                        return "x86_64";
-                    }
-                }
-            }
-            for (String androidArch : Build.SUPPORTED_32_BIT_ABIS) {
-                cpu = androidArch.toLowerCase();
-                if (cpu.contains("arm")) {
-                    return "arm";
-                }
-                if (cpu.contains("x86") || cpu.contains("i686")) {
-                    return "x86";
-                }
-            }
-        } else {
-            cpu = System.getProperty("os.arch").toLowerCase();
-            if (cpu.contains("arm")) {
-                return "arm";
-            } else if (cpu.contains("x86") || cpu.contains("i686")) {
-                return "x86";
-            }
-        }
-        return "arm";
+        return TermService.getArch();
     }
 
     static String getProp(String propName) {
