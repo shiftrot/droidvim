@@ -373,7 +373,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return mTERMINFO_INSTALL_DIR;
     }
 
-    static public String getVImRuntimeInstallDir() {
+    static public String getVimRuntimeInstallDir() {
         return mVIMRUNTIME_INSTALL_DIR;
     }
 

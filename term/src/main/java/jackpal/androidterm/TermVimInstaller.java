@@ -221,7 +221,7 @@ final class TermVimInstaller {
                     copyScript(activity.getResources().openRawResource(id), dst);
                     shell("chmod 755 " + dst);
 
-                    String runtimeDir = TermService.getVImRuntimeInstallDir();
+                    String runtimeDir = TermService.getVimRuntimeInstallDir();
                     setMessage(activity, pd, "runtime");
                     id = activity.getResources().getIdentifier("runtime", "raw", activity.getPackageName());
                     installTar(runtimeDir, getInputStream(activity, id));

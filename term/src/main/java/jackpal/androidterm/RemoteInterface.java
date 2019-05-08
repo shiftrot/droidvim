@@ -33,6 +33,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
@@ -79,7 +80,6 @@ public class RemoteInterface extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
-            mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(TermService.getVImRuntimeInstallDir() + "/runtime/etc/vimrc").exists();
             handleIntent();
         }
 
@@ -165,6 +165,7 @@ public class RemoteInterface extends AppCompatActivity {
             finish();
             return;
         }
+        mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(this.getFilesDir()+"/bin").isDirectory();
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
