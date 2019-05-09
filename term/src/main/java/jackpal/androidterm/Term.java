@@ -1978,7 +1978,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void confirmDelete(final Uri uri) {
-        String path = getPath(this, uri);
+        String path = UriToPath.getPath(this, uri);
         if (path == null) {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
             path = handleOpenDocument(uri, cursor);
@@ -2089,7 +2089,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 String path = null;
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
-                    path = getPath(this, uri);
+                    path = UriToPath.getPath(this, uri);
                     if (path == null) {
                         try {
                             Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
@@ -2143,145 +2143,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 break;
         }
-    }
-
-    public static String getPath(final Context context, final Uri uri) {
-        String realPath = getRealPathFromURI(context, uri);
-        if (realPath != null && new File(realPath).canRead()) return realPath;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return null;
-        }
-        if (uri == null) return null;
-        if (isDocumentUri(context, uri)) {
-            try {
-                File file = new File(getDocumentId(uri));
-                if (file.exists()) return file.toString();
-            } catch (Exception e) {
-                Log.d("FilePicker", e.toString());
-            }
-            if (isExternalStorageDocument(uri)) {
-                final String docId = getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                File file;
-                if ("primary".equalsIgnoreCase(type)) {
-                    file = new File(Environment.getExternalStorageDirectory() + "/" + split[1]);
-                    if (file.exists() && file.canWrite()) {
-                        return file.toString();
-                    }
-                }
-
-                String path = uri.getPath();
-                path = path.replaceAll(":", "/");
-                path = path.replaceFirst("document", "storage");
-                file = new File(path);
-                if (file.exists() && file.canWrite()) {
-                    return file.toString();
-                }
-                path = uri.getPath();
-                final File[] dirs = context.getExternalFilesDirs(null);
-                if (dirs != null && dirs.length >= 2) {
-                    for (File dir : dirs) {
-                        if (dir == null) continue;
-                        path = dir.getAbsolutePath().replaceAll(type.concat(".*"), "");
-                        path = String.format("%s/%s/%s", path, type, split[1]);
-                        path = path.replaceAll("/+", "/");
-                        file = new File(path);
-                        if (file.exists() && file.canWrite()) {
-                            return file.toString();
-                        }
-                    }
-                }
-                return null;
-            } else if (isInternalPrivateStorageDocument(uri)) {
-                String path = uri.getPath();
-                path = path.replaceAll(":", "/");
-                path = path.replaceFirst("/document/", "");
-                File file = new File(path);
-                if (file.exists()) {
-                    return file.toString();
-                }
-            }
-        }
-        String path = Uri.decode(uri.toString());
-        final String AUTHORITY_TRESORIT = "content://com.tresorit.mobile.provider/external_files/";
-        if (path != null && path.matches("^" + AUTHORITY_TRESORIT + ".*$")) {
-            path = Environment.getExternalStorageDirectory().toString() + path.substring(AUTHORITY_TRESORIT.length() - 1);
-            if (new File(path).exists()) return path;
-        }
-        return null;
-    }
-
-    @SuppressLint("NewApi")
-    private static String getRealPathFromURI(final Context context, final Uri uri) {
-        try {
-            boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-            // DocumentProvider
-            Log.e(TermDebug.LOG_TAG, "uri:" + uri.getAuthority());
-            if (isAfterKitKat && isDocumentUri(context, uri)) {
-                if ("com.android.externalstorage.documents".equals(
-                        uri.getAuthority())) { // ExternalStorageProvider
-                    final String docId = getDocumentId(uri);
-                    final String[] split = docId.split(":");
-                    final String type = split[0];
-                    if ("primary".equalsIgnoreCase(type)) {
-                        return Environment.getExternalStorageDirectory() + "/" + split[1];
-                    } else {
-                        return "/stroage/" + type + "/" + split[1];
-                    }
-                } else if ("com.android.providers.downloads.documents".equals(
-                        uri.getAuthority())) { // DownloadsProvider
-                    final String id = getDocumentId(uri);
-                    final Uri contentUri = ContentUris.withAppendedId(
-                            Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                    return getDataColumn(context, contentUri, null, null);
-                } else if ("com.android.providers.media.documents".equals(
-                        uri.getAuthority())) { // MediaProvider
-                    final String docId = getDocumentId(uri);
-                    final String[] split = docId.split(":");
-                    final String type = split[0];
-                    Uri contentUri = null;
-                    contentUri = MediaStore.Files.getContentUri("external");
-                    final String selection = "_id=?";
-                    final String[] selectionArgs = new String[]{
-                            split[1]
-                    };
-                    return getDataColumn(context, contentUri, selection, selectionArgs);
-                }
-            } else if ("content".equalsIgnoreCase(uri.getScheme())) { // MediaStore
-                return getDataColumn(context, uri, null, null);
-            } else if ("file".equalsIgnoreCase(uri.getScheme())) { // File
-                return uri.getPath();
-            }
-        } catch (Exception e) {
-            AlertDialog.Builder bld = new AlertDialog.Builder(context);
-            bld.setMessage(e.getMessage());
-            bld.setPositiveButton(android.R.string.ok, null);
-            Log.d(TermDebug.LOG_TAG, "Showing alert dialog: " + e.toString());
-            bld.create().show();
-        }
-        return null;
-    }
-
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = null;
-        final String[] projection = {
-                MediaStore.Files.FileColumns.DATA
-        };
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                try {
-                    final int cindex = cursor.getColumnIndexOrThrow(projection[0]);
-                    return cursor.getString(cindex);
-                } catch (Exception e) {
-                    // do nothing
-                }
-            }
-        } finally {
-            if (cursor != null) cursor.close();
-        }
-        return null;
     }
 
     @Override

@@ -52,8 +52,6 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
 
-import static jackpal.androidterm.Term.getPath;
-
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -650,7 +648,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 String path;
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
-                    path = getPath(this, uri);
+                    path = UriToPath.getPath(this, uri);
                     if (path != null && path.matches(".*\\.(?i)(ttf|ttc|otf)")) {
                         try {
                             File file = new File(path);

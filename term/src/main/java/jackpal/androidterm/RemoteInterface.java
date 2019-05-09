@@ -225,7 +225,7 @@ public class RemoteInterface extends AppCompatActivity {
             } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content") && flavorVim) {
                 Context context = this;
                 String command = null;
-                String path = Term.getPath(context, uri);
+                String path = UriToPath.getPath(context, uri);
                 if (path != null) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
                     command = "\u001b"+intentCommand + " " +path;
