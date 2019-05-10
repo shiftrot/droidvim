@@ -107,7 +107,7 @@ class SyncFileObserver extends RecursiveFileObserver {
     }
 
     public static void delete(File f) {
-        if(!f.exists()) {
+        if (!f.exists()) {
             return;
         }
         if (f.isFile()) {
@@ -129,7 +129,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             d.delete();
             return;
         }
-        for (File f: files) {
+        for (File f : files) {
             if (f.isDirectory()) {
                 deleteEmptyDirectory(f);
             }
@@ -138,13 +138,14 @@ class SyncFileObserver extends RecursiveFileObserver {
 
     private final static String HASH_ERROR = "HASH_ERROR";
     private final static String HASH_ALGORITHM = "SHA-1";
+
     boolean putUriAndLoad(Uri uri, String path) {
         mActive = true;
         path = path.replaceAll("//", "/");
         String hash = makeCache(uri, new File(path));
         if (!hash.equals(HASH_ERROR)) {
             putHashMap(path, uri.toString());
-            putHashMap(HASH_ALGORITHM+path, hash);
+            putHashMap(HASH_ALGORITHM + path, hash);
             return true;
         }
         return false;
@@ -210,7 +211,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         return toHexString(digest);
     }
 
-    private static String toHexString (byte[] digest) {
+    private static String toHexString(byte[] digest) {
         StringBuilder buff = new StringBuilder();
         for (byte b : digest) {
             buff.append(String.format("%1$02x", b));
@@ -219,6 +220,7 @@ class SyncFileObserver extends RecursiveFileObserver {
     }
 
     private static final int HASH_CHECK_MODE = 2;
+
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;
         if (HASH_CHECK_MODE == 0) {
@@ -226,7 +228,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             return;
         }
 
-        final String oldHash = mHashMap.get(HASH_ALGORITHM+file.toString());
+        final String oldHash = mHashMap.get(HASH_ALGORITHM + file.toString());
         try {
             InputStream dstIs = contentResolver.openInputStream(uri);
             if (dstIs != null) {
@@ -254,6 +256,7 @@ class SyncFileObserver extends RecursiveFileObserver {
     }
 
     private static boolean mDialogIsActive = false;
+
     private void flushCacheExec(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;
 
@@ -283,7 +286,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             if (md != null) {
                 byte[] digest = md.digest();
                 String hashValue = toHexString(digest);
-                putHashMap(HASH_ALGORITHM+file.toString(), hashValue);
+                putHashMap(HASH_ALGORITHM + file.toString(), hashValue);
             }
         } catch (Exception e) {
             writeErrorDialog((Activity) mObjectActivity);
@@ -340,8 +343,20 @@ class SyncFileObserver extends RecursiveFileObserver {
                     bld.setMessage(R.string.storage_write_error);
                     bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
+                            dialog.dismiss();
                             mDialogIsActive = false;
+                        }
+                    });
+                    bld.setNeutralButton(R.string.external_storage, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            mDialogIsActive = false;
+                            try {
+                                Term term = (Term) activity;
+                                term.intentFilePicker();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     bld.setOnCancelListener(new DialogInterface.OnCancelListener() {

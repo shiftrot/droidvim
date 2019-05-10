@@ -459,7 +459,7 @@
   <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
   <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
   <string name="storage_write_error_title">File write error</string>
-  <string name="storage_write_error">Check the following.\n\n* Are you granting storage access permission?\n\n* Does the file still exist in external storage or cloud storage?\n\n* This file is for viewing-only.\n Open the file for editing from the \"Storage\" button on this application.</string>
+  <string name="storage_write_error">This file is read only or the file has been deleted.\nOpen the file via \"Storage\" button on the drawer menu.\n\n(Files opened via \"Share\" menu are often set to \"Viewing only\" by the sharing source application)</string>
   <string name="storage_hash_error_title">File hash error</string>
   <string name="storage_hash_error">Because there is a possibility that the file was changed on the external storage, writing to the external storage is canceled.\nOverwrite or reopen this file via the \"Storage\" button.</string>
   <string name="storage_hash_overwrite">Overwrite</string>

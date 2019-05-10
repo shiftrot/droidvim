@@ -1922,7 +1922,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void intentFilePicker() {
+    public void intentFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
