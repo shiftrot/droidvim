@@ -185,13 +185,14 @@ final class TermVimInstaller {
                     bin = "bin_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
+                    setMessage(activity, pd, "binaries - vim");
                     bin = "vim_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installTar(path, getInputStream(activity, id));
                     installSoTar(path, "vim");
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                        arch = getArch();
+                        setMessage(activity, pd, "binaries - shell");
                         String local = sdcard + "/version.bash";
                         String target = TermService.getTMPDIR() + "/version";
                         id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());

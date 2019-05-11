@@ -159,12 +159,26 @@ public class TermService extends Service implements TermSession.FinishCallback {
         }
 
         String libPath = getAPPLIB();
-        if (new File(libPath + "/libarm64.so").exists()) return "arm64";
-        if (new File(libPath + "/libarm.so").exists()) return "arm";
-        if (new File(libPath + "/libx86.so").exists()) return "x86";
-        if (new File(libPath + "/libx86_64.so").exists()) return "x86_64";
+        String cpu = null;
 
-        String cpu;
+        if (new File(libPath + "/libarm64.so").exists()) cpu = "arm64";
+        else if (new File(libPath + "/libarm.so").exists()) cpu = "arm";
+        else if (new File(libPath + "/libx86.so").exists()) cpu = "x86";
+        else if (new File(libPath + "/libx86_64.so").exists()) cpu = "x86_64";
+        if (cpu != null) {
+            if (cpu.matches(".*64")) {
+                if (new File(mVIMRUNTIME_INSTALL_DIR + "/32bit").exists()) {
+                    return cpu.equals("arm64") ? "arm" : "x86";
+                }
+                return cpu;
+            } else {
+                if (new File(mVIMRUNTIME_INSTALL_DIR + "/64bit").exists()) {
+                    return cpu.equals("arm") ? "arm64" : "x86_64";
+                }
+                return cpu;
+            }
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             for (String androidArch : Build.SUPPORTED_64_BIT_ABIS) {
                 cpu = androidArch.toLowerCase();
@@ -386,7 +400,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     static public String getAPPLIB() {
-        if (mAPPLIB == null) return "/data/data/"+BuildConfig.APPLICATION_ID+"/lib";
+        if (mAPPLIB == null) return "/data/data/" + BuildConfig.APPLICATION_ID + "/lib";
         return mAPPLIB;
     }
 

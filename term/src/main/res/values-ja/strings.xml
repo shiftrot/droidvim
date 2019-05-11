@@ -295,6 +295,16 @@
    <string name="title_do_path_extensions_preference">PATH拡張の許可</string>
    <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
 
+   <string name="title_change_lib_preference">64ビットライブラリを強制</string>
+   <string name="summary_change_lib_preference">64ビットライブラリを強制使用します.</string>
+   <string name="message_change_lib_preference">特に問題がない場合は, ライブラリを変更しないでください.</string>
+   <string name="current_library">現在のライブラリ : </string>
+   <string name="reset_to_default">デフォルトに設定</string>
+   <string name="force_64bit">64ビットライブラリへ変更</string>
+   <string name="force_32bit">32ビットライブラリへ変更</string>
+   <string name="confirm_change_lib">ライブラリを変更した場合, 正常に動作しなくなることがあります.\n動作しなくなった場合は、「アプリ情報」から強制的に終了するか、ストレージをクリアしてください.</string>
+   <string name="change_lib">ライブラリ変更の用意ができました.\nアプリを再起動してください.</string>
+
    <string name="title_allow_prepend_path_preference">PATHへのプリペンドの許可</string>
    <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
 

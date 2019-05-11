@@ -52,6 +52,8 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.TermVimInstaller.shell;
+
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -965,7 +967,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
+                if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                     addPreferencesFromResource(R.xml.pref_shell);
                 } else {
                     addPreferencesFromResource(R.xml.pref_shell_20);
@@ -992,6 +994,17 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         return true;
                     }
                 });
+                if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
+                    final String FORCE_64BIT_KEY = "force_64bit";
+                    Preference force64bitPref = getPreferenceScreen().findPreference(FORCE_64BIT_KEY);
+                    force64bitPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            if (mTermPreference != null) mTermPreference.forceLibrary();
+                            return true;
+                        }
+                    });
+                }
             } else {
                 addPreferencesFromResource(R.xml.pref_shell_18);
             }
@@ -1009,6 +1022,85 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    void forceLibrary() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        bld.setTitle(R.string.title_change_lib_preference);
+        String message = this.getString(R.string.current_library) + " " + TermService.getArch();
+        message = message + "\n" + this.getString(R.string.message_change_lib_preference);
+        bld.setMessage(message);
+        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                chooseLibrary();
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.no), null);
+        bld.create().show();
+    }
+
+    void chooseLibrary() {
+        String[] items = {
+                this.getString(R.string.force_64bit),
+                this.getString(R.string.force_32bit),
+                this.getString(R.string.reset_to_default)
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_change_lib_preference))
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        confirmChangeLib(which);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    void confirmChangeLib(final int which) {
+        final Context context = this;
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        int messageId = R.string.reset_to_default;
+        if (which < 2) messageId = which == 0 ? R.string.force_64bit : R.string.force_32bit;
+        bld.setTitle(messageId);
+        String message = this.getString(R.string.current_library) + " " + TermService.getArch() + "\n" + this.getString(R.string.confirm_change_lib);
+        bld.setMessage(message);
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                shell("rm " + TermService.getAPPEXTFILES() + "/64bit");
+                shell("rm " + TermService.getAPPEXTFILES() + "/32bit");
+                if (which == 0) {
+                    shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/64bit");
+                } else if (which == 1) {
+                    shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/32bit");
+                }
+                uninstallExtra();
+                AlertDialog.Builder bld = new AlertDialog.Builder(context);
+                bld.setIcon(android.R.drawable.ic_dialog_info);
+                bld.setMessage(context.getString(R.string.change_lib));
+                bld.show();
+            }
+        });
+        bld.setNegativeButton(this.getString(android.R.string.no), null);
+        bld.show();
+    }
+
+    private void uninstallExtra() {
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPFILES() + "/usr"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPFILES() + "/bin/vim"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/runtime/pack/shiftrot/start"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.bash"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.git"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.python"));
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.vim.python"));
+        shell("rm " + TermService.getAPPEXTFILES() + "/version.*");
     }
 
     public static class AppsPreferenceFragment extends PreferenceFragment {

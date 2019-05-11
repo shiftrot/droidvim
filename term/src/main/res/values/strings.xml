@@ -307,6 +307,16 @@
    <string name="title_do_path_extensions_preference">Allow PATH extensions</string>
    <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
 
+   <string name="title_change_lib_preference">Change library</string>
+   <string name="summary_change_lib_preference">Change library.</string>
+   <string name="message_change_lib_preference">Please do not change if the app is working properly.</string>
+   <string name="current_library">Current library : </string>
+   <string name="reset_to_default">Reset to default</string>
+   <string name="force_64bit">Set to 64-bit library</string>
+   <string name="force_32bit">Set to 32-bit library</string>
+   <string name="confirm_change_lib">If you change the library, it may not work properly.\nIf it does not work, use \"Force stop\" or \"Clear storage\" in \"App info\".</string>
+   <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
+
    <string name="title_allow_prepend_path_preference">Allow PATH prepend</string>
    <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>
 

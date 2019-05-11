@@ -46,4 +46,8 @@
         android:title="@string/title_home_dir_chooser_preference"
         android:summary="@string/summary_home_dir_chooser_preference" />
 
+    <Preference
+        android:key="force_64bit"
+        android:title="@string/title_change_lib_preference" />
+
 </PreferenceScreen>
