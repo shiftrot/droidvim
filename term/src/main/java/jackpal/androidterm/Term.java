@@ -2275,7 +2275,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
                     doHideSoftKeyboard();
                 }
-                doCloseWindow();
+                sendKeyStrings("exit\rexit\rexit\r", false);
                 return true;
             case 0xffff0000:
                 setFunctionBar(2);
