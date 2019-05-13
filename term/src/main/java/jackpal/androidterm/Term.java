@@ -25,7 +25,6 @@ import android.app.Instrumentation;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,7 +49,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.system.Os;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -123,6 +121,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
@@ -184,6 +183,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_FILE_PICKER = 2;
     public static final int REQUEST_FILE_DELETE = 3;
     public static final int REQUEST_DOCUMENT_TREE = 10;
+    public static final int REQUEST_COPY_DOCUMENT_TREE_TO_HOME = 11;
 
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
@@ -1635,7 +1635,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
         } else if (id == R.id.menu_edit_vimrc) {
-            sendKeyStrings(":call ATETermVimVimrc()\r", true);
+            chooseEditVimFiles();
         } else if (id == R.id.menu_text_box) {
             setEditTextView(2);
         } else if (id == R.id.menu_drawer) {
@@ -1656,6 +1656,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (view != null) doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void chooseEditVimFiles() {
+        sendKeyStrings(":call ATETermVimVimrc()\r", true);
     }
 
     private void networkUpdate() {
@@ -2076,7 +2080,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         switch (request) {
             case REQUEST_DOCUMENT_TREE:
                 if (result == RESULT_OK && data != null) {
-                    Uri uri = data.getData();
+                }
+                break;
+            case REQUEST_COPY_DOCUMENT_TREE_TO_HOME:
+                if (result == RESULT_OK && data != null) {
                 }
                 break;
             case REQUEST_FILE_DELETE:
