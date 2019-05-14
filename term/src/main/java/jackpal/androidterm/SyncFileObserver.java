@@ -302,7 +302,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setTitle(R.string.storage_hash_error_title);
                     bld.setMessage(R.string.storage_hash_error);
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    bld.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
                             mDialogIsActive = false;
@@ -313,6 +313,18 @@ class SyncFileObserver extends RecursiveFileObserver {
                             dialog.cancel();
                             mDialogIsActive = false;
                             flushCacheExec(uri, file, contentResolver);
+                        }
+                    });
+                    bld.setPositiveButton(R.string.external_storage, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            mDialogIsActive = false;
+                            try {
+                                Term term = (Term) activity;
+                                term.intentFilePicker();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     bld.setOnCancelListener(new DialogInterface.OnCancelListener() {

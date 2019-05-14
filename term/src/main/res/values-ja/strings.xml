@@ -422,10 +422,11 @@
   <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
   <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
   <string name="storage_write_error_title">書き込みエラー</string>
-  <string name="storage_write_error">このファイルは読み込み専用であるか、ファイルが削除されています.\nドロワーメニューの\"ストレージ\"ボタンから編集用にファイルを開いてください.\n\n(\"共有\"を介して開かれたファイルは共有元のアプリによって\"閲覧用\"に設定されていることが多くあります)</string>
+  <string name="storage_write_error">このファイルは閲覧専用であるか、ファイルが削除されています.\nドロワーメニューの\"ストレージ\"ボタンから編集用にファイルを開いてください.</string>
   <string name="storage_hash_error_title">ハッシュエラー</string>
-  <string name="storage_hash_error">外部ストレージ上でファイルが変更された可能性があるため, 外部ストレージへの書き込みを中止します.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
+  <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
   <string name="storage_hash_overwrite">上書き</string>
+  <string name="storage_hash_reopen">ストレージ</string>
   <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
   <string name="title_internal_storage">内部プライベート領域</string>
   <string name="clear_cache">キャッシュクリア</string>
