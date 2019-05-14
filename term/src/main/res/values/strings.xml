@@ -459,7 +459,7 @@
   <string name="launch_app">\Launch %s</string>
   <string name="activity_not_found">Activity not found.\nPlease try again.</string>
   <string name="external_storage">Storage</string>
-  <string name="create_or_delete">New/Del/Clr</string>
+  <string name="create_or_delete">Manager</string>
   <string name="create_file">Create file</string>
   <string name="delete_file">Delete file</string>
   <string name="storage_intent_error">No storage can perform this action.\nPlease wait a few seconds and try again.</string>
