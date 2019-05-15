@@ -248,7 +248,7 @@ final class TermVimInstaller {
                     installZip(runtimeDir, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), sdcard + "/version");
-                    setupStorageSymlinks(activity.getApplicationContext());
+                    if (first) setupStorageSymlinks(activity.getApplicationContext());
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
