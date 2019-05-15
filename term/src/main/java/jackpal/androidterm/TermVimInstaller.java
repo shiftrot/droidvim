@@ -528,6 +528,17 @@ final class TermVimInstaller {
         }
     }
 
+    static private void setMessage(final Activity activity, final ProgressRingDialog pd, final String message) {
+        if (!activity.isFinishing() && pd != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    pd.setMessage(INSTALL_ZIP + "\n- " + message + INSTALL_WARNING);
+                }
+            });
+        }
+    }
+
     static public void installZip(String path, InputStream is) {
         if (is == null) return;
         File outDir = new File(path);
