@@ -2601,10 +2601,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (mSettings.getHtmlViewerMode() == 1) {
                     intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra("url", uri.toString());
-                    startActivity(intent);
+                    PackageManager pm = this.getApplicationContext().getPackageManager();
+                    if (intent.resolveActivity(pm) != null) startActivity(intent);
                 } else {
                     intent.setAction(action);
-                    startActivity(intent);
+                    PackageManager pm = this.getApplicationContext().getPackageManager();
+                    if (intent.resolveActivity(pm) != null) startActivity(intent);
                 }
             } catch (Exception e) {
                 alert(Term.this.getString(R.string.storage_read_error));
