@@ -5,7 +5,7 @@ repositories {
 
 import java.text.SimpleDateFormat
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16
@@ -58,7 +58,7 @@ android {
         }
         droidvim {
             dimension "default"
-            setApplicationId("com.droidvim")
+            applicationId "com.droidvim"
         }
     }
 }
