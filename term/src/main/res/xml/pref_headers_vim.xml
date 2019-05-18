@@ -25,12 +25,12 @@
         android:title="@string/keyboard_preferences"/>
 
     <header
-        android:fragment="jackpal.androidterm.TermPreferences$ShellPreferenceFragment"
-        android:title="@string/shell_preferences"/>
-
-    <header
         android:fragment="jackpal.androidterm.TermPreferences$AppsPreferenceFragment"
         android:title="@string/external_apps_preferences"/>
+
+    <header
+        android:fragment="jackpal.androidterm.TermPreferences$ShellPreferenceFragment"
+        android:title="@string/shell_preferences"/>
 
     <header
         android:fragment="jackpal.androidterm.TermPreferences$PrefsPreferenceFragment"

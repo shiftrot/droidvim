@@ -128,10 +128,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
         }
         mTMPDIR = getCacheDir() + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
-        String model = getProp("ro.product.model");
-        if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
-            mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:" + mLD_LIBRARY_PATH;
-        }
         File tmpdir = new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
 
@@ -312,6 +308,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private static String mAPPEXTFILES;
     private static String mEXTSTORAGE;
     private static String mLD_LIBRARY_PATH;
+    private static String mLD_PRELOAD;
     private static String mTMPDIR;
     private static String mHOME;
     private static String mSTARTUP_DIR;
@@ -323,7 +320,29 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
         mTERMINFO_INSTALL_DIR = mAPPFILES + "/usr/share";
         mVIMRUNTIME_INSTALL_DIR = mAPPEXTFILES;
-        String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin";
+        String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin" + ":\\$PATH";
+        String ld_library_path = mLD_LIBRARY_PATH;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int ldLibraryMode = prefs.getInt("FATAL_CRASH_RESOLVER", 0);
+
+        if (ldLibraryMode == 0) {
+            String model = getProp("ro.product.model");
+            if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
+                mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:" + mLD_LIBRARY_PATH;
+            }
+        } else {
+            String defLib = "/system/lib";
+            if (getArch().matches(".*64")) {
+                defLib += "64";
+                if (new File("/vendor/lib64").isDirectory()) defLib = "/vendor/lib64:" + defLib;
+            } else {
+                if (new File("/vendor/lib").isDirectory()) defLib = "/vendor/lib:" + defLib;
+            }
+            if (ldLibraryMode == 1) {
+                ld_library_path = defLib + ":" + mLD_LIBRARY_PATH;
+            }
+        }
+
         String terminfo = mTERMINFO_INSTALL_DIR + "/terminfo";
         String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
         String vim = vimruntime + "/etc";
@@ -335,7 +354,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
-        cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
+        cmd = cmd.replaceAll("%LD_PRELOAD_DEFAULT%", mLD_PRELOAD);
+        cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", ld_library_path);
         cmd = cmd.replaceAll("%PATH%", path);
         cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUP_DIR);
         cmd = cmd.replaceAll("%TERMINFO%", terminfo);

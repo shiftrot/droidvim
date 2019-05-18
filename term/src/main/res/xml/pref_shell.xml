@@ -8,7 +8,7 @@
         android:dialogTitle="@string/dialog_title_shell_preference" />
 
     <EditTextPreference
-        android:key="initialcommand_rev2"
+        android:key="initialcommand_rev3"
         android:defaultValue="@string/pref_initialcommand_default"
         android:title="@string/title_initialcommand_preference"
         android:summary="@string/summary_initialcommand_preference"
@@ -45,6 +45,10 @@
         android:key="home_dir_chooser"
         android:title="@string/title_home_dir_chooser_preference"
         android:summary="@string/summary_home_dir_chooser_preference" />
+
+    <Preference
+        android:key="choose_ld_library_path_mode"
+        android:title="@string/choose_ld_library_path_mode" />
 
     <Preference
         android:key="force_64bit"

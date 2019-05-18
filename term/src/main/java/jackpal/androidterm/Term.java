@@ -2402,12 +2402,153 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 AndroidIntent(mSettings.getHomePath() + "/.intent");
                 return true;
             case 0xffff9998:
-                networkUpdate();
+                try {
+                    ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                            .getManager(getApplicationContext());
+                    String str = getCurrentEmulatorView().getTranscriptCurrentText();
+                    clip.setText(str);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fatalCrashVim();
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    private int mLibrary = -1;
+    private int mLdLibraryPathMode = -1;
+
+    private void fatalCrashVim() {
+        mLibrary = -1;
+        mLdLibraryPathMode = -1;
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        bld.setTitle(getString(R.string.crash_title));
+        bld.setMessage(getString(R.string.crash_message));
+        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int m) {
+                dialog.dismiss();
+                fatalCrashVimQuit();
+            }
+        });
+        bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int m) {
+                dialog.dismiss();
+                chooseLdLibraryMode();
+            }
+        });
+        AlertDialog dlg = bld.create();
+        dlg.setCancelable(false);
+        dlg.setCanceledOnTouchOutside(false);
+        dlg.show();
+    }
+
+    private void fatalCrashVimQuit() {
+        final String[] items = {
+                this.getString(R.string.crash_quit_button),
+                this.getString(R.string.launch_default_vim),
+                this.getString(R.string.extra_contents_action_clean)};
+        AlertDialog dlg = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == 0) {
+                            doCloseCrashVimWindow();
+                        } else if (which == 1) {
+                            if (new File(TermService.getAPPFILES() + "/bin/vim.default").canExecute()) {
+                                sendKeyStrings("vim.app.default\r", false);
+                            } else {
+                                sendKeyStrings("vim.app\r", false);
+                            }
+                        } else if (which == 2) {
+                            uninstallExtraContents(Term.this, null);
+                            doCloseCrashVimWindow();
+                        } else {
+                            fatalCrashVim();
+                        }
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int m) {
+                        dialog.dismiss();
+                        fatalCrashVim();
+                    }
+                })
+                .create();
+        dlg.setCancelable(false);
+        dlg.setCanceledOnTouchOutside(false);
+        dlg.show();
+    }
+
+    private int mChecked = -1;
+
+    private void chooseLdLibraryMode() {
+        final String[] items = {
+                this.getString(R.string.ld_library_path_mode_default),
+                this.getString(R.string.ld_library_path_mode_alt_1)};
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mChecked = prefs.getInt("FATAL_CRASH_RESOLVER", 0);
+        if (mLdLibraryPathMode != -1 ) mChecked = mLdLibraryPathMode;
+        AlertDialog dlg = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(this.getString(R.string.choose_ld_library_path_mode))
+                .setSingleChoiceItems(items, mChecked, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mChecked = which;
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mLdLibraryPathMode = mChecked;
+                        doCloseCrashVimWindow();
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int m) {
+                        dialog.dismiss();
+                        fatalCrashVim();
+                    }
+                })
+                .create();
+        dlg.setCancelable(false);
+        dlg.setCanceledOnTouchOutside(false);
+        dlg.show();
+    }
+
+    private void doCloseCrashVimWindow() {
+        final AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        bld.setCancelable(false);
+        bld.setMessage(R.string.close_window);
+        bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                if (mLdLibraryPathMode != -1) {
+                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    final SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("FATAL_CRASH_RESOLVER", mLdLibraryPathMode);
+                        editor.apply();
+                }
+                doCloseWindow();
+            }
+        });
+        bld.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                fatalCrashVim();
+            }
+        });
+        AlertDialog dlg = bld.create();
+        dlg.setCancelable(false);
+        dlg.setCanceledOnTouchOutside(false);
+        dlg.show();
     }
 
     private final float EDGE = (float) 50.0;

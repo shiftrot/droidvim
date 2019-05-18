@@ -233,8 +233,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 || ScreenPreferenceFragment.class.getName().equals(fragmentName)
                 || FontPreferenceFragment.class.getName().equals(fragmentName)
                 || KeyboardPreferenceFragment.class.getName().equals(fragmentName)
-                || ShellPreferenceFragment.class.getName().equals(fragmentName)
                 || AppsPreferenceFragment.class.getName().equals(fragmentName)
+                || ShellPreferenceFragment.class.getName().equals(fragmentName)
                 || PrefsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -995,6 +995,16 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     }
                 });
                 if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
+                    final String CHOOSE_LD_LIBRARY_PATH_KEY = "choose_ld_library_path_mode";
+                    Preference chooseLdLibraryPathPref = getPreferenceScreen().findPreference(CHOOSE_LD_LIBRARY_PATH_KEY);
+                    chooseLdLibraryPathPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            if (mTermPreference != null) mTermPreference.chooseLdLibraryMode();
+                            return true;
+                        }
+                    });
+
                     final String FORCE_64BIT_KEY = "force_64bit";
                     Preference force64bitPref = getPreferenceScreen().findPreference(FORCE_64BIT_KEY);
                     force64bitPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -1024,7 +1034,47 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    void forceLibrary() {
+    private void chooseLdLibraryMode() {
+        final String[] items = {
+                this.getString(R.string.ld_library_path_mode_default),
+                this.getString(R.string.ld_library_path_mode_alt_1)};
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int mChecked = prefs.getInt("FATAL_CRASH_RESOLVER", 0);
+        final Context context = this;
+        AlertDialog dlg = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(this.getString(R.string.choose_ld_library_path_mode))
+                .setSingleChoiceItems(items, mChecked, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == 0 || which == 1) {
+                            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            final SharedPreferences.Editor editor = prefs.edit();
+                            editor.putInt("FATAL_CRASH_RESOLVER", which);
+                            editor.apply();
+                            AlertDialog.Builder bld = new AlertDialog.Builder(context);
+                            bld.setIcon(android.R.drawable.ic_dialog_info);
+                            bld.setMessage(context.getString(R.string.change_lib));
+                            bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            bld.show();
+                        }
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int m) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dlg.show();
+    }
+
+    private void forceLibrary() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_alert);
         bld.setTitle(R.string.title_change_lib_preference);
