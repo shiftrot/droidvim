@@ -307,8 +307,9 @@
    <string name="title_do_path_extensions_preference">Allow PATH extensions</string>
    <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
 
-   <string name="title_change_lib_preference">Change library</string>
-   <string name="summary_change_lib_preference">Change library.</string>
+   <string name="title_change_lib_preference">Change system library</string>
+   <string name="title_choose">Choose</string>
+   <string name="summary_change_lib_preference">Change system library.</string>
    <string name="message_change_lib_preference">Please do not change if the app is working properly.</string>
    <string name="current_library">Current library : </string>
    <string name="reset_to_default">Reset to default</string>

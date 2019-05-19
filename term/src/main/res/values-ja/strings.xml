@@ -295,9 +295,10 @@
    <string name="title_do_path_extensions_preference">PATH拡張の許可</string>
    <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
 
-   <string name="title_change_lib_preference">64ビットライブラリを強制</string>
-   <string name="summary_change_lib_preference">64ビットライブラリを強制使用します.</string>
-   <string name="message_change_lib_preference">特に問題がない場合は, ライブラリを変更しないでください.</string>
+   <string name="title_change_lib_preference">システムライブラリを強制変更</string>
+   <string name="title_choose">選択</string>
+   <string name="summary_change_lib_preference">システムライブラリを強制変更します.</string>
+   <string name="message_change_lib_preference">特に問題がない場合は, システムライブラリを変更しないでください.</string>
    <string name="current_library">現在のライブラリ : </string>
    <string name="reset_to_default">デフォルトに設定</string>
    <string name="force_64bit">64ビットライブラリへ変更</string>

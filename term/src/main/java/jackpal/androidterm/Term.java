@@ -2282,6 +2282,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
                     doHideSoftKeyboard();
                 }
+                if (mUninstall) {
+                    doUninstallExtraContents();
+                }
                 sendKeyStrings("exit\rexit\rexit\r", false);
                 return true;
             case 0xffff0000:
@@ -2418,10 +2421,25 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return super.onKeyUp(keyCode, event);
     }
 
+    static private boolean mUninstall = false;
+    static public void setUninstallExtraContents(boolean uninstall) {
+        mUninstall = uninstall;
+    }
+
+    private void doUninstallExtraContents() {
+        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPFILES() + "/usr"));
+        shell("rm " + TermService.getAPPFILES() + "/bin/vim");
+        shell("rm -rf " + TermService.getAPPEXTFILES() + "/runtime/pack/shiftrot/start");
+        shell("rm " + TermService.getAPPEXTFILES() + "/version");
+        shell("rm " + TermService.getAPPEXTFILES() + "/version.*");
+        mUninstall = false;
+    }
+
     private int mLibrary = -1;
     private int mLdLibraryPathMode = -1;
 
     private void fatalCrashVim() {
+        setUninstallExtraContents(false);
         mLibrary = -1;
         mLdLibraryPathMode = -1;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
@@ -2447,26 +2465,27 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void fatalCrashVimQuit() {
+        setUninstallExtraContents(false);
         final String[] items = {
-                this.getString(R.string.crash_quit_button),
                 this.getString(R.string.launch_default_vim),
-                this.getString(R.string.extra_contents_action_clean)};
+                this.getString(R.string.extra_contents_action_clean),
+                this.getString(R.string.crash_quit_button)};
         AlertDialog dlg = new AlertDialog.Builder(this)
-                .setCancelable(false)
+                .setTitle(this.getString(R.string.title_choose))
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if (which == 0) {
-                            doCloseCrashVimWindow();
-                        } else if (which == 1) {
                             if (new File(TermService.getAPPFILES() + "/bin/vim.default").canExecute()) {
                                 sendKeyStrings("vim.app.default\r", false);
                             } else {
                                 sendKeyStrings("vim.app\r", false);
                             }
+                        } else if (which == 1) {
+                            setUninstallExtraContents(true);
+                            doCloseCrashVimWindow();
                         } else if (which == 2) {
-                            uninstallExtraContents(Term.this, null);
                             doCloseCrashVimWindow();
                         } else {
                             fatalCrashVim();
@@ -2536,6 +2555,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         editor.putInt("FATAL_CRASH_RESOLVER", mLdLibraryPathMode);
                         editor.apply();
                 }
+                if (mUninstall) doUninstallExtraContents();
                 doCloseWindow();
             }
         });

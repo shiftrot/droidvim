@@ -1130,10 +1130,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 } else if (which == 1) {
                     shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/32bit");
                 }
-                uninstallExtra();
+                uninstallExtraContents();
                 AlertDialog.Builder bld = new AlertDialog.Builder(context);
                 bld.setIcon(android.R.drawable.ic_dialog_info);
                 bld.setMessage(context.getString(R.string.change_lib));
+                bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int m) {
+                        dialog.dismiss();
+                    }
+                });
                 bld.show();
             }
         });
@@ -1141,16 +1146,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         bld.show();
     }
 
-    private void uninstallExtra() {
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPFILES() + "/usr"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPFILES() + "/bin/vim"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/runtime/pack/shiftrot/start"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.bash"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.git"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.python"));
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPEXTFILES() + "/version.vim.python"));
-        shell("rm " + TermService.getAPPEXTFILES() + "/version.*");
+    private void uninstallExtraContents() {
+        Term.setUninstallExtraContents(true);
     }
 
     public static class AppsPreferenceFragment extends PreferenceFragment {
