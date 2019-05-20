@@ -2437,9 +2437,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private int mLibrary = -1;
     private int mLdLibraryPathMode = -1;
+    private int mChecked = -1;
 
     private void fatalCrashVim() {
         setUninstallExtraContents(false);
+        mUninstall = false;
         mLibrary = -1;
         mLdLibraryPathMode = -1;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
@@ -2455,7 +2457,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int m) {
                 dialog.dismiss();
-                chooseLdLibraryMode();
+                troubleShooting();
             }
         });
         AlertDialog dlg = bld.create();
@@ -2484,12 +2486,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             }
                         } else if (which == 1) {
                             setUninstallExtraContents(true);
-                            doCloseCrashVimWindow();
+                            doCloseCrashVimWindow(getString(R.string.extra_contents_action_clean));
                         } else if (which == 2) {
                             doCloseCrashVimWindow();
                         } else {
                             fatalCrashVim();
                         }
+                    }
+                })
+                .setPositiveButton(getString(R.string.quit_to_shell), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int m) {
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
@@ -2504,8 +2511,43 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dlg.show();
     }
 
-    private int mChecked = -1;
-
+    private void troubleShooting() {
+        final String[] items = {
+                this.getString(R.string.choose_ld_library_path_mode),
+                this.getString(R.string.title_change_lib_preference)};
+        AlertDialog dlg = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(this.getString(R.string.crash_trouble_shooting_button))
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == 0) {
+                            chooseLdLibraryMode();
+                        } else if (which == 1) {
+                            forceLibrary();
+                        }
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        String message = getString(R.string.confirm_do_close_troubleshooting) + getString(R.string.confirm_change_lib);
+                        doCloseCrashVimWindow(message);
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int m) {
+                        dialog.dismiss();
+                        fatalCrashVim();
+                    }
+                })
+                .create();
+        dlg.setCancelable(false);
+        dlg.setCanceledOnTouchOutside(false);
+        dlg.show();
+    }
     private void chooseLdLibraryMode() {
         final String[] items = {
                 this.getString(R.string.ld_library_path_mode_default),
@@ -2526,13 +2568,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mLdLibraryPathMode = mChecked;
-                        doCloseCrashVimWindow();
+                        troubleShooting();
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int m) {
                         dialog.dismiss();
-                        fatalCrashVim();
+                        troubleShooting();
                     }
                 })
                 .create();
@@ -2541,11 +2583,89 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dlg.show();
     }
 
+    private void forceLibrary() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        bld.setTitle(R.string.title_change_lib_preference);
+        String message = this.getString(R.string.current_library) + " " + TermService.getArch();
+        message = message + "\n" + this.getString(R.string.message_change_lib_preference);
+        bld.setMessage(message);
+        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                chooseLibrary();
+            }
+        });
+        bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                troubleShooting();
+            }
+        });
+        bld.create().show();
+    }
+
+    void chooseLibrary() {
+        String[] items = {
+                this.getString(R.string.force_64bit),
+                this.getString(R.string.force_32bit),
+                this.getString(R.string.reset_to_default)
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_change_lib_preference))
+                .setSingleChoiceItems(items, mLibrary, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        confirmChangeLib(which);
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        troubleShooting();
+                    }
+                })
+                .show();
+    }
+
+    void confirmChangeLib(final int which) {
+        final Context context = this;
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        int messageId = R.string.reset_to_default;
+        if (which < 2) messageId = which == 0 ? R.string.force_64bit : R.string.force_32bit;
+        bld.setTitle(messageId);
+        String message = this.getString(R.string.current_library) + " " + TermService.getArch() + "\n" + this.getString(R.string.confirm_change_lib);
+        bld.setMessage(message);
+        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                mUninstall = true;
+                mLibrary = which;
+                troubleShooting();
+            }
+        });
+        bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                troubleShooting();
+            }
+        });
+        bld.show();
+    }
+
     private void doCloseCrashVimWindow() {
+        doCloseCrashVimWindow(null);
+    }
+
+    private void doCloseCrashVimWindow(CharSequence message) {
         final AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_alert);
         bld.setCancelable(false);
-        bld.setMessage(R.string.close_window);
+        bld.setTitle(R.string.close_window);
+        if (message != null) bld.setMessage(message);
         bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
@@ -2556,6 +2676,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         editor.apply();
                 }
                 if (mUninstall) doUninstallExtraContents();
+                if (mLibrary != -1) {
+                    shell("rm " + TermService.getAPPEXTFILES() + "/64bit");
+                    shell("rm " + TermService.getAPPEXTFILES() + "/32bit");
+                    if (mLibrary == 0) {
+                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/64bit");
+                    } else if (mLibrary == 1) {
+                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/32bit");
+                    }
+                }
                 doCloseWindow();
             }
         });
