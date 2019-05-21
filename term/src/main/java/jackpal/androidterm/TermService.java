@@ -138,6 +138,10 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     static public String getArch() {
+        return getArch(false);
+    }
+
+    static public String getArch(boolean raw) {
         String libPath = getAPPLIB();
         String cpu = null;
 
@@ -146,7 +150,15 @@ public class TermService extends Service implements TermSession.FinishCallback {
         else if (new File(libPath + "/libx86.so").exists()) cpu = "x86";
         else if (new File(libPath + "/libx86_64.so").exists()) cpu = "x86_64";
 
+        // FIXME: Kindle fire
+        if (Build.MANUFACTURER.equals("Amazon")) {
+            if ((cpu != null) && (!Build.MODEL.matches("KFFOWI|KFMEWI|KFTBWI|KFARWI|KFASWI|KFSAWA|KFSAWI"))) {
+                cpu = cpu.contains("arm") ? "arm64" : "x86_64";
+            }
+        }
+
         if (cpu != null) {
+            if (raw) return cpu;
             if (cpu.contains("64")) {
                 if (new File(getAPPEXTFILES() + "/.32bit").exists()) {
                     return cpu.contains("arm") ? "arm" : "x86";
@@ -160,34 +172,19 @@ public class TermService extends Service implements TermSession.FinishCallback {
             }
         }
 
+        // Unreachable codes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (String androidArch : Build.SUPPORTED_64_BIT_ABIS) {
-                cpu = androidArch.toLowerCase();
-                if (cpu.contains("arm64")) {
-                    return "arm64";
+            for (String androidArch : Build.SUPPORTED_ABIS) {
+                switch (androidArch) {
+                    case "arm64-v8a": return "arm64";
+                    case "armeabi-v7a": return "arm";
+                    case "x86_64": return "x86_64";
+                    case "x86": return "x86";
                 }
-                if (cpu.contains("x86_64")) {
-                    return "x86_64";
-                }
-            }
-            for (String androidArch : Build.SUPPORTED_32_BIT_ABIS) {
-                cpu = androidArch.toLowerCase();
-                if (cpu.contains("arm")) {
-                    return "arm";
-                }
-                if (cpu.contains("x86") || cpu.contains("i686")) {
-                    return "x86";
-                }
-            }
-        } else {
-            cpu = System.getProperty("os.arch").toLowerCase();
-            if (cpu.contains("arm")) {
-                return "arm";
-            } else if (cpu.contains("x86") || cpu.contains("i686")) {
-                return "x86";
             }
         }
-        return "arm64";
+
+        return "arm";
     }
 
     private boolean useNotificationForgroundService() {
