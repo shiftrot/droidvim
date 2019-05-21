@@ -2401,7 +2401,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 clearClipBoard();
                 return true;
             case 0xffff1001:
-                AndroidIntent(mSettings.getHomePath() + "/.intent");
+                AndroidIntent(TermService.getAPPFILES() + "/.intent");
                 return true;
             case 0xffff9998:
                 try {
