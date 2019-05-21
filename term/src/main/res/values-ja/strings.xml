@@ -308,12 +308,15 @@
    <string name="change_lib">ライブラリ変更の用意ができました.\nアプリを再起動してください.</string>
 
    <string name="crash_title">申し訳ありません, Vimがクラッシュしました.</string>
-   <string name="crash_message">トラブルシューティングを実行するか, 終了してから再起動してください.\n\nもしVim.pythonが常にクラッシュする場合は, 機種依存の問題の可能性があります.\nトラブルシューティング(\"alt 1\"を試してみてください)で問題が解決しない場合は, 開発者まで連絡してください.</string>
+   <string name="crash_message">トラブルシューティングを実行するか, 終了してから再起動してください.\n\nもしVim.pythonが常にクラッシュする場合は, 機種依存の問題の可能性があります.\nトラブルシューティングで問題が解決しない場合は, 開発者までご連絡ください.</string>
    <string name="crash_quit_button">強制終了</string>
    <string name="crash_trouble_shooting_button">トラブルシューティング</string>
+   <string name="choose_vim_python_script">Vim (+Python) スクリプトを選択</string>
+   <string name="vim_python_script_default">デフォルト</string>
+   <string name="vim_python_script_alt1">代替モード (1)</string>
    <string name="choose_ld_library_path_mode">LD_LIBRARY_PATHモードを選択</string>
-   <string name="ld_library_path_mode_default">LD_LIBRARY_PATHをデフォルトに戻す.</string>
-   <string name="ld_library_path_mode_alt_1">LD_LIBRARY_PATHを変更 (alt 1).</string>
+   <string name="ld_library_path_mode_default">デフォルト</string>
+   <string name="ld_library_path_mode_alt_1">代替モード (1)</string>
    <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
    <string name="revert_to_default_vim">実行ファイルをデフォルトへ戻す.</string>
    <string name="quit_to_shell">シェル</string>
