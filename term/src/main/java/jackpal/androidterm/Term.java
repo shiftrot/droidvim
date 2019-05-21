@@ -2677,12 +2677,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 if (mUninstall) doUninstallExtraContents();
                 if (mLibrary != -1) {
-                    shell("rm " + TermService.getAPPEXTFILES() + "/64bit");
-                    shell("rm " + TermService.getAPPEXTFILES() + "/32bit");
+                    shell("rm " + TermService.getAPPEXTFILES() + "/.64bit");
+                    shell("rm " + TermService.getAPPEXTFILES() + "/.32bit");
                     if (mLibrary == 0) {
-                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/64bit");
+                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getVimRuntimeInstallDir() + "/.64bit");
                     } else if (mLibrary == 1) {
-                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/32bit");
+                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getVimRuntimeInstallDir() + "/.32bit");
                     }
                 }
                 doCloseWindow();

@@ -1123,12 +1123,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                shell("rm " + TermService.getAPPEXTFILES() + "/64bit");
-                shell("rm " + TermService.getAPPEXTFILES() + "/32bit");
+                shell("rm " + TermService.getAPPEXTFILES() + "/.64bit");
+                shell("rm " + TermService.getAPPEXTFILES() + "/.32bit");
                 if (which == 0) {
-                    shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/64bit");
+                    shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/.64bit");
                 } else if (which == 1) {
-                    shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/32bit");
+                    shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/.32bit");
                 }
                 uninstallExtraContents();
                 AlertDialog.Builder bld = new AlertDialog.Builder(context);

@@ -138,22 +138,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     static public String getArch() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // FIXME: for Kindle Fire
-            if (System.getenv("AMAZON_COMPONENT_LIST") != null) {
-                String cpu = getProp("ro.product.cpu.abi");
-                if (cpu != null) {
-                    cpu = cpu.toLowerCase();
-                    if (cpu.contains("arm64")) {
-                        return "arm64";
-                    }
-                    if (cpu.contains("x86_64")) {
-                        return "x86_64";
-                    }
-                }
-            }
-        }
-
         String libPath = getAPPLIB();
         String cpu = null;
 
@@ -161,15 +145,16 @@ public class TermService extends Service implements TermSession.FinishCallback {
         else if (new File(libPath + "/libarm.so").exists()) cpu = "arm";
         else if (new File(libPath + "/libx86.so").exists()) cpu = "x86";
         else if (new File(libPath + "/libx86_64.so").exists()) cpu = "x86_64";
+
         if (cpu != null) {
-            if (cpu.matches(".*64")) {
-                if (new File(mVIMRUNTIME_INSTALL_DIR + "/32bit").exists()) {
-                    return cpu.equals("arm64") ? "arm" : "x86";
+            if (cpu.contains("64")) {
+                if (new File(getAPPEXTFILES() + "/.32bit").exists()) {
+                    return cpu.contains("arm") ? "arm" : "x86";
                 }
                 return cpu;
             } else {
-                if (new File(mVIMRUNTIME_INSTALL_DIR + "/64bit").exists()) {
-                    return cpu.equals("arm") ? "arm64" : "x86_64";
+                if (new File(getAPPEXTFILES() + "/.64bit").exists()) {
+                    return cpu.contains("arm") ? "arm64" : "x86_64";
                 }
                 return cpu;
             }
@@ -429,6 +414,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     static public String getAPPFILES() {
+        if (mAPPFILES == null) return "/data/data/" + BuildConfig.APPLICATION_ID + "/files";
         return mAPPFILES;
     }
 
