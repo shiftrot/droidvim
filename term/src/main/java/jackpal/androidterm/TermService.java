@@ -336,7 +336,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
-        cmd = cmd.replaceAll("%LD_PRELOAD_DEFAULT%", mLD_PRELOAD);
+        cmd = cmd.replaceAll("%LD_PRELOAD_DEFAULT%", "\\$LD_PRELOAD");
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", ld_library_path);
         cmd = cmd.replaceAll("%PATH%", path);
         cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUP_DIR);
