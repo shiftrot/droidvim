@@ -187,6 +187,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
 
+
     private boolean mBackKeyPressed;
 
     private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
@@ -574,6 +575,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         int visibilty = View.VISIBLE;
         if (!FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
+        int color = mSettings.getColorTheme() == 0 ? R.drawable.sidebar_button_dark : R.drawable.sidebar_button;
     }
 
     private void setDebugButton() {
@@ -1145,7 +1147,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             });
         } else {
-            showVimTips();
             final String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
                     new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute())
                     ? BASH : "";
@@ -2420,6 +2421,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static private boolean mUninstall = false;
+
     static public void setUninstallExtraContents(boolean uninstall) {
         mUninstall = uninstall;
     }
@@ -2459,7 +2461,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int m) {
                 dialog.dismiss();
-                troubleShooting();
+                troubleShooting(true);
             }
         });
         AlertDialog dlg = bld.create();
@@ -2513,7 +2515,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dlg.show();
     }
 
-    private void troubleShooting() {
+    private boolean mFatalTroubleShooting = false;
+
+    private void troubleShooting(boolean fatal) {
+        mFatalTroubleShooting = fatal;
         final String[] items = {
                 this.getString(R.string.choose_vim_python_script),
                 this.getString(R.string.choose_ld_library_path_mode),
@@ -2545,7 +2550,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int m) {
                         dialog.dismiss();
-                        fatalCrashVim();
+                        if (mFatalTroubleShooting) {
+                            fatalCrashVim();
+                        } else {
+                            mUninstall = false;
+                            mLibrary = -1;
+                            mLdLibraryPathMode = -1;
+                            mVimPythonMode = -1;
+                        }
                     }
                 })
                 .create();
@@ -2560,7 +2572,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 this.getString(R.string.vim_python_script_alt1)};
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mChecked = prefs.getInt("VIM_PYTHON_MODE", 0);
-        if (mVimPythonMode != -1 ) mChecked = mVimPythonMode;
+        if (mVimPythonMode != -1) mChecked = mVimPythonMode;
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(this.getString(R.string.choose_vim_python_script))
@@ -2574,13 +2586,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mVimPythonMode = mChecked;
-                        troubleShooting();
+                        troubleShooting(mFatalTroubleShooting);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int m) {
                         dialog.dismiss();
-                        troubleShooting();
+                        troubleShooting(mFatalTroubleShooting);
                     }
                 })
                 .create();
@@ -2595,7 +2607,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 this.getString(R.string.ld_library_path_mode_alt_1)};
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mChecked = prefs.getInt("FATAL_CRASH_RESOLVER", 0);
-        if (mLdLibraryPathMode != -1 ) mChecked = mLdLibraryPathMode;
+        if (mLdLibraryPathMode != -1) mChecked = mLdLibraryPathMode;
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(this.getString(R.string.choose_ld_library_path_mode))
@@ -2609,13 +2621,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mLdLibraryPathMode = mChecked;
-                        troubleShooting();
+                        troubleShooting(mFatalTroubleShooting);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int m) {
                         dialog.dismiss();
-                        troubleShooting();
+                        troubleShooting(mFatalTroubleShooting);
                     }
                 })
                 .create();
@@ -2640,7 +2652,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                troubleShooting();
+                troubleShooting(mFatalTroubleShooting);
             }
         });
         bld.create().show();
@@ -2665,14 +2677,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
-                        troubleShooting();
+                        troubleShooting(mFatalTroubleShooting);
                     }
                 })
                 .show();
     }
 
     void confirmChangeLib(final int which) {
-        final Context context = this;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_alert);
         int messageId = R.string.reset_to_default;
@@ -2685,13 +2696,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 dialog.dismiss();
                 mUninstall = true;
                 mLibrary = which;
-                troubleShooting();
+                troubleShooting(mFatalTroubleShooting);
             }
         });
         bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                troubleShooting();
+                troubleShooting(mFatalTroubleShooting);
             }
         });
         bld.show();
@@ -2726,8 +2737,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (mLdLibraryPathMode != -1) {
                     final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     final SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("FATAL_CRASH_RESOLVER", mLdLibraryPathMode);
-                        editor.apply();
+                    editor.putInt("FATAL_CRASH_RESOLVER", mLdLibraryPathMode);
+                    editor.apply();
                 }
                 if (mUninstall) doUninstallExtraContents();
                 if (mLibrary != -1) {
@@ -4339,4 +4350,5 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return null;
         }
     }
+
 }

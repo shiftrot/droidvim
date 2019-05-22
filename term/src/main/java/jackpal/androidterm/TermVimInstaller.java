@@ -1,5 +1,6 @@
 package jackpal.androidterm;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,8 +12,12 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.system.Os;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.Toast;
 
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -47,6 +52,7 @@ final class TermVimInstaller {
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
     static public boolean doInstallVim = false;
+    static private final String DEBUG_OLD_LST = "";
 
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
@@ -159,8 +165,11 @@ final class TermVimInstaller {
                     doInstallTerm(activity);
                     int id = activity.getResources().getIdentifier("bin", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
+                    id = activity.getResources().getIdentifier("base", "raw", activity.getPackageName());
+                    installZip(path, getInputStream(activity, id));
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                        id = activity.getResources().getIdentifier("bin_am", "raw", activity.getPackageName());
+                        String bin_am = "bin_am";
+                        id = activity.getResources().getIdentifier(bin_am, "raw", activity.getPackageName());
                         installZip(path, getInputStream(activity, id));
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
                         copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
@@ -178,10 +187,8 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries");
                     arch = getArch().contains("86") ? "x86" : "arm";
                     bin = "busybox_" + arch;
-                    if (!new File(TermService.getAPPFILES() + "/usr/bin/busybox").exists()) {
-                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                        installZip(path, getInputStream(activity, id));
-                    }
+                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    installZip(path, getInputStream(activity, id));
                     bin = "bin_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
@@ -327,13 +334,81 @@ final class TermVimInstaller {
         }
     }
 
-    public static void extractXZ(String in, String outDir) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            String opt = (in.matches(".*.tar.xz|.*.so$")) ? " Jxf " : " xf ";
-            shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + new File(in).getAbsolutePath() + " -C " + outDir);
+    @SuppressLint("StaticFieldLeak")
+    static private Activity mActivity;
+    static private boolean mProgressToast = false;
+    static private Handler mProgressToastHandler = new Handler();
+    static private int mProgressToastHandlerMillis = 0;
+    static private final int PROGRESS_TOAST_HANDLER_MILLIS = 5000;
+    static private Runnable mProgressToastRunner = new Runnable() {
+        @Override
+        public void run() {
+            if (mProgressToastHandler != null) {
+                mProgressToastHandler.removeCallbacks(mProgressToastRunner);
+            }
+            if (mProgressToast) {
+                try {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressToastHandlerMillis += PROGRESS_TOAST_HANDLER_MILLIS;
+                            CharSequence mes;
+                            if (mProgressToastHandlerMillis >= 3 * 60 * 1000) {
+                                mes = "ERROR : Time our.";
+                                mProgressToast = false;
+                            } else {
+                                mes = "Please wait for while.";
+                                if (mProgressToastHandler != null) {
+                                    mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
+                                }
+                            }
+                            Toast toast = Toast.makeText(mActivity.getApplicationContext(), mes, Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.TOP, 0, 0);
+                            toast.show();
+                        }
+                    });
+                } catch (Exception e) {
+                    // Activity already dismissed - ignore.
+                }
+            }
+        }
+    };
+
+    private static void showProgressToast(final Activity activity, boolean show) {
+        if (!show) {
+            mProgressToast = false;
             return;
         }
+
+        mActivity = activity;
         try {
+            mProgressToast = true;
+            if (mProgressToastHandler != null)
+                mProgressToastHandler.removeCallbacks(mProgressToastRunner);
+            mProgressToastHandlerMillis = 0;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
+                }
+            });
+        } catch (Exception e) {
+            // Do nothing
+        }
+    }
+
+    public static void extractXZ(final Activity activity, final String in, final String outDir) {
+        showProgressToast(activity, true);
+        extractXZ(in, outDir);
+    }
+
+    public static void extractXZ(final String in, final String outDir) {
+        try {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                String opt = (in.matches(".*.tar.xz|.*.so$")) ? " Jxf " : " xf ";
+                shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + new File(in).getAbsolutePath() + " -C " + outDir);
+                return;
+            }
             TarArchiveInputStream fin;
             FileInputStream is = new FileInputStream(in);
             if (in.matches(".*.tar.xz|.*.so$")) {
@@ -379,7 +454,10 @@ final class TermVimInstaller {
                         String symlink = file.getAbsolutePath();
                         String target = file.getAbsoluteFile().getParent() + "/" + entry.getLinkName();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Os.symlink(target, symlink);
+                            if (new File(target).exists()) {
+                                file.delete();
+                                Os.symlink(target, symlink);
+                            }
                         } else {
                             shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + file.getAbsolutePath() + " " + symlink);
                         }
@@ -391,6 +469,8 @@ final class TermVimInstaller {
             fin.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            mProgressToast = false;
         }
     }
 
@@ -414,31 +494,35 @@ final class TermVimInstaller {
     }
 
     static void showWhatsNew(final Activity activity, final boolean first) {
-        if (BuildConfig.DEBUG) return;
         final String whatsNew = BuildConfig.WHATS_NEW;
         if (!first && whatsNew.equals("")) return;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                String[] list = activity.getString(R.string.tips_vim_list).split("\\|");
-                Random random = new Random();
-                int index = random.nextInt(list.length);
-                if (first) index = 0;
                 if (first) {
                     bld.setTitle(activity.getString(R.string.tips_vim_title));
-                    bld.setMessage(list[index]);
+                    bld.setMessage(activity.getString(R.string.tips_vim));
                 } else {
                     bld.setTitle(activity.getString(R.string.whats_new_title));
                     bld.setMessage(whatsNew);
                 }
-                bld.setPositiveButton("OK", null);
-                bld.create().show();
+                bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        if (!first) showVimTips(activity);
+                    }
+                });
+                final Term term = (Term) activity;
+                AlertDialog dialog = bld.create();
+                dialog.show();
+                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positive.requestFocus();
             }
         });
     }
 
-    static private int copyScript(InputStream is, String fname) {
+    static public int copyScript(InputStream is, String fname) {
         if (is == null) return -1;
         BufferedReader br = null;
         try {
@@ -612,4 +696,40 @@ final class TermVimInstaller {
             }
         }
     }
+
+    public static void showVimTips(final Activity activity) {
+        if (!FLAVOR_VIM) return;
+        try {
+            String title = activity.getString(R.string.tips_vim_title);
+            String[] list = activity.getString(R.string.tips_vim_list).split("\t");
+            int index = mRandom.nextInt(list.length);
+            String message = list[index];
+            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+            bld.setTitle(title);
+            bld.setMessage(message);
+            bld.setPositiveButton(android.R.string.yes, null);
+            AlertDialog dialog = bld.create();
+            dialog.show();
+        } catch (Exception e) {
+            // do nothing
+        }
+    }
+
+    private static Random mRandom = new Random();
+
+    static void toast(final Activity activity, final String message) {
+        try {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
+                }
+            });
+        } catch (Exception e) {
+            // Activity already dismissed - ignore.
+        }
+    }
+
 }
