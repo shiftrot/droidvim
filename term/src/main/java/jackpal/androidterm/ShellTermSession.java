@@ -17,16 +17,22 @@
 package jackpal.androidterm;
 
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import jackpal.androidterm.compat.AndroidCompat;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
-
-import java.io.*;
-import java.util.ArrayList;
 
 /**
  * A terminal session, controlling the process attached to the session (usually
@@ -77,6 +83,7 @@ public class ShellTermSession extends GenericTermSession {
 
     static private boolean mFirst = true;
     static private String mEnvInitialCommand = "";
+
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
 
@@ -157,8 +164,73 @@ public class ShellTermSession extends GenericTermSession {
             write(mEnvInitialCommand + '\r');
             mFirst = false;
         }
+        sendCommand(getLANG());
+
         if (initialCommand != null && initialCommand.length() > 0) {
             write(initialCommand + '\r');
+        }
+    }
+
+    static private String[] getLANG() {
+        List<String> LANGCommands = new ArrayList<>();
+        String locale;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            LocaleList localeList = LocaleList.getDefault();
+            locale = localeList.get(0).toLanguageTag();
+        } else {
+            locale = getprop("persist.sys.locale");
+            if ("".equals(locale)) {
+                String language = getprop("persist.sys.language");
+                String country = getprop("persist.sys.country");
+                if (!"".equals(language) && !"".equals(country)) {
+                    locale = language + "_" + country;
+                }
+            }
+        }
+        if ("".equals(locale)) locale = "en-US";
+        locale = locale.replace("-", "_");
+        LANGCommands.add("export LANG=" + locale + ".UTF-8");
+        return LANGCommands.toArray(new String[0]);
+    }
+
+    static private String getprop(String propName) {
+        String GETPROP_EXECUTABLE_PATH = "/system/bin/getprop";
+        String TAG = "getprop";
+
+        Process process = null;
+        BufferedReader bufferedReader = null;
+
+        try {
+            process = new ProcessBuilder().command(GETPROP_EXECUTABLE_PATH, propName).redirectErrorStream(true).start();
+            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = bufferedReader.readLine();
+            if (line == null) {
+                line = "";
+            }
+            Log.i(TAG, "read System Property: " + propName + "=" + line);
+            return line;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to read System Property " + propName, e);
+            return "";
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    // Do nothing
+                }
+            }
+            if (process != null) {
+                process.destroy();
+            }
+        }
+    }
+
+    private void sendCommand(String[] commands) {
+        if (Arrays.equals(commands, new String[]{})) return;
+        if (commands == null) return;
+        for (String cmd : commands) {
+            write(cmd + '\r');
         }
     }
 
