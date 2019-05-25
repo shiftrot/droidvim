@@ -1,6 +1,11 @@
 package com.droidvim.storage;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -18,6 +23,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,34 +34,35 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import androidx.core.content.ContextCompat;
 import jackpal.androidterm.R;
 
-import android.annotation.TargetApi;
 @TargetApi(Build.VERSION_CODES.KITKAT)
-
 public class LocalStorageProvider extends DocumentsProvider {
     private static final String TAG = "LocalStorageProvider";
-    private static String BASE_DEFAULT_DIR = "/data/data/com.droidvim/files/home";
+    private static final String TITLE = "DroidVim";
+    @SuppressLint("SdCardPath")
+    private static final String BASE_DEFAULT_DIR = "/data/data/com.droidvim/files/home";
     private static String mBASEDIR = BASE_DEFAULT_DIR;
 
     private static final String[] DEFAULT_ROOT_PROJECTION = new String[]{
-        Root.COLUMN_ROOT_ID,
-        Root.COLUMN_MIME_TYPES,
-        Root.COLUMN_FLAGS,
-        Root.COLUMN_ICON,
-        Root.COLUMN_TITLE,
-        Root.COLUMN_SUMMARY,
-        Root.COLUMN_DOCUMENT_ID,
-        Root.COLUMN_AVAILABLE_BYTES
+            Root.COLUMN_ROOT_ID,
+            Root.COLUMN_MIME_TYPES,
+            Root.COLUMN_FLAGS,
+            Root.COLUMN_ICON,
+            Root.COLUMN_TITLE,
+            Root.COLUMN_SUMMARY,
+            Root.COLUMN_DOCUMENT_ID,
+            Root.COLUMN_AVAILABLE_BYTES
     };
 
     private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[]{
-        Document.COLUMN_DOCUMENT_ID,
-        Document.COLUMN_MIME_TYPE,
-        Document.COLUMN_DISPLAY_NAME,
-        Document.COLUMN_LAST_MODIFIED,
-        Document.COLUMN_FLAGS,
-        Document.COLUMN_SIZE
+            Document.COLUMN_DOCUMENT_ID,
+            Document.COLUMN_MIME_TYPE,
+            Document.COLUMN_DISPLAY_NAME,
+            Document.COLUMN_LAST_MODIFIED,
+            Document.COLUMN_FLAGS,
+            Document.COLUMN_SIZE
     };
 
     private static final int MAX_SEARCH_RESULTS = 20;
@@ -72,26 +81,26 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     @Override
-    public Cursor queryRoots(String[] projection) throws FileNotFoundException {
+    public Cursor queryRoots(String[] projection) {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_ROOT_PROJECTION);
         MatrixCursor.RowBuilder row;
-        String title = "DroidVim";
+        String title = TITLE;
         if (getContext() != null) {
             title = getContext().getString(R.string.application_term_app);
-        }
-
-        row = result.newRow();
-        if (getContext() != null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
             mBASEDIR = pref.getString("home_path", mBASEDIR);
         }
+        row = result.newRow();
         File homeDir = new File(mBASEDIR);
         row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_TITLE, title);
         row.add(Root.COLUMN_SUMMARY, getContext().getString(R.string.title_home_path_preference));
         row.add(Root.COLUMN_ICON, R.mipmap.ic_launcher);
-        row.add(Root.COLUMN_FLAGS, Root.FLAG_SUPPORTS_CREATE | Root.FLAG_SUPPORTS_SEARCH);
+        int FLAGS = Root.FLAG_LOCAL_ONLY | Root.FLAG_SUPPORTS_CREATE | Root.FLAG_SUPPORTS_SEARCH | Root.FLAG_SUPPORTS_RECENTS;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            FLAGS |= Root.FLAG_SUPPORTS_IS_CHILD;
+        row.add(Root.COLUMN_FLAGS, FLAGS);
         row.add(Root.COLUMN_MIME_TYPES, "*/*");
         row.add(Root.COLUMN_AVAILABLE_BYTES, homeDir.getFreeSpace());
 
@@ -103,7 +112,7 @@ public class LocalStorageProvider extends DocumentsProvider {
             row.add(Root.COLUMN_TITLE, title);
             row.add(Root.COLUMN_SUMMARY, homeDir.getAbsolutePath());
             row.add(Root.COLUMN_ICON, R.drawable.ic_folder);
-            row.add(Root.COLUMN_FLAGS, Root.FLAG_LOCAL_ONLY | Root.FLAG_SUPPORTS_CREATE | Root.FLAG_SUPPORTS_SEARCH);
+            row.add(Root.COLUMN_FLAGS, FLAGS);
             row.add(Root.COLUMN_MIME_TYPES, "*/*");
             row.add(Root.COLUMN_AVAILABLE_BYTES, new StatFs(getDocIdForFile(homeDir)).getAvailableBytes());
         }
@@ -118,6 +127,21 @@ public class LocalStorageProvider extends DocumentsProvider {
         final File file = new File(docId);
         if (!file.exists()) throw new FileNotFoundException(file.getAbsolutePath() + " not found");
         return file;
+    }
+
+    private boolean isMissingPermission(String documentId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return false;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) return false;
+        try {
+            if (!getFileForDocId(documentId).getAbsolutePath().startsWith("/data")) {
+                Context context = getContext();
+                if (context != null)
+                    return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+            }
+            return false;
+        } catch (FileNotFoundException e) {
+            return true;
+        }
     }
 
     @Override
@@ -146,9 +170,18 @@ public class LocalStorageProvider extends DocumentsProvider {
 
         int flags = 0;
         if (file.isDirectory()) {
-            if (file.isDirectory() && file.canWrite()) flags |= Document.FLAG_DIR_SUPPORTS_CREATE;
+            if (file.canWrite())
+                flags |= Document.FLAG_DIR_SUPPORTS_CREATE | Document.FLAG_SUPPORTS_DELETE;
         } else if (file.canWrite()) {
             flags |= Document.FLAG_SUPPORTS_WRITE | Document.FLAG_SUPPORTS_DELETE;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            flags |= Document.FLAG_SUPPORTS_RENAME;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            flags |= Document.FLAG_SUPPORTS_MOVE;
+            flags |= Document.FLAG_SUPPORTS_COPY;
+            flags |= Document.FLAG_SUPPORTS_REMOVE;
         }
 
         final String displayName = file.getName();
@@ -183,13 +216,8 @@ public class LocalStorageProvider extends DocumentsProvider {
     @Override
     public ParcelFileDescriptor openDocument(final String documentId, String mode, CancellationSignal signal) throws FileNotFoundException {
         final File file = getFileForDocId(documentId);
-
-        final boolean isWrite = mode.matches(".*w.*");
-        if (isWrite) {
-            return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_WRITE);
-        } else {
-            return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
-        }
+        final int accessMode = ParcelFileDescriptor.parseMode(mode);
+        return ParcelFileDescriptor.open(file, accessMode);
     }
 
     @Override
@@ -200,47 +228,161 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     @Override
-    public String createDocument(final String parentDocumentId, final String mimeType, final String displayName) throws FileNotFoundException {
-        File file = new File(parentDocumentId, displayName);
+    public String createDocument(final String documentId, final String mimeType, final String displayName) throws FileNotFoundException {
+        File file = new File(documentId, displayName);
         try {
-            file.createNewFile();
+            if (Document.MIME_TYPE_DIR.equals(mimeType)) {
+                file.mkdirs();
+            } else {
+                file.createNewFile();
+            }
             file.setWritable(true);
             file.setReadable(true);
             return getDocIdForFile(file);
-        } catch (IOException e) {
-            Log.v (TAG, "Failed to delete document with id " + parentDocumentId);
+        } catch (Exception e) {
+            Log.v(TAG, "Failed to create document with id " + documentId);
+            throw new FileNotFoundException("Failed to create document with id " + documentId);
         }
-        return null;
     }
 
     @Override
     public void deleteDocument(String documentId) throws FileNotFoundException {
         File file = getFileForDocId(documentId);
-        if (!file.delete()) {
+        rmFileOrFolder(file);
+        if (file.exists()) {
             throw new FileNotFoundException("Failed to delete document with id " + documentId);
         }
     }
 
+    /*
+     * This function requires "implementation 'commons-io:commons-io:2.6'" in build.gradle
+     */
+    private void deleteFileOrFolder(File fileOrDirectory) {
+        try {
+            if (fileOrDirectory.isDirectory()) {
+                FileUtils.deleteDirectory(fileOrDirectory);
+            } else {
+                if (fileOrDirectory.delete()) {
+                    Log.v(TAG, "Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
+                }
+            }
+        } catch (IOException e) {
+            Log.v(TAG, "IOException in FileUtils.deleteDirectory(). " + fileOrDirectory.getAbsolutePath());
+        }
+        if (!fileOrDirectory.exists()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                revokeDocumentPermission(getDocIdForFile(fileOrDirectory));
+            }
+        }
+    }
+
+    /*
+     * Use `rm` command instead of `file.delete().
+     * 'rm' does not delete reference directory of symbolic link.
+     */
+    private void rmFileOrFolder(File fileOrDirectory) {
+        String opt = fileOrDirectory.isDirectory() ? " -rf " : "";
+        shell("rm " + opt + " " + fileOrDirectory.getAbsolutePath());
+        if (!fileOrDirectory.exists()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                revokeDocumentPermission(getDocIdForFile(fileOrDirectory));
+            }
+        } else {
+            Log.v(TAG, "Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
+        }
+    }
+
+    private void shell(String... strings) {
+        try {
+            Process shell = Runtime.getRuntime().exec("sh");
+            DataOutputStream sh = new DataOutputStream(shell.getOutputStream());
+
+            for (String s : strings) {
+                sh.writeBytes(s + "\n");
+                sh.flush();
+            }
+
+            sh.writeBytes("exit\n");
+            sh.flush();
+            try {
+                shell.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sh.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void removeDocument(String documentId, String parentDocumentId) throws FileNotFoundException {
+        File file = getFileForDocId(documentId);
+        deleteDocument(file.getAbsolutePath());
+    }
+
+    /*
+     * This function requires "implementation 'commons-io:commons-io:2.6'" in build.gradle
+     */
+    @Override
+    public String copyDocument(String sourceDocumentId, String targetParentDocumentId) throws FileNotFoundException {
+        File src = getFileForDocId(sourceDocumentId);
+        File dst = getFileForDocId(targetParentDocumentId);
+        if (src.isDirectory() && dst.isDirectory()) {
+            try {
+                FileUtils.copyDirectoryToDirectory(src, dst);
+            } catch (Exception e) {
+                throw new FileNotFoundException("Unable to copy " + sourceDocumentId + " to " + targetParentDocumentId);
+            }
+        } else if (src.isFile() && dst.isDirectory()) {
+            try {
+                FileUtils.copyFileToDirectory(src, dst);
+            } catch (IOException e) {
+                throw new FileNotFoundException("Unable to copy " + sourceDocumentId + " to " + targetParentDocumentId);
+            }
+        } else {
+            return null;
+        }
+        return getDocIdForFile(dst);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @Override
+    public String moveDocument(String sourceDocumentId, String sourceParentDocumentId, String targetParentDocumentId) throws FileNotFoundException {
+        try {
+            String result = copyDocument(sourceDocumentId, targetParentDocumentId);
+            if (result != null) {
+                deleteDocument(sourceDocumentId);
+                File existingFile = getFileForDocId(targetParentDocumentId);
+                return getDocIdForFile(existingFile);
+            }
+        } catch (Exception e) {
+            throw new FileNotFoundException("Unable to move " + sourceDocumentId + " to " + targetParentDocumentId);
+        }
+        return null;
+    }
+
     @Override
     public String renameDocument(final String documentId, final String displayName) throws FileNotFoundException {
-        File existingFile = new File(documentId);
+        File existingFile = getFileForDocId(documentId);
         if (!existingFile.exists()) {
             throw new FileNotFoundException(documentId + " does not exist");
         }
         if (existingFile.getName().equals(displayName)) {
-            return null;
+            return getDocIdForFile(existingFile);
         }
         File parentDirectory = existingFile.getParentFile();
         File newFile = new File(parentDirectory, displayName);
-        int conflictIndex = 1;
-        while (newFile.exists()) {
-            newFile = new File(parentDirectory, displayName + "_" + conflictIndex++);
-        }
         boolean success = existingFile.renameTo(newFile);
         if (!success) {
             throw new FileNotFoundException("Unable to rename " + documentId + " to " + existingFile.getAbsolutePath());
         }
-        return existingFile.getAbsolutePath();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            revokeDocumentPermission(documentId);
+        }
+        return getDocIdForFile(newFile);
     }
 
     @Override
