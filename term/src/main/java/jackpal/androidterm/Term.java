@@ -77,6 +77,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1130,6 +1132,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (TermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
             cmd = cmd.replaceAll("\n-?vim.app", "");
+
+            final DrawerLayout layout = findViewById(R.id.drawer_layout);
+            final ProgressBar progressBar = new ProgressBar(this.getApplicationContext(), null, android.R.attr.progressBarStyleLarge);
+//            showProgressRing(layout, progressBar);
+
             TermVimInstaller.installVim(Term.this, new Runnable() {
                 @Override
                 public void run() {
@@ -1143,6 +1150,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             ShellTermSession.setPostCmd(bash + "vim.app\n");
                         }
                     }
+//                    dismissProgressRing(layout, progressBar);
                     permissionCheckExternalStorage();
                 }
             });
@@ -1157,6 +1165,26 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return cmd;
     }
 
+    private void showProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
+        if (layout == null || progressBar == null) return;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
+        progressBar.setLayoutParams(params);
+        layout.addView(progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void dismissProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (layout != null) layout.removeView(progressBar);
+                } catch (Exception e) {
+                    // Do nothing
+                }
+            }
+        });
+    }
     private static Random mRandom = new Random();
 
     private void showVimTips() {
