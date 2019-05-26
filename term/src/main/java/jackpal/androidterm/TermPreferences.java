@@ -374,7 +374,14 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 dialog.dismiss();
                 Intent openUrl = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(getString(R.string.github_url)));
-                startActivity(openUrl);
+                PackageManager pm = TermPreferences.this.getApplicationContext().getPackageManager();
+                if (openUrl.resolveActivity(pm) != null) {
+                    startActivity(openUrl);
+                } else {
+                    Intent intent = new Intent(TermPreferences.this.getApplicationContext(), WebViewActivity.class);
+                    intent.putExtra("url", getString(R.string.github_url));
+                    startActivity(intent);
+                }
             }
         });
         bld.create().show();
