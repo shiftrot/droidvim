@@ -35,6 +35,7 @@ public class WebViewActivity extends Activity {
     private static int mNormalInterval = 100;
     private boolean mBack = false;
     private WebView mWebView;
+
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,12 +60,13 @@ public class WebViewActivity extends Activity {
                     mBack = false;
                 }
             }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
                 String url = request.getUrl().toString();
                 return overrideUrlLoading(webView, url);
             }
-            @SuppressWarnings("deprecation")
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, String url) {
                 return overrideUrlLoading(webView, url);
@@ -92,7 +94,7 @@ public class WebViewActivity extends Activity {
             }
             String url = bundle.getString("url");
             if ((url == null) || (!load(mWebView, url, mWebView.getUrl()))) {
-                Log.d("WebViewAcitivity", "Load error : "+url);
+                Log.d("WebViewAcitivity", "Load error : " + url);
             }
         }
     }
@@ -129,7 +131,7 @@ public class WebViewActivity extends Activity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.webview_back:
-                    if (mWebView.canGoBack()){
+                    if (mWebView.canGoBack()) {
                         mBack = true;
                         mWebView.goBack();
                     } else {
@@ -138,7 +140,7 @@ public class WebViewActivity extends Activity {
                     }
                     break;
                 case R.id.webview_forward:
-                    if (mWebView.canGoForward()){
+                    if (mWebView.canGoForward()) {
                         mWebView.goForward();
                     }
                     break;
@@ -169,7 +171,7 @@ public class WebViewActivity extends Activity {
 
     private void menu() {
         String[] items = {getString(R.string.scroll_to_top), getString(R.string.scroll_to_bottom), getString(R.string.open_in_browser), getString(R.string.quit)};
-        final int quit = items.length-1;
+        final int quit = items.length - 1;
         new AlertDialog.Builder(mWebView.getContext())
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     @Override
@@ -191,8 +193,7 @@ public class WebViewActivity extends Activity {
                 .show();
     }
 
-    private void execURL(String link)
-    {
+    private void execURL(String link) {
         if (link == null) return;
         Uri webLink = Uri.parse(link);
         if (webLink == null) return;
@@ -201,14 +202,22 @@ public class WebViewActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setMessage(R.string.webview_local_file_error);
-            builder.setPositiveButton(android.R.string.yes, null);
+            builder.setPositiveButton(android.R.string.ok, null);
             builder.create().show();
             return;
         }
         Intent openLink = new Intent(Intent.ACTION_VIEW, webLink);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> handlers = pm.queryIntentActivities(openLink, 0);
-        if(handlers.size() > 0) startActivity(openLink);
+        if (handlers.size() > 0) {
+            startActivity(openLink);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setMessage("Browser not found.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.create().show();
+        }
     }
 
     static public void setFontSize(int size) {
@@ -226,8 +235,8 @@ public class WebViewActivity extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            if (mWebView.canGoBack()){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mWebView.canGoBack()) {
                 mBack = true;
                 mWebView.goBack();
                 return true;
@@ -242,8 +251,8 @@ public class WebViewActivity extends Activity {
             return true;
         }
         try {
-            File html = new File (url);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(html),"UTF-8"));
+            File html = new File(url);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(html), "UTF-8"));
             StringBuilder buffer = new StringBuilder();
             String str;
             while ((str = reader.readLine()) != null) {
@@ -251,7 +260,7 @@ public class WebViewActivity extends Activity {
                 buffer.append(System.getProperty("line.separator"));
             }
             String data = buffer.toString();
-            webView.loadDataWithBaseURL("file://"+url, data, "text/html", "UTF-8", prev);
+            webView.loadDataWithBaseURL("file://" + url, data, "text/html", "UTF-8", prev);
             return true;
         } catch (Exception e) {
             Log.d("WebViewAcitivity", e.getMessage());
@@ -298,7 +307,7 @@ public class WebViewActivity extends Activity {
         if (!url.startsWith(ANDROID_SETTINGS)) {
             return false;
         }
-        url = url.replaceFirst(ANDROID_SETTINGS+"/?", "");
+        url = url.replaceFirst(ANDROID_SETTINGS + "/?", "");
         String action = getSettingsAction(url);
         Intent intent = new Intent(action);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
