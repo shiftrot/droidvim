@@ -404,9 +404,9 @@ final class TermVimInstaller {
 
     public static void extractXZ(final String in, final String outDir) {
         try {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (busybox(null)) {
                 String opt = (in.matches(".*.tar.xz|.*.so$")) ? " Jxf " : " xf ";
-                shell(TermService.getAPPFILES() + "/usr/bin/busybox tar " + opt + " " + new File(in).getAbsolutePath() + " -C " + outDir);
+                busybox("tar " + opt + " " + new File(in).getAbsolutePath() + " -C " + outDir);
                 return;
             }
             TarArchiveInputStream fin;
@@ -459,7 +459,7 @@ final class TermVimInstaller {
                                 Os.symlink(target, symlink);
                             }
                         } else {
-                            shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + file.getAbsolutePath() + " " + symlink);
+                            busybox("ln -s " + file.getAbsolutePath() + " " + symlink);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -486,7 +486,7 @@ final class TermVimInstaller {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
             } else {
-                shell(TermService.getAPPFILES() + "/usr/bin/busybox ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
+                busybox("ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
@@ -569,6 +569,16 @@ final class TermVimInstaller {
         if (fileOrDirectory.exists()) {
             // throw new RuntimeException("Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
         }
+    }
+
+    static public boolean busybox(String cmd) {
+        String busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
+        boolean canExecute = new File(busybox).exists();
+        if (cmd == null || !canExecute) return canExecute;
+
+        String busyboxCommand = busybox + " " + cmd;
+        shell(busyboxCommand);
+        return true;
     }
 
     static public void shell(String... strings) {
