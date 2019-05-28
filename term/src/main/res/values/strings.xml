@@ -123,7 +123,7 @@
 
    <string name="prefs_about">About</string>
    <string name="title_license">Open source licenses</string>
-   <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・android-async-http\n・android-file-chooser\n・Terminal Emulator for Android\n・Termux\n・TermuxAm\n\n\nThis software is an open source project.</string>
+   <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・Apache Commons\n・android-async-http\n・android-file-chooser\n・Terminal Emulator for Android\n・Termux\n・TermuxAm\n\n\nThis software is an open source project.</string>
    <string name="github">github</string>
    <string name="github_url">https://github.com/shiftrot/droidvim</string>
 
