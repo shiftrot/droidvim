@@ -2455,7 +2455,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doUninstallExtraContents() {
-        TermVimInstaller.deleteFileOrFolder(new File(TermService.getAPPFILES() + "/usr"));
+        shell("rm -rf " + TermService.getAPPFILES() + "/usr");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.default");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.python");

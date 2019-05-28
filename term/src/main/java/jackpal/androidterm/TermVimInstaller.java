@@ -423,7 +423,7 @@ final class TermVimInstaller {
                 if (entry.isDirectory()) {
                     if (!file.exists()) file.mkdirs();
                 } else if (entry.isFile()) {
-                    file.delete();
+                    shell("rm " + file.getAbsolutePath());
                     final OutputStream outputFileStream = new FileOutputStream(file);
                     IOUtils.copy(fin, outputFileStream);
                     outputFileStream.close();
@@ -564,13 +564,9 @@ final class TermVimInstaller {
     }
 
     static void deleteFileOrFolder(File fileOrDirectory) {
-        File[] children = fileOrDirectory.listFiles();
-        if (children != null) {
-            for (File child : children) {
-                deleteFileOrFolder(child);
-            }
-        }
-        if (!fileOrDirectory.delete()) {
+        String opt = fileOrDirectory.isDirectory() ? " -rf " : "";
+        shell("rm " + opt + fileOrDirectory.getAbsolutePath());
+        if (fileOrDirectory.exists()) {
             // throw new RuntimeException("Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
         }
     }
