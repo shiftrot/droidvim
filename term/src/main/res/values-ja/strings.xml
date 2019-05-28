@@ -429,6 +429,7 @@
   <string name="create_or_delete">管理</string>
   <string name="create_file">ファイル作成</string>
   <string name="delete_file">ファイル削除</string>
+  <string name="app_files">ファイルマネージャー</string>
   <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
   <string name="storage_manager">管理</string>
   <string name="launch_app">%s (アプリ起動)</string>

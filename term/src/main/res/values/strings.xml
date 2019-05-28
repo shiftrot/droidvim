@@ -478,6 +478,7 @@
   <string name="create_or_delete">Manager</string>
   <string name="create_file">Create file</string>
   <string name="delete_file">Delete file</string>
+  <string name="app_files">File manager</string>
   <string name="storage_intent_error">No storage can perform this action.\nPlease wait a few seconds and try again.</string>
   <string name="storage_manager">Create/Delete</string>
   <string name="storage_permission_error">Storage permission does not granted.</string>

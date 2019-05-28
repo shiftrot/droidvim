@@ -200,6 +200,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private static int mExternalAppMode = 1;
     private static String mExternalApp = "";
+    private static final String APP_FILES = "com.android.documentsui";
     private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
@@ -593,9 +594,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setDrawerButtons() {
         if (FLAVOR_VIM) {
-            mFilePickerItems = new ArrayList<>();
-            mFilePickerItems.add(this.getString(R.string.create_file));
-            mFilePickerItems.add(this.getString(R.string.delete_file));
             int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
             Button button = (Button) findViewById(R.id.drawer_app_button);
             button.setVisibility(visiblity);
@@ -612,6 +610,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
             String launchApp = this.getString(R.string.launch_app);
+            mFilePickerItems = new ArrayList<>();
+            mFilePickerItems.add(this.getString(R.string.create_file));
+            if (isAppInstalled(APP_FILES)) {
+                mFilePickerItems.add(String.format(launchApp, this.getString(R.string.app_files)));
+            } else {
+                mFilePickerItems.add(this.getString(R.string.delete_file));
+            }
             if (isAppInstalled(APP_DROPBOX)) {
                 visiblity = mSettings.getDropboxFilePicker() > 0 ? View.VISIBLE : View.GONE;
                 button = (Button) findViewById(R.id.drawer_dropbox_button);
@@ -1969,18 +1974,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String launchApp = Term.this.getString(R.string.launch_app);
                 String item = items[which];
                 if (item == null) {
                     // do nothing
+                } else if (item.equals(String.format(launchApp, Term.this.getString(R.string.app_files)))) {
+                    intentMainActivity(APP_FILES);
                 } else if (Term.this.getString(R.string.create_file).equals(item)) {
                     fileCreate();
                 } else if (Term.this.getString(R.string.delete_file).equals(item)) {
                     fileDelete();
-                } else if (item.matches(".*" + Term.this.getString(R.string.dropbox) + ".*")) {
+                } else if (item.equals(String.format(launchApp, Term.this.getString(R.string.dropbox)))) {
                     intentMainActivity(APP_DROPBOX);
-                } else if (item.matches(".*" + Term.this.getString(R.string.googledrive) + ".*")) {
+                } else if (item.equals(String.format(launchApp, Term.this.getString(R.string.googledrive)))) {
                     intentMainActivity(APP_GOOGLEDRIVE);
-                } else if (item.matches(".*" + Term.this.getString(R.string.onedrive) + ".*")) {
+                } else if (item.equals(String.format(launchApp, Term.this.getString(R.string.onedrive)))) {
                     intentMainActivity(APP_ONEDRIVE);
                 } else if (Term.this.getString(R.string.clear_cache).equals(item)) {
                     confirmClearCache();
