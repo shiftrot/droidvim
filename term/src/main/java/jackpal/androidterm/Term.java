@@ -132,6 +132,7 @@ import jackpal.androidterm.util.TermSettings;
 
 import static android.provider.DocumentsContract.Document;
 import static android.provider.DocumentsContract.deleteDocument;
+import static jackpal.androidterm.ShellTermSession.getProotCommand;
 import static jackpal.androidterm.TermVimInstaller.shell;
 
 /**
@@ -171,6 +172,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean mStopServiceOnFinish = false;
 
     private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    private final static boolean SCOPED_STORAGE = getProotCommand().length > 0;
     private static boolean mVimFlavor = FLAVOR_VIM;
 
     private Intent TSIntent;
@@ -825,7 +827,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
-        if (AndroidCompat.SDK < 23) return;
+        if (SCOPED_STORAGE) return;
+        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) return;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
         }
@@ -842,7 +845,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    alert(getString(R.string.storage_permission_granted));
+                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)
+                                        alert(getString(R.string.storage_permission_granted));
                                 }
                             });
                         } else {
@@ -1052,6 +1056,62 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void showAds(boolean show) {
         if (BuildConfig.DEBUG) return;
+    }
+
+    private void destroyAppWarning() {
+        String key = "scoped_storage_warning_backup";
+        String title = this.getString(R.string.scoped_storage_warning_title);
+        String message = this.getString(R.string.scoped_storage_uninstall_warning_message);
+        message += "\n - " + TermService.getAPPBASE();
+        message += "\n - " + TermService.getAPPEXTFILES();
+        boolean first = TermVimInstaller.ScopedStorageWarning;
+        TermVimInstaller.ScopedStorageWarning = false;
+
+        boolean warning = getPrefBoolean(Term.this, key, true);
+        if (!first && (!warning || mRandom.nextInt(5) != 1)) {
+            doExitShell();
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        if (!first) {
+            LayoutInflater flater = LayoutInflater.from(this);
+            View view = flater.inflate(R.layout.alert_checkbox, null);
+            builder.setView(view);
+            final CheckBox cb = view.findViewById(R.id.dont_show_again);
+            final String warningKey = key;
+            cb.setChecked(false);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    if (cb.isChecked()) {
+                        setPrefBoolean(Term.this, warningKey, false);
+                    }
+                    doExitShell();
+                }
+            });
+        } else {
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    doExitShell();
+                }
+            });
+        }
+        if (isAppInstalled(APP_FILES)) {
+            builder.setNeutralButton(getString(R.string.app_files), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    intentMainActivity(APP_FILES);
+                    doExitShell();
+                }
+            });
+        }
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positive.requestFocus();
     }
 
     @Override
@@ -1908,6 +1968,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doExitShell() {
+        if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
+            doHideSoftKeyboard();
+        }
+        if (mUninstall) {
+            doUninstallExtraContents();
+        }
         doCloseWindow();
     }
 
@@ -1944,7 +2010,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void filePicker() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (SCOPED_STORAGE) {
+            intentFilePicker();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FILE_PICKER);
         } else {
             intentFilePicker();
@@ -2009,7 +2077,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileDelete() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (SCOPED_STORAGE) {
+            doFileDelete();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_DELETE);
         } else {
             doFileDelete();
@@ -2055,7 +2125,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileCreate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (SCOPED_STORAGE) {
+            doFileCreate();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_CREATE);
         } else {
             doFileCreate();
@@ -2323,13 +2395,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 // fall into next
             case 0xffff0999:
-                if (mTermSessions.size() == 1 && !mHaveFullHwKeyboard) {
-                    doHideSoftKeyboard();
+                if (SCOPED_STORAGE) {
+                    destroyAppWarning();
+                } else {
+                    doExitShell();
                 }
-                if (mUninstall) {
-                    doUninstallExtraContents();
-                }
-                doExitShell();
                 return true;
             case 0xffff0000:
                 setFunctionBar(2);
@@ -4360,7 +4430,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         String path = null;
-        if (isExternalStorageDocument(uri)) {
+        if (!SCOPED_STORAGE && isExternalStorageDocument(uri)) {
             path = uri.getPath();
             path = path.replaceAll(":", "/");
             path = path.replaceFirst("/document/", "/storage/");
@@ -4392,8 +4462,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (path != null) {
                 path = "/" + path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
                 String fname = new File(path).getName();
-                if (displayName != null && !(fname == null || fname.equals(displayName)))
-                    path = path + "/" + displayName;
+                if (displayName != null && !(fname == null || fname.equals(displayName))) {
+                    String parent = new File(path).getParent();
+                    path = parent + "/" + displayName;
+                }
                 path = path.replaceAll(":|\\|", "-");
                 path = path.replaceAll("//+", "/");
             }

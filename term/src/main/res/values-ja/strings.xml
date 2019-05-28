@@ -351,6 +351,10 @@
 
     <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
 
+    <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
+    <string name="scoped_storage_warning_message">このデバイスでは\"Scoped storage\"が有効になっています.\n\n - 「ファイルは"画面をダブルタップ"→"ストレージ"ボタンを介して開いてください.\n - ファイルマネージャーに「内部ストレージ」が表示されない場合は, 設定メニューの「内部ストレージを表示」を有効にしてください.</string>
+    <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
+
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
     <string name="permdesc_run_script">アプリケーションに対して，端末エミュレータに新規ウインドウを開かせ，インターネットやSDカードへのアクセスを含む，端末エミュレータが持つすべてのパーミッションでコマンドを実行することを許可する.</string>
     <string name="perm_append_to_path">端末エミュレータへのコマンド追加</string>
@@ -408,6 +412,7 @@
     <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
     <string name="set_startup_directory">起動時のディレクトリは, 次の場所に設定されました.\n\n</string>
     <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
+    <string name="summary_startup_chooser_preference_scoped_storage">\"初期コマンド\"の\"%STARTUP_DIR%\"を\"/path/to/dir\"へ変更して起動ディレクトリを指定します.</string>
 
     <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると, ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
     <string name="choose_startup_directory_message">起動時のディレクトリを選択します.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリを起動時のディレクトリに設定することができます.</string>

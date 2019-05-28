@@ -243,16 +243,17 @@ public class RemoteInterface extends AppCompatActivity {
                         alert(this.getString(R.string.storage_read_error));
                         finish();
                     } else {
-                        File dir = Term.getScratchCacheDir(this);
                         SyncFileObserver sfo = Term.restoreSyncFileObserver(this);
-                        path = dir.getAbsolutePath() + path;
-                        String fname = new File(path).getName();
-                        if (path.equals("") || (sfo == null || !sfo.putUriAndLoad(uri, path))) {
-                            alert(fname + "\n" + this.getString(R.string.storage_read_error));
-                            finish();
+                        if (sfo != null) {
+                            path = sfo.getObserverDir() + path;
+                            if (path.equals("") || !sfo.putUriAndLoad(uri, path)) {
+                                String fname = new File(path).getName();
+                                alert(fname + "\n" + this.getString(R.string.storage_read_error));
+                                finish();
+                            }
+                            path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
+                            command = "\u001b" + intentCommand + " " + path;
                         }
-                        path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                        command = "\u001b" + intentCommand + " " + path;
                         if (mDoInstall) {
                             IntentCommand = command;
                             command = DO_INSTALL;

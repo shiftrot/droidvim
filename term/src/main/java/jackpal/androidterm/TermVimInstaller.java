@@ -53,6 +53,7 @@ import static jackpal.androidterm.ShellTermSession.getProotCommand;
 
 final class TermVimInstaller {
 
+    static final boolean SCOPED_STORAGE =  getProotCommand().length > 0;
     static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
@@ -151,7 +152,9 @@ final class TermVimInstaller {
         return false;
     }
 
+    static public boolean ScopedStorageWarning = false;
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
+        ScopedStorageWarning = SCOPED_STORAGE && new PrefValue(activity).getBoolean("enableScopedStorageWarning", true);
         final String path = TermService.getAPPFILES();
         final String sdcard = TermService.getAPPEXTFILES();
         INSTALL_ZIP = activity.getString(R.string.update_message);
@@ -165,6 +168,7 @@ final class TermVimInstaller {
                 fixOrientation(activity, orientationLock(activity));
                 try {
                     boolean first = !new File(TermService.getAPPFILES() + "/bin").isDirectory();
+                    if (ScopedStorageWarning) showScopeStorageMessage(activity);
                     showWhatsNew(activity, first);
                     setMessage(activity, pd, "scripts");
                     doInstallTerm(activity);
@@ -482,6 +486,7 @@ final class TermVimInstaller {
     }
 
     static private void setupStorageSymlinks(final Context context) {
+        if (SCOPED_STORAGE) return;
         try {
             File storageDir = new File(TermService.getHOME());
             String symlink = "internalStorage";
@@ -498,6 +503,24 @@ final class TermVimInstaller {
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
         }
+    }
+
+    static void showScopeStorageMessage(final Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                    bld.setTitle(activity.getString(R.string.scoped_storage_warning_title));
+                    bld.setMessage(activity.getString(R.string.scoped_storage_warning_message));
+                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                bld.create().show();
+            }
+        });
+        new PrefValue(activity).setBoolean("enableScopedStorageWarning", true);
     }
 
     static void showWhatsNew(final Activity activity, final boolean first) {
