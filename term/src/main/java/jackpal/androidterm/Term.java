@@ -3157,13 +3157,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doResetTerminal(boolean keyboard) {
         doRestartSoftKeyboard();
         if (keyboard && !mHaveFullHwKeyboard) doHideSoftKeyboard();
-        if (mViewFlipper != null) mViewFlipper.redraw();
         TermSession session = getCurrentTermSession();
         if (session != null) {
             session.reset();
             sendKeyStrings("\u001b\u000c", false);
         }
         if (keyboard && !mHaveFullHwKeyboard) doShowSoftKeyboard();
+        if (mViewFlipper != null) mViewFlipper.redraw();
         mDoResetTerminal = false;
     }
 

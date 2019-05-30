@@ -16,10 +16,6 @@
 
 package jackpal.androidterm;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Locale;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -30,11 +26,14 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Locale;
+
+import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
-
-import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
@@ -50,7 +49,6 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private LayoutParams mChildParams = null;
     private boolean mRedoLayout = false;
 
-    private static boolean mChromebook = false;
     /**
      * True if we must poll to discover if the view has changed size.
      * This is the only known way to detect the view changing size due to
@@ -60,11 +58,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private static final int SCREEN_CHECK_PERIOD = 1000;
     private final Handler mHandler = new Handler();
     private Runnable mCheckSize = new Runnable() {
-            public void run() {
-                adjustChildSize();
-                mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);
-            }
-        };
+        public void run() {
+            adjustChildSize();
+            mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);
+        }
+    };
 
     class ViewFlipperIterator implements Iterator<View> {
         int pos = 0;
@@ -99,11 +97,9 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         updateVisibleRect();
         Rect visible = mVisibleRect;
         mChildParams = new LayoutParams(visible.width(), visible.height(),
-            Gravity.TOP|Gravity.LEFT);
-        // FIXME
-        mFunctionBarSize = new PrefValue(context).getInt( "functinbar_size", mFunctionBarSize);
-        mChromebook = !"".equals(SystemProperties.getprop("persist.sys.chromeos_channel"));
-        if (!mChromebook) mChromebook = !"".equals(SystemProperties.getprop("ro.boot.chromeos_channel"));
+                Gravity.TOP | Gravity.LEFT);
+        // FIXME (mWindowMode)
+        mFunctionBarSize = new PrefValue(context).getInt("functinbar_size", mFunctionBarSize);
     }
 
     public void updatePrefs(TermSettings settings) {
@@ -133,8 +129,9 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     private static int mCurrentDisplayChild = 0;
+
     static public int getCurrentDisplayChild() {
-        return  mCurrentDisplayChild;
+        return mCurrentDisplayChild;
     }
 
     public void onPause() {
@@ -186,7 +183,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             return;
         }
 
-        String title = String.format(Locale.getDefault(), context.getString(R.string.window_title)+" %1$d", getDisplayedChild()+1);
+        String title = String.format(Locale.getDefault(), context.getString(R.string.window_title) + " %1$d", getDisplayedChild() + 1);
         if (session instanceof GenericTermSession) {
             title = ((GenericTermSession) session).getTitle(title);
         }
@@ -242,11 +239,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
            the activity (takes other views in the layout into account, but
            not space used by the IME) */
         getGlobalVisibleRect(visible);
-        if (mChromebook) return;
 
         /* Get rectangle representing visible area of this window (takes
            IME into account, but not other views in the layout) */
         getWindowVisibleDisplayFrame(window);
+        if (mWindowMode) return;
         /* Work around bug in getWindowVisibleDisplayFrame on API < 10, and
            avoid a distracting height change as status bar hides otherwise */
         if (!mStatusBarVisible) {
@@ -309,17 +306,13 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        adjustChildSize();
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        adjustChildSize();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mChromebook) {
-            adjustChildSize(mRedraw);
-            mRedraw = false;
-        }
-
+        if (mWindowMode) adjustChildSize();
         if (mRedoLayout) {
             requestLayout();
             mRedoLayout = false;
@@ -327,23 +320,30 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.onDraw(canvas);
     }
 
-    private boolean mRedraw = false;
     public void redraw() {
-        mRedraw = true;
         invalidate();
+    }
+
+    private static boolean mWindowMode = true;
+    public void setDrawMode(boolean windowMode) {
+        mWindowMode = windowMode;
     }
 
     private int mEditTextViewSize = 0;
     private boolean mEditTextView = false;
+
     public void setEditTextViewSize(int size) {
+        if (mWindowMode) return;
         if (size > 0) {
             PrefValue pv = new PrefValue(context);
-            if (pv.getInt("edit_text_view_size", mEditTextViewSize) != size) pv.setInt("edit_text_view_size", size);
+            if (pv.getInt("edit_text_view_size", mEditTextViewSize) != size)
+                pv.setInt("edit_text_view_size", size);
             mEditTextViewSize = size;
         }
     }
 
     public void setEditTextView(boolean bool) {
+        if (mWindowMode) return;
         if (mEditTextView == bool) return;
         mEditTextView = bool;
         adjustChildSize();
@@ -351,15 +351,19 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
 
     private int mFunctionBarSize = 0;
     private boolean mFunctionBar = true;
+
     public void setFunctionBarSize(int size) {
+        if (mWindowMode) return;
         if (size > 0) {
             PrefValue pv = new PrefValue(context);
-            if (pv.getInt("functinbar_size", mFunctionBarSize) != size) pv.setInt("functinbar_size", size);
+            if (pv.getInt("functinbar_size", mFunctionBarSize) != size)
+                pv.setInt("functinbar_size", size);
             mFunctionBarSize = size;
         }
     }
 
     public void setFunctionBar(boolean bool) {
+        if (mWindowMode) return;
         if (mFunctionBar == bool) return;
         mFunctionBar = bool;
         adjustChildSize();
