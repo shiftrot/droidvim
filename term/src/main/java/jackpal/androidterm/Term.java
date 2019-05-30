@@ -192,6 +192,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean mBackKeyPressed;
 
+    @SuppressLint("SdCardPath")
+    private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
+    @SuppressLint("SdCardPath")
+    private String FILE_CLIPBOARD   = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
+    @SuppressLint("SdCardPath")
+    private String FILE_INTENT      = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.intent";
+
     private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
     private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
     private static final String PERMISSION_PATH_BROADCAST = "jackpal.androidterm.permission.APPEND_TO_PATH";
@@ -493,6 +500,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mOnelineTextBox == -1) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         initOnelineTextBox(mOnelineTextBox);
         INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString() + "/intent";
+        FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
+        FILE_INTENT = TermService.getAPPFILES() + "/.intent";
 
         WebViewActivity.setFontSize(new PrefValue(this).getInt("mWebViewSize", 140));
 
@@ -1093,9 +1102,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 mSyncFileObserver.clearCache(MAX_SYNC_FILES);
             mKeepScreenHandler.removeCallbacksAndMessages(null);
         }
-        new File(TermService.getAPPFILES() + "/.clipboard").delete();
+        new File(FILE_CLIPBOARD).delete();
         File cacheDir = new File(INTENT_CACHE_DIR);
-        SyncFileObserver.delete(cacheDir);
+        shell("rm -rf " + cacheDir.getAbsolutePath());
         mTermService = null;
         mTSConnection = null;
         super.onDestroy();
@@ -2287,7 +2296,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     cmd += "\u001b" + RemoteInterface.IntentCommand + "\n";
                 }
                 if (RemoteInterface.ShareText != null) {
-                    String filename = TermService.getAPPFILES() + "/.clipboard";
+                    String filename = FILE_CLIPBOARD;
                     Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
                     cmd += "\u001b" + ":ATEMod _paste\n";
                 }
@@ -2374,7 +2383,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 break;
             case 0xffff0003:
-                copyFileToClipboard(TermService.getAPPFILES() + "/.clipboard");
+                copyFileToClipboard(FILE_CLIPBOARD);
                 return true;
             case 0xffff0004:
                 setEditTextView(0);
@@ -2400,7 +2409,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     alert(Term.this.getString(R.string.toast_clipboard_error));
                     return true;
                 }
-                copyClipboardToFile(TermService.getAPPFILES() + "/.clipboard");
+                copyClipboardToFile(FILE_CLIPBOARD);
                 if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
                 return true;
             case 0xffff1006:
@@ -2437,7 +2446,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 clearClipBoard();
                 return true;
             case 0xffff1001:
-                AndroidIntent(TermService.getAPPFILES() + "/.intent");
+                AndroidIntent(FILE_INTENT);
                 return true;
             case 0xffff9998:
                 try {
@@ -2834,8 +2843,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
-    private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
-
     private void AndroidIntent(String filename) {
         if (filename == null) return;
         TermSession session = getCurrentTermSession();
@@ -2967,7 +2974,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         File cacheDir = new File(INTENT_CACHE_DIR);
                         File cache = new File(cacheDir.toString() + "/" + hash);
                         if (cache.isDirectory()) {
-                            SyncFileObserver.delete(cache);
+                            shell("rm -rf " + cache.getAbsolutePath());
                         }
                         if (!cacheDir.isDirectory()) {
                             cacheDir.mkdirs();
