@@ -3005,6 +3005,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     intent.setAction(action);
                     PackageManager pm = this.getApplicationContext().getPackageManager();
                     if (intent.resolveActivity(pm) != null) startActivity(intent);
+                    else alert("Unknown action:\n" + action);
                 }
             } catch (Exception e) {
                 alert(Term.this.getString(R.string.storage_read_error));
