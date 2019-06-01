@@ -185,6 +185,8 @@ final class TermVimInstaller {
                         shell("chmod 755 " + vimsh);
                     }
                     setMessage(activity, pd, "binaries");
+                    id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
+                    installZip(path, getInputStream(activity, id));
                     arch = getArch().contains("86") ? "x86" : "arm";
                     bin = "busybox_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
