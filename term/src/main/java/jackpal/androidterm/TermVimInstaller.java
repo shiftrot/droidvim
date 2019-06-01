@@ -38,13 +38,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import jackpal.androidterm.compat.AndroidCompat;
+
+import static jackpal.androidterm.ShellTermSession.getProotCommand;
 
 final class TermVimInstaller {
 
@@ -583,18 +588,25 @@ final class TermVimInstaller {
         return true;
     }
 
-    static public void shell(String... strings) {
+    static public void shell(String... commands) {
+        List<String> shellCommands = new ArrayList<>();
+        String[] prootCommands = getProotCommand();
+        boolean proot = !Arrays.equals(prootCommands, new String[]{});
+
+        if (proot) shellCommands.addAll(Arrays.asList(prootCommands));
+        shellCommands.addAll(Arrays.asList(commands));
+        shellCommands.add("exit");
+        if (proot) shellCommands.add("exit");
+
         try {
             Process shell = Runtime.getRuntime().exec("sh");
             DataOutputStream sh = new DataOutputStream(shell.getOutputStream());
 
-            for (String s : strings) {
+            for (String s : shellCommands) {
                 sh.writeBytes(s + "\n");
                 sh.flush();
             }
 
-            sh.writeBytes("exit\n");
-            sh.flush();
             try {
                 shell.waitFor();
             } catch (InterruptedException e) {

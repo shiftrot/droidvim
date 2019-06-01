@@ -16,6 +16,7 @@
 
 package jackpal.androidterm;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Message;
@@ -167,6 +168,7 @@ public class ShellTermSession extends GenericTermSession {
             mFirst = false;
         }
         sendCommand(getAdditionalEnv());
+        sendCommand(getProotCommand());
 
         if (initialCommand != null && initialCommand.length() > 0) {
             write(initialCommand + '\r');
@@ -226,6 +228,29 @@ public class ShellTermSession extends GenericTermSession {
                 process.destroy();
             }
         }
+    }
+
+    static public String[] getProotCommand() {
+        return getProotCommand(new String[]{});
+    }
+
+    static String[] getProotCommand(String... commands) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return new String[]{};
+        String appLib = TermService.getAPPLIB();
+        if (!new File(appLib + "/libproot.so").canExecute()) return new String[]{};
+
+        List<String> prootCommands = new ArrayList<>();
+        prootCommands.add("export APPLIB=" + appLib);
+        prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
+        prootCommands.add("export PROOT_LOADER=$APPLIB/libloader.so");
+        if (new File(appLib + "/libloader-m32.so").canExecute()) {
+            prootCommands.add("export PROOT_LOADER_32=$APPLIB/libloader-m32.so");
+        }
+        prootCommands.add("$APPLIB/libproot.so /system/bin/sh");
+        if (commands != null && !Arrays.equals(commands, new String[]{})) {
+            prootCommands.addAll(Arrays.asList(commands));
+        }
+        return prootCommands.toArray(new String[0]);
     }
 
     private void sendCommand(String[] commands) {
