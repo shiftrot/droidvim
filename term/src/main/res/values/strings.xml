@@ -518,11 +518,13 @@
   <string name="extra_button">Extra</string>
 
   <string name="external_apps_preferences">External Apps</string>
+  <string name="external_app">Application name</string>
+  <string name="external_app_activity">Activity</string>
   <string name="external_app_button">External App</string>
   <string name="title_external_app_button_preference">External App Button</string>
   <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
   <string name="summary_external_app_button_off_preference">Hide App button on drawer.</string>
-  <string name="title_external_app_id_preference">External App</string>
+  <string name="title_external_app_id_preference">External App button</string>
   <string name="external_app_id_error">Application ID is not correct or not set.\nPlease set it from preferences.</string>
   <string name="external_app_activity_error">This application does not exist or there is no callable activity.</string>
   <string name="title_cloud_dropbox_preference">Dropbox</string>
