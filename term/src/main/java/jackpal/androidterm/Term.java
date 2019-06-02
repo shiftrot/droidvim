@@ -626,6 +626,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             } else {
                 mFilePickerItems.add(this.getString(R.string.delete_file));
             }
+            if (isAppInstalled(APP_FILES)) {
+                visiblity = mSettings.getUseFilesAppButton() ? View.VISIBLE : View.GONE;
+                button = (Button) findViewById(R.id.drawer_files_button);
+                button.setVisibility(visiblity);
+            }
             if (isAppInstalled(APP_DROPBOX)) {
                 visiblity = mSettings.getDropboxFilePicker() > 0 ? View.VISIBLE : View.GONE;
                 button = (Button) findViewById(R.id.drawer_dropbox_button);
@@ -686,6 +691,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         });
 
+        findViewById(R.id.drawer_files_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (launchExternalApp(2, APP_FILES))
+                    getDrawer().closeDrawers();
+            }
+        });
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

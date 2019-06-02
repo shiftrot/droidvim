@@ -1,9 +1,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference android:title="@string/title_use_app_files_button"
-        android:key="use_app_files_button"
-        android:defaultValue="@bool/pref_use_app_files_button_default" />
-
     <PreferenceScreen
         android:title="@string/title_external_app_id_preference"
         android:summary="@string/summary_app_filepicker_on_drawer">

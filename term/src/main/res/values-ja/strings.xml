@@ -472,6 +472,7 @@
   <string name="external_app">アプリ名</string>
   <string name="external_app_activity">アクティビティ</string>
   <string name="external_app_button">外部アプリ</string>
+  <string name="title_use_app_files_button">ファイルマネージャーアプリを使用する</string>
   <string name="title_external_app_button_preference">外部アプリボタン</string>
   <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
   <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>
