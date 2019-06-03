@@ -148,7 +148,7 @@ public class TermSettings {
     private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive_filepicker";
     private static final String HTML_VIEWER_MODE_KEY = "html_viewer_mode";
     private static final String SHELL_KEY = "android_shell_path";
-    private static final String INITIALCOMMAND_KEY = "initialcommand_rev4";
+    private static final String INITIALCOMMAND_KEY = "initialcommand_rev5";
     private static final String INTENTCOMMAND_KEY = "intent_command";
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
