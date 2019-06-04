@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <!-- Don't localize these default values -->
-   <string name="pref_statusbar_default" translatable="false">1</string>
-   <bool name="pref_functionbar_default">true</bool>
-   <bool name="pref_one_line_textbox_default">true</bool>
-   <bool name="pref_one_line_textbox_esc_default">false</bool>
-   <bool name="pref_one_line_textbox_cr_default">false</bool>
-   <integer name="pref_actionbar_default">3</integer>
-   <integer name="pref_orientation_default">0</integer>
-   <string name="pref_cursorstyle_default" translatable="false">0</string>
-   <string name="pref_cursorblink_default" translatable="false">0</string>
-   <string name="pref_fontsize_default" translatable="false">0.0</string>
-   <string name="pref_fontleading_default" translatable="false">0</string>
-   <string name="pref_fontfile_default" translatable="false">system</string>
-   <string name="pref_ambiguous_width_default" translatable="false">1</string>
-   <bool name="pref_force_flush_drawtext">false</bool>
-   <string name="pref_theme_default" translatable="false">1</string>
-   <string name="pref_color_default" translatable="false">0</string>
-   <string name="pref_keep_screen_default">10</string>
-   <bool name="pref_keepscreen_at_startup_default">false</bool>
-   <string name="pref_composingtext_default" translatable="false">2</string>
-   <bool name="pref_utf8_by_default_default">true</bool>
-   <bool name="pref_hw_acceleration_by_default">true</bool>
-   <string name="pref_actionbar_diamond_default" translatable="false">1360</string>
-   <string name="pref_actionbar_plus_default" translatable="false">1250</string>
-   <string name="pref_actionbar_minus_default" translatable="false">999</string>
-   <string name="pref_actionbar_x_default" translatable="false">1253</string>
-   <string name="pref_actionbar_invert_default" translatable="false">1363</string>
-   <string name="pref_actionbar_user_default" translatable="false">1355</string>
-   <string name="pref_double_tap_default" translatable="false">1355</string>
-   <string name="pref_right_double_tap_default" translatable="false">1358</string>
-   <string name="pref_left_double_tap_default" translatable="false">999</string>
-   <string name="pref_bottom_double_tap_default" translatable="false">1261</string>
-   <string name="pref_backaction_default" translatable="false">5</string>
-   <string name="pref_controlkey_default" translatable="false">7</string>
-   <string name="pref_fnkey_default" translatable="false">7</string>
-   <string name="pref_ime_default" translatable="false">1</string>
-   <string name="pref_cursor_direction_ctrl_mode_default" translatable="false">1</string>
-   <integer name="pref_vi_cooperative_mode_default">3</integer>
-   <bool name="pref_alt_sends_esc_default">false</bool>
-   <bool name="pref_ignore_xoff_default">true</bool>
-   <bool name="pref_back_as_esc_default">false</bool>
-   <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
-   <string name="pref_initialcommand_default" translatable="false">cd $HOME\nexport PATH=%PATH%\nexport TERMINFO=%TERMINFO%\n-clear</string>
-   <string name="pref_intent_command_default" translatable="false"></string>
-   <string name="pref_termtype_default" translatable="false">screen-256color</string>
-   <bool name="pref_close_window_on_process_exit_default">true</bool>
-   <bool name="pref_verify_path_default">false</bool>
-   <bool name="pref_do_path_extensions_default">false</bool>
-   <bool name="pref_allow_prepend_path_default">true</bool>
-   <!-- the home_path default is set dynamically in Term.onResume() -->
-   <bool name="pref_mouse_tracking_default">true</bool>
-   <bool name="pref_use_keyboard_shortcuts_default">false</bool>
-   <bool name="pref_auto_hide_functionbar_default">false</bool>
-   <integer name="pref_ime_shortcuts_action_default">60</integer>
-   <integer name="pref_ime_inputtype_default">53</integer>
-   <string name="pref_external_app_id_default"></string>
-   <bool name="pref_external_app_button_default">true</bool>
-   <string name="pref_external_app_button_mode_default" translatable="false">1</string>
-   <bool name="pref_cloud_dropbox_default">false</bool>
-   <bool name="pref_cloud_googledrive_default">false</bool>
-   <bool name="pref_cloud_onedrive_default">false</bool>
-   <bool name="pref_use_app_files_button_default">true</bool>
-   <string name="pref_cloud_dropbox_filepicker_default" translatable="false">1</string>
-   <string name="pref_cloud_googledrive_filepicker_default" translatable="false">1</string>
-   <string name="pref_cloud_onedrive_filepicker_default" translatable="false">1</string>
-   <string name="pref_html_viewer_mode_default" translatable="false">0</string>
+    <!-- Don't localize these default values -->
+    <string name="pref_statusbar_default" translatable="false">1</string>
+    <bool name="pref_functionbar_default">true</bool>
+    <bool name="pref_one_line_textbox_default">true</bool>
+    <bool name="pref_one_line_textbox_esc_default">false</bool>
+    <bool name="pref_one_line_textbox_cr_default">false</bool>
+    <integer name="pref_actionbar_default">3</integer>
+    <integer name="pref_orientation_default">0</integer>
+    <string name="pref_cursorstyle_default" translatable="false">0</string>
+    <string name="pref_cursorblink_default" translatable="false">0</string>
+    <string name="pref_fontsize_default" translatable="false">0.0</string>
+    <string name="pref_fontleading_default" translatable="false">0</string>
+    <string name="pref_fontfile_default" translatable="false">system</string>
+    <string name="pref_ambiguous_width_default" translatable="false">1</string>
+    <bool name="pref_force_flush_drawtext">false</bool>
+    <string name="pref_theme_default" translatable="false">1</string>
+    <string name="pref_color_default" translatable="false">0</string>
+    <string name="pref_keep_screen_default">10</string>
+    <bool name="pref_keepscreen_at_startup_default">false</bool>
+    <string name="pref_composingtext_default" translatable="false">2</string>
+    <bool name="pref_utf8_by_default_default">true</bool>
+    <bool name="pref_hw_acceleration_by_default">true</bool>
+    <string name="pref_actionbar_diamond_default" translatable="false">1360</string>
+    <string name="pref_actionbar_plus_default" translatable="false">1250</string>
+    <string name="pref_actionbar_minus_default" translatable="false">999</string>
+    <string name="pref_actionbar_x_default" translatable="false">1253</string>
+    <string name="pref_actionbar_invert_default" translatable="false">1363</string>
+    <string name="pref_actionbar_user_default" translatable="false">1355</string>
+    <string name="pref_double_tap_default" translatable="false">1355</string>
+    <string name="pref_right_double_tap_default" translatable="false">1358</string>
+    <string name="pref_left_double_tap_default" translatable="false">999</string>
+    <string name="pref_bottom_double_tap_default" translatable="false">1261</string>
+    <string name="pref_backaction_default" translatable="false">5</string>
+    <string name="pref_controlkey_default" translatable="false">7</string>
+    <string name="pref_fnkey_default" translatable="false">7</string>
+    <string name="pref_ime_default" translatable="false">1</string>
+    <string name="pref_cursor_direction_ctrl_mode_default" translatable="false">1</string>
+    <integer name="pref_vi_cooperative_mode_default">3</integer>
+    <bool name="pref_alt_sends_esc_default">false</bool>
+    <bool name="pref_ignore_xoff_default">true</bool>
+    <bool name="pref_back_as_esc_default">false</bool>
+    <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
+    <string name="pref_initialcommand_default" translatable="false">cd $HOME\nexport PATH=%PATH%\nexport TERMINFO=%TERMINFO%\n-clear</string>
+    <string name="pref_intent_command_default" translatable="false"></string>
+    <string name="pref_termtype_default" translatable="false">screen-256color</string>
+    <bool name="pref_close_window_on_process_exit_default">true</bool>
+    <bool name="pref_verify_path_default">false</bool>
+    <bool name="pref_do_path_extensions_default">false</bool>
+    <bool name="pref_allow_prepend_path_default">true</bool>
+    <!-- the home_path default is set dynamically in Term.onResume() -->
+    <bool name="pref_mouse_tracking_default">true</bool>
+    <bool name="pref_use_keyboard_shortcuts_default">false</bool>
+    <bool name="pref_auto_hide_functionbar_default">false</bool>
+    <integer name="pref_ime_shortcuts_action_default">60</integer>
+    <integer name="pref_ime_inputtype_default">53</integer>
+    <string name="pref_external_app_id_default"></string>
+    <bool name="pref_external_app_button_default">true</bool>
+    <string name="pref_external_app_button_mode_default" translatable="false">1</string>
+    <bool name="pref_cloud_dropbox_default">false</bool>
+    <bool name="pref_cloud_googledrive_default">false</bool>
+    <bool name="pref_cloud_onedrive_default">false</bool>
+    <bool name="pref_use_app_files_button_default">true</bool>
+    <string name="pref_cloud_dropbox_filepicker_default" translatable="false">1</string>
+    <string name="pref_cloud_googledrive_filepicker_default" translatable="false">1</string>
+    <string name="pref_cloud_onedrive_filepicker_default" translatable="false">1</string>
+    <string name="pref_html_viewer_mode_default" translatable="false">0</string>
 </resources>

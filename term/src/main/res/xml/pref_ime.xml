@@ -7,7 +7,7 @@
         android:summary="@string/summary_ime_inputtype_preference"
         android:entries="@array/entries_ime_inputtype_preference"
         android:entryValues="@array/entryvalues_ime_inputtype_preference"
-        android:dialogTitle="@string/dialog_titleime_inputtype_preference" />
+        android:dialogTitle="@string/dialog_titleime_inputtype_preference"/>
 
     <ListPreference
         android:key="ime"
@@ -15,7 +15,7 @@
         android:title="@string/title_ime_preference"
         android:entries="@array/entries_ime_preference"
         android:entryValues="@array/entryvalues_ime_preference"
-        android:dialogTitle="@string/dialog_title_ime_preference" />
+        android:dialogTitle="@string/dialog_title_ime_preference"/>
 
     <ListPreference
         android:key="ime_direct_input_method"
@@ -24,7 +24,7 @@
         android:entries="@array/entries_ime_preference"
         android:entryValues="@array/entryvalues_ime_preference"
         android:summary="@string/summary_ime_direct_input_method_preference"
-        android:dialogTitle="@string/dialog_title_ime_preference" />
+        android:dialogTitle="@string/dialog_title_ime_preference"/>
 
     <ListPreference
         android:key="vi_cooperative_mode"
@@ -33,7 +33,7 @@
         android:summary="@string/summary_vi_cooperative_mode"
         android:entries="@array/entries_vi_cooperative_mode_preference"
         android:entryValues="@array/entryvalues_vi_cooperative_mode_preference"
-        android:dialogTitle="@string/dialog_title_vi_cooperative_mode_preference" />
+        android:dialogTitle="@string/dialog_title_vi_cooperative_mode_preference"/>
 
     <PreferenceScreen
         android:title="@string/title_pre_ime_shortcuts"
@@ -46,7 +46,7 @@
             android:summary="@string/summary_ime_shortcuts_action_preference"
             android:entries="@array/entries_ime_shortcuts_action_preference"
             android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
-            android:dialogTitle="@string/dialog_titleime_shortcuts_action_preference" />
+            android:dialogTitle="@string/dialog_titleime_shortcuts_action_preference"/>
 
         <PreferenceScreen
             android:title="@string/title_pre_ime_shortcuts"

@@ -1,64 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/webview_back"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="◀" />
+            android:text="◀"/>
+
         <Button
             android:id="@+id/webview_forward"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="▶" />
+            android:text="▶"/>
+
         <Button
             android:id="@+id/webview_minus"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="-" />
+            android:text="-"/>
+
         <Button
             android:id="@+id/webview_plus"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="+" />
+            android:text="+"/>
+
         <Button
             android:id="@+id/webview_reload"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="R" />
+            android:text="R"/>
+
         <Button
             android:id="@+id/webview_abort"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="X" />
+            android:text="X"/>
+
         <Button
             android:id="@+id/webview_menu"
             android:minHeight="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="≡" />
+            android:text="≡"/>
     </LinearLayout>
+
     <WebView
         android:id="@+id/WebView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 </LinearLayout>

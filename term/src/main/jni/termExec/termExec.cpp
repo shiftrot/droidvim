@@ -18,21 +18,16 @@
 
 #define LOG_TAG "Exec"
 
-#include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/wait.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <termios.h>
-#include <signal.h>
 
 #include "termExec.h"
 
 static void android_os_Exec_setPtyWindowSize(JNIEnv *env, jobject clazz,
-    jint fd, jint row, jint col, jint xpixel, jint ypixel)
-{
+                                             jint fd, jint row, jint col, jint xpixel,
+                                             jint ypixel) {
     struct winsize sz;
 
     sz.ws_row = row;
@@ -47,18 +42,15 @@ static void android_os_Exec_setPtyWindowSize(JNIEnv *env, jobject clazz,
 
 // tcgetattr /tcsetattr are not part of Bionic at API level 4. Here's a compatible version.
 
-static __inline__ int my_tcgetattr(int fd, struct termios *s)
-{
+static __inline__ int my_tcgetattr(int fd, struct termios *s) {
     return ioctl(fd, TCGETS, s);
 }
 
-static __inline__ int my_tcsetattr(int fd, const struct termios *s)
-{
-    return ioctl(fd, TCSETS, (void *)s);
+static __inline__ int my_tcsetattr(int fd, const struct termios *s) {
+    return ioctl(fd, TCSETS, (void *) s);
 }
 
-static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, jboolean utf8Mode)
-{
+static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, jboolean utf8Mode) {
     struct termios tios;
 
     if (my_tcgetattr(fd, &tios) != 0)
@@ -76,15 +68,15 @@ static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, 
 
 static const char *classPathName = "jackpal/androidterm/Exec";
 static JNINativeMethod method_table[] = {
-    { "setPtyWindowSizeInternal", "(IIIII)V",
-        (void*) android_os_Exec_setPtyWindowSize},
-    { "setPtyUTF8ModeInternal", "(IZ)V",
-        (void*) android_os_Exec_setPtyUTF8Mode}
+        {"setPtyWindowSizeInternal", "(IIIII)V",
+                (void *) android_os_Exec_setPtyWindowSize},
+        {"setPtyUTF8ModeInternal",   "(IZ)V",
+                (void *) android_os_Exec_setPtyUTF8Mode}
 };
 
 int init_Exec(JNIEnv *env) {
     if (!registerNativeMethods(env, classPathName, method_table,
-                 sizeof(method_table) / sizeof(method_table[0]))) {
+                               sizeof(method_table) / sizeof(method_table[0]))) {
         return JNI_FALSE;
     }
 

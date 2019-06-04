@@ -27,13 +27,13 @@
         <item>Cacher la barre d\'actions (Touche Haut de l\'écran ou la touche Menu de l\'appareil pour afficher)</item>
         <item>Action bar disabled</item>
     </string-array>
-    
+
     <string-array name="entries_orientation_preference">
         <item>Automatique</item>
         <item>Paysage</item>
         <item>Portrait</item>
     </string-array>
-    
+
     <string-array name="entries_cursorblink_preference">
         <item>Curseur non clignotant</item>
         <item>Curseur clignotant</item>
@@ -94,7 +94,7 @@
         <item>Par caractère</item>
         <item>Par mot</item>
     </string-array>
-    
+
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
         <item>Ball</item>

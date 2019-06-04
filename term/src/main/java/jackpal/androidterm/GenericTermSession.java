@@ -16,21 +16,19 @@
 
 package jackpal.androidterm;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
-
-import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
 
 /**
@@ -114,13 +112,9 @@ class GenericTermSession extends TermSession {
         if (mSettings.closeWindowOnProcessExit()) {
             finish();
         } else if (mProcessExitMessage != null) {
-            try {
-                byte[] msg = ("\r\n[" + mProcessExitMessage + "]").getBytes("UTF-8");
-                appendToEmulator(msg, 0, msg.length);
-                notifyUpdate();
-            } catch (UnsupportedEncodingException e) {
-                // Never happens
-            }
+            byte[] msg = ("\r\n[" + mProcessExitMessage + "]").getBytes(StandardCharsets.UTF_8);
+            appendToEmulator(msg, 0, msg.length);
+            notifyUpdate();
         }
     }
 
@@ -141,7 +135,7 @@ class GenericTermSession extends TermSession {
      * be returned instead.
      *
      * @param defaultTitle The default title to use if this session's title is
-     *     unset or an empty string.
+     *                     unset or an empty string.
      */
     public String getTitle(String defaultTitle) {
         String title = getTitle();

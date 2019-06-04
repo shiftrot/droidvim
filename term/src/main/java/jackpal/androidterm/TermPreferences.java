@@ -59,7 +59,7 @@ import static jackpal.androidterm.TermVimInstaller.shell;
  * handset devices, settings are presented as a single list. On tablets,
  * settings are split by category, with category headers shown to the left of
  * the list of settings.
- * <p>
+ *
  * See <a href="http://developer.android.com/design/patterns/settings.html">
  * Android Design: Settings</a> for design guidelines and the <a
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
@@ -152,8 +152,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
     }
 
-    private static String mLabels[] = null;
-    private static String mPackageNames[] = null;
+    private static String[] mLabels = null;
+    private static String[] mPackageNames = null;
 
     public static void setAppPickerList(Activity activity) {
         try {
@@ -732,7 +732,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     private ListPreference setFontList(ListPreference fontFileList) {
-        File files[] = new File(FONT_PATH).listFiles();
+        File[] files = new File(FONT_PATH).listFiles();
         ArrayList<File> fonts = new ArrayList<File>();
 
         if (files != null) {

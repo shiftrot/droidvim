@@ -22,8 +22,7 @@
 
 #include "fileCompat.h"
 
-static jboolean testExecute(JNIEnv *env, jobject clazz, jstring jPathString)
-{
+static jboolean testExecute(JNIEnv *env, jobject clazz, jstring jPathString) {
     const char *pathname = NULL;
     int result;
 
@@ -39,12 +38,12 @@ static jboolean testExecute(JNIEnv *env, jobject clazz, jstring jPathString)
 
 static const char *classPathName = "jackpal/androidterm/compat/FileCompat$Api8OrEarlier";
 static JNINativeMethod method_table[] = {
-    { "testExecute", "(Ljava/lang/String;)Z", (void *) testExecute },
+        {"testExecute", "(Ljava/lang/String;)Z", (void *) testExecute},
 };
 
 int init_FileCompat(JNIEnv *env) {
     if (!registerNativeMethods(env, classPathName, method_table,
-                 sizeof(method_table) / sizeof(method_table[0]))) {
+                               sizeof(method_table) / sizeof(method_table[0]))) {
         return JNI_FALSE;
     }
 

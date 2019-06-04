@@ -195,9 +195,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("SdCardPath")
     private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
     @SuppressLint("SdCardPath")
-    private String FILE_CLIPBOARD   = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
+    private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
     @SuppressLint("SdCardPath")
-    private String FILE_INTENT      = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.intent";
+    private String FILE_INTENT = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.intent";
 
     private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
     private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
@@ -1212,6 +1212,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         });
     }
+
     private static Random mRandom = new Random();
 
     private void showVimTips() {

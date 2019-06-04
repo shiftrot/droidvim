@@ -16,10 +16,6 @@
 
 package jackpal.androidterm;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -33,21 +29,23 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
-
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
@@ -70,7 +68,7 @@ public class RemoteInterface extends AppCompatActivity {
 
     private TermService mTermService;
     private Intent mTSIntent;
-    public static String IntentCommand= null;
+    public static String IntentCommand = null;
     public static CharSequence ShareText = null;
     private boolean mDoInstall = false;
     private final String DO_INSTALL = "echo -n -e \"\\0033[990t\"";
@@ -138,7 +136,7 @@ public class RemoteInterface extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_FOREGROUND_SERVICE_PERMISSION:
-                for (int i = 0; i < permissions.length ; i++) {
+                for (int i = 0; i < permissions.length; i++) {
                     if (permissions[i].equals(Manifest.permission.FOREGROUND_SERVICE)) {
                         if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                             this.getApplicationContext().startForegroundService(mTSIntent);
@@ -165,7 +163,7 @@ public class RemoteInterface extends AppCompatActivity {
             finish();
             return;
         }
-        mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(this.getFilesDir()+"/bin").isDirectory();
+        mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(this.getFilesDir() + "/bin").isDirectory();
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
@@ -178,11 +176,11 @@ public class RemoteInterface extends AppCompatActivity {
         }
         ClipData clipData = myIntent.getClipData();
         if ((AndroidCompat.SDK >= 19 && action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) ||
-                   (action.equals(Intent.ACTION_SEND) && clipData != null) ||
-                   (action.equals("android.intent.action.VIEW")) ||
-                   (action.equals("android.intent.action.EDIT")) ||
-                   (action.equals("android.intent.action.PICK")) ||
-                   (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT"))) {
+                (action.equals(Intent.ACTION_SEND) && clipData != null) ||
+                (action.equals("android.intent.action.VIEW")) ||
+                (action.equals("android.intent.action.EDIT")) ||
+                (action.equals("android.intent.action.PICK")) ||
+                (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT"))) {
             String url = null;
             Uri uri = null;
             if (clipData != null) {
@@ -211,7 +209,7 @@ public class RemoteInterface extends AppCompatActivity {
                 String path = uri.getPath();
                 if (new File(path).canRead()) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    String command = "\u001b"+intentCommand + " " + path;
+                    String command = "\u001b" + intentCommand + " " + path;
                     if (mDoInstall) {
                         IntentCommand = command;
                         command = DO_INSTALL;
@@ -228,7 +226,7 @@ public class RemoteInterface extends AppCompatActivity {
                 String path = UriToPath.getPath(context, uri);
                 if (path != null) {
                     path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+intentCommand + " " +path;
+                    command = "\u001b" + intentCommand + " " + path;
                     if (mDoInstall) {
                         IntentCommand = command;
                         command = DO_INSTALL;
@@ -248,14 +246,14 @@ public class RemoteInterface extends AppCompatActivity {
                         File dir = Term.getScratchCacheDir(this);
                         SyncFileObserver sfo = new SyncFileObserver(path);
                         sfo.setConTentResolver(this.getContentResolver());
-                        path = dir.toString()+path;
+                        path = dir.toString() + path;
                         String fname = new File(path).getName();
                         if (path.equals("") || !sfo.putUriAndLoad(uri, path)) {
-                            alert(fname+"\n"+this.getString(R.string.storage_read_error));
+                            alert(fname + "\n" + this.getString(R.string.storage_read_error));
                             finish();
                         }
                         path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                        command = "\u001b"+intentCommand + " " + path;
+                        command = "\u001b" + intentCommand + " " + path;
                         if (mDoInstall) {
                             IntentCommand = command;
                             command = DO_INSTALL;
@@ -280,7 +278,7 @@ public class RemoteInterface extends AppCompatActivity {
                 }
                 if (command.matches("^:.*")) {
                     url = url.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b"+command + " " + url;
+                    command = "\u001b" + command + " " + url;
                     if (mDoInstall) {
                         IntentCommand = command;
                         command = DO_INSTALL;
@@ -289,7 +287,7 @@ public class RemoteInterface extends AppCompatActivity {
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
                     mReplace = false;
-                 } else if ((mHandle != null) && (url.equals(mFname))) {
+                } else if ((mHandle != null) && (url.equals(mFname))) {
                     // Target the request at an existing window if open
                     command = command + " " + url;
                     if (mDoInstall) {
@@ -335,9 +333,9 @@ public class RemoteInterface extends AppCompatActivity {
                 .getManager(this.getApplicationContext());
         if (clip != null) {
             if (FLAVOR_VIM) {
-                String filename = mSettings.getHomePath()+"/.clipboard";
-                Term.writeStringToFile(filename, "\n"+str.toString());
-                String command = "\u001b"+":ATEMod _paste";
+                String filename = mSettings.getHomePath() + "/.clipboard";
+                Term.writeStringToFile(filename, "\n" + str.toString());
+                String command = "\u001b" + ":ATEMod _paste";
                 if (mDoInstall) command = DO_INSTALL;
                 // Find the target window
                 mReplace = true;
@@ -351,7 +349,7 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     /**
-     *  Quote a string so it can be used as a parameter in bash and similar shells.
+     * Quote a string so it can be used as a parameter in bash and similar shells.
      */
     public static String quoteForBash(String s) {
         StringBuilder builder = new StringBuilder();
@@ -382,9 +380,9 @@ public class RemoteInterface extends AppCompatActivity {
         }
 
         String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
-                        new File(TermService.getAPPFILES()+"/usr/bin/bash").canExecute())
-                        ? BASH : "";
-        initialCommand = initialCommand.replaceAll("\n(-?vim.app)", "\n"+bash+"$1");
+                new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute())
+                ? BASH : "";
+        initialCommand = initialCommand.replaceAll("\n(-?vim.app)", "\n" + bash + "$1");
         try {
             TermSession session = Term.createTermSession(this, mSettings, initialCommand);
 
@@ -406,6 +404,7 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     private boolean mReplace = false;
+
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mReplace && mTermService.getSessions().size() == 0));
@@ -476,7 +475,8 @@ public class RemoteInterface extends AppCompatActivity {
         }
 
         if (target == null) {
-            if (sessions.isEmpty() || iInitialCommand == null) return openNewWindow(iInitialCommand);
+            if (sessions.isEmpty() || iInitialCommand == null)
+                return openNewWindow(iInitialCommand);
             target = (ShellTermSession) sessions.get(0);
         }
 

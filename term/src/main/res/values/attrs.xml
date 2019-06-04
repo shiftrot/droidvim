@@ -17,6 +17,6 @@
 -->
 
 <resources>
-     <declare-styleable name="EmulatorView">
+    <declare-styleable name="EmulatorView">
     </declare-styleable>
 </resources>

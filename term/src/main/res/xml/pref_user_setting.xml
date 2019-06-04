@@ -1,16 +1,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-   <Preference
+    <Preference
         android:key="app_info"
-        android:title="@string/title_app_info_preference" />
+        android:title="@string/title_app_info_preference"/>
 
     <Preference
         android:key="prefs_rw"
-        android:title="@string/title_prefs_preference" />
+        android:title="@string/title_prefs_preference"/>
 
-   <Preference
+    <Preference
         android:key="license"
-        android:title="@string/title_license" />
+        android:title="@string/title_license"/>
 
 </PreferenceScreen>
 

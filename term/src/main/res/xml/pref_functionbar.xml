@@ -6,7 +6,8 @@
         android:title="@string/title_functionbar_preference"
         android:summary="@string/summary_functionbar_preference"/>
 
-    <SwitchPreference android:title="@string/title_auto_hide_functionbar"
+    <SwitchPreference
+        android:title="@string/title_auto_hide_functionbar"
         android:key="auto_hide_functionbar"
         android:defaultValue="@bool/pref_auto_hide_functionbar_default"
         android:summary="@string/auto_hide_functionbar_summary"/>

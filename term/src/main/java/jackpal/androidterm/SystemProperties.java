@@ -18,7 +18,7 @@ public class SystemProperties {
             String line = bufferedReader.readLine();
             return (line != null) ? line : "";
         } catch (Exception e) {
-            Log.e(TAG,"Failed to read System Property " + propName,e);
+            Log.e(TAG, "Failed to read System Property " + propName, e);
             return "";
         } finally {
             try {

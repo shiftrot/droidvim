@@ -175,7 +175,7 @@ class SyncFileObserver extends RecursiveFileObserver {
 
             OutputStream os = new FileOutputStream(dst);
             BufferedOutputStream writer = new BufferedOutputStream(os);
-            byte buf[] = new byte[4096];
+            byte[] buf = new byte[4096];
             int len;
             while ((len = reader.read(buf)) != -1) {
                 if (md != null) md.update(buf, 0, len);
@@ -274,7 +274,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             InputStream is = new FileInputStream(file);
             BufferedInputStream reader = new BufferedInputStream(is);
 
-            byte buf[] = new byte[4096];
+            byte[] buf = new byte[4096];
             int len;
             while ((len = reader.read(buf)) != -1) {
                 if (md != null) md.update(buf, 0, len);

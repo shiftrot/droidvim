@@ -16,15 +16,14 @@
 
 package jackpal.androidterm.util;
 
-import jackpal.androidterm.R;
-import jackpal.androidterm.TermService;
-import jackpal.androidterm.compat.AndroidCompat;
-
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.KeyEvent;
 
 import java.util.Locale;
+
+import jackpal.androidterm.R;
+import jackpal.androidterm.TermService;
 
 /**
  * Terminal emulator settings
@@ -129,7 +128,7 @@ public class TermSettings {
     private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev2";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
-    private static final String ACTIONBAR_X_KEY    = "actionbar_x_action";
+    private static final String ACTIONBAR_X_KEY = "actionbar_x_action";
     private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
     private static final String ACTIONBAR_INVERT_KEY = "actionbar_invert_action";
     private static final String DOUBLE_TAP_KEY = "double_tap_action";
@@ -168,32 +167,32 @@ public class TermSettings {
     private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
     private static final String IME_VI_COOPERATIVE_MODE = "vi_cooperative_mode";
 
-    public static final int WHITE               = 0xffffffff;
-    public static final int BLACK               = 0xff000000;
-    public static final int BLUE                = 0xff344ebd;
-    public static final int GREEN               = 0xff00ff00;
-    public static final int AMBER               = 0xffffb651;
-    public static final int RED                 = 0xffff0113;
-    public static final int HOLO_BLUE           = 0xff33b5e5;
-    public static final int SOLARIZED_FG        = 0xff657b83;
-    public static final int SOLARIZED_BG        = 0xfffdf6e3;
-    public static final int SOLARIZED_DARK_FG   = 0xff839496;
-    public static final int SOLARIZED_DARK_BG   = 0xff002b36;
+    public static final int WHITE = 0xffffffff;
+    public static final int BLACK = 0xff000000;
+    public static final int BLUE = 0xff344ebd;
+    public static final int GREEN = 0xff00ff00;
+    public static final int AMBER = 0xffffb651;
+    public static final int RED = 0xffff0113;
+    public static final int HOLO_BLUE = 0xff33b5e5;
+    public static final int SOLARIZED_FG = 0xff657b83;
+    public static final int SOLARIZED_BG = 0xfffdf6e3;
+    public static final int SOLARIZED_DARK_FG = 0xff839496;
+    public static final int SOLARIZED_DARK_BG = 0xff002b36;
     public static final int LINUX_CONSOLE_WHITE = 0xffaaaaaa;
 
     // foreground color, background color
     public static final int[][] COLOR_SCHEMES = {
-        {BLACK,             WHITE},
-        {WHITE,             BLACK},
-        {WHITE,             BLUE},
-        {GREEN,             BLACK},
-        {AMBER,             BLACK},
-        {RED,               BLACK},
-        {HOLO_BLUE,         BLACK},
-        {SOLARIZED_FG,      SOLARIZED_BG},
-        {SOLARIZED_DARK_FG, SOLARIZED_DARK_BG},
-        {LINUX_CONSOLE_WHITE, BLACK},
-        {BLACK,             SOLARIZED_BG}
+            {BLACK, WHITE},
+            {WHITE, BLACK},
+            {WHITE, BLUE},
+            {GREEN, BLACK},
+            {AMBER, BLACK},
+            {RED, BLACK},
+            {HOLO_BLUE, BLACK},
+            {SOLARIZED_FG, SOLARIZED_BG},
+            {SOLARIZED_DARK_FG, SOLARIZED_DARK_BG},
+            {LINUX_CONSOLE_WHITE, BLACK},
+            {BLACK, SOLARIZED_BG}
     };
 
     public static final int ACTION_BAR_MODE_NONE = 0;
@@ -205,31 +204,33 @@ public class TermSettings {
     public static final int ORIENTATION_LANDSCAPE = 1;
     public static final int ORIENTATION_PORTRAIT = 2;
 
-    /** An integer not in the range of real key codes. */
+    /**
+     * An integer not in the range of real key codes.
+     */
     public static final int KEYCODE_NONE = -1;
 
     public static final int CONTROL_KEY_ID_NONE = 7;
     public static final int[] CONTROL_KEY_SCHEMES = {
-        KeyEvent.KEYCODE_DPAD_CENTER,
-        KeyEvent.KEYCODE_AT,
-        KeyEvent.KEYCODE_ALT_LEFT,
-        KeyEvent.KEYCODE_ALT_RIGHT,
-        KeyEvent.KEYCODE_VOLUME_UP,
-        KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA,
-        KEYCODE_NONE
+            KeyEvent.KEYCODE_DPAD_CENTER,
+            KeyEvent.KEYCODE_AT,
+            KeyEvent.KEYCODE_ALT_LEFT,
+            KeyEvent.KEYCODE_ALT_RIGHT,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_CAMERA,
+            KEYCODE_NONE
     };
 
     public static final int FN_KEY_ID_NONE = 7;
     public static final int[] FN_KEY_SCHEMES = {
-        KeyEvent.KEYCODE_DPAD_CENTER,
-        KeyEvent.KEYCODE_AT,
-        KeyEvent.KEYCODE_ALT_LEFT,
-        KeyEvent.KEYCODE_ALT_RIGHT,
-        KeyEvent.KEYCODE_VOLUME_UP,
-        KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA,
-        KEYCODE_NONE
+            KeyEvent.KEYCODE_DPAD_CENTER,
+            KeyEvent.KEYCODE_AT,
+            KeyEvent.KEYCODE_ALT_LEFT,
+            KeyEvent.KEYCODE_ALT_RIGHT,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_CAMERA,
+            KEYCODE_NONE
     };
 
     public static final int BACK_KEY_STOPS_SERVICE = 0;
@@ -344,7 +345,7 @@ public class TermSettings {
         mActionBarIconAction = readIntPref(ACTIONBAR_ICON_KEY, mActionBarIconAction, ACTIONBAR_KEY_MAX);
         mActionBarPlusAction = readIntPref(ACTIONBAR_PLUS_KEY, mActionBarPlusAction, ACTIONBAR_KEY_MAX);
         mActionBarMinusAction = readIntPref(ACTIONBAR_MINUS_KEY, mActionBarMinusAction, ACTIONBAR_KEY_MAX);
-        mActionBarXAction    = readIntPref(ACTIONBAR_X_KEY,    mActionBarXAction,    ACTIONBAR_KEY_MAX);
+        mActionBarXAction = readIntPref(ACTIONBAR_X_KEY, mActionBarXAction, ACTIONBAR_KEY_MAX);
         mActionBarUserAction = readIntPref(ACTIONBAR_USER_KEY, mActionBarUserAction, ACTIONBAR_KEY_MAX);
         mActionBarInvertAction = readIntPref(ACTIONBAR_INVERT_KEY, mActionBarInvertAction, ACTIONBAR_KEY_MAX);
         mDoubleTapAction = readIntPref(DOUBLE_TAP_KEY, mDoubleTapAction, ACTIONBAR_KEY_MAX);
@@ -356,7 +357,7 @@ public class TermSettings {
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId, FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mUseDirectCookedIME = readIntPref(IME_DIRECT_KEY, mUseDirectCookedIME, 1);
-        mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY , mExternalAppId);
+        mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY, mExternalAppId);
         mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
         mExternalAppButton = readBooleanPref(EXTERNAL_APP_BUTTON_KEY, mExternalAppButton);
         mUseFilesAppButton = readBooleanPref(FILES_BUTTON_KEY, mUseFilesAppButton);
@@ -386,6 +387,7 @@ public class TermSettings {
     }
 
     private static final String FIRST_KEY = "pref_first";
+
     private void setLocalizedDefault() {
         boolean first = mPrefs.getBoolean(FIRST_KEY, true);
         if (!first) return;
@@ -403,7 +405,7 @@ public class TermSettings {
         int val;
         try {
             val = Integer.parseInt(
-                mPrefs.getString(key, Integer.toString(defaultValue)));
+                    mPrefs.getString(key, Integer.toString(defaultValue)));
         } catch (NumberFormatException e) {
             val = defaultValue;
         }
@@ -463,7 +465,7 @@ public class TermSettings {
     }
 
     public int getCursorStyle() {
-        return mCursorStyle%2;
+        return mCursorStyle % 2;
     }
 
     public int getCursorBlink() {
@@ -530,7 +532,8 @@ public class TermSettings {
 
     public int getActionBarPlusKeyAction() {
         mActionBarPlusAction = 1250;
-        return mActionBarPlusAction; }
+        return mActionBarPlusAction;
+    }
 
     public int getActionBarMinusKeyAction() {
         mActionBarMinusAction = 999;
@@ -617,9 +620,12 @@ public class TermSettings {
 
     public int getBackKeyCharacter() {
         switch (mBackKeyAction) {
-            case BACK_KEY_SENDS_ESC: return 27;
-            case BACK_KEY_SENDS_TAB: return 9;
-            default: return 0;
+            case BACK_KEY_SENDS_ESC:
+                return 27;
+            case BACK_KEY_SENDS_TAB:
+                return 9;
+            default:
+                return 0;
         }
     }
 

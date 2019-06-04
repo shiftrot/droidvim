@@ -15,527 +15,527 @@
  * limitations under the License.
 -->
 <resources>
-   <string name="plus">+</string>
-   <string name="minus">-</string>
-   <string name="x">X</string>
-   <string name="user">□</string>
-   <string name="application_terminal">Terminal Emulator</string>
-   <string name="application_term_app">Terminal App</string>
-   <string name="preferences">Preferences</string>
-   <string name="new_window">New window</string>
-   <string name="close_window">Close window</string>
-   <string name="menu_window">Window</string>
-   <string name="window_list">Windows</string>
-   <string name="prev_window">Prev window</string>
-   <string name="next_window">Next window</string>
-   <string name="screen">Screen</string>
-   <string name="reset">Reset term</string>
-   <string name="send_email">Email to</string>
-   <string name="special_keys">Special keys</string>
-   <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
-   <string name="toggle_function_bar">Functionbar</string>
-   <string name="quit">Quit</string>
-
-   <string name="faild_to_bind_to_termservice">Faild to bind to TermService</string>
-   <string name="please_restart">Please restart this application.</string>
-
-   <string name="switch_windows_warning">Swipe the upper half of the screen to switch windows.</string>
-
-   <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
-   <string name="toast_clipboard">Text copied to clipboard.</string>
-   <string name="toast_clipboard_error">Text is not included.</string>
-
-   <string name="clipboard_warning_title">About the clipboard</string>
-   <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)\n\n\"Paste\" button is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
-
-   <string name="edit_vimrc">Edit .vimrc</string>
-   <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
-   <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
-   <string name="text_box">One-line text box</string>
-   <string name="menu_drawer">Storage</string>
-   <string name="update_message">Updating binaries and libraries.</string>
-   <string name="update_warning">Do not run in the background or forcibly rotate the screen.</string>
-   <string name="update_vim_warning">(Please wait until Vim starts even if the dialog disappears)</string>
-   <string name="reload_file">Reload (+Encoding)</string>
-   <string name="reload_file_title">Reload this file</string>
-   <string name="force_encoding">Choose encoding if you need.</string>
-   <string name="webview_local_file_error">Local file can not be \"opened with intent\".</string>
-
-   <string name="whats_new_title">What\'s new</string>
-   <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim"></string>
-   <string name="tips_vim_list"></string>
-
-   <string name="edit_text_view_warning_title">One-line text box</string>
-   <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - Delete all/Quit</string>
-
-   <string name="menu_update">Update</string>
-   <string name="menu_update_latest">Already updated.</string>
-
-   <string name="title_prefs_keepscreen_at_startup">\"Keep screen\" at startup</string>
-   <string name="summary_keepscreen_preference">Change the time to sleep while using this application.</string>
-   <string name="title_prefs_keepscreen">\"Keep screen\" time</string>
-   <string name="dialog_prefs_keepscreen">Time to sleep (0-120min)</string>
-   <string name="enable_keepscreen">\"Keep screen\" ON</string>
-   <string name="disable_keepscreen">\"Keep screen\" OFF</string>
-   <string name="keepscreen_notice">Keep the screen awake while this application running in the foreground.\nThis state lasts for% d minutes after the key was last pressed.</string>
-   <string name="keepscreen_deacitvated">\"Keep screen\" has been deactivated.</string>
-   <string name="keepscreen">Keep screen</string>
-
-   <string name="enable_wakelock">Take WakeLock</string>
-   <string name="disable_wakelock">Drop WakeLock</string>
-   <string name="enable_wifilock">Take WifiLock</string>
-   <string name="disable_wifilock">Drop WifiLock</string>
-
-   <string name="edit_text">Edit text</string>
-   <string name="select_text">Select text</string>
-   <string name="copy_all">Copy all</string>
-   <string name="copy_screen">Copy screen text</string>
-   <string name="copy_screen_current">Current screen</string>
-   <string name="copy_screen_buffer">Screen buffer</string>
-   <string name="paste">Paste</string>
-   <string name="clipboard">Clipboard</string>
-   <string name="send_control_key">Send control key</string>
-   <string name="send_fn_key">Send fn key</string>
-
-   <string name="window_title">Window</string>
-
-   <string name="service_notify_text">Terminal session is running</string>
-
-   <string name="process_exit_message">Terminal session finished</string>
-
-   <string name="do_not_show">Do not show again</string>
-
-   <string name="reloading">Reloading this page.</string>
-   <string name="stop_loading">Stop loading this page.</string>
-
-   <!-- Preference dialog -->
-   <string name="prefs_preferences">User Settings</string>
-   <string name="title_prefs_preference">Backup/Restore</string>
-   <string name="prefs_dialog_rw">Backup/Restore settings</string>
-   <string name="prefs_read">Restore</string>
-   <string name="prefs_read_error_title">File read error</string>
-   <string name="prefs_read_error">This file is not backup file or too old to restore.</string>
-   <string name="prefs_write">Backup</string>
-   <string name="prefs_write_confirm">Overwrite the backup file.</string>
-   <string name="prefs_write_info_success">Backup file is created successfully.</string>
-   <string name="prefs_write_info_failure">Unable to create backup file.</string>
-
-   <string name="prefs_about">About</string>
-   <string name="title_license">Open source licenses</string>
-   <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・Apache Commons\n・android-async-http\n・android-file-chooser\n・Terminal Emulator for Android\n・Termux\n・TermuxAm\n\n\nThis software is an open source project.</string>
-   <string name="github">github</string>
-   <string name="github_url">https://github.com/shiftrot/droidvim</string>
-
-   <string name="screen_preferences">Screen</string>
-
-   <string name="title_statusbar_preference">Status bar</string>
-   <string name="summary_statusbar_preference">Show/hide status bar.</string>
-   <string name="dialog_title_statusbar_preference">Status bar</string>
-
-   <string name="title_notification_preference">App info</string>
-   <string name="title_app_info_preference">App info</string>
-   <string name="summary_notification_preference">Notifications can be hidden via App info. However, messages with low importance will not be shown.</string>
-
-   <string name="title_statusbar_icon_preference">Status bar icon</string>
-   <string name="summary_statusbar_icon_on_preference">Show/Hide status bar icon (Restart required).</string>
-   <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon (Restart required).</string>
-
-   <string name="title_functionbar_preference">Functionbar</string>
-   <string name="summary_functionbar_preference">Show functionbar on start up.</string>
-   <string name="title_oneline_textbox_preference">One-line text box</string>
-   <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
-   <string name="title_oneline_textbox_esc_preference">Press ESC to hide (One-line text box)</string>
-   <string name="summary_oneline_textbox_esc_on">Move focus, send ESC and hide.</string>
-   <string name="summary_oneline_textbox_esc_off">Move focus.</string>
-   <string name="title_oneline_textbox_cr_preference">\"Send\" button (One-line text box)</string>
-
-   <string name="title_functionbar_key_preference">Function key (1st column)</string>
-   <string name="title_functionbar_key_2_preference">Function key (2nd column)</string>
-   <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
-
-   <string name="title_functionbar_menu">Menu</string>
-   <string name="title_functionbar_softkeyboard">Soft keyboard</string>
-   <string name="title_functionbar_hide">Hide functionbar</string>
-   <string name="title_functionbar_change">Switch functionbar</string>
-
-   <string name="title_actionbar_preference">Action bar</string>
-   <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
-   <string name="dialog_title_actionbar_preference">Action bar</string>
-
-   <string name="title_orientation_preference">Screen orientation</string>
-   <string name="summary_orientation_preference">Choose the screen orientation behavior.</string>
-   <string name="dialog_title_orientation_preference">Screen orientation</string>
-
-   <string name="title_theme_preference">Theme</string>
-   <string name="summary_theme_preference">Choose application theme (restart required).</string>
-   <string name="dialog_title_theme_preference">Theme</string>
-
-   <string name="title_cursorstyle_preference">Rendering mode</string>
-   <string name="summary_cursorstyle_preference">Choose cursor style and rendering mode.</string>
-   <string name="dialog_title_cursorstyle_preference">Cursor style and rendering mode</string>
-
-   <string name="title_cursorblink_preference">Cursor blink</string>
-   <string name="summary_cursorblink_preference">Choose cursor blink.</string>
-   <string name="dialog_title_cursorblink_preference">Cursor blink</string>
-
-   <string name="text_preferences">Text</string>
-   <string name="font_preferences">Font</string>
-
-   <string name="title_utf8_by_default_preference">Default to UTF-8</string>
-   <string name="summary_utf8_by_default_preference">Whether UTF-8 mode is enabled by default.</string>
-
-   <string name="title_hw_acceleration_by_default_preference">Hardware acceleration</string>
-   <string name="summary_hw_acceleration_by_default_preference">Whether hardware acceleration mode is enabled.</string>
-
-   <string name="title_fontsize_preference">Font size</string>
-   <string name="summary_fontsize_preference">Choose character height in points.</string>
-   <string name="dialog_title_fontsize_preference">Font size</string>
-
-   <string name="title_fontleading_preference">Font leading</string>
-   <string name="summary_fontleading_preference">Choose font leading.</string>
-   <string name="dialog_title_fontleading_preference">Font leading</string>
-
-   <string name="title_fontfile_preference">Font file</string>
-   <string name="summary_fontfile_preference">Choose font.</string>
-   <string name="dialog_title_fontfile_preference">Font file</string>
-   <string name="entry_fontfile_default">System font</string>
-   <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
-   <string name="font_file_invalid">Android can not handle this font file.</string>
-
-   <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
-   <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts.</string>
-   <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
-
-   <string name="title_force_flush_drawtext_preference">Use proportional font</string>
-   <string name="summary_force_flush_drawtext_preference">Fix screen glitches on proportional font or non-single-byte character set. Drawing speed will be slower.</string>
-
-   <string name="title_color_preference">Colors</string>
-   <string name="summary_color_preference">Choose terminal color.</string>
-   <string name="dialog_title_color_preference">Terminal color</string>
-
-   <string name="title_composingtext_preference">Input method color</string>
-   <string name="summary_composingtext_preference">Choose input method composing text color.</string>
-   <string name="dialog_title_composingtext_preference">Input method composing text color</string>
-
-   <string name="actionbar_key_preferences">Actionbar button</string>
-   <string name="title_actionbar_icon_preference">◇ button</string>
-   <string name="summary_actionbar_icon_preference">Choose what pressing the ◇ button does.</string>
-   <string name="dialog_title_actionbar_icon_preference">◇ button</string>
-   <string name="title_actionbar_invert_preference">○ button</string>
-   <string name="summary_actionbar_invert_preference">Choose what pressing the ○ button does.</string>
-   <string name="dialog_title_actionbar_invert_preference">○ button</string>
-   <string name="title_actionbar_plus_preference">+ button</string>
-   <string name="summary_actionbar_plus_preference">Choose what pressing the + button does.</string>
-   <string name="dialog_title_actionbar_plus_preference">+ button</string>
-   <string name="title_actionbar_minus_preference">- button</string>
-   <string name="summary_actionbar_minus_preference">Choose what pressing the - button does.</string>
-   <string name="dialog_title_actionbar_minus_preference">- button</string>
-   <string name="title_actionbar_x_preference">Q button</string>
-   <string name="summary_actionbar_x_preference">Choose what pressing the Q button does.</string>
-   <string name="dialog_title_actionbar_x_preference">Q button</string>
-   <string name="title_actionbar_user_preference">□ button</string>
-   <string name="summary_actionbar_user_preference">Choose what pressing the □ button does.</string>
-   <string name="dialog_title_actionbar_user_preference">□ button</string>
-   <string name="title_double_tap_preference">Double tap</string>
-   <string name="summary_double_tap_preference">Choose what double tap does.</string>
-   <string name="dialog_title_double_tap_preference">Double tap</string>
-   <string name="title_right_double_tap_preference">Double tap near the right edge</string>
-   <string name="summary_right_double_tap_preference">Choose what double tap near the right edge does.</string>
-   <string name="dialog_title_right_double_tap_preference">Double tap near the right edge</string>
-   <string name="title_left_double_tap_preference">Double tap near the left edge</string>
-   <string name="summary_left_double_tap_preference">Choose what double tap near the left edge does.</string>
-   <string name="dialog_title_left_double_tap_preference">Double tap near the left edge</string>
-   <string name="title_bottom_double_tap_preference">Double tap near the bottom edge</string>
-   <string name="summary_bottom_double_tap_preference">Choose what double tap near the bottom edge does.</string>
-   <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>
-   <string name="functionbar_preferences">Functionbar</string>
-   <string name="summary_functionbar_preferences">Select the functionbar key to use.</string>
-   <string name="gesture_preferences">Gestures</string>
-
-   <string name="keyboard_preferences">Keyboard</string>
-
-   <string name="title_backaction_preference">Back button</string>
-   <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
-   <string name="dialog_title_backaction_preference">Back button</string>
-
-   <string name="title_controlkey_preference">Control key</string>
-   <string name="summary_controlkey_preference">Choose control key.</string>
-   <string name="dialog_title_controlkey_preference">Control key</string>
-
-   <string name="title_fnkey_preference">Fn key</string>
-   <string name="summary_fnkey_preference">Choose Fn key.</string>
-   <string name="dialog_title_fnkey_preference">Fn key</string>
-
-   <string name="title_ime_inputtype_preference">Input mode at startup</string>
-   <string name="summary_ime_inputtype_preference">Switch to \"Normal input\" with ◇ button.</string>
-   <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
-
-   <string name="title_ime_direct_input_method_preference">Input method for \"Direct input\"</string>
-   <string name="title_ime_preference">Input method for \"Normal input\"</string>
-   <string name="summary_ime_preference">Choose input method for normal input.</string>
-   <string name="summary_ime_direct_input_method_preference">Choose input method for direct input.</string>
-   <string name="dialog_title_ime_preference">Choose input method</string>
-
-   <string name="title_vi_cooperative_mode_preference">vi-cooperative mode</string>
-   <string name="summary_vi_cooperative_mode">Reset to \"Input mode at startup\" with ESC button.</string>
-   <string name="dialog_title_vi_cooperative_mode_preference">Choose vi-cooperative mode.</string>
-
-   <string name="shell_preferences">Shell</string>
-   <string name="title_shell_preference">Command line</string>
-   <string name="summary_shell_preference">Specify the shell command line.</string>
-   <string name="dialog_title_shell_preference">Shell</string>
-
-   <string name="title_initialcommand_preference">Initial command</string>
-   <string name="summary_initialcommand_preference">Sent to the shell when it starts.</string>
-   <string name="dialog_title_initialcommand_preference">Initial Command</string>
-
-   <string name="title_intentcommand_preference">Intent command</string>
-   <string name="summary_intentcommand_preference">Command for intent.</string>
-   <string name="dialog_title_intentcommand_preference">Intent Command</string>
-
-   <string name="title_termtype_preference">Terminal type</string>
-   <string name="summary_termtype_preference">What terminal type to report to the shell.</string>
-   <string name="dialog_title_termtype_preference">Terminal type</string>
-
-   <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
-   <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
-
-   <string name="title_verify_path_preference">Verify PATH entries</string>
-   <string name="summary_verify_path_preference">Whether inaccessible directories should be removed from the PATH.</string>
-
-   <string name="title_do_path_extensions_preference">Allow PATH extensions</string>
-   <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
-
-   <string name="title_change_lib_preference">Change system library</string>
-   <string name="title_choose">Choose</string>
-   <string name="summary_change_lib_preference">Change system library.</string>
-   <string name="message_change_lib_preference">Please do not change if the app is working properly.</string>
-   <string name="current_library">Current library : </string>
-   <string name="reset_to_default">Reset to default</string>
-   <string name="force_64bit">Set to 64-bit library</string>
-   <string name="force_32bit">Set to 32-bit library</string>
-   <string name="confirm_do_close_troubleshooting">* The settings you set in Troubleshooting can also be changed from \"Preferences\">\"Shell\".\n* If you cancel, the settings set in troubleshooting will be lost.\n\n</string>
-   <string name="confirm_change_lib">If you change the system library, it may not work properly.\nIf it does not work, use \"Long press menu\">\"Window\">\"Close window\" or \"Force stop\" in \"App info\".</string>
-   <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
-
-   <string name="crash_title">Sorry, Vim has crashed.</string>
-   <string name="crash_message">Please use troubleshooting or close this app and restart.\n\nIf Vim.python always crashes, it may be a device dependent problem.\nIf you can not solve it by troubleshooting, please contact us.</string>
-   <string name="crash_quit_button">Force stop this app</string>
-   <string name="crash_trouble_shooting_button">Troubleshooting</string>
-   <string name="choose_vim_python_script">Choose Vim (+python) script</string>
-   <string name="vim_python_script_default">Default</string>
-   <string name="vim_python_script_alt1">Alternate (1)</string>
-   <string name="choose_ld_library_path_mode">Choose LD_LIBRARY_PATH mode</string>
-   <string name="ld_library_path_mode_default">Default</string>
-   <string name="ld_library_path_mode_alt_1">Alternate (1)</string>
-   <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
-   <string name="revert_to_default_vim">Revert to Vim (default).</string>
-   <string name="quit_to_shell">Shell</string>
-
-   <string name="title_allow_prepend_path_preference">Allow PATH prepend</string>
-   <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>
-
-   <string name="title_home_path_preference">HOME</string>
-   <string name="summary_home_path_preference">Path to a writable folder to be used as HOME.</string>
-
-   <string name="control_key_dialog_title">Control and Function Keys</string>
-   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
-        actual control key key name. -->
-   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
-  <string name="control_key_dialog_control_disabled_text">No control key set.</string>
-  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
-       actual function key key name. -->
-  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
-  <string name="control_key_dialog_fn_disabled_text">No function key set.</string>
-
-  <string name="confirm_window_close_message">Close this window?</string>
-
-  <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
-  <string name="permdesc_run_script">Allows application to open new windows in Terminal Emulator for Android and run commands in those windows with all of Terminal Emulator for Android\'s permissions, including access to the Internet and your SD Card.</string>
-  <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
-  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Terminal Emulator for Android.</string>
-  <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
-  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Terminal Emulator for Android.</string>
-
-  <string name="email_transcript_subject">Transcript from Terminal Emulator for Android</string>
-  <string name="email_transcript_chooser_title">Mail transcript using:</string>
-  <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
-
-  <string name="share_title">Share...</string>
-  <string name="share_buffer_text">Current Buffer</string>
-  <string name="share_visual_text">Selected text (Visual mode)</string>
-  <string name="share_unnamed_text">Unnamed register</string>
-  <string name="share_screen_text">Share screen text</string>
-  <string name="share_file">File</string>
-
-  <string name="alt_sends_esc">Alt key sends ESC</string>
-  <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
-  <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
-
-  <string name="back_as_esc">Back button as ESC</string>
-  <string name="summary_back_as_esc_preference">Enable it if ESC key of physical keyboard is handled as Back button.</string>
-
-  <string name="ignore_xoff">Ignore XOFF flow control</string>
-  <string name="ignore_xoff_summary_on">Ignore Ctrl-s.</string>
-  <string name="ignore_xoff_summary_off">Ctrl-s sends xoff.</string>
-
-  <string name="title_mouse_tracking_preference">Send mouse events</string>
-  <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
-
-  <string name="title_use_keyboard_shortcuts">Use Keyboard Shortcuts</string>
-  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
-  <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
-
-  <string name="title_auto_hide_functionbar">Hide functionbar</string>
-  <string name="auto_hide_functionbar_summary">Hide functionbar if physical keyboard is connected.</string>
-
-  <string name="ime_input_method_preferences">Text input mode</string>
-  <string name="title_pre_ime_shortcuts">IME shortcuts</string>
-  <string name="summary_title_pre_ime_shortcuts_select">Select a physical keyboard shortcut.</string>
-  <string name="summary_title_pre_ime_shortcuts">Physical Keyboard Shortcuts for IME Control.</string>
-  <string name="pref_alt_grave">Alt + [`]</string>
-  <string name="pref_alt_esc">Alt + [Esc]</string>
-  <string name="pref_alt_space">Alt + [Space]</string>
-  <string name="pref_ctrl_space">Ctrl + [Space]</string>
-  <string name="pref_shift_space">Shift + [Space]</string>
-  <string name="pref_zenkaku_hankaku">[Hankaku/Zenkaku]</string>
-  <string name="pref_grave">[`]</string>
-  <string name="pref_switch_charset">[Kanji]</string>
-  <string name="pref_ctrl_j">Ctrl + [j]</string>
-
-  <string name="title_ime_shortcuts_action_preference">IME shortcut action</string>
-  <string name="summary_ime_shortcuts_action_preference">Choose IME shortcut action</string>
-  <string name="dialog_titleime_shortcuts_action_preference">IME shortcut action</string>
-
-  <string name="title_home_dir_chooser_preference">Home directory</string>
-  <string name="set_home_directory">The home directory has been set to the following location:\n\n</string>
-  <string name="summary_home_dir_chooser_preference"></string>
-  <string name="title_startup_chooser_preference">Startup directory</string>
-  <string name="set_startup_directory">The startup directory has been set to the following location:\n\n</string>
-  <string name="summary_startup_chooser_preference">Choose startup directory</string>
-
-  <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default by pressing \"Default\" button.</string>
-  <string name="choose_startup_directory_message">Choose startup directory.\n\"Default\" button to set startup directory as home directory.</string>
-  <string name="select_directory_message">Chooose directory</string>
-  <string name="invalid_directory">Directory without write permission or invalid directory.\nPlease choose internal storage directory.</string>
-  <string name="copy_startup_dir">The selected path has been copied to the clipboard.\nIf you want to specify the directory at startup, try adding the following to your `.vimrc`: \n\ncd </string>
-  <string name="select_directory">Select</string>
-  <string name="reset_directory">Default</string>
-  <string name="choose_directory">Choose</string>
-
-  <string name="open_in_browser">Open in browser</string>
-  <string name="scroll_to_top">Top</string>
-  <string name="scroll_to_bottom">Bottom</string>
-  <string name="tutorial">Vim tutorial</string>
-  <string name="help">Help</string>
-  <string name="help_url">http://example.com</string>
-  <string name="activity_term_here_title">Term here</string>
-  <!-- BEGIN SHORTCUT RELATED STRINGS -->
-  <!-- AndroidManifest.xml -->
-  <string name="activity_shortcut_create">"Term shortcut"</string>
-  <!-- FSNavigator.java -->
-  <string name="fsnavigator_title">FILE SELECTOR</string>
-  <string name="fsnavigator_no_external_storage">External storage not available</string>
-  <string name="fsnavigator_optional_enter_path">Or enter path here.</string>
-  <string name="fsnavigator_change_theme">Change theme</string>
-  <!-- AddShortcut.java -->
-  <string name="addshortcut_command_hint">command</string>
-  <string name="addshortcut_example_hint">--example=\""a\"</string>
-  <string name="addshortcut_button_find_command">Find command</string>
-  <string name="addshortcut_navigator_title">SELECT SHORTCUT TARGET</string>
-  <string name="addshortcut_command_window_instructions">Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard).</string>
-  <string name="addshortcut_arguments_label">Arguments\:</string>
-  <string name="addshortcut_shortcut_label">Shortcut label\:</string>
-  <string name="addshortcut_button_text_icon">Text icon</string>
-  <string name="addshortcut_make_text_icon">MAKE TEXT ICON</string>
-  <string name="addshortcut_text_icon_instructions"></string>
-  <string name="addshortcut_title">Term shortcut</string>
-  <!-- ColorValue.java -->
-  <string name="colorvalue_letter_alpha">α</string>
-  <string name="colorvalue_letter_red">R</string>
-  <string name="colorvalue_letter_green">G</string>
-  <string name="colorvalue_letter_blue">B</string>
-  <string name="colorvalue_label_lock_button_column">LOCK</string>
-  <string name="colorvalue_icon_text_entry_hint">Enter icon text</string>
-  <!-- END SHORTCUT RELATED STRINGS -->
-
-  <string name="button_yes">Yes</string>
-  <string name="button_no">No</string>
-  <string name="install_runtime_doc_message">Would you like to install help files?</string>
-  <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
-  <string name="keyboard_warning">By default direct input is forced, so you may not be able to input non-alphanumeric characters from the physical keyboard.\nIn that case please try the following:\n\n- ◇ Button\n- IME shortcuts\n- Change \"Input mode at startup\" to \"Normal input\"\n- Change input mode with Vim script.\n\nPlease see the help for details.</string>
-
-  <string name="extra">Extra</string>
-  <string name="debug">Debug</string>
-  <string name="files">Files</string>
-  <string name="dropbox">Dropbox</string>
-  <string name="googledrive">GoogleDrive</string>
-  <string name="onedrive">OneDrive</string>
-  <string name="summary_app_filepicker_on_drawer">Choose the behavior of the application button on the drawer.</string>
-  <string name="launch_app">\Launch %s</string>
-  <string name="activity_not_found">Activity not found.\nPlease try again.</string>
-  <string name="external_storage">Storage</string>
-  <string name="create_or_delete">Manager</string>
-  <string name="create_file">Create file</string>
-  <string name="delete_file">Delete file</string>
-  <string name="app_files">File manager</string>
-  <string name="storage_intent_error">No storage can perform this action.\nPlease wait a few seconds and try again.</string>
-  <string name="storage_manager">Create/Delete</string>
-  <string name="storage_permission_error">Storage permission does not granted.</string>
-  <string name="storage_permission_granted">Storage access granted.\nPlease restart this app for the settings to take effect.</string>
-  <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
-  <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
-  <string name="storage_write_error_title">File write error</string>
-  <string name="storage_write_error">This file is read only or the file has been deleted.\nOpen the file for editing via \"Storage\" button on the drawer menu.</string>
-  <string name="storage_hash_error_title">File hash error</string>
-  <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Storage\" button.</string>
-  <string name="storage_hash_overwrite">Overwrite</string>
-  <string name="storage_hash_reopen">Storage</string>
-  <string name="storage_delete_file">Delete file from storage.</string>
-  <string name="title_internal_storage">Internal private storage</string>
-  <string name="clear_cache">Clear cache</string>
-  <string name="confirm_clear_cache_message">Clear external storage cache.</string>
-  <string name="softkeyboard">keyboard</string>
-
-  <string name="git_install_dialog_title">Install Git</string>
-  <string name="network_error">Please check network connection.</string>
-  <string name="iabsetup_try_again">Unable to connect to Google Play Service.\nPlease check your network connection and try again.</string>
-  <string name="installer_try_again">Installer was unable to download the file.\nPlease check your network connection and try again.</string>
-  <string name="installer_try_again_button">Try again</string>
-  <string name="git_install_message_install_git">Check for update...</string>
-  <string name="git_install_confirm_install">Git : There is a new version available.\nDo you want to install Git?</string>
-  <string name="git_install_confirm_update">Git : You already have the latest version.\nDo you want to overwrite the existing files?</string>
-  <string name="git_install_success">Git has been successfully updated.</string>
-
-  <string name="iab_null">Cannot found PlayStore.</string>
-  <string name="iab_wait">Please wait a moment.</string>
-  <string name="donate_confirm_title">Thank you for using DroidVim.</string>
-  <string name="donate_confirm_button">Donate</string>
-  <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get Git-cui, curl, Busybox after donation!\n\nGit - Version Control System.\ncurl - A tool to upload/download files.\nBusybox - A collection of UNIX utilities that do not exist on Android.</string>
-  <string name="donate_confirm_summary_no_payed_function">Sorry, no payed functions for your device.\nThis is just a donate option ;)</string>
-  <string name="donate_premium_purchase">Thank you for your donation!</string>
-  <string name="donate_button">Donate</string>
-  <string name="extra_button">Extra</string>
-
-  <string name="external_apps_preferences">External Apps</string>
-  <string name="external_app">Application name</string>
-  <string name="external_app_activity">Activity</string>
-  <string name="external_files_button">Files</string>
-  <string name="title_use_app_files_button">Use default file manager app</string>
-  <string name="external_app_button">External App</string>
-  <string name="title_external_app_button_preference">External App Button</string>
-  <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
-  <string name="summary_external_app_button_off_preference">Hide App button on drawer.</string>
-  <string name="title_external_app_id_preference">External App button</string>
-  <string name="external_app_id_error">Application ID is not correct or not set.\nPlease set it from preferences.</string>
-  <string name="external_app_activity_error">This application does not exist or there is no callable activity.</string>
-  <string name="title_cloud_dropbox_preference">Dropbox</string>
-  <string name="title_cloud_googledrive_preference">GoogleDrive</string>
-  <string name="title_cloud_onedrive_preference">OneDrive</string>
-  <string name="summary_cloud_file_picker_on_preference">Application</string>
-  <string name="summary_cloud_file_picker_off_preference">Content picker</string>
-  <string name="title_html_viewer_mode_preference">Html viewer</string>
-  <string name="summary_html_viewer_mode">Default</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="x">X</string>
+    <string name="user">□</string>
+    <string name="application_terminal">Terminal Emulator</string>
+    <string name="application_term_app">Terminal App</string>
+    <string name="preferences">Preferences</string>
+    <string name="new_window">New window</string>
+    <string name="close_window">Close window</string>
+    <string name="menu_window">Window</string>
+    <string name="window_list">Windows</string>
+    <string name="prev_window">Prev window</string>
+    <string name="next_window">Next window</string>
+    <string name="screen">Screen</string>
+    <string name="reset">Reset term</string>
+    <string name="send_email">Email to</string>
+    <string name="special_keys">Special keys</string>
+    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
+    <string name="toggle_function_bar">Functionbar</string>
+    <string name="quit">Quit</string>
+
+    <string name="faild_to_bind_to_termservice">Faild to bind to TermService</string>
+    <string name="please_restart">Please restart this application.</string>
+
+    <string name="switch_windows_warning">Swipe the upper half of the screen to switch windows.</string>
+
+    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
+    <string name="toast_clipboard">Text copied to clipboard.</string>
+    <string name="toast_clipboard_error">Text is not included.</string>
+
+    <string name="clipboard_warning_title">About the clipboard</string>
+    <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)\n\n\"Paste\" button is for sending commands to the shell and the number of characters that can be sent is limited by the size of the command buffer of the shell.</string>
+
+    <string name="edit_vimrc">Edit .vimrc</string>
+    <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
+    <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
+    <string name="text_box">One-line text box</string>
+    <string name="menu_drawer">Storage</string>
+    <string name="update_message">Updating binaries and libraries.</string>
+    <string name="update_warning">Do not run in the background or forcibly rotate the screen.</string>
+    <string name="update_vim_warning">(Please wait until Vim starts even if the dialog disappears)</string>
+    <string name="reload_file">Reload (+Encoding)</string>
+    <string name="reload_file_title">Reload this file</string>
+    <string name="force_encoding">Choose encoding if you need.</string>
+    <string name="webview_local_file_error">Local file can not be \"opened with intent\".</string>
+
+    <string name="whats_new_title">What\'s new</string>
+    <string name="tips_vim_title">Tips</string>
+    <string name="tips_vim"></string>
+    <string name="tips_vim_list"></string>
+
+    <string name="edit_text_view_warning_title">One-line text box</string>
+    <string name="edit_text_view_warning">One-line text box is an auxiliary means for Non-Alphanumeric characters, voice input and emoji.\n\nESC - Delete all/Quit</string>
+
+    <string name="menu_update">Update</string>
+    <string name="menu_update_latest">Already updated.</string>
+
+    <string name="title_prefs_keepscreen_at_startup">\"Keep screen\" at startup</string>
+    <string name="summary_keepscreen_preference">Change the time to sleep while using this application.</string>
+    <string name="title_prefs_keepscreen">\"Keep screen\" time</string>
+    <string name="dialog_prefs_keepscreen">Time to sleep (0-120min)</string>
+    <string name="enable_keepscreen">\"Keep screen\" ON</string>
+    <string name="disable_keepscreen">\"Keep screen\" OFF</string>
+    <string name="keepscreen_notice">Keep the screen awake while this application running in the foreground.\nThis state lasts for% d minutes after the key was last pressed.</string>
+    <string name="keepscreen_deacitvated">\"Keep screen\" has been deactivated.</string>
+    <string name="keepscreen">Keep screen</string>
+
+    <string name="enable_wakelock">Take WakeLock</string>
+    <string name="disable_wakelock">Drop WakeLock</string>
+    <string name="enable_wifilock">Take WifiLock</string>
+    <string name="disable_wifilock">Drop WifiLock</string>
+
+    <string name="edit_text">Edit text</string>
+    <string name="select_text">Select text</string>
+    <string name="copy_all">Copy all</string>
+    <string name="copy_screen">Copy screen text</string>
+    <string name="copy_screen_current">Current screen</string>
+    <string name="copy_screen_buffer">Screen buffer</string>
+    <string name="paste">Paste</string>
+    <string name="clipboard">Clipboard</string>
+    <string name="send_control_key">Send control key</string>
+    <string name="send_fn_key">Send fn key</string>
+
+    <string name="window_title">Window</string>
+
+    <string name="service_notify_text">Terminal session is running</string>
+
+    <string name="process_exit_message">Terminal session finished</string>
+
+    <string name="do_not_show">Do not show again</string>
+
+    <string name="reloading">Reloading this page.</string>
+    <string name="stop_loading">Stop loading this page.</string>
+
+    <!-- Preference dialog -->
+    <string name="prefs_preferences">User Settings</string>
+    <string name="title_prefs_preference">Backup/Restore</string>
+    <string name="prefs_dialog_rw">Backup/Restore settings</string>
+    <string name="prefs_read">Restore</string>
+    <string name="prefs_read_error_title">File read error</string>
+    <string name="prefs_read_error">This file is not backup file or too old to restore.</string>
+    <string name="prefs_write">Backup</string>
+    <string name="prefs_write_confirm">Overwrite the backup file.</string>
+    <string name="prefs_write_info_success">Backup file is created successfully.</string>
+    <string name="prefs_write_info_failure">Unable to create backup file.</string>
+
+    <string name="prefs_about">About</string>
+    <string name="title_license">Open source licenses</string>
+    <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・Apache Commons\n・android-async-http\n・android-file-chooser\n・Terminal Emulator for Android\n・Termux\n・TermuxAm\n\n\nThis software is an open source project.</string>
+    <string name="github">github</string>
+    <string name="github_url">https://github.com/shiftrot/droidvim</string>
+
+    <string name="screen_preferences">Screen</string>
+
+    <string name="title_statusbar_preference">Status bar</string>
+    <string name="summary_statusbar_preference">Show/hide status bar.</string>
+    <string name="dialog_title_statusbar_preference">Status bar</string>
+
+    <string name="title_notification_preference">App info</string>
+    <string name="title_app_info_preference">App info</string>
+    <string name="summary_notification_preference">Notifications can be hidden via App info. However, messages with low importance will not be shown.</string>
+
+    <string name="title_statusbar_icon_preference">Status bar icon</string>
+    <string name="summary_statusbar_icon_on_preference">Show/Hide status bar icon (Restart required).</string>
+    <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon (Restart required).</string>
+
+    <string name="title_functionbar_preference">Functionbar</string>
+    <string name="summary_functionbar_preference">Show functionbar on start up.</string>
+    <string name="title_oneline_textbox_preference">One-line text box</string>
+    <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
+    <string name="title_oneline_textbox_esc_preference">Press ESC to hide (One-line text box)</string>
+    <string name="summary_oneline_textbox_esc_on">Move focus, send ESC and hide.</string>
+    <string name="summary_oneline_textbox_esc_off">Move focus.</string>
+    <string name="title_oneline_textbox_cr_preference">\"Send\" button (One-line text box)</string>
+
+    <string name="title_functionbar_key_preference">Function key (1st column)</string>
+    <string name="title_functionbar_key_2_preference">Function key (2nd column)</string>
+    <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
+
+    <string name="title_functionbar_menu">Menu</string>
+    <string name="title_functionbar_softkeyboard">Soft keyboard</string>
+    <string name="title_functionbar_hide">Hide functionbar</string>
+    <string name="title_functionbar_change">Switch functionbar</string>
+
+    <string name="title_actionbar_preference">Action bar</string>
+    <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
+    <string name="dialog_title_actionbar_preference">Action bar</string>
+
+    <string name="title_orientation_preference">Screen orientation</string>
+    <string name="summary_orientation_preference">Choose the screen orientation behavior.</string>
+    <string name="dialog_title_orientation_preference">Screen orientation</string>
+
+    <string name="title_theme_preference">Theme</string>
+    <string name="summary_theme_preference">Choose application theme (restart required).</string>
+    <string name="dialog_title_theme_preference">Theme</string>
+
+    <string name="title_cursorstyle_preference">Rendering mode</string>
+    <string name="summary_cursorstyle_preference">Choose cursor style and rendering mode.</string>
+    <string name="dialog_title_cursorstyle_preference">Cursor style and rendering mode</string>
+
+    <string name="title_cursorblink_preference">Cursor blink</string>
+    <string name="summary_cursorblink_preference">Choose cursor blink.</string>
+    <string name="dialog_title_cursorblink_preference">Cursor blink</string>
+
+    <string name="text_preferences">Text</string>
+    <string name="font_preferences">Font</string>
+
+    <string name="title_utf8_by_default_preference">Default to UTF-8</string>
+    <string name="summary_utf8_by_default_preference">Whether UTF-8 mode is enabled by default.</string>
+
+    <string name="title_hw_acceleration_by_default_preference">Hardware acceleration</string>
+    <string name="summary_hw_acceleration_by_default_preference">Whether hardware acceleration mode is enabled.</string>
+
+    <string name="title_fontsize_preference">Font size</string>
+    <string name="summary_fontsize_preference">Choose character height in points.</string>
+    <string name="dialog_title_fontsize_preference">Font size</string>
+
+    <string name="title_fontleading_preference">Font leading</string>
+    <string name="summary_fontleading_preference">Choose font leading.</string>
+    <string name="dialog_title_fontleading_preference">Font leading</string>
+
+    <string name="title_fontfile_preference">Font file</string>
+    <string name="summary_fontfile_preference">Choose font.</string>
+    <string name="dialog_title_fontfile_preference">Font file</string>
+    <string name="entry_fontfile_default">System font</string>
+    <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
+    <string name="font_file_invalid">Android can not handle this font file.</string>
+
+    <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
+    <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts.</string>
+    <string name="dialog_title_ambiwidth_preference">East Asian ambiguous character width</string>
+
+    <string name="title_force_flush_drawtext_preference">Use proportional font</string>
+    <string name="summary_force_flush_drawtext_preference">Fix screen glitches on proportional font or non-single-byte character set. Drawing speed will be slower.</string>
+
+    <string name="title_color_preference">Colors</string>
+    <string name="summary_color_preference">Choose terminal color.</string>
+    <string name="dialog_title_color_preference">Terminal color</string>
+
+    <string name="title_composingtext_preference">Input method color</string>
+    <string name="summary_composingtext_preference">Choose input method composing text color.</string>
+    <string name="dialog_title_composingtext_preference">Input method composing text color</string>
+
+    <string name="actionbar_key_preferences">Actionbar button</string>
+    <string name="title_actionbar_icon_preference">◇ button</string>
+    <string name="summary_actionbar_icon_preference">Choose what pressing the ◇ button does.</string>
+    <string name="dialog_title_actionbar_icon_preference">◇ button</string>
+    <string name="title_actionbar_invert_preference">○ button</string>
+    <string name="summary_actionbar_invert_preference">Choose what pressing the ○ button does.</string>
+    <string name="dialog_title_actionbar_invert_preference">○ button</string>
+    <string name="title_actionbar_plus_preference">+ button</string>
+    <string name="summary_actionbar_plus_preference">Choose what pressing the + button does.</string>
+    <string name="dialog_title_actionbar_plus_preference">+ button</string>
+    <string name="title_actionbar_minus_preference">- button</string>
+    <string name="summary_actionbar_minus_preference">Choose what pressing the - button does.</string>
+    <string name="dialog_title_actionbar_minus_preference">- button</string>
+    <string name="title_actionbar_x_preference">Q button</string>
+    <string name="summary_actionbar_x_preference">Choose what pressing the Q button does.</string>
+    <string name="dialog_title_actionbar_x_preference">Q button</string>
+    <string name="title_actionbar_user_preference">□ button</string>
+    <string name="summary_actionbar_user_preference">Choose what pressing the □ button does.</string>
+    <string name="dialog_title_actionbar_user_preference">□ button</string>
+    <string name="title_double_tap_preference">Double tap</string>
+    <string name="summary_double_tap_preference">Choose what double tap does.</string>
+    <string name="dialog_title_double_tap_preference">Double tap</string>
+    <string name="title_right_double_tap_preference">Double tap near the right edge</string>
+    <string name="summary_right_double_tap_preference">Choose what double tap near the right edge does.</string>
+    <string name="dialog_title_right_double_tap_preference">Double tap near the right edge</string>
+    <string name="title_left_double_tap_preference">Double tap near the left edge</string>
+    <string name="summary_left_double_tap_preference">Choose what double tap near the left edge does.</string>
+    <string name="dialog_title_left_double_tap_preference">Double tap near the left edge</string>
+    <string name="title_bottom_double_tap_preference">Double tap near the bottom edge</string>
+    <string name="summary_bottom_double_tap_preference">Choose what double tap near the bottom edge does.</string>
+    <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>
+    <string name="functionbar_preferences">Functionbar</string>
+    <string name="summary_functionbar_preferences">Select the functionbar key to use.</string>
+    <string name="gesture_preferences">Gestures</string>
+
+    <string name="keyboard_preferences">Keyboard</string>
+
+    <string name="title_backaction_preference">Back button</string>
+    <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
+    <string name="dialog_title_backaction_preference">Back button</string>
+
+    <string name="title_controlkey_preference">Control key</string>
+    <string name="summary_controlkey_preference">Choose control key.</string>
+    <string name="dialog_title_controlkey_preference">Control key</string>
+
+    <string name="title_fnkey_preference">Fn key</string>
+    <string name="summary_fnkey_preference">Choose Fn key.</string>
+    <string name="dialog_title_fnkey_preference">Fn key</string>
+
+    <string name="title_ime_inputtype_preference">Input mode at startup</string>
+    <string name="summary_ime_inputtype_preference">Switch to \"Normal input\" with ◇ button.</string>
+    <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
+
+    <string name="title_ime_direct_input_method_preference">Input method for \"Direct input\"</string>
+    <string name="title_ime_preference">Input method for \"Normal input\"</string>
+    <string name="summary_ime_preference">Choose input method for normal input.</string>
+    <string name="summary_ime_direct_input_method_preference">Choose input method for direct input.</string>
+    <string name="dialog_title_ime_preference">Choose input method</string>
+
+    <string name="title_vi_cooperative_mode_preference">vi-cooperative mode</string>
+    <string name="summary_vi_cooperative_mode">Reset to \"Input mode at startup\" with ESC button.</string>
+    <string name="dialog_title_vi_cooperative_mode_preference">Choose vi-cooperative mode.</string>
+
+    <string name="shell_preferences">Shell</string>
+    <string name="title_shell_preference">Command line</string>
+    <string name="summary_shell_preference">Specify the shell command line.</string>
+    <string name="dialog_title_shell_preference">Shell</string>
+
+    <string name="title_initialcommand_preference">Initial command</string>
+    <string name="summary_initialcommand_preference">Sent to the shell when it starts.</string>
+    <string name="dialog_title_initialcommand_preference">Initial Command</string>
+
+    <string name="title_intentcommand_preference">Intent command</string>
+    <string name="summary_intentcommand_preference">Command for intent.</string>
+    <string name="dialog_title_intentcommand_preference">Intent Command</string>
+
+    <string name="title_termtype_preference">Terminal type</string>
+    <string name="summary_termtype_preference">What terminal type to report to the shell.</string>
+    <string name="dialog_title_termtype_preference">Terminal type</string>
+
+    <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
+    <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
+
+    <string name="title_verify_path_preference">Verify PATH entries</string>
+    <string name="summary_verify_path_preference">Whether inaccessible directories should be removed from the PATH.</string>
+
+    <string name="title_do_path_extensions_preference">Allow PATH extensions</string>
+    <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
+
+    <string name="title_change_lib_preference">Change system library</string>
+    <string name="title_choose">Choose</string>
+    <string name="summary_change_lib_preference">Change system library.</string>
+    <string name="message_change_lib_preference">Please do not change if the app is working properly.</string>
+    <string name="current_library">Current library : </string>
+    <string name="reset_to_default">Reset to default</string>
+    <string name="force_64bit">Set to 64-bit library</string>
+    <string name="force_32bit">Set to 32-bit library</string>
+    <string name="confirm_do_close_troubleshooting">* The settings you set in Troubleshooting can also be changed from \"Preferences\">\"Shell\".\n* If you cancel, the settings set in troubleshooting will be lost.\n\n</string>
+    <string name="confirm_change_lib">If you change the system library, it may not work properly.\nIf it does not work, use \"Long press menu\">\"Window\">\"Close window\" or \"Force stop\" in \"App info\".</string>
+    <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
+
+    <string name="crash_title">Sorry, Vim has crashed.</string>
+    <string name="crash_message">Please use troubleshooting or close this app and restart.\n\nIf Vim.python always crashes, it may be a device dependent problem.\nIf you can not solve it by troubleshooting, please contact us.</string>
+    <string name="crash_quit_button">Force stop this app</string>
+    <string name="crash_trouble_shooting_button">Troubleshooting</string>
+    <string name="choose_vim_python_script">Choose Vim (+python) script</string>
+    <string name="vim_python_script_default">Default</string>
+    <string name="vim_python_script_alt1">Alternate (1)</string>
+    <string name="choose_ld_library_path_mode">Choose LD_LIBRARY_PATH mode</string>
+    <string name="ld_library_path_mode_default">Default</string>
+    <string name="ld_library_path_mode_alt_1">Alternate (1)</string>
+    <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
+    <string name="revert_to_default_vim">Revert to Vim (default).</string>
+    <string name="quit_to_shell">Shell</string>
+
+    <string name="title_allow_prepend_path_preference">Allow PATH prepend</string>
+    <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>
+
+    <string name="title_home_path_preference">HOME</string>
+    <string name="summary_home_path_preference">Path to a writable folder to be used as HOME.</string>
+
+    <string name="control_key_dialog_title">Control and Function Keys</string>
+    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+         actual control key key name. -->
+    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+    <string name="control_key_dialog_control_disabled_text">No control key set.</string>
+    <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+         actual function key key name. -->
+    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+    <string name="control_key_dialog_fn_disabled_text">No function key set.</string>
+
+    <string name="confirm_window_close_message">Close this window?</string>
+
+    <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
+    <string name="permdesc_run_script">Allows application to open new windows in Terminal Emulator for Android and run commands in those windows with all of Terminal Emulator for Android\'s permissions, including access to the Internet and your SD Card.</string>
+    <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
+    <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Terminal Emulator for Android.</string>
+    <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
+    <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Terminal Emulator for Android.</string>
+
+    <string name="email_transcript_subject">Transcript from Terminal Emulator for Android</string>
+    <string name="email_transcript_chooser_title">Mail transcript using:</string>
+    <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
+
+    <string name="share_title">Share...</string>
+    <string name="share_buffer_text">Current Buffer</string>
+    <string name="share_visual_text">Selected text (Visual mode)</string>
+    <string name="share_unnamed_text">Unnamed register</string>
+    <string name="share_screen_text">Share screen text</string>
+    <string name="share_file">File</string>
+
+    <string name="alt_sends_esc">Alt key sends ESC</string>
+    <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
+    <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
+
+    <string name="back_as_esc">Back button as ESC</string>
+    <string name="summary_back_as_esc_preference">Enable it if ESC key of physical keyboard is handled as Back button.</string>
+
+    <string name="ignore_xoff">Ignore XOFF flow control</string>
+    <string name="ignore_xoff_summary_on">Ignore Ctrl-s.</string>
+    <string name="ignore_xoff_summary_off">Ctrl-s sends xoff.</string>
+
+    <string name="title_mouse_tracking_preference">Send mouse events</string>
+    <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
+
+    <string name="title_use_keyboard_shortcuts">Use Keyboard Shortcuts</string>
+    <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
+    <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
+
+    <string name="title_auto_hide_functionbar">Hide functionbar</string>
+    <string name="auto_hide_functionbar_summary">Hide functionbar if physical keyboard is connected.</string>
+
+    <string name="ime_input_method_preferences">Text input mode</string>
+    <string name="title_pre_ime_shortcuts">IME shortcuts</string>
+    <string name="summary_title_pre_ime_shortcuts_select">Select a physical keyboard shortcut.</string>
+    <string name="summary_title_pre_ime_shortcuts">Physical Keyboard Shortcuts for IME Control.</string>
+    <string name="pref_alt_grave">Alt + [`]</string>
+    <string name="pref_alt_esc">Alt + [Esc]</string>
+    <string name="pref_alt_space">Alt + [Space]</string>
+    <string name="pref_ctrl_space">Ctrl + [Space]</string>
+    <string name="pref_shift_space">Shift + [Space]</string>
+    <string name="pref_zenkaku_hankaku">[Hankaku/Zenkaku]</string>
+    <string name="pref_grave">[`]</string>
+    <string name="pref_switch_charset">[Kanji]</string>
+    <string name="pref_ctrl_j">Ctrl + [j]</string>
+
+    <string name="title_ime_shortcuts_action_preference">IME shortcut action</string>
+    <string name="summary_ime_shortcuts_action_preference">Choose IME shortcut action</string>
+    <string name="dialog_titleime_shortcuts_action_preference">IME shortcut action</string>
+
+    <string name="title_home_dir_chooser_preference">Home directory</string>
+    <string name="set_home_directory">The home directory has been set to the following location:\n\n</string>
+    <string name="summary_home_dir_chooser_preference"></string>
+    <string name="title_startup_chooser_preference">Startup directory</string>
+    <string name="set_startup_directory">The startup directory has been set to the following location:\n\n</string>
+    <string name="summary_startup_chooser_preference">Choose startup directory</string>
+
+    <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default by pressing \"Default\" button.</string>
+    <string name="choose_startup_directory_message">Choose startup directory.\n\"Default\" button to set startup directory as home directory.</string>
+    <string name="select_directory_message">Chooose directory</string>
+    <string name="invalid_directory">Directory without write permission or invalid directory.\nPlease choose internal storage directory.</string>
+    <string name="copy_startup_dir">The selected path has been copied to the clipboard.\nIf you want to specify the directory at startup, try adding the following to your `.vimrc`: \n\ncd </string>
+    <string name="select_directory">Select</string>
+    <string name="reset_directory">Default</string>
+    <string name="choose_directory">Choose</string>
+
+    <string name="open_in_browser">Open in browser</string>
+    <string name="scroll_to_top">Top</string>
+    <string name="scroll_to_bottom">Bottom</string>
+    <string name="tutorial">Vim tutorial</string>
+    <string name="help">Help</string>
+    <string name="help_url">http://example.com</string>
+    <string name="activity_term_here_title">Term here</string>
+    <!-- BEGIN SHORTCUT RELATED STRINGS -->
+    <!-- AndroidManifest.xml -->
+    <string name="activity_shortcut_create">"Term shortcut"</string>
+    <!-- FSNavigator.java -->
+    <string name="fsnavigator_title">FILE SELECTOR</string>
+    <string name="fsnavigator_no_external_storage">External storage not available</string>
+    <string name="fsnavigator_optional_enter_path">Or enter path here.</string>
+    <string name="fsnavigator_change_theme">Change theme</string>
+    <!-- AddShortcut.java -->
+    <string name="addshortcut_command_hint">command</string>
+    <string name="addshortcut_example_hint">--example=\""a\"</string>
+    <string name="addshortcut_button_find_command">Find command</string>
+    <string name="addshortcut_navigator_title">SELECT SHORTCUT TARGET</string>
+    <string name="addshortcut_command_window_instructions">Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard).</string>
+    <string name="addshortcut_arguments_label">Arguments\:</string>
+    <string name="addshortcut_shortcut_label">Shortcut label\:</string>
+    <string name="addshortcut_button_text_icon">Text icon</string>
+    <string name="addshortcut_make_text_icon">MAKE TEXT ICON</string>
+    <string name="addshortcut_text_icon_instructions"></string>
+    <string name="addshortcut_title">Term shortcut</string>
+    <!-- ColorValue.java -->
+    <string name="colorvalue_letter_alpha">α</string>
+    <string name="colorvalue_letter_red">R</string>
+    <string name="colorvalue_letter_green">G</string>
+    <string name="colorvalue_letter_blue">B</string>
+    <string name="colorvalue_label_lock_button_column">LOCK</string>
+    <string name="colorvalue_icon_text_entry_hint">Enter icon text</string>
+    <!-- END SHORTCUT RELATED STRINGS -->
+
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="install_runtime_doc_message">Would you like to install help files?</string>
+    <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
+    <string name="keyboard_warning">By default direct input is forced, so you may not be able to input non-alphanumeric characters from the physical keyboard.\nIn that case please try the following:\n\n- ◇ Button\n- IME shortcuts\n- Change \"Input mode at startup\" to \"Normal input\"\n- Change input mode with Vim script.\n\nPlease see the help for details.</string>
+
+    <string name="extra">Extra</string>
+    <string name="debug">Debug</string>
+    <string name="files">Files</string>
+    <string name="dropbox">Dropbox</string>
+    <string name="googledrive">GoogleDrive</string>
+    <string name="onedrive">OneDrive</string>
+    <string name="summary_app_filepicker_on_drawer">Choose the behavior of the application button on the drawer.</string>
+    <string name="launch_app">\Launch %s</string>
+    <string name="activity_not_found">Activity not found.\nPlease try again.</string>
+    <string name="external_storage">Storage</string>
+    <string name="create_or_delete">Manager</string>
+    <string name="create_file">Create file</string>
+    <string name="delete_file">Delete file</string>
+    <string name="app_files">File manager</string>
+    <string name="storage_intent_error">No storage can perform this action.\nPlease wait a few seconds and try again.</string>
+    <string name="storage_manager">Create/Delete</string>
+    <string name="storage_permission_error">Storage permission does not granted.</string>
+    <string name="storage_permission_granted">Storage access granted.\nPlease restart this app for the settings to take effect.</string>
+    <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
+    <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
+    <string name="storage_write_error_title">File write error</string>
+    <string name="storage_write_error">This file is read only or the file has been deleted.\nOpen the file for editing via \"Storage\" button on the drawer menu.</string>
+    <string name="storage_hash_error_title">File hash error</string>
+    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Storage\" button.</string>
+    <string name="storage_hash_overwrite">Overwrite</string>
+    <string name="storage_hash_reopen">Storage</string>
+    <string name="storage_delete_file">Delete file from storage.</string>
+    <string name="title_internal_storage">Internal private storage</string>
+    <string name="clear_cache">Clear cache</string>
+    <string name="confirm_clear_cache_message">Clear external storage cache.</string>
+    <string name="softkeyboard">keyboard</string>
+
+    <string name="git_install_dialog_title">Install Git</string>
+    <string name="network_error">Please check network connection.</string>
+    <string name="iabsetup_try_again">Unable to connect to Google Play Service.\nPlease check your network connection and try again.</string>
+    <string name="installer_try_again">Installer was unable to download the file.\nPlease check your network connection and try again.</string>
+    <string name="installer_try_again_button">Try again</string>
+    <string name="git_install_message_install_git">Check for update...</string>
+    <string name="git_install_confirm_install">Git : There is a new version available.\nDo you want to install Git?</string>
+    <string name="git_install_confirm_update">Git : You already have the latest version.\nDo you want to overwrite the existing files?</string>
+    <string name="git_install_success">Git has been successfully updated.</string>
+
+    <string name="iab_null">Cannot found PlayStore.</string>
+    <string name="iab_wait">Please wait a moment.</string>
+    <string name="donate_confirm_title">Thank you for using DroidVim.</string>
+    <string name="donate_confirm_button">Donate</string>
+    <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get Git-cui, curl, Busybox after donation!\n\nGit - Version Control System.\ncurl - A tool to upload/download files.\nBusybox - A collection of UNIX utilities that do not exist on Android.</string>
+    <string name="donate_confirm_summary_no_payed_function">Sorry, no payed functions for your device.\nThis is just a donate option ;)</string>
+    <string name="donate_premium_purchase">Thank you for your donation!</string>
+    <string name="donate_button">Donate</string>
+    <string name="extra_button">Extra</string>
+
+    <string name="external_apps_preferences">External Apps</string>
+    <string name="external_app">Application name</string>
+    <string name="external_app_activity">Activity</string>
+    <string name="external_files_button">Files</string>
+    <string name="title_use_app_files_button">Use default file manager app</string>
+    <string name="external_app_button">External App</string>
+    <string name="title_external_app_button_preference">External App Button</string>
+    <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
+    <string name="summary_external_app_button_off_preference">Hide App button on drawer.</string>
+    <string name="title_external_app_id_preference">External App button</string>
+    <string name="external_app_id_error">Application ID is not correct or not set.\nPlease set it from preferences.</string>
+    <string name="external_app_activity_error">This application does not exist or there is no callable activity.</string>
+    <string name="title_cloud_dropbox_preference">Dropbox</string>
+    <string name="title_cloud_googledrive_preference">GoogleDrive</string>
+    <string name="title_cloud_onedrive_preference">OneDrive</string>
+    <string name="summary_cloud_file_picker_on_preference">Application</string>
+    <string name="summary_cloud_file_picker_off_preference">Content picker</string>
+    <string name="title_html_viewer_mode_preference">Html viewer</string>
+    <string name="summary_html_viewer_mode">Default</string>
 
 </resources>

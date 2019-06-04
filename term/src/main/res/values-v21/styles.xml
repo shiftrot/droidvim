@@ -17,6 +17,7 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="android:colorAccent">@color/accent</item>
     </style>
+
     <style name="Theme.Holo" parent="@android:style/Theme.DeviceDefault">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -28,6 +29,7 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <!--<item name="android:colorAccent">@color/accent</item>-->
     </style>
+
     <style name="Theme.Holo.Light" parent="@android:style/Theme.DeviceDefault.Light">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -39,13 +41,16 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <!--<item name="android:colorAccent">@color/accent</item>-->
     </style>
+
     <style name="Theme.Holo.ActionBarOverlay" parent="@android:style/Theme.Holo">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>
     </style>
+
     <style name="Widget.ActionBarOverlay" parent="@android:style/Widget.DeviceDefault.ActionBar">
         <item name="android:background">#a0000000</item>
     </style>
+
     <style name="Theme.Holo.Light.ActionBarOverlay" parent="@style/Theme.Holo.Light">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>

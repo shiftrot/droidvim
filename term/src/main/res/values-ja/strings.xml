@@ -15,477 +15,477 @@
  * limitations under the License.
 -->
 <resources>
-   <string name="plus">＋</string>
-   <string name="minus">－</string>
-   <string name="x">Ｘ</string>
-   <string name="user">？</string>
-   <string name="application_terminal">端末エミュレータ</string>
-   <string name="preferences">設定</string>
-   <string name="new_window">新規ウインドウ</string>
-   <string name="close_window">ウインドウを閉じる</string>
-   <string name="menu_window">ウインドウ</string>
-   <string name="window_list">ウインドウ一覧</string>
-   <string name="prev_window">前のウインドウ</string>
-   <string name="next_window">次のウインドウ</string>
-   <string name="screen">画面</string>
-   <string name="reset">端末をリセット</string>
-   <string name="send_email">メール送信</string>
-   <string name="special_keys">特殊キー</string>
-   <string name="toggle_soft_keyboard">ソフトキーボード</string>
-   <string name="toggle_function_bar">ファンクションバー</string>
-   <string name="quit">終了</string>
-
-   <string name="faild_to_bind_to_termservice">TermServiceへの接続に失敗しました</string>
-   <string name="please_restart">このアプリを再起動してください.</string>
-
-   <string name="switch_windows_warning">画面の上半分をスワイプしてウィンドウを切り替えます.</string>
-
-   <string name="reset_toast_notification">このウインドウのターミナル状態はリセットされました.</string>
-   <string name="toast_clipboard">テキストをクリップボードへコピーしました.</string>
-   <string name="toast_clipboard_error">テキストが含まれていません.</string>
-
-   <string name="clipboard_warning_title">クリップボードについて</string>
-   <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)\n\n \"貼り付け\"ボタンはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
-
-   <string name="edit_vimrc">.vimrcを編集</string>
-   <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
-   <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
-   <string name="text_box">一行テキスト入力</string>
-   <string name="menu_drawer">ストレージ</string>
-   <string name="update_message">実行ファイルとライブラリをアップデートしています.</string>
-   <string name="update_warning">アップデート中にこのアプリをバックグラウンドで動作させたり強制的に画面を回転させないでください.</string>
-   <string name="update_vim_warning">(もしダイアログが表示されなくなっても, Vimが起動するまで待ってください)</string>
-   <string name="reload_file">エンコーディング指定</string>
-   <string name="reload_file_title">ファイル再読込</string>
-   <string name="force_encoding">必要に応じてエンコードを選択します.</string>
-   <string name="webview_local_file_error">ローカルファイルを「インテントで開く」ことはできません.</string>
-
-   <string name="tips_vim_title">Tips</string>
-   <string name="tips_vim"></string>
-   <string name="tips_vim_list"></string>
-
-   <string name="edit_text_view_warning_title">一行テキストボックス</string>
-   <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 全削除/一行テキストボックスから移動</string>
-
-   <string name="menu_update">アップデート</string>
-   <string name="menu_update_latest">アプリは最新です</string>
-
-   <string name="title_prefs_keepscreen_at_startup">\"キープスクリーン\"を起動時から有効にする</string>
-   <string name="title_prefs_keepscreen">\"キープスクリーン\"の時間</string>
-   <string name="summary_keepscreen_preference">このアプリの使用中はスリープまでの時間を変更.</string>
-   <string name="dialog_prefs_keepscreen">スリープまでの時間 (0-120分)</string>
-   <string name="enable_keepscreen">キープスクリーン有効化</string>
-   <string name="disable_keepscreen">キープスクリーン解除</string>
-   <string name="keepscreen_notice">フォアグラウンドでこのアプリケーションを実行していると, 画面がスリープしなくなります.\nこの状態は最後にキーが押されてから%d分間続きます.</string>
-   <string name="keepscreen_deacitvated">キープスクリーンが解除されました.</string>
-   <string name="keepscreen">キープスクリーン</string>
-
-   <string name="enable_wakelock">WakeLockを取得</string>
-   <string name="disable_wakelock">WakeLockを解除</string>
-   <string name="enable_wifilock">WifiLockを取得</string>
-   <string name="disable_wifilock">WifiLockを解除</string>
-
-   <string name="edit_text">テキスト編集</string>
-   <string name="select_text">テキスト選択</string>
-   <string name="copy_all">すべてコピー</string>
-   <string name="copy_screen">画面のテキストをコピー</string>
-   <string name="copy_screen_current">現画面</string>
-   <string name="copy_screen_buffer">スクリーンバッファ</string>
-   <string name="paste">貼り付け</string>
-   <string name="clipboard">クリップボード</string>
-   <string name="send_control_key">コントールキー送信</string>
-   <string name="send_fn_key">fnキー送信</string>
-
-   <string name="window_title">ウインドウ</string>
-
-   <string name="service_notify_text">ターミナルセッション実行中</string>
-
-   <string name="process_exit_message">ターミナルセッション終了</string>
-
-   <string name="do_not_show">次回から表示しない</string>
-
-   <string name="reloading">このページを再読込しています</string>
-   <string name="stop_loading">このページの読込を中止</string>
-
-   <!-- Preference dialog -->
-   <string name="prefs_preferences">設定</string>
-   <string name="title_prefs_preference">保存/読込</string>
-   <string name="prefs_dialog_rw">設定の保存/読込を行います.</string>
-   <string name="prefs_read">読込</string>
-   <string name="prefs_read_error_title">読込エラー</string>
-   <string name="prefs_read_error">このファイルはバックアップファイルではないか, 古すぎるバックアップファイルです.</string>
-   <string name="prefs_write">保存</string>
-   <string name="prefs_write_confirm">バックアップファイルを上書きします.</string>
-   <string name="prefs_write_info_success">バックアップファイルが作成されました.</string>
-   <string name="prefs_write_info_failure">バックアップファイルを作成できません.</string>
-   <string name="screen_preferences">スクリーン</string>
-
-   <string name="title_statusbar_preference">ステータスバー</string>
-   <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
-   <string name="dialog_title_statusbar_preference">ステータスバー</string>
-
-   <string name="title_notification_preference">アプリ情報</string>
-   <string name="title_app_info_preference">アプリ情報</string>
-   <string name="summary_notification_preference">通知はアプリ情報から非表示にすることができますが, 重要度の低いメッセージは表示されなくなります.</string>
-
-   <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
-   <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
-   <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
-
-   <string name="title_functionbar_preference">ファンクションバー</string>
-   <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
-   <string name="title_oneline_textbox_preference">一行テキスト入力</string>
-   <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
-   <string name="title_oneline_textbox_esc_preference">ESCで一行テキストボックスを非表示にする</string>
-   <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
-   <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
-   <string name="title_oneline_textbox_cr_preference">\"送出\"ボタンを表示(一行テキストボックス)</string>
-
-   <string name="title_functionbar_key_preference">ファンクションキー (1列目)</string>
-   <string name="title_functionbar_key_2_preference">ファンクションキー (2列目)</string>
-   <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
-
-   <string name="title_functionbar_menu">メニュー</string>
-   <string name="title_functionbar_softkeyboard">IMEのトグル</string>
-   <string name="title_functionbar_hide">ファンクションバーを隠す</string>
-   <string name="title_functionbar_change">ファンクションバー切替</string>
-
-   <string name="title_actionbar_preference">アクションバー</string>
-   <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降)</string>
-   <string name="dialog_title_actionbar_preference">アクションバーの振舞い</string>
-
-   <string name="title_orientation_preference">画面の向き</string>
-   <string name="summary_orientation_preference">画面の向きを選択</string>
-   <string name="dialog_title_orientation_preference">画面の向き</string>
-
-   <string name="title_theme_preference">テーマ</string>
-   <string name="summary_theme_preference">アプリのテーマを選択する (要再起動).</string>
-   <string name="dialog_title_theme_preference">テーマ</string>
-
-   <string name="title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>
-   <string name="summary_cursorstyle_preference">カーソルスタイルとレンダリングモードの選択</string>
-   <string name="dialog_title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>
-
-   <string name="title_cursorblink_preference">カーソルの点滅</string>
-   <string name="summary_cursorblink_preference">カーソルの点滅を選択</string>
-   <string name="dialog_title_cursorblink_preference">カーソルの点滅</string>
-
-   <string name="text_preferences">テキスト</string>
-   <string name="font_preferences">フォント</string>
-
-   <string name="title_utf8_by_default_preference">デフォルトをUTF-8にする</string>
-   <string name="summary_utf8_by_default_preference">エンコーディングをUTF-8に設定する</string>
-
-   <string name="title_hw_acceleration_by_default_preference">ハードウェアアクセラレーション</string>
-   <string name="summary_hw_acceleration_by_default_preference">ハードウェアアクセラレーションを有効にする</string>
-
-   <string name="title_fontsize_preference">フォントサイズ</string>
-   <string name="summary_fontsize_preference">文字の高さと大きさを選択</string>
-   <string name="dialog_title_fontsize_preference">フォントサイズ</string>
-
-   <string name="title_fontleading_preference">行間</string>
-   <string name="summary_fontleading_preference">行間の大きさを指定する</string>
-   <string name="dialog_title_fontleading_preference">行間の大きさ</string>
-
-   <string name="title_fontfile_preference">フォントファイル</string>
-   <string name="summary_fontfile_preference">フォントを選択</string>
-   <string name="dialog_title_fontfile_preference">フォントファイル</string>
-   <string name="entry_fontfile_default">システムフォント</string>
-   <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfの等幅フォントファイルを選択してください.</string>
-   <string name="font_file_invalid">Androidはこのフォントファイルを扱えません.</string>
-
-   <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
-   <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う.</string>
-   <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
-
-   <string name="title_force_flush_drawtext_preference">プロポーショナルフォントを使用</string>
-   <string name="summary_force_flush_drawtext_preference">プロポーショナルフォントを使用しても画面が乱れなくなります. 描画速度は遅くなります.</string>
-
-   <string name="title_color_preference">色</string>
-   <string name="summary_color_preference">端末の色を選択する</string>
-   <string name="dialog_title_color_preference">端末の色</string>
-
-   <string name="title_composingtext_preference">IMEの色</string>
-   <string name="summary_composingtext_preference">変換中の文字色を選択</string>
-   <string name="dialog_title_composingtext_preference">IME変換中の文字色</string>
-
-   <string name="actionbar_key_preferences">アクションバーボタン</string>
-   <string name="title_actionbar_icon_preference">◇ボタン</string>
-   <string name="summary_actionbar_icon_preference">◇ボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_icon_preference">◇ボタン</string>
-   <string name="title_actionbar_plus_preference">＋ボタン</string>
-   <string name="summary_actionbar_plus_preference">＋ボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_plus_preference">＋ボタン</string>
-   <string name="title_actionbar_minus_preference">－ボタン</string>
-   <string name="summary_actionbar_minus_preference">－ボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_minus_preference">－ボタン</string>
-   <string name="title_actionbar_x_preference">Ｑボタン</string>
-   <string name="summary_actionbar_x_preference">Ｑボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_x_preference">Ｑボタン</string>
-   <string name="title_actionbar_user_preference">□ボタン</string>
-   <string name="summary_actionbar_user_preference">□ボタンの振舞いを選択</string>
-   <string name="dialog_title_actionbar_user_preference">□ボタン</string>
-   <string name="title_double_tap_preference">ダブルタップ</string>
-   <string name="summary_double_tap_preference">ダブルタップの振舞いを選択</string>
-   <string name="dialog_title_double_tap_preference">ダブルタップ</string>
-   <string name="title_right_double_tap_preference">画面右端でのダブルタップ</string>
-   <string name="summary_right_double_tap_preference">画面右端でのダブルタップの振舞いを選択</string>
-   <string name="dialog_title_right_double_tap_preference">画面右端でのダブルタップ</string>
-   <string name="title_left_double_tap_preference">画面左端でのダブルタップ</string>
-   <string name="summary_left_double_tap_preference">画面左端でのダブルタップの振舞いを選択</string>
-   <string name="dialog_title_left_double_tap_preference">画面左端でのダブルタップ</string>
-   <string name="title_bottom_double_tap_preference">画面下端でのダブルタップ</string>
-   <string name="summary_bottom_double_tap_preference">画面下端でのダブルタップの振舞いを選択</string>
-   <string name="dialog_title_bottom_double_tap_preference">画面下端でのダブルクリック</string>
-   <string name="functionbar_preferences">ファンクションバー</string>
-   <string name="summary_functionbar_preferences">使用したいファンクションキーを選択</string>
-   <string name="gesture_preferences">ジェスチャー</string>
-
-   <string name="keyboard_preferences">キーボード</string>
-
-   <string name="title_backaction_preference">Backボタン</string>
-   <string name="summary_backaction_preference">Backボタンの振舞いを選択</string>
-   <string name="dialog_title_backaction_preference">Backボタン</string>
-
-   <string name="title_controlkey_preference">コントロールキー</string>
-   <string name="summary_controlkey_preference">コントロールキーの割り当て先を選択</string>
-   <string name="dialog_title_controlkey_preference">コントロールキー</string>
-
-   <string name="title_fnkey_preference">Fnキー</string>
-   <string name="summary_fnkey_preference">Fnキーの割り当て先を選択</string>
-   <string name="dialog_title_fnkey_preference">Fnキー</string>
-
-   <string name="title_ime_inputtype_preference">起動時の入力モード</string>
-   <string name="summary_ime_inputtype_preference">◇ボタンで「通常入力」と切り替えます</string>
-   <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
-
-   <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
-   <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へリセットします.</string>
-   <string name="dialog_title_vi_cooperative_mode_preference">vi協調モードを有効にするキーボードを選択.</string>
-
-   <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>
-   <string name="title_ime_preference">「通常入力」のインプットメソッド</string>
-   <string name="summary_ime_preference">「通常入力」のインプットメソッドを選択</string>
-   <string name="summary_ime_direct_input_method_preference">「直接入力」のインプットメソッドを選択</string>
-   <string name="dialog_title_ime_preference">インプットメソッドを選択</string>
-
-   <string name="shell_preferences">シェル</string>
-   <string name="title_shell_preference">コマンドライン</string>
-   <string name="summary_shell_preference">コマンドラインシェルを指定</string>
-   <string name="dialog_title_shell_preference">シェル</string>
-
-   <string name="title_initialcommand_preference">初期コマンド</string>
-   <string name="summary_initialcommand_preference">シェル開始時に実行するコマンド</string>
-   <string name="dialog_title_initialcommand_preference">初期コマンド</string>
-
-   <string name="title_intentcommand_preference">インテントコマンド</string>
-   <string name="summary_intentcommand_preference">インテント呼出時に実行するコマンド</string>
-   <string name="dialog_title_intentcommand_preference">インテントコマンド</string>
-
-   <string name="title_termtype_preference">ターミナルタイプ</string>
-   <string name="summary_termtype_preference">シェルに設定するターミナルタイプ</string>
-   <string name="dialog_title_termtype_preference">ターミナルタイプ</string>
-
-   <string name="title_close_window_on_process_exit_preference">終了時にウインドウを閉じる</string>
-   <string name="summary_close_window_on_process_exit_preference">シェル終了時にウインドウを閉じる</string>
-
-   <string name="title_verify_path_preference">PATHエントリを照合</string>
-   <string name="summary_verify_path_preference">アクセス不可ディレクトリをPATHから取り除く</string>
-
-   <string name="title_do_path_extensions_preference">PATH拡張の許可</string>
-   <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
-
-   <string name="title_change_lib_preference">システムライブラリを強制変更</string>
-   <string name="title_choose">選択</string>
-   <string name="summary_change_lib_preference">システムライブラリを強制変更します.</string>
-   <string name="message_change_lib_preference">特に問題がない場合は, システムライブラリを変更しないでください.</string>
-   <string name="current_library">現在のライブラリ : </string>
-   <string name="reset_to_default">デフォルトに設定</string>
-   <string name="force_64bit">64ビットライブラリへ変更</string>
-   <string name="force_32bit">32ビットライブラリへ変更</string>
-   <string name="confirm_do_close_troubleshooting">* トラブルシューティングで設定した設定は、\"環境設定\">\"シェル\"からも変更できます.\n* キャンセルすると, トラブルシューティングで設定した設定が失われます.\n\n</string>
-   <string name="confirm_change_lib">システムライブラリを変更した場合, 正常に動作しなくなることがあります.\n動作しなくなった場合は、「アプリ情報」から強制的に終了するか、ストレージをクリアしてください.</string>
-   <string name="change_lib">ライブラリ変更の用意ができました.\nアプリを再起動してください.</string>
-
-   <string name="crash_title">申し訳ありません, Vimがクラッシュしました.</string>
-   <string name="crash_message">トラブルシューティングを実行するか, 終了してから再起動してください.\n\nもしVim.pythonが常にクラッシュする場合は, 機種依存の問題の可能性があります.\nトラブルシューティングで問題が解決しない場合は, 開発者までご連絡ください.</string>
-   <string name="crash_quit_button">強制終了</string>
-   <string name="crash_trouble_shooting_button">トラブルシューティング</string>
-   <string name="choose_vim_python_script">Vim (+Python) スクリプトを選択</string>
-   <string name="vim_python_script_default">デフォルト</string>
-   <string name="vim_python_script_alt1">代替モード (1)</string>
-   <string name="choose_ld_library_path_mode">LD_LIBRARY_PATHモードを選択</string>
-   <string name="ld_library_path_mode_default">デフォルト</string>
-   <string name="ld_library_path_mode_alt_1">代替モード (1)</string>
-   <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
-   <string name="revert_to_default_vim">実行ファイルをデフォルトへ戻す.</string>
-   <string name="quit_to_shell">シェル</string>
-
-   <string name="title_allow_prepend_path_preference">PATHへのプリペンドの許可</string>
-   <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
-
-   <string name="title_home_path_preference">ホームディレクトリ</string>
-   <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ</string>
-
-   <string name="control_key_dialog_title">コントロールキーとファンクションキー</string>
-   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
-        actual control key key name. -->
-   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
-  <string name="control_key_dialog_control_disabled_text">コントロールキーを設定してください.</string>
-  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
-       actual function key key name. -->
-  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
-  <string name="control_key_dialog_fn_disabled_text">ファンクションキーを設定してください.</string>
-
-  <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
-
-  <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
-  <string name="permdesc_run_script">アプリケーションに対して，端末エミュレータに新規ウインドウを開かせ，インターネットやSDカードへのアクセスを含む，端末エミュレータが持つすべてのパーミッションでコマンドを実行することを許可する.</string>
-  <string name="perm_append_to_path">端末エミュレータへのコマンド追加</string>
-  <string name="permdesc_append_to_path">アプリケーションに対して，端末エミュレータのコマンドを追加する(PATHにディレクトリを追加する)ことを許可する.</string>
-  <string name="perm_prepend_to_path">端末エミュレータのコマンドを上書きする</string>
-  <string name="permdesc_prepend_to_path">アプリケーションに対して，端末エミュレータが持つ既存のコマンドを，アプリケーション独自のバージョンに置き換える(PATHの先頭にディレクトリを追加する)ことを許可する.</string>
-
-  <string name="email_transcript_subject">Transcript from Terminal Emulator for Android</string>
-  <string name="email_transcript_chooser_title">メール転写の選択:</string>
-  <string name="email_transcript_no_email_activity_found">転写を送信するEメール用アクティビティが選択できませんでした.</string>
-
-  <string name="share_title">共有...</string>
-  <string name="share_buffer_text">現バッファ</string>
-  <string name="share_visual_text">選択テキスト (ビジュアルモード)</string>
-  <string name="share_unnamed_text">無名レジスタ</string>
-  <string name="share_screen_text">画面のテキストを共有</string>
-  <string name="share_file">ファイル</string>
-
-  <string name="alt_sends_esc">AltキーでESCを送出</string>
-  <string name="alt_sends_esc_summary_on">AltキーでESCを送出する</string>
-  <string name="alt_sends_esc_summary_off">AltキーでESCを送出しない</string>
-
-  <string name="back_as_esc">BackボタンをESCとして扱う</string>
-  <string name="summary_back_as_esc_preference">物理キーボードのESCキーがBackボタンとして扱われてしまう場合に有効にしてください.</string>
-
-  <string name="ignore_xoff">XOFFフロー制御を無視</string>
-  <string name="ignore_xoff_summary_on">Ctrl-sの入力を無視する.</string>
-  <string name="ignore_xoff_summary_off">Ctrl-sの入力でXOFFを送出する.</string>
-
-  <string name="title_mouse_tracking_preference">マウスイベントの送出</string>
-  <string name="summary_mouse_tracking_preference">タップやスワイプを端末へのエスケープシーケンスに変換する</string>
-
-  <string name="title_use_keyboard_shortcuts">キーボードショートカット</string>
-  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: ウィンドウ移動, Ctrl-Shift-N: 新しいウィンドウ, Ctrl-Shift-V: 貼り付け</string>
-  <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
-
-  <string name="title_auto_hide_functionbar">ファンクションバーを隠す</string>
-  <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す.</string>
-
-  <string name="ime_input_method_preferences">テキスト入力モード</string>
-  <string name="title_pre_ime_shortcuts">IMEショートカット</string>
-  <string name="summary_title_pre_ime_shortcuts_select">IMEショートカットを選択します</string>
-  <string name="summary_title_pre_ime_shortcuts">IME制御のための物理キーボードショートカット.</string>
-  <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
-  <string name="pref_zenkaku_hankaku">[半/全]</string>
-  <string name="pref_grave">[`]</string>
-  <string name="pref_switch_charset">[漢字]</string>
-
-  <string name="title_ime_shortcuts_action_preference">IMEショートカット設定</string>
-  <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
-  <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
-
-  <string name="title_home_dir_chooser_preference">ホームディレクトリ</string>
-  <string name="set_home_directory">ホームディレクトリは, 次の場所に設定されました.\n\n</string>
-  <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
-  <string name="set_startup_directory">起動時のディレクトリは, 次の場所に設定されました.\n\n</string>
-  <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
-
-  <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
-  <string name="choose_startup_directory_message">起動時のディレクトリを選択します.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリを起動時のディレクトリに設定することができます.</string>
-  <string name="select_directory_message">ディレクトリを選択</string>
-  <string name="invalid_directory">書き込めないか, 不正なディレクトリです.\n内部ストレージのディレクトリを選択してください.</string>
-  <string name="copy_startup_dir">選択したパスがクリップボードへコピーされました.\n起動時のディレクトリを指定したい場合は, `.vimrc`に以下を追加してみてください.\n\ncd </string>
-  <string name="select_directory">選択</string>
-  <string name="reset_directory">デフォルト</string>
-  <string name="choose_directory">Choose</string>
-
-  <string name="open_in_browser">ブラウザで開く</string>
-  <string name="scroll_to_top">先頭</string>
-  <string name="scroll_to_bottom">末尾</string>
-  <string name="tutorial">Vimチュートリアル</string>
-  <string name="help">ヘルプ</string>
-  <string name="help_url">http://example.com</string>
-  <!-- AddShortcut.java -->
-  <string name="addshortcut_button_find_command">コマンド指定</string>
-  <string name="addshortcut_command_window_instructions">コマンドはフルパスで指定し引数は省略可. フルパスで指定しない場合は引数ウィンドウのみで設定 (例: cd /sdcard).</string>
-  <string name="addshortcut_arguments_label">引数\:</string>
-  <string name="addshortcut_shortcut_label">ラベル\:</string>
-  <string name="addshortcut_button_text_icon">テキストアイコン</string>
-
-  <string name="button_yes">はい</string>
-  <string name="button_no">いいえ</string>
-  <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
-  <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
-  <string name="keyboard_warning">デフォルトでは直接入力を強制しているため、ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
-
-  <string name="external_storage">ストレージ</string>
-  <string name="create_or_delete">管理</string>
-  <string name="create_file">ファイル作成</string>
-  <string name="delete_file">ファイル削除</string>
-  <string name="app_files">ファイルマネージャー</string>
-  <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
-  <string name="storage_manager">管理</string>
-  <string name="launch_app">%s (アプリ起動)</string>
-  <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
-  <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
-  <string name="storage_permission_granted">ストレージ権限が有効になりました.\n設定を有効にするため, このアプリを再起動してください.</string>
-  <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
-  <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
-  <string name="storage_write_error_title">書き込みエラー</string>
-  <string name="storage_write_error">このファイルは閲覧専用であるか、ファイルが削除されています.\nドロワーメニューの\"ストレージ\"ボタンから編集用にファイルを開いてください.</string>
-  <string name="storage_hash_error_title">ハッシュエラー</string>
-  <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
-  <string name="storage_hash_overwrite">上書き</string>
-  <string name="storage_hash_reopen">ストレージ</string>
-  <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
-  <string name="title_internal_storage">内部プライベート領域</string>
-  <string name="clear_cache">キャッシュクリア</string>
-  <string name="confirm_clear_cache_message">外部ストレージキャッシュを削除します.</string>
-  <string name="softkeyboard">キーボード</string>
-
-  <string name="git_install_dialog_title">Gitのインストール</string>
-  <string name="network_error">ネットワーク接続を確認してください.</string>
-  <string name="iabsetup_try_again">Google Playサービスへの接続に失敗しました。ネットワーク接続を確認して再実行してください.</string>
-  <string name="installer_try_again">ファイルのダウンロードに失敗しました.\nネットワーク接続を確認して再実行してください.</string>
-  <string name="installer_try_again_button">再実行</string>
-  <string name="git_install_message_install_git">アップデートをチェックしています...</string>
-  <string name="git_install_confirm_install">新しいバージョンのGitが存在します.\nGitのインストールを実行します.</string>
-  <string name="git_install_confirm_update">既に同じバージョンのGitがインストールされています.\n上書きインストールしますか？</string>
-  <string name="git_install_success">Gitのアップデートに成功しました.</string>
-
-  <string name="iab_null">PlayStoreがみつかりません.</string>
-  <string name="iab_wait">しばらくおまちください.</string>
-  <string name="donate_confirm_title">DroidVimのご使用ありがとうございます.</string>
-  <string name="donate_confirm_button">寄付する</string>
-  <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>
-  <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
-  <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
-
-  <string name="external_apps_preferences">外部アプリ</string>
-  <string name="external_app">アプリ名</string>
-  <string name="external_app_activity">アクティビティ</string>
-  <string name="external_app_button">外部アプリ</string>
-  <string name="title_use_app_files_button">ファイルマネージャーアプリを使用する</string>
-  <string name="title_external_app_button_preference">外部アプリボタン</string>
-  <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
-  <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>
-  <string name="title_external_app_id_preference">外部アプリボタン</string>
-  <string name="external_app_id_error">アプリケーションIDが正しくないか, 設定されていません.\n環境設定から設定してください.</string>
-  <string name="external_app_activity_error">このアプリケーションは存在しないか、呼び出し可能なアクティビティがありません.</string>
-  <string name="title_cloud_dropbox_preference">Dropbox</string>
-  <string name="title_cloud_googledrive_preference">GoogleDrive</string>
-  <string name="title_cloud_onedrive_preference">OneDrive</string>
-  <string name="summary_app_filepicker_on_drawer">ドロワー上のアプリボタンの振舞いを選択する.</string>
-  <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
-  <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
-
-  <string name="title_html_viewer_mode_preference">HTMLビューア</string>
+    <string name="plus">＋</string>
+    <string name="minus">－</string>
+    <string name="x">Ｘ</string>
+    <string name="user">？</string>
+    <string name="application_terminal">端末エミュレータ</string>
+    <string name="preferences">設定</string>
+    <string name="new_window">新規ウインドウ</string>
+    <string name="close_window">ウインドウを閉じる</string>
+    <string name="menu_window">ウインドウ</string>
+    <string name="window_list">ウインドウ一覧</string>
+    <string name="prev_window">前のウインドウ</string>
+    <string name="next_window">次のウインドウ</string>
+    <string name="screen">画面</string>
+    <string name="reset">端末をリセット</string>
+    <string name="send_email">メール送信</string>
+    <string name="special_keys">特殊キー</string>
+    <string name="toggle_soft_keyboard">ソフトキーボード</string>
+    <string name="toggle_function_bar">ファンクションバー</string>
+    <string name="quit">終了</string>
+
+    <string name="faild_to_bind_to_termservice">TermServiceへの接続に失敗しました</string>
+    <string name="please_restart">このアプリを再起動してください.</string>
+
+    <string name="switch_windows_warning">画面の上半分をスワイプしてウィンドウを切り替えます.</string>
+
+    <string name="reset_toast_notification">このウインドウのターミナル状態はリセットされました.</string>
+    <string name="toast_clipboard">テキストをクリップボードへコピーしました.</string>
+    <string name="toast_clipboard_error">テキストが含まれていません.</string>
+
+    <string name="clipboard_warning_title">クリップボードについて</string>
+    <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)\n\n \"貼り付け\"ボタンはシェルにコマンドを送信するためのコマンドで, 送信できる文字数はシェルのコマンドバッファのサイズによって制限されます.</string>
+
+    <string name="edit_vimrc">.vimrcを編集</string>
+    <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
+    <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
+    <string name="text_box">一行テキスト入力</string>
+    <string name="menu_drawer">ストレージ</string>
+    <string name="update_message">実行ファイルとライブラリをアップデートしています.</string>
+    <string name="update_warning">アップデート中にこのアプリをバックグラウンドで動作させたり強制的に画面を回転させないでください.</string>
+    <string name="update_vim_warning">(もしダイアログが表示されなくなっても, Vimが起動するまで待ってください)</string>
+    <string name="reload_file">エンコーディング指定</string>
+    <string name="reload_file_title">ファイル再読込</string>
+    <string name="force_encoding">必要に応じてエンコードを選択します.</string>
+    <string name="webview_local_file_error">ローカルファイルを「インテントで開く」ことはできません.</string>
+
+    <string name="tips_vim_title">Tips</string>
+    <string name="tips_vim"></string>
+    <string name="tips_vim_list"></string>
+
+    <string name="edit_text_view_warning_title">一行テキストボックス</string>
+    <string name="edit_text_view_warning">一行テキストボックスは日本語、絵文字入力と音声入力の補助手段です.\n\nESC - 全削除/一行テキストボックスから移動</string>
+
+    <string name="menu_update">アップデート</string>
+    <string name="menu_update_latest">アプリは最新です</string>
+
+    <string name="title_prefs_keepscreen_at_startup">\"キープスクリーン\"を起動時から有効にする</string>
+    <string name="title_prefs_keepscreen">\"キープスクリーン\"の時間</string>
+    <string name="summary_keepscreen_preference">このアプリの使用中はスリープまでの時間を変更.</string>
+    <string name="dialog_prefs_keepscreen">スリープまでの時間 (0-120分)</string>
+    <string name="enable_keepscreen">キープスクリーン有効化</string>
+    <string name="disable_keepscreen">キープスクリーン解除</string>
+    <string name="keepscreen_notice">フォアグラウンドでこのアプリケーションを実行していると, 画面がスリープしなくなります.\nこの状態は最後にキーが押されてから%d分間続きます.</string>
+    <string name="keepscreen_deacitvated">キープスクリーンが解除されました.</string>
+    <string name="keepscreen">キープスクリーン</string>
+
+    <string name="enable_wakelock">WakeLockを取得</string>
+    <string name="disable_wakelock">WakeLockを解除</string>
+    <string name="enable_wifilock">WifiLockを取得</string>
+    <string name="disable_wifilock">WifiLockを解除</string>
+
+    <string name="edit_text">テキスト編集</string>
+    <string name="select_text">テキスト選択</string>
+    <string name="copy_all">すべてコピー</string>
+    <string name="copy_screen">画面のテキストをコピー</string>
+    <string name="copy_screen_current">現画面</string>
+    <string name="copy_screen_buffer">スクリーンバッファ</string>
+    <string name="paste">貼り付け</string>
+    <string name="clipboard">クリップボード</string>
+    <string name="send_control_key">コントールキー送信</string>
+    <string name="send_fn_key">fnキー送信</string>
+
+    <string name="window_title">ウインドウ</string>
+
+    <string name="service_notify_text">ターミナルセッション実行中</string>
+
+    <string name="process_exit_message">ターミナルセッション終了</string>
+
+    <string name="do_not_show">次回から表示しない</string>
+
+    <string name="reloading">このページを再読込しています</string>
+    <string name="stop_loading">このページの読込を中止</string>
+
+    <!-- Preference dialog -->
+    <string name="prefs_preferences">設定</string>
+    <string name="title_prefs_preference">保存/読込</string>
+    <string name="prefs_dialog_rw">設定の保存/読込を行います.</string>
+    <string name="prefs_read">読込</string>
+    <string name="prefs_read_error_title">読込エラー</string>
+    <string name="prefs_read_error">このファイルはバックアップファイルではないか, 古すぎるバックアップファイルです.</string>
+    <string name="prefs_write">保存</string>
+    <string name="prefs_write_confirm">バックアップファイルを上書きします.</string>
+    <string name="prefs_write_info_success">バックアップファイルが作成されました.</string>
+    <string name="prefs_write_info_failure">バックアップファイルを作成できません.</string>
+    <string name="screen_preferences">スクリーン</string>
+
+    <string name="title_statusbar_preference">ステータスバー</string>
+    <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
+    <string name="dialog_title_statusbar_preference">ステータスバー</string>
+
+    <string name="title_notification_preference">アプリ情報</string>
+    <string name="title_app_info_preference">アプリ情報</string>
+    <string name="summary_notification_preference">通知はアプリ情報から非表示にすることができますが, 重要度の低いメッセージは表示されなくなります.</string>
+
+    <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
+    <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
+    <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
+
+    <string name="title_functionbar_preference">ファンクションバー</string>
+    <string name="summary_functionbar_preference">起動時にファンクションバーを表示する</string>
+    <string name="title_oneline_textbox_preference">一行テキスト入力</string>
+    <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
+    <string name="title_oneline_textbox_esc_preference">ESCで一行テキストボックスを非表示にする</string>
+    <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
+    <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
+    <string name="title_oneline_textbox_cr_preference">\"送出\"ボタンを表示(一行テキストボックス)</string>
+
+    <string name="title_functionbar_key_preference">ファンクションキー (1列目)</string>
+    <string name="title_functionbar_key_2_preference">ファンクションキー (2列目)</string>
+    <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
+
+    <string name="title_functionbar_menu">メニュー</string>
+    <string name="title_functionbar_softkeyboard">IMEのトグル</string>
+    <string name="title_functionbar_hide">ファンクションバーを隠す</string>
+    <string name="title_functionbar_change">ファンクションバー切替</string>
+
+    <string name="title_actionbar_preference">アクションバー</string>
+    <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降)</string>
+    <string name="dialog_title_actionbar_preference">アクションバーの振舞い</string>
+
+    <string name="title_orientation_preference">画面の向き</string>
+    <string name="summary_orientation_preference">画面の向きを選択</string>
+    <string name="dialog_title_orientation_preference">画面の向き</string>
+
+    <string name="title_theme_preference">テーマ</string>
+    <string name="summary_theme_preference">アプリのテーマを選択する (要再起動).</string>
+    <string name="dialog_title_theme_preference">テーマ</string>
+
+    <string name="title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>
+    <string name="summary_cursorstyle_preference">カーソルスタイルとレンダリングモードの選択</string>
+    <string name="dialog_title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>
+
+    <string name="title_cursorblink_preference">カーソルの点滅</string>
+    <string name="summary_cursorblink_preference">カーソルの点滅を選択</string>
+    <string name="dialog_title_cursorblink_preference">カーソルの点滅</string>
+
+    <string name="text_preferences">テキスト</string>
+    <string name="font_preferences">フォント</string>
+
+    <string name="title_utf8_by_default_preference">デフォルトをUTF-8にする</string>
+    <string name="summary_utf8_by_default_preference">エンコーディングをUTF-8に設定する</string>
+
+    <string name="title_hw_acceleration_by_default_preference">ハードウェアアクセラレーション</string>
+    <string name="summary_hw_acceleration_by_default_preference">ハードウェアアクセラレーションを有効にする</string>
+
+    <string name="title_fontsize_preference">フォントサイズ</string>
+    <string name="summary_fontsize_preference">文字の高さと大きさを選択</string>
+    <string name="dialog_title_fontsize_preference">フォントサイズ</string>
+
+    <string name="title_fontleading_preference">行間</string>
+    <string name="summary_fontleading_preference">行間の大きさを指定する</string>
+    <string name="dialog_title_fontleading_preference">行間の大きさ</string>
+
+    <string name="title_fontfile_preference">フォントファイル</string>
+    <string name="summary_fontfile_preference">フォントを選択</string>
+    <string name="dialog_title_fontfile_preference">フォントファイル</string>
+    <string name="entry_fontfile_default">システムフォント</string>
+    <string name="font_file_error">内部ストレージ内の拡張子が.ttfまたは.otfの等幅フォントファイルを選択してください.</string>
+    <string name="font_file_invalid">Androidはこのフォントファイルを扱えません.</string>
+
+    <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
+    <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う.</string>
+    <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
+
+    <string name="title_force_flush_drawtext_preference">プロポーショナルフォントを使用</string>
+    <string name="summary_force_flush_drawtext_preference">プロポーショナルフォントを使用しても画面が乱れなくなります. 描画速度は遅くなります.</string>
+
+    <string name="title_color_preference">色</string>
+    <string name="summary_color_preference">端末の色を選択する</string>
+    <string name="dialog_title_color_preference">端末の色</string>
+
+    <string name="title_composingtext_preference">IMEの色</string>
+    <string name="summary_composingtext_preference">変換中の文字色を選択</string>
+    <string name="dialog_title_composingtext_preference">IME変換中の文字色</string>
+
+    <string name="actionbar_key_preferences">アクションバーボタン</string>
+    <string name="title_actionbar_icon_preference">◇ボタン</string>
+    <string name="summary_actionbar_icon_preference">◇ボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_icon_preference">◇ボタン</string>
+    <string name="title_actionbar_plus_preference">＋ボタン</string>
+    <string name="summary_actionbar_plus_preference">＋ボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_plus_preference">＋ボタン</string>
+    <string name="title_actionbar_minus_preference">－ボタン</string>
+    <string name="summary_actionbar_minus_preference">－ボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_minus_preference">－ボタン</string>
+    <string name="title_actionbar_x_preference">Ｑボタン</string>
+    <string name="summary_actionbar_x_preference">Ｑボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_x_preference">Ｑボタン</string>
+    <string name="title_actionbar_user_preference">□ボタン</string>
+    <string name="summary_actionbar_user_preference">□ボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_user_preference">□ボタン</string>
+    <string name="title_double_tap_preference">ダブルタップ</string>
+    <string name="summary_double_tap_preference">ダブルタップの振舞いを選択</string>
+    <string name="dialog_title_double_tap_preference">ダブルタップ</string>
+    <string name="title_right_double_tap_preference">画面右端でのダブルタップ</string>
+    <string name="summary_right_double_tap_preference">画面右端でのダブルタップの振舞いを選択</string>
+    <string name="dialog_title_right_double_tap_preference">画面右端でのダブルタップ</string>
+    <string name="title_left_double_tap_preference">画面左端でのダブルタップ</string>
+    <string name="summary_left_double_tap_preference">画面左端でのダブルタップの振舞いを選択</string>
+    <string name="dialog_title_left_double_tap_preference">画面左端でのダブルタップ</string>
+    <string name="title_bottom_double_tap_preference">画面下端でのダブルタップ</string>
+    <string name="summary_bottom_double_tap_preference">画面下端でのダブルタップの振舞いを選択</string>
+    <string name="dialog_title_bottom_double_tap_preference">画面下端でのダブルクリック</string>
+    <string name="functionbar_preferences">ファンクションバー</string>
+    <string name="summary_functionbar_preferences">使用したいファンクションキーを選択</string>
+    <string name="gesture_preferences">ジェスチャー</string>
+
+    <string name="keyboard_preferences">キーボード</string>
+
+    <string name="title_backaction_preference">Backボタン</string>
+    <string name="summary_backaction_preference">Backボタンの振舞いを選択</string>
+    <string name="dialog_title_backaction_preference">Backボタン</string>
+
+    <string name="title_controlkey_preference">コントロールキー</string>
+    <string name="summary_controlkey_preference">コントロールキーの割り当て先を選択</string>
+    <string name="dialog_title_controlkey_preference">コントロールキー</string>
+
+    <string name="title_fnkey_preference">Fnキー</string>
+    <string name="summary_fnkey_preference">Fnキーの割り当て先を選択</string>
+    <string name="dialog_title_fnkey_preference">Fnキー</string>
+
+    <string name="title_ime_inputtype_preference">起動時の入力モード</string>
+    <string name="summary_ime_inputtype_preference">◇ボタンで「通常入力」と切り替えます</string>
+    <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
+
+    <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
+    <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へリセットします.</string>
+    <string name="dialog_title_vi_cooperative_mode_preference">vi協調モードを有効にするキーボードを選択.</string>
+
+    <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>
+    <string name="title_ime_preference">「通常入力」のインプットメソッド</string>
+    <string name="summary_ime_preference">「通常入力」のインプットメソッドを選択</string>
+    <string name="summary_ime_direct_input_method_preference">「直接入力」のインプットメソッドを選択</string>
+    <string name="dialog_title_ime_preference">インプットメソッドを選択</string>
+
+    <string name="shell_preferences">シェル</string>
+    <string name="title_shell_preference">コマンドライン</string>
+    <string name="summary_shell_preference">コマンドラインシェルを指定</string>
+    <string name="dialog_title_shell_preference">シェル</string>
+
+    <string name="title_initialcommand_preference">初期コマンド</string>
+    <string name="summary_initialcommand_preference">シェル開始時に実行するコマンド</string>
+    <string name="dialog_title_initialcommand_preference">初期コマンド</string>
+
+    <string name="title_intentcommand_preference">インテントコマンド</string>
+    <string name="summary_intentcommand_preference">インテント呼出時に実行するコマンド</string>
+    <string name="dialog_title_intentcommand_preference">インテントコマンド</string>
+
+    <string name="title_termtype_preference">ターミナルタイプ</string>
+    <string name="summary_termtype_preference">シェルに設定するターミナルタイプ</string>
+    <string name="dialog_title_termtype_preference">ターミナルタイプ</string>
+
+    <string name="title_close_window_on_process_exit_preference">終了時にウインドウを閉じる</string>
+    <string name="summary_close_window_on_process_exit_preference">シェル終了時にウインドウを閉じる</string>
+
+    <string name="title_verify_path_preference">PATHエントリを照合</string>
+    <string name="summary_verify_path_preference">アクセス不可ディレクトリをPATHから取り除く</string>
+
+    <string name="title_do_path_extensions_preference">PATH拡張の許可</string>
+    <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
+
+    <string name="title_change_lib_preference">システムライブラリを強制変更</string>
+    <string name="title_choose">選択</string>
+    <string name="summary_change_lib_preference">システムライブラリを強制変更します.</string>
+    <string name="message_change_lib_preference">特に問題がない場合は, システムライブラリを変更しないでください.</string>
+    <string name="current_library">現在のライブラリ : </string>
+    <string name="reset_to_default">デフォルトに設定</string>
+    <string name="force_64bit">64ビットライブラリへ変更</string>
+    <string name="force_32bit">32ビットライブラリへ変更</string>
+    <string name="confirm_do_close_troubleshooting">* トラブルシューティングで設定した設定は、\"環境設定\">\"シェル\"からも変更できます.\n* キャンセルすると, トラブルシューティングで設定した設定が失われます.\n\n</string>
+    <string name="confirm_change_lib">システムライブラリを変更した場合, 正常に動作しなくなることがあります.\n動作しなくなった場合は、「アプリ情報」から強制的に終了するか、ストレージをクリアしてください.</string>
+    <string name="change_lib">ライブラリ変更の用意ができました.\nアプリを再起動してください.</string>
+
+    <string name="crash_title">申し訳ありません, Vimがクラッシュしました.</string>
+    <string name="crash_message">トラブルシューティングを実行するか, 終了してから再起動してください.\n\nもしVim.pythonが常にクラッシュする場合は, 機種依存の問題の可能性があります.\nトラブルシューティングで問題が解決しない場合は, 開発者までご連絡ください.</string>
+    <string name="crash_quit_button">強制終了</string>
+    <string name="crash_trouble_shooting_button">トラブルシューティング</string>
+    <string name="choose_vim_python_script">Vim (+Python) スクリプトを選択</string>
+    <string name="vim_python_script_default">デフォルト</string>
+    <string name="vim_python_script_alt1">代替モード (1)</string>
+    <string name="choose_ld_library_path_mode">LD_LIBRARY_PATHモードを選択</string>
+    <string name="ld_library_path_mode_default">デフォルト</string>
+    <string name="ld_library_path_mode_alt_1">代替モード (1)</string>
+    <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
+    <string name="revert_to_default_vim">実行ファイルをデフォルトへ戻す.</string>
+    <string name="quit_to_shell">シェル</string>
+
+    <string name="title_allow_prepend_path_preference">PATHへのプリペンドの許可</string>
+    <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
+
+    <string name="title_home_path_preference">ホームディレクトリ</string>
+    <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ</string>
+
+    <string name="control_key_dialog_title">コントロールキーとファンクションキー</string>
+    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+         actual control key key name. -->
+    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+    <string name="control_key_dialog_control_disabled_text">コントロールキーを設定してください.</string>
+    <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+         actual function key key name. -->
+    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+    <string name="control_key_dialog_fn_disabled_text">ファンクションキーを設定してください.</string>
+
+    <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
+
+    <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
+    <string name="permdesc_run_script">アプリケーションに対して，端末エミュレータに新規ウインドウを開かせ，インターネットやSDカードへのアクセスを含む，端末エミュレータが持つすべてのパーミッションでコマンドを実行することを許可する.</string>
+    <string name="perm_append_to_path">端末エミュレータへのコマンド追加</string>
+    <string name="permdesc_append_to_path">アプリケーションに対して，端末エミュレータのコマンドを追加する(PATHにディレクトリを追加する)ことを許可する.</string>
+    <string name="perm_prepend_to_path">端末エミュレータのコマンドを上書きする</string>
+    <string name="permdesc_prepend_to_path">アプリケーションに対して，端末エミュレータが持つ既存のコマンドを，アプリケーション独自のバージョンに置き換える(PATHの先頭にディレクトリを追加する)ことを許可する.</string>
+
+    <string name="email_transcript_subject">Transcript from Terminal Emulator for Android</string>
+    <string name="email_transcript_chooser_title">メール転写の選択:</string>
+    <string name="email_transcript_no_email_activity_found">転写を送信するEメール用アクティビティが選択できませんでした.</string>
+
+    <string name="share_title">共有...</string>
+    <string name="share_buffer_text">現バッファ</string>
+    <string name="share_visual_text">選択テキスト (ビジュアルモード)</string>
+    <string name="share_unnamed_text">無名レジスタ</string>
+    <string name="share_screen_text">画面のテキストを共有</string>
+    <string name="share_file">ファイル</string>
+
+    <string name="alt_sends_esc">AltキーでESCを送出</string>
+    <string name="alt_sends_esc_summary_on">AltキーでESCを送出する</string>
+    <string name="alt_sends_esc_summary_off">AltキーでESCを送出しない</string>
+
+    <string name="back_as_esc">BackボタンをESCとして扱う</string>
+    <string name="summary_back_as_esc_preference">物理キーボードのESCキーがBackボタンとして扱われてしまう場合に有効にしてください.</string>
+
+    <string name="ignore_xoff">XOFFフロー制御を無視</string>
+    <string name="ignore_xoff_summary_on">Ctrl-sの入力を無視する.</string>
+    <string name="ignore_xoff_summary_off">Ctrl-sの入力でXOFFを送出する.</string>
+
+    <string name="title_mouse_tracking_preference">マウスイベントの送出</string>
+    <string name="summary_mouse_tracking_preference">タップやスワイプを端末へのエスケープシーケンスに変換する</string>
+
+    <string name="title_use_keyboard_shortcuts">キーボードショートカット</string>
+    <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: ウィンドウ移動, Ctrl-Shift-N: 新しいウィンドウ, Ctrl-Shift-V: 貼り付け</string>
+    <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
+
+    <string name="title_auto_hide_functionbar">ファンクションバーを隠す</string>
+    <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す.</string>
+
+    <string name="ime_input_method_preferences">テキスト入力モード</string>
+    <string name="title_pre_ime_shortcuts">IMEショートカット</string>
+    <string name="summary_title_pre_ime_shortcuts_select">IMEショートカットを選択します</string>
+    <string name="summary_title_pre_ime_shortcuts">IME制御のための物理キーボードショートカット.</string>
+    <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
+    <string name="pref_zenkaku_hankaku">[半/全]</string>
+    <string name="pref_grave">[`]</string>
+    <string name="pref_switch_charset">[漢字]</string>
+
+    <string name="title_ime_shortcuts_action_preference">IMEショートカット設定</string>
+    <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
+    <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
+
+    <string name="title_home_dir_chooser_preference">ホームディレクトリ</string>
+    <string name="set_home_directory">ホームディレクトリは, 次の場所に設定されました.\n\n</string>
+    <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
+    <string name="set_startup_directory">起動時のディレクトリは, 次の場所に設定されました.\n\n</string>
+    <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
+
+    <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
+    <string name="choose_startup_directory_message">起動時のディレクトリを選択します.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリを起動時のディレクトリに設定することができます.</string>
+    <string name="select_directory_message">ディレクトリを選択</string>
+    <string name="invalid_directory">書き込めないか, 不正なディレクトリです.\n内部ストレージのディレクトリを選択してください.</string>
+    <string name="copy_startup_dir">選択したパスがクリップボードへコピーされました.\n起動時のディレクトリを指定したい場合は, `.vimrc`に以下を追加してみてください.\n\ncd </string>
+    <string name="select_directory">選択</string>
+    <string name="reset_directory">デフォルト</string>
+    <string name="choose_directory">Choose</string>
+
+    <string name="open_in_browser">ブラウザで開く</string>
+    <string name="scroll_to_top">先頭</string>
+    <string name="scroll_to_bottom">末尾</string>
+    <string name="tutorial">Vimチュートリアル</string>
+    <string name="help">ヘルプ</string>
+    <string name="help_url">http://example.com</string>
+    <!-- AddShortcut.java -->
+    <string name="addshortcut_button_find_command">コマンド指定</string>
+    <string name="addshortcut_command_window_instructions">コマンドはフルパスで指定し引数は省略可. フルパスで指定しない場合は引数ウィンドウのみで設定 (例: cd /sdcard).</string>
+    <string name="addshortcut_arguments_label">引数\:</string>
+    <string name="addshortcut_shortcut_label">ラベル\:</string>
+    <string name="addshortcut_button_text_icon">テキストアイコン</string>
+
+    <string name="button_yes">はい</string>
+    <string name="button_no">いいえ</string>
+    <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
+    <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
+    <string name="keyboard_warning">デフォルトでは直接入力を強制しているため、ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
+
+    <string name="external_storage">ストレージ</string>
+    <string name="create_or_delete">管理</string>
+    <string name="create_file">ファイル作成</string>
+    <string name="delete_file">ファイル削除</string>
+    <string name="app_files">ファイルマネージャー</string>
+    <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
+    <string name="storage_manager">管理</string>
+    <string name="launch_app">%s (アプリ起動)</string>
+    <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
+    <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
+    <string name="storage_permission_granted">ストレージ権限が有効になりました.\n設定を有効にするため, このアプリを再起動してください.</string>
+    <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
+    <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
+    <string name="storage_write_error_title">書き込みエラー</string>
+    <string name="storage_write_error">このファイルは閲覧専用であるか、ファイルが削除されています.\nドロワーメニューの\"ストレージ\"ボタンから編集用にファイルを開いてください.</string>
+    <string name="storage_hash_error_title">ハッシュエラー</string>
+    <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
+    <string name="storage_hash_overwrite">上書き</string>
+    <string name="storage_hash_reopen">ストレージ</string>
+    <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
+    <string name="title_internal_storage">内部プライベート領域</string>
+    <string name="clear_cache">キャッシュクリア</string>
+    <string name="confirm_clear_cache_message">外部ストレージキャッシュを削除します.</string>
+    <string name="softkeyboard">キーボード</string>
+
+    <string name="git_install_dialog_title">Gitのインストール</string>
+    <string name="network_error">ネットワーク接続を確認してください.</string>
+    <string name="iabsetup_try_again">Google Playサービスへの接続に失敗しました。ネットワーク接続を確認して再実行してください.</string>
+    <string name="installer_try_again">ファイルのダウンロードに失敗しました.\nネットワーク接続を確認して再実行してください.</string>
+    <string name="installer_try_again_button">再実行</string>
+    <string name="git_install_message_install_git">アップデートをチェックしています...</string>
+    <string name="git_install_confirm_install">新しいバージョンのGitが存在します.\nGitのインストールを実行します.</string>
+    <string name="git_install_confirm_update">既に同じバージョンのGitがインストールされています.\n上書きインストールしますか？</string>
+    <string name="git_install_success">Gitのアップデートに成功しました.</string>
+
+    <string name="iab_null">PlayStoreがみつかりません.</string>
+    <string name="iab_wait">しばらくおまちください.</string>
+    <string name="donate_confirm_title">DroidVimのご使用ありがとうございます.</string>
+    <string name="donate_confirm_button">寄付する</string>
+    <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>
+    <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
+    <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
+
+    <string name="external_apps_preferences">外部アプリ</string>
+    <string name="external_app">アプリ名</string>
+    <string name="external_app_activity">アクティビティ</string>
+    <string name="external_app_button">外部アプリ</string>
+    <string name="title_use_app_files_button">ファイルマネージャーアプリを使用する</string>
+    <string name="title_external_app_button_preference">外部アプリボタン</string>
+    <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
+    <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>
+    <string name="title_external_app_id_preference">外部アプリボタン</string>
+    <string name="external_app_id_error">アプリケーションIDが正しくないか, 設定されていません.\n環境設定から設定してください.</string>
+    <string name="external_app_activity_error">このアプリケーションは存在しないか、呼び出し可能なアクティビティがありません.</string>
+    <string name="title_cloud_dropbox_preference">Dropbox</string>
+    <string name="title_cloud_googledrive_preference">GoogleDrive</string>
+    <string name="title_cloud_onedrive_preference">OneDrive</string>
+    <string name="summary_app_filepicker_on_drawer">ドロワー上のアプリボタンの振舞いを選択する.</string>
+    <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
+    <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
+
+    <string name="title_html_viewer_mode_preference">HTMLビューア</string>
 
 </resources>

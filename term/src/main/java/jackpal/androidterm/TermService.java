@@ -176,10 +176,14 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             for (String androidArch : Build.SUPPORTED_ABIS) {
                 switch (androidArch) {
-                    case "arm64-v8a": return "arm64";
-                    case "armeabi-v7a": return "arm";
-                    case "x86_64": return "x86_64";
-                    case "x86": return "x86";
+                    case "arm64-v8a":
+                        return "arm64";
+                    case "armeabi-v7a":
+                        return "arm";
+                    case "x86_64":
+                        return "x86_64";
+                    case "x86":
+                        return "x86";
                 }
             }
         }
@@ -430,8 +434,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private boolean getInstallStatus(String scriptFile, String zipFile) {
         if (!TermVimInstaller.TERMVIM_VERSION.equals(new PrefValue(this).getString("versionName", "")))
             return false;
-        if (!(new File(scriptFile).exists())) return false;
-        return true;
+        return new File(scriptFile).exists();
     }
 
     @Override

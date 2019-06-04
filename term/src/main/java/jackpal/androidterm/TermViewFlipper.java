@@ -325,6 +325,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     private static boolean mWindowMode = true;
+
     public void setDrawMode(boolean windowMode) {
         mWindowMode = windowMode;
     }

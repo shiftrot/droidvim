@@ -16,12 +16,12 @@
 
 package jackpal.androidterm;
 
-import jackpal.androidterm.util.ShortcutEncryption;
+import android.content.Intent;
+import android.util.Log;
 
 import java.security.GeneralSecurityException;
 
-import android.content.Intent;
-import android.util.Log;
+import jackpal.androidterm.util.ShortcutEncryption;
 
 public final class RunShortcut extends RemoteInterface {
     public static final String ACTION_RUN_SHORTCUT = "jackpal.androidterm.RUN_SHORTCUT";

@@ -65,6 +65,7 @@ class ProgressRingDialog extends DialogFragment {
             e.printStackTrace();
         }
     }
+
     void setMessage(CharSequence mes) {
         try {
             mMessage = mes;

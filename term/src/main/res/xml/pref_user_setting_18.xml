@@ -2,11 +2,11 @@
 
     <Preference
         android:key="app_info"
-        android:title="@string/title_app_info_preference" />
+        android:title="@string/title_app_info_preference"/>
 
     <Preference
         android:key="license"
-        android:title="@string/title_license" />
+        android:title="@string/title_license"/>
 
 </PreferenceScreen>
 

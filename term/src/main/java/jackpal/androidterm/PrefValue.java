@@ -15,6 +15,7 @@ class PrefValue {
     }
 
     final private static String DATABASE = "dev";
+
     @SuppressLint("CommitPrefEdits")
     PrefValue(Context context) {
         mPref = context.getSharedPreferences(DATABASE, Context.MODE_PRIVATE);

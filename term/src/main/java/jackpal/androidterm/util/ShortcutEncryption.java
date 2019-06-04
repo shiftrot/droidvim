@@ -16,8 +16,6 @@
 
 package jackpal.androidterm.util;
 
-import jackpal.androidterm.compat.Base64;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -31,6 +29,7 @@ import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.regex.Pattern;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
@@ -38,18 +37,20 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import jackpal.androidterm.compat.Base64;
+
 /**
  * Implementation of a simple authenticated encryption scheme suitable for
  * TEA shortcuts.
  *
  * The goals of the encryption are as follows:
  *
- *   (1) An unauthorized actor must not be able to create a valid text with
- *       contents of his choice;
- *   (2) An unauthorized actor must not be able to modify an existing text to
- *       change its contents in any way;
- *   (3) An unauthorized actor must not be able to discover the contents of
- *       an existing text.
+ * (1) An unauthorized actor must not be able to create a valid text with
+ * contents of his choice;
+ * (2) An unauthorized actor must not be able to modify an existing text to
+ * change its contents in any way;
+ * (3) An unauthorized actor must not be able to discover the contents of
+ * an existing text.
  *
  * Conditions (1) and (2) ensure that an attacker cannot send commands of his
  * choosing to TEA via the shortcut mechanism, while condition (3) ensures that
@@ -58,11 +59,11 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * We ensure these conditions using two cryptographic building blocks:
  *
- *   * a symmetric cipher (currently AES in CBC mode using PKCS#5 padding),
- *     which prevents someone without the encryption key from reading the
- *     contents of the shortcut; and
- *   * a message authentication code (currently HMAC-SHA256), which proves that
- *     the shortcut was created by someone with the MAC key.
+ * * a symmetric cipher (currently AES in CBC mode using PKCS#5 padding),
+ * which prevents someone without the encryption key from reading the
+ * contents of the shortcut; and
+ * * a message authentication code (currently HMAC-SHA256), which proves that
+ * the shortcut was created by someone with the MAC key.
  *
  * The security of these depends on the security of the keys, which must be
  * kept secret.  In this application, the keys are randomly generated and stored
@@ -70,15 +71,15 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * The encrypted string output by this scheme is of the form:
  *
- *     mac + ":" + iv + ":" cipherText
+ * mac + ":" + iv + ":" cipherText
  *
  * where:
  *
- *   * cipherText is the Base64-encoded result of encrypting the data
- *     using the encryption key;
- *   * iv is a Base64-encoded, non-secret random number used as an
- *     initialization vector for the encryption algorithm;
- *   * mac is the Base64 encoding of MAC(MAC-key, iv + ":" + cipherText).
+ * * cipherText is the Base64-encoded result of encrypting the data
+ * using the encryption key;
+ * * iv is a Base64-encoded, non-secret random number used as an
+ * initialization vector for the encryption algorithm;
+ * * mac is the Base64 encoding of MAC(MAC-key, iv + ":" + cipherText).
  */
 public final class ShortcutEncryption {
     public static final String ENC_ALGORITHM = "AES";
@@ -113,7 +114,7 @@ public final class ShortcutEncryption {
         /**
          * Outputs the keys as a string of the form
          *
-         *     encKey + ":" + macKey
+         * encKey + ":" + macKey
          *
          * where encKey and macKey are the Base64-encoded encryption and MAC
          * keys.
@@ -191,9 +192,8 @@ public final class ShortcutEncryption {
      * contents have not been tampered with.
      *
      * @param encrypted The string to decrypt, in the format described above.
-     * @param keys The keys to verify and decrypt with.
+     * @param keys      The keys to verify and decrypt with.
      * @return The decrypted data.
-     *
      * @throws GeneralSecurityException if the data is invalid, verification fails, or an error occurs during decryption.
      */
     public static String decrypt(String encrypted, Keys keys) throws GeneralSecurityException {
@@ -248,7 +248,6 @@ public final class ShortcutEncryption {
      * @param data The string containing the data to encrypt.
      * @param keys The keys to encrypt and authenticate with.
      * @return The encrypted data.
-     *
      * @throws GeneralSecurityException if an error occurs during encryption.
      */
     public static String encrypt(String data, Keys keys) throws GeneralSecurityException {

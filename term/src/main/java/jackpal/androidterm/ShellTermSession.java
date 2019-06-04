@@ -139,10 +139,11 @@ public class ShellTermSession extends GenericTermSession {
                 checkedPath.append(":");
             }
         }
-        return checkedPath.substring(0, checkedPath.length()-1);
+        return checkedPath.substring(0, checkedPath.length() - 1);
     }
 
     static private String mPostCmd = null;
+
     @Override
     public void initializeEmulator(int columns, int rows) {
         super.initializeEmulator(columns, rows);
@@ -235,7 +236,7 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     private int createSubprocess(String shell, String[] env) throws IOException {
-        if (shell == null || "system".equals(shell)  || "".equals(shell) || !shell.matches("/.*")) {
+        if (shell == null || "system".equals(shell) || "".equals(shell) || !shell.matches("/.*")) {
             shell = "/system/bin/sh -";
         }
 
@@ -268,7 +269,7 @@ public class ShellTermSession extends GenericTermSession {
         final int WHITESPACE = 1;
         final int INQUOTE = 2;
         int state = WHITESPACE;
-        ArrayList<String> result =  new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<String>();
         int cmdLen = cmd.length();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < cmdLen; i++) {
@@ -276,7 +277,7 @@ public class ShellTermSession extends GenericTermSession {
             if (state == PLAIN) {
                 if (Character.isWhitespace(c)) {
                     result.add(builder.toString());
-                    builder.delete(0,builder.length());
+                    builder.delete(0, builder.length());
                     state = WHITESPACE;
                 } else if (c == '"') {
                     state = INQUOTE;

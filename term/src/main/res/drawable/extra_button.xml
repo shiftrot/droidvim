@@ -3,16 +3,16 @@
 
     <item android:state_pressed="false">
         <shape android:dither="true" android:shape="rectangle">
-            <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="6dp" android:topLeftRadius="0dp" android:topRightRadius="6dp" />
+            <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="6dp" android:topLeftRadius="0dp" android:topRightRadius="6dp"/>
 
-            <solid android:color="#EF7C20" />
+            <solid android:color="#EF7C20"/>
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:dither="true" android:shape="rectangle">
-            <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="6dp" android:topLeftRadius="0dp" android:topRightRadius="6dp" />
+            <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="6dp" android:topLeftRadius="0dp" android:topRightRadius="6dp"/>
 
-            <solid android:color="#80EF7C20" />
+            <solid android:color="#80EF7C20"/>
         </shape>
     </item>
 

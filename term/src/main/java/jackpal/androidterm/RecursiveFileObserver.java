@@ -1,12 +1,12 @@
 package jackpal.androidterm;
 
+import android.os.FileObserver;
+import android.util.Log;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-
-import android.os.FileObserver;
-import android.util.Log;
 
 public class RecursiveFileObserver extends FileObserver {
 
@@ -176,14 +176,14 @@ public class RecursiveFileObserver extends FileObserver {
             }
 
             switch (event & FileObserver.ALL_EVENTS) {
-            case DELETE_SELF:
-                RecursiveFileObserver.this.stopWatching(filePath);
-                break;
-            case CREATE:
-                if (watch(file)) {
-                    RecursiveFileObserver.this.startWatching(file.getAbsolutePath());
-                }
-                break;
+                case DELETE_SELF:
+                    RecursiveFileObserver.this.stopWatching(filePath);
+                    break;
+                case CREATE:
+                    if (watch(file)) {
+                        RecursiveFileObserver.this.startWatching(file.getAbsolutePath());
+                    }
+                    break;
             }
 
             RecursiveFileObserver.this.onEvent(event, file.toString());

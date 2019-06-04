@@ -6,7 +6,7 @@
         android:title="@string/title_double_tap_preference"
         android:entries="@array/entries_actionbar_icon_preference"
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
-        android:dialogTitle="@string/dialog_title_double_tap_preference" />
+        android:dialogTitle="@string/dialog_title_double_tap_preference"/>
 
     <ListPreference
         android:key="right_double_tap_action"
@@ -14,7 +14,7 @@
         android:title="@string/title_right_double_tap_preference"
         android:entries="@array/entries_actionbar_icon_preference"
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
-        android:dialogTitle="@string/dialog_title_right_double_tap_preference" />
+        android:dialogTitle="@string/dialog_title_right_double_tap_preference"/>
 
     <ListPreference
         android:key="left_double_tap_action"
@@ -22,7 +22,7 @@
         android:title="@string/title_left_double_tap_preference"
         android:entries="@array/entries_actionbar_icon_preference"
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
-        android:dialogTitle="@string/dialog_title_left_double_tap_preference" />
+        android:dialogTitle="@string/dialog_title_left_double_tap_preference"/>
 
     <ListPreference
         android:key="bottom_double_tap_action"
@@ -30,11 +30,12 @@
         android:title="@string/title_bottom_double_tap_preference"
         android:entries="@array/entries_actionbar_icon_preference"
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
-        android:dialogTitle="@string/dialog_title_bottom_double_tap_preference" />
+        android:dialogTitle="@string/dialog_title_bottom_double_tap_preference"/>
 
-    <SwitchPreference android:title="@string/title_mouse_tracking_preference"
+    <SwitchPreference
+        android:title="@string/title_mouse_tracking_preference"
         android:key="mouse_tracking"
         android:defaultValue="@bool/pref_mouse_tracking_default"
-        android:summary="@string/summary_mouse_tracking_preference" />
+        android:summary="@string/summary_mouse_tracking_preference"/>
 
 </PreferenceScreen>

@@ -21,4 +21,4 @@
 
 int init_FileCompat(JNIEnv *env);
 
-#endif	/* !defined(_FILECOMPAT_H) */
+#endif    /* !defined(_FILECOMPAT_H) */

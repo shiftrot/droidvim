@@ -10,7 +10,7 @@
             android:title="@string/external_app_activity"
             android:entries="@array/entries_app_filepicker_preference"
             android:entryValues="@array/entryvalues_app_filepicker_preference"
-            android:dialogTitle="@string/title_external_app_button_preference" />
+            android:dialogTitle="@string/title_external_app_button_preference"/>
 
         <ListPreference
             android:key="external_app_package_name"
@@ -18,7 +18,7 @@
             android:title="@string/external_app"
             android:entries="@array/entries_preference"
             android:entryValues="@array/entries_preference"
-            android:dialogTitle="@string/title_external_app_id_preference" />
+            android:dialogTitle="@string/title_external_app_id_preference"/>
 
     </PreferenceScreen>
 
@@ -28,7 +28,7 @@
         android:title="@string/title_cloud_dropbox_preference"
         android:entries="@array/entries_app_filepicker_preference"
         android:entryValues="@array/entryvalues_app_filepicker_preference"
-        android:dialogTitle="@string/title_cloud_dropbox_preference" />
+        android:dialogTitle="@string/title_cloud_dropbox_preference"/>
 
     <ListPreference
         android:key="cloud_googledrive_filepicker"
@@ -36,7 +36,7 @@
         android:title="@string/title_cloud_googledrive_preference"
         android:entries="@array/entries_app_filepicker_preference"
         android:entryValues="@array/entryvalues_app_filepicker_preference"
-        android:dialogTitle="@string/title_cloud_googledrive_preference" />
+        android:dialogTitle="@string/title_cloud_googledrive_preference"/>
 
     <ListPreference
         android:key="cloud_onedrive_filepicker"
@@ -44,7 +44,7 @@
         android:title="@string/title_cloud_onedrive_preference"
         android:entries="@array/entries_app_filepicker_preference"
         android:entryValues="@array/entryvalues_app_filepicker_preference"
-        android:dialogTitle="@string/title_cloud_onedrive_preference" />
+        android:dialogTitle="@string/title_cloud_onedrive_preference"/>
 
     <ListPreference
         android:key="html_viewer_mode"
@@ -52,6 +52,6 @@
         android:title="@string/title_html_viewer_mode_preference"
         android:summary="@string/summary_html_viewer_mode"
         android:entries="@array/entries_html_viewer_mode_preference"
-        android:entryValues="@array/entryvalues_html_viewer_mode_preference" />
+        android:entryValues="@array/entryvalues_html_viewer_mode_preference"/>
 
 </PreferenceScreen>

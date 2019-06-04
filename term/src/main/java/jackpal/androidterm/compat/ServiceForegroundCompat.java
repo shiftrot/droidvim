@@ -17,13 +17,14 @@
 
 package jackpal.androidterm.compat;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import android.app.Service;
-import android.util.Log;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.Service;
 import android.content.Context;
+import android.util.Log;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /* Provide startForeground() and stopForeground() compatibility, using the
    current interfaces where available and the deprecated setForeground()
@@ -31,12 +32,12 @@ import android.content.Context;
    The idea for the implementation comes from an example in the documentation of
    android.app.Service */
 public class ServiceForegroundCompat {
-    private static Class<?>[] mSetForegroundSig = new Class[] {
-        boolean.class };
-    private static Class<?>[] mStartForegroundSig = new Class[] {
-        int.class, Notification.class };
-    private static Class<?>[] mStopForegroundSig = new Class[] {
-        boolean.class };
+    private static Class<?>[] mSetForegroundSig = new Class[]{
+            boolean.class};
+    private static Class<?>[] mStartForegroundSig = new Class[]{
+            int.class, Notification.class};
+    private static Class<?>[] mStopForegroundSig = new Class[]{
+            boolean.class};
 
     private Service service;
     private NotificationManager mNM;
@@ -83,7 +84,7 @@ public class ServiceForegroundCompat {
 
     public ServiceForegroundCompat(Service service) {
         this.service = service;
-        mNM = (NotificationManager)service.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNM = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Class<?> clazz = service.getClass();
 

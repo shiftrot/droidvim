@@ -21,4 +21,4 @@
 
 int init_Exec(JNIEnv *env);
 
-#endif	/* !defined(_TERMEXEC_H) */
+#endif    /* !defined(_TERMEXEC_H) */

@@ -98,7 +98,7 @@
     </string-array>
 
     <string-array name="entries_fnkey_preference">
-       <item>Trackball</item>
+        <item>Trackball</item>
         <item>Tecla \@</item>
         <item>Tecla Alt esquerda</item>
         <item>Tecla Alt direita</item>
