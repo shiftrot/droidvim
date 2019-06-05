@@ -1925,6 +1925,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         b.show();
     }
 
+    private void doExitShell() {
+        try {
+            sendKeyStrings("exit\r", false);
+            sendKeyStrings("exit\r", false);
+            sendKeyStrings("exit\r", false);
+        } catch (Exception e) {
+            doCloseWindow();
+        }
+    }
+
     private void doCloseWindow() {
         if (mTermSessions == null) {
             return;
@@ -2342,7 +2352,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (mUninstall) {
                     doUninstallExtraContents();
                 }
-                sendKeyStrings("exit\rexit\rexit\r", false);
+                doExitShell();
                 return true;
             case 0xffff0000:
                 setFunctionBar(2);
