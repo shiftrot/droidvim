@@ -439,7 +439,7 @@
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか、権限がありません.</string>
     <string name="storage_write_error_title">書き込みエラー</string>
-    <string name="storage_write_error">このファイルは閲覧専用であるか、ファイルが削除されています.\nドロワーメニューの\"ストレージ\"ボタンから編集用にファイルを開いてください.</string>
+    <string name="storage_write_error">ドロワーメニューの\"ストレージ\"ボタンから編集用にファイルを開いてください.(または、ファイルが読み取り専用ではなく、ファイルも削除されていないか確認してください)</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>
     <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
     <string name="storage_hash_overwrite">上書き</string>

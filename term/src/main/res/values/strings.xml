@@ -487,7 +487,7 @@
     <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
     <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
     <string name="storage_write_error_title">File write error</string>
-    <string name="storage_write_error">This file is read only or the file has been deleted.\nOpen the file for editing via \"Storage\" button on the drawer menu.</string>
+    <string name="storage_write_error">Open the file for editing via \"Storage\" button on the drawer menu.\n(Or check if the file is not read only and the file has not been deleted)</string>
     <string name="storage_hash_error_title">File hash error</string>
     <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Storage\" button.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
