@@ -314,8 +314,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 return true;
             } else {
-                if (Math.abs(velocityX) > Math.abs(velocityY)) return true;
-                return false;
+                return Math.abs(velocityX) > Math.abs(velocityY);
             }
         }
 
@@ -486,10 +485,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         setContentView(R.layout.term_activity);
-        mViewFlipper = (TermViewFlipper) findViewById(VIEW_FLIPPER);
+        mViewFlipper = findViewById(VIEW_FLIPPER);
         setFunctionKeyListener();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
@@ -583,7 +582,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setExtraButton() {
-        Button button = (Button) findViewById(R.id.drawer_extra_button);
+        Button button = findViewById(R.id.drawer_extra_button);
         int visibilty = View.VISIBLE;
         if (!FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
@@ -592,7 +591,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setDebugButton() {
         if (!BuildConfig.DEBUG) return;
-        Button button = (Button) findViewById(R.id.drawer_debug_button);
+        Button button = findViewById(R.id.drawer_debug_button);
         button.setVisibility(View.VISIBLE);
 
         if (mSettings.getColorTheme() == 0)
@@ -604,7 +603,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void setDrawerButtons() {
         if (FLAVOR_VIM) {
             int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
-            Button button = (Button) findViewById(R.id.drawer_app_button);
+            Button button = findViewById(R.id.drawer_app_button);
             button.setVisibility(visiblity);
             mExternalApp = mSettings.getExternalAppId();
             mExternalAppMode = mSettings.getExternalAppButtonMode();
@@ -628,35 +627,35 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             if (isAppInstalled(APP_FILES)) {
                 visiblity = mSettings.getUseFilesAppButton() ? View.VISIBLE : View.GONE;
-                button = (Button) findViewById(R.id.drawer_files_button);
+                button = findViewById(R.id.drawer_files_button);
                 button.setVisibility(visiblity);
             }
             if (isAppInstalled(APP_DROPBOX)) {
                 visiblity = mSettings.getDropboxFilePicker() > 0 ? View.VISIBLE : View.GONE;
-                button = (Button) findViewById(R.id.drawer_dropbox_button);
+                button = findViewById(R.id.drawer_dropbox_button);
                 button.setVisibility(visiblity);
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.dropbox)));
             }
             if (isAppInstalled(APP_GOOGLEDRIVE)) {
                 visiblity = mSettings.getGoogleDriveFilePicker() > 0 ? View.VISIBLE : View.GONE;
-                button = (Button) findViewById(R.id.drawer_googledrive_button);
+                button = findViewById(R.id.drawer_googledrive_button);
                 button.setVisibility(visiblity);
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.googledrive)));
             }
             if (isAppInstalled(APP_ONEDRIVE)) {
                 visiblity = mSettings.getOneDriveFilePicker() > 0 ? View.VISIBLE : View.GONE;
-                button = (Button) findViewById(R.id.drawer_onedrive_button);
+                button = findViewById(R.id.drawer_onedrive_button);
                 button.setVisibility(visiblity);
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.onedrive)));
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                button = (Button) findViewById(R.id.drawer_storage_button);
+                button = findViewById(R.id.drawer_storage_button);
                 button.setVisibility(View.VISIBLE);
-                button = (Button) findViewById(R.id.drawer_createfile_button);
+                button = findViewById(R.id.drawer_createfile_button);
                 button.setVisibility(View.VISIBLE);
                 mFilePickerItems.add(this.getString(R.string.clear_cache));
             } else {
-                button = (Button) findViewById(R.id.drawer_clear_cache_button);
+                button = findViewById(R.id.drawer_clear_cache_button);
                 button.setVisibility(View.VISIBLE);
             }
         }
@@ -1239,7 +1238,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         LayoutInflater flater = LayoutInflater.from(this);
         View view = flater.inflate(R.layout.alert_checkbox, null);
         builder.setView(view);
-        final CheckBox cb = (CheckBox) view.findViewById(R.id.dont_show_again);
+        final CheckBox cb = view.findViewById(R.id.dont_show_again);
         final String warningKey = key;
         cb.setChecked(dontShowAgain);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -1862,7 +1861,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void toggleDrawer() {
-        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout mDrawer = findViewById(R.id.drawer_layout);
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
         } else {
@@ -1871,7 +1870,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void openDrawer() {
-        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout mDrawer = findViewById(R.id.drawer_layout);
         if (!mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.openDrawer(GravityCompat.START);
         }
@@ -2103,7 +2102,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout_encoding = inflater.inflate(R.layout.force_encoding, null);
-        final AutoCompleteTextView textView = (AutoCompleteTextView) layout_encoding.findViewById((R.id.autocomplete_encoding));
+        final AutoCompleteTextView textView = layout_encoding.findViewById((R.id.autocomplete_encoding));
 
         ArrayAdapter<String> ac_adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, IconvHelper.encodings);
         textView.setAdapter(ac_adapter);
@@ -2111,7 +2110,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         ArrayAdapter<String> sp_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, IconvHelper.encodings);
         sp_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sp_encoding = (Spinner) layout_encoding.findViewById(R.id.spinner_encoding);
+        Spinner sp_encoding = layout_encoding.findViewById(R.id.spinner_encoding);
         sp_encoding.setAdapter(sp_adapter);
 
         builder.setView(layout_encoding);
@@ -2370,7 +2369,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                     mBackKeyPressed = false;
                 }
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 if (drawer.isDrawerOpen(GravityCompat.START)) {
                     drawer.closeDrawer(GravityCompat.START);
                     return true;
@@ -2438,7 +2437,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return true;
             case 0xffff1006:
             case 0xffff1007:
-                mVimPaste = (keyCode == 0xffff1006) ? true : false;
+                mVimPaste = keyCode == 0xffff1006;
                 return true;
             case 0xffff1008:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -2871,7 +2870,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (filename == null) return;
         TermSession session = getCurrentTermSession();
         if (session == null) return;
-        String str[] = new String[3];
+        String[] str = new String[3];
         try {
             File file = new File(filename);
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -3046,7 +3045,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
             OutputStream os = new FileOutputStream(dst);
             BufferedOutputStream writer = new BufferedOutputStream(os);
-            byte buf[] = new byte[4096];
+            byte[] buf = new byte[4096];
             int len;
             while ((len = reader.read(buf)) != -1) {
                 writer.write(buf, 0, len);
@@ -3066,7 +3065,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance(HASH_ALGORITHM);
             digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
 
             StringBuffer hexString = new StringBuffer();
             for (int i = 0; i < messageDigest.length; i++) {
@@ -3648,7 +3647,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private EditText mEditText;
 
     private void initOnelineTextBox(int mode) {
-        mEditText = (EditText) findViewById(R.id.text_input);
+        mEditText = findViewById(R.id.text_input);
         mEditText.setText("");
         setEditTextView(mode);
         mEditText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
@@ -3806,7 +3805,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (size == 0) {
                 size = findViewById(R.id.view_function_bar).getHeight();
                 if (size <= 0) {
-                    final TextView textView = (TextView) findViewById((R.id.text_input));
+                    final TextView textView = findViewById((R.id.text_input));
                     float sp = SCALE_VIEW * textView.getTextSize() * getApplicationContext().getResources().getDisplayMetrics().scaledDensity;
                     size = (int) Math.ceil(sp);
                 }
@@ -3912,7 +3911,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     break;
             }
         }
-        Button button = (Button) findViewById(R.id.button_oneline_text_box_clear);
+        Button button = findViewById(R.id.button_oneline_text_box_clear);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3921,7 +3920,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
 
         int visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
-        button = (Button) findViewById(R.id.button_oneline_text_box_enter);
+        button = findViewById(R.id.button_oneline_text_box_enter);
         button.setVisibility(visibility);
         button.setOnClickListener(new OnClickListener() {
             @Override
@@ -3931,7 +3930,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
         final String label = "⏎";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
-        button = (Button) findViewById(R.id.button_enter);
+        button = findViewById(R.id.button_enter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
     }
 
@@ -4011,7 +4010,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String label = prefs.getString(FKEY_LABEL + key, "");
         setFunctionBarButton(id, visibility, label);
 
-        Button button = (Button) findViewById(R.id.button_oneline_text_box_enter);
+        Button button = findViewById(R.id.button_oneline_text_box_enter);
         visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
         button.setVisibility(visibility);
 
@@ -4048,7 +4047,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("NewApi")
     private void setFunctionBarButton(int id, int visibility, String label) {
-        Button button = (Button) findViewById(id);
+        Button button = findViewById(id);
         if (!label.equals("")) button.setText(label);
         button.setVisibility(visibility);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -4377,7 +4376,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void showImageDialog(AlertDialog dialog, String mes, int id) {
         LayoutInflater inflater = getLayoutInflater();
         final View view = inflater.inflate(R.layout.image_dialog, null);
-        ImageView iv = (ImageView) view.findViewById(R.id.iv_image_dialog);
+        ImageView iv = view.findViewById(R.id.iv_image_dialog);
         iv.setImageResource(id);
         dialog.setMessage(mes);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
