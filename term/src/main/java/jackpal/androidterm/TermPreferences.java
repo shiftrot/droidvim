@@ -1162,13 +1162,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            final String APP_FILES = "com.android.documentsui";
-            boolean mFiles = isAppInstalled(APP_FILES);
-            if (mFiles) {
-                addPreferencesFromResource(R.xml.pref_apps);
-            } else {
-                addPreferencesFromResource(R.xml.pref_apps_25);
-            }
+            addPreferencesFromResource(R.xml.pref_apps_25);
 
             String id = "external_app_package_name";
             ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
