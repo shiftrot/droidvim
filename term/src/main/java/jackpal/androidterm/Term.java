@@ -603,6 +603,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void setDrawerButtons() {
         if (FLAVOR_VIM) {
             int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
+            if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visiblity = View.GONE;
             Button button = findViewById(R.id.drawer_app_button);
             button.setVisibility(visiblity);
             mExternalApp = mSettings.getExternalAppId();
