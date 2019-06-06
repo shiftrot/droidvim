@@ -20,7 +20,7 @@
     <string name="x">X</string>
     <string name="user">□</string>
     <string name="application_terminal">Terminal Emulator</string>
-    <string name="application_term_app">Terminal App</string>
+    <string name="application_term_app">Terminal Emulator</string>
     <string name="preferences">Preferences</string>
     <string name="new_window">New window</string>
     <string name="close_window">Close window</string>

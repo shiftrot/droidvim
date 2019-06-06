@@ -50,7 +50,6 @@ import android.util.Log;
 import java.io.File;
 import java.util.UUID;
 
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.ServiceForegroundCompat;
@@ -191,20 +190,18 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return "arm";
     }
 
-    private boolean useNotificationForgroundService() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
-                (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED));
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean showStatusIcon = pref.getBoolean("statusbar_icon", true);
+            String channelId = getText(R.string.application_term_app) + "_channel";
+            setNotificationChannel(channelId, showStatusIcon);
+            Notification notification = buildNotification(channelId, showStatusIcon);
             if (useNotificationForgroundService()) {
-                Notification notification = showNotification();
                 startForeground(RUNNING_NOTIFICATION, notification);
             } else {
                 compat = new ServiceForegroundCompat(this);
-                Notification notification = showNotification();
                 if (notification != null)
                     compat.startForeground(RUNNING_NOTIFICATION, notification);
             }
@@ -214,69 +211,61 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return START_STICKY;
     }
 
-    Notification showNotification() {
-        CharSequence contentText = getText(R.string.application_terminal);
-        if (!BuildConfig.FLAVOR.equals("main")) {
-            contentText = getText(R.string.application_term_app);
+    void setNotificationChannel(String channelId, boolean showStatusIcon) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Terminal Session";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            if (!showStatusIcon) importance = NotificationManager.IMPORTANCE_NONE;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            String description = getText(R.string.service_notify_text).toString();
+            channel.setDescription(description);
+            channel.setLightColor(Color.GREEN);
+            channel.enableLights(false);
+            channel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            channel.enableVibration(false);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
-        int priority = Notification.PRIORITY_DEFAULT;
-        int statusIcon = R.mipmap.ic_stat_service_notification_icon;
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!pref.getBoolean("statusbar_icon", true)) {
-            priority = Notification.PRIORITY_MIN;
-            if (AndroidCompat.SDK >= 24 || TermVimInstaller.OS_AMAZON)
-                statusIcon = R.drawable.ic_stat_transparent_icon;
-        }
+    }
+
+    private Notification buildNotification(String channelId, boolean showStatusIcon) {
         Intent notifyIntent = new Intent(this, Term.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
-        Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
-        Notification notification;
+        CharSequence contentText = getText(R.string.application_term_app);
+        Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        int priority = Notification.PRIORITY_LOW;
+        int statusIcon = R.mipmap.ic_stat_service_notification_icon;
+        if (!showStatusIcon) {
+            priority = Notification.PRIORITY_MIN;
+            statusIcon = R.drawable.ic_stat_transparent_icon;
+        }
+
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentText(getText(R.string.service_notify_text));
+        builder.setContentTitle(contentText);
+        builder.setTicker(contentText);
+        builder.setContentIntent(pendingIntent);
+        builder.setLargeIcon(largeIconBitmap);
+        builder.setSmallIcon(statusIcon);
+        builder.setAutoCancel(false);
+        builder.setOngoing(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            builder.setShowWhen(true);
+            builder.setWhen(System.currentTimeMillis());
+        }
+        builder.setPriority(priority);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            String NOTIFICATION_CHANNEL_ID = contentText.toString() + "_channel";
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Terminal Session", NotificationManager.IMPORTANCE_LOW);
-            notificationChannel.setDescription(getText(R.string.service_notify_text).toString());
-            notificationChannel.setLightColor(Color.GREEN);
-            notificationChannel.enableLights(false);
-            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-            notificationChannel.setImportance(NotificationManager.IMPORTANCE_MIN);
-            notificationChannel.enableVibration(false);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-            notificationBuilder
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setWhen(System.currentTimeMillis())
-                    .setTicker(contentText)
-                    .setContentTitle(contentText)
-                    .setContentText(getText(R.string.service_notify_text))
-                    .setContentIntent(pendingIntent)
-                    .setSmallIcon(statusIcon)
-                    .setLargeIcon(largeIconBitmap)
-                    .setPriority(priority)
-                    .setOngoing(true)
-                    .setAutoCancel(false)
-                    .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                    .setContentInfo("");
-            notification = notificationBuilder.build();
-        } else {
-            notification = new NotificationCompat.Builder(getApplicationContext())
-                    .setContentTitle(contentText)
-                    .setContentText(getText(R.string.service_notify_text))
-                    .setContentIntent(pendingIntent)
-                    .setSmallIcon(statusIcon)
-                    .setLargeIcon(largeIconBitmap)
-                    .setPriority(priority)
-                    .setOngoing(true)
-                    .setAutoCancel(false)
-                    .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                    .build();
+            builder.setChannelId(channelId);
         }
-        return notification;
+        return builder.build();
+    }
+
+    private boolean useNotificationForgroundService() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED));
     }
 
     @SuppressLint("NewApi")
