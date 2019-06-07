@@ -244,11 +244,10 @@ public class RemoteInterface extends AppCompatActivity {
                         finish();
                     } else {
                         File dir = Term.getScratchCacheDir(this);
-                        SyncFileObserver sfo = new SyncFileObserver(path);
-                        sfo.setConTentResolver(this.getContentResolver());
-                        path = dir.toString() + path;
+                        SyncFileObserver sfo = Term.restoreSyncFileObserver(this);
+                        path = dir.getAbsolutePath() + path;
                         String fname = new File(path).getName();
-                        if (path.equals("") || !sfo.putUriAndLoad(uri, path)) {
+                        if (path.equals("") || (sfo == null || !sfo.putUriAndLoad(uri, path))) {
                             alert(fname + "\n" + this.getString(R.string.storage_read_error));
                             finish();
                         }

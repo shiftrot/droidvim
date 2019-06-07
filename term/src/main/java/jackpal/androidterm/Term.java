@@ -83,24 +83,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -416,7 +409,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private Handler mHandler = new Handler();
-    private SyncFileObserver mSyncFileObserver = null;
+    private static SyncFileObserver mSyncFileObserver = null;
     private static String BASH = "bash\n";
 
     @Override
@@ -506,7 +499,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         updatePrefs();
         setDrawerButtons();
-        restoreSyncFileObserver();
+        restoreSyncFileObserver(this);
         TermPreferences.setAppPickerList(this);
         mAlreadyStarted = true;
     }
@@ -517,68 +510,27 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return new File(cacheDir + "/scratch");
     }
 
-    private static final String mSyncFileObserverFile = "mSyncFileObserver.dat";
+    private static final String mSyncFileObserverFile = "SyncFileObserver.json";
 
-    private void restoreSyncFileObserver() {
-        if (!FLAVOR_VIM) return;
-        File dir = getScratchCacheDir(this);
-        mSyncFileObserver = new SyncFileObserver(dir.toString());
-        mSyncFileObserver.deleteFromStorage(true);
-        File sfofile = new File(dir.toString() + "/" + mSyncFileObserverFile);
-        if (sfofile.exists()) {
-            try {
-                FileInputStream fis = new FileInputStream(sfofile.toString());
-                int size = fis.available();
-                byte[] buffer = new byte[size];
-                fis.read(buffer);
-                fis.close();
-
-                String json = new String(buffer);
-                JSONObject jsonObject = new JSONObject(json);
-                JSONArray jsonArray = jsonObject.getJSONArray("mHashMap");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonOneRecord = jsonArray.getJSONObject(i);
-                    mSyncFileObserver.putHashMap((String) jsonOneRecord.get("path"), (String) jsonOneRecord.get("uri"));
-                }
-                fis.close();
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        mSyncFileObserver.setConTentResolver(this.getContentResolver());
-        mSyncFileObserver.setActivity(this);
+    static SyncFileObserver restoreSyncFileObserver(Activity activity) {
+        if (!FLAVOR_VIM) return null;
+        saveSyncFileObserver();
+        File dir = getScratchCacheDir(activity);
+        mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
+        File sfofile = new File(dir.getAbsolutePath() + "/" + mSyncFileObserverFile);
+        mSyncFileObserver.restoreHashMap(sfofile);
+        mSyncFileObserver.setActivity(activity);
         mSyncFileObserver.startWatching();
+        return mSyncFileObserver;
     }
 
-    private void saveSyncFileObserver() {
+    static private void saveSyncFileObserver() {
         if (!FLAVOR_VIM) return;
         if (mSyncFileObserver == null) return;
         mSyncFileObserver.stopWatching();
-        try {
-            String dir = mSyncFileObserver.getObserverDir();
-            File sfofile = new File(dir + "/" + mSyncFileObserverFile);
-
-            JSONObject jsonObject = new JSONObject();
-            JSONArray jsonArary = new JSONArray();
-
-            Map<String, String> hashMap = mSyncFileObserver.getHashMap();
-            for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-                JSONObject jsonOneData;
-                jsonOneData = new JSONObject();
-                jsonOneData.put("path", entry.getKey());
-                jsonOneData.put("uri", entry.getValue());
-                jsonArary.put(jsonOneData);
-            }
-            jsonObject.put("mHashMap", jsonArary);
-
-            FileWriter fileWriter = new FileWriter(sfofile);
-            BufferedWriter bw = new BufferedWriter(fileWriter);
-            PrintWriter pw = new PrintWriter(bw);
-            pw.write(jsonObject.toString());
-            pw.close();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
+        String dir = mSyncFileObserver.getObserverDir();
+        File sfofile = new File(dir + "/" + mSyncFileObserverFile);
+        mSyncFileObserver.saveHashMap(sfofile);
     }
 
     private void setExtraButton() {
@@ -1104,15 +1056,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
 
-        saveSyncFileObserver();
         if (mStopServiceOnFinish) {
             stopService(TSIntent);
             mFirstInputtype = true;
             mFunctionBar = -1;
             mOrientation = -1;
-            final int MAX_SYNC_FILES = 100;
-            if (FLAVOR_VIM && mSyncFileObserver != null)
-                mSyncFileObserver.clearCache(MAX_SYNC_FILES);
+            if (FLAVOR_VIM && mSyncFileObserver != null) {
+                mSyncFileObserver.clearOldCache();
+                saveSyncFileObserver();
+            }
             mKeepScreenHandler.removeCallbacksAndMessages(null);
         }
         new File(FILE_CLIPBOARD).delete();
@@ -1498,7 +1450,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mSyncFileObserver != null) {
             mSyncFileObserver.setActivity(this);
         } else {
-            restoreSyncFileObserver();
+            restoreSyncFileObserver(this);
         }
     }
 

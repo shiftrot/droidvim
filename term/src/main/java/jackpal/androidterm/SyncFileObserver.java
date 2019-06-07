@@ -1,38 +1,116 @@
 package jackpal.androidterm;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.FileObserver;
 import android.provider.DocumentsContract;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 class SyncFileObserver extends RecursiveFileObserver {
+    class Info {
+        private String uriString;
+        private String hash;
+        private long time;
 
-    static private Map<String, String> mHashMap = new HashMap<>();
-    static private HashSet<String> mHashSet = new HashSet<>();
+        Info() {
+            this.uriString = null;
+            this.hash = null;
+            this.time = -1;
+        }
+
+        Info(Uri uri, String hash) {
+            this.uriString = uri.toString();
+            this.hash = hash;
+            this.time = System.currentTimeMillis();
+        }
+
+        Info(Uri uri, String hash, long millis) {
+            this.uriString = uri.toString();
+            this.hash = hash;
+            this.time = millis;
+        }
+
+        Uri getUri() {
+            return Uri.parse(uriString);
+        }
+
+        void setUri(Uri uri) {
+            if (uri != null) uriString = uri.toString();
+        }
+
+        String getHash() {
+            return hash;
+        }
+
+        void setHash(String hash) {
+            if (hash != null) this.hash = hash;
+        }
+
+        long getTime() {
+            return time;
+        }
+
+        void setTime(long millis) {
+            time = millis;
+        }
+
+        int compareTo(Info value) {
+            long c = value.getTime() - time;
+            if (c == 0) return 0;
+            else return (c > 0 ? 1 : -1);
+        }
+
+        @Override
+        public String toString() {
+            String str = null;
+            try {
+                JSONObject jsonOneData = new JSONObject();
+                jsonOneData.put("uriString", this.uriString);
+                jsonOneData.put("hash", this.hash);
+                jsonOneData.put("time", String.valueOf(this.time));
+                str = jsonOneData.toString(4);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return str;
+        }
+    }
+
+    static private Map<String, Info> mHashMap = new HashMap<>();
     private File mCacheDir;
     private ContentResolver mContentResolver = null;
     private static Object mObjectActivity = null;
-    private boolean mDeleteFromStorage;
+    private boolean mConfirmDeleteFromStorage = false;
     private boolean mActive;
 
     SyncFileObserver(String path) {
@@ -42,8 +120,6 @@ class SyncFileObserver extends RecursiveFileObserver {
     private SyncFileObserver(String path, int mask) {
         super(path, mask);
         mCacheDir = new File(path);
-        mHashSet.clear();
-        mDeleteFromStorage = false;
         mActive = true;
     }
 
@@ -51,77 +127,108 @@ class SyncFileObserver extends RecursiveFileObserver {
     public void onEvent(int event, String path) {
         if (!mActive || !mHashMap.containsKey(path)) return;
         switch (event) {
-//            case FileObserver.DELETE_SELF:
+            // case FileObserver.DELETE_SELF:
             case FileObserver.DELETE:
-                confirmDelete(Uri.parse(mHashMap.get(path)), new File(path), mContentResolver);
+                confirmDelete(mHashMap.get(path).getUri(), new File(path), mContentResolver);
                 break;
             case FileObserver.OPEN:
-                // if (!mHashSet.contains(path)) {
-                //     makeCache(Uri.parse(mHashMap.get(path)), new File(path));
-                //     mHashSet.add(path);
-                // }
+                mHashMap.get(path).setTime(System.currentTimeMillis());
                 break;
             // case FileObserver.MODIFY:
             case FileObserver.CLOSE_WRITE:
-                flushCache(Uri.parse(mHashMap.get(path)), new File(path), mContentResolver);
+                mHashMap.get(path).setTime(System.currentTimeMillis());
+                flushCache(mHashMap.get(path).getUri(), new File(path), mContentResolver);
                 break;
+            // case FileObserver.ACCESS:
+            //     mHashMap.get(path).setTime(System.currentTimeMillis());
+            //     break;
             default:
                 break;
         }
     }
 
-    void setConTentResolver(ContentResolver cr) {
+    void setContentResolver(ContentResolver cr) {
         mContentResolver = cr;
     }
 
     void setActivity(Activity activity) {
         mObjectActivity = activity;
+        if (activity != null) setContentResolver(activity.getContentResolver());
     }
 
     String getObserverDir() {
-        return mCacheDir.toString();
+        return mCacheDir.getAbsolutePath();
     }
 
-    Map<String, String> getHashMap() {
-        return mHashMap;
+    private static int mMaxSyncFiles = 300;
+
+    public void setMaxSyncFiles(int max) {
+        mMaxSyncFiles = max > 100 ? max : 100;
     }
 
-    void putHashMap(String path, String uri) {
-        mActive = true;
-        mHashMap.put(path, uri);
-    }
-
-    void clearCache(int max) {
+    void clearOldCache() {
         if (mCacheDir == null || mHashMap == null) return;
-        if ((mHashMap.size() / 2) <= max) return;
-        clearCache();
+        if (mHashMap.size() <= mMaxSyncFiles) return;
+
+        List<Map.Entry<String, Info>> list_entries = new ArrayList<>(mHashMap.entrySet());
+
+        Collections.sort(list_entries, new Comparator<Map.Entry<String, Info>>() {
+            public int compare(Map.Entry<String, Info> obj1, Map.Entry<String, Info> obj2) {
+                return obj1.getValue().compareTo(obj2.getValue());
+            }
+        });
+        int size = list_entries.size() - 1;
+        int minSize = (size * 3) / 4;
+        for (int i = size; i > minSize; i--) {
+            String path = list_entries.get(i).getKey();
+            stopWatching(path);
+            if (new File(path).delete()) {
+                list_entries.remove(i);
+            } else {
+                startWatching(path);
+            }
+        }
+        mHashMap.clear();
+        for (Map.Entry<String, Info> map : list_entries) {
+            mHashMap.put(map.getKey(), map.getValue());
+        }
+        deleteEmptyDirectory(mCacheDir);
     }
 
     void clearCache() {
         mActive = true;
         if (mCacheDir == null) return;
         mHashMap.clear();
-        mHashSet.clear();
-        if (mCacheDir.isDirectory()) delete(mCacheDir);
+        if (mCacheDir.isDirectory()) deleteFileOrFolderRecursive(mCacheDir);
         stopWatching();
     }
 
-    public static void delete(File f) {
-        if (!f.exists()) {
-            return;
-        }
-        if (f.isFile()) {
-            f.delete();
-        } else if (f.isDirectory()) {
-            File[] files = f.listFiles();
-            for (File file : files) {
-                delete(file);
+    /*
+     * CAUTION: This function deletes reference directory of symbolic link. (Android N and earlier)
+     */
+    private boolean deleteFileOrFolderRecursive(File fileOrDirectory) {
+        if (fileOrDirectory == null || !fileOrDirectory.exists()) return true;
+        try {
+            if (fileOrDirectory.isDirectory()) {
+                File[] files = fileOrDirectory.listFiles();
+                if (files != null && files.length > 0) {
+                    for (File file : files) {
+                        deleteFileOrFolderRecursive(file);
+                    }
+                }
             }
-            f.delete();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return Files.deleteIfExists(fileOrDirectory.toPath());
+            } else {
+                return fileOrDirectory.delete();
+            }
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    public static void deleteEmptyDirectory(File d) {
+    private static void deleteEmptyDirectory(File d) {
+        if (d == null) return;
         File[] files = d.listFiles();
         if (files == null) {
             return;
@@ -142,10 +249,10 @@ class SyncFileObserver extends RecursiveFileObserver {
     boolean putUriAndLoad(Uri uri, String path) {
         mActive = true;
         path = path.replaceAll("//", "/");
+        path = new File(path).getAbsolutePath();
         String hash = makeCache(uri, new File(path));
         if (!hash.equals(HASH_ERROR)) {
-            putHashMap(path, uri.toString());
-            putHashMap(HASH_ALGORITHM + path, hash);
+            mHashMap.put(path, new Info(uri, hash, System.currentTimeMillis()));
             return true;
         }
         return false;
@@ -160,8 +267,9 @@ class SyncFileObserver extends RecursiveFileObserver {
 
         String hashValue = "";
         mActive = false;
-        dst.mkdirs();
-        if (dst.isDirectory()) delete(dst);
+        deleteFileOrFolderRecursive(dst);
+        File parent = dst.getParentFile();
+        if (parent != null) parent.mkdirs();
         try {
             MessageDigest md;
             try {
@@ -193,12 +301,12 @@ class SyncFileObserver extends RecursiveFileObserver {
             mActive = true;
             return HASH_ERROR;
         }
-        startWatching(dst.toString());
+        startWatching(dst.getAbsolutePath());
         mActive = true;
         return hashValue;
     }
 
-    public static String digest(InputStream is)
+    static String digest(InputStream is)
             throws NoSuchAlgorithmException, IOException, DigestException {
         MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
 
@@ -219,7 +327,13 @@ class SyncFileObserver extends RecursiveFileObserver {
         return buff.toString();
     }
 
-    private static final int HASH_CHECK_MODE = 2;
+    /*
+     * HASH_CHECK_MODE
+     * 0 : No check
+     * 1 : Check if the destination file has changed.
+     * 2 : Upload only if the local hash and destination hash are different.
+     */
+    private static int HASH_CHECK_MODE = 2;
 
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;
@@ -228,7 +342,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             return;
         }
 
-        final String oldHash = mHashMap.get(HASH_ALGORITHM + file.toString());
+        final String oldHash = mHashMap.get(file.getAbsolutePath()).getHash();
         try {
             InputStream dstIs = contentResolver.openInputStream(uri);
             if (dstIs != null) {
@@ -239,7 +353,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                     return;
                 }
                 if (HASH_CHECK_MODE == 2) {
-                    InputStream srcIs = new FileInputStream(file.toString());
+                    InputStream srcIs = new FileInputStream(file.getAbsolutePath());
                     String hashSrc = digest(srcIs);
                     srcIs.close();
                     if (hashDst.equals(hashSrc)) return;
@@ -274,7 +388,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             InputStream is = new FileInputStream(file);
             BufferedInputStream reader = new BufferedInputStream(is);
 
-            byte[] buf = new byte[4096];
+            byte[] buf = new byte[16 * 1024];
             int len;
             while ((len = reader.read(buf)) != -1) {
                 if (md != null) md.update(buf, 0, len);
@@ -286,7 +400,7 @@ class SyncFileObserver extends RecursiveFileObserver {
             if (md != null) {
                 byte[] digest = md.digest();
                 String hashValue = toHexString(digest);
-                putHashMap(HASH_ALGORITHM + file.toString(), hashValue);
+                mHashMap.get(file.getAbsolutePath()).setHash(hashValue);
             }
         } catch (Exception e) {
             writeErrorDialog((Activity) mObjectActivity);
@@ -353,7 +467,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setTitle(R.string.storage_write_error_title);
                     bld.setMessage(R.string.storage_write_error);
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    bld.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
                             mDialogIsActive = false;
@@ -384,13 +498,9 @@ class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    void deleteFromStorage(boolean delete) {
-        mDeleteFromStorage = delete;
-    }
-
     @SuppressLint("NewApi")
     private void confirmDelete(final Uri uri, final File path, final ContentResolver contentResolver) {
-        if (!mDeleteFromStorage || mObjectActivity == null) return;
+        if (!mConfirmDeleteFromStorage || mObjectActivity == null) return;
         final Activity activity = (Activity) mObjectActivity;
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
             return;
@@ -419,6 +529,71 @@ class SyncFileObserver extends RecursiveFileObserver {
             }
         });
     }
-}
 
+    boolean restoreHashMap(File hashMapFile) {
+        if (hashMapFile.exists()) {
+            try {
+                FileInputStream fis = new FileInputStream(hashMapFile.getAbsolutePath());
+                int size = fis.available();
+                byte[] buffer = new byte[size];
+                fis.read(buffer);
+                fis.close();
+
+                String json = new String(buffer);
+                JSONObject jsonObject = new JSONObject(json);
+                JSONArray jsonArray = jsonObject.getJSONArray("mHashMap");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
+                        JSONObject jsonOneRecord = jsonArray.getJSONObject(i);
+                        String path = (String) jsonOneRecord.get("path");
+                        Info info = new Info();
+                        info.uriString = (String) jsonOneRecord.get("info.uriString");
+                        info.hash = (String) jsonOneRecord.get("info.hash");
+                        info.time = Long.valueOf((String) jsonOneRecord.get("info.time"));
+                        mHashMap.put(path, info);
+                    } catch (Exception e) {
+                        // invalid data
+                        e.printStackTrace();
+                    }
+                }
+                fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        mActive = true;
+        return true;
+    }
+
+    boolean saveHashMap(File hashMapFile) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArary = new JSONArray();
+
+            if (mHashMap == null || mHashMap.size() == 0) return true;
+            for (Map.Entry<String, Info> entry : mHashMap.entrySet()) {
+                JSONObject jsonOneData = new JSONObject();
+                jsonOneData.put("path", entry.getKey());
+                Info info = entry.getValue();
+                jsonOneData.put("info.uriString", info.uriString);
+                jsonOneData.put("info.hash", info.hash);
+                jsonOneData.put("info.time", String.valueOf(info.time));
+                jsonArary.put(jsonOneData);
+            }
+            jsonObject.put("mHashMap", jsonArary);
+
+            FileWriter fileWriter = new FileWriter(hashMapFile);
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            PrintWriter pw = new PrintWriter(bw);
+            String str = jsonObject.toString(4);
+            pw.write(str);
+            pw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}
 

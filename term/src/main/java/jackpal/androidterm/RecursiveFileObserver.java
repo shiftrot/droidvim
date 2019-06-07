@@ -76,7 +76,7 @@ public class RecursiveFileObserver extends FileObserver {
         return file.isDirectory() && !file.getName().equals(".") && !file.getName().equals("..");
     }
 
-    private void stopWatching(String path) {
+    void stopWatching(String path) {
         synchronized (mObservers) {
             FileObserver observer = mObservers.remove(path);
             if (observer != null) {
