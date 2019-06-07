@@ -498,7 +498,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             if (key.equals("home_path")) {
                 if (!new File(loadVal).canWrite()) {
                     String defValue;
-                    if (!BuildConfig.FLAVOR.equals("master")) {
+                    if (!BuildConfig.FLAVOR.equals("origin")) {
                         defValue = TermService.getAPPFILES() + "/home";
                         File home = new File(defValue);
                         if (!home.exists()) home.mkdir();

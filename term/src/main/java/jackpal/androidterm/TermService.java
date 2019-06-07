@@ -96,7 +96,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         String defValue;
-        if (!BuildConfig.FLAVOR.equals("master")) {
+        if (!BuildConfig.FLAVOR.equals("origin")) {
             defValue = getFilesDir().getAbsolutePath() + "/home";
             File home = new File(defValue);
             if (!home.exists()) home.mkdir();
