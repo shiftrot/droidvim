@@ -25,7 +25,6 @@ import android.webkit.MimeTypeMap;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,6 +35,7 @@ import java.util.PriorityQueue;
 
 import androidx.core.content.ContextCompat;
 import jackpal.androidterm.R;
+import jackpal.androidterm.TermService;
 
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class LocalStorageProvider extends DocumentsProvider {
@@ -105,12 +105,14 @@ public class LocalStorageProvider extends DocumentsProvider {
         row.add(Root.COLUMN_AVAILABLE_BYTES, homeDir.getFreeSpace());
 
         homeDir = Environment.getExternalStorageDirectory();
+        String summary = "$INTERNAL_STORAGE";
+
         if (TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
             row = result.newRow();
             row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(homeDir));
             row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(homeDir));
             row.add(Root.COLUMN_TITLE, title);
-            row.add(Root.COLUMN_SUMMARY, homeDir.getAbsolutePath());
+            row.add(Root.COLUMN_SUMMARY, summary);
             row.add(Root.COLUMN_ICON, R.drawable.ic_folder);
             row.add(Root.COLUMN_FLAGS, FLAGS);
             row.add(Root.COLUMN_MIME_TYPES, "*/*");
@@ -229,7 +231,8 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public String createDocument(final String documentId, final String mimeType, final String displayName) throws FileNotFoundException {
-        File file = new File(documentId, displayName);
+        String canonicalName = displayName.replaceAll("\\\\", "_");
+        File file = new File(documentId, canonicalName);
         try {
             if (Document.MIME_TYPE_DIR.equals(mimeType)) {
                 file.mkdirs();
@@ -248,7 +251,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     @Override
     public void deleteDocument(String documentId) throws FileNotFoundException {
         File file = getFileForDocId(documentId);
-        rmFileOrFolder(file);
+        deleteFileOrFolder(file);
         if (file.exists()) {
             throw new FileNotFoundException("Failed to delete document with id " + documentId);
         }
@@ -258,60 +261,22 @@ public class LocalStorageProvider extends DocumentsProvider {
      * This function requires "implementation 'commons-io:commons-io:2.6'" in build.gradle
      */
     private void deleteFileOrFolder(File fileOrDirectory) {
+        if (fileOrDirectory == null || !fileOrDirectory.exists()) return;
         try {
             if (fileOrDirectory.isDirectory()) {
                 FileUtils.deleteDirectory(fileOrDirectory);
             } else {
-                if (fileOrDirectory.delete()) {
+                if (!fileOrDirectory.delete()) {
                     Log.v(TAG, "Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
                 }
             }
-        } catch (IOException e) {
-            Log.v(TAG, "IOException in FileUtils.deleteDirectory(). " + fileOrDirectory.getAbsolutePath());
+        } catch (Exception e) {
+            Log.v(TAG, "Exception in FileUtils.deleteDirectory(). " + e.toString() + " " + fileOrDirectory.getAbsolutePath());
         }
         if (!fileOrDirectory.exists()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 revokeDocumentPermission(getDocIdForFile(fileOrDirectory));
             }
-        }
-    }
-
-    /*
-     * Use `rm` command instead of `file.delete().
-     * 'rm' does not delete reference directory of symbolic link.
-     */
-    private void rmFileOrFolder(File fileOrDirectory) {
-        String opt = fileOrDirectory.isDirectory() ? " -rf " : "";
-        shell("rm " + opt + " " + fileOrDirectory.getAbsolutePath());
-        if (!fileOrDirectory.exists()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                revokeDocumentPermission(getDocIdForFile(fileOrDirectory));
-            }
-        } else {
-            Log.v(TAG, "Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
-        }
-    }
-
-    private void shell(String... strings) {
-        try {
-            Process shell = Runtime.getRuntime().exec("sh");
-            DataOutputStream sh = new DataOutputStream(shell.getOutputStream());
-
-            for (String s : strings) {
-                sh.writeBytes(s + "\n");
-                sh.flush();
-            }
-
-            sh.writeBytes("exit\n");
-            sh.flush();
-            try {
-                shell.waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            sh.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -345,7 +310,6 @@ public class LocalStorageProvider extends DocumentsProvider {
             return null;
         }
         return getDocIdForFile(dst);
-
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -370,11 +334,12 @@ public class LocalStorageProvider extends DocumentsProvider {
         if (!existingFile.exists()) {
             throw new FileNotFoundException(documentId + " does not exist");
         }
-        if (existingFile.getName().equals(displayName)) {
+        String canonicalName = displayName.replaceAll("\\\\", "_");
+        if (existingFile.getName().equals(canonicalName)) {
             return getDocIdForFile(existingFile);
         }
         File parentDirectory = existingFile.getParentFile();
-        File newFile = new File(parentDirectory, displayName);
+        File newFile = new File(parentDirectory, canonicalName);
         boolean success = existingFile.renameTo(newFile);
         if (!success) {
             throw new FileNotFoundException("Unable to rename " + documentId + " to " + existingFile.getAbsolutePath());
