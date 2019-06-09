@@ -1,0 +1,12 @@
+diff --git a/runtime/tutor/tutor.vim b/runtime/tutor/tutor.vim
+index 6af69d053..c49618691 100644
+--- a/runtime/tutor/tutor.vim
++++ b/runtime/tutor/tutor.vim
+@@ -198,5 +198,6 @@ else
+ endif
+ 
+ " 4. Making the copy and exiting Vim:
++silent! bw! $TUTOR
+ e $TUTOR
+-wq! $TUTORCOPY
++file $TUTORCOPY

@@ -1,0 +1,56 @@
+diff --git a/runtime/autoload/netrw.vim b/runtime/autoload/netrw.vim
+index 7e3e66e6d..fb59430c3 100644
+--- a/runtime/autoload/netrw.vim
++++ b/runtime/autoload/netrw.vim
+@@ -11412,11 +11412,50 @@ fun! s:NetrwExe(cmd)
+     exe a:cmd
+     let [&shell,&shellcmdflag,&shellxquote,&shellxescape,&shellquote,&shellpipe,&shellredir,&shellslash] = savedShell
+   else
+-   exe a:cmd
++    if has("win32") || exists('$APPBASE')
++      exe s:CnvLocalPath2Uri(a:cmd)
++    else
++      exe a:cmd
++    endif
+   endif
+ "  call Dret("s:NetrwExe")
+ endfun
+ 
++func! s:CnvLocalPath2Uri(str)
++  let str = a:str
++  let pathhead = '\.\.\?[/\\]\([./\\]*\)*'
++  let pathchr  = '[^ |:]'
++  let prevPath = s:escape(getcwd(), ' ')
++  exe 'chdir ' . s:escape(fnamemodify(expand('%'), ':h'), ' ')
++  while match(str, "[\"']".pathhead) != -1
++    let uri = matchstr(str, pathhead)
++    let uri = s:NormalizePath(fnamemodify(uri, ':p'))
++    let str = substitute(str, pathhead, 'file://'.uri, '')
++    let str = substitute(str, 'file:///', 'file://'.fnamemodify('/', ':p'), 'g')
++    let str = substitute(str, 'file://', '', 'g')
++  endwhile
++  silent! exe 'chdir ' . prevPath
++  return str
++endfunction
++
++fun! s:escape(str, chars)
++  return escape(a:str, a:chars.((has('win32')|| has('win64')) ? '#%&' : '#%$'))
++endfun
++
++let s:MSWindows = has('win95') + has('win16') + has('win32') + has('win64')
++fun! s:NormalizePath(path, ...)
++  let path = a:path
++  if s:MSWindows
++    if a:0
++      let path = toupper(path)
++    else
++      let path = substitute(path, '^\([a-z]\):', '\u\1:', '')
++    endif
++    let path = substitute(path, '\\', '/', 'g')
++  endif
++  return path
++endfun
++
+ " ---------------------------------------------------------------------
+ " s:NetrwInsureWinVars: insure that a netrw buffer has its w: variables in spite of a wincmd v or s {{{2
+ fun! s:NetrwInsureWinVars()

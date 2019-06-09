@@ -1,0 +1,13 @@
+diff --git a/src/libvterm/src/vterm_internal.h b/src/libvterm/src/vterm_internal.h
+index 759382c..e1e1c45 100644
+--- a/src/libvterm/src/vterm_internal.h
++++ b/src/libvterm/src/vterm_internal.h
+@@ -1,7 +1,7 @@
+ #ifndef __VTERM_INTERNAL_H__
+ #define __VTERM_INTERNAL_H__
+ 
+-#include "vterm.h"
++#include "../include/vterm.h"
+ 
+ #include <stdarg.h>
+ 

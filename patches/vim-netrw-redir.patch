@@ -1,0 +1,12 @@
+diff --git a/runtime/autoload/netrw.vim b/runtime/autoload/netrw.vim
+index 76485c2f3..7e3e66e6d 100644
+--- a/runtime/autoload/netrw.vim
++++ b/runtime/autoload/netrw.vim
+@@ -5048,6 +5048,7 @@ fun! netrw#BrowseX(fname,remote)
+ 
+   " set up redirection (avoids browser messages)
+   " by default, g:netrw_suppress_gx_mesg is true
++  let redir = ''
+   if g:netrw_suppress_gx_mesg
+    if &srr =~ "%s"
+     if (has("win32") || has("win95") || has("win64") || has("win16"))
