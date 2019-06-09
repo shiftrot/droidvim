@@ -4,9 +4,16 @@ buildscript {
         jcenter()
         google()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.5.0-beta04'
     }
+
+    ext.versions = [
+            'compileSdk': 29,
+            'minSdk'    : 16,
+            'targetSdk' : 28
+    ]
 }
 
 allprojects {
@@ -14,6 +21,7 @@ allprojects {
         jcenter()
         google()
     }
+
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
 //            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"

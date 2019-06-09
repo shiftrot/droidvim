@@ -4,13 +4,16 @@ repositories {
 }
 
 import java.text.SimpleDateFormat
+
 android {
-    compileSdkVersion 29
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+    }
 
+    defaultConfig {
         versionName = "1.0.0"
         versionCode 1
 
@@ -61,14 +64,22 @@ android {
             applicationId "com.droidvim"
         }
     }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.annotation:annotation:1.0.2'
-    implementation 'androidx.vectordrawable:vectordrawable:1.1.0-beta01'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0-beta02'
     implementation project(':emulatorview')
     implementation project(':libtermexec')
+}
+
+dependencies {
     implementation 'org.apache.commons:commons-compress:1.18'
     implementation 'commons-io:commons-io:2.6'
     implementation 'org.tukaani:xz:1.8'
