@@ -766,7 +766,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         });
         if (mSettings.getColorTheme() == 0) {
-            findViewById(R.id.drawer_files_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
+            findViewById(R.id.drawer_files_button).setBackgroundResource(R.drawable.sidebar_button2_dark);
             findViewById(R.id.drawer_app_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
             findViewById(R.id.drawer_dropbox_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
             findViewById(R.id.drawer_googledrive_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
