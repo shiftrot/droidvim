@@ -320,7 +320,7 @@
     <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
 
     <string name="crash_title">Sorry, Vim has crashed.</string>
-    <string name="crash_message">Please use troubleshooting or close this app and restart.\n\nIf Vim.python always crashes, it may be a device dependent problem.\nIf you can not solve it by troubleshooting, please contact us.</string>
+    <string name="crash_message">Please use troubleshooting or close this app and restart.\nIf you can not solve it by troubleshooting, please contact us.</string>
     <string name="crash_quit_button">Force stop this app</string>
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
     <string name="choose_vim_python_script">Choose Vim (+python) script</string>
@@ -486,8 +486,8 @@
     <string name="storage_permission_granted">Storage access granted.\nPlease restart this app for the settings to take effect.</string>
     <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
     <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
-    <string name="storage_write_error_title">File write error</string>
-    <string name="storage_write_error">Open the file for editing via \"Storage\" button on the drawer menu.\n(Or check if the file is not read only and the file has not been deleted)</string>
+    <string name="storage_write_error_title">Invalid URI</string>
+    <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Storage\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
     <string name="storage_hash_error_title">File hash error</string>
     <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Storage\" button.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
