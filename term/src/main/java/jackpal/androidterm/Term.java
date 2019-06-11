@@ -2492,6 +2492,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void fatalCrashVimQuit() {
+        mFatalTroubleShooting = true;
         setUninstallExtraContents(false);
         final String[] items = {
                 this.getString(R.string.launch_default_vim),
@@ -2503,16 +2504,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if (which == 0) {
+                        if (getString(R.string.launch_default_vim).equals(items[which])) {
                             if (new File(TermService.getAPPFILES() + "/bin/vim.default").canExecute()) {
                                 sendKeyStrings("vim.app.default\r", false);
                             } else {
                                 sendKeyStrings("vim.app\r", false);
                             }
-                        } else if (which == 1) {
+                        } else if (getString(R.string.revert_to_default_vim).equals(items[which])) {
                             setUninstallExtraContents(true);
                             doCloseCrashVimWindow(getString(R.string.revert_to_default_vim));
-                        } else if (which == 2) {
+                        } else if (getString(R.string.crash_quit_button).equals(items[which])) {
                             doCloseCrashVimWindow();
                         } else {
                             fatalCrashVim();
