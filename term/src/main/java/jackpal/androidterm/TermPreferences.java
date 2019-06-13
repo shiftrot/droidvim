@@ -687,10 +687,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     private void doStartActivityForResult(Intent intent, int requestCode) {
-        intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-        intent.putExtra("android.content.extra.FANCY", true);
-        intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
-        startActivityForResult(intent, requestCode);
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        if (intent.resolveActivity(pm) != null) startActivityForResult(intent, requestCode);
     }
 
     public static String getDirectory(Activity activity, Uri uri) {
