@@ -283,7 +283,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private static String mAPPEXTFILES;
     private static String mEXTSTORAGE;
     private static String mLD_LIBRARY_PATH;
-    private static String mLD_PRELOAD;
     private static String mTMPDIR;
     private static String mHOME;
     private static String mSTARTUP_DIR;
@@ -329,7 +328,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
-        cmd = cmd.replaceAll("%LD_PRELOAD_DEFAULT%", "\\$LD_PRELOAD");
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", ld_library_path);
         cmd = cmd.replaceAll("%PATH%", path);
         cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUP_DIR);

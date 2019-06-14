@@ -105,7 +105,8 @@ public class ShellTermSession extends GenericTermSession {
             path = checkPath(path);
         }
 
-        String[] env = new String[9];
+        int size = 9;
+        String[] env = new String[size];
         env[0] = "PATH=" + path;
         env[1] = "HOME=" + TermService.getHOME();
         env[2] = "TMPDIR=" + TermService.getTMPDIR();
@@ -119,7 +120,7 @@ public class ShellTermSession extends GenericTermSession {
         String[] envCmd = env;
         if (mFirst) {
             for (String str : env) {
-                mEnvInitialCommand += "export " + str + "\r";
+                if (!"".equals(str)) mEnvInitialCommand += "export " + str + "\r";
             }
             envCmd = new String[1];
             envCmd[0] = "";
@@ -165,15 +166,15 @@ public class ShellTermSession extends GenericTermSession {
             write(mEnvInitialCommand + '\r');
             mFirst = false;
         }
-        sendCommand(getLANG());
+        sendCommand(getAdditionalEnv());
 
         if (initialCommand != null && initialCommand.length() > 0) {
             write(initialCommand + '\r');
         }
     }
 
-    static private String[] getLANG() {
-        List<String> LANGCommands = new ArrayList<>();
+    static private String[] getAdditionalEnv() {
+        List<String> AdditonalCommands = new ArrayList<>();
         String locale;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             LocaleList localeList = LocaleList.getDefault();
@@ -190,8 +191,8 @@ public class ShellTermSession extends GenericTermSession {
         }
         if ("".equals(locale)) locale = "en-US";
         locale = locale.replace("-", "_");
-        LANGCommands.add("export LANG=" + locale + ".UTF-8");
-        return LANGCommands.toArray(new String[0]);
+        AdditonalCommands.add("export LANG=" + locale + ".UTF-8");
+        return AdditonalCommands.toArray(new String[0]);
     }
 
     static private String getprop(String propName) {
