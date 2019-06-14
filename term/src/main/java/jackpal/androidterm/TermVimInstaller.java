@@ -253,7 +253,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("runtimetutor", "raw", activity.getPackageName());
                     installTar(runtimeDir, getInputStream(activity, id));
 
-                    id = activity.getResources().getIdentifier("extra", "raw", activity.getPackageName());
+                    id = activity.getResources().getIdentifier("runtime_extra", "raw", activity.getPackageName());
                     installZip(runtimeDir, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), sdcard + "/version");
