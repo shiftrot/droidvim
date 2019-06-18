@@ -3206,6 +3206,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 // Do nothing
             }
         }
+        final String externalAppLabel = externalApp;
         final String[] externalApps = externalApp != null ? new String[]{externalApp} : new String[]{};
 
         final Map<String, String> apps = new LinkedHashMap<String, String>() {
@@ -3237,40 +3238,32 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         System.arraycopy(appLabels, 0, storageApps, 0, storages);
 
         final String[] base = {
-                this.getString(R.string.external_storage),
+                this.getString(R.string.file_chooser),
                 this.getString(R.string.create_or_delete),
-                this.getString(R.string.preferences)
         };
 
-        final String[] items = new String[externalApps.length + storageApps.length + base.length];
-        System.arraycopy(externalApps, 0, items, 0, externalApps.length);
-        System.arraycopy(appLabels, 0, items, externalApps.length, storageApps.length);
-        System.arraycopy(base, 0, items, externalApps.length + storageApps.length, base.length);
+        final String[] items = new String[base.length + storageApps.length + externalApps.length];
+
+        System.arraycopy(base, 0, items, 0, base.length);
+        System.arraycopy(appLabels, 0, items, base.length, storageApps.length);
+        System.arraycopy(externalApps, 0, items, base.length + storageApps.length, externalApps.length);
 
         new AlertDialog.Builder(this)
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (externalApps.length > 0 && which < externalApps.length) {
+                        if (getString(R.string.file_chooser).equals(items[which])) {
+                            filePicker();
+                        } else if (getString(R.string.create_or_delete).equals(items[which])) {
+                            chooseFilePicker();
+                        } else if (getString(R.string.dropbox).equals(items[which])) {
+                            launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX);
+                        } else if (getString(R.string.googledrive).equals(items[which])) {
+                            launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE);
+                        } else if (getString(R.string.onedrive).equals(items[which])) {
+                            launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE);
+                        } else if (externalAppLabel.equals(items[which])) {
                             externalApp();
-                        } else if (which < externalApps.length + storageApps.length) {
-                            int id = which - externalApps.length;
-                            if (getString(R.string.dropbox).equals(storageApps[id])) {
-                                launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX);
-                            } else if (getString(R.string.googledrive).equals(storageApps[id])) {
-                                launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE);
-                            } else if (getString(R.string.onedrive).equals(storageApps[id])) {
-                                launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE);
-                            }
-                        } else {
-                            int id = which - externalApps.length - storageApps.length;
-                            if (id == 0) {
-                                filePicker();
-                            } else if (id == 1) {
-                                chooseFilePicker();
-                            } else if (id == 2) {
-                                doPreferences();
-                            }
                         }
                     }
                 })

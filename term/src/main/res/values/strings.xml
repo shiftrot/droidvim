@@ -476,6 +476,7 @@
     <string name="launch_app">\Launch %s</string>
     <string name="activity_not_found">Activity not found.\nPlease try again.</string>
     <string name="external_storage">Storage</string>
+    <string name="file_chooser">Choose file</string>
     <string name="create_or_delete">Manager</string>
     <string name="create_file">Create file</string>
     <string name="delete_file">Delete file</string>

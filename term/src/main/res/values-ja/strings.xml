@@ -426,6 +426,7 @@
     <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
 
     <string name="external_storage">ストレージ</string>
+    <string name="file_chooser">ファイル選択</string>
     <string name="create_or_delete">管理</string>
     <string name="create_file">ファイル作成</string>
     <string name="delete_file">ファイル削除</string>
