@@ -55,6 +55,11 @@
         android:theme="@style/ThemeLightDefault"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ExtraContents"
+            android:label="@string/title_activity_extra_contents"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".Term"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:immersive="false"

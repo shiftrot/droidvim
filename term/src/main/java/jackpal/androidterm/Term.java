@@ -4289,12 +4289,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private boolean mOnExtraButtonClicked = false;
 
-    // User clicked the "Upgrade to Premium" button.
     public void onExtraButtonClicked(View arg0) {
-        if (!isConnected(this.getApplicationContext())) {
-            alert(this.getString(R.string.network_error));
-            return;
-        }
+        Intent intent = new Intent(this, ExtraContents.class);
+        startActivity(intent);
     }
 
     public void updateUi() {

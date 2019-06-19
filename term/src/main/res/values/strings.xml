@@ -538,5 +538,6 @@
     <string name="summary_cloud_file_picker_off_preference">Content picker</string>
     <string name="title_html_viewer_mode_preference">Html viewer</string>
     <string name="summary_html_viewer_mode">Default</string>
+    <string name="title_activity_extra_contents">ExtraContents</string>
 
 </resources>
