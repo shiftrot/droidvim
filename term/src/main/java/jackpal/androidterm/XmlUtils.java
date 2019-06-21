@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.droidvim;
+package jackpal.androidterm;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -585,7 +585,7 @@ public class XmlUtils {
     /**
      * Flatten an object's value into an XmlSerializer.  The value can later
      * be read back with readThisValueXml().
-     *
+     * <p>
      * Currently supported value types are: null, String, Integer, Long,
      * Float, Double Boolean, Map, List.
      *
@@ -605,7 +605,7 @@ public class XmlUtils {
     /**
      * Flatten an object's value into an XmlSerializer.  The value can later
      * be read back with readThisValueXml().
-     *
+     * <p>
      * Currently supported value types are: null, String, Integer, Long,
      * Float, Double Boolean, Map, List.
      *

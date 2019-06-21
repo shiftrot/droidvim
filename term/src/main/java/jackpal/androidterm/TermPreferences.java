@@ -27,7 +27,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.MenuItem;
 
-import com.droidvim.XmlUtils;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 
 import java.io.File;

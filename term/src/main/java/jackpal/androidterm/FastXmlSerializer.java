@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.droidvim;
+package jackpal.androidterm;
 
 import org.xmlpull.v1.XmlSerializer;
 
