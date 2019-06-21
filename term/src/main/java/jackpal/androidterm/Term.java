@@ -1879,13 +1879,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doExitShell() {
-        try {
-            sendKeyStrings("exit\r", false);
-            sendKeyStrings("exit\r", false);
-            sendKeyStrings("exit\r", false);
-        } catch (Exception e) {
-            doCloseWindow();
-        }
+        doCloseWindow();
     }
 
     private void doCloseWindow() {
