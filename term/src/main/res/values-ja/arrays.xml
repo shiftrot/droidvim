@@ -124,6 +124,7 @@
         <item>ファンクションバーのカーソルキーの方向をトグル"</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
+        <item>&lt;C-^&gt; (iminsert)</item>
         <item>新規タブでファイルを開く(Vim)</item>
         <item>画面の向き</item>
         <item>終了</item>
@@ -205,6 +206,7 @@
         <item>一行テキスト入力</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
+        <item>&lt;C-^&gt; (Vim iminsert)</item>
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">

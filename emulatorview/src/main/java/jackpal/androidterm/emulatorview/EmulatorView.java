@@ -1497,12 +1497,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
             switch (ctrl) {
             case 0:
+            case 70:
                 doHideSoftKeyboard();
                 break;
             case 1:
+            case 71:
                 doShowSoftKeyboard();
                 break;
             case 2:
+            case 72:
                 doToggleSoftKeyboard();
                 break;
             case 3:
@@ -1564,6 +1567,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case 62:
                 ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
+                break;
+            case 63:
+                ((Activity)this.getContext()).onKeyUp(0xffff0063, null);
+                break;
+            case 1061:
+                if (mIme == IME_ID_GBOARD && mHaveFullHwKeyboard) {
+                    ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
+                }
                 break;
             case 500:
                 setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
@@ -1925,6 +1936,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
         } else if (action == 1362) {
             ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
+        } else if (action == 1365) {
+            ((Activity)this.getContext()).onKeyUp(0xffff0063, null);
         } else {
             int imeType = mUseCookedIme ? EditorInfo.TYPE_CLASS_TEXT : EditorInfo.TYPE_NULL;
             if (mIMEInputType == imeType) {

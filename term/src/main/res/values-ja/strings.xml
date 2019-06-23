@@ -387,9 +387,9 @@
     <string name="pref_grave">[`]</string>
     <string name="pref_switch_charset">[漢字]</string>
 
-    <string name="title_ime_shortcuts_action_preference">IMEショートカット設定</string>
+    <string name="title_ime_shortcuts_action_preference">IMEショートカットアクション</string>
     <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
-    <string name="dialog_titleime_shortcuts_action_preference">IMEショートカット設定</string>
+    <string name="dialog_titleime_shortcuts_action_preference">IMEショートカットアクション</string>
 
     <string name="title_home_dir_chooser_preference">ホームディレクトリ</string>
     <string name="set_home_directory">ホームディレクトリは, 次の場所に設定されました.\n\n</string>

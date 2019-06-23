@@ -1732,12 +1732,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 setEditTextAltCmd();
                 view.doImeShortcutsAction();
             }
+            toggleVimIminsert();
             return true;
         } else if (key == 1261) {
             doEditTextFocusAction();
         } else if (key == 1360 || (key >= 1351 && key <= 1354)) {
             if (setEditTextAltCmd()) return true;
             view.doImeShortcutsAction(key - 1300);
+            if (key == 1360) toggleVimIminsert();
         } else if (key == 1361) {
             keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
         } else if (key == 1362) {
@@ -1751,6 +1753,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 mInvertCursorDirection = getDefaultInvertCursorDirection();
                 setCursorDirectionLabel();
             }
+        } else if (key == 1365) {
+            sendVimIminsertKey();
         } else if (key == 1355) {
             toggleDrawer();
         } else if (key == 1356) {
@@ -1785,6 +1789,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             view.setControlKeyState(state);
         }
         return true;
+    }
+
+    private boolean mUseIminsert = false;
+    void toggleVimIminsert() {
+        if (!FLAVOR_VIM || !mUseIminsert) return;
+        sendVimIminsertKey();
+    }
+
+    void sendVimIminsertKey() {
+        EmulatorView view = getCurrentEmulatorView();
+        if (view == null) return;
+        // send <C-^>
+        TermSession session = getCurrentTermSession();
+        if (session != null) session.write(30);
     }
 
     private static boolean mInvertCursorDirection = false;
@@ -2395,6 +2413,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return true;
             case 0xffff1364:
                 doSendActionBarKey(getCurrentEmulatorView(), 1364);
+                return true;
+            case 0xffff0063:
+            case 0xffff1365:
+                sendVimIminsertKey();
                 return true;
             case 0xffff0056:
                 doEditTextFocusAction();
