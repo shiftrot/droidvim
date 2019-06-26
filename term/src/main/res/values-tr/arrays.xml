@@ -70,16 +70,6 @@
         <item>Black text on Solarized Light</item>
     </string-array>
 
-    <string-array name="entries_controlkey_preference">
-        <item>Jog ball</item>
-        <item>\@ Tuşu</item>
-        <item>Sol Alt Tuşu</item>
-        <item>Sağ Alt Tuşu</item>
-        <item>Ses Arttırma Tuşu</item>
-        <item>Ses Kısma Tuşu</item>
-        <item>Kamera Tuşu</item>
-    </string-array>
-
     <string-array name="entries_ime_preference">
         <item>Harf tabanlı</item>
         <item>Kelime tabanlı</item>
