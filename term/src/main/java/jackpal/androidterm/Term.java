@@ -1992,6 +1992,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
+                .setTitle(getString(R.string.storage_menu))
                 .show();
     }
 
@@ -3265,6 +3266,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         System.arraycopy(externalApps, 0, items, base.length + storageApps.length, externalApps.length);
 
         new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.storage_menu))
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
