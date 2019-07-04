@@ -2481,31 +2481,39 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private int mChecked = -1;
 
     private void fatalCrashVim() {
-        setUninstallExtraContents(false);
-        mUninstall = false;
-        mLibrary = -1;
-        mLdLibraryPathMode = -1;
-        mVimPythonMode = -1;
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_alert);
-        bld.setTitle(getString(R.string.crash_title));
-        bld.setMessage(getString(R.string.crash_message));
-        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int m) {
-                dialog.dismiss();
-                fatalCrashVimQuit();
+        try {
+            setUninstallExtraContents(false);
+            mUninstall = false;
+            mLibrary = -1;
+            mLdLibraryPathMode = -1;
+            mVimPythonMode = -1;
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setIcon(android.R.drawable.ic_dialog_alert);
+            bld.setTitle(getString(R.string.crash_title));
+            bld.setMessage(getString(R.string.crash_message));
+            bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int m) {
+                    dialog.dismiss();
+                    fatalCrashVimQuit();
+                }
+            });
+            bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int m) {
+                    dialog.dismiss();
+                    troubleShooting(true);
+                }
+            });
+            AlertDialog dlg = bld.create();
+            dlg.setCancelable(false);
+            dlg.setCanceledOnTouchOutside(false);
+            dlg.show();
+        } catch (Exception e) {
+            if (new File(TermService.getAPPFILES() + "/bin/vim.default").canExecute()) {
+                sendKeyStrings("vim.app.default\r", false);
+            } else {
+                sendKeyStrings("vim.app\r", false);
             }
-        });
-        bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int m) {
-                dialog.dismiss();
-                troubleShooting(true);
-            }
-        });
-        AlertDialog dlg = bld.create();
-        dlg.setCancelable(false);
-        dlg.setCanceledOnTouchOutside(false);
-        dlg.show();
+        }
     }
 
     private void fatalCrashVimQuit() {
