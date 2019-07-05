@@ -191,7 +191,8 @@
     <string name="summary_fontfile_preference">フォントを選択</string>
     <string name="dialog_title_fontfile_preference">フォントファイル</string>
     <string name="entry_fontfile_default">システムフォント</string>
-    <string name="font_file_error">ホームディレクトリまたは内部ストレージ内の拡張子が\".ttf\"または\".otf\"の等幅フォントファイルを選択してください.\nプロポーショナルフォントを使用したい場合は「プロポーショナルフォントを使用」オプションを有効にしてください.</string>
+    <string name="font_file_error">拡張子が\".ttf\"または\".otf\"の等幅フォントファイルを選択してください.</string>
+    <string name="font_file_changed">フォントを設定しました.</string>
     <string name="font_file_invalid">Androidはこのフォントファイルを扱えません.</string>
 
     <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>

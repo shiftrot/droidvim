@@ -200,7 +200,8 @@
     <string name="summary_fontfile_preference">Choose font.</string>
     <string name="dialog_title_fontfile_preference">Font file</string>
     <string name="entry_fontfile_default">System font</string>
-    <string name="font_file_error">Please choose monospaced (fixed-width) font file with extension \".ttf\" or \".otf\" in Home directory or Internal storage.\nIf you want to use proportional fonts, Enable \"Use proportional font\" option.</string>
+    <string name="font_file_error">Please choose monospaced (fixed-width) font file with extension \".ttf\" or \".otf\".</string>
+    <string name="font_file_changed">The font has been changed.</string>
     <string name="font_file_invalid">Android can not handle this font file.</string>
 
     <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
