@@ -200,7 +200,7 @@
     <string name="summary_fontfile_preference">Choose font.</string>
     <string name="dialog_title_fontfile_preference">Font file</string>
     <string name="entry_fontfile_default">System font</string>
-    <string name="font_file_error">Please choose monospaced font file with extension .ttf or .otf in internal storage path.</string>
+    <string name="font_file_error">Please choose monospaced (fixed-width) font file with extension \".ttf\" or \".otf\" in Home directory or Internal storage.\nIf you want to use proportional fonts, Enable \"Use proportional font\" option.</string>
     <string name="font_file_invalid">Android can not handle this font file.</string>
 
     <string name="title_ambiwidth_preference">East Asian ambiguous width</string>
@@ -479,6 +479,7 @@
     <string name="storage_menu">Storage menu</string>
     <string name="file_chooser">Open file...</string>
     <string name="create_or_delete">Manager</string>
+    <string name="external_storage_warning">To read/write an external SD card, choose \"Storage\" → \"3 dot menu\" → \"Show SD card\".</string>
     <string name="create_file">Create file</string>
     <string name="delete_file">Delete file</string>
     <string name="app_files">File manager</string>

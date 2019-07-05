@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="summary_color_preference">表示色を変更した後は、背景色に応じて `:set bg=light`または`:set bg=dark`を使用するか再起動してください.</string>
+    <string name="summary_color_preference">表示色を変更した後は再起動をおすすめします.</string>
     <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (:help ambiwidth)</string>
     <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれます.</string>
     <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリは変更可能ですが、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.\n\nviminfo:\nviminfoは属性変更を必要としますので`set viminfo+=n$APPFILES/home/.viminfo`を.vimrcに追加してください.</string>

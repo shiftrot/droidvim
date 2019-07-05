@@ -2,7 +2,7 @@
 <resources>
     <string name="application_term_app">DroidVim</string>
 
-    <string name="summary_color_preference">After changing the terminal color, use `:set bg=light` or `:set bg=dark` depending on the background color or restart this app.</string>
+    <string name="summary_color_preference">After changing the terminal color, we recommended restart this app.</string>
     <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts. (:help ambiwidth)</string>
     <string name="summary_home_dir_chooser_preference">`.vimrc` and `.vim` are read from `$HOME`</string>
     <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default value by pressing \"Default\" button.\n\nviminfo:\nSince viminfo requires an attribute change, please add `set viminfo+=n$APPFILES/home/.viminfo` to .vimrc.</string>
