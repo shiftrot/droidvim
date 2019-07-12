@@ -240,7 +240,7 @@
     <string name="dialog_title_bottom_double_tap_preference">画面下端でのダブルクリック</string>
     <string name="functionbar_preferences">ファンクションバー</string>
     <string name="summary_functionbar_preferences">使用したいファンクションキーを選択</string>
-    <string name="gesture_preferences">ジェスチャー</string>
+    <string name="gesture_preferences">ジェスチャー &amp; Backボタン</string>
 
     <string name="keyboard_preferences">キーボード</string>
 

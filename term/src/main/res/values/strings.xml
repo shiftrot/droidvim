@@ -252,7 +252,7 @@
     <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>
     <string name="functionbar_preferences">Functionbar</string>
     <string name="summary_functionbar_preferences">Select the functionbar key to use.</string>
-    <string name="gesture_preferences">Gestures</string>
+    <string name="gesture_preferences">Gestures &amp; Back button</string>
 
     <string name="keyboard_preferences">Keyboard</string>
 

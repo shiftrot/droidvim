@@ -904,6 +904,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
             setHasOptionsMenu(true);
 
+            bindPreferenceSummaryToValue(findPreference("backaction"));
             bindPreferenceSummaryToValue(findPreference("double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("right_double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("left_double_tap_action"));
@@ -1028,8 +1029,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 addPreferencesFromResource(R.xml.pref_keyboard_20);
             }
             setHasOptionsMenu(true);
-
-            bindPreferenceSummaryToValue(findPreference("backaction"));
         }
 
         @Override
