@@ -1220,7 +1220,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         registerForContextMenu(emulatorView);
 
         if (mFirstInputtype) {
-            emulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
+            EmulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
             emulatorView.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             mFirstInputtype = false;
         }
