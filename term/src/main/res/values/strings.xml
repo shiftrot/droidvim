@@ -144,7 +144,9 @@
     <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon (Restart required).</string>
 
     <string name="title_functionbar_preference">Functionbar</string>
-    <string name="summary_functionbar_preference">Show functionbar on start up.</string>
+    <string name="summary_functionbar_preference">The button size is fixed. The function bar can be shown or hidden from the menu.</string>
+    <string name="title_navigation_button_preference">Functionbar (Fixed-size)</string>
+    <string name="summary_navigation_button_preference">Fixed size function bar that automatically adjusts the button size according to the screen.</string>
     <string name="title_oneline_textbox_preference">One-line text box</string>
     <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
     <string name="title_oneline_textbox_esc_preference">Press ESC to hide (One-line text box)</string>
@@ -152,14 +154,21 @@
     <string name="summary_oneline_textbox_esc_off">Move focus.</string>
     <string name="title_oneline_textbox_cr_preference">\"Send\" button (One-line text box)</string>
 
-    <string name="title_functionbar_key_preference">Function key (1st column)</string>
-    <string name="title_functionbar_key_2_preference">Function key (2nd column)</string>
+    <string name="title_functionbar_key_preference">Function key</string>
+    <string name="title_functionbar_key_2_preference">Function key (F1-F12)</string>
+    <string name="title_navigation_key_preference">Function key (Fixed-size)</string>
     <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
 
-    <string name="title_functionbar_menu">Menu</string>
+    <string name="title_menu">Menu</string>
     <string name="title_functionbar_softkeyboard">Soft keyboard</string>
-    <string name="title_functionbar_hide">Hide functionbar</string>
-    <string name="title_functionbar_change">Switch functionbar</string>
+    <string name="title_functionbar_menu">≡ - Menu</string>
+    <string name="title_functionbar_vim_yank">&quot;*yy - Vim yank command</string>
+    <string name="title_functionbar_vim_paste">&quot;*p - Vim paste command</string>
+    <string name="title_functionbar_ime_toggle">✏ - Toggle keyboard</string>
+    <string name="title_navigationbar_fn_toggle">➖ - Toggle functionbar</string>
+    <string name="title_functionbar_hide">▽ - Hide functionbar</string>
+    <string name="title_functionbar_change">↑ - F1-F12</string>
+    <string name="title_functionbar_change_fkey">↓ - Hide F1-F12</string>
 
     <string name="title_actionbar_preference">Action bar</string>
     <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>

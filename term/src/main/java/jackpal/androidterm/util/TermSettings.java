@@ -18,6 +18,7 @@ package jackpal.androidterm.util;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.KeyEvent;
 
 import java.util.Locale;
@@ -33,6 +34,7 @@ public class TermSettings {
 
     private int mStatusBar;
     private boolean mFunctionBar;
+    private boolean mFunctionBarNavigationButton;
     private int mCursorDirectionCtrl;
     private boolean mOnelineTextBox;
     private boolean mOnelineTextBoxEsc;
@@ -105,6 +107,7 @@ public class TermSettings {
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String FUNCTIONBAR_KEY = "functionbar";
+    private static final String FUNCTIONBAR_NAVIAGATION_BUTTON_KEY = "functionbar_navigation_button";
     private static final String CURSOR_DIRECTION_CTRL = "cursor_direction_ctrl_mode";
     private static final String ONELINE_TEXTBOX_KEY = "oneline_textbox";
     private static final String ONELINE_TEXTBOX_ESC_KEY = "oneline_textbox_esc";
@@ -253,6 +256,7 @@ public class TermSettings {
     private void readDefaultPrefs(Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
         mFunctionBar = res.getBoolean(R.bool.pref_functionbar_default);
+        mFunctionBarNavigationButton = res.getBoolean(R.bool.pref_functionbar_navigation_button_default);
         mCursorDirectionCtrl = Integer.parseInt(res.getString(R.string.pref_cursor_direction_ctrl_mode_default));
         mOnelineTextBox = res.getBoolean(R.bool.pref_one_line_textbox_default);
         mOnelineTextBoxEsc = res.getBoolean(R.bool.pref_one_line_textbox_esc_default);
@@ -322,6 +326,7 @@ public class TermSettings {
         setLocalizedDefault();
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mFunctionBar = readBooleanPref(FUNCTIONBAR_KEY, mFunctionBar);
+        mFunctionBarNavigationButton = readBooleanPref(FUNCTIONBAR_NAVIAGATION_BUTTON_KEY, mFunctionBarNavigationButton);
         mCursorDirectionCtrl = readIntPref(CURSOR_DIRECTION_CTRL, mCursorDirectionCtrl, 3);
         mOnelineTextBox = readBooleanPref(ONELINE_TEXTBOX_KEY, mOnelineTextBox);
         mOnelineTextBoxEsc = readBooleanPref(ONELINE_TEXTBOX_ESC_KEY, mOnelineTextBoxEsc);
@@ -438,6 +443,10 @@ public class TermSettings {
 
     public boolean showFunctionBar() {
         return mFunctionBar;
+    }
+
+    public boolean showFunctionBarNavigationButton() {
+        return mFunctionBarNavigationButton;
     }
 
     public int getCursorDirectionControlMode() {

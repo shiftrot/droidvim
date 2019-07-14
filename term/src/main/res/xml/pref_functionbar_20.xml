@@ -7,6 +7,12 @@
         android:summary="@string/summary_functionbar_preference"/>
 
     <CheckBoxPreference
+        android:key="functionbar_navigation_button"
+        android:defaultValue="@bool/pref_functionbar_navigation_button_default"
+        android:title="@string/title_navigation_button_preference"
+        android:summary="@string/summary_navigation_button_preference"/>
+
+    <CheckBoxPreference
         android:title="@string/title_auto_hide_functionbar"
         android:key="auto_hide_functionbar"
         android:defaultValue="@bool/pref_auto_hide_functionbar_default"
@@ -23,7 +29,7 @@
 
         <CheckBoxPreference
             android:key="functionbar_esc"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="Esc"/>
 
         <CheckBoxPreference
@@ -43,12 +49,12 @@
 
         <CheckBoxPreference
             android:key="functionbar_up"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="▲"/>
 
         <CheckBoxPreference
             android:key="functionbar_down"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="▼"/>
 
         <CheckBoxPreference
@@ -60,16 +66,6 @@
             android:key="functionbar_right"
             android:defaultValue="false"
             android:title="▶"/>
-
-        <CheckBoxPreference
-            android:key="functionbar_colon"
-            android:defaultValue="true"
-            android:title=":"/>
-
-        <CheckBoxPreference
-            android:key="functionbar_softkeyboard"
-            android:defaultValue="true"
-            android:title="◇"/>
 
         <CheckBoxPreference
             android:key="functionbar_backspace"
@@ -84,12 +80,17 @@
         <CheckBoxPreference
             android:key="functionbar_page_up"
             android:defaultValue="false"
-            android:title="PageUp"/>
+            android:title="PU - PageUp"/>
 
         <CheckBoxPreference
             android:key="functionbar_page_down"
             android:defaultValue="false"
-            android:title="PageDown"/>
+            android:title="PD - PageDown"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_colon"
+            android:defaultValue="true"
+            android:title=":"/>
 
         <CheckBoxPreference
             android:key="functionbar_i"
@@ -100,6 +101,11 @@
             android:key="functionbar_slash"
             android:defaultValue="false"
             android:title="/"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_plus"
+            android:defaultValue="false"
+            android:title="+"/>
 
         <CheckBoxPreference
             android:key="functionbar_minus"
@@ -122,6 +128,11 @@
             android:title="|"/>
 
         <CheckBoxPreference
+            android:key="functionbar_softkeyboard"
+            android:defaultValue="false"
+            android:title="◇"/>
+
+        <CheckBoxPreference
             android:key="functionbar_invert"
             android:defaultValue="true"
             android:title="○"/>
@@ -132,14 +143,19 @@
             android:title="□"/>
 
         <CheckBoxPreference
+            android:key="functionbar_ime_toggle"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_ime_toggle"/>
+
+        <CheckBoxPreference
             android:key="functionbar_vim_paste"
             android:defaultValue="true"
-            android:title="&quot;*p"/>
+            android:title="@string/title_functionbar_vim_paste"/>
 
         <CheckBoxPreference
             android:key="functionbar_vim_yank"
-            android:defaultValue="false"
-            android:title="&quot;*yy"/>
+            android:defaultValue="true"
+            android:title="@string/title_functionbar_vim_yank"/>
 
         <CheckBoxPreference
             android:key="functionbar_menu_quit"
@@ -170,7 +186,7 @@
         <CheckBoxPreference
             android:key="functionbar_prev"
             android:defaultValue="true"
-            android:title="@string/title_functionbar_change"/>
+            android:title="@string/title_functionbar_change_fkey"/>
 
         <CheckBoxPreference
             android:key="functionbar_m1"
@@ -235,7 +251,148 @@
         <CheckBoxPreference
             android:key="functionbar_prev2"
             android:defaultValue="true"
-            android:title="@string/title_functionbar_change"/>
+            android:title="@string/title_functionbar_change_fkey"/>
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/title_navigation_key_preference"
+        android:summary="@string/summary_functionbar_preferences">
+
+        <CheckBoxPreference
+            android:key="navigationbar_esc"
+            android:defaultValue="true"
+            android:title="Esc"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_ctrl"
+            android:defaultValue="false"
+            android:title="Ctrl"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_alt"
+            android:defaultValue="false"
+            android:title="Alt"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_tab"
+            android:defaultValue="false"
+            android:title="Tab"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_up"
+            android:defaultValue="true"
+            android:title="▲"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_down"
+            android:defaultValue="true"
+            android:title="▼"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_left"
+            android:defaultValue="false"
+            android:title="◀"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_right"
+            android:defaultValue="false"
+            android:title="▶"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_backspace"
+            android:defaultValue="false"
+            android:title="BS"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_enter"
+            android:defaultValue="false"
+            android:title="ENTER"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_page_up"
+            android:defaultValue="false"
+            android:title="PU - PageUp"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_page_down"
+            android:defaultValue="false"
+            android:title="PD - PageDown"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_colon"
+            android:defaultValue="false"
+            android:title=":"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_i"
+            android:defaultValue="false"
+            android:title="i"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_slash"
+            android:defaultValue="false"
+            android:title="/"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_plus"
+            android:defaultValue="false"
+            android:title="+"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_minus"
+            android:defaultValue="false"
+            android:title="-"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_equal"
+            android:defaultValue="false"
+            android:title="="/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_asterisk"
+            android:defaultValue="false"
+            android:title="*"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_pipe"
+            android:defaultValue="false"
+            android:title="|"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_softkeyboard"
+            android:defaultValue="true"
+            android:title="◇"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_invert"
+            android:defaultValue="false"
+            android:title="○"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_menu_user"
+            android:defaultValue="false"
+            android:title="□"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_vim_paste"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_vim_paste"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_vim_yank"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_vim_yank"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_fn_toggle"
+            android:defaultValue="true"
+            android:title="@string/title_navigationbar_fn_toggle"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_ime_toggle"
+            android:defaultValue="true"
+            android:title="@string/title_functionbar_ime_toggle"/>
 
     </PreferenceScreen>
 

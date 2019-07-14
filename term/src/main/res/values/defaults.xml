@@ -3,6 +3,7 @@
     <!-- Don't localize these default values -->
     <string name="pref_statusbar_default" translatable="false">1</string>
     <bool name="pref_functionbar_default">true</bool>
+    <bool name="pref_functionbar_navigation_button_default">true</bool>
     <bool name="pref_one_line_textbox_default">true</bool>
     <bool name="pref_one_line_textbox_esc_default">false</bool>
     <bool name="pref_one_line_textbox_cr_default">false</bool>
@@ -26,7 +27,7 @@
     <string name="pref_actionbar_plus_default" translatable="false">1250</string>
     <string name="pref_actionbar_minus_default" translatable="false">999</string>
     <string name="pref_actionbar_x_default" translatable="false">1253</string>
-    <string name="pref_actionbar_invert_default" translatable="false">1002</string>
+    <string name="pref_actionbar_invert_default" translatable="false">1363</string>
     <string name="pref_actionbar_user_default" translatable="false">1355</string>
     <string name="pref_double_tap_default" translatable="false">1355</string>
     <string name="pref_right_double_tap_default" translatable="false">1261</string>
