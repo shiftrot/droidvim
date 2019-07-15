@@ -3423,6 +3423,29 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         doWarningBeforePaste();
     }
 
+    private void choosePasteMode() {
+        final String[] items = {
+                getString(R.string.paste_vim),
+                getString(R.string.paste_shell) };
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.clipboard))
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        String item = items[which];
+                        if (getString(R.string.paste_vim).equals(item)) {
+                            sendKeyStrings("\"*p", true);
+                        } else if (getString(R.string.paste_shell).equals(item)) {
+                            doTermPaste();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
     private void doTermPaste() {
         if (!canPaste()) {
             alert(Term.this.getString(R.string.toast_clipboard_error));
@@ -3448,7 +3471,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         builder.setMessage(R.string.clipboard_warning);
         builder.setPositiveButton(getString(R.string.paste), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int m) {
-                doTermPaste();
+                choosePasteMode();
             }
         });
         builder.setNeutralButton(getString(R.string.share_title), new DialogInterface.OnClickListener() {
