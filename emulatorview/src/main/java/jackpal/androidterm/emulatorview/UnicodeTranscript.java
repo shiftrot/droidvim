@@ -819,8 +819,7 @@ class UnicodeTranscript {
         {0x31c0, 0x31e3},
         {0x31f0, 0x321e},
         {0x3220, 0x3247},
-        {0x3250, 0x32fe},
-        {0x3300, 0x4dbf},
+        {0x3250, 0x4dbf},
         {0x4e00, 0xa48c},
         {0xa490, 0xa4c6},
         {0xa960, 0xa97c},
@@ -931,8 +930,8 @@ class UnicodeTranscript {
     };
 
     private static int vimCharWidth(int codePoint) {
-        if (intable(codePoint, doublewidth)) return 2;
         if (intable(codePoint, ambiguous)) return mAmbiWidth;
+        if (intable(codePoint, doublewidth)) return 2;
         if (intable(codePoint, emoji_width)) return 2;
         return 1;
     }
