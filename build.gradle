@@ -6,13 +6,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-rc02'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
 
     ext.versions = [
-            'compileSdk': 29,
-            'minSdk'    : 16,
-            'targetSdk' : 28
+            'versionCode': 1,
+            'compileSdk' : 29,
+            'minSdk'     : 16,
+            'targetSdk'  : 28
     ]
 }
 
