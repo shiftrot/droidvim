@@ -4050,11 +4050,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 onelineTextBoxEnter(true);
             }
         });
-        String label = "⏎";
+        String label = getString(R.string.string_functionbar_enter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
         button = findViewById(R.id.button_enter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
-        label = "⌨";
+        label = getString(R.string.string_functionbar_ime_toggle);
         button = findViewById(R.id.button_navigation_ime_toggle);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) button.setText(label);
         button = findViewById(R.id.button_ime_toggle);
@@ -4158,6 +4158,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mHideFunctionBar) {
             visibility = View.GONE;
             findViewById(R.id.view_function_bar).setVisibility(visibility);
+            findViewById(R.id.view_function_bar2).setVisibility(visibility);
             setFunctionBarSize();
             mViewFlipper.setFunctionBar(false);
             return;
