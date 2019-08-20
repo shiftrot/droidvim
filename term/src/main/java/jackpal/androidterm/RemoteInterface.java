@@ -324,6 +324,7 @@ public class RemoteInterface extends AppCompatActivity {
         toast.show();
     }
 
+    private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
     public void shareText(CharSequence str) {
         if (str == null) {
             alert(this.getString(R.string.toast_clipboard_error));
@@ -333,7 +334,8 @@ public class RemoteInterface extends AppCompatActivity {
                 .getManager(this.getApplicationContext());
         if (clip != null) {
             if (FLAVOR_VIM) {
-                String filename = mSettings.getHomePath() + "/.clipboard";
+                FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
+                String filename = FILE_CLIPBOARD;
                 Term.writeStringToFile(filename, "\n" + str.toString());
                 String command = "\u001b" + ":ATEMod _paste";
                 if (mDoInstall) command = DO_INSTALL;
