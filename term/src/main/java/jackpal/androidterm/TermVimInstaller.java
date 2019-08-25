@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.system.Os;
 import android.util.Log;
 import android.view.Gravity;
@@ -146,7 +147,18 @@ final class TermVimInstaller {
                 File fontPath = new File(TermPreferences.FONT_PATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
             }
-            if (!FLAVOR_VIM) new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
+            if (!FLAVOR_VIM) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+                final SharedPreferences.Editor editor = prefs.edit();
+                String key = "functionbar_vim_paste";
+                boolean value = prefs.getBoolean(key, false);
+                editor.putBoolean(key, value);
+                key = "functionbar_vim_yank";
+                value = prefs.getBoolean(key, false);
+                editor.putBoolean(key, value);
+                editor.apply();
+                new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
+            }
             return true;
         }
         return false;

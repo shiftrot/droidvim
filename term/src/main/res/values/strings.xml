@@ -145,8 +145,8 @@
 
     <string name="title_functionbar_preference">Functionbar</string>
     <string name="summary_functionbar_preference">The button size is fixed. The function bar can be shown or hidden from the menu.</string>
-    <string name="title_navigation_button_preference">Functionbar (Fixed-size)</string>
-    <string name="summary_navigation_button_preference">Fixed size function bar that automatically adjusts the button size according to the screen.</string>
+    <string name="title_navigation_button_preference">Functionbar (Screen fit)</string>
+    <string name="summary_navigation_button_preference">The button size is automatically adjusted according to the screen.</string>
     <string name="title_oneline_textbox_preference">One-line text box</string>
     <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
     <string name="title_oneline_textbox_esc_preference">Press ESC to hide (One-line text box)</string>
@@ -156,7 +156,7 @@
 
     <string name="title_functionbar_key_preference">Function key</string>
     <string name="title_functionbar_key_2_preference">Function key (F1-F12)</string>
-    <string name="title_navigation_key_preference">Function key (Fixed-size)</string>
+    <string name="title_navigation_key_preference">Function key (Screen fit)</string>
     <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
 
     <string name="title_menu">Menu</string>

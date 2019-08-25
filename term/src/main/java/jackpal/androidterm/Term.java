@@ -38,7 +38,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Rect;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -66,8 +66,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -4191,6 +4189,37 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         button.setMinHeight(height);
         if (AndroidCompat.SDK >= 14) {
             button.setAllCaps(false);
+        }
+        setScreenFitFunctionBarShortLabel();
+    }
+
+    private void setScreenFitFunctionBarShortLabel() {
+        View view = getCurrentEmulatorView();
+        if (view != null) view.post(new Thread(new Runnable() {
+            public void run() {
+                setShortButtonLabel(R.id.button_navigation_esc, "Esc");
+                setShortButtonLabel(R.id.button_navigation_ctrl, "Ctrl");
+                setShortButtonLabel(R.id.button_navigation_tab, "Tab");
+                setShortButtonLabel(R.id.button_navigation_alt, "Alt");
+            }
+        }));
+    }
+
+    private void setShortButtonLabel(int id, String label) {
+        Button button = findViewById(id);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        if (button != null) {
+            float textSize = button.getTextSize();
+            Paint paint = new Paint();
+            paint.setTextSize(textSize);
+            int padding = button.getPaddingLeft() + button.getPaddingRight();
+            int buttonMaxWidth = button.getWidth() - padding;
+            float textWidth = paint.measureText(label);
+            if (textWidth > buttonMaxWidth) {
+                label = label.substring(0, 1);
+            }
+            button.setText(label);
         }
     }
 

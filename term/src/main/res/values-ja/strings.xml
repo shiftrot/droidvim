@@ -136,7 +136,7 @@
 
     <string name="title_functionbar_preference">ファンクションバー</string>
     <string name="summary_functionbar_preference">ボタンサイズは固定. 表示/非表示をメニューから切替可能なファンクションバー</string>
-    <string name="title_navigation_button_preference">ファンクションバー (固定サイズ)</string>
+    <string name="title_navigation_button_preference">ファンクションバー (画面固定)</string>
     <string name="summary_navigation_button_preference">ボタンサイズを画面に応じて自動調整する固定サイズのファンクションバー.</string>
     <string name="title_oneline_textbox_preference">一行テキスト入力</string>
     <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
@@ -147,7 +147,7 @@
 
     <string name="title_functionbar_key_preference">ファンクションキー</string>
     <string name="title_functionbar_key_2_preference">ファンクションキー (F1-F12)</string>
-    <string name="title_navigation_key_preference">ファンクションキー (固定サイズ)</string>
+    <string name="title_navigation_key_preference">ファンクションキー (画面固定)</string>
     <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
 
     <string name="title_menu">メニュー</string>
