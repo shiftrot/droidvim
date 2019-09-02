@@ -1302,6 +1302,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private EmulatorView getCurrentEmulatorView() {
+        if (mViewFlipper == null) return null;
         return (EmulatorView) mViewFlipper.getCurrentView();
     }
 
@@ -4088,7 +4089,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (mEditText != null && mEditText.isFocused()) {
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) view.requestFocusFromTouch();
-                if (mSettings.getOneLineTextBoxEsc()) {
+                if (mSettings != null && mSettings.getOneLineTextBoxEsc()) {
                     setEditTextView(0);
                     return false;
                 }
