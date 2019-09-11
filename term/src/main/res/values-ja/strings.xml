@@ -337,7 +337,7 @@
     <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
 
     <string name="title_home_path_preference">ホームディレクトリ</string>
-    <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ</string>
+    <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ(要再起動)</string>
 
     <string name="control_key_dialog_title">コントロールキーとファンクションキー</string>
     <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
@@ -445,7 +445,7 @@
     <string name="external_storage">ストレージ</string>
     <string name="file_chooser">ファイルを開く</string>
     <string name="storage_menu">ストレージメニュー</string>
-    <string name="create_or_delete">管理</string>
+    <string name="create_or_delete">新規/削除</string>
     <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ストレージ\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
     <string name="create_file">ファイル作成</string>
     <string name="delete_file">ファイル削除</string>
@@ -455,7 +455,7 @@
     <string name="launch_app">%s (アプリ起動)</string>
     <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
     <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
-    <string name="storage_permission_granted">ストレージ権限が有効になりました.\n設定を有効にするため, このアプリを再起動してください.</string>
+    <string name="storage_permission_granted">設定を有効にするため, このアプリを再起動してください.</string>
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか, 権限がありません.</string>
     <string name="storage_write_error_title">無効なURI</string>

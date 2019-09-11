@@ -2,7 +2,7 @@
 <resources>
     <string name="summary_color_preference">表示色を変更した後は再起動をおすすめします.</string>
     <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (:help ambiwidth)</string>
-    <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれます.</string>
+    <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれます. (要再起動)</string>
     <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリは変更可能ですが、ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.\n\nviminfo:\nviminfoは属性変更を必要としますので`set viminfo+=n$APPFILES/home/.viminfo`を.vimrcに追加してください.</string>
     <string name="tips_vim_title">Tips</string>
     <string name="tips_vim">▼終了方法:\n- \":qa\"を入力.\n- ダブルタップ->\"QUIT\".\n\n▼キーボードのトグル:\n- 画面下端付近でのダブルタップ\n- Backボタン\n\n▼直接入力:\n- ファンクションバーの\"◇\"ボタンで「英数入力のみ」/「日本語入力可」を切替.(「起動時の入力モード」は設定で変更可能です)\n- 一行入力は「画面右端付近でのダブルタップ」でON/OFF可能です. 予測変換入力、音声入力または絵文字の入力で便利です.\n\n▼Vimチュートリアル:\n- 長押しメニューの\"Vimチュートリアル\"を実行するか\":Vimtutor\"を入力.</string>

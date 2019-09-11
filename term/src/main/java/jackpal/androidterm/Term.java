@@ -843,8 +843,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)
-                                        alert(getString(R.string.storage_permission_granted));
+                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                                        AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                                        bld.setIcon(android.R.drawable.ic_dialog_alert);
+                                        bld.setMessage(R.string.storage_permission_granted);
+                                        bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.dismiss();
+                                                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
+                                                    sendKeyStrings(":confirm qa\r", true);
+                                                } else {
+                                                    confirmCloseWindow();
+                                                }
+                                            }
+                                        });
+                                        AlertDialog dialog = bld.create();
+                                        dialog.show();
+                                    }
                                 }
                             });
                         } else {
