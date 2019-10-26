@@ -213,9 +213,13 @@
     <string name="title_force_flush_drawtext_preference">プロポーショナルフォントを使用</string>
     <string name="summary_force_flush_drawtext_preference">プロポーショナルフォントを使用しても画面が乱れなくなります. 描画速度は遅くなります.</string>
 
-    <string name="title_color_preference">色</string>
+    <string name="title_color_preference">端末色</string>
     <string name="summary_color_preference">端末の色を選択する</string>
-    <string name="dialog_title_color_preference">端末の色</string>
+    <string name="dialog_title_color_preference">端末色</string>
+
+    <string name="title_cursorcolor_preference">カーソル色</string>
+    <string name="dialog_title_cursorcolor_preference">カーソル色を設定</string>
+    <string name="dialog_message_cursorcolor_preference">空白: 端末の文字色\nRRGGBB: 6桁の16進数 (例 7f7f7f)</string>
 
     <string name="title_composingtext_preference">IMEの色</string>
     <string name="summary_composingtext_preference">変換中の文字色を選択</string>

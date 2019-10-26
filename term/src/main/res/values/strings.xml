@@ -225,8 +225,12 @@
     <string name="summary_force_flush_drawtext_preference">Fix screen glitches on proportional font or non-single-byte character set. Drawing speed will be slower.</string>
 
     <string name="title_color_preference">Colors</string>
-    <string name="summary_color_preference">Choose terminal color.</string>
-    <string name="dialog_title_color_preference">Terminal color</string>
+    <string name="summary_color_preference">Choose terminal color scheme.</string>
+    <string name="dialog_title_color_preference">Terminal color scheme</string>
+
+    <string name="title_cursorcolor_preference">Cursor color</string>
+    <string name="dialog_title_cursorcolor_preference">Set cursor color</string>
+    <string name="dialog_message_cursorcolor_preference">Blank: Terminal text color\nRRGGBB: 6-digit hex number. (E.g. 7f7f7f)</string>
 
     <string name="title_composingtext_preference">Input method color</string>
     <string name="summary_composingtext_preference">Choose input method composing text color.</string>

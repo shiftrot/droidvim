@@ -22,7 +22,6 @@ import android.util.Log;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 

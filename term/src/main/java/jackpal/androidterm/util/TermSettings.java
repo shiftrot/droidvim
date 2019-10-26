@@ -43,6 +43,7 @@ public class TermSettings {
     private int mOrientation;
     private int mCursorStyle;
     private int mCursorBlink;
+    private String mCursorColor;
     private float mFontSize;
     private int mFontLeading;
     private String mFontFile;
@@ -116,6 +117,7 @@ public class TermSettings {
     private static final String ORIENTATION_KEY = "orientation";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
     private static final String CURSORBLINK_KEY = "cursorblink";
+    private static final String CURSORCOLOR_KEY = "cursorcolor";
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String FONTLEADING_KEY = "fontleading";
     private static final String FONTFILE_KEY = "fontfile";
@@ -265,6 +267,7 @@ public class TermSettings {
         mOrientation = res.getInteger(R.integer.pref_orientation_default);
         mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
         mCursorBlink = Integer.parseInt(res.getString(R.string.pref_cursorblink_default));
+        mCursorColor = res.getString(R.string.pref_cursorcolor_default);
         mFontSize = Float.parseFloat(res.getString(R.string.pref_fontsize_default));
         mFontLeading = Integer.parseInt(res.getString(R.string.pref_fontleading_default));
         mFontFile = res.getString(R.string.pref_fontfile_default);
@@ -335,6 +338,7 @@ public class TermSettings {
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 3);
         mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
+        mCursorColor = readStringPref(CURSORCOLOR_KEY, mCursorColor);
         mFontSize = readFloatPref(FONTSIZE_KEY, mFontSize, 288.0f);
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
@@ -480,6 +484,19 @@ public class TermSettings {
     public int getCursorBlink() {
         return mCursorStyle >= 2 ? 1 : 0;
         // return mCursorBlink;
+    }
+
+    public int getCursorColor() {
+        if (mCursorColor.equals("")) return 0;
+        int color;
+        try {
+            // #ARGB
+            color = Integer.parseInt(mCursorColor, 16);
+            color = 0xff000000 + (color & 0x00ffffff);
+        } catch (Exception e) {
+            color = 0xff808080;
+        }
+        return color;
     }
 
     public float getFontSize() {

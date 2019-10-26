@@ -32,6 +32,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Build;
@@ -463,6 +464,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else {
             mColorScheme = scheme;
         }
+        mColorScheme.setDefaultCursorColors();
         updateText();
     }
 
@@ -2305,6 +2307,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     static public void setCursorHeight(int height) {
         PaintRenderer.setCursorHeight(height);
+    }
+
+    static public void setCursorColor(int color) {
+        ColorScheme.setDefaultCursorColor(color);
     }
 
     static public void setForceFlush(boolean flush) {
