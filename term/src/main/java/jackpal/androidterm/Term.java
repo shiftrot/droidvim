@@ -850,11 +850,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                         bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dialog.dismiss();
-                                                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                                                    sendKeyStrings(":confirm qa\r", true);
-                                                } else {
-                                                    confirmCloseWindow();
-                                                }
                                             }
                                         });
                                         AlertDialog dialog = bld.create();
