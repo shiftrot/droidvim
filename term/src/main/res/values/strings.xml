@@ -370,7 +370,7 @@
     <string name="confirm_window_close_message">Close this window?</string>
 
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
-    <string name="scoped_storage_warning_message"> \"Scoped storage\" is enabled on this device.\n\n - Double tap -> \"Storage\" button to open file.\n - If \"Internal Storage\" does not exist in the file manager, enable \"Show Internal storage\" in the 3-dot menu.</string>
+    <string name="scoped_storage_warning_message"> \"Scoped storage\" is enabled on this device.\n\n - Double tap -> \"Open file...\" button to open file.\n - If \"Internal Storage\" does not exist in the file manager, enable \"Show Internal storage\" in the 3-dot menu.</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in Home directory and \"app-specific directory\" below will be deleted when uninstalling.</string>
 
     <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
@@ -498,11 +498,11 @@
     <string name="summary_app_filepicker_on_drawer">Choose the behavior of the application button on the drawer.</string>
     <string name="launch_app">\Launch %s</string>
     <string name="activity_not_found">Activity not found.\nPlease try again.</string>
-    <string name="external_storage">Storage</string>
+    <string name="external_storage">Open file...</string>
     <string name="storage_menu">Storage menu</string>
     <string name="file_chooser">Open file...</string>
-    <string name="create_or_delete">New/Delete</string>
-    <string name="external_storage_warning">To read/write an external SD card, choose \"Storage\" → \"3 dot menu\" → \"Show SD card\".</string>
+    <string name="create_or_delete">Storage</string>
+    <string name="external_storage_warning">To read/write an external SD card, choose \"Open file...\" → \"3 dot menu\" → \"Show SD card\".</string>
     <string name="create_file">Create file</string>
     <string name="delete_file">Delete file</string>
     <string name="app_files">File manager</string>
@@ -513,11 +513,11 @@
     <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
     <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
     <string name="storage_write_error_title">Invalid URI</string>
-    <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Storage\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
+    <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Open file...\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
     <string name="storage_hash_error_title">File hash error</string>
-    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Storage\" button.</string>
+    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file...\" button.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
-    <string name="storage_hash_reopen">Storage</string>
+    <string name="storage_hash_reopen">Re-open</string>
     <string name="storage_delete_file">Delete file from storage.</string>
     <string name="title_internal_storage">Internal private storage</string>
     <string name="clear_cache">Clear cache</string>
@@ -547,7 +547,7 @@
     <string name="external_apps_preferences">External Apps</string>
     <string name="external_app">Application name</string>
     <string name="external_app_activity">Activity</string>
-    <string name="external_files_button">Files</string>
+    <string name="external_files_button">File Manager</string>
     <string name="title_use_app_files_button">Use default file manager app</string>
     <string name="external_app_button">External App</string>
     <string name="title_external_app_button_preference">External App Button</string>

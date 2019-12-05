@@ -356,7 +356,7 @@
     <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
 
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
-    <string name="scoped_storage_warning_message">このデバイスでは\"Scoped storage\"が有効になっています.\n\n - 「ファイルは"画面をダブルタップ"→"ストレージ"ボタンを介して開いてください.\n - ファイルマネージャーに「内部ストレージ」が表示されない場合は, 設定メニューの「内部ストレージを表示」を有効にしてください.</string>
+    <string name="scoped_storage_warning_message">このデバイスでは\"Scoped storage\"が有効になっています.\n\n - 「ファイルは"画面をダブルタップ"→"ファイルを開く"ボタンを介して開いてください.\n - ファイルマネージャーに「内部ストレージ」が表示されない場合は, 設定メニューの「内部ストレージを表示」を有効にしてください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
 
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
@@ -446,14 +446,14 @@
     <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
     <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
 
-    <string name="external_storage">ストレージ</string>
+    <string name="external_storage">ファイルを開く</string>
     <string name="file_chooser">ファイルを開く</string>
     <string name="storage_menu">ストレージメニュー</string>
-    <string name="create_or_delete">新規/削除</string>
-    <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ストレージ\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
+    <string name="create_or_delete">ストレージ</string>
+    <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
     <string name="create_file">ファイル作成</string>
     <string name="delete_file">ファイル削除</string>
-    <string name="app_files">ファイルマネージャー</string>
+    <string name="app_files">ファイル管理</string>
     <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
     <string name="storage_manager">管理</string>
     <string name="launch_app">%s (アプリ起動)</string>
@@ -467,7 +467,7 @@
     <string name="storage_hash_error_title">ハッシュエラー</string>
     <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ストレージ\"ボタンから再読込してください.</string>
     <string name="storage_hash_overwrite">上書き</string>
-    <string name="storage_hash_reopen">ストレージ</string>
+    <string name="storage_hash_reopen">再読み込みく</string>
     <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
     <string name="title_internal_storage">内部プライベート領域</string>
     <string name="clear_cache">キャッシュクリア</string>
@@ -496,7 +496,8 @@
     <string name="external_app">アプリ名</string>
     <string name="external_app_activity">アクティビティ</string>
     <string name="external_app_button">外部アプリ</string>
-    <string name="title_use_app_files_button">ファイルマネージャーアプリを使用する</string>
+    <string name="external_files_button">ファイル管理</string>
+    <string name="title_use_app_files_button">ファイル管理を使用する</string>
     <string name="title_external_app_button_preference">外部アプリボタン</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
     <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>

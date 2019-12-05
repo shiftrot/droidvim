@@ -2,7 +2,7 @@
 
     <SwitchPreference
         android:title="@string/title_use_app_files_button"
-        android:key="use_app_files_button"
+        android:key="use_app_files_button_rev2"
         android:defaultValue="@bool/pref_use_app_files_button_default"/>
 
     <PreferenceScreen

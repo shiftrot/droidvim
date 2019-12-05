@@ -148,7 +148,7 @@ public class TermSettings {
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
     private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_button_mode";
     private static final String EXTERNAL_APP_BUTTON_KEY = "external_app_button";
-    private static final String FILES_BUTTON_KEY = "use_app_files_button";
+    private static final String FILES_BUTTON_KEY = "use_app_files_button_rev2";
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
     private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive_filepicker";
