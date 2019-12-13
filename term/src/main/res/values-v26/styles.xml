@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="App_Theme_Dark_api26" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:background">#B0202020</item>
+        <item name="android:theme">@style/Theme.AppCompat.Dialog</item>
+    </style>
+
+    <style name="App_Theme_Light_api26" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:background">#B0F0F0F0</item>
+        <item name="android:theme">@style/Theme.AppCompat.Light.Dialog</item>
+    </style>
+</resources>

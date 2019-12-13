@@ -37,6 +37,9 @@
     <string-array name="entries_theme_preference">
         <item>Light theme</item>
         <item>Dark theme</item>
+        <item>Light theme (API26)</item>
+        <item>Dark theme (API26)</item>
+        <item>Auto</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">

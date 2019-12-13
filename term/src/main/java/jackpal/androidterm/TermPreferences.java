@@ -185,10 +185,10 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void setupTheme() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final TermSettings settings = new TermSettings(getResources(), prefs);
-        if (settings.getColorTheme() == 0) {
-            setTheme(R.style.Theme_AppCompat);
+        if (settings.getColorTheme() % 2 == 0) {
+            setTheme(R.style.App_Preference_Theme_Dark);
         } else {
-            setTheme(R.style.Theme_AppCompat_Light);
+            setTheme(R.style.App_Preference_Theme_Light);
         }
     }
 

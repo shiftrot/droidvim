@@ -22,9 +22,9 @@ public class ExtraContents extends AppCompatActivity {
         settings = new TermSettings(getResources(), prefs);
         int theme = settings.getColorTheme();
         if (theme == 0) {
-            setTheme(R.style.Theme_AppCompat_NoActionBar);
+            setTheme(R.style.App_Theme_Dark);
         } else {
-            setTheme(R.style.ThemeLightDefault_NoActionBar);
+            setTheme(R.style.App_Theme_Light);
         }
         setContentView(R.layout.activity_extra_contents);
         Toolbar toolbar = findViewById(R.id.toolbar);

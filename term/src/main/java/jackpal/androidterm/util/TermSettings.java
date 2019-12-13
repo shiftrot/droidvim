@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import jackpal.androidterm.R;
 import jackpal.androidterm.TermService;
+import jackpal.androidterm.compat.AndroidCompat;
 
 /**
  * Terminal emulator settings
@@ -343,7 +344,7 @@ public class TermSettings {
         mFontLeading = readIntPref(FONTLEADING_KEY, mFontLeading, 288);
         mFontFile = readStringPref(FONTFILE_KEY, mFontFile);
         mAmbiWidth = readIntPref(AMBIWIDTH_KEY, mAmbiWidth, 3);
-        mTheme = readIntPref(THEME_KEY, mTheme, 1);
+        mTheme = readIntPref(THEME_KEY, mTheme, 4);
         mKeepScreenTime = readIntPref(KEEP_SCREEN_TIME_KEY, mKeepScreenTime, 120);
         mKeepScreenAtStartup = readBooleanPref(KEEP_SCREEN_AT_STARTUP_KEY, mKeepScreenAtStartup);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
@@ -536,7 +537,16 @@ public class TermSettings {
     }
 
     public int getColorTheme() {
-        return mTheme;
+        int theme = mTheme;
+        if (mTheme == 4) {
+            // FIXME: Android changes background color.
+            if (AndroidCompat.SDK >= Build.VERSION_CODES.O) {
+                theme = getCOLORFGBG().equals("'0;15'") ? 3 : 2;
+            } else {
+                theme = getCOLORFGBG().equals("'0;15'") ? 1 : 0;
+            }
+        }
+        return theme;
     }
 
     public String getCOLORFGBG() {

@@ -10,7 +10,7 @@
 
         <jackpal.androidterm.TermViewFlipper
             android:id="@+id/view_flipper"
-            android:focusableInTouchMode="true"
+            android:focusableInTouchMode="false"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"/>

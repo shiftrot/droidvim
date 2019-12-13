@@ -473,12 +473,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             startService(TSIntent);
         }
 
-        int theme = mSettings.getColorTheme();
-        if (theme == 0) {
-            setTheme(R.style.Theme_AppCompat_NoActionBar);
-        } else {
-            setTheme(R.style.Theme_AppCompat_Light_NoActionBar);
-        }
+        setupTheme(mSettings.getColorTheme());
 
         setContentView(R.layout.term_activity);
         mViewFlipper = findViewById(VIEW_FLIPPER);
@@ -505,6 +500,30 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         restoreSyncFileObserver(this);
         TermPreferences.setAppPickerList(this);
         mAlreadyStarted = true;
+    }
+
+    static int mTheme = -1;
+    private void setupTheme(int theme) {
+        switch (theme) {
+            case 0:
+                setTheme(R.style.App_Theme_Dark);
+                break;
+            case 1:
+                setTheme(R.style.App_Theme_Light);
+                break;
+            case 2:
+                setTheme(R.style.App_Theme_Dark_api26);
+                break;
+            case 3:
+                setTheme(R.style.App_Theme_Light_api26);
+                break;
+            default:
+                break;
+        }
+        mTheme = theme;
+    }
+
+        }
     }
 
     public static File getScratchCacheDir(Activity activity) {
@@ -541,7 +560,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         int visibilty = View.VISIBLE;
         if (!FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
-        int color = mSettings.getColorTheme() == 0 ? R.drawable.sidebar_button_dark : R.drawable.sidebar_button;
     }
 
     private void setDebugButton() {
@@ -549,7 +567,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Button button = findViewById(R.id.drawer_debug_button);
         button.setVisibility(View.VISIBLE);
 
-        if (mSettings.getColorTheme() == 0)
+        if (mSettings.getColorTheme() % 2 == 0)
             button.setBackgroundResource(R.drawable.extra_button_dark);
     }
 
@@ -720,7 +738,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         });
-        if (mSettings.getColorTheme() == 0) {
+        if (mSettings.getColorTheme() % 2 == 0) {
             findViewById(R.id.drawer_files_button).setBackgroundResource(R.drawable.sidebar_button2_dark);
             findViewById(R.id.drawer_app_button).setBackgroundResource(R.drawable.sidebar_button3_dark);
             findViewById(R.id.drawer_dropbox_button).setBackgroundResource(R.drawable.sidebar_button3_dark);

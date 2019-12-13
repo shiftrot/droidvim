@@ -17,7 +17,7 @@
     <string name="pref_fontfile_default" translatable="false">system</string>
     <string name="pref_ambiguous_width_default" translatable="false">1</string>
     <bool name="pref_force_flush_drawtext">false</bool>
-    <string name="pref_theme_default" translatable="false">1</string>
+    <string name="pref_theme_default" translatable="false">4</string>
     <string name="pref_color_default" translatable="false">0</string>
     <string name="pref_keep_screen_default">10</string>
     <bool name="pref_keepscreen_at_startup_default">false</bool>

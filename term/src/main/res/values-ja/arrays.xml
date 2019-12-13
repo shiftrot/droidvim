@@ -37,6 +37,9 @@
     <string-array name="entries_theme_preference">
         <item>ライトテーマ</item>
         <item>ダークテーマ</item>
+        <item>ライトテーマ (API26)</item>
+        <item>ダークテーマ (API26)</item>
+        <item>自動</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
