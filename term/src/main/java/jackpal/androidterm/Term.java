@@ -38,6 +38,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -66,6 +67,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -523,7 +525,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mTheme = theme;
     }
 
+    public static void showToast(final Toast toast) {
+        if (AndroidCompat.SDK >= Build.VERSION_CODES.O && mTheme == 2) {
+            View v = toast.getView();
+            if (v instanceof ViewGroup) {
+                ViewGroup g = (ViewGroup)v;
+                for (int i = 0; i < g.getChildCount(); i++) {
+                    View c = g.getChildAt(i);
+                    if (c instanceof TextView) {
+                        ((TextView) c).setTextColor(Color.DKGRAY);
+                        ((TextView) c).setBackgroundColor(Color.argb(60, 255, 255, 255));
+                    }
+                }
+            }
         }
+        toast.show();
     }
 
     public static File getScratchCacheDir(Activity activity) {
@@ -891,9 +907,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                Toast toast = Toast.makeText(this, this.getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
+                                final Toast toast = Toast.makeText(this, this.getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
+                                showToast(toast);
                             } else {
                                 doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
                             }
@@ -1056,7 +1072,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 try {
                     mTermSessions.add(createTermSession());
                 } catch (IOException e) {
-                    Toast.makeText(this, "Failed to start terminal session", Toast.LENGTH_LONG).show();
+                    final Toast toast = Toast.makeText(this, "Failed to start terminal session", Toast.LENGTH_LONG);
+                    showToast(toast);
                     finish();
                     return;
                 }
@@ -1411,7 +1428,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             screenLockItem = this.getString(R.string.enable_keepscreen);
         }
         final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.share_screen_text), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
-        final Toast toastReset = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
+        final Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.screen))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -1430,8 +1447,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else {
                             doResetTerminal(true);
                             updatePrefs();
-                            toastReset.setGravity(Gravity.CENTER, 0, 0);
-                            toastReset.show();
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            showToast(toast);
                         }
                     }
                 })
@@ -1707,9 +1724,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_reset) {
             doResetTerminal(true);
             updatePrefs();
-            Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
+            final Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showToast(toast);
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
         } else if (id == R.id.menu_send_email) {
@@ -1971,7 +1988,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount() - 1);
             doWarningDialog(null, this.getString(R.string.switch_windows_warning), "switch_window", false);
         } catch (IOException e) {
-            Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT).show();
+            final Toast toast = Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT);
+            showToast(toast);
         }
     }
 
@@ -3308,9 +3326,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 startActivity(Intent.createChooser(intent,
                         getString(R.string.email_transcript_chooser_title)));
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(this,
-                        R.string.email_transcript_no_email_activity_found,
-                        Toast.LENGTH_LONG).show();
+                final Toast toast = Toast.makeText(this, R.string.email_transcript_no_email_activity_found, Toast.LENGTH_LONG);
+                showToast(toast);
             }
         }
     }
@@ -3520,9 +3537,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             return;
         }
-        final Toast toastCopy = Toast.makeText(this, mes, Toast.LENGTH_LONG);
-        toastCopy.setGravity(Gravity.CENTER, 0, 0);
-        toastCopy.show();
+        final Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        showToast(toast);
     }
 
     private static boolean mVimPaste = false;
@@ -3683,7 +3700,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mKeepScreenHandler.removeCallbacksAndMessages(null);
             final Toast toast = Toast.makeText(this, this.getString(R.string.keepscreen_deacitvated), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
-            if (!mKeepScreenEnableAuto) toast.show();
+            if (!mKeepScreenEnableAuto) showToast(toast);
         } else {
             final int timeout = mSettings.getKeepScreenTime();
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -3701,7 +3718,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (keepScreen) {
                         if (currentTimeMillis >= mLastKeyPress + timeoutMills) {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                            if (!mKeepScreenEnableAuto) toast.show();
+                            if (!mKeepScreenEnableAuto) showToast(toast);
                         } else {
                             mKeepScreenHandler.postDelayed(this, timeoutMills - (currentTimeMillis - mLastKeyPress));
                         }

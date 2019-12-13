@@ -191,7 +191,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         if (mToast != null) mToast.cancel();
         mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER, 0, 0);
-        mToast.show();
+        Term.showToast(mToast);
     }
 
     @Override

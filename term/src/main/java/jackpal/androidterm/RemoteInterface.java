@@ -319,9 +319,9 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     void alert(final String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        final Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        Term.showToast(toast);
     }
 
     private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
