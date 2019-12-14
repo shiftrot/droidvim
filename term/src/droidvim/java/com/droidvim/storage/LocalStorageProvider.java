@@ -104,20 +104,6 @@ public class LocalStorageProvider extends DocumentsProvider {
         row.add(Root.COLUMN_MIME_TYPES, "*/*");
         row.add(Root.COLUMN_AVAILABLE_BYTES, homeDir.getFreeSpace());
 
-        homeDir = Environment.getExternalStorageDirectory();
-        String summary = "$INTERNAL_STORAGE";
-
-        if (TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
-            row = result.newRow();
-            row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(homeDir));
-            row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(homeDir));
-            row.add(Root.COLUMN_TITLE, title);
-            row.add(Root.COLUMN_SUMMARY, summary);
-            row.add(Root.COLUMN_ICON, R.drawable.ic_folder);
-            row.add(Root.COLUMN_FLAGS, FLAGS);
-            row.add(Root.COLUMN_MIME_TYPES, "*/*");
-            row.add(Root.COLUMN_AVAILABLE_BYTES, new StatFs(getDocIdForFile(homeDir)).getAvailableBytes());
-        }
         return result;
     }
 
