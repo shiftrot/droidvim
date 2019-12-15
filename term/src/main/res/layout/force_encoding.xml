@@ -5,11 +5,6 @@
               android:layout_height="wrap_content"
               android:padding="5dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/force_encoding"/>
-
     <Spinner
         android:id="@+id/spinner_encoding"
         android:layout_width="fill_parent"

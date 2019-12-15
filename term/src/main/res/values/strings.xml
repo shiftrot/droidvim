@@ -517,7 +517,7 @@
     <string name="storage_hash_error_title">File hash error</string>
     <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file...\" button.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
-    <string name="storage_hash_reopen">Re-open</string>
+    <string name="storage_hash_reopen">Reload</string>
     <string name="storage_delete_file">Delete file from storage.</string>
     <string name="title_internal_storage">Internal private storage</string>
     <string name="clear_cache">Clear cache</string>
