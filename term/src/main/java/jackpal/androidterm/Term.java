@@ -683,8 +683,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.drawer_files_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (launchExternalApp(2, APP_FILES))
-                    getDrawer().closeDrawers();
+                getDrawer().closeDrawers();
+                final Runnable runFiler = new Runnable() {
+                    public void run() {
+                        launchExternalApp(2, APP_FILES);
+                    }
+                };
+                doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_file_chooser", false, runFiler);
             }
         });
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
@@ -713,7 +718,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                filePicker();
+                final Runnable runFiler = new Runnable() {
+                    public void run() {
+                                    filePicker();
+                                                 }
+                };
+                doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
             }
         });
         findViewById(R.id.drawer_createfile_button).setOnClickListener(new OnClickListener() {
@@ -1286,8 +1296,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doWarningDialog(String title, String message, String key, boolean dontShowAgain) {
+        doWarningDialogRun(title, message, key, dontShowAgain, null);
+    }
+    private void doWarningDialogRun(String title, String message, String key, boolean dontShowAgain, final Runnable whenDone) {
         boolean warning = getPrefBoolean(Term.this, key, true);
         if (!warning) {
+            if (whenDone != null) whenDone.run();
             return;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1305,6 +1319,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (cb.isChecked()) {
                     setPrefBoolean(Term.this, warningKey, false);
                 }
+                if (whenDone != null) whenDone.run();
             }
         });
         AlertDialog dialog = builder.create();

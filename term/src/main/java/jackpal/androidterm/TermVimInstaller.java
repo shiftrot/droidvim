@@ -180,7 +180,6 @@ final class TermVimInstaller {
                 fixOrientation(activity, orientationLock(activity));
                 try {
                     boolean first = !new File(TermService.getAPPFILES() + "/bin").isDirectory();
-                    if (ScopedStorageWarning) showScopeStorageMessage(activity);
                     showWhatsNew(activity, first);
                     setMessage(activity, pd, "scripts");
                     doInstallTerm(activity);
@@ -515,24 +514,6 @@ final class TermVimInstaller {
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
         }
-    }
-
-    static void showScopeStorageMessage(final Activity activity) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setTitle(activity.getString(R.string.scoped_storage_warning_title));
-                    bld.setMessage(activity.getString(R.string.scoped_storage_warning_message));
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-                bld.create().show();
-            }
-        });
-        new PrefValue(activity).setBoolean("enableScopedStorageWarning", true);
     }
 
     static void showWhatsNew(final Activity activity, final boolean first) {
