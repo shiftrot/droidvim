@@ -33,8 +33,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+class SyncFileObserverMru {
+    private Uri uri;
+    private String path;
+    SyncFileObserverMru() {
+        this.uri = null;
+        this.path = null;
+    }
+
+    SyncFileObserverMru(Uri uri, String path) {
+        this.uri = uri;
+        this.path = path;
+    }
+}
 
 class SyncFileObserver extends RecursiveFileObserver {
     class Info {
@@ -164,6 +179,23 @@ class SyncFileObserver extends RecursiveFileObserver {
 
     public void setMaxSyncFiles(int max) {
         mMaxSyncFiles = max > 100 ? max : 100;
+    }
+
+    LinkedList<SyncFileObserverMru> getMRU() {
+        if (mCacheDir == null || mHashMap == null) return null;
+        List<Map.Entry<String, Info>> list_entries = new ArrayList<>(mHashMap.entrySet());
+
+        Collections.sort(list_entries, new Comparator<Map.Entry<String, Info>>() {
+            public int compare(Map.Entry<String, Info> obj1, Map.Entry<String, Info> obj2) {
+                return obj1.getValue().compareTo(obj2.getValue());
+            }
+        });
+        LinkedList<SyncFileObserverMru> mru = new LinkedList<SyncFileObserverMru>();//[1]
+        for (Map.Entry<String, Info> map : list_entries) {
+            Info info = map.getValue();
+            mru.add(new SyncFileObserverMru(info.getUri(), map.getKey()));
+        }
+        return mru;
     }
 
     void clearOldCache() {
