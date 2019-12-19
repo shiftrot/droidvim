@@ -416,7 +416,7 @@
     <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
     <string name="set_startup_directory">起動時のディレクトリは, 次の場所に設定されました.\n\n</string>
     <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
-    <string name="summary_startup_chooser_preference_scoped_storage">\"初期コマンド\"の\"%STARTUP_DIR%\"を\"/path/to/dir\"へ変更して起動ディレクトリを指定します.</string>
+    <string name="summary_startup_chooser_preference_scoped_storage">\"初期コマンド\"の\"cd %STARTUP_DIR%\"を\"cd /path/to/dir\"へ変更してください.</string>
 
     <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると, ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
     <string name="choose_startup_directory_message">起動時のディレクトリを選択します.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリを起動時のディレクトリに設定することができます.</string>
@@ -463,7 +463,7 @@
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか, 権限がありません.</string>
     <string name="storage_write_error_title">無効なURI</string>
-    <string name="storage_write_error">ファイルを編集するためのURIが無効になっています.\nドロワーメニューの\"Storage\"ボタンを使用して編集用にファイルを再度開いてください.\n(このバッファの編集状態は失われます.)</string>
+    <string name="storage_write_error">ファイルを編集するためのURIが無効になっています.\nドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください.\n(このバッファの編集状態は失われます.)</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>
     <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ファイルを開く\"ボタンから再読込してください.</string>
     <string name="storage_hash_overwrite">上書き</string>

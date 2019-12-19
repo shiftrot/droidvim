@@ -436,7 +436,7 @@
     <string name="title_startup_chooser_preference">Startup directory</string>
     <string name="set_startup_directory">The startup directory has been set to the following location:\n\n</string>
     <string name="summary_startup_chooser_preference">Choose startup directory</string>
-    <string name="summary_startup_chooser_preference_scoped_storage">Change the startup directory by changing \"%STARTUP_DIR%\" to \"/path/to/dir\" for \"Initial command\".</string>
+    <string name="summary_startup_chooser_preference_scoped_storage">Change \"cd %STARTUP_DIR%\" in \"Initial command\" to \"cd /path/to/dir\".</string>
 
     <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default by pressing \"Default\" button.</string>
     <string name="choose_startup_directory_message">Choose startup directory.\n\"Default\" button to set startup directory as home directory.</string>
