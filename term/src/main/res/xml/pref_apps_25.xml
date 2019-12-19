@@ -54,4 +54,9 @@
         android:entries="@array/entries_html_viewer_mode_preference"
         android:entryValues="@array/entryvalues_html_viewer_mode_preference"/>
 
+    <Preference
+        android:key="mru_command"
+        android:title="@string/title_mrucommand_preference"
+        android:summary="@string/summary_mrucommand_preference"/>
+
 </PreferenceScreen>

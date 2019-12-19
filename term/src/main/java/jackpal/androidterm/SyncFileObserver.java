@@ -49,6 +49,14 @@ class SyncFileObserverMru {
         this.uri = uri;
         this.path = path;
     }
+
+    Uri getUri() {
+        return uri;
+    }
+
+    String getPath() {
+        return path;
+    }
 }
 
 class SyncFileObserver extends RecursiveFileObserver {

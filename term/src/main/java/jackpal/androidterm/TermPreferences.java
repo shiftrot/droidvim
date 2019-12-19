@@ -27,6 +27,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.obsez.android.lib.filechooser.ChooserDialog;
 
@@ -1239,6 +1240,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 if (mLabels != null) packageName.setEntries(mLabels);
                 if (mPackageNames != null) packageName.setEntryValues(mPackageNames);
             }
+            final String MRU_KEY = "mru_command";
+            Preference prefsMru = getPreferenceScreen().findPreference(MRU_KEY);
+            prefsMru.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.mruCommand(MRU_KEY);
+                    return true;
+                }
+            });
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
@@ -1266,6 +1276,34 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void mruCommand(String key) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences.Editor editor = prefs.edit();
+        final EditText editText = new EditText(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        editText.setText(sp.getString(key, getString(R.string.pref_mru_command_default)));
+        editText.setSingleLine();
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_title_mrucommand_preference))
+                .setMessage(getString(R.string.dialog_message_mrucommand_preference))
+                .setView(editText)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String cmd = editText.getText().toString();
+                        editor.putString(key, cmd);
+                        editor.apply();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(this.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     public static class PrefsPreferenceFragment extends PreferenceFragment {

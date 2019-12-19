@@ -108,6 +108,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -718,12 +719,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                final Runnable runFiler = new Runnable() {
-                    public void run() {
-                                    filePicker();
-                                                 }
-                };
-                doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
+                filePicker();
             }
         });
         findViewById(R.id.drawer_createfile_button).setOnClickListener(new OnClickListener() {
@@ -1298,6 +1294,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doWarningDialog(String title, String message, String key, boolean dontShowAgain) {
         doWarningDialogRun(title, message, key, dontShowAgain, null);
     }
+
     private void doWarningDialogRun(String title, String message, String key, boolean dontShowAgain, final Runnable whenDone) {
         boolean warning = getPrefBoolean(Term.this, key, true);
         if (!warning) {
@@ -2068,8 +2065,41 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void filePicker() {
+        final String mruCommand = mSettings.getMRUCommand();
+        final LinkedList<SyncFileObserverMru> list = mSyncFileObserver.getMRU();
+        final Runnable runFiler = new Runnable() {
+            public void run() {
+                doFilePicker();
+            }
+        };
+        if (mruCommand.equals("") || list == null || list.size() == 0) {
+            doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
+            return;
+        }
+        String mru = mruCommand.equals("MRU") ? this.getString(R.string.use_mru_cache) : this.getString(R.string.use_mru);
+        final String[] items = {
+                this.getString(R.string.use_file_chooser),
+                mru};
+        new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String item = items[which];
+                if (item.equals(Term.this.getString(R.string.use_file_chooser))) {
+                    doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
+                } else if (item.equals(Term.this.getString(R.string.use_mru))) {
+                    sendKeyStrings(mruCommand+"\r", true);
+                } else if (item.equals(Term.this.getString(R.string.use_mru_cache))) {
+                    chooseMruCache();
+                }
+            }
+        }).setNegativeButton(android.R.string.cancel, null)
+                .setTitle(getString(R.string.external_storage))
+                .show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void doFilePicker() {
         if (SCOPED_STORAGE) {
             intentFilePicker();
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -2077,6 +2107,36 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             intentFilePicker();
         }
+    }
+
+    private void chooseMruCache() {
+        final LinkedList<SyncFileObserverMru> list = mSyncFileObserver.getMRU();
+        int MRU_FILES = 5;
+        if (MRU_FILES > list.size()) MRU_FILES = list.size();
+        final String[] items = new String[MRU_FILES];
+        for (int i = 0; i < MRU_FILES; i++) {
+            String item = list.get(i).getPath();
+            item = new File(item).getName();
+            items[i] = item;
+        }
+        new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String item = items[which];
+                if (item == null) {
+                    // do nothing
+                } else {
+                    String intentCommand = mSettings.getIntentCommand();
+                    if (!intentCommand.matches("^:.*")) intentCommand = ":e ";
+                    String path = list.get(which).getPath();
+                    path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
+                    path = intentCommand + " " + path + "\r";
+                    sendKeyStrings(path, true);
+                }
+            }
+        }).setNegativeButton(android.R.string.cancel, null)
+        .setTitle(getString(R.string.use_mru_cache))
+        .show();
     }
 
     private void documentTreePicker(int requestCode) {
@@ -3419,7 +3479,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (getString(R.string.file_chooser).equals(items[which])) {
-                            filePicker();
+                            doFilePicker();
                         } else if (getString(R.string.create_or_delete).equals(items[which])) {
                             chooseFilePicker();
                         } else if (getString(R.string.dropbox).equals(items[which])) {

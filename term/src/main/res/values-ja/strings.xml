@@ -298,6 +298,11 @@
     <string name="summary_intentcommand_preference">インテント呼出時に実行するコマンド</string>
     <string name="dialog_title_intentcommand_preference">インテントコマンド</string>
 
+    <string name="title_mrucommand_preference">MRUコマンド</string>
+    <string name="summary_mrucommand_preference">\"ファイルを開く\"ボタンにMRUコマンドを設定する.</string>
+    <string name="dialog_title_mrucommand_preference">MRUコマンド</string>
+    <string name="dialog_message_mrucommand_preference">・\"MRU\" : 外部ストレージのMRUを有効にする. (デフォルト)\n・空白 : MRUを無効にする.\n・その他 : コマンドをシェルに送信. (例 \":bro ol\" でVimのMRUを呼び出す)</string>
+
     <string name="title_termtype_preference">ターミナルタイプ</string>
     <string name="summary_termtype_preference">シェルに設定するターミナルタイプ</string>
     <string name="dialog_title_termtype_preference">ターミナルタイプ</string>
@@ -448,6 +453,8 @@
 
     <string name="external_storage">ファイルを開く</string>
     <string name="file_chooser">ファイルを開く</string>
+    <string name="use_file_chooser">ファイル選択</string>
+    <string name="use_mru_cache">外部ストレージキャッシュ</string>
     <string name="storage_menu">ストレージメニュー</string>
     <string name="create_or_delete">ストレージ</string>
     <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
@@ -470,7 +477,7 @@
     <string name="storage_hash_reopen">再読込く</string>
     <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
     <string name="title_internal_storage">内部プライベート領域</string>
-    <string name="clear_cache">キャッシュクリア</string>
+    <string name="clear_cache">外部ストレージキャッシュクリア</string>
     <string name="confirm_clear_cache_message">外部ストレージキャッシュを削除します.</string>
     <string name="softkeyboard">キーボード</string>
 
@@ -492,7 +499,7 @@
     <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
     <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
 
-    <string name="external_apps_preferences">外部アプリ</string>
+    <string name="external_apps_preferences">外部アプリ &amp; ドロワー</string>
     <string name="external_app">アプリ名</string>
     <string name="external_app_activity">アクティビティ</string>
     <string name="external_app_button">外部アプリ</string>

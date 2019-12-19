@@ -312,6 +312,11 @@
     <string name="summary_intentcommand_preference">Command for intent.</string>
     <string name="dialog_title_intentcommand_preference">Intent Command</string>
 
+    <string name="title_mrucommand_preference">MRU command</string>
+    <string name="summary_mrucommand_preference">Set MRU Command to \"Open file...\" button.</string>
+    <string name="dialog_title_mrucommand_preference">MRU Command</string>
+    <string name="dialog_message_mrucommand_preference">- \"MRU\" : Enable external MRU cache. (Default)\n- Blank : Disable MRU.\n- Others : Send command to shell. (E.g. \":bro ol\" to call Vim MRU)</string>
+
     <string name="title_termtype_preference">Terminal type</string>
     <string name="summary_termtype_preference">What terminal type to report to the shell.</string>
     <string name="dialog_title_termtype_preference">Terminal type</string>
@@ -500,6 +505,9 @@
     <string name="activity_not_found">Activity not found.\nPlease try again.</string>
     <string name="external_storage">Open file...</string>
     <string name="storage_menu">Storage menu</string>
+    <string name="use_file_chooser">File chooser</string>
+    <string name="use_mru">MRU</string>
+    <string name="use_mru_cache">External storage cache</string>
     <string name="file_chooser">Open file...</string>
     <string name="create_or_delete">Storage</string>
     <string name="external_storage_warning">To read/write an external SD card, choose \"Open file...\" → \"3 dot menu\" → \"Show SD card\".</string>
@@ -520,7 +528,7 @@
     <string name="storage_hash_reopen">Reload</string>
     <string name="storage_delete_file">Delete file from storage.</string>
     <string name="title_internal_storage">Internal private storage</string>
-    <string name="clear_cache">Clear cache</string>
+    <string name="clear_cache">Clear external storage cache</string>
     <string name="confirm_clear_cache_message">Clear external storage cache.</string>
     <string name="softkeyboard">keyboard</string>
 
@@ -544,7 +552,7 @@
     <string name="donate_button">Donate</string>
     <string name="extra_button">Extra</string>
 
-    <string name="external_apps_preferences">External Apps</string>
+    <string name="external_apps_preferences">External Apps &amp; Drawer</string>
     <string name="external_app">Application name</string>
     <string name="external_app_activity">Activity</string>
     <string name="external_files_button">File Manager</string>

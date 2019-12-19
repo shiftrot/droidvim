@@ -72,6 +72,7 @@ public class TermSettings {
     private int mFnKeyId;
     private int mUseCookedIME;
     private int mUseDirectCookedIME;
+    private String mMRUCommand;
     private String mExternalAppId;
     private boolean mExternalAppButton;
     private int mExternalAppButtonMode;
@@ -146,6 +147,7 @@ public class TermSettings {
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
     private static final String IME_DIRECT_KEY = "ime_direct_input_method";
+    private static final String MRU_COMMAND_KEY = "mru_command";
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
     private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_button_mode";
     private static final String EXTERNAL_APP_BUTTON_KEY = "external_app_button";
@@ -291,6 +293,7 @@ public class TermSettings {
         mRightDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_right_double_tap_default));
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
+        mMRUCommand = res.getString(R.string.pref_mru_command_default);
         mExternalAppId = res.getString(R.string.pref_external_app_id_default);
         mExternalAppButtonMode = Integer.parseInt(res.getString(R.string.pref_external_app_button_mode_default));
         mExternalAppButton = res.getBoolean(R.bool.pref_external_app_button_default);
@@ -367,6 +370,7 @@ public class TermSettings {
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId, FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mUseDirectCookedIME = readIntPref(IME_DIRECT_KEY, mUseDirectCookedIME, 1);
+        mMRUCommand = readStringPref(MRU_COMMAND_KEY, mMRUCommand);
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY, mExternalAppId);
         mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
         mExternalAppButton = readBooleanPref(EXTERNAL_APP_BUTTON_KEY, mExternalAppButton);
@@ -679,6 +683,10 @@ public class TermSettings {
 
     public int getFnKeyCode() {
         return FN_KEY_SCHEMES[mFnKeyId];
+    }
+
+    public String getMRUCommand() {
+        return mMRUCommand;
     }
 
     public String getExternalAppId() {
