@@ -4614,8 +4614,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 path = "/" + path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
                 String fname = new File(path).getName();
                 if (displayName != null && !(fname == null || fname.equals(displayName))) {
-                    String parent = new File(path).getParent();
-                    path = parent + "/" + displayName;
+                    path = path + "/" + displayName;
                 }
                 path = path.replaceAll(":|\\|", "-");
                 path = path.replaceAll("//+", "/");
