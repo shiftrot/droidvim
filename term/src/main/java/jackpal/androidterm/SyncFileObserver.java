@@ -222,11 +222,8 @@ class SyncFileObserver extends RecursiveFileObserver {
         for (int i = size; i > minSize; i--) {
             String path = list_entries.get(i).getKey();
             stopWatching(path);
-            if (new File(path).delete()) {
-                list_entries.remove(i);
-            } else {
-                startWatching(path);
-            }
+            list_entries.remove(i);
+            new File(path).delete();
         }
         mHashMap.clear();
         for (Map.Entry<String, Info> map : list_entries) {
@@ -337,9 +334,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                 hashValue = toHexString(digest);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            mActive = true;
-            return HASH_ERROR;
+            hashValue = HASH_ERROR;
         }
         startWatching(dst.getAbsolutePath());
         mActive = true;
@@ -519,7 +514,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                             mDialogIsActive = false;
                             try {
                                 Term term = (Term) activity;
-                                term.intentFilePicker();
+                                term.openDrawer();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

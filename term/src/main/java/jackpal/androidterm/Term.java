@@ -726,7 +726,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                chooseFilePicker();
+                storageMenu();
             }
         });
         findViewById(R.id.drawer_clear_cache_button).setOnClickListener(new OnClickListener() {
@@ -1967,7 +1967,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void openDrawer() {
+    public void openDrawer() {
         DrawerLayout mDrawer = findViewById(R.id.drawer_layout);
         if (!mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.openDrawer(GravityCompat.START);
@@ -2162,7 +2162,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
-    private void chooseFilePicker() {
+    private void storageMenu() {
         final String[] items = new String[mFilePickerItems.size()];
         for (int i = 0; i < mFilePickerItems.size(); i++) {
             items[i] = mFilePickerItems.get(i);
@@ -3479,9 +3479,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (getString(R.string.file_chooser).equals(items[which])) {
-                            doFilePicker();
+                            filePicker();
                         } else if (getString(R.string.create_or_delete).equals(items[which])) {
-                            chooseFilePicker();
+                            storageMenu();
                         } else if (getString(R.string.dropbox).equals(items[which])) {
                             launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX);
                         } else if (getString(R.string.googledrive).equals(items[which])) {
@@ -4608,7 +4608,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             } else if (isMediaDocument(uri)) {
                 path = uri.toString().replaceFirst("content://[^/]+/", "/MediaDocument/");
             } else {
-                path = uri.toString().replaceFirst("content://[^/]+/", "/");
+                path = uri.toString().replaceFirst("content://", "/");
             }
             if (path != null) {
                 path = "/" + path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
