@@ -140,14 +140,43 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return getArch(false);
     }
 
+    static private int mGetArchMode = 1;
+    static public void setArchMode(int mode) {
+        mGetArchMode = mode;
+    }
+
     static public String getArch(boolean raw) {
         String libPath = getAPPLIB();
         String cpu = null;
 
-        if (new File(libPath + "/libarm64.so").exists()) cpu = "arm64";
-        else if (new File(libPath + "/libarm.so").exists()) cpu = "arm";
-        else if (new File(libPath + "/libx86.so").exists()) cpu = "x86";
-        else if (new File(libPath + "/libx86_64.so").exists()) cpu = "x86_64";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mGetArchMode == 1) {
+            for (String androidArch : Build.SUPPORTED_ABIS) {
+                switch (androidArch) {
+                    case "arm64-v8a":
+                        cpu = "arm64";
+                        break;
+                    case "armeabi-v7a":
+                    case "armeabi":
+                        cpu = "arm";
+                        break;
+                    case "x86_64":
+                        cpu = "x86_64";
+                        break;
+                    case "x86":
+                        cpu = "x86";
+                        break;
+                    default:
+                        continue;
+                }
+                break;
+            }
+        }
+        if (cpu == null) {
+            if (new File(libPath + "/libx86_64.so").exists()) cpu = "x86_64";
+            else if (new File(libPath + "/libx86.so").exists()) cpu = "x86";
+            else if (new File(libPath + "/libarm64.so").exists()) cpu = "arm64";
+            else if (new File(libPath + "/libarm.so").exists()) cpu = "arm";
+        }
 
         // FIXME: Kindle fire
         if (Build.MANUFACTURER.equals("Amazon")) {
@@ -171,22 +200,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
             }
         }
 
-        // Unreachable codes
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (String androidArch : Build.SUPPORTED_ABIS) {
-                switch (androidArch) {
-                    case "arm64-v8a":
-                        return "arm64";
-                    case "armeabi-v7a":
-                        return "arm";
-                    case "x86_64":
-                        return "x86_64";
-                    case "x86":
-                        return "x86";
-                }
-            }
-        }
-
+        // Unreachable
         return "arm";
     }
 

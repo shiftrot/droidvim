@@ -2884,11 +2884,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dlg.show();
     }
 
+    static String getArch() {
+        return TermService.getArch();
+    }
+
     private void forceLibrary() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_alert);
         bld.setTitle(R.string.title_change_lib_preference);
-        String message = this.getString(R.string.current_library) + " " + TermService.getArch();
+        String message = this.getString(R.string.current_library) + " " + getArch();
         message = message + "\n" + this.getString(R.string.message_change_lib_preference);
         bld.setMessage(message);
         bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
@@ -2937,7 +2941,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         int messageId = R.string.reset_to_default;
         if (which < 2) messageId = which == 0 ? R.string.force_64bit : R.string.force_32bit;
         bld.setTitle(messageId);
-        String message = this.getString(R.string.current_library) + " " + TermService.getArch() + "\n" + this.getString(R.string.confirm_change_lib);
+        String message = this.getString(R.string.current_library) + " " + getArch() + "\n" + this.getString(R.string.confirm_change_lib);
         bld.setMessage(message);
         bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

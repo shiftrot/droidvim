@@ -64,8 +64,8 @@ final class TermVimInstaller {
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
 
-        String cpu = getArch();
-        if ((AndroidCompat.SDK < 16) || ((AndroidCompat.SDK < 18) && (cpu.contains("x86") || cpu.contains("i686")))) {
+        String arch = getArch();
+        if ((AndroidCompat.SDK < 16) || ((AndroidCompat.SDK < 18) && (arch.contains("x86") || arch.contains("i686")))) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
