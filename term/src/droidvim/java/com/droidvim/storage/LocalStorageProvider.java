@@ -132,6 +132,11 @@ public class LocalStorageProvider extends DocumentsProvider {
         }
     }
 
+   @Override
+    public boolean isChildDocument(String parentDocumentId, String documentId) {
+        return documentId.startsWith(parentDocumentId);
+    }
+
     @Override
     public Cursor queryDocument(String documentId, String[] projection) throws FileNotFoundException {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_DOCUMENT_PROJECTION);
@@ -245,6 +250,10 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     /*
      * This function requires "implementation 'commons-io:commons-io:2.6'" in build.gradle
+     * for the following reasons.
+     * File.delete() cannot delete a non-empty directory.
+     * In directory deletion simply using recursion, if the symbolic link is deleted,
+     * the target directory is also deleted.
      */
     private void deleteFileOrFolder(File fileOrDirectory) {
         if (fileOrDirectory == null || !fileOrDirectory.exists()) return;
