@@ -381,8 +381,10 @@ class TermKeyListener {
         updateCursorMode();
     }
 
+    private String mTermType;
     public void setTermType(String termType) {
         setFnKeys(termType);
+        mTermType = termType;
     }
 
     private void setFnKeys(String termType) {
@@ -755,10 +757,77 @@ class TermKeyListener {
                 byte[] bytes = code.getBytes();
                 Log.d(EmulatorDebug.LOG_TAG, "Out: '" + EmulatorDebug.bytesToString(bytes, 0, bytes.length) + "'");
             }
+            code = mapTenKeyCode(keyCode, code);
             mTermSession.write(code);
             return true;
         }
         return false;
+    }
+
+    private String mapTenKeyCode(int keyCode, String code) {
+        if ("vt100".equals(mTermType)) return code;
+        switch (keyCode) {
+        case KEYCODE_NUM_LOCK:
+            code = "";
+            break;
+        case KEYCODE_NUMPAD_DIVIDE:
+            code = "/";
+            break;
+        case KEYCODE_NUMPAD_MULTIPLY:
+            code = "*";
+            break;
+        case KEYCODE_NUMPAD_SUBTRACT:
+            code = "-";
+            break;
+        case KEYCODE_NUMPAD_ADD:
+            code = "+";
+            break;
+        case KEYCODE_NUMPAD_ENTER:
+            code = "\015";
+            break;
+        case KEYCODE_NUMPAD_EQUALS:
+            code = "=";
+            break;
+        case KEYCODE_NUMPAD_COMMA:
+            code = ",";
+            break;
+        case KEYCODE_NUMPAD_DOT:
+            code = ".";
+            break;
+        case KEYCODE_NUMPAD_0:
+            code = "0";
+            break;
+        case KEYCODE_NUMPAD_1:
+            code = "1";
+            break;
+        case KEYCODE_NUMPAD_2:
+            code = "2";
+            break;
+        case KEYCODE_NUMPAD_3:
+            code = "3";
+            break;
+        case KEYCODE_NUMPAD_4:
+            code = "4";
+            break;
+        case KEYCODE_NUMPAD_5:
+            code = "5";
+            break;
+        case KEYCODE_NUMPAD_6:
+            code = "6";
+            break;
+        case KEYCODE_NUMPAD_7:
+            code = "7";
+            break;
+        case KEYCODE_NUMPAD_8:
+            code = "8";
+            break;
+        case KEYCODE_NUMPAD_9:
+            code = "9";
+            break;
+        default:
+            break;
+        }
+        return  code;
     }
 
     /**
