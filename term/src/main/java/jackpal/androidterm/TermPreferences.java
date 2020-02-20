@@ -1232,7 +1232,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            addPreferencesFromResource(R.xml.pref_apps_25);
+            boolean mFiles = !"".equals(Term.getAppFilerPackageName());
+            if (mFiles) {
+                addPreferencesFromResource(R.xml.pref_apps);
+            } else {
+                addPreferencesFromResource(R.xml.pref_apps_25);
+            }
 
             String id = "external_app_package_name";
             ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
@@ -1257,14 +1262,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
             bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));
             bindPreferenceSummaryToValue(findPreference("html_viewer_mode"));
-        }
-
-        private boolean isAppInstalled(String appPackage) {
-            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) return false;
-            PackageManager packageManager = getContext().getPackageManager();
-            if (packageManager == null) return false;
-            Intent intent = packageManager.getLaunchIntentForPackage("com.android.documentsui");
-            return (intent != null);
         }
 
         @Override

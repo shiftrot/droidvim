@@ -206,7 +206,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private static int mExternalAppMode = 1;
     private static String mExternalApp = "";
-    private static final String APP_FILES = "com.android.documentsui";
+    private static String APP_FILER = "";
     private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
@@ -611,12 +611,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             String launchApp = this.getString(R.string.launch_app);
             mFilePickerItems = new ArrayList<>();
             mFilePickerItems.add(this.getString(R.string.create_file));
-            if (isAppInstalled(APP_FILES)) {
+            APP_FILER = getAppFiler();
+            if (isAppInstalled(APP_FILER)) {
                 mFilePickerItems.add(String.format(launchApp, this.getString(R.string.app_files)));
             } else {
                 mFilePickerItems.add(this.getString(R.string.delete_file));
             }
-            if (isAppInstalled(APP_FILES)) {
+            if (isAppInstalled(APP_FILER)) {
                 visiblity = mSettings.getUseFilesAppButton() ? View.VISIBLE : View.GONE;
                 button = findViewById(R.id.drawer_files_button);
                 button.setVisibility(visiblity);
@@ -687,7 +688,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 getDrawer().closeDrawers();
                 final Runnable runFiler = new Runnable() {
                     public void run() {
-                        launchExternalApp(2, APP_FILES);
+                        launchExternalApp(2, APP_FILER);
                     }
                 };
                 doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_file_chooser", false, runFiler);
@@ -775,6 +776,25 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             findViewById(R.id.drawer_preference_button).setBackgroundResource(R.drawable.extra_button_dark);
             findViewById(R.id.drawer_quit_button).setBackgroundResource(R.drawable.extra_button_dark);
         }
+    }
+
+    static public String getAppFilerPackageName() {
+        return APP_FILER;
+    }
+
+    private String getAppFiler() {
+        String[] appFilers = {
+                "com.android.documentsui",
+                "com.google.android.documentsui",
+                ""};
+        String app = appFilers[0];
+        for (String pname: appFilers) {
+            if (isAppInstalled(pname)) {
+                app = pname;
+                break;
+            }
+        }
+        return app;
     }
 
     private boolean isAppInstalled(String appPackage) {
@@ -1147,10 +1167,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             });
         }
-        if (isAppInstalled(APP_FILES)) {
+        if (isAppInstalled(APP_FILER)) {
             builder.setNeutralButton(getString(R.string.app_files), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
-                    intentMainActivity(APP_FILES);
+                    intentMainActivity(APP_FILER);
                     doExitShell();
                 }
             });
@@ -2175,7 +2195,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (item == null) {
                     // do nothing
                 } else if (item.equals(String.format(launchApp, Term.this.getString(R.string.app_files)))) {
-                    intentMainActivity(APP_FILES);
+                    intentMainActivity(APP_FILER);
                 } else if (Term.this.getString(R.string.create_file).equals(item)) {
                     fileCreate();
                 } else if (Term.this.getString(R.string.delete_file).equals(item)) {
