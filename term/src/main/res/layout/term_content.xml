@@ -47,7 +47,7 @@
                 android:layout_weight="0.15"
                 android:minHeight="44dp"
                 android:minWidth="56dp"
-                android:text="×"/>
+                android:text="@string/key_clear"/>
 
             <Button
                 android:id="@+id/button_oneline_text_box_enter"
@@ -59,7 +59,7 @@
                 android:layout_weight="0.1"
                 android:minHeight="44dp"
                 android:minWidth="56dp"
-                android:text="↲"/>
+                android:text="@string/key_enter"/>
 
         </LinearLayout>
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
                     android:minWidth="0dp"
-                    android:text="↓"/>
+                    android:text="@string/key_fn_down"/>
 
                 <Button
                     android:id="@+id/button_m1"
@@ -215,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
                     android:minWidth="0dp"
-                    android:text="↓"/>
+                    android:text="@string/key_fn_down"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -235,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
                 android:minWidth="0dp"
-                android:text="↑"/>
+                android:text="@string/key_fn_up"/>
 
             <Button
                 android:id="@+id/button_esc"
@@ -301,7 +301,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="▲"/>
+                        android:text="@string/key_up"/>
 
                     <Button
                         android:id="@+id/button_down"
@@ -311,7 +311,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="▼"/>
+                        android:text="@string/key_down"/>
 
                     <Button
                         android:id="@+id/button_left"
@@ -321,7 +321,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="◀"/>
+                        android:text="@string/key_left"/>
 
                     <Button
                         android:id="@+id/button_right"
@@ -331,7 +331,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="▶"/>
+                        android:text="@string/key_right"/>
 
                     <Button
                         android:id="@+id/button_backspace"
@@ -351,7 +351,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="↲"/>
+                        android:text="@string/key_enter"/>
 
                     <Button
                         android:id="@+id/button_page_up"
@@ -461,7 +461,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="◇"/>
+                        android:text="@string/key_dia"/>
 
                     <Button
                         android:id="@+id/button_invert"
@@ -471,7 +471,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="○"/>
+                        android:text="@string/key_circle"/>
 
                     <Button
                         android:id="@+id/button_menu_user"
@@ -481,7 +481,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="□"/>
+                        android:text="@string/key_square"/>
 
                     <Button
                         android:id="@+id/button_ime_toggle"
@@ -491,7 +491,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="✏"/>
+                        android:text="@string/key_ime"/>
 
                     <Button
                         android:id="@+id/button_vim_paste"
@@ -561,7 +561,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="≡"/>
+                        android:text="@string/key_menu"/>
 
                     <Button
                         android:id="@+id/button_menu_hide"
@@ -571,7 +571,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="▽"/>
+                        android:text="@string/key_fn_hide"/>
 
                     <Button
                         android:id="@+id/button_next_functionbar2"
@@ -582,7 +582,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="0dp"
-                        android:text="↑"/>
+                        android:text="@string/key_fn_up"/>
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
@@ -644,7 +644,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="▲"/>
+                android:text="@string/key_up"/>
 
             <Button
                 android:id="@+id/button_navigation_down"
@@ -654,7 +654,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="▼"/>
+                android:text="@string/key_down"/>
 
             <Button
                 android:id="@+id/button_navigation_left"
@@ -664,7 +664,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="◀"/>
+                android:text="@string/key_left"/>
 
             <Button
                 android:id="@+id/button_navigation_right"
@@ -674,7 +674,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="▶"/>
+                android:text="@string/key_right"/>
 
             <Button
                 android:id="@+id/button_navigation_backspace"
@@ -694,7 +694,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="↲"/>
+                android:text="@string/key_enter"/>
 
             <Button
                 android:id="@+id/button_navigation_page_up"
@@ -804,7 +804,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="◇"/>
+                android:text="@string/key_dia"/>
 
             <Button
                 android:id="@+id/button_navigation_invert"
@@ -814,7 +814,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="○"/>
+                android:text="@string/key_circle"/>
 
             <Button
                 android:id="@+id/button_navigation_menu_user"
@@ -824,7 +824,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="□"/>
+                android:text="@string/key_square"/>
 
             <Button
                 android:id="@+id/button_navigation_vim_paste"
@@ -884,7 +884,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="➖"/>
+                android:text="@string/key_toggle"/>
 
             <Button
                 android:id="@+id/button_navigation_ime_toggle"
@@ -914,7 +914,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="≡"/>
+                android:text="@string/key_menu"/>
 
             <Button
                 android:id="@+id/button_navigation_menu_hide"
@@ -924,7 +924,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="▽"/>
+                android:text="@string/key_fn_hide"/>
 
         </LinearLayout>
 

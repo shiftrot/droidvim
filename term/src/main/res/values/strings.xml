@@ -169,8 +169,23 @@
     <string name="title_functionbar_ime_toggle">✏ - Toggle keyboard</string>
     <string name="title_navigationbar_fn_toggle">➖ - Toggle functionbar</string>
     <string name="title_functionbar_hide">▽ - Hide functionbar</string>
-    <string name="title_functionbar_change">↑ - F1-F12</string>
-    <string name="title_functionbar_change_fkey">↓ - Hide F1-F12</string>
+    <string name="title_functionbar_change">∧ - F1-F12</string>
+    <string name="title_functionbar_change_fkey">∨ - Hide F1-F12</string>
+    <string name="key_fn_up">∧</string>
+    <string name="key_fn_down">∨</string>
+    <string name="key_fn_hide">▽</string>
+    <string name="key_up">▲</string>
+    <string name="key_down">▼</string>
+    <string name="key_left">◀</string>
+    <string name="key_right">▶</string>
+    <string name="key_ime">✏</string>
+    <string name="key_toggle">➖</string>
+    <string name="key_enter">↲</string>
+    <string name="key_circle">○</string>
+    <string name="key_square">□</string>
+    <string name="key_dia">◇</string>
+    <string name="key_clear">×</string>
+    <string name="key_menu">≡</string>
 
     <string name="title_actionbar_preference">Action bar</string>
     <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
