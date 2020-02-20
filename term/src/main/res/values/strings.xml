@@ -376,7 +376,7 @@
 
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in Home directory and \"app-specific directory\" below will be deleted when uninstalling.</string>
-    <string name="google_filer_warning_message">If \"Internal Storage\" or \"SD card\"does not exist in the file manager, enable \"Show Internal storage\"/\"Show SD card\" via the 3-dot menu.</string>
+    <string name="google_filer_warning_message">If \"Internal Storage\" or \"SD card\" does not exist in the file manager, enable \"Show Internal storage\"/\"Show SD card\" via the 3-dot menu.</string>
 
     <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
     <string name="permdesc_run_script">Allows application to open new windows in Terminal Emulator for Android and run commands in those windows with all of Terminal Emulator for Android\'s permissions, including access to the Internet and your SD Card.</string>
