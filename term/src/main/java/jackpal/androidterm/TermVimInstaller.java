@@ -537,10 +537,14 @@ final class TermVimInstaller {
                     }
                 });
                 final Term term = (Term) activity;
-                AlertDialog dialog = bld.create();
-                dialog.show();
-                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positive.requestFocus();
+                try {
+                    AlertDialog dialog = bld.create();
+                    dialog.show();
+                    Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positive.requestFocus();
+                } catch (Exception e) {
+                    // do nothing
+                }
             }
         });
     }

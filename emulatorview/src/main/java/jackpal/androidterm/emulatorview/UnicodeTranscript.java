@@ -308,7 +308,8 @@ class UnicodeTranscript {
         }
 
         if (bottomMargin > mScreenRows) {
-            throw new IllegalArgumentException();
+            // throw new IllegalArgumentException();
+            return;
         }
 
         int screenRows = mScreenRows;

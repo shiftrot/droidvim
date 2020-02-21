@@ -527,7 +527,11 @@ class SyncFileObserver extends RecursiveFileObserver {
                         }
                     });
                     mDialogIsActive = true;
-                    bld.create().show();
+                    try {
+                        bld.create().show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
