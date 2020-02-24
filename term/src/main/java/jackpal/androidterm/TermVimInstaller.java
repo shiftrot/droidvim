@@ -193,8 +193,8 @@ final class TermVimInstaller {
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
                         copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
                     }
-                    String arch = getArch().contains("arm") ? "arm" : "x86";
-                    String bin = "bin_" + arch;
+                    String arch32 = getArch().contains("arm") ? "arm" : "x86";
+                    String bin = "bin_" + arch32;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
                     String defaultVim = TermService.getAPPFILES() + "/bin/vim.default";
@@ -206,16 +206,20 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries");
                     id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    arch = getArch().contains("86") ? "x86" : "arm";
-                    bin = "busybox_" + arch;
+                    bin = "busybox_" + arch32;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    bin = "bin_" + arch;
+                    bin = "bin_" + arch32;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
                     setMessage(activity, pd, "binaries - vim");
+                    String arch = getArch();
                     bin = "vim_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    if (id == 0) {
+                        bin = "vim_" + arch32;
+                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    }
                     installTar(path, getInputStream(activity, id));
                     installSoTar(path, "vim");
 
