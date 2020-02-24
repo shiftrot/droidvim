@@ -53,8 +53,7 @@ import jackpal.androidterm.compat.AndroidCompat;
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
 
 final class TermVimInstaller {
-
-    static final boolean SCOPED_STORAGE =  getProotCommand().length > 0;
+    static final boolean SCOPED_STORAGE = (getProotCommand().length > 0) && (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q);
     static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
