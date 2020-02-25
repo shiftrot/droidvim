@@ -2410,6 +2410,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
             // Don't repeat action if intent comes from history
             return;
