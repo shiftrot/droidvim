@@ -62,7 +62,7 @@ public class RemoteInterface extends AppCompatActivity {
     protected static final String EXTRA_WINDOW_HANDLE = "jackpal.androidterm.window_handle";
 
     protected static final String PRIVACT_ACTIVITY_ALIAS = "jackpal.androidterm.TermInternal";
-    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    private final static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
 
     private TermSettings mSettings;
 

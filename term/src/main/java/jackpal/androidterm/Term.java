@@ -172,7 +172,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
 
-    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    private final static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
     private static boolean SCOPED_STORAGE = ShellTermSession.SCOPED_STORAGE;
     private static boolean mVimFlavor = FLAVOR_VIM;
 
