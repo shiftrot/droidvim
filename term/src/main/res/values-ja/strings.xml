@@ -417,9 +417,9 @@
     <string name="dialog_titleime_shortcuts_action_preference">IMEショートカットアクション</string>
 
     <string name="title_home_dir_chooser_preference">ホームディレクトリ</string>
-    <string name="set_home_directory">ホームディレクトリは, 次の場所に設定されました.\n\n</string>
+    <string name="set_home_directory">ディレクトリは, 次の場所に設定されました.\n\n</string>
     <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
-    <string name="set_startup_directory">起動時のディレクトリは, 次の場所に設定されました.\n\n</string>
+    <string name="set_startup_directory">ディレクトリは, 次の場所に設定されました.\n\n</string>
     <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
     <string name="summary_startup_chooser_preference_scoped_storage">\"初期コマンド\"の\"cd %STARTUP_DIR%\"を\"cd /path/to/dir\"へ変更してください.</string>
 

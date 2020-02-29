@@ -259,7 +259,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             public void onChoosePath(String path, File pathFile) {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                 if (path == null) {
-                    path = TermService.getHOME();
+                    path = getFilesDir().getAbsolutePath() + "/home";
                     pathFile = new File(path);
                     if (!pathFile.exists()) pathFile.mkdir();
                     editor.putString("home_path", path);
@@ -291,7 +291,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             public void onChoosePath(String path, File pathFile) {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                 if (path == null) {
-                    path = TermService.getHOME();
+                    path = TermService.getAPPFILES() + "/home";
                     pathFile = new File(path);
                     if (!pathFile.exists()) pathFile.mkdir();
                     editor.putString("startup_path", path);
@@ -567,7 +567,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         bld.create().show();
     }
 
-    public static final boolean USE_DOCUMENT_TREE_PICKER = false && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+    public static final boolean USE_DOCUMENT_TREE_PICKER = true && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     public static final int REQUEST_FONT_PICKER = 16;
     public static final int REQUEST_PREFS_READ_PICKER = REQUEST_FONT_PICKER + 1;
     public static final int REQUEST_STORAGE_FONT_PICKER = REQUEST_FONT_PICKER + 2;
@@ -1043,7 +1043,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    private static boolean SCOPED_STORAGE = ShellTermSession.getProotCommand().length > 0;
+    private static final boolean SCOPED_STORAGE = ShellTermSession.SCOPED_STORAGE;
 
     public static class ShellPreferenceFragment extends PreferenceFragment {
         @Override

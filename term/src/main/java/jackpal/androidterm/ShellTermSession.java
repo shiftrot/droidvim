@@ -41,6 +41,7 @@ import jackpal.androidterm.util.TermSettings;
  * upon stopping.
  */
 public class ShellTermSession extends GenericTermSession {
+    public final static boolean SCOPED_STORAGE = (getProotCommand().length > 0) && (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q);
     private int mProcId;
     private Thread mWatcherThread;
 
