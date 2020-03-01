@@ -175,6 +175,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private final static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
     private static boolean SCOPED_STORAGE = ShellTermSession.SCOPED_STORAGE;
     private static boolean mVimFlavor = FLAVOR_VIM;
+    private TermVimInstaller mTermVimInstaller = new TermVimInstaller();
 
     private Intent TSIntent;
 
@@ -1133,8 +1134,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String message = this.getString(R.string.scoped_storage_uninstall_warning_message);
         message += "\n - " + TermService.getAPPBASE();
         message += "\n - " + TermService.getAPPEXTFILES();
-        boolean first = TermVimInstaller.ScopedStorageWarning;
-        TermVimInstaller.ScopedStorageWarning = false;
+        boolean first = mTermVimInstaller.ScopedStorageWarning;
+        mTermVimInstaller.ScopedStorageWarning = false;
 
         boolean warning = getPrefBoolean(Term.this, key, true);
         if (!first && (!warning || mRandom.nextInt(5) != 1)) {
@@ -1238,9 +1239,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
         if (!FLAVOR_VIM) {
-            TermVimInstaller.doInstallTerm(Term.this);
+            mTermVimInstaller.doInstallTerm(Term.this);
             permissionCheckExternalStorage();
-        } else if (TermVimInstaller.doInstallVim) {
+        } else if (mTermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
             cmd = cmd.replaceAll("\n-?vim.app", "");
 
@@ -1248,7 +1249,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             final ProgressBar progressBar = new ProgressBar(this.getApplicationContext(), null, android.R.attr.progressBarStyleLarge);
 //            showProgressRing(layout, progressBar);
 
-            TermVimInstaller.installVim(Term.this, new Runnable() {
+            mTermVimInstaller.installVim(Term.this, new Runnable() {
                 @Override
                 public void run() {
                     final String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
@@ -2514,7 +2515,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     cmd += "\u001b" + ":ATEMod _paste\n";
                 }
                 final String riCmd = cmd;
-                TermVimInstaller.doInstallVim(Term.this, new Runnable() {
+                mTermVimInstaller.doInstallVim(Term.this, new Runnable() {
                     @Override
                     public void run() {
                         String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
