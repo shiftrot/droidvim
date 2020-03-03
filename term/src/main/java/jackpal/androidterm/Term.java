@@ -2692,7 +2692,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         shell("rm " + TermService.getAPPFILES() + "/bin/vim");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.default");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.python");
-        shell("rm -rf " + TermService.getAPPEXTFILES() + "/runtime/pack/shiftrot/start");
+        shell("rm -rf " + TermService.getVimRuntimeInstallDir() + "/runtime/pack/shiftrot");
         shell("rm " + TermService.getAPPEXTFILES() + "/version");
         shell("rm " + TermService.getAPPEXTFILES() + "/version.*");
         mUninstall = false;
@@ -3019,9 +3019,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     shell("rm " + TermService.getAPPEXTFILES() + "/.64bit");
                     shell("rm " + TermService.getAPPEXTFILES() + "/.32bit");
                     if (mLibrary == 0) {
-                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getVimRuntimeInstallDir() + "/.64bit");
+                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/.64bit");
                     } else if (mLibrary == 1) {
-                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getVimRuntimeInstallDir() + "/.32bit");
+                        shell("cat " + TermService.getAPPEXTFILES() + "/version > " + TermService.getAPPEXTFILES() + "/.32bit");
                     }
                 }
                 doCloseWindow();
