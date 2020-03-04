@@ -1,0 +1,1 @@
+su -c %APPFILES%/bin/vim.sh

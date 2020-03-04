@@ -12,7 +12,7 @@ buildscript {
     ext.versions = [
             'versionCode': 1,
             'compileSdk' : 29,
-            'targetSdk'  : 28,
+            'targetSdk'  : 29,
             'minSdk'     : 16
     ]
 }
