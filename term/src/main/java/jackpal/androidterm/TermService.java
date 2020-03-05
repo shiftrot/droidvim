@@ -145,32 +145,34 @@ public class TermService extends Service implements TermSession.FinishCallback {
         mGetArchMode = mode;
     }
 
+    static private boolean mArchOverrideMode = false;
+    static public boolean getArchOverrideMode() {
+        return mArchOverrideMode;
+    }
+
     static public String getArch(boolean raw) {
         String libPath = getAPPLIB();
         String cpu = null;
+        mArchOverrideMode = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mGetArchMode == 1) {
             for (String androidArch : Build.SUPPORTED_ABIS) {
-                switch (androidArch) {
-                    case "arm64-v8a":
-                        cpu = "arm64";
-                        break;
-                    case "armeabi-v7a":
-                    case "armeabi":
-                        cpu = "arm";
-                        break;
-                    case "x86_64":
-                        cpu = "x86_64";
-                        break;
-                    case "x86":
-                        cpu = "x86";
-                        break;
-                    default:
-                        continue;
+                if (androidArch.contains("arm64")) {
+                    cpu = "arm64";
+                    break;
+                } else if (androidArch.contains("armeabi")) {
+                    cpu = "arm";
+                    break;
+                } else if (androidArch.contains("x86_64")) {
+                    cpu = "x86_64";
+                    break;
+                } else if (androidArch.contains("x86")) {
+                    cpu = "x86";
+                    break;
                 }
-                break;
             }
         }
+
         if (cpu == null) {
             if (new File(libPath + "/libx86_64.so").exists()) cpu = "x86_64";
             else if (new File(libPath + "/libx86.so").exists()) cpu = "x86";
@@ -182,6 +184,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (Build.MANUFACTURER.equals("Amazon")) {
             if ((cpu != null) && (!Build.MODEL.matches("KFFOWI|KFMEWI|KFTBWI|KFARWI|KFASWI|KFSAWA|KFSAWI"))) {
                 cpu = cpu.contains("arm") ? "arm64" : "x86_64";
+                mArchOverrideMode = true;
             }
         }
 
@@ -189,11 +192,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
             if (raw) return cpu;
             if (cpu.contains("64")) {
                 if (new File(getAPPEXTFILES() + "/.32bit").exists()) {
+                    mArchOverrideMode = true;
                     return cpu.contains("arm") ? "arm" : "x86";
                 }
                 return cpu;
             } else {
                 if (new File(getAPPEXTFILES() + "/.64bit").exists()) {
+                    mArchOverrideMode = true;
                     return cpu.contains("arm") ? "arm64" : "x86_64";
                 }
                 return cpu;

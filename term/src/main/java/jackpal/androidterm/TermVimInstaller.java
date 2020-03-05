@@ -1,5 +1,6 @@
 package jackpal.androidterm;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -193,10 +194,6 @@ final class TermVimInstaller {
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
                         copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
                     }
-                    String arch32 = getArch().contains("arm") ? "arm" : "x86";
-                    String bin = "bin_" + arch32;
-                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    installZip(path, getInputStream(activity, id));
                     String defaultVim = TermService.getAPPFILES() + "/bin/vim.default";
                     String vimsh = TermService.getAPPFILES() + "/bin/vim";
                     if ((!new File(defaultVim).exists()) || (!new File(vimsh).exists())) {
@@ -206,14 +203,26 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries");
                     id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    bin = "busybox_" + arch32;
+                    String arch = getArch();
+                    String arch32 = arch.contains("arm") ? "arm" : "x86";
+                    installSoZip(path, "busybox");
+                    String bin = "busybox_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    if (id == 0) {
+                        bin = "busybox_" + arch32;
+                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    }
                     installZip(path, getInputStream(activity, id));
-                    bin = "bin_" + arch32;
+                    installSoZip(path, "bin");
+                    bin = "bin_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    if (id == 0 || AndroidCompat.SDK < Build.VERSION_CODES.M) {
+                        bin = "bin_" + arch32;
+                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+                    }
                     installZip(path, getInputStream(activity, id));
                     setMessage(activity, pd, "binaries - vim");
-                    String arch = getArch();
+                    installSoTar(path, "vim");
                     bin = "vim_" + arch;
                     id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     if (id == 0) {
@@ -221,7 +230,6 @@ final class TermVimInstaller {
                         id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
                     }
                     installTar(path, getInputStream(activity, id));
-                    installSoTar(path, "vim");
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         setMessage(activity, pd, "binaries - shell");
@@ -233,7 +241,7 @@ final class TermVimInstaller {
                         File localVer = new File(local);
                         if (isNeedUpdate(targetVer, localVer)) {
                             installSoTar(path, "bash");
-                            id = activity.getResources().getIdentifier("bash_" + getArch(), "raw", activity.getPackageName());
+                            id = activity.getResources().getIdentifier("bash_" + arch, "raw", activity.getPackageName());
                             installTar(path, getInputStream(activity, id));
                             if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                                 shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
@@ -331,11 +339,33 @@ final class TermVimInstaller {
     static private void installSoTar(String path, String soLib) {
         final String SOLIB_PATH = TermService.getAPPLIB();
         try {
-            File soFile = new File(SOLIB_PATH + "/lib" + soLib + ".so");
-            installTar(path, new FileInputStream(soFile));
-        } catch (FileNotFoundException e) {
+            String fname = "lib" + soLib + ".so";
+            String local = TermService.getTMPDIR() + "/" + fname;
+            cp(SOLIB_PATH + "/" + fname, local);
+            installTar(path, new FileInputStream(local));
+            new File(local).delete();
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    static public boolean cp(String src, String dst) {
+        try {
+            InputStream is = new FileInputStream(src);
+            OutputStream os = new FileOutputStream(dst);
+            byte[] buf = new byte[1024 * 64];
+            int len = 0;
+
+            while ((len = is.read(buf)) > 0) {
+                os.write(buf, 0, len);
+            }
+            os.flush();
+            is.close();
+            os.close();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     static private void installTar(String path, InputStream is) {
@@ -603,7 +633,7 @@ final class TermVimInstaller {
 
     static public boolean busybox(String cmd) {
         String busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
-        boolean canExecute = new File(busybox).exists();
+        boolean canExecute = new File(busybox).canExecute();
         if (cmd == null || !canExecute) return canExecute;
 
         String busyboxCommand = busybox + " " + cmd;
@@ -666,16 +696,26 @@ final class TermVimInstaller {
         }
     }
 
+    static private void installSoZip(String path, String soLib) {
+        final String SOLIB_PATH = TermService.getAPPLIB();
+        try {
+            File soFile = new File(SOLIB_PATH + "/lib" + soLib + ".so");
+            installZip(path, new FileInputStream(soFile));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     static public void installZip(String path, InputStream is) {
         if (is == null) return;
-        File outDir = new File(path);
-        outDir.mkdirs();
-        ZipInputStream zin = new ZipInputStream(new BufferedInputStream(is));
-        ZipEntry ze;
-        int size;
-        byte[] buffer = new byte[8192];
-
         try {
+            File outDir = new File(path);
+            outDir.mkdirs();
+            ZipInputStream zin = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry ze;
+            int size;
+            byte[] buffer = new byte[8192];
+
             while ((ze = zin.getNextEntry()) != null) {
                 if (ze.isDirectory()) {
                     File file = new File(path + "/" + ze.getName());
