@@ -259,7 +259,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             public void onChoosePath(String path, File pathFile) {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                 if (path == null) {
-                    path = getFilesDir().getAbsolutePath() + "/home";
+                    path = getDefaultHome();
                     pathFile = new File(path);
                     if (!pathFile.exists()) pathFile.mkdir();
                     editor.putString("home_path", path);
@@ -281,6 +281,16 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         });
     }
 
+    private String getDefaultHome() {
+        String defValue;
+        if (!BuildConfig.FLAVOR.equals("origin")) {
+            defValue = getFilesDir().getAbsolutePath() + "/home";
+        } else {
+            defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        }
+        return defValue;
+    }
+
     private void startupDirectoryPicker(String mes) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
@@ -291,7 +301,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             public void onChoosePath(String path, File pathFile) {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                 if (path == null) {
-                    path = TermService.getAPPFILES() + "/home";
+                    path = getDefaultHome();
                     pathFile = new File(path);
                     if (!pathFile.exists()) pathFile.mkdir();
                     editor.putString("startup_path", path);
