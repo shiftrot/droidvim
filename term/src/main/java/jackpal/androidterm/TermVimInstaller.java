@@ -14,7 +14,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.system.Os;
 import android.util.Log;
 import android.view.Gravity;
@@ -49,17 +48,18 @@ import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
 
 final class TermVimInstaller {
-    static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
+    static private final boolean SCOPED_STORAGE = StaticConfig.SCOPED_STORAGE;
+    static private final boolean FLAVOR_VIM = StaticConfig.FLAVOR_VIM;
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
     static public boolean doInstallVim = false;
     static private final String DEBUG_OLD_LST = "";
-    static private final boolean SCOPED_STORAGE = ShellTermSession.SCOPED_STORAGE;
 
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
@@ -143,11 +143,30 @@ final class TermVimInstaller {
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
             installZip(terminfoDir, getInputStream(activity, id));
+            final String path = TermService.getAPPFILES();
+            id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
+            installZip(path, getInputStream(activity, id));
+            if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
+                String bin_am = "bin_am";
+                id = activity.getResources().getIdentifier(bin_am, "raw", activity.getPackageName());
+                installZip(path, getInputStream(activity, id));
+                id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
+                copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
+            }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                 File fontPath = new File(TermPreferences.FONT_PATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
             }
             if (!FLAVOR_VIM) {
+                if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
+                    installSoZip(path, "busybox");
+                    installZip(path, getInputStream(activity, getLocalLibId(activity, "busybox_")));
+                    installSoTar(path, "bash");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
+                    if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
+                        shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
+                    }
+                }
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
                 final SharedPreferences.Editor editor = prefs.edit();
                 String key = "functionbar_vim_paste";
@@ -162,6 +181,18 @@ final class TermVimInstaller {
             return true;
         }
         return false;
+    }
+
+    static private int getLocalLibId(Activity activity, String tarName) {
+        String arch = getArch();
+        String arch32 = arch.contains("arm") ? "arm" : "x86";
+        String bin = tarName + arch;
+        int id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+        if (id == 0) {
+            bin = tarName + arch32;
+            id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
+        }
+        return id;
     }
 
     static public boolean ScopedStorageWarning = false;
@@ -183,17 +214,10 @@ final class TermVimInstaller {
                     showWhatsNew(activity, first);
                     setMessage(activity, pd, "scripts");
                     doInstallTerm(activity);
-                    int id = activity.getResources().getIdentifier("bin", "raw", activity.getPackageName());
+                    int id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    id = activity.getResources().getIdentifier("base", "raw", activity.getPackageName());
+                    id = activity.getResources().getIdentifier("shell_vim", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                        String bin_am = "bin_am";
-                        id = activity.getResources().getIdentifier(bin_am, "raw", activity.getPackageName());
-                        installZip(path, getInputStream(activity, id));
-                        id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
-                        copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
-                    }
                     String defaultVim = TermService.getAPPFILES() + "/bin/vim.default";
                     String vimsh = TermService.getAPPFILES() + "/bin/vim";
                     if ((!new File(defaultVim).exists()) || (!new File(vimsh).exists())) {
@@ -203,33 +227,10 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries");
                     id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    String arch = getArch();
-                    String arch32 = arch.contains("arm") ? "arm" : "x86";
                     installSoZip(path, "busybox");
-                    String bin = "busybox_" + arch;
-                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    if (id == 0) {
-                        bin = "busybox_" + arch32;
-                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    }
-                    installZip(path, getInputStream(activity, id));
+                    installZip(path, getInputStream(activity, getLocalLibId(activity, "busybox_")));
                     installSoZip(path, "bin");
-                    bin = "bin_" + arch;
-                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    if (id == 0 || AndroidCompat.SDK < Build.VERSION_CODES.M) {
-                        bin = "bin_" + arch32;
-                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    }
-                    installZip(path, getInputStream(activity, id));
-                    setMessage(activity, pd, "binaries - vim");
-                    installSoTar(path, "vim");
-                    bin = "vim_" + arch;
-                    id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    if (id == 0) {
-                        bin = "vim_" + arch32;
-                        id = activity.getResources().getIdentifier(bin, "raw", activity.getPackageName());
-                    }
-                    installTar(path, getInputStream(activity, id));
+                    installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         setMessage(activity, pd, "binaries - shell");
@@ -241,8 +242,7 @@ final class TermVimInstaller {
                         File localVer = new File(local);
                         if (isNeedUpdate(targetVer, localVer)) {
                             installSoTar(path, "bash");
-                            id = activity.getResources().getIdentifier("bash_" + arch, "raw", activity.getPackageName());
-                            installTar(path, getInputStream(activity, id));
+                            installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
                             if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                                 shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                             }
@@ -257,6 +257,11 @@ final class TermVimInstaller {
                         id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
                         copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
                     }
+
+                    setMessage(activity, pd, "binaries - vim");
+                    installSoTar(path, "vim");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "vim_")));
+
                     id = activity.getResources().getIdentifier("suvim", "raw", activity.getPackageName());
                     String dst = TermService.getAPPFILES() + "/bin/suvim";
                     copyScript(activity.getResources().openRawResource(id), dst);
@@ -409,7 +414,7 @@ final class TermVimInstaller {
                             mProgressToastHandlerMillis += PROGRESS_TOAST_HANDLER_MILLIS;
                             CharSequence mes;
                             if (mProgressToastHandlerMillis >= 3 * 60 * 1000) {
-                                mes = "ERROR : Time our.";
+                                mes = "ERROR : Time out.";
                                 mProgressToast = false;
                             } else {
                                 mes = "Please wait for while.";
@@ -610,6 +615,7 @@ final class TermVimInstaller {
         } catch (IOException e) {
             return 1;
         }
+        if (fname.contains("/bin/")) shell("chmod 755 " + fname);
         return 0;
     }
 

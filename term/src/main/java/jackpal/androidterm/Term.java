@@ -50,7 +50,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.system.Os;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -121,6 +120,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
@@ -133,7 +133,6 @@ import jackpal.androidterm.util.TermSettings;
 
 import static android.provider.DocumentsContract.Document;
 import static android.provider.DocumentsContract.deleteDocument;
-import static jackpal.androidterm.ShellTermSession.getProotCommand;
 import static jackpal.androidterm.TermVimInstaller.shell;
 
 /**
@@ -172,9 +171,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
 
-    private final static boolean FLAVOR_VIM = BuildConfig.FLAVOR.matches(".*vim.*");
-    private static boolean SCOPED_STORAGE = ShellTermSession.SCOPED_STORAGE;
-    private static boolean mVimFlavor = FLAVOR_VIM;
+    private static boolean SCOPED_STORAGE = StaticConfig.SCOPED_STORAGE;
+    private static boolean mVimFlavor = StaticConfig.FLAVOR_VIM;
     private TermVimInstaller mTermVimInstaller = new TermVimInstaller();
 
     private Intent TSIntent;
@@ -507,6 +505,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static int mTheme = -1;
+
     private void setupTheme(int theme) {
         switch (theme) {
             case 0:
@@ -531,7 +530,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (AndroidCompat.SDK >= Build.VERSION_CODES.O && mTheme == 2) {
             View v = toast.getView();
             if (v instanceof ViewGroup) {
-                ViewGroup g = (ViewGroup)v;
+                ViewGroup g = (ViewGroup) v;
                 for (int i = 0; i < g.getChildCount(); i++) {
                     View c = g.getChildAt(i);
                     if (c instanceof TextView) {
@@ -553,7 +552,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String mSyncFileObserverFile = "SyncFileObserver.json";
 
     static SyncFileObserver restoreSyncFileObserver(Activity activity) {
-        if (!FLAVOR_VIM) return null;
+        if (!mVimFlavor) return null;
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
         mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
@@ -565,7 +564,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static private void saveSyncFileObserver() {
-        if (!FLAVOR_VIM) return;
+        if (!mVimFlavor) return;
         if (mSyncFileObserver == null) return;
         mSyncFileObserver.stopWatching();
         String dir = mSyncFileObserver.getObserverDir();
@@ -576,7 +575,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void setExtraButton() {
         Button button = findViewById(R.id.drawer_extra_button);
         int visibilty = View.VISIBLE;
-        if (!FLAVOR_VIM) visibilty = View.GONE;
+        if (!mVimFlavor) visibilty = View.GONE;
         button.setVisibility(visibilty);
     }
 
@@ -592,7 +591,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     ArrayList<String> mFilePickerItems;
 
     private void setDrawerButtons() {
-        if (FLAVOR_VIM) {
+        if (mVimFlavor) {
             int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
             if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visiblity = View.GONE;
             Button button = findViewById(R.id.drawer_app_button);
@@ -789,7 +788,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 "com.google.android.documentsui",
                 ""};
         String app = appFilers[0];
-        for (String pname: appFilers) {
+        for (String pname : appFilers) {
             if (isAppInstalled(pname)) {
                 app = pname;
                 break;
@@ -1138,7 +1137,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mTermVimInstaller.ScopedStorageWarning = false;
 
         boolean warning = getPrefBoolean(Term.this, key, true);
-        if (!first && (!warning || mRandom.nextInt(5) != 1)) {
+        if (!first && (!warning || mRandom.nextInt(50) != 1)) {
             doExitShell();
             return;
         }
@@ -1194,7 +1193,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mFirstInputtype = true;
             mFunctionBar = -1;
             mOrientation = -1;
-            if (FLAVOR_VIM && mSyncFileObserver != null) {
+            if (mVimFlavor && mSyncFileObserver != null) {
                 mSyncFileObserver.clearOldCache();
                 saveSyncFileObserver();
             }
@@ -1238,7 +1237,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
-        if (!FLAVOR_VIM) {
+        if (!mVimFlavor) {
             mTermVimInstaller.doInstallTerm(Term.this);
             permissionCheckExternalStorage();
         } else if (mTermVimInstaller.doInstallVim) {
@@ -1548,6 +1547,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     public void onPause() {
+        super.onPause();
         try {
             unregisterReceiver(mBroadcastReceiever);
         } catch (Exception e) {
@@ -1572,8 +1572,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (imm != null && token != null) imm.hideSoftInputFromWindow(token, 0);
             }
         }.start();
-
-        super.onPause();
     }
 
     @Override
@@ -1688,11 +1686,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         menu.removeItem(R.id.menu_update);
         menu.removeItem(R.id.menu_window_list);
         menu.removeItem(R.id.menu_x);
-        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_share_text);
-        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
-        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
-        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
-        if (!FLAVOR_VIM || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT))
+        if (!mVimFlavor) menu.removeItem(R.id.menu_share_text);
+        if (!mVimFlavor) menu.removeItem(R.id.menu_edit_vimrc);
+        if (!mVimFlavor) menu.removeItem(R.id.menu_reload);
+        if (!mVimFlavor) menu.removeItem(R.id.menu_tutorial);
+        if (!mVimFlavor || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT))
             menu.removeItem(R.id.menu_drawer);
         return true;
     }
@@ -1932,8 +1930,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean mUseIminsert = false;
+
     void toggleVimIminsert() {
-        if (!FLAVOR_VIM || !mUseIminsert) return;
+        if (!mVimFlavor || !mUseIminsert) return;
         sendVimIminsertKey();
     }
 
@@ -2109,7 +2108,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (item.equals(Term.this.getString(R.string.use_file_chooser))) {
                     doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
                 } else if (item.equals(Term.this.getString(R.string.use_mru))) {
-                    sendKeyStrings(mruCommand+"\r", true);
+                    sendKeyStrings(mruCommand + "\r", true);
                 } else if (item.equals(Term.this.getString(R.string.use_mru_cache))) {
                     chooseMruCache();
                 }
@@ -2156,8 +2155,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
-        .setTitle(getString(R.string.use_mru_cache))
-        .show();
+                .setTitle(getString(R.string.use_mru_cache))
+                .show();
     }
 
     private void documentTreePicker(int requestCode) {
@@ -2571,13 +2570,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     case TermSettings.BACK_KEY_STOPS_SERVICE:
                         // mStopServiceOnFinish = true;
                         // finish();
+                    case TermSettings.BACK_KEY_CLOSES_WINDOW:
                         doSendActionBarKey(getCurrentEmulatorView(), 1251);
                         return true;
                     case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
                         finish();
-                        return true;
-                    case TermSettings.BACK_KEY_CLOSES_WINDOW:
-                        doSendActionBarKey(getCurrentEmulatorView(), 1251);
                         return true;
                     case TermSettings.BACK_KEY_TOGGLE_IME:
                     case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
@@ -3400,7 +3397,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             sendKeyStrings("\u001b\u000c", false);
         }
         if (keyboard && !mHaveFullHwKeyboard) doShowSoftKeyboard();
-        if (mViewFlipper != null) mViewFlipper.redraw();
         mDoResetTerminal = false;
     }
 
@@ -3652,7 +3648,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void choosePasteMode() {
         final String[] items = {
                 getString(R.string.paste_vim),
-                getString(R.string.paste_shell) };
+                getString(R.string.paste_shell)};
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.clipboard))
@@ -4009,7 +4005,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (view != null) view.requestFocusFromTouch();
         }
         setEditTextViewSize();
-        if (mViewFlipper != null) mViewFlipper.setEditTextView(visibility == View.VISIBLE);
     }
 
     private void doWarningEditTextView() {
@@ -4033,7 +4028,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             }
         }
-        if (mViewFlipper != null) mViewFlipper.setEditTextViewSize(size);
     }
 
     private static int mFunctionBar = -1;
@@ -4057,7 +4051,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         int size;
         size = findViewById(R.id.view_function_bar).getHeight();
         if (mFunctionBarId == 1) size += size;
-        if (mViewFlipper != null) mViewFlipper.setFunctionBarSize(size);
     }
 
     class FunctionKey {
@@ -4305,7 +4298,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             findViewById(R.id.view_function_bar).setVisibility(visibility);
             findViewById(R.id.view_function_bar2).setVisibility(visibility);
             setFunctionBarSize();
-            mViewFlipper.setFunctionBar(false);
             return;
         }
 
@@ -4320,7 +4312,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         visibility = (mFunctionBar == 1 && mFunctionBarId == 1) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar2).setVisibility(visibility);
         setFunctionBarSize();
-        mViewFlipper.setFunctionBar(mFunctionBar == 1);
     }
 
     @SuppressLint("NewApi")

@@ -98,8 +98,6 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         Rect visible = mVisibleRect;
         mChildParams = new LayoutParams(visible.width(), visible.height(),
                 Gravity.TOP | Gravity.LEFT);
-        // FIXME (mWindowMode)
-        mFunctionBarSize = new PrefValue(context).getInt("functinbar_size", mFunctionBarSize);
     }
 
     public void updatePrefs(TermSettings settings) {
@@ -267,21 +265,15 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
            it's possible that the view won't resize correctly on IME hide */
         visible.right = window.right;
         visible.bottom = window.bottom;
-        visible.bottom -= mEditTextView ? mEditTextViewSize : 0;
-        visible.bottom -= mFunctionBar ? mFunctionBarSize : 0;
     }
 
     private void adjustChildSize() {
-        adjustChildSize(false);
-    }
-
-    private void adjustChildSize(boolean force) {
         updateVisibleRect();
         Rect visible = mVisibleRect;
         int width = visible.width();
         int height = visible.height();
 
-        if (force || mCurWidth != width || mCurHeight != height) {
+        if (mCurWidth != width || mCurHeight != height) {
             mCurWidth = width;
             mCurHeight = height;
 
@@ -320,54 +312,10 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.onDraw(canvas);
     }
 
-    public void redraw() {
-        invalidate();
-    }
-
     private static boolean mWindowMode = true;
 
     public void setDrawMode(boolean windowMode) {
         mWindowMode = windowMode;
-    }
-
-    private int mEditTextViewSize = 0;
-    private boolean mEditTextView = false;
-
-    public void setEditTextViewSize(int size) {
-        if (mWindowMode) return;
-        if (size > 0) {
-            PrefValue pv = new PrefValue(context);
-            if (pv.getInt("edit_text_view_size", mEditTextViewSize) != size)
-                pv.setInt("edit_text_view_size", size);
-            mEditTextViewSize = size;
-        }
-    }
-
-    public void setEditTextView(boolean bool) {
-        if (mWindowMode) return;
-        if (mEditTextView == bool) return;
-        mEditTextView = bool;
-        adjustChildSize();
-    }
-
-    private int mFunctionBarSize = 0;
-    private boolean mFunctionBar = true;
-
-    public void setFunctionBarSize(int size) {
-        if (mWindowMode) return;
-        if (size > 0) {
-            PrefValue pv = new PrefValue(context);
-            if (pv.getInt("functinbar_size", mFunctionBarSize) != size)
-                pv.setInt("functinbar_size", size);
-            mFunctionBarSize = size;
-        }
-    }
-
-    public void setFunctionBar(boolean bool) {
-        if (mWindowMode) return;
-        if (mFunctionBar == bool) return;
-        mFunctionBar = bool;
-        adjustChildSize();
     }
 
 }

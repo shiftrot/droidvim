@@ -1,5 +1,7 @@
 package jackpal.androidterm.emulatorview.compat;
 
+import android.os.Build;
+
 /**
  * The classes in this package take advantage of the fact that the VM does
  * not attempt to load a class until it's accessed, and the verifier
@@ -23,7 +25,7 @@ public class AndroidCompat {
         } catch (VerifyError e) {
             // We must be at an SDK level less than 4.
             try {
-                result = Integer.valueOf(android.os.Build.VERSION.SDK);
+                result = Build.VERSION.SDK_INT;
             } catch (NumberFormatException e2) {
                 // Couldn't parse string, assume the worst.
                 result = 1;

@@ -1,11 +1,11 @@
 diff --git a/runtime/autoload/netrw.vim b/runtime/autoload/netrw.vim
-index 7e3e66e6d..fb59430c3 100644
+index b7c55512f..436672da4 100644
 --- a/runtime/autoload/netrw.vim
 +++ b/runtime/autoload/netrw.vim
-@@ -11412,11 +11412,50 @@ fun! s:NetrwExe(cmd)
-     exe a:cmd
+@@ -11893,7 +11893,11 @@ fun! s:NetrwExe(cmd)
      let [&shell,&shellcmdflag,&shellxquote,&shellxescape,&shellquote,&shellpipe,&shellredir,&shellslash] = savedShell
    else
+ "   call Decho("exe ".a:cmd,'~'.expand("<slnum>"))
 -   exe a:cmd
 +    if has("win32") || exists('$APPBASE')
 +      exe s:CnvLocalPath2Uri(a:cmd)
@@ -13,7 +13,10 @@ index 7e3e66e6d..fb59430c3 100644
 +      exe a:cmd
 +    endif
    endif
- "  call Dret("s:NetrwExe")
+   if v:shell_error
+    call netrw#ErrorMsg(s:WARNING,"shell signalled an error",106)
+@@ -11901,6 +11905,41 @@ fun! s:NetrwExe(cmd)
+ "  call Dret("s:NetrwExe : v:shell_error=".v:shell_error)
  endfun
  
 +func! s:CnvLocalPath2Uri(str)

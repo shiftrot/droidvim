@@ -30,7 +30,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -42,6 +41,7 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
@@ -163,7 +163,7 @@ public class RemoteInterface extends AppCompatActivity {
             finish();
             return;
         }
-        mDoInstall = TermVimInstaller.FLAVOR_VIM && !new File(this.getFilesDir() + "/bin").isDirectory();
+        mDoInstall = StaticConfig.FLAVOR_VIM && !new File(this.getFilesDir() + "/bin").isDirectory();
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();

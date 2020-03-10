@@ -1,7 +1,7 @@
 package jackpal.androidterm.emulatorview.compat;
 
+import android.content.ClipboardManager;
 import android.content.Context;
-import android.text.ClipboardManager;
 
 @SuppressWarnings("deprecation")
 public class ClipboardManagerCompatV1 implements ClipboardManagerCompat {

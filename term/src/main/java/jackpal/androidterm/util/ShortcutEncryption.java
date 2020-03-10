@@ -18,7 +18,6 @@ package jackpal.androidterm.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -37,44 +36,45 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.Base64;
 
 /**
  * Implementation of a simple authenticated encryption scheme suitable for
  * TEA shortcuts.
- *
+ * <p>
  * The goals of the encryption are as follows:
- *
+ * <p>
  * (1) An unauthorized actor must not be able to create a valid text with
  * contents of his choice;
  * (2) An unauthorized actor must not be able to modify an existing text to
  * change its contents in any way;
  * (3) An unauthorized actor must not be able to discover the contents of
  * an existing text.
- *
+ * <p>
  * Conditions (1) and (2) ensure that an attacker cannot send commands of his
  * choosing to TEA via the shortcut mechanism, while condition (3) ensures that
  * an attacker cannot learn what commands are being sent via shortcuts even if
  * he can read saved shortcuts or sniff Android intents.
- *
+ * <p>
  * We ensure these conditions using two cryptographic building blocks:
- *
+ * <p>
  * * a symmetric cipher (currently AES in CBC mode using PKCS#5 padding),
  * which prevents someone without the encryption key from reading the
  * contents of the shortcut; and
  * * a message authentication code (currently HMAC-SHA256), which proves that
  * the shortcut was created by someone with the MAC key.
- *
+ * <p>
  * The security of these depends on the security of the keys, which must be
  * kept secret.  In this application, the keys are randomly generated and stored
  * in the application's private shared preferences.
- *
+ * <p>
  * The encrypted string output by this scheme is of the form:
- *
+ * <p>
  * mac + ":" + iv + ":" cipherText
- *
+ * <p>
  * where:
- *
+ * <p>
  * * cipherText is the Base64-encoded result of encrypting the data
  * using the encryption key;
  * * iv is a Base64-encoded, non-secret random number used as an
@@ -113,9 +113,9 @@ public final class ShortcutEncryption {
 
         /**
          * Outputs the keys as a string of the form
-         *
+         * <p>
          * encKey + ":" + macKey
-         *
+         * <p>
          * where encKey and macKey are the Base64-encoded encryption and MAC
          * keys.
          */

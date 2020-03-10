@@ -147,7 +147,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
-    private final static boolean FLAVOR_VIM = TermVimInstaller.FLAVOR_VIM;
+    static private final boolean FLAVOR_VIM = StaticConfig.FLAVOR_VIM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1022,7 +1022,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    private static final boolean SCOPED_STORAGE = ShellTermSession.SCOPED_STORAGE;
+    private static final boolean SCOPED_STORAGE = StaticConfig.SCOPED_STORAGE;
 
     public static class ShellPreferenceFragment extends PreferenceFragment {
         @Override

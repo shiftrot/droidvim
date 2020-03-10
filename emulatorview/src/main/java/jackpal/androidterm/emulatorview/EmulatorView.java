@@ -16,14 +16,6 @@
 
 package jackpal.androidterm.emulatorview;
 
-import jackpal.androidterm.emulatorview.compat.AndroidCompat;
-import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
-import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
-import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
-
-import java.io.IOException;
-import java.util.Hashtable;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -32,14 +24,12 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -61,6 +51,15 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Scroller;
+
+import java.io.IOException;
+import java.util.Hashtable;
+
+import androidx.preference.PreferenceManager;
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 
 /**
  * A view on a {@link TermSession}.  Displays the terminal emulator's screen,
@@ -251,10 +250,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     };
 
     /**
-     *
      * A hash table of underlying URLs to implement clickable links.
      */
-    private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
+    private Hashtable<Integer, URLSpan[]> mLinkLayer = new Hashtable<Integer, URLSpan[]>();
 
     /**
      * Sends mouse wheel codes to terminal in response to fling.
@@ -296,7 +294,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 post(this);
             }
         }
-    };
+    }
+
+    ;
     private MouseTrackingFlingRunner mMouseTrackingFlingRunner = new MouseTrackingFlingRunner();
 
     private float mScrollRemainder;
@@ -317,7 +317,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private UpdateCallback mUpdateNotify = new UpdateCallback() {
         public void onUpdate() {
             doEscCtrl();
-            if ( mIsSelectingText ) {
+            if (mIsSelectingText) {
                 int rowShift = mEmulator.getScrollCounter();
                 mSelY1 -= rowShift;
                 mSelY2 -= rowShift;
@@ -504,7 +504,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     if (n == 1 && text.charAt(0) == '\n') {
                         text = "\r";
                     }
-                    for(int i = 0; i < n; i++) {
+                    for (int i = 0; i < n; i++) {
                         c = text.charAt(i);
                         if (Character.isHighSurrogate(c)) {
                             int codePoint;
@@ -524,7 +524,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 }
             }
 
-            private  int charToKeyCode(int c) {
+            private int charToKeyCode(int c) {
                 if (c >= 'a' && c <= 'z') {
                     return (c - 'a' + KeycodeConstants.KEYCODE_A);
                 } else if (c >= 'A' && c <= 'Z') {
@@ -532,11 +532,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 } else if (c >= '0' && c <= '9') {
                     return (c - '0' + KeycodeConstants.KEYCODE_0);
                 } else if (c == ' ') {
-                     return KeycodeConstants.KEYCODE_SPACE;
+                    return KeycodeConstants.KEYCODE_SPACE;
                 } else if (c == '/') {
-                     return KeycodeConstants.KEYCODE_SLASH;
+                    return KeycodeConstants.KEYCODE_SLASH;
                 } else if (c == '\\') {
-                     return KeycodeConstants.KEYCODE_BACKSLASH;
+                    return KeycodeConstants.KEYCODE_BACKSLASH;
                 } else if (c == ',') {
                     return KeycodeConstants.KEYCODE_COMMA;
                 } else if (c == '.') {
@@ -552,7 +552,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             private void mapAndSend(int c) throws IOException {
                 int key = charToKeyCode(c);
                 if (mIsAltKeySent && c != key) {
-                    int meta  = KeyEvent.META_ALT_ON;
+                    int meta = KeyEvent.META_ALT_ON;
                     if (c >= 'A' && c <= 'Z') {
                         meta += KeyEvent.META_SHIFT_LEFT_ON;
                     }
@@ -666,7 +666,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (len <= 0 || mCursor < 0 || mCursor >= mImeBuffer.length()) {
                     return "";
                 }
-                return mImeBuffer.substring(mCursor-len, mCursor);
+                return mImeBuffer.substring(mCursor - len, mCursor);
             }
 
             @Override
@@ -694,7 +694,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
 
             @Override
-            public boolean commitCorrection (CorrectionInfo correctionInfo) {
+            public boolean commitCorrection(CorrectionInfo correctionInfo) {
                 if (LOG_IME) {
                     Log.w(TAG, "commitCorrection");
                 }
@@ -723,7 +723,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     return;
                 }
                 setImeBuffer(mImeBuffer.substring(0, mComposingTextStart) +
-                    mImeBuffer.substring(mComposingTextEnd));
+                        mImeBuffer.substring(mComposingTextEnd));
                 if (mCursor < mComposingTextStart) {
                     // do nothing
                 } else if (mCursor < mComposingTextEnd) {
@@ -744,12 +744,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (leftLength > 0) {
                     for (int i = 0; i < leftLength; i++) {
                         sendKeyEvent(
-                            new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                                new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                     }
                 } else if ((leftLength == 0) && (rightLength == 0)) {
                     // Delete key held down / repeating
                     sendKeyEvent(
-                        new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                            new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                 }
                 // TODO: handle forward deletes.
                 return true;
@@ -797,14 +797,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     return false;
                 }
                 setImeBuffer(mImeBuffer.substring(0, mComposingTextStart) +
-                    text + mImeBuffer.substring(mComposingTextEnd));
+                        text + mImeBuffer.substring(mComposingTextEnd));
                 mComposingTextEnd = mComposingTextStart + text.length();
                 mCursor = newCursorPosition > 0 ? mComposingTextEnd + newCursorPosition - 1
                         : mComposingTextStart - newCursorPosition;
                 if (mIme != IME_ID_GOOGLE_JA && text.length() == 0) {
                     mImeSpannableString = null;
                 } else if (text instanceof SpannableString) {
-                    mImeSpannableString = (SpannableString)text;
+                    mImeSpannableString = (SpannableString) text;
                 }
                 if (mIme == IME_ID_GOOGLE_JA && mIMEGoogleInput) {
                     if (text.length() > 0) {
@@ -862,7 +862,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (mSelectedTextEnd >= len || mSelectedTextStart > mSelectedTextEnd) {
                     return "";
                 }
-                return mImeBuffer.substring(mSelectedTextStart, mSelectedTextEnd+1);
+                return mImeBuffer.substring(mSelectedTextStart, mSelectedTextEnd + 1);
             }
 
         };
@@ -955,6 +955,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     @SuppressLint("NewApi")
     private boolean mHardwareAcceleration = true;
+
     public void setHwAcceleration(boolean mode) {
         if (mHardwareAcceleration == mode) return;
         mHardwareAcceleration = mode;
@@ -995,21 +996,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     /**
      * Gets the visible number of rows for the view, useful when updating Ptysize with the correct number of rows/columns
+     *
      * @return The rows for the visible number of rows, this is calculate in updateSize(int w, int h), please call
      * updateSize(true) if the view changed, to get the correct calculation before calling this.
      */
-    public int getVisibleRows()
-    {
-      return mVisibleRows;
+    public int getVisibleRows() {
+        return mVisibleRows;
     }
 
     /**
      * Gets the visible number of columns for the view, again useful to get when updating PTYsize
+     *
      * @return the columns for the visisble view, please call updateSize(true) to re-calculate this if the view has changed
      */
-    public int getVisibleColumns()
-    {
-      return mVisibleColumns;
+    public int getVisibleColumns() {
+        return mVisibleColumns;
     }
 
 
@@ -1018,7 +1019,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * screenfuls).
      *
      * @param delta The number of screens to scroll. Positive means scroll down,
-     *        negative means scroll up.
+     *              negative means scroll up.
      */
     public void page(int delta) {
         mTopRow =
@@ -1031,7 +1032,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Page the terminal view horizontally.
      *
      * @param deltaColumns the number of columns to scroll. Positive scrolls to
-     *        the right.
+     *                     the right.
      */
     public void pageHorizontal(int deltaColumns) {
         mLeftColumn =
@@ -1047,7 +1048,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setTextSize(float fontSize) {
         if (fontSize == 0) {
-            fontSize = getTextSize((Activity)this.getContext());
+            fontSize = getTextSize((Activity) this.getContext());
         }
         mTextSize = (int) Math.floor(fontSize * mDensity);
         updateText();
@@ -1063,7 +1064,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         Resources resources = activity.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float fs = point.x / metrics.density / splashWidth;
-        fs = (float)Math.floor(fs) + (((fs - Math.floor(fs)) > 0.5f) ? 0.5f : 0f);
+        fs = (float) Math.floor(fs) + (((fs - Math.floor(fs)) > 0.5f) ? 0.5f : 0f);
         if (fs > fontSize) fontSize = fs;
         if (fontSize > fontSizeMax) fontSize = fontSizeMax;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -1095,6 +1096,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setUseDirectCookedIME(boolean useCookedIME) {
         mUseDirectCookedIme = useCookedIME;
     }
+
     /**
      * Returns true if mouse events are being sent as escape sequences to the terminal.
      */
@@ -1106,24 +1108,24 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Send a single mouse event code to the terminal.
      */
     private void sendMouseEventCode(MotionEvent e, int button_code) {
-        int x = (int)(e.getX() / mCharacterWidth) + 1;
-        int y = (int)((e.getY()-mTopOfScreenMargin) / mCharacterHeight) + 1;
+        int x = (int) (e.getX() / mCharacterWidth) + 1;
+        int y = (int) ((e.getY() - mTopOfScreenMargin) / mCharacterHeight) + 1;
         // Clip to screen, and clip to the limits of 8-bit data.
         boolean out_of_bounds =
-            x < 1 || y < 1 ||
-            x > mColumns || y > mRows ||
-            x > 255-32 || y > 255-32;
+                x < 1 || y < 1 ||
+                        x > mColumns || y > mRows ||
+                        x > 255 - 32 || y > 255 - 32;
         //Log.d(TAG, "mouse button "+x+","+y+","+button_code+",oob="+out_of_bounds);
-        if(button_code < 0 || button_code > 255-32) {
-            Log.e(TAG, "mouse button_code out of range: "+button_code);
+        if (button_code < 0 || button_code > 255 - 32) {
+            Log.e(TAG, "mouse button_code out of range: " + button_code);
             return;
         }
-        if(!out_of_bounds) {
+        if (!out_of_bounds) {
             byte[] data = {
-                '\033', '[', 'M',
-                (byte)(32 + button_code),
-                (byte)(32 + x),
-                (byte)(32 + y) };
+                    '\033', '[', 'M',
+                    (byte) (32 + button_code),
+                    (byte) (32 + x),
+                    (byte) (32 + y)};
             mTermSession.write(data, 0, data.length);
         }
     }
@@ -1178,7 +1180,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public boolean onScroll(MotionEvent e1, MotionEvent e2,
-            float distanceX, float distanceY) {
+                            float distanceX, float distanceY) {
         if (mExtGestureListener != null && mExtGestureListener.onScroll(e1, e2, distanceX, distanceY)) {
             return true;
         }
@@ -1190,28 +1192,28 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         if (isMouseTrackingActive()) {
             // Send mouse wheel events to terminal.
-            for (; deltaRows>0; deltaRows--) {
+            for (; deltaRows > 0; deltaRows--) {
                 sendMouseEventCode(e1, 65);
             }
-            for (; deltaRows<0; deltaRows++) {
+            for (; deltaRows < 0; deltaRows++) {
                 sendMouseEventCode(e1, 64);
             }
             return true;
         }
 
         mTopRow =
-            Math.min(0, Math.max(-(mEmulator.getScreen()
-                    .getActiveTranscriptRows()), mTopRow + deltaRows));
+                Math.min(0, Math.max(-(mEmulator.getScreen()
+                        .getActiveTranscriptRows()), mTopRow + deltaRows));
         invalidate();
 
         return true;
     }
 
     public boolean onJumpTapDown(MotionEvent e1, MotionEvent e2) {
-       // Scroll to bottom
-       mTopRow = 0;
-       invalidate();
-       return true;
+        // Scroll to bottom
+        mTopRow = 0;
+        invalidate();
+        return true;
     }
 
     public boolean onJumpTapUp(MotionEvent e1, MotionEvent e2) {
@@ -1222,7 +1224,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-            float velocityY) {
+                           float velocityY) {
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
         }
@@ -1270,41 +1272,41 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean onTouchEventWhileSelectingText(MotionEvent ev) {
         int action = ev.getAction();
-        int cx = (int)(ev.getX() / mCharacterWidth);
+        int cx = (int) (ev.getX() / mCharacterWidth);
         int cy = Math.max(0,
-                (int)((ev.getY() + SELECT_TEXT_OFFSET_Y * mScaledDensity)
+                (int) ((ev.getY() + SELECT_TEXT_OFFSET_Y * mScaledDensity)
                         / mCharacterHeight) + mTopRow);
         switch (action) {
-        case MotionEvent.ACTION_DOWN:
-            mSelXAnchor = cx;
-            mSelYAnchor = cy;
-            mSelX1 = cx;
-            mSelY1 = cy;
-            mSelX2 = mSelX1;
-            mSelY2 = mSelY1;
-            break;
-        case MotionEvent.ACTION_MOVE:
-        case MotionEvent.ACTION_UP:
-            int minx = Math.min(mSelXAnchor, cx);
-            int maxx = Math.max(mSelXAnchor, cx);
-            int miny = Math.min(mSelYAnchor, cy);
-            int maxy = Math.max(mSelYAnchor, cy);
-            mSelX1 = minx;
-            mSelY1 = miny;
-            mSelX2 = maxx;
-            mSelY2 = maxy;
-            if (action == MotionEvent.ACTION_UP) {
-                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                        .getManager(getContext().getApplicationContext());
-                clip.setText(getSelectedText().trim());
+            case MotionEvent.ACTION_DOWN:
+                mSelXAnchor = cx;
+                mSelYAnchor = cy;
+                mSelX1 = cx;
+                mSelY1 = cy;
+                mSelX2 = mSelX1;
+                mSelY2 = mSelY1;
+                break;
+            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_UP:
+                int minx = Math.min(mSelXAnchor, cx);
+                int maxx = Math.max(mSelXAnchor, cx);
+                int miny = Math.min(mSelYAnchor, cy);
+                int maxy = Math.max(mSelYAnchor, cy);
+                mSelX1 = minx;
+                mSelY1 = miny;
+                mSelX2 = maxx;
+                mSelY2 = maxy;
+                if (action == MotionEvent.ACTION_UP) {
+                    ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                            .getManager(getContext().getApplicationContext());
+                    clip.setText(getSelectedText().trim());
+                    toggleSelectingText();
+                }
+                invalidate();
+                break;
+            default:
                 toggleSelectingText();
-            }
-            invalidate();
-            break;
-        default:
-            toggleSelectingText();
-            invalidate();
-            break;
+                invalidate();
+                break;
         }
         return true;
     }
@@ -1313,7 +1315,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Called when a key is pressed in the view.
      *
      * @param keyCode The keycode of the key which was pressed.
-     * @param event A {@link KeyEvent} describing the event.
+     * @param event   A {@link KeyEvent} describing the event.
      * @return Whether the event was handled.
      */
     @Override
@@ -1335,7 +1337,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else if (handleFnKey(keyCode, true)) {
             return true;
         } else if (isSystemKey(keyCode, event)) {
-            if (! isInterceptedSystemKey(keyCode) ) {
+            if (!isInterceptedSystemKey(keyCode)) {
                 // Don't intercept the system keys
                 return super.onKeyDown(keyCode, event);
             }
@@ -1359,7 +1361,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
-    /** Do we want to intercept this system key? */
+    /**
+     * Do we want to intercept this system key?
+     */
     private boolean isInterceptedSystemKey(int keyCode) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true;
@@ -1371,7 +1375,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Called when a key is released in the view.
      *
      * @param keyCode The keycode of the key which was released.
-     * @param event A {@link KeyEvent} describing the event.
+     * @param event   A {@link KeyEvent} describing the event.
      * @return Whether the event was handled.
      */
     @Override
@@ -1379,7 +1383,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyUp " + keyCode);
         }
-        if (mIme == IME_ID_SWIFT && mHaveFullHwKeyboard &&keyCode == KeyEvent.KEYCODE_DEL) {
+        if (mIme == IME_ID_SWIFT && mHaveFullHwKeyboard && keyCode == KeyEvent.KEYCODE_DEL) {
             return true;
         }
         if (handleControlKey(keyCode, false)) {
@@ -1388,7 +1392,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
-            if ( ! isInterceptedSystemKey(keyCode) ) {
+            if (!isInterceptedSystemKey(keyCode)) {
                 return super.onKeyUp(keyCode, event);
             }
         }
@@ -1430,7 +1434,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean checkHaveFullHwKeyboard(Configuration c) {
         return (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
-            (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
+                (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
     }
 
     public void sendFnKeyCode() {
@@ -1477,7 +1481,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setIMECtrlBeginBatchEditDisable(boolean mode) {
         mIMECtrlBeginBatchEditDisable = mode;
-        if (getDevBoolean(this.getContext(), "BatchEditDisable", false)) mIMECtrlBeginBatchEditDisable = true;
+        if (getDevBoolean(this.getContext(), "BatchEditDisable", false))
+            mIMECtrlBeginBatchEditDisable = true;
     }
 
     public void setIMECtrlBeginBatchEditDisableHwKbdChk(boolean mode) {
@@ -1498,215 +1503,215 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 continue;
             }
             switch (ctrl) {
-            case 0:
-            case 70:
-                doHideSoftKeyboard();
-                break;
-            case 1:
-            case 71:
-                doShowSoftKeyboard();
-                break;
-            case 2:
-            case 72:
-                doToggleSoftKeyboard();
-                break;
-            case 3:
-                ((Activity)this.getContext()).onKeyUp(0xffff0003, null);
-                break;
-            case 4:
-                ((Activity)this.getContext()).onKeyUp(0xffff0004, null);
-                break;
-            case 5:
-                ((Activity)this.getContext()).onKeyUp(0xffff0005, null);
-                break;
-            case 6:
-                ((Activity)this.getContext()).onKeyUp(0xffff0006, null);
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 30:
-                ((Activity)this.getContext()).onKeyUp(0xffff0030, null);
-                break;
-            case 33:
-                ((Activity)this.getContext()).onKeyUp(0xffff0033, null);
-                break;
-            case 333:
-                ((Activity)this.getContext()).onKeyUp(0xffff0333, null);
-                break;
-            case 50:
-                setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
-                break;
-            case 51:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                break;
-            case 52:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
-                break;
-            case 53:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
-                break;
-            case 54:
-                setIMEInputType(EditorInfo.TYPE_NULL);
-                break;
-            case 55:
-                doImeShortcutsAction();
-                break;
-            case 56:
-                ((Activity)this.getContext()).onKeyUp(0xffff0056, null);
-                break;
-            case 57:
-                ((Activity)this.getContext()).onKeyUp(0xffff0057, null);
-                break;
-            case 58:
-                ((Activity)this.getContext()).onKeyUp(0xffff0058, null);
-                break;
-            case 61:
-                ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
-                break;
-            case 62:
-                ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
-                break;
-            case 63:
-                ((Activity)this.getContext()).onKeyUp(0xffff0063, null);
-                break;
-            case 1061:
-                if (mIme == IME_ID_GBOARD && mHaveFullHwKeyboard) {
-                    ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
-                }
-                break;
-            case 500:
-                setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
-                break;
-            case 501:
-                setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
-                break;
-            case 502:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                break;
-            case 503:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
-                break;
-            case 504:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER);
-                break;
-            case 505:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_LONG_MESSAGE);
-                break;
-            case 506:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
-                break;
-            case 507:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
-                break;
-            case 508:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME);
-                break;
-            case 509:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC);
-                break;
-            case 510:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
-                break;
-            case 511:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
-                break;
-            case 512:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
-                break;
-            case 513:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                break;
-            case 514:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
-                break;
-            case 515:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
-                break;
-            case 516:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
-                break;
-            case 10:
-                pasteClipboard();
-                break;
-            case 11:
-                mIMECtrlBeginBatchEditDisable = !getDevBoolean(this.getContext(), "BatchEditDisable", false);
-                setDevBoolean(this.getContext(), "BatchEditDisable", mIMECtrlBeginBatchEditDisable);
-                break;
-            case 12:
-                mIMECtrlBeginBatchEditDisableHwKbdChk = !getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
-                setDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", mIMECtrlBeginBatchEditDisableHwKbdChk);
-                break;
-            case 13:
-                break;
-            case 14:
-                break;
-            case 15:
-                break;
-            case 99:
-                testFunc();
-                break;
-            case 100:
-                boolean tc = !getDevBoolean(this.getContext(), "ThumbCtrl", false);
-                setDevBoolean(this.getContext(), "ThumbCtrl", tc);
-                if (mKeyListener != null) mKeyListener.setThumbCtrl(tc);
-                break;
-            case 101:
-                boolean sez = !getDevBoolean(this.getContext(), "SwapESC2HZ", false);
-                setDevBoolean(this.getContext(), "SwapESC2HZ", sez);
-                if (mKeyListener != null) mKeyListener.setSwapESC2HZ(sez);
-                break;
-            case 102:
-                boolean yr = !getDevBoolean(this.getContext(), "JpYenRo", false);
-                setDevBoolean(this.getContext(), "JpYenRo", yr);
-                if (mKeyListener != null) mKeyListener.setJpYenRo(yr);
-                break;
-            case 990:
-                ((Activity)this.getContext()).onKeyUp(0xffff0990, null);
-                break;
-            case 998:
-            case 999:
-                int key = ctrl == 998 ? 0xffff0998 : 0xffff0999;
-                ((Activity)this.getContext()).onKeyUp(key, null);
-                break;
-            case 1000:
-                ((Activity)this.getContext()).onKeyUp(0xffff0000, null);
-                break;
-            case 1001:
-                ((Activity)this.getContext()).onKeyUp(0xffff1001, null);
-                break;
-            case 1010:
-                ((Activity)this.getContext()).onKeyUp(0xffff1010, null);
-                break;
-            case 1011:
-                ((Activity)this.getContext()).onKeyUp(0xffff1011, null);
-                break;
-            case 1002:
-                ((Activity)this.getContext()).onKeyUp(0xffff1002, null);
-                break;
-            case 1003:
-                ((Activity)this.getContext()).onKeyUp(KeycodeConstants.KEYCODE_MENU, null);
-                break;
-            case 1006:
-                ((Activity)this.getContext()).onKeyUp(0xffff1006, null);
-                break;
-            case 1007:
-                ((Activity)this.getContext()).onKeyUp(0xffff1007, null);
-                break;
-            case 1008:
-                ((Activity)this.getContext()).onKeyUp(0xffff1008, null);
-                break;
-            case 1009:
-                ((Activity)this.getContext()).onKeyUp(0xffff1009, null);
-                break;
-            case 9998:
-                ((Activity)this.getContext()).onKeyUp(0xffff9998, null);
-                break;
-            default:
-                break;
+                case 0:
+                case 70:
+                    doHideSoftKeyboard();
+                    break;
+                case 1:
+                case 71:
+                    doShowSoftKeyboard();
+                    break;
+                case 2:
+                case 72:
+                    doToggleSoftKeyboard();
+                    break;
+                case 3:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0003, null);
+                    break;
+                case 4:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0004, null);
+                    break;
+                case 5:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0005, null);
+                    break;
+                case 6:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0006, null);
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 30:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0030, null);
+                    break;
+                case 33:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0033, null);
+                    break;
+                case 333:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0333, null);
+                    break;
+                case 50:
+                    setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
+                    break;
+                case 51:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    break;
+                case 52:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                    break;
+                case 53:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD, true);
+                    break;
+                case 54:
+                    setIMEInputType(EditorInfo.TYPE_NULL);
+                    break;
+                case 55:
+                    doImeShortcutsAction();
+                    break;
+                case 56:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0056, null);
+                    break;
+                case 57:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0057, null);
+                    break;
+                case 58:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0058, null);
+                    break;
+                case 61:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0061, null);
+                    break;
+                case 62:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0062, null);
+                    break;
+                case 63:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0063, null);
+                    break;
+                case 1061:
+                    if (mIme == IME_ID_GBOARD && mHaveFullHwKeyboard) {
+                        ((Activity) this.getContext()).onKeyUp(0xffff0061, null);
+                    }
+                    break;
+                case 500:
+                    setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
+                    break;
+                case 501:
+                    setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
+                    break;
+                case 502:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    break;
+                case 503:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    break;
+                case 504:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER);
+                    break;
+                case 505:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+                    break;
+                case 506:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                    break;
+                case 507:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                    break;
+                case 508:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME);
+                    break;
+                case 509:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC);
+                    break;
+                case 510:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+                    break;
+                case 511:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+                    break;
+                case 512:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
+                    break;
+                case 513:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    break;
+                case 514:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
+                    break;
+                case 515:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
+                    break;
+                case 516:
+                    setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+                    break;
+                case 10:
+                    pasteClipboard();
+                    break;
+                case 11:
+                    mIMECtrlBeginBatchEditDisable = !getDevBoolean(this.getContext(), "BatchEditDisable", false);
+                    setDevBoolean(this.getContext(), "BatchEditDisable", mIMECtrlBeginBatchEditDisable);
+                    break;
+                case 12:
+                    mIMECtrlBeginBatchEditDisableHwKbdChk = !getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
+                    setDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", mIMECtrlBeginBatchEditDisableHwKbdChk);
+                    break;
+                case 13:
+                    break;
+                case 14:
+                    break;
+                case 15:
+                    break;
+                case 99:
+                    testFunc();
+                    break;
+                case 100:
+                    boolean tc = !getDevBoolean(this.getContext(), "ThumbCtrl", false);
+                    setDevBoolean(this.getContext(), "ThumbCtrl", tc);
+                    if (mKeyListener != null) mKeyListener.setThumbCtrl(tc);
+                    break;
+                case 101:
+                    boolean sez = !getDevBoolean(this.getContext(), "SwapESC2HZ", false);
+                    setDevBoolean(this.getContext(), "SwapESC2HZ", sez);
+                    if (mKeyListener != null) mKeyListener.setSwapESC2HZ(sez);
+                    break;
+                case 102:
+                    boolean yr = !getDevBoolean(this.getContext(), "JpYenRo", false);
+                    setDevBoolean(this.getContext(), "JpYenRo", yr);
+                    if (mKeyListener != null) mKeyListener.setJpYenRo(yr);
+                    break;
+                case 990:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0990, null);
+                    break;
+                case 998:
+                case 999:
+                    int key = ctrl == 998 ? 0xffff0998 : 0xffff0999;
+                    ((Activity) this.getContext()).onKeyUp(key, null);
+                    break;
+                case 1000:
+                    ((Activity) this.getContext()).onKeyUp(0xffff0000, null);
+                    break;
+                case 1001:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1001, null);
+                    break;
+                case 1010:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1010, null);
+                    break;
+                case 1011:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1011, null);
+                    break;
+                case 1002:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1002, null);
+                    break;
+                case 1003:
+                    ((Activity) this.getContext()).onKeyUp(KeycodeConstants.KEYCODE_MENU, null);
+                    break;
+                case 1006:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1006, null);
+                    break;
+                case 1007:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1007, null);
+                    break;
+                case 1008:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1008, null);
+                    break;
+                case 1009:
+                    ((Activity) this.getContext()).onKeyUp(0xffff1009, null);
+                    break;
+                case 9998:
+                    ((Activity) this.getContext()).onKeyUp(0xffff9998, null);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -1738,6 +1743,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
     private final static String IME_WNNLAB = "jp.co.omronsoft.wnnlab.*";
     private static int mIme = -1;
+
     private int setIME(TerminalEmulator view) {
         if (view == null) return IME_ID_ERROR;
         String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
@@ -1773,6 +1779,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private static boolean mIMEGoogleInput = false;
+
     private void setIMEInputType(int attr, boolean google) {
         mIMEGoogleInput = google;
         if (mIMEInputType == attr) return;
@@ -1789,7 +1796,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void restartInput() {
-        Activity activity = (Activity)this.getContext();
+        Activity activity = (Activity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.restartInput(this);
     }
@@ -1800,25 +1807,25 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void doShowSoftKeyboard() {
-        Activity activity = (Activity)this.getContext();
+        Activity activity = (Activity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
     }
 
     private void doHideSoftKeyboard() {
-        Activity activity = (Activity)this.getContext();
+        Activity activity = (Activity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
     private void doToggleSoftKeyboard() {
-        Activity activity = (Activity)this.getContext();
+        Activity activity = (Activity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void doInputMethodPicker() {
-        Activity activity = (Activity)this.getContext();
+        Activity activity = (Activity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.showInputMethodPicker();
     }
@@ -1859,10 +1866,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
 
         if ((keyCode == KeyEvent.KEYCODE_BACK) && (event.getAction() == KeyEvent.ACTION_UP)) {
-            ((Activity)this.getContext()).onKeyUp(0xffffffc0, null);
+            ((Activity) this.getContext()).onKeyUp(0xffffffc0, null);
         }
         return super.onKeyPreIme(keyCode, event);
-    };
+    }
+
+    ;
 
     private boolean preIMEShortcuts(int keyCode, KeyEvent event) {
         int stat = getPreIMEShortcutsStatus(keyCode, event);
@@ -1871,9 +1880,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else if (stat == PREIME_SHORTCUT_ACTION2) {
             doImeShortcutsAction(1261);
         } else if (stat == PREIME_SHORTCUT_ACTION_MENU) {
-            ((Activity)this.getContext()).onKeyUp(stat, null);
+            ((Activity) this.getContext()).onKeyUp(stat, null);
         }
-        return  (stat > PREIME_SHORTCUT_ACTION_NULL);
+        return (stat > PREIME_SHORTCUT_ACTION_NULL);
     }
 
     public final static int PREIME_SHORTCUT_ACTION_NULL = 0;
@@ -1881,6 +1890,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public final static int PREIME_SHORTCUT_ACTION      = 2;
     public final static int PREIME_SHORTCUT_ACTION2     = 3;
     public final static int PREIME_SHORTCUT_ACTION_MENU = KeyEvent.KEYCODE_MENU;
+
     static public int getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
         int keyAction = event.getAction();
         boolean ctrlOn = (event.getMetaState() & KeyEvent.META_CTRL_ON) != 0;
@@ -1919,8 +1929,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_DOWN) || ((as || cs || ss) && keyAction == KeyEvent.ACTION_UP)) {
             return PREIME_SHORTCUT_ACTION;
         }
-        if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_UP)) return PREIME_SHORTCUT_ACTION_DONE;
-        if (((as || cs || ss) && keyAction == KeyEvent.ACTION_DOWN)) return PREIME_SHORTCUT_ACTION_DONE;
+        if (((ag || ae || zh || sc || grave || cj) && keyAction == KeyEvent.ACTION_UP))
+            return PREIME_SHORTCUT_ACTION_DONE;
+        if (((as || cs || ss) && keyAction == KeyEvent.ACTION_DOWN))
+            return PREIME_SHORTCUT_ACTION_DONE;
         if ((mAltEsc || mAltSpace || mAltGrave) && altPressed) return PREIME_SHORTCUT_ACTION_DONE;
         return PREIME_SHORTCUT_ACTION_NULL;
     }
@@ -1933,13 +1945,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (action == 0) {
             doToggleSoftKeyboard();
         } else if (action == 1261) {
-            ((Activity)this.getContext()).onKeyUp(0xffff0056, null);
+            ((Activity) this.getContext()).onKeyUp(0xffff0056, null);
         } else if (action == 1361) {
-            ((Activity)this.getContext()).onKeyUp(0xffff0061, null);
+            ((Activity) this.getContext()).onKeyUp(0xffff0061, null);
         } else if (action == 1362) {
-            ((Activity)this.getContext()).onKeyUp(0xffff0062, null);
+            ((Activity) this.getContext()).onKeyUp(0xffff0062, null);
         } else if (action == 1365) {
-            ((Activity)this.getContext()).onKeyUp(0xffff0063, null);
+            ((Activity) this.getContext()).onKeyUp(0xffff0063, null);
         } else {
             int imeType = mUseCookedIme ? EditorInfo.TYPE_CLASS_TEXT : EditorInfo.TYPE_NULL;
             if (mIMEInputType == imeType) {
@@ -2003,8 +2015,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private static boolean mViCooperativeMode = false;
+
     public void setViCooperativeMode(int value) {
-       mViCooperativeMode = ((value & 2) != 0);
+        mViCooperativeMode = ((value & 2) != 0);
     }
 
     public boolean setDevBoolean(Context context, String key, boolean value) {
@@ -2034,7 +2047,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean handleHardwareControlKey(int keyCode, KeyEvent event) {
         if (keyCode == KeycodeConstants.KEYCODE_CTRL_LEFT ||
-            keyCode == KeycodeConstants.KEYCODE_CTRL_RIGHT) {
+                keyCode == KeycodeConstants.KEYCODE_CTRL_RIGHT) {
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleHardwareControlKey " + keyCode);
             }
@@ -2084,8 +2097,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         ColorScheme scheme = mColorScheme;
         if (mTextSize > 0) {
             mTextRenderer = new PaintRenderer(mTextSize, scheme, mTextFont, mTextLeading);
-        }
-        else {
+        } else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);
         }
 
@@ -2161,6 +2173,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * @param canvas The {@link Canvas} to draw the view to.
      */
     final int CTRL_MODE_MASK = 3 << TextRenderer.MODE_CTRL_SHIFT;
+
     @Override
     protected void onDraw(Canvas canvas) {
         updateSize(false);
@@ -2192,7 +2205,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         int cursorStyle = mKeyListener.getCursorMode();
         if ((cursorStyle & CTRL_MODE_MASK) == 0) {
-            ((Activity)this.getContext()).onKeyUp(0xffff1364, null);
+            ((Activity) this.getContext()).onKeyUp(0xffff1364, null);
         }
 
         for (int i = mTopRow; i < endLine; i++) {
@@ -2202,11 +2215,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
             int selx1 = -1;
             int selx2 = -1;
-            if ( i >= mSelY1 && i <= mSelY2 ) {
-                if ( i == mSelY1 ) {
+            if (i >= mSelY1 && i <= mSelY2) {
+                if (i == mSelY1) {
                     selx1 = mSelX1;
                 }
-                if ( i == mSelY2 ) {
+                if (i == mSelY2) {
                     selx2 = mSelX2;
                 } else {
                     selx2 = mColumns;
@@ -2234,9 +2247,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Toggle text selection mode in the view.
      */
     public void toggleSelectingText() {
-        mIsSelectingText = ! mIsSelectingText;
-        setVerticalScrollBarEnabled( ! mIsSelectingText );
-        if ( ! mIsSelectingText ) {
+        mIsSelectingText = !mIsSelectingText;
+        setVerticalScrollBarEnabled(!mIsSelectingText);
+        if (!mIsSelectingText) {
             mSelX1 = -1;
             mSelY1 = -1;
             mSelX2 = -1;
@@ -2290,6 +2303,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Set whether to prepend the ESC keycode to the character when when pressing
      * the ALT Key.
+     *
      * @param flag
      */
     public void setAltSendsEsc(boolean flag) {
@@ -2333,7 +2347,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public void setTermType(String termType) {
-         mKeyListener.setTermType(termType);
+        mKeyListener.setTermType(termType);
     }
 
     /**
@@ -2343,11 +2357,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mMouseTracking = flag;
     }
 
-     public String getTranscriptScreenText() {
-         if (mEmulator == null) return null;
-         TranscriptScreen ts = mEmulator.getScreen();
-         if (ts == null) return null;
-         return ts.getTranscriptScreenText();
+    public String getTranscriptScreenText() {
+        if (mEmulator == null) return null;
+        TranscriptScreen ts = mEmulator.getScreen();
+        if (ts == null) return null;
+        return ts.getTranscriptScreenText();
     }
 
     public String getTranscriptText() {
@@ -2361,6 +2375,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mEmulator == null) return null;
         TranscriptScreen ts = mEmulator.getScreen();
         if (ts == null) return null;
-        return ts.getSelectedText(0, mTopRow, mVisibleColumns, mVisibleRows+mTopRow-1);
+        return ts.getSelectedText(0, mTopRow, mVisibleColumns, mVisibleRows + mTopRow - 1);
     }
 }

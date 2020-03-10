@@ -566,25 +566,10 @@ class UnicodeTranscript {
         } else if (mAmbiWidthMode == 3) {
             return unicode9CharWidth(codePoint);
         } else {
-            if (Character.charCount(codePoint) == 1) {
-                // Android's getEastAsianWidth() only works for BMP characters
-                switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
-                case AndroidCharacterCompat.EAST_ASIAN_WIDTH_FULL_WIDTH:
-                case AndroidCharacterCompat.EAST_ASIAN_WIDTH_WIDE:
-                    return 2;
-                }
-            } else {
-                // Outside the BMP, only the ideographic planes contain wide chars
-                switch ((codePoint >> 16) & 0xf) {
-                case 2: // Supplementary Ideographic Plane
-                case 3: // Tertiary Ideographic Plane
-                    return 2;
-                }
-            }
+            return vimCharWidth(codePoint);
         }
-
-        return 1;
     }
+
     // from vim/src/mbyte.c
     private static final int ambiguous[][] =
     {
@@ -1465,7 +1450,7 @@ class FullUnicodeLine {
 
             ++shift;
         }
-        
+
         /*
          * Handle cases where we need to clobber the contents of the next
          * column in order to preserve column alignment

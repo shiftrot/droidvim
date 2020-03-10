@@ -43,7 +43,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.ResultReceiver;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -51,6 +50,7 @@ import java.io.File;
 import java.util.UUID;
 
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.ServiceForegroundCompat;
 import jackpal.androidterm.emulatorview.TermSession;
@@ -74,6 +74,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     private final IBinder mTSBinder = new TSBinder();
+    private final boolean SCOPED_STORAGE = Build.VERSION.SDK_INT > Build.VERSION_CODES.Q;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -125,6 +126,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             mEXTSTORAGE = mHOME;
         }
+        if (SCOPED_STORAGE) mEXTSTORAGE = mHOME;
         mTMPDIR = getCacheDir() + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
         File tmpdir = new File(mTMPDIR);

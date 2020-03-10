@@ -12,14 +12,10 @@ import android.database.MatrixCursor;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.CancellationSignal;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.os.StatFs;
-import android.preference.PreferenceManager;
 import android.provider.DocumentsContract.Document;
 import android.provider.DocumentsContract.Root;
 import android.provider.DocumentsProvider;
-import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -34,8 +30,8 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import jackpal.androidterm.R;
-import jackpal.androidterm.TermService;
 
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class LocalStorageProvider extends DocumentsProvider {
@@ -132,7 +128,7 @@ public class LocalStorageProvider extends DocumentsProvider {
         }
     }
 
-   @Override
+    @Override
     public boolean isChildDocument(String parentDocumentId, String documentId) {
         return documentId.startsWith(parentDocumentId);
     }

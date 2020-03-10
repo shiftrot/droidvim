@@ -1,5 +1,7 @@
 package jackpal.androidterm.compat;
 
+import static android.os.Build.VERSION;
+
 /**
  * The classes in this package take advantage of the fact that the VM does
  * not attempt to load a class until it's accessed, and the verifier
@@ -7,7 +9,7 @@ package jackpal.androidterm.compat;
  * are unavailable on older platforms in subclasses which are only ever
  * accessed on platforms where they are available, we can preserve
  * compatibility with older platforms without resorting to reflection.
- *
+ * <p>
  * See http://developer.android.com/resources/articles/backward-compatibility.html
  * and http://android-developers.blogspot.com/2010/07/how-to-have-your-cupcake-and-eat-it-too.html
  * for further discussion of this technique.
@@ -30,7 +32,7 @@ public class AndroidCompat {
         } catch (VerifyError e) {
             // We must be at an SDK level less than 4.
             try {
-                result = Integer.valueOf(android.os.Build.VERSION.SDK);
+                result = VERSION.SDK_INT;
             } catch (NumberFormatException e2) {
                 // Couldn't parse string, assume the worst.
                 result = 1;
@@ -42,6 +44,6 @@ public class AndroidCompat {
 
 class AndroidLevel4PlusCompat {
     static int getSDKInt() {
-        return android.os.Build.VERSION.SDK_INT;
+        return VERSION.SDK_INT;
     }
 }
