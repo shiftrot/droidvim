@@ -42,12 +42,13 @@
     <string name="switch_windows_warning">Swipe the upper half of the screen to switch windows.</string>
 
     <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
-    <string name="toast_clipboard">Text copied to clipboard.</string>
+    <string name="toast_clipboard">Text copied to the clipboard.</string>
     <string name="toast_clipboard_error">Text is not included.</string>
 
     <string name="clipboard_warning_title">About the clipboard</string>
     <string name="paste_vim">\"*p - Paste to Vim</string>
     <string name="paste_shell">Paste to shell</string>
+    <string name="copy_to_clipboard">Copy to the clipboard</string>
     <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)</string>
 
     <string name="edit_vimrc">Edit .vimrc</string>
@@ -92,6 +93,8 @@
     <string name="edit_text">Edit text</string>
     <string name="select_text">Select text</string>
     <string name="copy_all">Copy all</string>
+    <string name="copy_share_screen_buffer">Copy screen buffer</string>
+    <string name="copy_share_current_screen">Copy screen</string>
     <string name="copy_screen">Copy screen text</string>
     <string name="copy_screen_current">Current screen</string>
     <string name="copy_screen_buffer">Screen buffer</string>

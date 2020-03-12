@@ -66,14 +66,14 @@
         android:id="@+id/menu_share_text"
         android:title="@string/share_title"/>
     <item
+        android:id="@+id/menu_copy_screen"
+        android:title="@string/copy_share_current_screen"/>
+    <item
         android:id="@+id/menu_screen"
         android:title="@string/screen"/>
     <item
         android:id="@+id/menu_reset"
         android:title="@string/reset"/>
-    <item
-        android:id="@+id/menu_copy_screen"
-        android:title="@string/copy_screen"/>
     <item
         android:id="@+id/menu_send_email"
         android:title="@string/send_email"/>

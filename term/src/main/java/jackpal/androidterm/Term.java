@@ -133,6 +133,7 @@ import jackpal.androidterm.util.TermSettings;
 
 import static android.provider.DocumentsContract.Document;
 import static android.provider.DocumentsContract.deleteDocument;
+import static jackpal.androidterm.TermVimInstaller.copyScript;
 import static jackpal.androidterm.TermVimInstaller.shell;
 
 /**
@@ -1459,24 +1460,39 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             screenLockItem = this.getString(R.string.enable_keepscreen);
         }
-        final String[] items = {this.getString(R.string.dialog_title_orientation_preference), this.getString(R.string.share_screen_text), this.getString(R.string.copy_screen), screenLockItem, this.getString(R.string.reset)};
+        final String[] items = {getString(R.string.copy_share_current_screen), getString(R.string.copy_share_screen_buffer), screenLockItem, getString(R.string.dialog_title_orientation_preference), this.getString(R.string.reset)};
         final Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
+        String mes = Term.this.getString(R.string.toast_clipboard);
+        final Toast toastClipboard = Toast.makeText(this, mes, Toast.LENGTH_LONG);
+        toastClipboard.setGravity(Gravity.CENTER, 0, 0);
         new AlertDialog.Builder(this)
                 .setTitle(this.getString(R.string.screen))
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
+                        if (getString(R.string.dialog_title_orientation_preference).equals(items[which])) {
                             setCurrentOrientation();
-                        } else if (which == 1) {
-                            doShareAll();
-                        } else if (which == 2) {
-                            doCopyAll();
-                        } else if (which == 3) {
+                        } else if (getString(R.string.copy_share_current_screen).equals(items[which])) {
+                            String strings = getCurrentEmulatorView().getTranscriptCurrentText();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                showTextInWebview(strings);
+                            } else {
+                                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                                        .getManager(getApplicationContext());
+                                clip.setText(strings);
+                                showToast(toastClipboard);
+                            }
+                        } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
+                            String strings = getCurrentEmulatorView().getTranscriptText();
+                            ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                                    .getManager(getApplicationContext());
+                            clip.setText(strings);
+                            showToast(toastClipboard);
+                        } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
                             if (keepScreen) mKeepScreenEnableAuto = false;
                             doToggleKeepScreen();
                             if (!keepScreen) mKeepScreenEnableAuto = true;
-                        } else {
+                        } else if (getString(R.string.reset).equals(items[which])) {
                             doResetTerminal(true);
                             updatePrefs();
                             toast.setGravity(Gravity.CENTER, 0, 0);
@@ -1675,10 +1691,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.removeItem(R.id.menu_close_window);
-        menu.removeItem(R.id.menu_copy_screen);
+        // menu.removeItem(R.id.menu_copy_screen);
         menu.removeItem(R.id.menu_new_window);
         menu.removeItem(R.id.menu_plus);
-        // menu.removeItem(R.id.menu_reset);
+        menu.removeItem(R.id.menu_reset);
         menu.removeItem(R.id.menu_send_email);
         menu.removeItem(R.id.menu_special_keys);
         menu.removeItem(R.id.menu_toggle_wakelock);
@@ -1690,8 +1706,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!mVimFlavor) menu.removeItem(R.id.menu_edit_vimrc);
         if (!mVimFlavor) menu.removeItem(R.id.menu_reload);
         if (!mVimFlavor) menu.removeItem(R.id.menu_tutorial);
-        if (!mVimFlavor || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT))
+        if (!mVimFlavor || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT)) {
             menu.removeItem(R.id.menu_drawer);
+        }
         return true;
     }
 
@@ -1716,8 +1733,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doPreferences();
         } else if (id == R.id.menu_paste) {
             doPaste();
-        } else if (id == R.id.menu_copy_screen) {
-            doCopyAll();
         } else if (id == R.id.menu_new_window) {
             doCreateNewWindow();
         } else if (id == R.id.menu_plus) {
@@ -1758,6 +1773,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             final Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             showToast(toast);
+        } else if (id == R.id.menu_copy_screen) {
+            String mes = Term.this.getString(R.string.toast_clipboard);
+            final Toast toastClipboard = Toast.makeText(this, mes, Toast.LENGTH_LONG);
+            String strings;
+            if (mVimFlavor) {
+                strings = getCurrentEmulatorView().getTranscriptCurrentText();
+            } else {
+                strings = getCurrentEmulatorView().getTranscriptText();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                showTextInWebview(strings);
+            } else {
+                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                        .getManager(getApplicationContext());
+                clip.setText(strings);
+                showToast(toastClipboard);
+            }
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
         } else if (id == R.id.menu_send_email) {
@@ -3639,6 +3671,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         showToast(toast);
     }
 
+    private void showTextInWebview(String strings) {
+        if (getCurrentEmulatorView() != null) {
+            String file = TermService.getTMPDIR() + "/html/clipboard.html";
+            strings = strings.replaceAll("\n", "<br />");
+            int id = getResources().getIdentifier("clipboard_html", "raw", getPackageName());
+            copyScript(getResources().openRawResource(id), file, strings);
+            Intent intent;
+            intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra("url", file.toString());
+            startActivity(intent);
+        }
+    }
+
     private static boolean mVimPaste = false;
 
     private void doPaste() {
@@ -3668,6 +3713,29 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .show();
     }
 
+    private void chooseTermClipboard() {
+        final String[] items = {
+                getString(R.string.copy_to_clipboard),
+                getString(R.string.paste_shell)};
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.clipboard))
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        String item = items[which];
+                        if (getString(R.string.copy_to_clipboard).equals(item)) {
+                            doScreenMenu();
+                        } else if (getString(R.string.paste_shell).equals(item)) {
+                            doTermPaste();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
     private void doTermPaste() {
         if (!canPaste()) {
             alert(Term.this.getString(R.string.toast_clipboard_error));
@@ -3684,7 +3752,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doWarningBeforePaste() {
         if (!mVimFlavor) {
-            doTermPaste();
+            chooseTermClipboard();
             return;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

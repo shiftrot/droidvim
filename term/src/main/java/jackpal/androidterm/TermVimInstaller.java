@@ -588,8 +588,18 @@ final class TermVimInstaller {
     }
 
     static public int copyScript(InputStream is, String fname) {
+        return doCopyScript(is, fname, null);
+    }
+
+    static public int copyScript(InputStream is, String fname, String strings) {
+        return doCopyScript(is, fname, strings);
+    }
+
+    static public int doCopyScript(InputStream is, String fname, String strings) {
         if (is == null) return -1;
         BufferedReader br = null;
+        File dir = new File(fname);
+        if (dir.getParent() != null) new File(dir.getParent()).mkdirs();
         try {
             try {
                 String appBase = TermService.getAPPBASE();
@@ -604,10 +614,14 @@ final class TermVimInstaller {
                     str = str.replaceAll("%APPFILES%", appFiles);
                     str = str.replaceAll("%APPEXTFILES%", appExtFiles);
                     str = str.replaceAll("%INTERNAL_STORAGE%", internalStorage);
-                    writer.print(str + "\n");
+                    if (strings != null && str.contains("%%STRINGS%%")) {
+                        writer.print(strings + "\n");
+                    } else {
+                        writer.print(str + "\n");
+                    }
                 }
                 writer.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return 1;
             } finally {
                 if (br != null) br.close();

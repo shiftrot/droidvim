@@ -47,6 +47,7 @@
     <string name="clipboard_warning_title">クリップボードについて</string>
     <string name="paste_vim">\"*p - Vimへ貼り付け</string>
     <string name="paste_shell">Shellへ貼り付け</string>
+    <string name="copy_to_clipboard">クリップボードへコピー</string>
     <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)</string>
 
     <string name="edit_vimrc">.vimrcを編集</string>
@@ -90,6 +91,8 @@
     <string name="edit_text">テキスト編集</string>
     <string name="select_text">テキスト選択</string>
     <string name="copy_all">すべてコピー</string>
+    <string name="copy_share_screen_buffer">スクリーンバッファのコピー</string>
+    <string name="copy_share_current_screen">画面コピー</string>
     <string name="copy_screen">画面のテキストをコピー</string>
     <string name="copy_screen_current">現画面</string>
     <string name="copy_screen_buffer">スクリーンバッファ</string>
