@@ -340,7 +340,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
         String terminfo = mTERMINFO_INSTALL_DIR + "/terminfo";
         String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
-        String vim = vimruntime + "/etc";
+        String vim = mVIMRUNTIME_INSTALL_DIR;
 
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1" + replace);
