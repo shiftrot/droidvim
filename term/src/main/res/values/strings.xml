@@ -202,7 +202,7 @@
     <string name="summary_theme_preference">Choose application theme (restart required).</string>
     <string name="dialog_title_theme_preference">Theme</string>
 
-    <string name="title_cursorstyle_preference">Rendering mode</string>
+    <string name="title_cursorstyle_preference">Cursor style</string>
     <string name="summary_cursorstyle_preference">Choose cursor style and rendering mode.</string>
     <string name="dialog_title_cursorstyle_preference">Cursor style and rendering mode</string>
 

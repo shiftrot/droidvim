@@ -1430,7 +1430,48 @@ class TerminalEmulator {
             setCursorRowCol(mTopMargin, 0);
         }
             break;
-
+        case ' ':
+            /*
+             * Ps=0: Block, Blink
+             * 1: Block, Blink
+             * 2: Block, Steady
+             * 3: Underline, Blink
+             * 4: Underline, Steady
+             * 5: Vertical line, Blink
+             * 6: Vertical line, Steady
+             */
+            int mode = getArg0(1);
+            switch (mode) {
+            case 0:
+            case 1:
+                BaseTextRenderer.setCursorHeightMode(BaseTextRenderer.getCursorHeightMode());
+                EmulatorView.setCursorBlink(1);
+                break;
+            case 2:
+                BaseTextRenderer.setCursorHeightMode(BaseTextRenderer.getCursorHeightMode());
+                EmulatorView.setCursorBlink(0);
+                break;
+            case 3:
+                BaseTextRenderer.setCursorHeightMode(3);
+                EmulatorView.setCursorBlink(1);
+                break;
+            case 4:
+                BaseTextRenderer.setCursorHeightMode(1);
+                EmulatorView.setCursorBlink(0);
+                break;
+            case 5:
+                BaseTextRenderer.setCursorHeightMode(4);
+                EmulatorView.setCursorBlink(1);
+                break;
+            case 6:
+                BaseTextRenderer.setCursorHeightMode(5);
+                EmulatorView.setCursorBlink(0);
+                break;
+            default:
+                break;
+            }
+            parseArg(b);
+            break;
         case 't':
             setEscCtrlMode();
             break;
@@ -1700,7 +1741,7 @@ class TerminalEmulator {
                 mArgs[mArgIndex] = value;
             }
             continueSequence();
-        } else if (b == ';') {
+        } else if (b == ';' || b == ' ') {
             if (mArgIndex < mArgs.length) {
                 mArgIndex++;
             }
@@ -1851,8 +1892,8 @@ class TerminalEmulator {
      * Send a Unicode code point to the screen.
      *
      * @param c The code point of the character to display
-     * @param foreColor The foreground color of the character
-     * @param backColor The background color of the character
+     * foreColor The foreground color of the character
+     * backColor The background color of the character
      */
     private void emit(int c, int style) {
         boolean autoWrap = autoWrapEnabled();

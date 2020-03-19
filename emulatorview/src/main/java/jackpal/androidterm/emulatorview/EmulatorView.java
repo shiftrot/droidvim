@@ -2320,7 +2320,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     static public void setCursorHeight(int height) {
-        PaintRenderer.setCursorHeight(height);
+        PaintRenderer.setCursorHeightModeDefault(height);
     }
 
     static public void setCursorColor(int color) {

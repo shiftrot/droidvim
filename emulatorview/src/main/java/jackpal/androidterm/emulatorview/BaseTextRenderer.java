@@ -386,10 +386,20 @@ abstract class BaseTextRenderer implements TextRenderer {
 
     static float mCursorHeight = 1.0f;
     static int mCursorHeightMode = 0;
+    static int mCursorHeightModeDefault = mCursorHeightMode;
 
-    static public void setCursorHeight(int cursorHeight) {
+    static public void setCursorHeightModeDefault(int cursorHeight) {
+        mCursorHeightModeDefault = cursorHeight;
+        setCursorHeightMode(cursorHeight);
+    }
+
+    static public void setCursorHeightMode(int cursorHeight) {
         mCursorHeightMode = cursorHeight;
         mCursorHeight = (mCursorHeightMode == 1 || mCursorHeightMode == 3) ? 3.0f : 1.0f;
+    }
+
+    static public int getCursorHeightMode() {
+        return mCursorHeightModeDefault;
     }
 
     private void setDefaultColors(ColorScheme scheme) {
@@ -409,6 +419,8 @@ abstract class BaseTextRenderer implements TextRenderer {
 
     protected void drawCursorImp(Canvas canvas, float x, float y, float charWidth, float charHeight, int cursorMode) {
         if (cursorMode == 0) {
+            float cursorWidth = charWidth;
+            if (mCursorHeightMode >= 4) charWidth = charWidth / 5.0f;
             canvas.drawRect(x, y - charHeight / mCursorHeight, x + charWidth, y, mCursorScreenPaint);
             return;
         }

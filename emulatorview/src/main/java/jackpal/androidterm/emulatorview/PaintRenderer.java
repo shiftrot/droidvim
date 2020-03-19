@@ -157,6 +157,8 @@ class PaintRenderer extends BaseTextRenderer {
                     drawCursorImp(canvas, cursorX, y, cursorWidth * mCharWidth, mCharHeight, cursorMode);
                     if (mCursorHeightMode == 0 || mCursorHeightMode == 2) {
                         mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
+                    } else if (mCursorHeightMode >= 4) {
+                        mTextPaint.setColor(textPaintColor);
                     }
                     canvas.drawText(text, cursorIndex, cursorIncr, cursorX, textOriginY, mTextPaint);
                     // Text after cursor
