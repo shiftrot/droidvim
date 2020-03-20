@@ -95,6 +95,7 @@ public class TermSettings {
     private String mPrependPath = null;
     private String mAppendPath = null;
 
+    private boolean mAltUses8bitMSB;
     private boolean mAltSendsEsc;
 
     private boolean mIgnoreXoff;
@@ -165,6 +166,7 @@ public class TermSettings {
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
     private static final String HOMEPATH_KEY = "home_path";
+    private static final String ALT_USES_8BIT_META = "alt_uses_8bit_meta";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String IGNORE_XON = "ignore_xoff";
     private static final String BACK_AS_ESC = "back_as_esc";
@@ -317,6 +319,7 @@ public class TermSettings {
         mDoPathExtensions = res.getBoolean(R.bool.pref_do_path_extensions_default);
         mAllowPathPrepend = res.getBoolean(R.bool.pref_allow_prepend_path_default);
         // the mHomePath default is set dynamically in readPrefs()
+        mAltUses8bitMSB = res.getBoolean(R.bool.pref_alt_uses_8bit_meta_default);
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mIgnoreXoff = res.getBoolean(R.bool.pref_ignore_xoff_default);
         mBackAsEsc = res.getBoolean(R.bool.pref_back_as_esc_default);
@@ -388,6 +391,7 @@ public class TermSettings {
         mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
+        mAltUses8bitMSB = readBooleanPref(ALT_USES_8BIT_META, mAltUses8bitMSB);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mIgnoreXoff = readBooleanPref(IGNORE_XON, mIgnoreXoff);
         mBackAsEsc = readBooleanPref(BACK_AS_ESC, mBackAsEsc);
@@ -624,6 +628,10 @@ public class TermSettings {
 
     public boolean getAltSendsEscFlag() {
         return mAltSendsEsc;
+    }
+
+    public boolean getAltUses8bitMSB() {
+        return mAltUses8bitMSB;
     }
 
     public boolean getIgnoreXoff() {

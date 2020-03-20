@@ -414,11 +414,12 @@
     <string name="share_screen_text">Share screen text</string>
     <string name="share_file">File</string>
 
+    <string name="alt_uses_8bit_meta">Alt key uses MSB (Physical keyboard)</string>
     <string name="alt_sends_esc">Alt key sends ESC</string>
     <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
     <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
-    <string name="back_as_esc">Back button as ESC</string>
+    <string name="back_as_esc">Back button as ESC (Physical keyboard)</string>
     <string name="summary_back_as_esc_preference">Enable it if ESC key of physical keyboard is handled as Back button.</string>
 
     <string name="ignore_xoff">Ignore XOFF flow control</string>

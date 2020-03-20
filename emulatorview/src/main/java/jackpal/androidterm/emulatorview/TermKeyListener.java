@@ -24,7 +24,7 @@ class TermKeyListener {
     private static final boolean LOG_COMBINING_ACCENT = false;
 
     /** Disabled for now because it interferes with ALT processing on phones with physical keyboards. */
-    private final static boolean SUPPORT_8_BIT_META = false;
+    private static boolean SUPPORT_8_BIT_META = false;
 
     private static final int KEYMOD_ALT   = 0x80000000;
     private static final int KEYMOD_CTRL  = 0x40000000;
@@ -678,6 +678,14 @@ class TermKeyListener {
                 KeyCharacterMap.load(event.getDeviceId()));
         return kcm.getModifierBehaviour() ==
                 KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
+    }
+
+    public void setSupport8bitMeta(boolean state) {
+        SUPPORT_8_BIT_META = state;
+    }
+
+    public boolean getSupport8bitMeta() {
+        return SUPPORT_8_BIT_META;
     }
 
     private boolean mThumbCtrl = false;

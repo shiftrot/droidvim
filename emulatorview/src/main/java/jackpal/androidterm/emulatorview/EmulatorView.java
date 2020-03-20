@@ -556,9 +556,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     if (c >= 'A' && c <= 'Z') {
                         meta += KeyEvent.META_SHIFT_LEFT_ON;
                     }
+                    boolean support8bitMeta = mKeyListener.getSupport8bitMeta();
+                    mKeyListener.setSupport8bitMeta(true);
                     long eventTime = SystemClock.uptimeMillis();
                     KeyEvent event = new KeyEvent(eventTime, eventTime, KeyEvent.ACTION_DOWN, key, 1, meta);
+
                     dispatchKeyEvent(event);
+                    mKeyListener.setSupport8bitMeta(support8bitMeta);
                 } else {
                     int result = mKeyListener.mapControlChar(c);
                     if (mIgnoreXoff && result == 19) {
@@ -2308,6 +2312,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setAltSendsEsc(boolean flag) {
         mKeyListener.setAltSendsEsc(flag);
+    }
+
+    public void setSupport8bitMeta(boolean flag) {
+        mKeyListener.setSupport8bitMeta(flag);
     }
 
     public void setIgnoreXoff(boolean flag) {
