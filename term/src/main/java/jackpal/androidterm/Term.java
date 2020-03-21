@@ -133,6 +133,8 @@ import jackpal.androidterm.util.TermSettings;
 
 import static android.provider.DocumentsContract.Document;
 import static android.provider.DocumentsContract.deleteDocument;
+import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
+import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.copyScript;
 import static jackpal.androidterm.TermVimInstaller.shell;
 
@@ -172,8 +174,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
 
-    private static boolean SCOPED_STORAGE = StaticConfig.SCOPED_STORAGE;
-    private static boolean mVimFlavor = StaticConfig.FLAVOR_VIM;
     private TermVimInstaller mTermVimInstaller = new TermVimInstaller();
 
     private Intent TSIntent;
@@ -433,7 +433,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mSettings = new TermSettings(getResources(), mPrefs);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
-        if (!mVimFlavor && mSettings.doPathExtensions()) {
+        if (!FLAVOR_VIM && mSettings.doPathExtensions()) {
             BroadcastReceiver pathReceiver = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
                     String path = makePathFromBundle(getResultExtras(false));
@@ -457,7 +457,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mPendingPathBroadcasts++;
             sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, pathReceiver, null, RESULT_OK, null, null);
 
-            if (!mVimFlavor && mSettings.allowPathPrepend()) {
+            if (!FLAVOR_VIM && mSettings.allowPathPrepend()) {
                 broadcast = new Intent(broadcast);
                 broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
                 mPendingPathBroadcasts++;
@@ -553,7 +553,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String mSyncFileObserverFile = "SyncFileObserver.json";
 
     static SyncFileObserver restoreSyncFileObserver(Activity activity) {
-        if (!mVimFlavor) return null;
+        if (!FLAVOR_VIM) return null;
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
         mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
@@ -565,7 +565,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static private void saveSyncFileObserver() {
-        if (!mVimFlavor) return;
+        if (!FLAVOR_VIM) return;
         if (mSyncFileObserver == null) return;
         mSyncFileObserver.stopWatching();
         String dir = mSyncFileObserver.getObserverDir();
@@ -576,7 +576,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void setExtraButton() {
         Button button = findViewById(R.id.drawer_extra_button);
         int visibilty = View.VISIBLE;
-        if (!mVimFlavor) visibilty = View.GONE;
+        if (!FLAVOR_VIM) visibilty = View.GONE;
         button.setVisibility(visibilty);
     }
 
@@ -592,7 +592,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     ArrayList<String> mFilePickerItems;
 
     private void setDrawerButtons() {
-        if (mVimFlavor) {
+        if (FLAVOR_VIM) {
             int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
             if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visiblity = View.GONE;
             Button button = findViewById(R.id.drawer_app_button);
@@ -904,22 +904,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (!SCOPED_STORAGE) {
-                                        AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
-                                        bld.setIcon(android.R.drawable.ic_dialog_alert);
-                                        bld.setMessage(R.string.storage_permission_granted);
-                                        bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                        AlertDialog dialog = bld.create();
-                                        dialog.show();
-                                    }
+                                    AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                                    bld.setIcon(android.R.drawable.ic_dialog_alert);
+                                    bld.setMessage(R.string.storage_permission_granted);
+                                    bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    AlertDialog dialog = bld.create();
+                                    dialog.show();
                                 }
                             });
                         } else {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            String permisson = permissions[i];
+                            if (shouldShowRequestPermissionRationale(permisson)) {
                                 doWarningDialog(this.getString(R.string.storage_permission_error), this.getString(R.string.storage_permission_warning), "storage_permission", false);
                             }
                         }
@@ -933,7 +932,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 for (int i = 0; i < permissions.length; i++) {
                     if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            String permission = permissions[i];
+                            if (shouldShowRequestPermissionRationale(permission)) {
                                 final Toast toast = Toast.makeText(this, this.getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 showToast(toast);
@@ -1194,7 +1194,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mFirstInputtype = true;
             mFunctionBar = -1;
             mOrientation = -1;
-            if (mVimFlavor && mSyncFileObserver != null) {
+            if (FLAVOR_VIM && mSyncFileObserver != null) {
                 mSyncFileObserver.clearOldCache();
                 saveSyncFileObserver();
             }
@@ -1238,7 +1238,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
-        if (!mVimFlavor) {
+        if (!FLAVOR_VIM) {
             mTermVimInstaller.doInstallTerm(Term.this);
             permissionCheckExternalStorage();
         } else if (mTermVimInstaller.doInstallVim) {
@@ -1301,7 +1301,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static Random mRandom = new Random();
 
     private void showVimTips() {
-        if (!mVimFlavor) return;
+        if (!FLAVOR_VIM) return;
         if (true) return;
 
         String title = this.getString(R.string.tips_vim_title);
@@ -1655,7 +1655,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doWarningHwKeyboard() {
-        if (!mVimFlavor) return;
+        if (!FLAVOR_VIM) return;
         doWarningDialog(null, this.getString(R.string.keyboard_warning), "do_warning_physical_keyboard", false);
     }
 
@@ -1702,11 +1702,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         menu.removeItem(R.id.menu_update);
         menu.removeItem(R.id.menu_window_list);
         menu.removeItem(R.id.menu_x);
-        if (!mVimFlavor) menu.removeItem(R.id.menu_share_text);
-        if (!mVimFlavor) menu.removeItem(R.id.menu_edit_vimrc);
-        if (!mVimFlavor) menu.removeItem(R.id.menu_reload);
-        if (!mVimFlavor) menu.removeItem(R.id.menu_tutorial);
-        if (!mVimFlavor || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT)) {
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_share_text);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
+        if (!FLAVOR_VIM || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT)) {
             menu.removeItem(R.id.menu_drawer);
         }
         return true;
@@ -1777,7 +1777,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             String mes = Term.this.getString(R.string.toast_clipboard);
             final Toast toastClipboard = Toast.makeText(this, mes, Toast.LENGTH_LONG);
             String strings;
-            if (mVimFlavor) {
+            if (FLAVOR_VIM) {
                 strings = getCurrentEmulatorView().getTranscriptCurrentText();
             } else {
                 strings = getCurrentEmulatorView().getTranscriptText();
@@ -1964,7 +1964,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean mUseIminsert = false;
 
     void toggleVimIminsert() {
-        if (!mVimFlavor || !mUseIminsert) return;
+        if (!FLAVOR_VIM || !mUseIminsert) return;
         sendVimIminsertKey();
     }
 
@@ -3751,7 +3751,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doWarningBeforePaste() {
-        if (!mVimFlavor) {
+        if (!FLAVOR_VIM) {
             chooseTermClipboard();
             return;
         }
@@ -4076,7 +4076,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doWarningEditTextView() {
-        if (!mVimFlavor) return;
+        if (!FLAVOR_VIM) return;
         doWarningDialog(this.getString(R.string.edit_text_view_warning_title), this.getString(R.string.edit_text_view_warning), "do_warning_edit_text_view", true);
     }
 

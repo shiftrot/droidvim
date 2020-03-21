@@ -52,6 +52,7 @@ import androidx.documentfile.provider.DocumentFile;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.shell;
 
 class ChooserDialog {
@@ -1022,8 +1023,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    private static final boolean SCOPED_STORAGE = StaticConfig.SCOPED_STORAGE;
-
     public static class ShellPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -1041,7 +1040,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        if (mTermPreference != null) {
+                        if (mTermPreference != null && !SCOPED_STORAGE) {
                             mTermPreference.startupDirectoryPicker(getActivity().getString(R.string.choose_startup_directory_message));
                         }
                         return true;

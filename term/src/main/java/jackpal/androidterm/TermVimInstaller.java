@@ -52,10 +52,10 @@ import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
+import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
+import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 
 final class TermVimInstaller {
-    static private final boolean SCOPED_STORAGE = StaticConfig.SCOPED_STORAGE;
-    static private final boolean FLAVOR_VIM = StaticConfig.FLAVOR_VIM;
     static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
     static public boolean doInstallVim = false;
@@ -563,7 +563,11 @@ final class TermVimInstaller {
                 AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                 if (first) {
                     bld.setTitle(activity.getString(R.string.tips_vim_title));
-                    bld.setMessage(activity.getString(R.string.tips_vim));
+                    String message = activity.getString(R.string.tips_vim);
+                    if (SCOPED_STORAGE) {
+                        message = activity.getString(R.string.scoped_storage_first_warning_message) + "\n\n" + message;
+                    }
+                    bld.setMessage(message);
                 } else {
                     bld.setTitle(activity.getString(R.string.whats_new_title));
                     bld.setMessage(whatsNew);

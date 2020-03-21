@@ -58,6 +58,7 @@ import jackpal.androidterm.libtermexec.v1.ITerminal;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.getProp;
 
 public class TermService extends Service implements TermSession.FinishCallback {
@@ -74,7 +75,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     private final IBinder mTSBinder = new TSBinder();
-    private final boolean SCOPED_STORAGE = Build.VERSION.SDK_INT > Build.VERSION_CODES.Q;
 
     @Override
     public IBinder onBind(Intent intent) {

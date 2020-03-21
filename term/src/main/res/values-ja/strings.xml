@@ -364,6 +364,7 @@
     <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
 
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
+    <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスは禁止されています.最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
     <string name="google_filer_warning_message">ファイルマネージャーに「内部ストレージ」/「SDカード」が表示されない場合は, 右上の3ドットメニューから有効にしてください.</string>
 
