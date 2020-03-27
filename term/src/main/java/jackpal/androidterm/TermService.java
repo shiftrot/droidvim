@@ -183,8 +183,9 @@ public class TermService extends Service implements TermSession.FinishCallback {
         }
 
         // FIXME: Kindle fire
+        // 64bit : After 2015
         if (Build.MANUFACTURER.equals("Amazon")) {
-            if ((cpu != null) && (!Build.MODEL.matches("KFFOWI|KFMEWI|KFTBWI|KFARWI|KFASWI|KFSAWA|KFSAWI"))) {
+            if ((cpu != null) && (!Build.MODEL.matches("KFOT|KFTT|KFJWI|KFJWA|KFSOWI|KFTHWA|KFTHWI|KFAPWA|KFAPWI|KFARWI|KFASWI|KFSAWA|KFSAWI|KFTBWI|KFMEWI|KFFOWI"))) {
                 cpu = cpu.contains("arm") ? "arm64" : "x86_64";
                 mArchOverrideMode = true;
             }
