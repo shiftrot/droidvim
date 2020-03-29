@@ -295,6 +295,14 @@ class SyncFileObserver extends RecursiveFileObserver {
         return false;
     }
 
+    boolean add(SyncFileObserverMru mru) {
+        return putUriAndLoad(mru.getUri(), mru.getPath());
+    }
+
+    void remove(SyncFileObserverMru mru) {
+        mHashMap.remove(mru.getPath());
+    }
+
     private String makeCache(final Uri uri, final File dst) {
         return makeCache(uri, dst, mContentResolver);
     }

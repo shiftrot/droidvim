@@ -25,6 +25,7 @@ import android.app.Instrumentation;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -2142,7 +2143,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 } else if (item.equals(Term.this.getString(R.string.use_mru))) {
                     sendKeyStrings(mruCommand + "\r", true);
                 } else if (item.equals(Term.this.getString(R.string.use_mru_cache))) {
-                    chooseMruCache();
+                    chooseExternalFileMru();
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
@@ -2161,9 +2162,28 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void chooseMruCache() {
-        final LinkedList<SyncFileObserverMru> list = mSyncFileObserver.getMRU();
-        int MRU_FILES = 5;
+    private void chooseExternalFileMru() {
+        final LinkedList<SyncFileObserverMru> mruList = mSyncFileObserver.getMRU();
+        final LinkedList<SyncFileObserverMru> list = new LinkedList<SyncFileObserverMru>();
+        ContentResolver contentResolver = getContentResolver();
+        int MRU_FILES = 8;
+        for (SyncFileObserverMru mru : mruList) {
+            Uri uri = mru.getUri();
+            list.add(mru);
+            if (list.size() == MRU_FILES) break;
+/*
+            try {
+                InputStream is = contentResolver.openInputStream(uri);
+                if (is != null) {
+                    is.close();
+                    list.add(mru);
+                    if (list.size() == MRU_FILES) break;
+                }
+            } catch (Exception e) {
+                // Do nothing
+            }
+*/
+        }
         if (MRU_FILES > list.size()) MRU_FILES = list.size();
         final String[] items = new String[MRU_FILES];
         for (int i = 0; i < MRU_FILES; i++) {
@@ -2178,17 +2198,45 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (item == null) {
                     // do nothing
                 } else {
-                    String intentCommand = mSettings.getIntentCommand();
-                    if (!intentCommand.matches("^:.*")) intentCommand = ":e ";
-                    String path = list.get(which).getPath();
-                    path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
-                    path = intentCommand + " " + path + "\r";
-                    sendKeyStrings(path, true);
+                    if (mSyncFileObserver != null) {
+                        Uri uri = list.get(which).getUri();
+                        String path = list.get(which).getPath();
+                        if (mSyncFileObserver.putUriAndLoad(uri,path)) {
+                            String intentCommand = mSettings.getIntentCommand();
+                            if (!intentCommand.matches("^:.*")) intentCommand = ":e ";
+                            path = path.replaceAll(SHELL_ESCAPE, "\\\\$1");
+                            path = intentCommand + " " + path + "\r";
+                            sendKeyStrings(path, true);
+                            return;
+                        }
+                    }
+                    final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
+                    b.setIcon(android.R.drawable.ic_dialog_alert);
+                    b.setMessage(getString(R.string.mru_hash_error));
+                    b.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SyncFileObserverMru mru  = list.get(which);
+                            mSyncFileObserver.remove(mru);
+                            chooseExternalFileMru();
+                        }
+                    });
+                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            chooseExternalFileMru();
+                        }
+                    });
+                    b.show();
                 }
             }
-        }).setNegativeButton(android.R.string.cancel, null)
-                .setTitle(getString(R.string.use_mru_cache))
-                .show();
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                filePicker();
+            }
+        })
+        .setTitle(getString(R.string.use_mru_cache))
+        .show();
     }
 
     private void documentTreePicker(int requestCode) {

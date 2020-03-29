@@ -459,7 +459,8 @@
     <string name="external_storage">ファイルを開く</string>
     <string name="file_chooser">ファイルを開く</string>
     <string name="use_file_chooser">ファイル選択</string>
-    <string name="use_mru_cache">外部ストレージキャッシュ</string>
+    <string name="use_mru_cache">外部ストレージMRU</string>
+    <string name="mru_hash_error">外部ストレージ上でファイルが削除されたか, 無効なURIです.\n\"ファイルを開く\"ボタンから再読込してください.</string>
     <string name="storage_menu">ストレージメニュー</string>
     <string name="create_or_delete">ストレージ</string>
     <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>

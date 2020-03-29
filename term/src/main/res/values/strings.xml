@@ -527,7 +527,8 @@
     <string name="storage_menu">Storage menu</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
-    <string name="use_mru_cache">External storage cache</string>
+    <string name="use_mru_cache">External storage MRU</string>
+    <string name="mru_hash_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file...\" button.</string>
     <string name="file_chooser">Open file...</string>
     <string name="create_or_delete">Storage</string>
     <string name="external_storage_warning">To read/write an external SD card, choose \"Open file...\" → \"3 dot menu\" → \"Show SD card\".</string>
