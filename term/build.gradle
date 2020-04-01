@@ -13,6 +13,7 @@ android {
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+        multiDexEnabled true
     }
 
     defaultConfig {
@@ -28,8 +29,8 @@ android {
         externalNativeBuild {
             ndkBuild {
                 arguments '-C', 'src/main', '-j', Runtime.runtime.availableProcessors() + ''
-                abiFilters 'arm64-v8a', 'armeabi-v7a'
-                abiFilters 'x86_64', 'x86'
+                if (abiArm) abiFilters 'arm64-v8a', 'armeabi-v7a'
+                if (abiX86) abiFilters 'x86_64', 'x86'
             }
         }
 
@@ -59,8 +60,8 @@ android {
         abi {
             enable false
             reset()
-            include 'arm64-v8a', 'armeabi-v7a'
-            include 'x86_64', 'x86'
+            if (abiArm) include 'arm64-v8a', 'armeabi-v7a'
+            if (abiX86) include 'x86_64', 'x86'
             universalApk true
         }
     }
@@ -80,44 +81,50 @@ android {
     sourceSets {
         origin {
             jniLibs.srcDirs = ['src/main/jniLibs']
-            res.srcDirs += ['src/main-arm/res']
-            res.srcDirs += ['src/main-x86/res']
+            if (abiArm) res.srcDirs += ['src/main-arm/res']
+            if (abiX86) res.srcDirs += ['src/main-x86/res']
         }
         droidvim {
             jniLibs.srcDirs += ['src/main/jniLibs']
-            jniLibs.srcDirs += ['src/main-arm/jniLibs']
-            jniLibs.srcDirs += ['src/main-x86/jniLibs']
+            if (abiArm) jniLibs.srcDirs += ['src/main-arm/jniLibs']
+            if (abiX86) jniLibs.srcDirs += ['src/main-x86/jniLibs']
             res.srcDirs += ['src/droidvim/res', 'src/vim/res']
-            res.srcDirs += ['src/main-arm/res', 'src/vim-arm/res']
-            res.srcDirs += ['src/main-x86/res', 'src/vim-x86/res']
+            if (abiArm) res.srcDirs += ['src/main-arm/res', 'src/vim-arm/res']
+            if (abiX86) res.srcDirs += ['src/main-x86/res', 'src/vim-x86/res']
         }
     }
 
 }
 
 dependencies {
-    implementation "androidx.core:core-ktx:$version_core_ktx"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 dependencies {
-    implementation "androidx.annotation:annotation:$version_annotation"
-    implementation "androidx.appcompat:appcompat:$version_appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$version_constraintlayout"
-    implementation "androidx.documentfile:documentfile:$version_documentfile"
-    implementation "androidx.preference:preference:$version_preference"
-    implementation "androidx.vectordrawable:vectordrawable:$version_vectordrawable"
-    implementation "com.google.android.material:material:$version_material"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 }
 
+// Libraries which can be re-used in other modules should use the `api` keyword.
+// This way they can be shared with dependent feature modules.
 dependencies {
-    implementation project(':emulatorview')
-    implementation project(':libtermexec')
+    api "androidx.annotation:annotation:${versions.annotation}"
+    api "androidx.appcompat:appcompat:${versions.appcompat}"
+    api "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+    api "androidx.documentfile:documentfile:${versions.documentfile}"
+    api "androidx.preference:preference:${versions.preference}"
+    api "androidx.vectordrawable:vectordrawable:${versions.vectordrawable}"
+    api "com.google.android.material:material:${versions.material}"
 }
 
 dependencies {
     implementation 'org.apache.commons:commons-compress:1.18'
     implementation 'commons-io:commons-io:2.6'
     implementation 'org.tukaani:xz:1.8'
+}
+
+dependencies {
+    implementation project(':emulatorview')
+    implementation project(':libtermexec')
 }
 

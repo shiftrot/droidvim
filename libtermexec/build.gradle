@@ -12,8 +12,8 @@ android {
         externalNativeBuild {
             ndkBuild {
                 arguments '-C', 'src/main', '-j', Runtime.runtime.availableProcessors() + ''
-                abiFilters 'arm64-v8a', 'armeabi-v7a'
-                abiFilters 'x86_64', 'x86'
+                if (abiArm) abiFilters 'arm64-v8a', 'armeabi-v7a'
+                if (abiX86) abiFilters 'x86_64', 'x86'
             }
         }
     }
@@ -42,6 +42,6 @@ dependencies {
 }
 
 dependencies {
-    implementation "androidx.annotation:annotation:$version_annotation"
-    implementation "androidx.appcompat:appcompat:$version_appcompat"
+    implementation "androidx.annotation:annotation:${versions.annotation}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
 }

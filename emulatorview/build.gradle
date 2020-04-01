@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.annotation:annotation:$version_annotation"
-    implementation "androidx.appcompat:appcompat:$version_appcompat"
-    implementation "androidx.preference:preference:$version_preference"
+    implementation "androidx.annotation:annotation:${versions.annotation}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.preference:preference:${versions.preference}"
 }
