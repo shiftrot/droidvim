@@ -199,7 +199,7 @@
     <string name="dialog_title_orientation_preference">Screen orientation</string>
 
     <string name="title_theme_preference">Theme</string>
-    <string name="summary_theme_preference">Choose application theme (restart required).</string>
+    <string name="summary_theme_preference">Choose application theme.</string>
     <string name="dialog_title_theme_preference">Theme</string>
 
     <string name="title_cursorstyle_preference">Cursor style</string>

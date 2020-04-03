@@ -173,7 +173,7 @@
     <string name="dialog_title_orientation_preference">画面の向き</string>
 
     <string name="title_theme_preference">テーマ</string>
-    <string name="summary_theme_preference">アプリのテーマを選択する (要再起動).</string>
+    <string name="summary_theme_preference">アプリのテーマを選択する.</string>
     <string name="dialog_title_theme_preference">テーマ</string>
 
     <string name="title_cursorstyle_preference">カーソルスタイルとレンダリングモード</string>

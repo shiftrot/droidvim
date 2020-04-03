@@ -245,6 +245,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         mSettings.readPrefs(sharedPreferences);
         setDrawerButtons();
+        recreate();
     }
 
     private boolean mHaveFullHwKeyboard = false;
@@ -1531,7 +1532,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mOrientation = which;
-                        doResetTerminal();
                         updatePrefs();
                     }
                 })
@@ -1600,7 +1600,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
             v.updateSize(true);
-            doResetTerminal();
         }
         if (mSyncFileObserver != null) {
             mSyncFileObserver.setActivity(this);
@@ -3470,13 +3469,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doResetTerminal(boolean keyboard) {
         doRestartSoftKeyboard();
-        if (keyboard && !mHaveFullHwKeyboard) doHideSoftKeyboard();
-        TermSession session = getCurrentTermSession();
-        if (session != null) {
-            session.reset();
-            sendKeyStrings("\u001b\u000c", false);
-        }
-        if (keyboard && !mHaveFullHwKeyboard) doShowSoftKeyboard();
+        recreate();
         mDoResetTerminal = false;
     }
 
