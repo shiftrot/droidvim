@@ -143,8 +143,8 @@
     <string name="summary_notification_preference">Notifications can be hidden via App info. However, messages with low importance will not be shown.</string>
 
     <string name="title_statusbar_icon_preference">Status bar icon</string>
-    <string name="summary_statusbar_icon_on_preference">Show/Hide status bar icon (Restart required).</string>
-    <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon (Restart required).</string>
+    <string name="summary_statusbar_icon_on_preference">Show/Hide status bar icon.</string>
+    <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon.</string>
 
     <string name="title_functionbar_preference">Functionbar</string>
     <string name="summary_functionbar_preference">The button size is fixed. The function bar can be shown or hidden from the menu.</string>
@@ -415,7 +415,7 @@
     <string name="share_screen_text">Share screen text</string>
     <string name="share_file">File</string>
 
-    <string name="alt_uses_8bit_meta">Alt key uses MSB (Physical keyboard)</string>
+    <string name="alt_uses_8bit_meta">Alt key uses 8bit MSB (Physical keyboard)</string>
     <string name="alt_sends_esc">Alt key sends ESC</string>
     <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
     <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
@@ -540,7 +540,7 @@
     <string name="storage_permission_error">Storage permission does not granted.</string>
     <string name="storage_permission_granted">Please restart this app for the settings to take effect.</string>
     <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
-    <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.</string>
+    <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.\nIf the file is in cloud storage, check your network connection.</string>
     <string name="storage_write_error_title">Invalid URI</string>
     <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Open file...\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
     <string name="storage_hash_error_title">File hash error</string>

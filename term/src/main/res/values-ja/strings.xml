@@ -134,13 +134,13 @@
     <string name="summary_notification_preference">通知はアプリ情報から非表示にすることができますが, 重要度の低いメッセージは表示されなくなります.</string>
 
     <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
-    <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
-    <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示 (要再起動).</string>
+    <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示</string>
+    <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示</string>
 
     <string name="title_functionbar_preference">ファンクションバー</string>
     <string name="summary_functionbar_preference">ボタンサイズは固定. 表示/非表示をメニューから切替可能なファンクションバー</string>
     <string name="title_navigation_button_preference">ファンクションバー (画面固定)</string>
-    <string name="summary_navigation_button_preference">ボタンサイズを画面に応じて自動調整する固定サイズのファンクションバー.</string>
+    <string name="summary_navigation_button_preference">ボタンサイズを画面に応じて自動調整する固定サイズのファンクションバー</string>
     <string name="title_oneline_textbox_preference">一行テキスト入力</string>
     <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
     <string name="title_oneline_textbox_esc_preference">ESCで一行テキストボックスを非表示にする</string>
@@ -210,7 +210,7 @@
     <string name="font_file_invalid">Androidはこのフォントファイルを扱えません.</string>
 
     <string name="title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
-    <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う.</string>
+    <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う</string>
     <string name="dialog_title_ambiwidth_preference">東アジアの曖昧な文字幅</string>
 
     <string name="title_force_flush_drawtext_preference">プロポーショナルフォントを使用</string>
@@ -386,7 +386,7 @@
     <string name="share_screen_text">画面のテキストを共有</string>
     <string name="share_file">ファイル</string>
 
-    <string name="alt_uses_8bit_meta">Altキー出力にMSBを使用 (物理キーボード)</string>
+    <string name="alt_uses_8bit_meta">Altキー出力に8bit MSBを使用 (物理キーボード)</string>
     <string name="alt_sends_esc">AltキーでESCを送出</string>
     <string name="alt_sends_esc_summary_on">Altキーの代わりにESCを送出する</string>
     <string name="alt_sends_esc_summary_off">Altキーの代わりにESCを送出しない</string>
@@ -406,7 +406,7 @@
     <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
 
     <string name="title_auto_hide_functionbar">ファンクションバーを隠す</string>
-    <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す.</string>
+    <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す</string>
 
     <string name="ime_input_method_preferences">テキスト入力モード</string>
     <string name="title_pre_ime_shortcuts">IMEショートカット</string>
@@ -474,7 +474,7 @@
     <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
     <string name="storage_permission_granted">設定を有効にするため, このアプリを再起動してください.</string>
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
-    <string name="storage_read_error">読込または編集に失敗しました.\nファイルが存在しないか, 権限がありません.</string>
+    <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
     <string name="storage_write_error_title">無効なURI</string>
     <string name="storage_write_error">ファイルを編集するためのURIが無効になっています.\nドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください.\n(このバッファの編集状態は失われます.)</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>
