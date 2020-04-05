@@ -2357,7 +2357,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void doFileCreate() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("text/plain");
+        intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
         if (checkImplicitIntent(this, intent))
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
