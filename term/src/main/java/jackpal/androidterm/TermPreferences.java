@@ -1089,46 +1089,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    private void chooseLdLibraryMode() {
-        final String[] items = {
-                this.getString(R.string.ld_library_path_mode_default),
-                this.getString(R.string.ld_library_path_mode_alt_1)};
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int mChecked = prefs.getInt("FATAL_CRASH_RESOLVER", 0);
-        final Context context = this;
-        AlertDialog dlg = new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(this.getString(R.string.choose_ld_library_path_mode))
-                .setSingleChoiceItems(items, mChecked, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (which == 0 || which == 1) {
-                            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            final SharedPreferences.Editor editor = prefs.edit();
-                            editor.putInt("FATAL_CRASH_RESOLVER", which);
-                            editor.apply();
-                            AlertDialog.Builder bld = new AlertDialog.Builder(context);
-                            bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(context.getString(R.string.change_lib));
-                            bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            bld.show();
-                        }
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        dlg.show();
-    }
-
     private void forceLibrary() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_alert);

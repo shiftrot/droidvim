@@ -2775,8 +2775,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private int mLibrary = -1;
-    private int mLdLibraryPathMode = -1;
-    private int mVimPythonMode = -1;
     private int mChecked = -1;
 
     private void fatalCrashVim() {
@@ -2784,8 +2782,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             setUninstallExtraContents(false);
             mUninstall = false;
             mLibrary = -1;
-            mLdLibraryPathMode = -1;
-            mVimPythonMode = -1;
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(getString(R.string.crash_title));
@@ -2866,9 +2862,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void troubleShooting(boolean fatal) {
         mFatalTroubleShooting = fatal;
         final String[] items = {
-                this.getString(R.string.choose_vim_python_script),
-                this.getString(R.string.choose_ld_library_path_mode),
-                this.getString(R.string.title_change_lib_preference)};
+                getString(R.string.title_change_lib_preference)};
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(this.getString(R.string.crash_trouble_shooting_button))
@@ -2876,11 +2870,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if (which == 0) {
-                            chooseVimPython();
-                        } else if (which == 1) {
-                            chooseLdLibraryMode();
-                        } else if (which == 2) {
+                        if (getString(R.string.title_change_lib_preference).equals(items[which])) {
                             forceLibrary();
                         }
                     }
@@ -2901,79 +2891,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else {
                             mUninstall = false;
                             mLibrary = -1;
-                            mLdLibraryPathMode = -1;
-                            mVimPythonMode = -1;
                         }
-                    }
-                })
-                .create();
-        dlg.setCancelable(false);
-        dlg.setCanceledOnTouchOutside(false);
-        dlg.show();
-    }
-
-    private void chooseVimPython() {
-        final String[] items = {
-                this.getString(R.string.vim_python_script_default),
-                this.getString(R.string.vim_python_script_alt1)};
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mChecked = prefs.getInt("VIM_PYTHON_MODE", 0);
-        if (mVimPythonMode != -1) mChecked = mVimPythonMode;
-        AlertDialog dlg = new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(this.getString(R.string.choose_vim_python_script))
-                .setSingleChoiceItems(items, mChecked, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mChecked = which;
-                    }
-                })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mVimPythonMode = mChecked;
-                        troubleShooting(mFatalTroubleShooting);
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
-                        troubleShooting(mFatalTroubleShooting);
-                    }
-                })
-                .create();
-        dlg.setCancelable(false);
-        dlg.setCanceledOnTouchOutside(false);
-        dlg.show();
-    }
-
-    private void chooseLdLibraryMode() {
-        final String[] items = {
-                this.getString(R.string.ld_library_path_mode_default),
-                this.getString(R.string.ld_library_path_mode_alt_1)};
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mChecked = prefs.getInt("FATAL_CRASH_RESOLVER", 0);
-        if (mLdLibraryPathMode != -1) mChecked = mLdLibraryPathMode;
-        AlertDialog dlg = new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(this.getString(R.string.choose_ld_library_path_mode))
-                .setSingleChoiceItems(items, mChecked, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mChecked = which;
-                    }
-                })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mLdLibraryPathMode = mChecked;
-                        troubleShooting(mFatalTroubleShooting);
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
-                        troubleShooting(mFatalTroubleShooting);
                     }
                 })
                 .create();
@@ -3071,25 +2989,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                if (mVimPythonMode != -1) {
-                    if (new File(TermService.getAPPFILES() + "/bin/vim.python").canExecute()) {
-                        String vimsh = TermService.getAPPFILES() + "/bin/vim";
-                        String mode = mVimPythonMode == 0 ? "" : ".alt";
-                        new File(vimsh).delete();
-                        shell("cat " + TermService.getAPPFILES() + "/usr/etc/src.vim.python" + mode + " > " + vimsh);
-                        shell("chmod 755 " + vimsh);
-                    }
-                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    final SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("VIM_PYTHON_MODE", mVimPythonMode);
-                    editor.apply();
-                }
-                if (mLdLibraryPathMode != -1) {
-                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    final SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("FATAL_CRASH_RESOLVER", mLdLibraryPathMode);
-                    editor.apply();
-                }
                 if (mUninstall) doUninstallExtraContents();
                 if (mLibrary != -1) {
                     shell("rm " + TermService.getAPPEXTFILES() + "/.64bit");

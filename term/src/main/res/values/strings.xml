@@ -364,12 +364,6 @@
     <string name="crash_message">Please use troubleshooting or close this app and restart.\nIf you can not solve it by troubleshooting, please contact us.</string>
     <string name="crash_quit_button">Force stop this app</string>
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
-    <string name="choose_vim_python_script">Choose Vim (+python) script</string>
-    <string name="vim_python_script_default">Default</string>
-    <string name="vim_python_script_alt1">Alternate (1)</string>
-    <string name="choose_ld_library_path_mode">Choose LD_LIBRARY_PATH mode</string>
-    <string name="ld_library_path_mode_default">Default</string>
-    <string name="ld_library_path_mode_alt_1">Alternate (1)</string>
     <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
     <string name="revert_to_default_vim">Revert to Vim (default).</string>
     <string name="quit_to_shell">Shell</string>
