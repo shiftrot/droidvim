@@ -86,6 +86,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -134,6 +136,8 @@ import jackpal.androidterm.util.TermSettings;
 
 import static android.provider.DocumentsContract.Document;
 import static android.provider.DocumentsContract.deleteDocument;
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.copyScript;
@@ -1073,9 +1077,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             String permission = permissions[i];
                             if (shouldShowRequestPermissionRationale(permission)) {
-                                final Toast toast = Toast.makeText(this, getString(R.string.storage_permission_error), Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                showToast(toast);
+                                Snackbar.make(findViewById(R.id.term_coordinator_layout_top), getString(R.string.storage_permission_error), LENGTH_LONG).show();
                             } else {
                                 doWarningDialog(getString(R.string.storage_permission_error), getString(R.string.storage_permission_warning), "storage_permission", false);
                             }
@@ -1227,8 +1229,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 try {
                     mTermSessions.add(createTermSession());
                 } catch (IOException e) {
-                    final Toast toast = Toast.makeText(this, "Failed to start terminal session", Toast.LENGTH_LONG);
-                    showToast(toast);
+                    Snackbar.make(this.<View>findViewById(R.id.term_coordinator_layout_top), "Failed to start terminal session", LENGTH_SHORT).show();
                     finish();
                     return;
                 }
@@ -1573,10 +1574,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             screenLockItem = getString(R.string.enable_keepscreen);
         }
         final String[] items = {getString(R.string.copy_share_current_screen), getString(R.string.copy_share_screen_buffer), screenLockItem, getString(R.string.dialog_title_orientation_preference), getString(R.string.reset)};
-        final Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
         String mes = getString(R.string.toast_clipboard);
-        final Toast toastClipboard = Toast.makeText(this, mes, Toast.LENGTH_LONG);
-        toastClipboard.setGravity(Gravity.CENTER, 0, 0);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_top), mes, LENGTH_LONG);
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.screen))
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -1592,23 +1591,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                                         .getManager(getApplicationContext());
                                 clip.setText(strings);
-                                showToast(toastClipboard);
+                                snackbar.show();
                             }
                         } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
                             String strings = getCurrentEmulatorView().getTranscriptText();
                             ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                                     .getManager(getApplicationContext());
                             clip.setText(strings);
-                            showToast(toastClipboard);
+                            snackbar.show();
                         } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
                             if (keepScreen) mKeepScreenEnableAuto = false;
                             doToggleKeepScreen();
                             if (!keepScreen) mKeepScreenEnableAuto = true;
                         } else if (getString(R.string.reset).equals(items[which])) {
-                            doResetTerminal(true);
+                            doResetTerminal();
                             updatePrefs();
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            showToast(toast);
                         }
                     }
                 })
@@ -1875,14 +1872,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_window) {
             doWindowMenu();
         } else if (id == R.id.menu_reset) {
-            doResetTerminal(true);
+            doResetTerminal();
             updatePrefs();
-            final Toast toast = Toast.makeText(this, R.string.reset_toast_notification, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            showToast(toast);
         } else if (id == R.id.menu_copy_screen) {
-            String mes = getString(R.string.toast_clipboard);
-            final Toast toastClipboard = Toast.makeText(this, mes, Toast.LENGTH_LONG);
             String strings;
             if (FLAVOR_VIM) {
                 strings = getCurrentEmulatorView().getTranscriptCurrentText();
@@ -1895,7 +1887,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
                 clip.setText(strings);
-                showToast(toastClipboard);
+                String mes = getString(R.string.toast_clipboard);
+                Snackbar.make(findViewById(R.id.term_coordinator_layout_top), mes, LENGTH_LONG).show();
             }
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
@@ -2134,8 +2127,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount() - 1);
             doWarningDialog(null, getString(R.string.switch_windows_warning), "switch_window", false);
         } catch (IOException e) {
-            final Toast toast = Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT);
-            showToast(toast);
+            String mes = "Failed to create a session";
+            Snackbar.make(findViewById(R.id.term_coordinator_layout_top), mes, LENGTH_LONG).show();
         }
     }
 
@@ -3399,11 +3392,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doResetTerminal() {
-        doResetTerminal(false);
-    }
-
-    private void doResetTerminal(boolean keyboard) {
-        doRestartSoftKeyboard();
         recreate();
     }
 
@@ -3430,8 +3418,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 startActivity(Intent.createChooser(intent,
                         getString(R.string.email_transcript_chooser_title)));
             } catch (ActivityNotFoundException e) {
-                final Toast toast = Toast.makeText(this, R.string.email_transcript_no_email_activity_found, Toast.LENGTH_LONG);
-                showToast(toast);
+                String mes = getString(R.string.email_transcript_no_email_activity_found);
+                Snackbar.make(findViewById(R.id.term_coordinator_layout_top), mes, LENGTH_LONG).show();
             }
         }
     }
@@ -3641,9 +3629,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             return;
         }
-        final Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        showToast(toast);
+        Snackbar.make(findViewById(R.id.term_coordinator_layout_top), mes, LENGTH_LONG).show();
     }
 
     private void showTextInWebview(String strings) {
@@ -3831,16 +3817,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (keepScreen) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             mKeepScreenHandler.removeCallbacksAndMessages(null);
-            final Toast toast = Toast.makeText(this, getString(R.string.keepscreen_deacitvated), Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            if (!mKeepScreenEnableAuto) showToast(toast);
+            if (!mKeepScreenEnableAuto) Snackbar.make(findViewById(R.id.term_coordinator_layout_top), getString(R.string.keepscreen_deacitvated), LENGTH_LONG).show();
         } else {
             final int timeout = mSettings.getKeepScreenTime();
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             String mes = String.format(getString(R.string.keepscreen_notice), timeout);
             if (!mKeepScreenEnableAuto) alert(mes);
-            final Toast toast = Toast.makeText(this, getString(R.string.keepscreen_deacitvated), Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
+            final Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_top), getString(R.string.keepscreen_deacitvated), LENGTH_LONG);
             final Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -3851,7 +3834,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (keepScreen) {
                         if (currentTimeMillis >= mLastKeyPress + timeoutMills) {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                            if (!mKeepScreenEnableAuto) showToast(toast);
+                            if (!mKeepScreenEnableAuto) snackbar.show();
                         } else {
                             mKeepScreenHandler.postDelayed(this, timeoutMills - (currentTimeMillis - mLastKeyPress));
                         }

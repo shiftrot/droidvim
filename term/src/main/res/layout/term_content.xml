@@ -8,12 +8,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+       <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/term_coordinator_layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
         <jackpal.androidterm.TermViewFlipper
             android:id="@+id/view_flipper"
             android:focusableInTouchMode="false"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/term_coordinator_layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/oneline_text_box"
@@ -929,4 +940,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </FrameLayout>

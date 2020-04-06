@@ -65,8 +65,14 @@
             android:text="≡"/>
     </LinearLayout>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/webview_coordinator_layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <WebView
         android:id="@+id/WebView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 </LinearLayout>

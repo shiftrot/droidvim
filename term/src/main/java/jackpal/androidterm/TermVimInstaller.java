@@ -16,9 +16,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.system.Os;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Button;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -51,6 +51,7 @@ import java.util.zip.ZipInputStream;
 import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
@@ -422,9 +423,7 @@ final class TermVimInstaller {
                                     mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
                                 }
                             }
-                            Toast toast = Toast.makeText(mActivity.getApplicationContext(), mes, Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.TOP, 0, 0);
-                            toast.show();
+                            toast(mActivity, mes.toString());
                         }
                     });
                 } catch (Exception e) {
@@ -829,9 +828,7 @@ final class TermVimInstaller {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.TOP, 0, 0);
-                    toast.show();
+                    Snackbar.make(activity.findViewById(R.id.term_coordinator_layout_top), message, LENGTH_LONG).show();
                 }
             });
         } catch (Exception e) {

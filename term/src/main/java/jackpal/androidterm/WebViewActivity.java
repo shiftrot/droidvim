@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -21,27 +22,103 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.preference.PreferenceManager;
+import jackpal.androidterm.util.TermSettings;
+
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+
 public class WebViewActivity extends Activity {
+    /*
+     *  Open Android Settings
+     *  If there is a link starting with "file:///android_asset/ACTION_SETTINGS/", open the corresponding setting screen.
+     *  E.g. <a href="file:///android_asset/ACTION_SETTINGS/ACTION_HARD_KEYBOARD_SETTINGS">Physical Keyboard settings&</a>
+     */
+    static final private Map<String, String> mSettingsAction = new HashMap<String, String>() {
+        {
+            put("ACTION_SETTINGS", Settings.ACTION_SETTINGS);
+            put("ACTION_INPUT_METHOD_SETTINGS", Settings.ACTION_INPUT_METHOD_SETTINGS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                put("ACTION_HARD_KEYBOARD_SETTINGS", Settings.ACTION_HARD_KEYBOARD_SETTINGS);
+            }
+        }
+    };
     private static int mFontSize = 140;
     private static int mInitialInterval = 0;
     private static int mNormalInterval = 100;
     private boolean mBack = false;
     private WebView mWebView;
+    private View.OnClickListener mButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.webview_back:
+                    if (mWebView.canGoBack()) {
+                        mBack = true;
+                        mWebView.goBack();
+                    } else {
+                        mWebView.stopLoading();
+                        finish();
+                    }
+                    break;
+                case R.id.webview_forward:
+                    if (mWebView.canGoForward()) {
+                        mWebView.goForward();
+                    }
+                    break;
+                case R.id.webview_reload:
+                    mWebView.reload();
+                    toast(R.string.reloading);
+                    break;
+                case R.id.webview_abort:
+                    mWebView.stopLoading();
+                    toast(R.string.stop_loading);
+                    break;
+                case R.id.webview_menu:
+                    menu();
+                    break;
+                case R.id.webview_plus:
+                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + 10);
+                    mFontSize = mWebView.getSettings().getTextZoom();
+                    break;
+                case R.id.webview_minus:
+                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - 10);
+                    mFontSize = mWebView.getSettings().getTextZoom();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    static public int getFontSize() {
+        return mFontSize;
+    }
+
+    static public void setFontSize(int size) {
+        mFontSize = size;
+    }
+
+    static public void setRepeatInterval(int initial, int normal) {
+        mInitialInterval = initial;
+        mNormalInterval = normal;
+    }
 
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setupTheme();
         setContentView(R.layout.webview_activity);
         mWebView = findViewById(R.id.WebView);
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -127,49 +204,6 @@ public class WebViewActivity extends Activity {
         }
     }
 
-    View.OnClickListener mButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.webview_back:
-                    if (mWebView.canGoBack()) {
-                        mBack = true;
-                        mWebView.goBack();
-                    } else {
-                        mWebView.stopLoading();
-                        finish();
-                    }
-                    break;
-                case R.id.webview_forward:
-                    if (mWebView.canGoForward()) {
-                        mWebView.goForward();
-                    }
-                    break;
-                case R.id.webview_reload:
-                    mWebView.reload();
-                    Toast.makeText(mWebView.getContext(), R.string.reloading, Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.webview_abort:
-                    mWebView.stopLoading();
-                    Toast.makeText(mWebView.getContext(), R.string.stop_loading, Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.webview_menu:
-                    menu();
-                    break;
-                case R.id.webview_plus:
-                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + 10);
-                    mFontSize = mWebView.getSettings().getTextZoom();
-                    break;
-                case R.id.webview_minus:
-                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - 10);
-                    mFontSize = mWebView.getSettings().getTextZoom();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
     private void menu() {
         String[] items = {getString(R.string.scroll_to_top), getString(R.string.scroll_to_bottom), getString(R.string.open_in_browser), getString(R.string.quit)};
         final int quit = items.length - 1;
@@ -219,19 +253,6 @@ public class WebViewActivity extends Activity {
             builder.setPositiveButton(android.R.string.ok, null);
             builder.create().show();
         }
-    }
-
-    static public void setFontSize(int size) {
-        mFontSize = size;
-    }
-
-    static public int getFontSize() {
-        return mFontSize;
-    }
-
-    static public void setRepeatInterval(int initial, int normal) {
-        mInitialInterval = initial;
-        mNormalInterval = normal;
     }
 
     @Override
@@ -288,21 +309,6 @@ public class WebViewActivity extends Activity {
         return true;
     }
 
-    /*
-     *  Open Android Settings
-     *  If there is a link starting with "file:///android_asset/ACTION_SETTINGS/", open the corresponding setting screen.
-     *  E.g. <a href="file:///android_asset/ACTION_SETTINGS/ACTION_HARD_KEYBOARD_SETTINGS">Physical Keyboard settings&</a>
-     */
-    static final private Map<String, String> mSettingsAction = new HashMap<String, String>() {
-        {
-            put("ACTION_SETTINGS", Settings.ACTION_SETTINGS);
-            put("ACTION_INPUT_METHOD_SETTINGS", Settings.ACTION_INPUT_METHOD_SETTINGS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                put("ACTION_HARD_KEYBOARD_SETTINGS", Settings.ACTION_HARD_KEYBOARD_SETTINGS);
-            }
-        }
-    };
-
     private boolean openSettings(String url) {
         final String ANDROID_SETTINGS = "file:///android_asset/ACTION_SETTINGS";
         if (!url.startsWith(ANDROID_SETTINGS)) {
@@ -332,4 +338,32 @@ public class WebViewActivity extends Activity {
         }
         return true;
     }
+
+    private void toast(int resid) {
+        Toast.makeText(mWebView.getContext(), resid, Toast.LENGTH_SHORT).show();
+        // Snackbar.make(findViewById(R.id.webview_coordinator_layout_top), resid, LENGTH_SHORT).show();
+    }
+
+    private void setupTheme() {
+        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        TermSettings mSettings = new TermSettings(getResources(), mPrefs);
+        int theme = mSettings.getColorTheme();
+        switch (theme) {
+            case 0:
+                setTheme(R.style.App_Theme_Dark);
+                break;
+            case 1:
+                setTheme(R.style.App_Theme_Light);
+                break;
+            case 2:
+                setTheme(R.style.App_Theme_Dark_api26);
+                break;
+            case 3:
+                setTheme(R.style.App_Theme_Light_api26);
+                break;
+            default:
+                break;
+        }
+    }
+
 }
