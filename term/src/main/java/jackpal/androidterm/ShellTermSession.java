@@ -237,10 +237,10 @@ public class ShellTermSession extends GenericTermSession {
     static String[] getProotCommand(String... commands) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return new String[]{};
         String appLib = TermService.getAPPLIB();
-        if (!new File(appLib + "/libproot.so").canExecute()) return new String[]{};
-
         List<String> prootCommands = new ArrayList<>();
         prootCommands.add("export APPLIB=" + appLib);
+        if (!new File(appLib + "/libproot.so").canExecute()) return prootCommands.toArray(new String[0]);
+
         prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
         prootCommands.add("export PROOT_LOADER=$APPLIB/libloader.so");
         if (new File(appLib + "/libloader-m32.so").canExecute()) {

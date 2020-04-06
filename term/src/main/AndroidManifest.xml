@@ -118,6 +118,7 @@
                 <data android:mimeType="application/ecmascript"/>
                 <data android:mimeType="application/javascript"/>
                 <data android:mimeType="application/json"/>
+                <data android:mimeType="application/*log*"/>
                 <data android:mimeType="application/octet-stream"/>
                 <data android:mimeType="application/soap+xm"/>
                 <data android:mimeType="application/x-caramel"/>

@@ -81,8 +81,14 @@ android {
     sourceSets {
         origin {
             jniLibs.srcDirs = ['src/main/jniLibs']
-            if (abiArm) res.srcDirs += ['src/main-arm/res']
-            if (abiX86) res.srcDirs += ['src/main-x86/res']
+            if (abiArm) {
+                res.srcDirs += ['src/main-arm/res']
+                jniLibs.srcDirs += ['src/main-arm/jniLibs']
+            }
+            if (abiX86) {
+                res.srcDirs += ['src/main-x86/res']
+                jniLibs.srcDirs += ['src/main-x86/jniLibs']
+            }
         }
         droidvim {
             jniLibs.srcDirs += ['src/main/jniLibs']

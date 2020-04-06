@@ -110,7 +110,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         mHOME = homePath;
         mSTARTUP_DIR = prefs.getString("startup_path", homePath);
 
-        mAPPLIB = this.getApplicationInfo().nativeLibraryDir;
+        mAPPLIB = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         mARCH = getArch();
         mAPPBASE = this.getApplicationInfo().dataDir;
         mAPPFILES = this.getFilesDir().toString();
@@ -333,6 +333,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
+        cmd = cmd.replaceAll("%APPLIB%", mAPPLIB);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", ld_library_path);
