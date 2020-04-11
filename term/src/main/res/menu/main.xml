@@ -67,7 +67,7 @@
         android:title="@string/share_title"/>
     <item
         android:id="@+id/menu_copy_screen"
-        android:title="@string/copy_share_current_screen"/>
+        android:title="@string/menu_copy_screen"/>
     <item
         android:id="@+id/menu_screen"
         android:title="@string/screen"/>

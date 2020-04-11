@@ -92,6 +92,7 @@
     <string name="select_text">テキスト選択</string>
     <string name="copy_all">すべてコピー</string>
     <string name="copy_share_screen_buffer">スクリーンバッファのコピー</string>
+    <string name="menu_copy_screen">テキスト選択</string>
     <string name="copy_share_current_screen">画面コピー</string>
     <string name="copy_screen">画面のテキストをコピー</string>
     <string name="copy_screen_current">現画面</string>

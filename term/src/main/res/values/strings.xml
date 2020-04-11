@@ -94,7 +94,8 @@
     <string name="select_text">Select text</string>
     <string name="copy_all">Copy all</string>
     <string name="copy_share_screen_buffer">Copy screen buffer</string>
-    <string name="copy_share_current_screen">Copy screen</string>
+    <string name="menu_copy_screen">Text selection</string>
+    <string name="copy_share_current_screen">Copy screen text</string>
     <string name="copy_screen">Copy screen text</string>
     <string name="copy_screen_current">Current screen</string>
     <string name="copy_screen_buffer">Screen buffer</string>

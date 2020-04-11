@@ -1586,7 +1586,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else if (getString(R.string.copy_share_current_screen).equals(items[which])) {
                             String strings = getCurrentEmulatorView().getTranscriptCurrentText();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                showTextInWebview(strings);
+                                showTextInWebview("html_text", strings);
                             } else {
                                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                                         .getManager(getApplicationContext());
@@ -1595,10 +1595,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             }
                         } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
                             String strings = getCurrentEmulatorView().getTranscriptText();
-                            ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                                    .getManager(getApplicationContext());
-                            clip.setText(strings);
-                            snackbar.show();
+                            showTextInWebview("html_log", strings);
                         } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
                             if (keepScreen) mKeepScreenEnableAuto = false;
                             doToggleKeepScreen();
@@ -1882,7 +1879,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 strings = getCurrentEmulatorView().getTranscriptText();
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                showTextInWebview(strings);
+                showTextInWebview("html_text", strings);
             } else {
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
@@ -1920,14 +1917,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if (id == R.id.action_help) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("url", getString(R.string.help_url));
-                startActivity(intent);
-            } else {
-                Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
-                startActivity(openHelp);
-            }
+            Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
+            startActivity(openHelp);
         } else if (id == R.id.menu_quit) {
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
@@ -2774,6 +2765,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
                 return true;
             case 0xffff1006:
+                return true;
             case 0xffff1007:
                 return true;
             case 0xffff1008:
@@ -3632,17 +3624,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Snackbar.make(findViewById(R.id.term_coordinator_layout_top), mes, LENGTH_LONG).show();
     }
 
-    private void showTextInWebview(String strings) {
-        if (getCurrentEmulatorView() != null) {
-            String file = TermService.getTMPDIR() + "/html/clipboard.html";
-            strings = strings.replaceAll("\n", "<br />");
-            int id = getResources().getIdentifier("clipboard_html", "raw", getPackageName());
-            copyScript(getResources().openRawResource(id), file, strings);
-            Intent intent;
-            intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra("url", file.toString());
-            startActivity(intent);
-        }
+    private void showTextInWebview(String htmlTemplate, String strings) {
+        strings = strings.replaceAll("&", "&amp;");
+        strings = strings.replaceAll("<", "&lt;");
+        strings = strings.replaceAll(">", "&gt;");
+        strings = strings.replaceAll("\"", "&quot;");
+        strings = strings.replaceAll(" ", "&nbsp;");
+        strings = strings.replaceAll("\n", "<br />");
+        String file = TermService.getTMPDIR() + "/html/text.html";
+        int id = getResources().getIdentifier(htmlTemplate, "raw", getPackageName());
+        copyScript(getResources().openRawResource(id), file, strings);
+        Intent intent;
+        intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra("url", file.toString());
+        startActivity(intent);
     }
 
     private void doPaste() {

@@ -2383,8 +2383,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mEmulator == null) return null;
         TranscriptScreen ts = mEmulator.getScreen();
         if (ts == null) return null;
-        String str = "";
-        for (int i = mTopRow; i < mVisibleRows + mTopRow; i++) {
+        String str = ts.getSelectedText(0, mTopRow, mVisibleColumns, mTopRow);
+        for (int i = mTopRow + 1; i < mVisibleRows + mTopRow; i++) {
             str = str + "\n" + ts.getSelectedText(0, i, mVisibleColumns, i);
         }
         return str;

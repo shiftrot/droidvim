@@ -55,6 +55,7 @@ public class WebViewActivity extends Activity {
     private static int mFontSize = 140;
     private static int mInitialInterval = 0;
     private static int mNormalInterval = 100;
+    private static int mZoom = 5;
     private boolean mBack = false;
     private WebView mWebView;
     private View.OnClickListener mButtonListener = new View.OnClickListener() {
@@ -87,11 +88,11 @@ public class WebViewActivity extends Activity {
                     menu();
                     break;
                 case R.id.webview_plus:
-                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + 10);
+                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + mZoom);
                     mFontSize = mWebView.getSettings().getTextZoom();
                     break;
                 case R.id.webview_minus:
-                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - 10);
+                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - mZoom);
                     mFontSize = mWebView.getSettings().getTextZoom();
                     break;
                 default:
@@ -119,7 +120,16 @@ public class WebViewActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setupTheme();
-        setContentView(R.layout.webview_activity);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        int viewId = R.layout.webview_activity;
+        if (bundle != null) {
+            String url = bundle.getString("url");
+            if (url != null && url.startsWith(TermService.getTMPDIR())) {
+                viewId = R.layout.webview_text_activity;
+            }
+        }
+        setContentView(viewId);
         mWebView = findViewById(R.id.WebView);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUseWideViewPort(true);
@@ -160,8 +170,6 @@ public class WebViewActivity extends Activity {
             }
         });
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
         if (bundle != null) {
             try {
                 String size = bundle.getString("size");

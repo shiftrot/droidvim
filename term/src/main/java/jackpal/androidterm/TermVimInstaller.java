@@ -618,7 +618,10 @@ final class TermVimInstaller {
                     str = str.replaceAll("%APPEXTFILES%", appExtFiles);
                     str = str.replaceAll("%INTERNAL_STORAGE%", internalStorage);
                     if (strings != null && str.contains("%%STRINGS%%")) {
-                        writer.print(strings + "\n");
+                        String prev = str.replaceFirst("%%STRINGS%%.*", "");
+                        if (!prev.equals("")) writer.print(prev);
+                        writer.print(strings);
+                        writer.print(str.replaceFirst(".*%%STRINGS%%", ""));
                     } else {
                         writer.print(str + "\n");
                     }

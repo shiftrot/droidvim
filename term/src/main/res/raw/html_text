@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Script-Type" content="text/javascript" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Screen Text</title>
+        <style type="text/css">
+            * {max-height:999999px}
+            body {
+                font:100% meiryo,arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;
+                line-height: 1.4em
+                word-wrap: break-word;
+                overflow-wrap : break-word;
+            }
+            var,
+            samp,
+            kbd,
+            tt {
+                font-family: monospace, serif;
+                _font-family: 'courier new', monospace;
+                font-size: 1.0rem;
+            }
+            pre,
+            code {
+                font-family: monospace;
+                _font-family: monospace;
+                font-size: 1.0rem;
+            }
+        </style>
+    </head>
+    <body>
+        <p><pre>%%STRINGS%%</pre></p>
+    </body>
+</html>
