@@ -163,8 +163,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         if (view == null) {
             return;
         }
-        view.onResume();
         view.requestFocus();
+        view.onResume();
     }
 
     private void showTitle() {

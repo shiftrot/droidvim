@@ -1701,10 +1701,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         registerReceiver(mBroadcastReceiever, new IntentFilter(AM_INTENT_ACTION));
 
-        EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
-        if (v != null) {
-            v.updateSize(true);
-        }
         if (mSyncFileObserver != null) {
             mSyncFileObserver.setActivity(this);
         } else {
