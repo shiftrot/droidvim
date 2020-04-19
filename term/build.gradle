@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        versionName = "1.0.0"
+        versionName versions.versionName
         versionCode versions.versionCode
 
         buildConfigField "String", "WHATS_NEW", '""'
@@ -91,12 +91,16 @@ android {
             }
         }
         droidvim {
-            jniLibs.srcDirs += ['src/main/jniLibs']
-            if (abiArm) jniLibs.srcDirs += ['src/main-arm/jniLibs']
-            if (abiX86) jniLibs.srcDirs += ['src/main-x86/jniLibs']
             res.srcDirs += ['src/droidvim/res', 'src/vim/res']
-            if (abiArm) res.srcDirs += ['src/main-arm/res', 'src/vim-arm/res']
-            if (abiX86) res.srcDirs += ['src/main-x86/res', 'src/vim-x86/res']
+            jniLibs.srcDirs += ['src/main/jniLibs']
+            if (abiArm) {
+                res.srcDirs += ['src/main-arm/res', 'src/vim-arm/res']
+                jniLibs.srcDirs += ['src/main-arm/jniLibs', 'src/vim-arm/jniLibs']
+            }
+            if (abiX86) {
+                res.srcDirs += ['src/main-x86/res', 'src/vim-x86/res']
+                jniLibs.srcDirs += ['src/main-x86/jniLibs', 'src/vim-x86/jniLibs']
+            }
         }
     }
 
