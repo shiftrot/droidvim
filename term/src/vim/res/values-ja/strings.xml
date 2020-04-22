@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="help_url">https://droidterm-e8a40.firebaseapp.com/droidvim/ja-JP</string>
+    <string name="help_git">https://droidterm-e8a40.firebaseapp.com/droidvim/ja-JP/index.html#git-libpath</string>
+
     <string name="summary_color_preference">表示色を変更した後は再起動をおすすめします.</string>
     <string name="summary_ambiwidth_preference">日本語フォント用に一部文字を全角文字として扱う. (:help ambiwidth)</string>
     <string name="summary_home_dir_chooser_preference">`.vimrc`と`.vim`は`$HOME`から読み込まれます. (要再起動)</string>

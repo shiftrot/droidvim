@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="help_url">https://droidterm-e8a40.firebaseapp.com/droidvim</string>
+    <string name="help_git">https://droidterm-e8a40.firebaseapp.com/droidvim/index.html#git-libpath</string>
+
     <string name="summary_color_preference">After changing the terminal color, we recommended restart this app.</string>
     <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts. (:help ambiwidth)</string>
     <string name="summary_home_dir_chooser_preference">`.vimrc` and `.vim` are read from `$HOME` (Restart required)</string>

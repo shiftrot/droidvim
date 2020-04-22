@@ -471,7 +471,7 @@
     <string name="scroll_to_bottom">Bottom</string>
     <string name="tutorial">Vim tutorial</string>
     <string name="help">Help</string>
-    <string name="help_url">http://example.com</string>
+    <string name="help_url">https://github.com/jackpal/Android-Terminal-Emulator/wiki</string>
     <string name="activity_term_here_title">Term here</string>
     <!-- BEGIN SHORTCUT RELATED STRINGS -->
     <!-- AndroidManifest.xml -->
