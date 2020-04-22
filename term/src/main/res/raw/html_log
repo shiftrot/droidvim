@@ -13,8 +13,9 @@
             body {
                 font:100% meiryo,arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;
                 line-height: 1.4em
-                word-wrap: break-word;
-                overflow-wrap : break-word;
+                word-break: break-all;
+                word-wrap: break-all;
+                overflow-wrap : break-all;
             }
             var,
             samp,
@@ -29,6 +30,7 @@
                 font-family: monospace;
                 _font-family: monospace;
                 font-size: 1.0rem;
+                white-space: pre-wrap;
             }
         </style>
     </head>

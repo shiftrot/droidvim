@@ -1594,7 +1594,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                 snackbar.show();
                             }
                         } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
-                            String strings = getCurrentEmulatorView().getTranscriptText();
+                            doHideSoftKeyboard();
+                            String strings = getCurrentEmulatorView().getTranscriptText().trim();
                             showTextInWebview("html_log", strings);
                         } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
                             if (keepScreen) mKeepScreenEnableAuto = false;
@@ -1876,7 +1877,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (FLAVOR_VIM) {
                 strings = getCurrentEmulatorView().getTranscriptCurrentText();
             } else {
-                strings = getCurrentEmulatorView().getTranscriptText();
+                strings = getCurrentEmulatorView().getTranscriptText().trim();
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 showTextInWebview("html_text", strings);
@@ -3607,7 +3608,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             clip.setText(str);
             mes = getString(R.string.toast_clipboard);
         } else if (mode == 1) {
-            str = getCurrentEmulatorView().getTranscriptText();
+            str = getCurrentEmulatorView().getTranscriptText().trim();
             clip.setText(str);
             mes = getString(R.string.toast_clipboard);
         } else if (mode == 2) {
@@ -3615,7 +3616,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doShareIntentText(str);
             return;
         } else if (mode == 3) {
-            str = getCurrentEmulatorView().getTranscriptText();
+            str = getCurrentEmulatorView().getTranscriptText().trim();
             doShareIntentText(str);
             return;
         } else {
