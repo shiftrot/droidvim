@@ -60,6 +60,13 @@
         android:entryValues="@array/entryvalues_composingtext_preference"
         android:dialogTitle="@string/dialog_title_composingtext_preference"/>
 
+    <SwitchPreference
+        android:key="statusbar_icon"
+        android:defaultValue="true"
+        android:title="@string/title_statusbar_icon_preference"
+        android:summaryOn="@string/summary_statusbar_icon_on_preference"
+        android:summaryOff="@string/summary_statusbar_icon_off_preference"/>
+
     <ListPreference
         android:key="theme"
         android:defaultValue="@string/pref_theme_default"
@@ -68,13 +75,6 @@
         android:entries="@array/entries_theme_preference"
         android:entryValues="@array/entryvalues_theme_preference"
         android:dialogTitle="@string/dialog_title_theme_preference"/>
-
-    <SwitchPreference
-        android:key="statusbar_icon"
-        android:defaultValue="true"
-        android:title="@string/title_statusbar_icon_preference"
-        android:summaryOn="@string/summary_statusbar_icon_on_preference"
-        android:summaryOff="@string/summary_statusbar_icon_off_preference"/>
 
     <Preference
         android:key="notification"

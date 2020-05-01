@@ -109,6 +109,7 @@ public class TermSettings {
     private int mImeDefaultInputtype;
     private int mViCooperativeMode;
 
+    public static final String STATUSBAR_ICON_KEY = "statusbar_icon";
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String FUNCTIONBAR_KEY = "functionbar";
     private static final String FUNCTIONBAR_NAVIAGATION_BUTTON_KEY = "functionbar_navigation_button";
@@ -126,10 +127,10 @@ public class TermSettings {
     private static final String FONTFILE_KEY = "fontfile";
     private static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String FORCE_FLUSH_DRAW_KEY = "force_flush_drawtext";
-    private static final String THEME_KEY = "theme";
+    public static final String THEME_KEY = "theme";
     private static final String KEEP_SCREEN_AT_STARTUP_KEY = "keepscreen_at_startup";
     private static final String KEEP_SCREEN_TIME_KEY = "keepscreentime";
-    private static final String COLOR_KEY = "color";
+    public static final String COLOR_KEY = "color";
     private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";

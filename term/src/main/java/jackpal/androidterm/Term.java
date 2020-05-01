@@ -608,8 +608,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         mSettings.readPrefs(sharedPreferences);
-        setDrawerButtons();
-        recreate();
+        if (TermSettings.THEME_KEY.equals(s) || TermSettings.COLOR_KEY.equals(s) || TermSettings.STATUSBAR_ICON_KEY.equals(s)) {
+            setDrawerButtons();
+            recreate();
+        }
     }
 
     private void onLastKey() {

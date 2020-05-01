@@ -216,7 +216,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            boolean showStatusIcon = pref.getBoolean("statusbar_icon", true);
+            boolean showStatusIcon = pref.getBoolean(TermSettings.STATUSBAR_ICON_KEY, true);
             String channelId = getText(R.string.application_term_app) + "_channel";
             setNotificationChannel(channelId, showStatusIcon);
             Notification notification = buildNotification(channelId, showStatusIcon);
