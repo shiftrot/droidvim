@@ -778,7 +778,7 @@ final class TermVimInstaller {
     }
 
     static String getArch() {
-        return TermService.getArch();
+        return TermService.getARCH();
     }
 
     static String getProp(String propName) {
