@@ -86,6 +86,11 @@ public class UriToPath {
             }
         }
         String path = Uri.decode(uri.toString());
+        final String AUTHORITY_DROIDVIM = "content://" + BuildConfig.APPLICATION_ID + ".storage.documents/tree/";
+        if (path != null && path.startsWith(AUTHORITY_DROIDVIM)) {
+            path = path.substring(AUTHORITY_DROIDVIM.length());
+            if (new File(path).exists()) return path;
+        }
         final String AUTHORITY_TRESORIT = "content://com.tresorit.mobile.provider/external_files/";
         if (path != null && path.matches("^" + AUTHORITY_TRESORIT + ".*$")) {
             path = Environment.getExternalStorageDirectory().toString() + path.substring(AUTHORITY_TRESORIT.length() - 1);

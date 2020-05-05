@@ -424,9 +424,10 @@
     <string name="summary_startup_chooser_preference_scoped_storage">\"初期コマンド\"の\"cd %STARTUP_DIR%\"を\"cd /path/to/dir\"へ変更してください.</string>
 
     <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると, ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
+    <string name="vimrc_home_directory_warning_message">\n\nviminfo:\nviminfoはファイルの属性変更を必要とします. 以下をあなたの.vimrcに追加してください.\n\n`set viminfo+=n$APPFILES/home/.viminfo`</string>
     <string name="choose_startup_directory_message">起動時のディレクトリを選択します.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリを起動時のディレクトリに設定することができます.</string>
     <string name="select_directory_message">ディレクトリを選択</string>
-    <string name="invalid_directory">書き込めないか, 不正なディレクトリです.\n内部ストレージのディレクトリを選択してください.</string>
+    <string name="invalid_directory">書き込めないか, 不正なディレクトリです.</string>
     <string name="copy_startup_dir">選択したパスがクリップボードへコピーされました.\n起動時のディレクトリを指定したい場合は, `.vimrc`に以下を追加してみてください.\n\ncd </string>
     <string name="select_directory">選択</string>
     <string name="reset_directory">デフォルト</string>

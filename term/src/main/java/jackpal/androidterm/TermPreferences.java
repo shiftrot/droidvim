@@ -50,6 +50,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.documentfile.provider.DocumentFile;
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
@@ -631,14 +633,28 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
                             bld.setMessage(activity.getString(R.string.invalid_directory));
                         } else if (new File(path).canWrite()) {
+                            String vimrcMessage = "";
                             if (request == REQUEST_HOME_DIRECTORY) {
                                 editor.putString("home_path", path);
+                                if (FLAVOR_VIM && !path.startsWith("/data")) {
+                                    vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
+                                }
                             } else if (request == REQUEST_STARTUP_DIRECTORY) {
                                 editor.putString("startup_path", path);
                             }
                             editor.apply();
                             bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path);
+                            bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
+                            if (!vimrcMessage.equals("")) {
+                                bld.setNeutralButton(this.getString(R.string.copy_to_clipboard), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                                                .getManager(getApplicationContext());
+                                        clip.setText("set viminfo+=n$APPFILES/home/.viminfo");
+                                    }
+                                });
+                            }
                         } else {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
                             bld.setMessage(activity.getString(R.string.invalid_directory));
@@ -753,6 +769,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         String path = null;
         path = UriToPath.getPath(activity.getApplicationContext(), uri);
         if (path != null && new File(path).canWrite()) return path;
+        final String AUTHORITY_DROIDVIM = "content://" + BuildConfig.APPLICATION_ID + ".storage.documents/tree/";
         String scheme = uri.getScheme();
         if ("file".equals(scheme)) {
             path = uri.getPath();
@@ -777,6 +794,13 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         } catch (Exception e) {
                             return null;
                         }
+                    }
+                }
+                String uriPath = Uri.decode(uri.toString());
+                if (uriPath.startsWith(AUTHORITY_DROIDVIM)) {
+                    uriPath = uriPath.substring(AUTHORITY_DROIDVIM.length());
+                    if (new File(uriPath).exists()) {
+                        return uriPath;
                     }
                 }
             } catch (UnsupportedEncodingException e) {

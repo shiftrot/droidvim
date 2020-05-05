@@ -459,9 +459,10 @@
     <string name="summary_startup_chooser_preference_scoped_storage">Change \"cd %STARTUP_DIR%\" in \"Initial command\" to \"cd /path/to/dir\".</string>
 
     <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default by pressing \"Default\" button.</string>
+    <string name="vimrc_home_directory_warning_message">\n\nviminfo:\nviminfo requires changing file attributes. Add the following to your .vimrc:\n\n`set viminfo+=n$APPFILES/home/.viminfo`</string>
     <string name="choose_startup_directory_message">Choose startup directory.\n\"Default\" button to set startup directory as home directory.</string>
     <string name="select_directory_message">Chooose directory</string>
-    <string name="invalid_directory">Directory without write permission or invalid directory.\nPlease choose internal storage directory.</string>
+    <string name="invalid_directory">Directory without write permission or invalid directory.</string>
     <string name="copy_startup_dir">The selected path has been copied to the clipboard.\nIf you want to specify the directory at startup, try adding the following to your `.vimrc`: \n\ncd </string>
     <string name="select_directory">Select</string>
     <string name="reset_directory">Default</string>

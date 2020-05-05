@@ -40,6 +40,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     @SuppressLint("SdCardPath")
     private static final String BASE_DEFAULT_DIR = "/data/data/com.droidvim/files/home";
     private static String mBASEDIR = BASE_DEFAULT_DIR;
+    private static String mSUMMARY = "HOME";
 
     private static final String[] DEFAULT_ROOT_PROJECTION = new String[]{
             Root.COLUMN_ROOT_ID,
@@ -66,14 +67,23 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public boolean onCreate() {
+        setBaseDir();
+        return true;
+    }
+
+    private void setBaseDir() {
         try {
-            if (getContext() != null) mBASEDIR = getContext().getFilesDir().getPath();
+            if (getContext() != null) mBASEDIR = getContext().getFilesDir().getAbsolutePath() + "/home";
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-            mBASEDIR = pref.getString("home_path", BASE_DEFAULT_DIR);
+            String appHOME = pref.getString("home_path", mBASEDIR);
+            if ("".equals(appHOME) || mBASEDIR.equals(appHOME)) {
+                mSUMMARY = getContext().getString(R.string.title_home_path_preference);
+            } else {
+                mSUMMARY = mBASEDIR;
+            }
         } catch (Exception e) {
             // Do nothing
         }
-        return true;
     }
 
     @Override
@@ -83,15 +93,14 @@ public class LocalStorageProvider extends DocumentsProvider {
         String title = TITLE;
         if (getContext() != null) {
             title = getContext().getString(R.string.application_term_app);
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-            mBASEDIR = pref.getString("home_path", mBASEDIR);
+            setBaseDir();
         }
         row = result.newRow();
         File homeDir = new File(mBASEDIR);
         row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(homeDir));
         row.add(Root.COLUMN_TITLE, title);
-        row.add(Root.COLUMN_SUMMARY, getContext().getString(R.string.title_home_path_preference));
+        row.add(Root.COLUMN_SUMMARY, mSUMMARY);
         row.add(Root.COLUMN_ICON, R.mipmap.ic_launcher);
         int FLAGS = Root.FLAG_LOCAL_ONLY | Root.FLAG_SUPPORTS_CREATE | Root.FLAG_SUPPORTS_SEARCH | Root.FLAG_SUPPORTS_RECENTS;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
