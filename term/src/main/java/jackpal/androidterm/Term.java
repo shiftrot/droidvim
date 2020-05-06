@@ -2842,7 +2842,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mLibrary = -1;
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
             bld.setIcon(android.R.drawable.ic_dialog_alert);
-            bld.setTitle(getString(R.string.crash_title));
+            bld.setTitle(getString(R.string.crash_title) + " (" + getArch() + ")");
             bld.setMessage(getString(R.string.crash_message));
             bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int m) {

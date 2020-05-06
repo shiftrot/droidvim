@@ -451,7 +451,7 @@
     <string name="dialog_titleime_shortcuts_action_preference">IME shortcut action</string>
 
     <string name="title_home_dir_chooser_preference">Home directory</string>
-    <string name="set_home_directory">The directory has been set to the following location:\n\n</string>
+    <string name="set_home_directory">The directory has been set to the following location (Restart required):\n\n</string>
     <string name="summary_home_dir_chooser_preference"></string>
     <string name="title_startup_chooser_preference">Startup directory</string>
     <string name="set_startup_directory">The directory has been set to the following location:\n\n</string>
