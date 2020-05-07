@@ -153,6 +153,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_FILE_DELETE = 3;
     public static final int REQUEST_DOCUMENT_TREE = 10;
     public static final int REQUEST_COPY_DOCUMENT_TREE_TO_HOME = 11;
+    public static final int REQUEST_WEBVIEW_ACTIVITY = 15;
+    public static final int REQUEST_HTML_LOG_ACTIVITY = REQUEST_WEBVIEW_ACTIVITY + 1;
+    public static final int WEBVIEW_DEFAULT_FONT_SIZE = 140;
+    private static final String WEBVIEW_FONT_SIZE = "mWebViewFontSize";
+    private static final String WEBVIEW_HTML_LOG_FONT_SIZE = "mHtmlLogWebViewFontSize";
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     public static final int REQUEST_STORAGE = 10000;
     public static final int REQUEST_STORAGE_DELETE = 10001;
@@ -699,8 +704,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString() + "/intent";
         FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
         FILE_INTENT = TermService.getAPPFILES() + "/.intent";
-
-        WebViewActivity.setFontSize(new PrefValue(this).getInt("mWebViewSize", 140));
 
         updatePrefs();
         setDrawerButtons();
@@ -1736,12 +1739,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             e.printStackTrace();
         }
 
-        int webViewSize = WebViewActivity.getFontSize();
-        PrefValue pv = new PrefValue(this);
-        if (webViewSize != pv.getInt("mWebViewSize", 140)) {
-            pv.setInt("mWebViewSize", webViewSize);
-        }
-
         super.onStop();
     }
 
@@ -2480,6 +2477,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         switch (request) {
+            case REQUEST_WEBVIEW_ACTIVITY:
+            case REQUEST_HTML_LOG_ACTIVITY:
+                int webViewSize = WebViewActivity.getFontSize();
+                String fontSizeId = request == REQUEST_WEBVIEW_ACTIVITY ? WEBVIEW_FONT_SIZE : WEBVIEW_HTML_LOG_FONT_SIZE;
+                PrefValue pv = new PrefValue(this);
+                if (webViewSize != pv.getInt(fontSizeId, WEBVIEW_DEFAULT_FONT_SIZE)) {
+                    pv.setInt(fontSizeId, webViewSize);
+                }
+                break;
             case REQUEST_DOCUMENT_TREE:
                 if (result == RESULT_OK && data != null) {
                 }
@@ -3213,7 +3219,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             }
                             intent = new Intent(this, WebViewActivity.class);
                             intent.putExtra("url", file.toString());
-                            startActivity(intent);
+                            WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
+                            startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
                             return;
                         } catch (Exception webViewErr) {
                             Log.d(TermDebug.LOG_TAG, webViewErr.getMessage());
@@ -3255,7 +3262,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra("url", uri.toString());
                     PackageManager pm = this.getApplicationContext().getPackageManager();
-                    if (intent.resolveActivity(pm) != null) startActivity(intent);
+                    if (intent.resolveActivity(pm) != null) {
+                        WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
+                        startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
+
+                    }
                 } else {
                     intent.setAction(action);
                     PackageManager pm = this.getApplicationContext().getPackageManager();
@@ -3640,7 +3651,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent;
         intent = new Intent(this, WebViewActivity.class);
         intent.putExtra("url", file.toString());
-        startActivity(intent);
+        WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_HTML_LOG_FONT_SIZE, 140));
+        startActivityForResult(intent, REQUEST_HTML_LOG_ACTIVITY);
     }
 
     private void doPaste() {

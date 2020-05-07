@@ -125,7 +125,7 @@ public class WebViewActivity extends Activity {
         int viewId = R.layout.webview_activity;
         if (bundle != null) {
             String url = bundle.getString("url");
-            if (url != null && url.startsWith(TermService.getTMPDIR())) {
+            if (url != null && url.contains("/tmp/html/text.html")) {
                 viewId = R.layout.webview_text_activity;
             }
         }
