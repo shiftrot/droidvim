@@ -5,7 +5,9 @@ buildscript {
         'versionCode' : 1,
         'compileSdk'  : 29,
         'targetSdk'   : 29,
-        'minSdk'      : 16
+        'minSdk'      : 16,
+        'sourceCompatibility' : '1.8',
+        'targetCompatibility' : '1.8'
     ]
 
     ext {
