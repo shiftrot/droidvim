@@ -16,7 +16,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.system.Os;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -51,7 +53,6 @@ import java.util.zip.ZipInputStream;
 import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
@@ -831,7 +832,11 @@ final class TermVimInstaller {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Snackbar.make(activity.findViewById(R.id.term_coordinator_layout_top), message, LENGTH_LONG).show();
+                    Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.term_coordinator_layout_top), message, Snackbar.LENGTH_LONG);
+                    View snackbarView = snackbar.getView();
+                    TextView tv= (TextView) snackbarView.findViewById(R.id.snackbar_text);
+                    tv.setMaxLines(3);
+                    snackbar.show();
                 }
             });
         } catch (Exception e) {
