@@ -182,15 +182,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
             else if (new File(libPath + "/libarm.so").exists()) cpu = "arm";
         }
 
-        // FIXME: Kindle fire
-        // 64bit : After 2015
-        if (Build.MANUFACTURER.equals("Amazon")) {
-            if ((cpu != null) && (!Build.MODEL.matches("KFOT|KFTT|KFJWI|KFJWA|KFSOWI|KFTHWA|KFTHWI|KFAPWA|KFAPWI|KFARWI|KFASWI|KFSAWA|KFSAWI|KFTBWI|KFMEWI|KFFOWI"))) {
-                cpu = cpu.contains("arm") ? "arm64" : "x86_64";
-                mArchOverrideMode = true;
-            }
-        }
-
         if (cpu != null) {
             if (raw) return cpu;
             if (cpu.contains("64")) {
