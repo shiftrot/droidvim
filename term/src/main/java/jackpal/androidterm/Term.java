@@ -619,8 +619,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         mSettings.readPrefs(sharedPreferences);
-        if (TermSettings.THEME_KEY.equals(s) || TermSettings.COLOR_KEY.equals(s) || TermSettings.STATUSBAR_ICON_KEY.equals(s)) {
-            setDrawerButtons();
+        setDrawerButtons();
+        if (TermSettings.THEME_KEY.equals(s)
+                || TermSettings.COLOR_KEY.equals(s)
+                || TermSettings.STATUSBAR_ICON_KEY.equals(s)
+                ) {
             recreate();
         }
     }
@@ -946,8 +949,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String[] appFilers = {
                 "com.android.documentsui",
                 "com.google.android.documentsui",
-                ""};
-        String app = appFilers[0];
+                };
+        String app = "";
         for (String pname : appFilers) {
             if (isAppInstalled(pname)) {
                 app = pname;
