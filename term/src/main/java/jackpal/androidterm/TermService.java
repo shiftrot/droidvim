@@ -328,6 +328,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
         String vim = mVIMRUNTIME_INSTALL_DIR;
 
+        if (!bFirst) cmd = cmd.replaceAll("(^|\n)-vim.app", "$1" + "bash.app");
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1" + replace);
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
