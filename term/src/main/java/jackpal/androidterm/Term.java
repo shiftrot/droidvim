@@ -4273,6 +4273,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     public void onClick(View v) {
         EmulatorView view = getCurrentEmulatorView();
+        if (view == null) return;
         switch (v.getId()) {
             case R.id.button_navigation_ime_toggle:
             case R.id.button_ime_toggle:
@@ -4521,11 +4522,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     void alert(String message) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setMessage(message);
-        bld.setPositiveButton(android.R.string.ok, null);
-        Log.d(TermDebug.LOG_TAG, "Showing alert dialog: " + message);
-        bld.create().show();
+        try {
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            if (bld == null) return;
+            bld.setMessage(message);
+            bld.setPositiveButton(android.R.string.ok, null);
+            Log.d(TermDebug.LOG_TAG, "Showing alert dialog: " + message);
+            bld.create().show();
+        } catch (Exception e) {
+            // Do nothing
+        }
     }
 
     private void showImageDialog(AlertDialog dialog, String mes, int id) {
