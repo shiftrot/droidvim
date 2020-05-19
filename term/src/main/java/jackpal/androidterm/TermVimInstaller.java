@@ -163,6 +163,10 @@ final class TermVimInstaller {
                 if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                     installSoZip(path, "busybox");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "busybox_")));
+                    installSoTar(path, "unzip");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
+                    installSoTar(path, "zip");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
                     installSoTar(path, "bash");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
                     if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
@@ -233,6 +237,10 @@ final class TermVimInstaller {
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "busybox_")));
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
+                    installSoTar(path, "unzip");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
+                    installSoTar(path, "zip");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         setMessage(activity, pd, "binaries - shell");
