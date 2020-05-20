@@ -129,7 +129,22 @@ public class WebViewActivity extends Activity {
                 viewId = R.layout.webview_text_activity;
             }
         }
-        setContentView(viewId);
+        try {
+            setContentView(viewId);
+        } catch (Exception e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setTitle(R.string.webview_missing_webview_package_error_title);
+            builder.setMessage(R.string.webview_missing_webview_package_error_message);
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            builder.create().show();
+            return;
+        }
         mWebView = findViewById(R.id.WebView);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUseWideViewPort(true);

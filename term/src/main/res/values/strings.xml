@@ -63,6 +63,8 @@
     <string name="reload_file_title">Reload this file</string>
     <string name="force_encoding">Choose encoding if you need.</string>
     <string name="webview_local_file_error">Local file can not be \"opened with intent\".</string>
+    <string name="webview_missing_webview_package_error_title">Missing WebView Package</string>
+    <string name="webview_missing_webview_package_error_message">The webview cannot be displayed, probably because the Android OS is doing a background update. Please try again later.</string>
 
     <string name="whats_new_title">What\'s new</string>
     <string name="tips_vim_title">Tips</string>

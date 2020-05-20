@@ -62,6 +62,7 @@
     <string name="reload_file_title">ファイル再読込</string>
     <string name="force_encoding">必要に応じてエンコードを選択します.</string>
     <string name="webview_local_file_error">ローカルファイルを「インテントで開く」ことはできません.</string>
+    <string name="webview_missing_webview_package_error_message">おそらくAndroid OSがバックグラウンドで更新を行っているため, webviewを表示できません. もう一度やり直してください.</string>
 
     <string name="tips_vim_title">Tips</string>
     <string name="tips_vim"></string>
