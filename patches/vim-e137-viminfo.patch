@@ -1,0 +1,20 @@
+diff --git a/src/viminfo.c b/src/viminfo.c
+index b014d7f21..8318c7955 100644
+--- a/src/viminfo.c
++++ b/src/viminfo.c
+@@ -3071,6 +3071,7 @@ write_viminfo(char_u *file, int forceit)
+ 	// write the new viminfo into, in the same directory as the
+ 	// existing viminfo file, which will be renamed once all writing is
+ 	// successful.
++#ifndef __ANDROID__
+ #ifdef UNIX
+ 	// For Unix we check the owner of the file.  It's not very nice to
+ 	// overwrite a user's viminfo file after a "su root", with a
+@@ -3095,6 +3096,7 @@ write_viminfo(char_u *file, int forceit)
+ 	    goto end;
+ 	}
+ #endif
++#endif
+ #ifdef MSWIN
+ 	// Get the file attributes of the existing viminfo file.
+ 	hidden = mch_ishidden(fname);

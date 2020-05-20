@@ -636,9 +636,9 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             String vimrcMessage = "";
                             if (request == REQUEST_HOME_DIRECTORY) {
                                 editor.putString("home_path", path);
-                                if (FLAVOR_VIM && !path.startsWith("/data")) {
-                                    vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
-                                }
+                                // if (FLAVOR_VIM && !path.startsWith("/data")) {
+                                //     vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
+                                // }
                             } else if (request == REQUEST_STARTUP_DIRECTORY) {
                                 editor.putString("startup_path", path);
                             }
