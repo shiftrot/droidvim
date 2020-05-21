@@ -368,7 +368,15 @@ final class TermVimInstaller {
         try {
             InputStream is = new FileInputStream(src);
             OutputStream os = new FileOutputStream(dst);
-            byte[] buf = new byte[1024 * 64];
+            return cpStream(is, os);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    static public boolean cpStream(InputStream is, OutputStream os) {
+        try {
+            byte[] buf = new byte[1024 * 4];
             int len = 0;
 
             while ((len = is.read(buf)) > 0) {
