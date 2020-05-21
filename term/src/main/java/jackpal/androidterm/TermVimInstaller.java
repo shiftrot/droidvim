@@ -161,8 +161,7 @@ final class TermVimInstaller {
             }
             if (!FLAVOR_VIM) {
                 if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                    installSoZip(path, "busybox");
-                    installZip(path, getInputStream(activity, getLocalLibId(activity, "busybox_")));
+                    installInternalBusybox(activity, path + "/usr/bin");
                     installSoTar(path, "unzip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
                     installSoTar(path, "zip");
@@ -233,8 +232,7 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries");
                     id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    installSoZip(path, "busybox");
-                    installZip(path, getInputStream(activity, getLocalLibId(activity, "busybox_")));
+                    installInternalBusybox(activity, path + "/usr/bin");
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
                     installSoTar(path, "unzip");
@@ -674,8 +672,40 @@ final class TermVimInstaller {
         }
     }
 
+    static private void installInternalBusybox(Activity activity, String target) {
+        try {
+            InputStream is = null;
+            final String arch = getArch();
+            final String SOLIB_PATH = TermService.getAPPLIB();
+            File soFile = new File(SOLIB_PATH + "/libbusybox_" + arch + ".so");
+            final File symlink = new File(target+"/busybox");
+            if (soFile.exists()) {
+/*
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    if (symlink.exists()) symlink.delete();
+                    Os.symlink(soFile.getAbsolutePath(), symlink.getAbsolutePath());
+                    return;
+                }
+*/
+                is = new FileInputStream(soFile);
+            } else {
+                is = getInputStream(activity, getLocalLibId(activity,"busybox_"));
+            }
+            if (is != null) {
+                if (symlink.exists()) symlink.delete();
+                cpStream(is , new FileOutputStream(symlink.getAbsolutePath()));
+                shell("chmod 755 " + symlink.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     static public boolean busybox(String cmd) {
-        String busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
+        String busybox = TermService.getAPPLIB() + "/busybox_"+ TermService.getARCH() +".so";
+        if (!new File(busybox).canExecute()) {
+            busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
+        }
         boolean canExecute = new File(busybox).canExecute();
         if (cmd == null || !canExecute) return canExecute;
 
