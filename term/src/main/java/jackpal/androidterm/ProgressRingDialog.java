@@ -21,7 +21,7 @@ class ProgressRingDialog extends DialogFragment {
 
     private Dialog mDialog;
     private CharSequence mTitle = "Task in progress";
-    private CharSequence mMessage = "Please wait for while.";
+    private CharSequence mMessage = "Please wait for a minute.";
     private boolean mCancelable = false;
 
     @Override

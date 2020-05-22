@@ -435,7 +435,7 @@ final class TermVimInstaller {
                                 mes = "ERROR : Time out.";
                                 mProgressToast = false;
                             } else {
-                                mes = "Please wait for while.";
+                                mes = mActivity.getString(R.string.message_please_wait);
                                 if (mProgressToastHandler != null) {
                                     mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
                                 }
