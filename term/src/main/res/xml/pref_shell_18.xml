@@ -8,7 +8,7 @@
         android:dialogTitle="@string/dialog_title_shell_preference"/>
 
     <EditTextPreference
-        android:key="initialcommand_rev5"
+        android:key="initialcommand_rev6"
         android:defaultValue="@string/pref_initialcommand_default"
         android:title="@string/title_initialcommand_preference"
         android:summary="@string/summary_initialcommand_preference"

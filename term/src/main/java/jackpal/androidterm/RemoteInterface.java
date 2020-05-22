@@ -72,7 +72,6 @@ public class RemoteInterface extends AppCompatActivity {
     public static CharSequence ShareText = null;
     private boolean mDoInstall = false;
     private final String DO_INSTALL = "echo -n -e \"\\0033[990t\"";
-    private final String BASH = "bash\n";
 
     private ServiceConnection mTSConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -381,10 +380,6 @@ public class RemoteInterface extends AppCompatActivity {
             }
         }
 
-        String bash = (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP &&
-                new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute())
-                ? BASH : "";
-        initialCommand = initialCommand.replaceAll("\n(-?vim.app)", "\n" + bash + "$1");
         try {
             TermSession session = Term.createTermSession(this, mSettings, initialCommand);
 

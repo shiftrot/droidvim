@@ -319,7 +319,9 @@ public class TermService extends Service implements TermSession.FinishCallback {
         String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
         String vim = mVIMRUNTIME_INSTALL_DIR;
 
-        if (!bFirst) cmd = cmd.replaceAll("(^|\n)-vim.app", "$1" + "bash.app");
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            cmd = cmd.replaceAll("(^|\n)bash", "$1#bash");
+        }
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1" + replace);
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
@@ -336,6 +338,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%VIM%", vim);
         cmd = cmd.replaceAll("\n#.*\n|\n\n", "\n");
         cmd = cmd.replaceAll("^#.*\n|\n#.*$|\n$", "");
+        cmd = cmd.replaceAll("(^|\n)bash([ \t]*|[ \t][^\n]+)?$", "$1bash.app$2");
         return cmd;
     }
 
