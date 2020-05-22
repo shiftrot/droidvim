@@ -66,11 +66,11 @@
         android:id="@+id/menu_share_text"
         android:title="@string/share_title"/>
     <item
-        android:id="@+id/menu_copy_screen"
-        android:title="@string/menu_copy_screen"/>
-    <item
         android:id="@+id/menu_screen"
         android:title="@string/screen"/>
+    <item
+        android:id="@+id/menu_copy_screen"
+        android:title="@string/menu_copy_screen"/>
     <item
         android:id="@+id/menu_reset"
         android:title="@string/reset"/>
