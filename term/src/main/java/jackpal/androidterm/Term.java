@@ -1063,7 +1063,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                     AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
                                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                                     bld.setMessage(R.string.storage_permission_granted);
-                                    bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
+                                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.dismiss();
                                         }
@@ -1413,6 +1413,63 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         mFirst = false;
         return cmd;
+    }
+
+    private void installFromRemotoInterface() {
+        String initialCmd = mSettings.getInitialCommand();
+        initialCmd = mTermService.getInitialCommand(initialCmd, true);
+        String postCmd = "";
+        String[] list = initialCmd.split("\n");
+        for (String str : list) {
+            if (str.matches("^(bash|vim.app).*")) {
+                postCmd = postCmd + str + "\n";
+            }
+        }
+
+        if (RemoteInterface.IntentCommand != null) {
+            postCmd += "\u001b" + RemoteInterface.IntentCommand + "\n";
+        }
+        if (RemoteInterface.ShareText != null) {
+            String filename = FILE_CLIPBOARD;
+            Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
+            postCmd += "\u001b" + ":ATEMod _paste\n";
+        }
+        final String riCmd = postCmd;
+        try {
+            mTermVimInstaller.doInstallVim(Term.this, new Runnable() {
+                @Override
+                public void run() {
+                    String cmd = riCmd;
+                    if (getCurrentTermSession() != null) {
+                        sendKeyStrings(cmd, false);
+                    } else {
+                        ShellTermSession.setPostCmd(cmd);
+                    }
+                    AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                    bld.setIcon(android.R.drawable.ic_dialog_alert);
+                    bld.setTitle(getString(R.string.title_remote_interface_installer_warning));
+                    bld.setMessage(getString(R.string.message_remote_interface_installer_warning));
+                    bld.setPositiveButton(getString(R.string.quit), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int m) {
+                            dialog.dismiss();
+                            sendKeyStrings(":confirm qa\r", true);
+                        }
+                    });
+                    bld.setNeutralButton(getString(R.string.button_continue), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int m) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dlg = bld.create();
+                    dlg.setCancelable(false);
+                    dlg.setCanceledOnTouchOutside(false);
+                    dlg.show();
+                    permissionCheckExternalStorage();
+                }
+            }, true);
+        } catch (Exception e) {
+            // Do nothing
+        }
     }
 
     private void showProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
@@ -2263,6 +2320,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 */
         }
         if (MRU_FILES > list.size()) MRU_FILES = list.size();
+        if (MRU_FILES == 0) {
+            filePicker();
+            return;
+        }
         final String[] items = new String[MRU_FILES];
         for (int i = 0; i < MRU_FILES; i++) {
             String item = list.get(i).getPath();
@@ -2671,28 +2732,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case 0xffff0990:
-                String cmd = "vim.app\n";
-                if (RemoteInterface.IntentCommand != null) {
-                    cmd += "\u001b" + RemoteInterface.IntentCommand + "\n";
-                }
-                if (RemoteInterface.ShareText != null) {
-                    String filename = FILE_CLIPBOARD;
-                    Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
-                    cmd += "\u001b" + ":ATEMod _paste\n";
-                }
-                final String riCmd = cmd;
-                mTermVimInstaller.doInstallVim(Term.this, new Runnable() {
-                    @Override
-                    public void run() {
-                        String cmd = riCmd;
-                        if (getCurrentTermSession() != null) {
-                            sendKeyStrings(cmd, false);
-                        } else {
-                            ShellTermSession.setPostCmd(cmd);
-                        }
-                        permissionCheckExternalStorage();
-                    }
-                }, true);
+                installFromRemotoInterface();
                 return true;
             case 0xffff0998:
                 if (mTermSessions.size() > 1) {

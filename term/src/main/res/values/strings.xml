@@ -508,9 +508,12 @@
 
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
+    <string name="button_continue">Continue</string>
     <string name="message_please_wait">Please wait for a minute.</string>
     <string name="install_runtime_doc_message">Would you like to install help files?</string>
     <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
+    <string name="title_remote_interface_installer_warning">Installation finished</string>
+    <string name="message_remote_interface_installer_warning">Please restart this app for the settings to take effect.\nYou can view the file without restarting this app, but you may not be able to write.</string>
     <string name="keyboard_warning">By default direct input is forced, so you may not be able to input non-alphanumeric characters from the physical keyboard.\nIn that case please try the following:\n\n- ◇ Button\n- IME shortcuts\n- Change \"Input mode at startup\" to \"Normal input\"\n- Change input mode with Vim script.\n\nPlease see the help for details.</string>
 
     <string name="extra">Extra</string>
