@@ -524,6 +524,7 @@
     <string name="activity_not_found">Activity not found.\nPlease try again.</string>
     <string name="external_storage">Open file...</string>
     <string name="storage_menu">Storage menu</string>
+    <string name="create_symlinks">Create symbolic links</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>

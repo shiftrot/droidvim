@@ -1199,38 +1199,41 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
             if (!storageDir.exists() && !storageDir.mkdirs()) {
                 Log.e(TermDebug.LOG_TAG, "Unable to mkdirs() for $HOME/storage");
+                alert("Unable to mkdirs() for $HOME/storage");
                 return;
             }
 
             File sharedDir = Environment.getExternalStorageDirectory();
-            Os.symlink(sharedDir.getAbsolutePath(), new File(storageDir, "shared").getAbsolutePath());
+            if (sharedDir.canWrite()) {
+                File symlink = new File(storageDir, "shared");
+                shell("rm " + symlink.getAbsolutePath());
+                Os.symlink(sharedDir.getAbsolutePath(), symlink.getAbsolutePath());
+            }
 
-            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            Os.symlink(downloadsDir.getAbsolutePath(), new File(storageDir, "downloads").getAbsolutePath());
-
-            File dcimDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-            Os.symlink(dcimDir.getAbsolutePath(), new File(storageDir, "dcim").getAbsolutePath());
-
-            File picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            Os.symlink(picturesDir.getAbsolutePath(), new File(storageDir, "pictures").getAbsolutePath());
-
-            File musicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-            Os.symlink(musicDir.getAbsolutePath(), new File(storageDir, "music").getAbsolutePath());
-
-            File moviesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-            Os.symlink(moviesDir.getAbsolutePath(), new File(storageDir, "movies").getAbsolutePath());
+            File appDir = new File(TermService.getAPPEXTFILES());
+            if (appDir.canWrite()) {
+                File symlink = new File(storageDir, "app-internal");
+                shell("rm " + symlink.getAbsolutePath());
+                Os.symlink(appDir.getAbsolutePath(), symlink.getAbsolutePath());
+            }
 
             final File[] dirs = context.getExternalFilesDirs(null);
             if (dirs != null && dirs.length > 1) {
                 for (int i = 1; i < dirs.length; i++) {
                     File dir = dirs[i];
                     if (dir == null) continue;
-                    String symlinkName = "external-" + i;
-                    Os.symlink(dir.getAbsolutePath(), new File(storageDir, symlinkName).getAbsolutePath());
+                    String symlinkName = "app-external-" + i;
+                    if (dir.canWrite()) {
+                        File symlink = new File(storageDir, symlinkName);
+                        shell("rm " + symlink.getAbsolutePath());
+                        Os.symlink(dir.getAbsolutePath(), symlink.getAbsolutePath());
+                    }
                 }
             }
+            alert("Symbolic links are created:\n\n"  + storageDir.toString());
         } catch (Exception e) {
-            Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
+            Log.e(TermDebug.LOG_TAG, "Error setting up symbolic link", e);
+            alert("Error setting up symbolic link");
         }
     }
 
@@ -1275,7 +1278,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String title = getString(R.string.scoped_storage_warning_title);
         String message = getString(R.string.scoped_storage_uninstall_warning_message);
         message += "\n - " + TermService.getAPPBASE();
-        message += "\n - " + TermService.getAPPEXTFILES();
+        message += "\n - (Internal / SD Card)/Android/data/" + BuildConfig.APPLICATION_ID;
         boolean first = mTermVimInstaller.ScopedStorageWarning;
         mTermVimInstaller.ScopedStorageWarning = false;
 
@@ -2363,6 +2366,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     intentMainActivity(APP_ONEDRIVE);
                 } else if (getString(R.string.clear_cache).equals(item)) {
                     confirmClearCache();
+                } else if (getString(R.string.create_symlinks).equals(item)) {
+                    setupStorageSymlinks(Term.this);
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)

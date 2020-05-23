@@ -533,7 +533,8 @@ final class TermVimInstaller {
                                 Os.symlink(target, symlink);
                             }
                         } else {
-                            busybox("ln -s " + file.getAbsolutePath() + " " + symlink);
+                            file.delete();
+                            shell("ln -s " + file.getAbsolutePath() + " " + symlink);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
