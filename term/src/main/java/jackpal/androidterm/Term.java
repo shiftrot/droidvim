@@ -319,6 +319,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
     private boolean mBackKeyPressed;
+
     @SuppressLint("SdCardPath")
     private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
     private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
@@ -340,6 +341,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private TermService mTermService;
     private boolean mHaveFullHwKeyboard = false;
     private boolean mUseKeyboardShortcuts;
+    private boolean mVolumeAsCursor = false;
     private Handler mHandler = new Handler();
     private int mPrevHaveFullHwKeyboard = -1;
     private boolean mHideFunctionBar = false;
@@ -1578,6 +1580,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void updatePrefs() {
         invalidateOptionsMenu();
         mUseKeyboardShortcuts = mSettings.getUseKeyboardShortcutsFlag();
+        mVolumeAsCursor = mSettings.getVolumeAsCursor();
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -2713,6 +2716,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mVolumeAsCursor) {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                int key = keyCode == KeyEvent.KEYCODE_VOLUME_UP ? KeycodeConstants.KEYCODE_DPAD_UP : KeycodeConstants.KEYCODE_DPAD_DOWN;
+                KeyEvent vdEvent = new KeyEvent(KeyEvent.ACTION_DOWN, key);
+                dispatchKeyEvent(vdEvent);
+                vdEvent = new KeyEvent(KeyEvent.ACTION_UP, key);
+                dispatchKeyEvent(vdEvent);
+                return true;
+            }
+        }
         /* The pre-Eclair default implementation of onKeyDown() would prevent
            our handling of the Back key in onKeyUp() from taking effect, so
            ignore it here */
@@ -2787,6 +2800,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     default:
                         return false;
                 }
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (mVolumeAsCursor) return true;
+                break;
             case KeyEvent.KEYCODE_MENU:
                 openOptionsMenu();
                 break;

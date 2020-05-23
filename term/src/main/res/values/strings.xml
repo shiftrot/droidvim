@@ -290,7 +290,7 @@
     <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>
     <string name="functionbar_preferences">Functionbar</string>
     <string name="summary_functionbar_preferences">Select the functionbar key to use.</string>
-    <string name="gesture_preferences">Gestures &amp; Back button</string>
+    <string name="gesture_preferences">Gestures &amp; Buttons</string>
 
     <string name="keyboard_preferences">Keyboard</string>
 
@@ -426,6 +426,7 @@
 
     <string name="title_mouse_tracking_preference">Send mouse events</string>
     <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
+    <string name="title_volume_as_cursor_tracking_preference">Volume button as cursor</string>
 
     <string name="title_use_keyboard_shortcuts">Use Keyboard Shortcuts</string>
     <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
