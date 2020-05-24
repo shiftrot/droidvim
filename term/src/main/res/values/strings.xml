@@ -548,8 +548,8 @@
     <string name="storage_hash_reopen">Reload</string>
     <string name="storage_delete_file">Delete file from storage.</string>
     <string name="title_internal_storage">Internal private storage</string>
-    <string name="clear_cache">Clear external storage cache</string>
-    <string name="confirm_clear_cache_message">Clear external storage cache.</string>
+    <string name="clear_cache">Clear storage cache</string>
+    <string name="confirm_clear_cache_message">Clear storage cache.</string>
     <string name="softkeyboard">keyboard</string>
 
     <string name="git_install_dialog_title">Install Git</string>
@@ -572,7 +572,7 @@
     <string name="donate_button">Donate</string>
     <string name="extra_button">Extra</string>
 
-    <string name="external_apps_preferences">External Apps &amp; Drawer</string>
+    <string name="external_apps_preferences">Drawer &amp; External Apps</string>
     <string name="external_app">Application name</string>
     <string name="external_app_activity">Activity</string>
     <string name="external_files_button">File Manager</string>
