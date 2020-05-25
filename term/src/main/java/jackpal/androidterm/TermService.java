@@ -132,6 +132,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         File tmpdir = new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
 
+        mVERSION_FILES_DIR = mAPPFILES;
+
         mTermSessions = new SessionList();
         install();
 
@@ -185,13 +187,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (cpu != null) {
             if (raw) return cpu;
             if (cpu.contains("64")) {
-                if (new File(getAPPEXTFILES() + "/.32bit").exists()) {
+                if (new File(getVersionFilesDir() + "/.32bit").exists()) {
                     mArchOverrideMode = true;
                     return cpu.contains("arm") ? "arm" : "x86";
                 }
                 return cpu;
             } else {
-                if (new File(getAPPEXTFILES() + "/.64bit").exists()) {
+                if (new File(getVersionFilesDir() + "/.64bit").exists()) {
                     mArchOverrideMode = true;
                     return cpu.contains("arm") ? "arm64" : "x86_64";
                 }
@@ -299,14 +301,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private static String mTMPDIR;
     private static String mHOME;
     private static String mSTARTUP_DIR;
+    private static String mVERSION_FILES_DIR;
     private static String mTERMINFO_INSTALL_DIR;
     private static String mVIMRUNTIME_INSTALL_DIR;
 
     public String getInitialCommand(String cmd, boolean bFirst) {
         if (cmd == null || cmd.equals("")) return cmd;
 
-        mTERMINFO_INSTALL_DIR = mAPPFILES + "/usr/share";
-        mVIMRUNTIME_INSTALL_DIR = mAPPEXTFILES;
         String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin" + ":\\$PATH";
         String ld_library_path = mLD_LIBRARY_PATH;
 
@@ -315,7 +316,9 @@ public class TermService extends Service implements TermSession.FinishCallback {
             mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:" + mLD_LIBRARY_PATH;
         }
 
+        mTERMINFO_INSTALL_DIR = mAPPFILES + "/usr/share";
         String terminfo = mTERMINFO_INSTALL_DIR + "/terminfo";
+        mVIMRUNTIME_INSTALL_DIR = mAPPFILES;
         String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
         String vim = mVIMRUNTIME_INSTALL_DIR;
 
@@ -377,6 +380,10 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static public String getTMPDIR() {
         return mTMPDIR;
+    }
+
+    static public String getVersionFilesDir() {
+        return mVERSION_FILES_DIR;
     }
 
     static public String getTerminfoInstallDir() {

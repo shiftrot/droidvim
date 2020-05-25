@@ -129,14 +129,10 @@ final class TermVimInstaller {
     }
 
     static String getInstallVersionFile(final Service service) {
-        String sdcard = TermService.getAPPEXTFILES();
-        return sdcard + "/version";
+        return TermService.getVersionFilesDir() + "/version";
     }
 
     static boolean doInstallTerm(final Activity activity) {
-        final String sdcard = TermService.getAPPEXTFILES();
-        final String appFiles = TermService.getAPPFILES();
-
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
         String terminfoDir = TermService.getTerminfoInstallDir();
         File dir = new File(terminfoDir + "/terminfo");
@@ -204,7 +200,7 @@ final class TermVimInstaller {
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
         ScopedStorageWarning = SCOPED_STORAGE && new PrefValue(activity).getBoolean("enableScopedStorageWarning", true);
         final String path = TermService.getAPPFILES();
-        final String sdcard = TermService.getAPPEXTFILES();
+        final String versionPath = TermService.getVersionFilesDir();
         INSTALL_ZIP = activity.getString(R.string.update_message);
         INSTALL_WARNING = "\n\n" + activity.getString(R.string.update_warning);
         if (FLAVOR_VIM) INSTALL_WARNING += "\n" + activity.getString(R.string.update_vim_warning);
@@ -242,7 +238,7 @@ final class TermVimInstaller {
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         setMessage(activity, pd, "binaries - shell");
-                        String local = sdcard + "/version.bash";
+                        String local = versionPath + "/version.bash";
                         String target = TermService.getTMPDIR() + "/version";
                         id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
                         copyScript(activity.getResources().openRawResource(id), target);
@@ -255,7 +251,7 @@ final class TermVimInstaller {
                                 shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                             }
                             id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
-                            copyScript(activity.getResources().openRawResource(id), sdcard + "/version.bash");
+                            copyScript(activity.getResources().openRawResource(id), versionPath + "/version.bash");
                         }
                         targetVer.delete();
 
@@ -300,8 +296,8 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("runtime_extra", "raw", activity.getPackageName());
                     installZip(runtimeDir, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
-                    copyScript(activity.getResources().openRawResource(id), sdcard + "/version");
-                    if (first) setupStorageSymlinks(activity.getApplicationContext());
+                    copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
+                    setupStorageSymlinks();
                     new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
@@ -549,20 +545,20 @@ final class TermVimInstaller {
         }
     }
 
-    static private void setupStorageSymlinks(final Context context) {
-        if (SCOPED_STORAGE) return;
+    static public void setupStorageSymlinks() {
         try {
             File storageDir = new File(TermService.getHOME());
             String symlink = "internalStorage";
 
-            if (new File(storageDir.getAbsolutePath() + "/" + symlink).exists()) {
-                return;
-            }
             File internalDir = Environment.getExternalStorageDirectory();
+            if (!internalDir.canWrite()) {
+                internalDir = new File(TermService.getAPPEXTFILES());
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                shell("rm " + new File(storageDir, symlink).getAbsolutePath());
                 Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
             } else {
-                busybox("ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
+                busybox("ln -sf " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
