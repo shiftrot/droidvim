@@ -514,6 +514,9 @@
     <string name="external_app_button">外部アプリ</string>
     <string name="external_files_button">ファイル管理</string>
     <string name="title_use_app_files_button">「ファイル管理」ボタン</string>
+    <string name="title_local_storage_provider_path_mode_preference">ローカルストレージプロバイダのパス</string>
+    <string name="summary_local_storage_provider_path_mode_preference">「ファイル管理」アプリに登録するパスを選択します.\n変更が反映されない場合はこのデバイスを再起動してください.</string>
+    <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
     <string name="title_external_app_button_preference">外部アプリボタン</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
     <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>

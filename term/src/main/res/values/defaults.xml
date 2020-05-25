@@ -59,6 +59,7 @@
     <bool name="pref_auto_hide_functionbar_default">false</bool>
     <integer name="pref_ime_shortcuts_action_default">60</integer>
     <integer name="pref_ime_inputtype_default">53</integer>
+    <string name="pref_local_storage_provider_path_mode_default">1</string>
     <string name="pref_mru_command_default">MRU</string>
     <string name="pref_external_app_id_default"></string>
     <bool name="pref_external_app_button_default">true</bool>

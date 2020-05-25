@@ -252,4 +252,16 @@
         <item>While Ctrl button is locked</item>
     </string-array>
 
+    <string-array name="entries_local_storage_provider_path_mode_preference">
+        <item>$APPEXTFILES</item>
+        <item>Startup directory\n(See \"Preference\" -> \"Shell\" -> \"Startup directory\")</item>
+        <item>$INTERNAL_STORAGE</item>
+    </string-array>
+
+    <string-array name="entries_local_storage_provider_path_mode_preference_value">
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+    </string-array>
+
 </resources>

@@ -582,6 +582,9 @@
     <string name="external_app_activity">Activity</string>
     <string name="external_files_button">File Manager</string>
     <string name="title_use_app_files_button">\"File Manager\" button</string>
+    <string name="title_local_storage_provider_path_mode_preference">Local Storage Provider path</string>
+    <string name="summary_local_storage_provider_path_mode_preference">Choose the path to register to \"File Manager\"\nIf the changes do not take effect, reboot this device.</string>
+    <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
     <string name="external_app_button">External App</string>
     <string name="title_external_app_button_preference">External App Button</string>
     <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
