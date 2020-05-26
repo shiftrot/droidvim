@@ -253,15 +253,14 @@
     </string-array>
 
     <string-array name="entries_local_storage_provider_path_mode_preference">
-        <item>$APPEXTFILES</item>
-        <item>Startup directory\n(See \"Preference\" -> \"Shell\" -> \"Startup directory\")</item>
-        <item>$INTERNAL_STORAGE</item>
+        <item>$APPEXTFILES\n(\"echo $APPEXTFILES\" to see the actual path.)</item>
+        <item>Startup directory\n(\"Preference\" -> \"Shell\" -> \"Startup directory\")</item>
+        <item>$INTERNAL_STORAGE\n(\"echo $INTERNAL_STORAGE\" to see the actual path.)</item>
     </string-array>
 
-    <string-array name="entries_local_storage_provider_path_mode_preference_value">
-        <item>1</item>
-        <item>2</item>
-        <item>0</item>
+    <string-array name="entries_scoped_storage_home_path_mode_preference">
+        <item>Default\n($APPFILES/home)</item>
+        <item>$APPEXTFILES\n(\"echo $APPEXTFILES\" to see the actual path.)</item>
     </string-array>
 
 </resources>

@@ -1059,18 +1059,18 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 } else {
                     addPreferencesFromResource(R.xml.pref_shell_20);
                 }
-                final String STARTUP_KEY = "startup_dir_chooser";
-                Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
-                prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mTermPreference != null && !SCOPED_STORAGE) {
-                            mTermPreference.startupDirectoryPicker(getActivity().getString(R.string.choose_startup_directory_message));
-                        }
-                        return true;
-                    }
-                });
                 if (!SCOPED_STORAGE) {
+                    final String STARTUP_KEY = "startup_dir_chooser";
+                    Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
+                    prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            if (mTermPreference != null && !SCOPED_STORAGE) {
+                                mTermPreference.startupDirectoryPicker(getActivity().getString(R.string.choose_startup_directory_message));
+                            }
+                            return true;
+                        }
+                    });
                     final String HOME_KEY = "home_dir_chooser";
                     Preference prefsHome = getPreferenceScreen().findPreference(HOME_KEY);
                     prefsHome.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

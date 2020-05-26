@@ -236,4 +236,15 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="entries_local_storage_provider_path_mode_preference_value">
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="entries_scoped_storage_home_path_mode_preference_value">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
 </resources>

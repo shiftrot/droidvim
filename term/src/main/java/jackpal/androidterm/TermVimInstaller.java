@@ -295,6 +295,8 @@ final class TermVimInstaller {
 
                     id = activity.getResources().getIdentifier("runtime_extra", "raw", activity.getPackageName());
                     installZip(runtimeDir, getInputStream(activity, id));
+                    id = activity.getResources().getIdentifier("startup_dir", "raw", activity.getPackageName());
+                    installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
                     setupStorageSymlinks();

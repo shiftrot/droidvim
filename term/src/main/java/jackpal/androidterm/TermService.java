@@ -104,7 +104,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
             defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
         }
         String homePath = prefs.getString("home_path", defValue);
-        if (!new File(homePath).canWrite()) homePath = defValue;
+        if (!new File(homePath).canWrite() || SCOPED_STORAGE) homePath = defValue;
         editor.putString("home_path", homePath);
         editor.apply();
         mHOME = homePath;
@@ -126,7 +126,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             mEXTSTORAGE = mHOME;
         }
-        if (SCOPED_STORAGE) mEXTSTORAGE = mHOME;
+        if (SCOPED_STORAGE) {
+            int modeHome = Integer.parseInt( prefs.getString("scoped_storage_home_path_mode", "0"));
+            mHOME = modeHome == 0 ? defValue : mAPPEXTFILES;
+            boolean modeStartup = prefs.getBoolean("scoped_storage_startup_path_is_home", false);
+            mSTARTUP_DIR = modeStartup ? mHOME : mAPPEXTFILES;
+            mEXTSTORAGE = mAPPEXTFILES;
+        }
         mTMPDIR = getCacheDir() + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
         File tmpdir = new File(mTMPDIR);

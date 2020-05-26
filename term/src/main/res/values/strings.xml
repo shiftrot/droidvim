@@ -460,6 +460,7 @@
     <string name="set_startup_directory">The directory has been set to the following location:\n\n</string>
     <string name="summary_startup_chooser_preference">Choose startup directory</string>
     <string name="summary_startup_chooser_preference_scoped_storage">Change \"cd %STARTUP_DIR%\" in \"Initial command\" to \"cd /path/to/dir\".</string>
+    <string name="dialog_title_scoped_storage_home_path_mode_preference">Choose home directory path</string>
 
     <string name="choose_home_directory_message">HOME directory:\nIf you change the HOME directory, you will not be able to change the attributes of the file.\nYou can restore the home directory to the default by pressing \"Default\" button.</string>
     <string name="vimrc_home_directory_warning_message">\n\nviminfo:\nviminfo requires changing file attributes. Add the following to your .vimrc:\n\n`set viminfo+=n$APPFILES/home/.viminfo`</string>
@@ -586,7 +587,9 @@
     <string name="external_files_button">File Manager</string>
     <string name="title_use_app_files_button">\"File Manager\" button</string>
     <string name="title_local_storage_provider_path_mode_preference">Local Storage Provider path</string>
-    <string name="summary_local_storage_provider_path_mode_preference">Choose the path to register to \"File Manager\"\nIf the changes do not take effect, reboot this device.</string>
+    <string name="summary_local_storage_provider_path_mode_preference">Choose the path to register to \"File Manager\".\nIt takes time for the setting change to take effect. If you want to change immediately, reboot this device.</string>
+    <string name="title_scoped_storage_startup_path_mode_preference">Use $HOME as Startup directory</string>
+    <string name="summary_scoped_storage_startup_path_mode_preference">Set the home directory as the startup directory.</string>
     <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
     <string name="external_app_button">External App</string>
     <string name="title_external_app_button_preference">External App Button</string>

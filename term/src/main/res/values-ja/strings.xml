@@ -424,6 +424,7 @@
     <string name="set_startup_directory">ディレクトリは, 次の場所に設定されました.\n\n</string>
     <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
     <string name="summary_startup_chooser_preference_scoped_storage">\"初期コマンド\"の\"cd %STARTUP_DIR%\"を\"cd /path/to/dir\"へ変更してください.</string>
+    <string name="dialog_title_scoped_storage_home_path_mode_preference">ホームディレクトリのパス</string>
 
     <string name="choose_home_directory_message">ホームディレクトリ:\nホームディレクトリを変更すると, ファイルの属性を変更することはできなくなります.\n\"デフォルト\"ボタンを押すことで, ホームディレクトリをデフォルトに戻すことができます.</string>
     <string name="vimrc_home_directory_warning_message">\n\nviminfo:\nviminfoはファイルの属性変更を必要とします. 以下をあなたの.vimrcに追加してください.\n\n`set viminfo+=n$APPFILES/home/.viminfo`</string>
@@ -516,7 +517,9 @@
     <string name="external_files_button">ファイル管理</string>
     <string name="title_use_app_files_button">「ファイル管理」ボタン</string>
     <string name="title_local_storage_provider_path_mode_preference">ローカルストレージプロバイダのパス</string>
-    <string name="summary_local_storage_provider_path_mode_preference">「ファイル管理」アプリに登録するパスを選択します.\n変更が反映されない場合はこのデバイスを再起動してください.</string>
+    <string name="summary_local_storage_provider_path_mode_preference">「ファイル管理」アプリに登録するパスを選択します.\n変更が反映されるまで時間がかかることがあります. 急ぎの場合はこのデバイスを再起動してください.</string>
+    <string name="title_scoped_storage_startup_path_mode_preference">起動時にホームディレクトリへ移動</string>
+    <string name="summary_scoped_storage_startup_path_mode_preference">スタートアップディレクトリとしてホームディレクトリを使用します.</string>
     <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
     <string name="title_external_app_button_preference">外部アプリボタン</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
