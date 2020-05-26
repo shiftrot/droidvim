@@ -818,6 +818,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 button = findViewById(R.id.drawer_clear_cache_button);
                 button.setVisibility(View.VISIBLE);
             }
+            mFilePickerItems.add(getString(R.string.backup_restore));
         }
         setExtraButton();
         findViewById(R.id.drawer_app_button).setOnClickListener(new OnClickListener() {
@@ -1238,6 +1239,29 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             Log.e(TermDebug.LOG_TAG, "Error setting up symbolic link", e);
             alert("Error setting up symbolic link");
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void backupAndRestoreHome() {
+        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
+
+        final String[] items = {getString(R.string.backup_home_directory), getString(R.string.restore_home_directory) };
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.backup_restore))
+            .setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getString(R.string.backup_home_directory).equals(items[which])) {
+                        showSnackbar(getString(R.string.message_please_wait));
+                        sendKeyStrings(":echo system(\"cpsync backup\")" + "\r", true);
+                    } else if (getString(R.string.restore_home_directory).equals(items[which])) {
+                        showSnackbar(getString(R.string.message_please_wait));
+                        sendKeyStrings(":echo system(\"cpsync restore\")" + "\r", true);
+                    }
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
     }
 
     private void populateViewFlipper() {
@@ -2433,6 +2457,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     confirmClearCache();
                 } else if (getString(R.string.create_symlinks).equals(item)) {
                     setupStorageSymlinks(Term.this);
+                } else if (getString(R.string.backup_restore).equals(item)) {
+                    backupAndRestoreHome();
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
@@ -3560,11 +3586,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 getString(R.string.create_or_delete),
         };
 
-        final String[] items = new String[base.length + storageApps.length + externalApps.length];
+        final String[] backup= {
+                getString(R.string.backup_restore)
+        };
+        final String[] items = new String[base.length + storageApps.length + externalApps.length + backup.length];
 
         System.arraycopy(base, 0, items, 0, base.length);
         System.arraycopy(appLabels, 0, items, base.length, storageApps.length);
         System.arraycopy(externalApps, 0, items, base.length + storageApps.length, externalApps.length);
+        System.arraycopy(backup, 0, items, base.length + storageApps.length + externalApps.length, backup.length);
 
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.storage_menu))
@@ -3583,6 +3613,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE);
                         } else if (externalAppLabel.equals(items[which])) {
                             externalApp();
+                        } else if (getString(R.string.backup_restore).equals(items[which])) {
+                            backupAndRestoreHome();
                         }
                     }
                 })
