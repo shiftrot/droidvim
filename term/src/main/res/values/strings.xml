@@ -535,8 +535,8 @@
     <string name="storage_menu">Storage menu</string>
     <string name="create_symlinks">Create symbolic links</string>
     <string name="backup_restore">Backup / Restore $HOME</string>
-    <string name="backup_home_directory">$HOME -> $APPEXTFILES</string>
-    <string name="restore_home_directory">$APPEXTFILES -> $HOME</string>
+    <string name="backup_home_directory">Backup $HOME</string>
+    <string name="restore_home_directory">Restore to $HOME</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>

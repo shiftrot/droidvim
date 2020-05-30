@@ -471,6 +471,8 @@
     <string name="storage_menu">ストレージメニュー</string>
     <string name="create_symlinks">シンボリックリンクの作成</string>
     <string name="backup_restore">$HOMEのバックアップ/リストア</string>
+    <string name="backup_home_directory">$HOMEをバックアップ</string>
+    <string name="restore_home_directory">$HOMEへリストア</string>
     <string name="create_or_delete">ストレージ</string>
     <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
     <string name="create_file">ファイル作成</string>

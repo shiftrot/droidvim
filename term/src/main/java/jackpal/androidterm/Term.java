@@ -51,6 +51,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.provider.DocumentsContract;
+import android.provider.OpenableColumns;
+import android.provider.Settings;
 import android.system.Os;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -91,6 +94,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -117,13 +121,23 @@ import java.util.Map;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.NotFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
@@ -151,6 +165,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_FILE_DELETE = 3;
     public static final int REQUEST_DOCUMENT_TREE = 10;
     public static final int REQUEST_COPY_DOCUMENT_TREE_TO_HOME = 11;
+    public static final int REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME = 12;
+    public static final int REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME = 13;
     public static final int REQUEST_WEBVIEW_ACTIVITY = 15;
     public static final int REQUEST_HTML_LOG_ACTIVITY = REQUEST_WEBVIEW_ACTIVITY + 1;
     public static final int WEBVIEW_DEFAULT_FONT_SIZE = 140;
@@ -1259,6 +1275,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void backupFromHome() {
+        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
+        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void restoreToHome() {
+        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
+        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupAndRestoreHome() {
         if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
 
@@ -1269,11 +1297,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (getString(R.string.backup_home_directory).equals(items[which])) {
-                        showSnackbar(getString(R.string.message_please_wait));
-                        sendKeyStrings(":echo system(\"cpsync backup\")" + "\r", true);
+                        backupFromHome();
+//                        showSnackbar(getString(R.string.message_please_wait));
+//                        sendKeyStrings(":echo system(\"cpsync backup\")" + "\r", true);
                     } else if (getString(R.string.restore_home_directory).equals(items[which])) {
-                        showSnackbar(getString(R.string.message_please_wait));
-                        sendKeyStrings(":echo system(\"cpsync restore\")" + "\r", true);
+                        restoreToHome();
+//                        showSnackbar(getString(R.string.message_please_wait));
+//                        sendKeyStrings(":echo system(\"cpsync restore\")" + "\r", true);
                     }
                 }
             })
@@ -2619,6 +2649,30 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (result == RESULT_OK && data != null) {
                 }
                 break;
+            case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
+            case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
+                if (result == RESULT_OK && data != null) {
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    Uri uri = data.getData();
+                    if (uri != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                            switch (request) {
+                                case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        ASFUtils.backupToTreeUri(Term.this, uri, TermService.getHOME());
+                                    }
+                                    break;
+                                case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
+                                    ASFUtils.restoreHomeFromTreeUri(Term.this, uri, TermService.getHOME());
+                                    break;
+                            }
+                        }
+                    }
+                }
+                break;
             case REQUEST_FILE_DELETE:
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
@@ -3638,7 +3692,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else if (externalAppLabel.equals(items[which])) {
                             externalApp();
                         } else if (getString(R.string.backup_restore).equals(items[which])) {
-                            backupAndRestoreHome();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                backupAndRestoreHome();
+                            } else {
+                                alert("This feature requires Android 5 or later.");
+                            }
                         } else if (getString(R.string.edit_vimrc).equals(items[which])) {
                             editVimrc();
                         }
