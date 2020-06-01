@@ -17,13 +17,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.documentfile.provider.DocumentFile;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -75,30 +72,27 @@ public class ASFUtils {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void backupToTreeUri(final Activity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
-        String local = rootUri.getPath();
-        if (local != null) local = local.replaceFirst("/tree/", "");
-        if (local != null && local.startsWith(TermService.getHOME())) {
-            final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-            bld.setMessage("The source and destination are the same.");
-            bld.setPositiveButton(android.R.string.ok, null);
-            showDialog(activity, bld.create());
-            return;
-        }
+        if (isHomeDirectory(activity, rootUri)) return;
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
         if (root != null) {
             if (isRootDirectory(root)) {
-                showSDCardRootError(activity);
+                alertDialog(activity, activity.getString(R.string.root_directory_error));
                 return;
             }
             final AlertDialog dlg = createProcessingDialog(activity);
             mProcessingDialog = dlg;
             showDialog(activity, dlg);
+            final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+            bld.setMessage(activity.getString(R.string.backup_restore_complete));
+            bld.setPositiveButton(android.R.string.ok, null);
+            final AlertDialog completeDlg = bld.create();
             try {
                 new Thread() {
                     @Override
                     public void run() {
                         try {
                             doBackupToTreeUri(activity, TermService.getHOME(), root);
+                            showDialog(activity, completeDlg);
                         } catch (Exception e) {
                             // Do nothing
                         } finally {
@@ -112,16 +106,32 @@ public class ASFUtils {
         }
     }
 
-    static boolean isRootDirectory(DocumentFile root) {
+    static private boolean isHomeDirectory(Activity activity, Uri rootUri) {
+        if (rootUri == null) return false;
+        String local = rootUri.getPath();
+        if (local != null) local = local.replaceFirst("/tree/", "");
+        if (local != null && local.startsWith(TermService.getHOME()) && new File(local).canWrite()) {
+            if (activity != null) {
+                final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setMessage(activity.getString(R.string.same_directory_error));
+                bld.setPositiveButton(android.R.string.ok, null);
+                showDialog(activity, bld.create());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    static private boolean isRootDirectory(DocumentFile root) {
         Uri uri = root.getUri();
         String path = uri.getPath();
         if (path != null && path.endsWith(":")) return true;
         return false;
     }
 
-    static void showSDCardRootError(Activity activity) {
+    static private void alertDialog(Activity activity, String message) {
         final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-        bld.setMessage(activity.getString(R.string.root_directory_error));
+        bld.setMessage(message);
         bld.setPositiveButton(android.R.string.ok, null);
         showDialog(activity, bld.create());
     }
@@ -208,7 +218,7 @@ public class ASFUtils {
         if (rootUri == null) return;
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
         if (isRootDirectory(root)) {
-            showSDCardRootError(activity);
+            alertDialog(activity, activity.getString(R.string.root_directory_error));
             return;
         }
         final AlertDialog dlg = createProcessingDialog(activity);
@@ -216,11 +226,16 @@ public class ASFUtils {
         String message = rootUri.getPath();
         if (message != null) setDialogMessage(activity, mProcessingDialog, message);
         showDialog(activity, dlg);
+        final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+        bld.setMessage(activity.getString(R.string.backup_restore_complete));
+        bld.setPositiveButton(android.R.string.ok, null);
+        final AlertDialog completeDlg = bld.create();
         new Thread() {
             @Override
             public void run() {
                 try {
                     doRestoreHomeFromTreeUri(activity, rootUri, path);
+                    showDialog(activity, completeDlg);
                 } catch (Exception e) {
                     // Do nothing
                 } finally {
@@ -232,19 +247,8 @@ public class ASFUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void doRestoreHomeFromTreeUri(final Activity activity, final Uri rootUri, final String path) {
-        final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-        String local = rootUri.getPath();
-        if (local != null) local = local.replaceFirst("/tree/", "");
-        if (local != null && local.startsWith(TermService.getHOME()) && new File(local).canWrite()) {
-            bld.setMessage("The source and destination are the same.");
-            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            showDialog(activity, bld.create());
-            return;
-        }
+        if (rootUri == null) return;
+        if (isHomeDirectory(activity, rootUri)) return;
         ContentResolver contentResolver = activity.getContentResolver();
         Uri childrenUri;
         try {
