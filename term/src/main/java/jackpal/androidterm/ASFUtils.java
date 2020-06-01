@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.RequiresApi;
@@ -75,21 +74,22 @@ public class ASFUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void backupToTreeUri(final Activity activity, final Uri rootUri, final String path) {
+        if (rootUri == null) return;
         String local = rootUri.getPath();
         if (local != null) local = local.replaceFirst("/tree/", "");
         if (local != null && local.startsWith(TermService.getHOME())) {
             final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
             bld.setMessage("The source and destination are the same.");
-            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
+            bld.setPositiveButton(android.R.string.ok, null);
             showDialog(activity, bld.create());
             return;
         }
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
         if (root != null) {
+            if (isRootDirectory(root)) {
+                showSDCardRootError(activity);
+                return;
+            }
             final AlertDialog dlg = createProcessingDialog(activity);
             mProcessingDialog = dlg;
             showDialog(activity, dlg);
@@ -110,6 +110,20 @@ public class ASFUtils {
                 // Do nothing
             }
         }
+    }
+
+    static boolean isRootDirectory(DocumentFile root) {
+        Uri uri = root.getUri();
+        String path = uri.getPath();
+        if (path != null && path.endsWith(":")) return true;
+        return false;
+    }
+
+    static void showSDCardRootError(Activity activity) {
+        final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+        bld.setMessage(activity.getString(R.string.root_directory_error));
+        bld.setPositiveButton(android.R.string.ok, null);
+        showDialog(activity, bld.create());
     }
 
     static private void doBackupToTreeUri(Activity activity, String rootPath, DocumentFile docRoot) {
@@ -191,6 +205,12 @@ public class ASFUtils {
     }
 
     static public void restoreHomeFromTreeUri(final Activity activity, final Uri rootUri, final String path) {
+        if (rootUri == null) return;
+        DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
+        if (isRootDirectory(root)) {
+            showSDCardRootError(activity);
+            return;
+        }
         final AlertDialog dlg = createProcessingDialog(activity);
         mProcessingDialog = dlg;
         String message = rootUri.getPath();

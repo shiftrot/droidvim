@@ -537,6 +537,7 @@
     <string name="backup_restore">Backup / Restore $HOME</string>
     <string name="backup_home_directory">Backup \"$HOME\"</string>
     <string name="restore_home_directory">Restore to \"$HOME\"</string>
+    <string name="root_directory_error">The root directory cannot be specified as the backup / restore destination.\nCreate or specify a subdirectory.</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>
