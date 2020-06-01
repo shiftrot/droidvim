@@ -53,9 +53,9 @@
 
     <string name="edit_vimrc">Edit .vimrc</string>
     <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME).\n\n</string>
-    <string name="edit_vimrc_message_symboliclink">- Symbolic link\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in $HOME.\n\n</string>
-    <string name="edit_vimrc_message_symboliclink_11">- Symbolic link\n 1. Copy Vimfiles to \"$APPEXTFILES\" using file manager (Files).\n 2. Create symbolic link in $HOME.\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to $HOME.\n\nSee help for details.</string>
+    <string name="edit_vimrc_message_symboliclink">- Symbolic link\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in \"$HOME\".\n\n</string>
+    <string name="edit_vimrc_message_symboliclink_11">- Symbolic link\n 1. Copy Vimfiles to \"$APPEXTFILES\" using file manager (Files).\n 2. Create symbolic link in \"$HOME\".\n\n</string>
+    <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".\n\nSee help for details.</string>
     <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
@@ -379,7 +379,7 @@
     <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>
 
     <string name="title_home_path_preference">HOME</string>
-    <string name="summary_home_path_preference">Path to a writable folder to be used as HOME. (Restart required)</string>
+    <string name="summary_home_path_preference">Path to a writable folder to be used as \"$HOME\". (Restart required)</string>
 
     <string name="control_key_dialog_title">Control and Function Keys</string>
     <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
@@ -535,8 +535,8 @@
     <string name="storage_menu">Storage menu</string>
     <string name="create_symlinks">Create symbolic links</string>
     <string name="backup_restore">Backup / Restore $HOME</string>
-    <string name="backup_home_directory">Backup $HOME</string>
-    <string name="restore_home_directory">Restore to $HOME</string>
+    <string name="backup_home_directory">Backup \"$HOME\"</string>
+    <string name="restore_home_directory">Restore to \"$HOME\"</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>
@@ -592,7 +592,7 @@
     <string name="title_use_app_files_button">\"File Manager\" button</string>
     <string name="title_local_storage_provider_path_mode_preference">Local Storage Provider path</string>
     <string name="summary_local_storage_provider_path_mode_preference">Choose the path to register to \"File Manager\".\nIt takes time for the setting change to take effect. If you want to change immediately, reboot this device.</string>
-    <string name="title_scoped_storage_startup_path_mode_preference">Use $HOME as Startup directory</string>
+    <string name="title_scoped_storage_startup_path_mode_preference">Use \"$HOME\" as Startup directory</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">Set the home directory as the startup directory.</string>
     <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
     <string name="external_app_button">External App</string>

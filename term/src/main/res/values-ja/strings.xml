@@ -52,9 +52,9 @@
 
     <string name="edit_vimrc">.vimrcを編集</string>
     <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.\n\n</string>
-    <string name="edit_vimrc_message_symboliclink">- シンボリックリンク\n 1. Vimfilesを内部ストレージへコピー\n 2. $HOMEにシンボリックリンクを作成\n\n</string>
-    <string name="edit_vimrc_message_symboliclink_11">- シンボリックリンク\n 1. ファイル管理(Files)を使用してVimfilesを$APPEXTFILESへコピー\n 2. $HOMEにシンボリックリンクを作成\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n "長押しメニュー→ストレージ→バックアップ/リストア"を使用して内部ストレージまたはSDカードのVimfilesを$HOMEへコピー.\n\n詳しくはヘルプを参照してください.</string>
+    <string name="edit_vimrc_message_symboliclink">- シンボリックリンク\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
+    <string name="edit_vimrc_message_symboliclink_11">- シンボリックリンク\n 1. ファイル管理(Files)を使用してVimfilesを\"$APPEXTFILES\"へコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
+    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.\n\n詳しくはヘルプを参照してください.</string>
     <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
     <string name="text_box">一行テキスト入力</string>
@@ -471,8 +471,8 @@
     <string name="storage_menu">ストレージメニュー</string>
     <string name="create_symlinks">シンボリックリンクの作成</string>
     <string name="backup_restore">$HOMEのバックアップ/リストア</string>
-    <string name="backup_home_directory">$HOMEをバックアップ</string>
-    <string name="restore_home_directory">$HOMEへリストア</string>
+    <string name="backup_home_directory">\"$HOME\"をバックアップ</string>
+    <string name="restore_home_directory">\"$HOME\"へリストア</string>
     <string name="create_or_delete">ストレージ</string>
     <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
     <string name="create_file">ファイル作成</string>
