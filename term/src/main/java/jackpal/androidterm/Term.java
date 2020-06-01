@@ -51,8 +51,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.provider.DocumentsContract;
-import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.system.Os;
 import android.text.TextUtils;
@@ -62,7 +60,6 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,12 +86,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -119,24 +124,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
-import androidx.documentfile.provider.DocumentFile;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceManager;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.NotFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
