@@ -819,6 +819,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 button.setVisibility(View.VISIBLE);
             }
             mFilePickerItems.add(getString(R.string.backup_restore));
+            if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.edit_vimrc));
         }
         setExtraButton();
         findViewById(R.id.drawer_app_button).setOnClickListener(new OnClickListener() {
@@ -1241,6 +1242,22 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    private void editVimrc() {
+        final Runnable editVimrc = new Runnable() {
+            public void run() {
+                chooseEditVimFiles();
+            }
+        };
+        String message = getString(R.string.edit_vimrc_message);
+        if (SCOPED_STORAGE) {
+            message += getString(R.string.edit_vimrc_message_symboliclink_11);
+        } else {
+            message += getString(R.string.edit_vimrc_message_symboliclink);
+        }
+        message += getString(R.string.edit_vimrc_message_backup_restore);
+        doWarningDialogRun(getString(R.string.edit_vimrc), message, "edit_vimrc", false, editVimrc);
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupAndRestoreHome() {
         if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
@@ -1552,7 +1569,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final CheckBox cb = view.findViewById(R.id.dont_show_again);
         final String warningKey = key;
         cb.setChecked(dontShowAgain);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.button_continue), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int m) {
                 if (cb.isChecked()) {
                     setPrefBoolean(Term.this, warningKey, false);
@@ -2007,7 +2024,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
         } else if (id == R.id.menu_edit_vimrc) {
-            chooseEditVimFiles();
+            editVimrc();
         } else if (id == R.id.menu_text_box) {
             setEditTextView(2);
         } else if (id == R.id.menu_drawer) {
@@ -2459,6 +2476,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     setupStorageSymlinks(Term.this);
                 } else if (getString(R.string.backup_restore).equals(item)) {
                     backupAndRestoreHome();
+                } else if (getString(R.string.edit_vimrc).equals(item)) {
+                    editVimrc();
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
@@ -3587,14 +3606,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         };
 
         final String[] backup= {
-                getString(R.string.backup_restore)
+            getString(R.string.backup_restore)
         };
+
         final String[] items = new String[base.length + storageApps.length + externalApps.length + backup.length];
 
-        System.arraycopy(base, 0, items, 0, base.length);
-        System.arraycopy(appLabels, 0, items, base.length, storageApps.length);
-        System.arraycopy(externalApps, 0, items, base.length + storageApps.length, externalApps.length);
-        System.arraycopy(backup, 0, items, base.length + storageApps.length + externalApps.length, backup.length);
+        int destPos = 0;
+        System.arraycopy(base, 0, items, destPos, base.length);
+        destPos += base.length;
+        System.arraycopy(appLabels, 0, items, destPos, storageApps.length);
+        destPos += storageApps.length;
+        System.arraycopy(externalApps, 0, items, destPos, externalApps.length);
+        destPos += externalApps.length;
+        System.arraycopy(backup, 0, items, destPos, backup.length);
 
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.storage_menu))
@@ -3615,6 +3639,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             externalApp();
                         } else if (getString(R.string.backup_restore).equals(items[which])) {
                             backupAndRestoreHome();
+                        } else if (getString(R.string.edit_vimrc).equals(items[which])) {
+                            editVimrc();
                         }
                     }
                 })

@@ -52,6 +52,10 @@
     <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)</string>
 
     <string name="edit_vimrc">Edit .vimrc</string>
+    <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME).\n\n</string>
+    <string name="edit_vimrc_message_symboliclink">- Symbolic link\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in $HOME.\n\n</string>
+    <string name="edit_vimrc_message_symboliclink_11">- Symbolic link\n 1. Copy Vimfiles to \"$APPEXTFILES\" using file manager (Files).\n 2. Create symbolic link in $HOME.\n\n</string>
+    <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to $HOME.\n\nSee help for details.</string>
     <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
