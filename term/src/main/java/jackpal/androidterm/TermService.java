@@ -121,6 +121,11 @@ public class TermService extends Service implements TermSession.FinishCallback {
             File[] dirs = this.getApplicationContext().getExternalFilesDirs(null);
             mAPPEXTFILES = dirs[sdcard].toString();
         }
+        try {
+            mAPPEXTHOME = getExternalFilesDir(null).getAbsolutePath() + "/home";
+        } catch (Exception e) {
+            mAPPEXTHOME = mAPPEXTFILES + "/home";
+        }
 
         mEXTSTORAGE = Environment.getExternalStorageDirectory().toString();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -302,6 +307,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private static String mAPPBASE;
     private static String mAPPFILES;
     private static String mAPPEXTFILES;
+    private static String mAPPEXTHOME;
     private static String mEXTSTORAGE;
     private static String mLD_LIBRARY_PATH;
     private static String mTMPDIR;
@@ -336,6 +342,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
+        cmd = cmd.replaceAll("%APPEXTHOME%", mAPPEXTHOME);
         cmd = cmd.replaceAll("%APPLIB%", mAPPLIB);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
@@ -424,6 +431,10 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static public String getAPPEXTFILES() {
         return mAPPEXTFILES;
+    }
+
+    static public String getAPPEXTHOME() {
+        return mAPPEXTHOME;
     }
 
     static public String getEXTSTORAGE() {

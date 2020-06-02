@@ -124,6 +124,8 @@ public class ASFUtils {
 
     static private boolean isRootDirectory(DocumentFile root) {
         Uri uri = root.getUri();
+        String authority = uri.getAuthority();
+        if ("com.android.providers.downloads.documents".equals(authority)) return true;
         String path = uri.getPath();
         if (path != null && path.endsWith(":")) return true;
         return false;

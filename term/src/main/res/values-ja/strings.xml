@@ -53,8 +53,8 @@
     <string name="edit_vimrc">.vimrcを編集</string>
     <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.\n\n</string>
     <string name="edit_vimrc_message_symboliclink">- シンボリックリンク\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
-    <string name="edit_vimrc_message_symboliclink_11">- シンボリックリンク\n 1. ファイル管理(Files)を使用してVimfilesを\"$APPEXTFILES\"へコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.\n\n詳しくはヘルプを参照してください.</string>
+    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.</string>
+    <string name="edit_vimrc_message_scoped_storage_backup_restore">- ファイルマネージャーから\"$APPEXTHOME\"のvimfiles.txtを 開いてください.\n- ドロワーメニュー→ストレージ→バックアップ/リストア\n- ヘルプ→Vimfiles</string>
     <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
     <string name="text_box">一行テキスト入力</string>
@@ -364,7 +364,7 @@
     <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
 
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
-    <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスは禁止されています.最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
+    <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
     <string name="google_filer_warning_message">ファイルマネージャーに「内部ストレージ」/「SDカード」が表示されない場合は, 右上の3ドットメニューから有効にしてください.</string>
 
@@ -473,9 +473,9 @@
     <string name="backup_restore">$HOMEのバックアップ/リストア</string>
     <string name="backup_home_directory">\"$HOME\"をバックアップ</string>
     <string name="restore_home_directory">\"$HOME\"へリストア</string>
-    <string name="root_directory_error">ルートディレクトリはバックアップ/リストア先に指定できません.\nサブディレクトリを作成/指定してください.</string>
+    <string name="root_directory_error">このストレージまたはディレクトリはバックアップ/リストア先に指定できません.\n内部ストレージまたはSDカードのディレクトリを指定してください.</string>
     <string name="same_directory_error">送り側と受け側が同じです.</string>
-    <string name="backup_restore_complete">バックアップ/リストアを完了しました.</string>
+    <string name="backup_restore_complete">バックアップ/リストアを完了しました.\n\n - タイムスタンプが新しいファイルのみバックアップ/リストアしました.\n - シンボリックリンクはバックアップ/リストアしませんでした.\n - ミラーリングは行っていません.</string>
     <string name="create_or_delete">ストレージ</string>
     <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
     <string name="create_file">ファイル作成</string>

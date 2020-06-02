@@ -36,29 +36,20 @@
         android:title="@string/title_verify_path_preference"
         android:summary="@string/summary_verify_path_preference"/>
 
-    <ListPreference
-        android:key="scoped_storage_home_path_mode"
-        android:defaultValue="@string/pref_scoped_storage_home_path_mode_default"
-        android:title="@string/title_home_dir_chooser_preference"
-        android:summary="@string/summary_home_dir_chooser_preference"
-        android:entries="@array/entries_scoped_storage_home_path_mode_preference"
-        android:entryValues="@array/entries_scoped_storage_home_path_mode_preference_value"
-        android:dialogTitle="@string/dialog_title_scoped_storage_home_path_mode_preference"/>
-
-    <SwitchPreference
-        android:key="scoped_storage_startup_path_is_home"
-        android:defaultValue="@bool/pref_scoped_storage_startup_path_is_home_default"
-        android:title="@string/title_scoped_storage_startup_path_mode_preference"
-        android:summary="@string/summary_scoped_storage_startup_path_mode_preference"/>
-
     <!-- <ListPreference -->
-    <!--     android:key="local_storage_provider_path_mode" -->
-    <!--     android:defaultValue="@string/pref_local_storage_provider_path_mode_default" -->
-    <!--     android:title="@string/title_local_storage_provider_path_mode_preference" -->
-    <!--     android:summary="@string/summary_local_storage_provider_path_mode_preference" -->
-    <!--     android:entries="@array/entries_local_storage_provider_path_mode_preference" -->
-    <!--     android:entryValues="@array/entries_local_storage_provider_path_mode_preference_value" -->
-    <!--     android:dialogTitle="@string/dialog_title_local_storage_provider_path_mode_preference"/> -->
+    <!--     android:key="scoped_storage_home_path_mode" -->
+    <!--     android:defaultValue="@string/pref_scoped_storage_home_path_mode_default" -->
+    <!--     android:title="@string/title_home_dir_chooser_preference" -->
+    <!--     android:summary="@string/summary_home_dir_chooser_preference" -->
+    <!--     android:entries="@array/entries_scoped_storage_home_path_mode_preference" -->
+    <!--     android:entryValues="@array/entries_scoped_storage_home_path_mode_preference_value" -->
+    <!--     android:dialogTitle="@string/dialog_title_scoped_storage_home_path_mode_preference"/> -->
+
+    <!-- <SwitchPreference -->
+    <!--     android:key="scoped_storage_startup_path_is_home" -->
+    <!--     android:defaultValue="@bool/pref_scoped_storage_startup_path_is_home_default" -->
+    <!--     android:title="@string/title_scoped_storage_startup_path_mode_preference" -->
+    <!--     android:summary="@string/summary_scoped_storage_startup_path_mode_preference"/> -->
 
     <Preference
         android:key="force_64bit"

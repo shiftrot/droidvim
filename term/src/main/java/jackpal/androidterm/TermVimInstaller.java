@@ -295,8 +295,10 @@ final class TermVimInstaller {
 
                     id = activity.getResources().getIdentifier("runtime_extra", "raw", activity.getPackageName());
                     installZip(runtimeDir, getInputStream(activity, id));
-                    id = activity.getResources().getIdentifier("startup_dir", "raw", activity.getPackageName());
-                    installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
+                    if (!new File(TermService.getAPPEXTHOME()).exists()) {
+                        id = activity.getResources().getIdentifier("app_ext_home", "raw", activity.getPackageName());
+                        installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
+                    }
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
                     setupStorageSymlinks();
@@ -548,13 +550,14 @@ final class TermVimInstaller {
     }
 
     static public void setupStorageSymlinks() {
+        if (SCOPED_STORAGE) return;
         try {
             File storageDir = new File(TermService.getHOME());
             String symlink = "internalStorage";
 
             File internalDir = Environment.getExternalStorageDirectory();
             if (!internalDir.canWrite()) {
-                internalDir = new File(TermService.getAPPEXTFILES());
+                internalDir = new File(TermService.getAPPEXTHOME());
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 shell("rm " + new File(storageDir, symlink).getAbsolutePath());

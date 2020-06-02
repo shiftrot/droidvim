@@ -1253,11 +1253,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         };
         String message = getString(R.string.edit_vimrc_message);
         if (SCOPED_STORAGE) {
-            message += getString(R.string.edit_vimrc_message_symboliclink_11);
+            message += getString(R.string.edit_vimrc_message_scoped_storage_backup_restore);
         } else {
             message += getString(R.string.edit_vimrc_message_symboliclink);
+            message += getString(R.string.edit_vimrc_message_backup_restore);
         }
-        message += getString(R.string.edit_vimrc_message_backup_restore);
         doWarningDialogRun(getString(R.string.edit_vimrc), message, "edit_vimrc", false, editVimrc);
     }
 
@@ -1277,21 +1277,50 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void backupAndRestoreHome() {
         if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
 
-        final String[] items = {getString(R.string.backup_home_directory), getString(R.string.restore_home_directory) };
+        final String[] items29 = {
+            getString(R.string.backup_home_directory),
+            getString(R.string.restore_home_directory)
+        };
+        final String[] itemsScopedStorage = {
+            getString(R.string.backup_home_directory),
+            getString(R.string.restore_home_directory),
+            getString(R.string.backup_home_to_appextfiles),
+            getString(R.string.restore_home_from_appextfiles)
+        };
+        final String[] items = (SCOPED_STORAGE) ? itemsScopedStorage : items29;
+
         new AlertDialog.Builder(this)
             .setTitle(getString(R.string.backup_restore))
             .setItems(items, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (getString(R.string.backup_home_directory).equals(items[which])) {
-                        backupFromHome();
-//                        showSnackbar(getString(R.string.message_please_wait));
-//                        sendKeyStrings(":echo system(\"cpsync backup\")" + "\r", true);
-                    } else if (getString(R.string.restore_home_directory).equals(items[which])) {
-                        restoreToHome();
-//                        showSnackbar(getString(R.string.message_please_wait));
-//                        sendKeyStrings(":echo system(\"cpsync restore\")" + "\r", true);
-                    }
+                    final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
+                    b.setIcon(android.R.drawable.ic_dialog_info);
+                    b.setMessage(items[which]);
+                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            if (getString(R.string.backup_home_directory).equals(items[which])) {
+                                backupFromHome();
+                            } else if (getString(R.string.restore_home_directory).equals(items[which])) {
+                                restoreToHome();
+                            } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
+                                showSnackbar(getString(R.string.message_please_wait));
+                                sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
+                            } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
+                                showSnackbar(getString(R.string.message_please_wait));
+                                sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
+                            }
+                        }
+                    });
+                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            backupAndRestoreHome();
+                        }
+                    });
+                    b.show();
                 }
             })
             .setNegativeButton(android.R.string.cancel, null)
@@ -1344,7 +1373,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mTermVimInstaller.ScopedStorageWarning = false;
 
         boolean warning = getPrefBoolean(Term.this, key, true);
-        if (!first && (!warning || mRandom.nextInt(50) != 1)) {
+        if (!first && (!warning || mRandom.nextInt(100) != 1)) {
             doExitShell();
             return;
         }

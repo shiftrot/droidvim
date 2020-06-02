@@ -54,8 +54,8 @@
     <string name="edit_vimrc">Edit .vimrc</string>
     <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME).\n\n</string>
     <string name="edit_vimrc_message_symboliclink">- Symbolic link\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in \"$HOME\".\n\n</string>
-    <string name="edit_vimrc_message_symboliclink_11">- Symbolic link\n 1. Copy Vimfiles to \"$APPEXTFILES\" using file manager (Files).\n 2. Create symbolic link in \"$HOME\".\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".\n\nSee help for details.</string>
+    <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".</string>
+    <string name="edit_vimrc_message_scoped_storage_backup_restore">- See vimfiles.txt in \"$APPEXTHOME\" via a file manager.\n- Drawer menu > Storage > Backup / Restore\n- help > Vimfiles</string>
     <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
@@ -393,8 +393,8 @@
 
     <string name="confirm_window_close_message">Close this window?</string>
 
-    <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
-    <string name="scoped_storage_first_warning_message">Scoped Storage:\n\"Scoped storage\" is enabled for this device. Therefore, direct access via Vim commands to other than the \"HOME directory\" is prohibited. First, use "Open File" in the drawer menu (Double tap on the screen).</string>
+    <string name="scoped_storage_warning_title">Scoped storage</string>
+    <string name="scoped_storage_first_warning_message">Scoped Storage:\n\"Scoped storage\" is enabled for this device. Therefore, direct access via Vim commands to other than the \"HOME directory\" is prohibited. Please use \"Open File\" in the drawer menu (Double tap on the screen).</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in the \"Home directory\" will be deleted when uninstalling.</string>
     <string name="google_filer_warning_message">If \"Internal Storage\" or \"SD card\" does not exist in the file manager, enable \"Show Internal storage\"/\"Show SD card\" via the 3-dot menu.</string>
 
@@ -537,9 +537,11 @@
     <string name="backup_restore">Backup / Restore $HOME</string>
     <string name="backup_home_directory">Backup \"$HOME\"</string>
     <string name="restore_home_directory">Restore to \"$HOME\"</string>
+    <string name="backup_home_to_appextfiles">\"$HOME\" > \"$APPEXTHOME\"</string>
+    <string name="restore_home_from_appextfiles">\"$APPEXTHOME\" > \"$HOME\"</string>
     <string name="same_directory_error">The source and destination are the same.</string>
-    <string name="root_directory_error">The root directory cannot be specified as the backup / restore destination.\nCreate or specify a subdirectory.</string>
-    <string name="backup_restore_complete">Backup / Restore completed.</string>
+    <string name="root_directory_error">This directory cannot be specified as a destination.\nPlease choose the directory of internal storage or SD card.</string>
+    <string name="backup_restore_complete">Backup / Restore completed.\n\n- Backup/Restore only copies files with new timestamp.\n- Backup/Restore does not copy symbolic links.\n- No mirroring.</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>
