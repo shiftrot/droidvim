@@ -51,10 +51,10 @@
     <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)</string>
 
     <string name="edit_vimrc">.vimrcを編集</string>
-    <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.\n\n</string>
+    <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.(詳しくはヘルプ参照)\n\n</string>
     <string name="edit_vimrc_message_symboliclink">- シンボリックリンク\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
     <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.</string>
-    <string name="edit_vimrc_message_scoped_storage_backup_restore">- ファイルマネージャーから\"$APPEXTHOME\"のvimfiles.txtを 開いてください.\n- ドロワーメニュー→ストレージ→バックアップ/リストア\n- ヘルプ→Vimfiles</string>
+    <string name="edit_vimrc_message_scoped_storage_backup_restore">- ドロワーメニュー→ストレージ→バックアップ/リストア\n- ファイルマネージャーから\"$APPEXTHOME\"のvimfiles.txtを開く.\n- ヘルプ→Vimfiles</string>
     <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
     <string name="text_box">一行テキスト入力</string>
@@ -366,7 +366,8 @@
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
-    <string name="google_filer_warning_message">ファイルマネージャーに「内部ストレージ」/「SDカード」が表示されない場合は, 右上の3ドットメニューから有効にしてください.</string>
+    <string name="google_file_chooser_warning_message">3ドットメニューで「内部ストレージ/SDカード」の「表示/非表示」を切り替えます.</string>
+    <string name="google_filer_app_warning_message">- 3ドットメニューで「内部ストレージ/SDカード」の「表示/非表示」を切り替えます.\n- Vimfiles(.vimrc, .vim)のバックアップには「ドロワーメニュー→ストレージ」のバックアップコマンドを使用してください.</string>
 
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
     <string name="permdesc_run_script">アプリケーションに対して，端末エミュレータに新規ウインドウを開かせ，インターネットやSDカードへのアクセスを含む，端末エミュレータが持つすべてのパーミッションでコマンドを実行することを許可する.</string>
@@ -477,7 +478,6 @@
     <string name="same_directory_error">送り側と受け側が同じです.</string>
     <string name="backup_restore_complete">バックアップ/リストアを完了しました.\n\n - タイムスタンプが新しいファイルのみバックアップ/リストアしました.\n - シンボリックリンクはバックアップ/リストアしませんでした.\n - ミラーリングは行っていません.</string>
     <string name="create_or_delete">ストレージ</string>
-    <string name="external_storage_warning">外部SDカードを読み書きする場合は\"ファイルを開く\"→\"3ドットメニュー\"→\"SDカードを表示\"を選択してください.</string>
     <string name="create_file">ファイル作成</string>
     <string name="delete_file">ファイル削除</string>
     <string name="app_files">ファイル管理</string>

@@ -762,6 +762,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setDrawerButtons() {
+        final String WARNING_ID_FILE_MANAGER = "file_manager_app_warning";
         if (FLAVOR_VIM) {
             int visiblity = mSettings.getExternalAppButtonMode() > 0 ? View.VISIBLE : View.GONE;
             if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visiblity = View.GONE;
@@ -864,7 +865,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         launchExternalApp(2, APP_FILER);
                     }
                 };
-                doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_file_chooser", false, runFiler);
+                doWarningDialogRun(null, getString(R.string.google_filer_app_warning_message), WARNING_ID_FILE_MANAGER, false, runFiler);
             }
         });
         findViewById(R.id.drawer_dropbox_button).setOnClickListener(new OnClickListener() {
@@ -2345,6 +2346,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void filePicker() {
+        final String WARNING_ID_FILE_PICKER = "google_storage_filer";
         final String mruCommand = mSettings.getMRUCommand();
         final LinkedList<SyncFileObserverMru> list = mSyncFileObserver.getMRU();
         final Runnable runFiler = new Runnable() {
@@ -2353,7 +2355,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         };
         if (mruCommand.equals("") || list == null || list.size() == 0) {
-            doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
+            doWarningDialogRun(null, getString(R.string.google_file_chooser_warning_message), WARNING_ID_FILE_PICKER, false, runFiler);
             return;
         }
         String mru = mruCommand.equals("MRU") ? getString(R.string.use_mru_cache) : getString(R.string.use_mru);
@@ -2365,7 +2367,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             public void onClick(DialogInterface dialog, int which) {
                 String item = items[which];
                 if (item.equals(getString(R.string.use_file_chooser))) {
-                    doWarningDialogRun(null, getString(R.string.google_filer_warning_message), "google_storage_filer", false, runFiler);
+                    doWarningDialogRun(null, getString(R.string.google_file_chooser_warning_message), WARNING_ID_FILE_PICKER, false, runFiler);
                 } else if (item.equals(getString(R.string.use_mru))) {
                     sendKeyStrings(mruCommand + "\r", true);
                 } else if (item.equals(getString(R.string.use_mru_cache))) {
