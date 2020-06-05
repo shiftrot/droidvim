@@ -158,6 +158,7 @@ final class TermVimInstaller {
             if (!FLAVOR_VIM) {
                 if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                     installInternalBusybox(activity, path + "/usr/bin");
+                    installBusyboxCommands();
                     installSoTar(path, "unzip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
                     installSoTar(path, "zip");
@@ -229,6 +230,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
                     installInternalBusybox(activity, path + "/usr/bin");
+                    installBusyboxCommands();
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
                     installSoTar(path, "unzip");
@@ -701,6 +703,12 @@ final class TermVimInstaller {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    static public void installBusyboxCommands() {
+        final File destDir = new File(TermService.getAPPFILES());
+        final File outDir = new File(TermService.getAPPFILES() + "/usr/bin");
+        shell("export APPFILES=" + destDir.toString(), outDir + "/busybox-setup all");
     }
 
     static public boolean busybox(String cmd) {
