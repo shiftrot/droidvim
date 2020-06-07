@@ -1474,6 +1474,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
     }
 
+    public int getAltKeyState() {
+        return mKeyListener.getAltKeyState();
+    }
+
+    public void setAltKeyState(int state) {
+        mKeyListener.setAltKeyState(state);
+        invalidate();
+    }
+
     private void pasteClipboard() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory.getManager(this.getContext());
         if (clip.hasText() == false) {

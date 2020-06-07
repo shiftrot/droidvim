@@ -882,6 +882,15 @@ class TermKeyListener {
         return mAltKey.isActive();
     }
 
+    public int getAltKeyState() {
+        return mAltKey.mState;
+    }
+
+    public void setAltKeyState(int state) {
+        mAltKey.mState = state;
+        updateCursorMode();
+    }
+
     public int getControlKeyState() {
         return mControlKey.mState;
     }

@@ -4477,10 +4477,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case R.id.button_navigation_esc:
             case R.id.button_esc:
-                if (view.getControlKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
+                if (view.getControlKeyState() != 0 || view.getAltKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
                     mInvertCursorDirection = getDefaultInvertCursorDirection();
                     setCursorDirectionLabel();
                     view.setControlKeyState(0);
+                    view.setAltKeyState(0);
                     break;
                 }
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
