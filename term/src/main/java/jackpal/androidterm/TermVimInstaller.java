@@ -1,6 +1,5 @@
 package jackpal.androidterm;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -99,6 +98,7 @@ final class TermVimInstaller {
                     doInstallVim(activity, whenDone, false);
                 }
             });
+            b.setCancelable(false);
             b.show();
         }
     }

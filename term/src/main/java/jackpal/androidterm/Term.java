@@ -3035,6 +3035,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doUninstallExtraContents() {
+        recoveryDelete();
+        mUninstall = false;
+    }
+
+    static public void recoveryDelete() {
         shell("rm -rf " + TermService.getAPPFILES() + "/usr");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.default");
