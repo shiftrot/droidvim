@@ -505,6 +505,16 @@
                         android:text="@string/key_ime"/>
 
                     <Button
+                        android:id="@+id/button_voice_input"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:minWidth="52dp"
+                        android:text="@string/key_voice_input"/>
+
+                    <Button
                         android:id="@+id/button_vim_paste"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -896,6 +906,16 @@
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
                 android:text="@string/key_toggle"/>
+
+            <Button
+                android:id="@+id/button_navigation_voice_input"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="44dp"
+                android:text="@string/key_voice_input"/>
 
             <Button
                 android:id="@+id/button_navigation_ime_toggle"

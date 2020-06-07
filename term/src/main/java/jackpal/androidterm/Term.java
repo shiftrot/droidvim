@@ -52,6 +52,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.speech.RecognizerIntent;
 import android.system.Os;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -150,6 +151,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final int REQUEST_FILE_PICKER = 2;
     public static final int REQUEST_FILE_DELETE = 3;
+    public static final int REQUEST_VOICE_INPUT = 5;
     public static final int REQUEST_DOCUMENT_TREE = 10;
     public static final int REQUEST_COPY_DOCUMENT_TREE_TO_HOME = 11;
     public static final int REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME = 12;
@@ -250,6 +252,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             new FunctionKey("functionbar_asterisk", R.id.button_asterisk, false),
             new FunctionKey("functionbar_pipe", R.id.button_pipe, false),
             new FunctionKey("functionbar_minus", R.id.button_minus, false),
+            new FunctionKey("functionbar_voice_input", R.id.button_voice_input, true),
             new FunctionKey("functionbar_vim_paste", R.id.button_vim_paste, true),
             new FunctionKey("functionbar_vim_yank", R.id.button_vim_yank, true),
             new FunctionKey("functionbar_softkeyboard", R.id.button_softkeyboard, false),
@@ -307,6 +310,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             new FunctionKey("navigationbar_menu_plus", R.id.button_navigation_menu_plus, false),
             new FunctionKey("navigationbar_menu_minus", R.id.button_navigation_menu_minus, false),
             new FunctionKey("navigationbar_menu_x", R.id.button_navigation_menu_x, false),
+            new FunctionKey("navigationbar_voice_input", R.id.button_navigation_voice_input, false),
             new FunctionKey("navigationbar_fn_toggle", R.id.button_navigation_fn_toggle, true),
             new FunctionKey("navigationbar_ime_toggle", R.id.button_navigation_ime_toggle, true),
             new FunctionKey("navigationbar_menu_user", R.id.button_navigation_menu_user, false),
@@ -2133,6 +2137,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             sendKeyStrings(":", false);
         } else if (key == 1255) {
             setFunctionBar(2);
+        } else if (key == 1257) {
+            VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
         } else if (key == 1260) {
             int action = mSettings.getImeShortcutsAction();
             if (action == 0) {
@@ -2650,6 +2656,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
         switch (request) {
+            case REQUEST_VOICE_INPUT:
+                if (result == RESULT_OK && data != null) {
+                    ArrayList<String> candidates = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if(candidates.size() > 0) {
+                        String str = candidates.get(0);
+                        TermSession session = getCurrentTermSession();
+                        if (session == null) return;
+                        session.write(str);
+                    }
+                }
+                break;
             case REQUEST_WEBVIEW_ACTIVITY:
             case REQUEST_HTML_LOG_ACTIVITY:
                 int webViewSize = WebViewActivity.getFontSize();
@@ -4276,6 +4293,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         }
                     }));
                     break;
+                case R.id.button_navigation_fn_toggle:
+                case R.id.button_navigation_ime_toggle:
+                    findViewById(fkey.resid).setOnClickListener(this);
+                    findViewById(fkey.resid).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
+                            return true;
+                        }
+                    });
+                    break;
                 default:
                     findViewById(fkey.resid).setOnClickListener(this);
                     break;
@@ -4471,6 +4499,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         EmulatorView view = getCurrentEmulatorView();
         if (view == null) return;
         switch (v.getId()) {
+            case R.id.button_voice_input:
+            case R.id.button_navigation_voice_input:
+                VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
+                break;
             case R.id.button_navigation_ime_toggle:
             case R.id.button_ime_toggle:
                 doToggleSoftKeyboard();

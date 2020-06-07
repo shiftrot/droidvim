@@ -219,6 +219,11 @@
             android:title="□"/>
 
         <CheckBoxPreference
+            android:key="functionbar_voice_input"
+            android:defaultValue="true"
+            android:title="@string/title_functionbar_voice_input"/>
+
+        <CheckBoxPreference
             android:key="functionbar_ime_toggle"
             android:defaultValue="false"
             android:title="@string/title_functionbar_ime_toggle"/>
@@ -388,6 +393,11 @@
             android:key="navigationbar_fn_toggle"
             android:defaultValue="true"
             android:title="@string/title_navigationbar_fn_toggle"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_voice_input"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_voice_input"/>
 
         <CheckBoxPreference
             android:key="navigationbar_ime_toggle"

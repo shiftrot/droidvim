@@ -1,16 +1,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
-        android:key="functionbar_navigation_button"
-        android:defaultValue="@bool/pref_functionbar_navigation_button_default"
-        android:title="@string/title_navigation_button_preference"
-        android:summary="@string/summary_navigation_button_preference"/>
-
-    <CheckBoxPreference
         android:key="functionbar"
         android:defaultValue="@bool/pref_functionbar_default"
         android:title="@string/title_functionbar_preference"
         android:summary="@string/summary_functionbar_preference"/>
+
+    <CheckBoxPreference
+        android:key="functionbar_navigation_button"
+        android:defaultValue="@bool/pref_functionbar_navigation_button_default"
+        android:title="@string/title_navigation_button_preference"
+        android:summary="@string/summary_navigation_button_preference"/>
 
     <CheckBoxPreference
         android:title="@string/title_auto_hide_functionbar"
@@ -219,6 +219,11 @@
             android:title="□"/>
 
         <CheckBoxPreference
+            android:key="functionbar_voice_input"
+            android:defaultValue="true"
+            android:title="@string/title_functionbar_voice_input"/>
+
+        <CheckBoxPreference
             android:key="functionbar_ime_toggle"
             android:defaultValue="false"
             android:title="@string/title_functionbar_ime_toggle"/>
@@ -388,6 +393,11 @@
             android:key="navigationbar_fn_toggle"
             android:defaultValue="true"
             android:title="@string/title_navigationbar_fn_toggle"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_voice_input"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_voice_input"/>
 
         <CheckBoxPreference
             android:key="navigationbar_ime_toggle"
