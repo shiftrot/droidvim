@@ -119,6 +119,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -231,90 +232,90 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private long mLastKeyPress = System.currentTimeMillis();
     private ArrayList<String> mFilePickerItems;
     private boolean mFirst = true;
-    private FunctionKey[] FunctionKeys = {
-            new FunctionKey("functionbar_esc", R.id.button_esc, false),
-            new FunctionKey("functionbar_ctrl", R.id.button_ctrl, true),
-            new FunctionKey("functionbar_alt", R.id.button_alt, false),
-            new FunctionKey("functionbar_tab", R.id.button_tab, true),
-            new FunctionKey("functionbar_up", R.id.button_up, false),
-            new FunctionKey("functionbar_down", R.id.button_down, false),
-            new FunctionKey("functionbar_left", R.id.button_left, false),
-            new FunctionKey("functionbar_right", R.id.button_right, false),
-            new FunctionKey("functionbar_page_up", R.id.button_page_up, false),
-            new FunctionKey("functionbar_page_down", R.id.button_page_down, false),
-            new FunctionKey("functionbar_backspace", R.id.button_backspace, false),
-            new FunctionKey("functionbar_enter", R.id.button_enter, false),
-            new FunctionKey("functionbar_i", R.id.button_i, false),
-            new FunctionKey("functionbar_colon", R.id.button_colon, true),
-            new FunctionKey("functionbar_slash", R.id.button_slash, false),
-            new FunctionKey("functionbar_plus", R.id.button_plus, false),
-            new FunctionKey("functionbar_equal", R.id.button_equal, false),
-            new FunctionKey("functionbar_asterisk", R.id.button_asterisk, false),
-            new FunctionKey("functionbar_pipe", R.id.button_pipe, false),
-            new FunctionKey("functionbar_minus", R.id.button_minus, false),
-            new FunctionKey("functionbar_voice_input", R.id.button_voice_input, true),
-            new FunctionKey("functionbar_vim_paste", R.id.button_vim_paste, true),
-            new FunctionKey("functionbar_vim_yank", R.id.button_vim_yank, true),
-            new FunctionKey("functionbar_softkeyboard", R.id.button_softkeyboard, false),
-            new FunctionKey("functionbar_invert", R.id.button_invert, true),
-            new FunctionKey("functionbar_menu", R.id.button_menu, true),
-            new FunctionKey("functionbar_menu_hide", R.id.button_menu_hide, true),
-            new FunctionKey("functionbar_menu_plus", R.id.button_menu_plus, false),
-            new FunctionKey("functionbar_menu_minus", R.id.button_menu_minus, false),
-            new FunctionKey("functionbar_menu_x", R.id.button_menu_x, false),
-            new FunctionKey("functionbar_ime_toggle", R.id.button_ime_toggle, false),
-            new FunctionKey("functionbar_menu_user", R.id.button_menu_user, true),
-            new FunctionKey("functionbar_menu_quit", R.id.button_menu_quit, true),
-            new FunctionKey("functionbar_next0", R.id.button_next_functionbar0, true),
-            new FunctionKey("functionbar_next2", R.id.button_next_functionbar2, true),
-            new FunctionKey("functionbar_prev", R.id.button_prev_functionbar, true),
-            new FunctionKey("functionbar_prev2", R.id.button_prev_functionbar2, true),
-            new FunctionKey("functionbar_m1", R.id.button_m1, true),
-            new FunctionKey("functionbar_m2", R.id.button_m2, true),
-            new FunctionKey("functionbar_m3", R.id.button_m3, true),
-            new FunctionKey("functionbar_m4", R.id.button_m4, true),
-            new FunctionKey("functionbar_m5", R.id.button_m5, true),
-            new FunctionKey("functionbar_m6", R.id.button_m6, true),
-            new FunctionKey("functionbar_m7", R.id.button_m7, true),
-            new FunctionKey("functionbar_m8", R.id.button_m8, true),
-            new FunctionKey("functionbar_m9", R.id.button_m9, true),
-            new FunctionKey("functionbar_m10", R.id.button_m10, true),
-            new FunctionKey("functionbar_m11", R.id.button_m11, true),
-            new FunctionKey("functionbar_m12", R.id.button_m12, true),
-            new FunctionKey("navigationbar_esc", R.id.button_navigation_esc, true),
-            new FunctionKey("navigationbar_ctrl", R.id.button_navigation_ctrl, false),
-            new FunctionKey("navigationbar_alt", R.id.button_navigation_alt, false),
-            new FunctionKey("navigationbar_tab", R.id.button_navigation_tab, false),
-            new FunctionKey("navigationbar_up", R.id.button_navigation_up, true),
-            new FunctionKey("navigationbar_down", R.id.button_navigation_down, true),
-            new FunctionKey("navigationbar_left", R.id.button_navigation_left, false),
-            new FunctionKey("navigationbar_right", R.id.button_navigation_right, false),
-            new FunctionKey("navigationbar_page_up", R.id.button_navigation_page_up, false),
-            new FunctionKey("navigationbar_page_down", R.id.button_navigation_page_down, false),
-            new FunctionKey("navigationbar_backspace", R.id.button_navigation_backspace, false),
-            new FunctionKey("navigationbar_enter", R.id.button_navigation_enter, false),
-            new FunctionKey("navigationbar_i", R.id.button_navigation_i, false),
-            new FunctionKey("navigationbar_colon", R.id.button_navigation_colon, false),
-            new FunctionKey("navigationbar_slash", R.id.button_navigation_slash, false),
-            new FunctionKey("navigationbar_equal", R.id.button_navigation_equal, false),
-            new FunctionKey("navigationbar_asterisk", R.id.button_navigation_asterisk, false),
-            new FunctionKey("navigationbar_pipe", R.id.button_navigation_pipe, false),
-            new FunctionKey("navigationbar_plus", R.id.button_navigation_plus, false),
-            new FunctionKey("navigationbar_minus", R.id.button_navigation_minus, false),
-            new FunctionKey("navigationbar_vim_paste", R.id.button_navigation_vim_paste, false),
-            new FunctionKey("navigationbar_vim_yank", R.id.button_navigation_vim_yank, false),
-            new FunctionKey("navigationbar_softkeyboard", R.id.button_navigation_softkeyboard, true),
-            new FunctionKey("navigationbar_invert", R.id.button_navigation_invert, false),
-            new FunctionKey("navigationbar_menu", R.id.button_navigation_menu, false),
-            new FunctionKey("navigationbar_menu_hide", R.id.button_navigation_menu_hide, false),
-            new FunctionKey("navigationbar_menu_plus", R.id.button_navigation_menu_plus, false),
-            new FunctionKey("navigationbar_menu_minus", R.id.button_navigation_menu_minus, false),
-            new FunctionKey("navigationbar_menu_x", R.id.button_navigation_menu_x, false),
-            new FunctionKey("navigationbar_voice_input", R.id.button_navigation_voice_input, false),
-            new FunctionKey("navigationbar_fn_toggle", R.id.button_navigation_fn_toggle, true),
-            new FunctionKey("navigationbar_ime_toggle", R.id.button_navigation_ime_toggle, true),
-            new FunctionKey("navigationbar_menu_user", R.id.button_navigation_menu_user, false),
-            new FunctionKey("navigationbar_menu_quit", R.id.button_navigation_menu_quit, false),
+    private FunctionKey[] mFunctionKeys = {
+            new FunctionKey(R.id.button_next_functionbar0, true , "functionbar_next0"           , "∧"   ),
+            new FunctionKey(R.id.button_esc              , false, "functionbar_esc"             , "Esc"  ),
+            new FunctionKey(R.id.button_ctrl             , true , "functionbar_ctrl"            , "Ctrl" ),
+            new FunctionKey(R.id.button_alt              , false, "functionbar_alt"             , "Alt"  ),
+            new FunctionKey(R.id.button_function_1       , true , "functionbar_tab"             , "Tab"  ),
+            new FunctionKey(R.id.button_function_2       , false, "functionbar_up"              , "▲"   ),
+            new FunctionKey(R.id.button_function_3       , false, "functionbar_down"            , "▼"   ),
+            new FunctionKey(R.id.button_function_4       , false, "functionbar_left"            , "◀"   ),
+            new FunctionKey(R.id.button_function_5       , false, "functionbar_right"           , "▶"   ),
+            new FunctionKey(R.id.button_function_6       , false, "functionbar_backspace"       , "BS"   ),
+            new FunctionKey(R.id.button_function_7       , false, "functionbar_enter"           , "↲"    ),
+            new FunctionKey(R.id.button_function_8       , false, "functionbar_page_up"         , "PU"   ),
+            new FunctionKey(R.id.button_function_9       , false, "functionbar_page_down"       , "PD"   ),
+            new FunctionKey(R.id.button_function_10      , true , "functionbar_colon"           , ":"    ),
+            new FunctionKey(R.id.button_function_11      , false, "functionbar_i"               , "i"    ),
+            new FunctionKey(R.id.button_function_12      , false, "functionbar_slash"           , "/"    ),
+            new FunctionKey(R.id.button_function_13      , false, "functionbar_plus"            , "+"    ),
+            new FunctionKey(R.id.button_function_14      , false, "functionbar_minus"           , "-"    ),
+            new FunctionKey(R.id.button_function_15      , false, "functionbar_equal"           , "="    ),
+            new FunctionKey(R.id.button_function_16      , false, "functionbar_asterisk"        , "*"    ),
+            new FunctionKey(R.id.button_function_17      , false, "functionbar_pipe"            , "|"    ),
+            new FunctionKey(R.id.button_function_18      , false, "functionbar_softkeyboard"    , "◇"   ),
+            new FunctionKey(R.id.button_function_19      , true , "functionbar_invert"          , "○"   ),
+            new FunctionKey(R.id.button_function_20      , true , "functionbar_menu_user"       , "□"   ),
+            new FunctionKey(R.id.button_function_21      , false, "functionbar_menu_x"          , "×"   ),
+            new FunctionKey(R.id.button_function_22      , false, "functionbar_menu_plus"       , "＋"   ),
+            new FunctionKey(R.id.button_function_23      , false, "functionbar_menu_minus"      , "－"   ),
+            new FunctionKey(R.id.button_function_24      , true , "functionbar_voice_input"     , "🎙"   ),
+            new FunctionKey(R.id.button_function_25      , false, "functionbar_ime_toggle"      , "✏"    ),
+            new FunctionKey(R.id.button_function_26      , true , "functionbar_vim_paste"       , "\"*p" ),
+            new FunctionKey(R.id.button_function_27      , true , "functionbar_vim_yank"        , "\"*yy"),
+            new FunctionKey(R.id.button_function_28      , true , "functionbar_menu_quit"       , "[Q]"  ),
+            new FunctionKey(R.id.button_function_29      , true , "functionbar_menu"            , "≡"   ),
+            new FunctionKey(R.id.button_function_30      , true , "functionbar_menu_hide"       , "∇"   ),
+            new FunctionKey(R.id.button_next_functionbar2, true , "functionbar_next2"           , "∧"   ),
+            new FunctionKey(R.id.button_prev_functionbar , true , "functionbar_prev"            , "∨"   ),
+            new FunctionKey(R.id.button_m1               , true , "functionbar_m1"              , "F1"   ),
+            new FunctionKey(R.id.button_m2               , true , "functionbar_m2"              , "F2"   ),
+            new FunctionKey(R.id.button_m3               , true , "functionbar_m3"              , "F3"   ),
+            new FunctionKey(R.id.button_m4               , true , "functionbar_m4"              , "F4"   ),
+            new FunctionKey(R.id.button_m5               , true , "functionbar_m5"              , "F5"   ),
+            new FunctionKey(R.id.button_m6               , true , "functionbar_m6"              , "F6"   ),
+            new FunctionKey(R.id.button_m7               , true , "functionbar_m7"              , "F7"   ),
+            new FunctionKey(R.id.button_m8               , true , "functionbar_m8"              , "F8"   ),
+            new FunctionKey(R.id.button_m9               , true , "functionbar_m9"              , "F9"   ),
+            new FunctionKey(R.id.button_m10              , true , "functionbar_m10"             , "F10"  ),
+            new FunctionKey(R.id.button_m11              , true , "functionbar_m11"             , "F11"  ),
+            new FunctionKey(R.id.button_m12              , true , "functionbar_m12"             , "F12"  ),
+            new FunctionKey(R.id.button_prev_functionbar2, true , "functionbar_prev2"           , "∨"   ),
+            new FunctionKey(R.id.button_navigation_1     , true , "navigationbar_esc"           , "Esc"  ),
+            new FunctionKey(R.id.button_navigation_2     , false, "navigationbar_ctrl"          , "Ctrl" ),
+            new FunctionKey(R.id.button_navigation_3     , false, "navigationbar_alt"           , "Alt"  ),
+            new FunctionKey(R.id.button_navigation_4     , false, "navigationbar_tab"           , "Tab"  ),
+            new FunctionKey(R.id.button_navigation_5     , true , "navigationbar_up"            , "▲"   ),
+            new FunctionKey(R.id.button_navigation_6     , true , "navigationbar_down"          , "▼"   ),
+            new FunctionKey(R.id.button_navigation_7     , false, "navigationbar_left"          , "◀"   ),
+            new FunctionKey(R.id.button_navigation_8     , false, "navigationbar_right"         , "▶"   ),
+            new FunctionKey(R.id.button_navigation_9     , false, "navigationbar_backspace"     , "BS"   ),
+            new FunctionKey(R.id.button_navigation_10    , false, "navigationbar_enter"         , "↲"    ),
+            new FunctionKey(R.id.button_navigation_11    , false, "navigationbar_page_up"       , "PU"   ),
+            new FunctionKey(R.id.button_navigation_12    , false, "navigationbar_page_down"     , "PD"   ),
+            new FunctionKey(R.id.button_navigation_13    , false, "navigationbar_colon"         , ":"    ),
+            new FunctionKey(R.id.button_navigation_14    , false, "navigationbar_i"             , "i"    ),
+            new FunctionKey(R.id.button_navigation_15    , false, "navigationbar_slash"         , "/"    ),
+            new FunctionKey(R.id.button_navigation_16    , false, "navigationbar_plus"          , "+"    ),
+            new FunctionKey(R.id.button_navigation_17    , false, "navigationbar_minus"         , "-"    ),
+            new FunctionKey(R.id.button_navigation_18    , false, "navigationbar_equal"         , "="    ),
+            new FunctionKey(R.id.button_navigation_19    , false, "navigationbar_asterisk"      , "*"    ),
+            new FunctionKey(R.id.button_navigation_20    , false, "navigationbar_pipe"          , "|"    ),
+            new FunctionKey(R.id.button_navigation_21    , true , "navigationbar_softkeyboard"  , "◇"   ),
+            new FunctionKey(R.id.button_navigation_22    , false, "navigationbar_invert"        , "○"   ),
+            new FunctionKey(R.id.button_navigation_23    , false, "navigationbar_menu_user"     , "□"   ),
+            new FunctionKey(R.id.button_navigation_24    , false, "navigationbar_menu_x"        , "×"   ),
+            new FunctionKey(R.id.button_navigation_25    , false, "navigationbar_menu_plus"     , "＋"   ),
+            new FunctionKey(R.id.button_navigation_26    , false, "navigationbar_menu_minus"    , "－"   ),
+            new FunctionKey(R.id.button_navigation_27    , false, "navigationbar_vim_paste"     , "\"*p" ),
+            new FunctionKey(R.id.button_navigation_28    , false, "navigationbar_vim_yank"      , "\"yy" ),
+            new FunctionKey(R.id.button_navigation_29    , true , "navigationbar_fn_toggle"     , "➖"   ),
+            new FunctionKey(R.id.button_navigation_30    , false, "navigationbar_voice_input"   , "🎙"   ),
+            new FunctionKey(R.id.button_navigation_31    , true , "navigationbar_ime_toggle"    , "✏"    ),
+            new FunctionKey(R.id.button_navigation_32    , false, "navigationbar_menu_quit"     , "[Q]"  ),
+            new FunctionKey(R.id.button_navigation_33    , false, "navigationbar_menu"          , "≡"   ),
+            new FunctionKey(R.id.button_navigation_34    , false, "navigationbar_menu_hide"     , "∇"   ),
     };
     private TermViewFlipper mViewFlipper;
     private SessionList mTermSessions;
@@ -2224,23 +2225,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setCursorDirectionLabel() {
         if (!getInvertCursorDirection()) {
-            ((Button) findViewById(R.id.button_right)).setText("▶");
-            ((Button) findViewById(R.id.button_left)).setText("◀");
-            ((Button) findViewById(R.id.button_up)).setText("▲");
-            ((Button) findViewById(R.id.button_down)).setText("▼");
-            ((Button) findViewById(R.id.button_navigation_right)).setText("▶");
-            ((Button) findViewById(R.id.button_navigation_left)).setText("◀");
-            ((Button) findViewById(R.id.button_navigation_up)).setText("▲");
-            ((Button) findViewById(R.id.button_navigation_down)).setText("▼");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_right"))).setText("▶");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_left"))).setText("◀");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_up"))).setText("▲");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_down"))).setText("▼");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_right"))).setText("▶");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_left"))).setText("◀");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_up"))).setText("▲");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_down"))).setText("▼");
         } else {
-            ((Button) findViewById(R.id.button_right)).setText("▼");
-            ((Button) findViewById(R.id.button_left)).setText("▲");
-            ((Button) findViewById(R.id.button_up)).setText("◀");
-            ((Button) findViewById(R.id.button_down)).setText("▶");
-            ((Button) findViewById(R.id.button_navigation_right)).setText("▼");
-            ((Button) findViewById(R.id.button_navigation_left)).setText("▲");
-            ((Button) findViewById(R.id.button_navigation_up)).setText("◀");
-            ((Button) findViewById(R.id.button_navigation_down)).setText("▶");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_right"))).setText("▼");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_left"))).setText("▲");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_up"))).setText("◀");
+            ((Button) findViewById(FunctionKey.getResourceId("functionbar_down"))).setText("▶");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_right"))).setText("▼");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_left"))).setText("▲");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_up"))).setText("◀");
+            ((Button) findViewById(FunctionKey.getResourceId("navigationbar_down"))).setText("▶");
         }
     }
 
@@ -4282,26 +4283,30 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setFunctionKeyListener() {
-        for (FunctionKey fkey : FunctionKeys) {
-            switch (fkey.resid) {
-                case R.id.button_up:
-                case R.id.button_down:
-                case R.id.button_left:
-                case R.id.button_right:
-                case R.id.button_navigation_up:
-                case R.id.button_navigation_down:
-                case R.id.button_navigation_left:
-                case R.id.button_navigation_right:
-                    findViewById(fkey.resid).setOnTouchListener(new RepeatListener(400, 25, new OnClickListener() {
+        for (FunctionKey fkey : mFunctionKeys) {
+            Button button = findViewById(fkey.resId);
+            button.setText(fkey.label);
+            switch (fkey.prefId) {
+                case "functionbar_up":
+                case "functionbar_down":
+                case "functionbar_left":
+                case "functionbar_right":
+                case "navigationbar_up":
+                case "navigationbar_down":
+                case "navigationbar_left":
+                case "navigationbar_right":
+                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, 25, new OnClickListener() {
                         public void onClick(View v) {
                             Term.this.onClick(v);
                         }
                     }));
                     break;
-                case R.id.button_navigation_fn_toggle:
-                case R.id.button_navigation_ime_toggle:
-                    findViewById(fkey.resid).setOnClickListener(this);
-                    findViewById(fkey.resid).setOnLongClickListener(new View.OnLongClickListener() {
+                case "functionbar_softkeyboard":
+                case "navigationbar_softkeyboard":
+                case "navigationbar_fn_toggle":
+                case "navigationbar_ime_toggle":
+                    button.setOnClickListener(this);
+                    button.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
                             VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
@@ -4310,7 +4315,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     });
                     break;
                 default:
-                    findViewById(fkey.resid).setOnClickListener(this);
+                    button.setOnClickListener(this);
                     break;
             }
         }
@@ -4332,14 +4337,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         });
         String label = getString(R.string.string_functionbar_enter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
-        button = findViewById(R.id.button_enter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) button.setText(label);
+        button.setText(label);
+        button = findViewById(FunctionKey.getResourceId("functionbar_enter"));
+        button.setText(label);
+        button = findViewById(FunctionKey.getResourceId("navigationbar_enter"));
+        button.setText(label);
         label = getString(R.string.string_functionbar_ime_toggle);
-        button = findViewById(R.id.button_navigation_ime_toggle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) button.setText(label);
-        button = findViewById(R.id.button_ime_toggle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) button.setText(label);
+        button = findViewById(FunctionKey.getResourceId("functionbar_ime_toggle"));
+        button.setText(label);
+        button = findViewById(FunctionKey.getResourceId("navigationbar_ime_toggle"));
+        button.setText(label);
+        label = getString(R.string.string_functionbar_dia);
+        button = findViewById(FunctionKey.getResourceId("functionbar_softkeyboard"));
+        button.setText(label);
+        button = findViewById(FunctionKey.getResourceId("navigationbar_softkeyboard"));
+        button.setText(label);
     }
 
     private boolean onelineTextBoxClear() {
@@ -4410,12 +4422,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setFunctionKeyVisibility(SharedPreferences prefs, String key, int id, boolean defValue) {
         int visibility = prefs.getBoolean(key, defValue) ? View.VISIBLE : View.GONE;
-        if (id == R.id.button_menu_plus) visibility = View.GONE;
-        if (id == R.id.button_menu_minus) visibility = View.GONE;
-        if (id == R.id.button_menu_x) visibility = View.GONE;
-        if (id == R.id.button_navigation_menu_plus) visibility = View.GONE;
-        if (id == R.id.button_navigation_menu_minus) visibility = View.GONE;
-        if (id == R.id.button_navigation_menu_x) visibility = View.GONE;
+        if (key.equals("functionbar_menu_plus")) visibility = View.GONE;
+        if (key.equals("functionbar_menu_minus")) visibility = View.GONE;
+        if (key.equals("functionbar_menu_x")) visibility = View.GONE;
+        if (key.equals("navigationbar_menu_plus")) visibility = View.GONE;
+        if (key.equals("navigationbar_menu_minus")) visibility = View.GONE;
+        if (key.equals("navigationbar_menu_x")) visibility = View.GONE;
         String label = prefs.getString(FKEY_LABEL + key, "");
         setFunctionBarButton(id, visibility, label);
 
@@ -4441,8 +4453,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        for (FunctionKey fkey : FunctionKeys) {
-            setFunctionKeyVisibility(prefs, fkey.key, fkey.resid, fkey.defValue);
+        for (FunctionKey fkey : mFunctionKeys) {
+            setFunctionKeyVisibility(prefs, fkey.prefId, fkey.resId, fkey.defValue);
         }
 
         visibility = (mFunctionBar == 1) ? View.VISIBLE : View.GONE;
@@ -4474,16 +4486,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         View view = getCurrentEmulatorView();
         if (view != null) view.post(new Thread(new Runnable() {
             public void run() {
-                setShortButtonLabel(R.id.button_navigation_esc, "Esc");
-                setShortButtonLabel(R.id.button_navigation_ctrl, "Ctrl");
-                setShortButtonLabel(R.id.button_navigation_tab, "Tab");
-                setShortButtonLabel(R.id.button_navigation_alt, "Alt");
+                setShortButtonLabel("navigationbar_esc", "Esc");
+                setShortButtonLabel("navigationbar_ctrl", "Ctrl");
+                setShortButtonLabel("navigationbar_tab", "Tab");
+                setShortButtonLabel("navigationbar_alt", "Alt");
             }
         }));
     }
 
-    private void setShortButtonLabel(int id, String label) {
-        Button button = findViewById(id);
+    private void setShortButtonLabel(String resId, String label) {
+        Button button = findViewById(FunctionKey.getResourceId(resId));
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         if (button != null) {
@@ -4503,17 +4515,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onClick(View v) {
         EmulatorView view = getCurrentEmulatorView();
         if (view == null) return;
-        switch (v.getId()) {
-            case R.id.button_voice_input:
-            case R.id.button_navigation_voice_input:
+        String prefId = FunctionKey.getPreferenceId(v.getId());
+        if (prefId == null) return;
+        switch (prefId) {
+            case "functionbar_voice_input":
+            case "navigationbar_voice_input":
                 VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
                 break;
-            case R.id.button_navigation_ime_toggle:
-            case R.id.button_ime_toggle:
+            case "navigationbar_ime_toggle":
+            case "functionbar_ime_toggle":
                 doToggleSoftKeyboard();
                 break;
-            case R.id.button_navigation_esc:
-            case R.id.button_esc:
+            case "navigationbar_esc":
+            case "functionbar_esc":
                 if (view.getControlKeyState() != 0 || view.getAltKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
                     mInvertCursorDirection = getDefaultInvertCursorDirection();
                     setCursorDirectionLabel();
@@ -4523,8 +4537,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_ESCAPE);
                 break;
-            case R.id.button_navigation_ctrl:
-            case R.id.button_ctrl:
+            case "navigationbar_ctrl":
+            case "functionbar_ctrl":
                 int ctrl = view.getControlKeyState();
                 if (ctrl == LOCKED) {
                     mInvertCursorDirection = getDefaultInvertCursorDirection();
@@ -4542,44 +4556,45 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_CTRL_LEFT);
                 break;
-            case R.id.button_navigation_alt:
-            case R.id.button_alt:
+            case "navigationbar_alt":
+            case "functionbar_alt":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
                 break;
-            case R.id.button_navigation_tab:
-            case R.id.button_tab:
+            case "navigationbar_tab":
+            case "functionbar_tab":
                 if (onelineTextBoxTab()) break;
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
                 break;
-            case R.id.button_navigation_up:
-            case R.id.button_navigation_down:
-            case R.id.button_navigation_left:
-            case R.id.button_navigation_right:
-            case R.id.button_up:
-            case R.id.button_down:
-            case R.id.button_left:
-            case R.id.button_right:
+            case "navigationbar_up":
+            case "navigationbar_down":
+            case "navigationbar_left":
+            case "navigationbar_right":
+            case "functionbar_up":
+            case "functionbar_down":
+            case "functionbar_left":
+            case "functionbar_right":
                 int state = view.getControlKeyState();
                 boolean invert = getInvertCursorDirection();
-                if ((!invert && v.getId() == R.id.button_up) ||
-                        (!invert && v.getId() == R.id.button_navigation_up) ||
-                        (invert && v.getId() == R.id.button_navigation_left) ||
-                        (invert && v.getId() == R.id.button_left)) {
+                String resStr = FunctionKey.getPreferenceId(v.getId());
+                if ((!invert && "functionbar_up".equals(resStr)) ||
+                        (!invert && "navigationbar_up".equals(resStr)) ||
+                        (invert && "navigationbar_left".equals(resStr)) ||
+                        (invert && "functionbar_left".equals(resStr))) {
                     doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_UP);
-                } else if ((!invert && v.getId() == R.id.button_down) ||
-                        (!invert && v.getId() == R.id.button_navigation_down) ||
-                        (invert && v.getId() == R.id.button_navigation_right) ||
-                        (invert && v.getId() == R.id.button_right)) {
+                } else if ((!invert && "functionbar_down".equals(resStr)) ||
+                        (!invert && "navigationbar_down".equals(resStr)) ||
+                        (invert && "navigationbar_right".equals(resStr)) ||
+                        (invert && "functionbar_right".equals(resStr))) {
                     doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_DOWN);
-                } else if ((!invert && v.getId() == R.id.button_left) ||
-                        (!invert && v.getId() == R.id.button_navigation_left) ||
-                        (invert && v.getId() == R.id.button_navigation_up) ||
-                        (invert && v.getId() == R.id.button_up)) {
+                } else if ((!invert && "functionbar_left".equals(resStr)) ||
+                        (!invert && "navigationbar_left".equals(resStr)) ||
+                        (invert && "navigationbar_up".equals(resStr)) ||
+                        (invert && "functionbar_up".equals(resStr))) {
                     doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_LEFT);
-                } else if ((!invert && v.getId() == R.id.button_right) ||
-                        (!invert && v.getId() == R.id.button_navigation_right) ||
-                        (invert && v.getId() == R.id.button_navigation_down) ||
-                        (invert && v.getId() == R.id.button_down)) {
+                } else if ((!invert && "functionbar_right".equals(resStr)) ||
+                        (!invert && "navigationbar_right".equals(resStr)) ||
+                        (invert && "navigationbar_down".equals(resStr)) ||
+                        (invert && "functionbar_down".equals(resStr))) {
                     doSendActionBarKey(view, KeycodeConstants.KEYCODE_DPAD_RIGHT);
                 }
                 if (state == RELEASED && mSettings.getCursorDirectionControlMode() == 1) {
@@ -4588,141 +4603,141 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     setCursorDirectionLabel();
                 }
                 break;
-            case R.id.button_navigation_page_up:
-            case R.id.button_page_up:
+            case "navigationbar_page_up":
+            case "functionbar_page_up":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_UP);
                 break;
-            case R.id.button_navigation_page_down:
-            case R.id.button_page_down:
+            case "navigationbar_page_down":
+            case "functionbar_page_down":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_PAGE_DOWN);
                 break;
-            case R.id.button_navigation_backspace:
-            case R.id.button_backspace:
+            case "navigationbar_backspace":
+            case "functionbar_backspace":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_DEL);
                 break;
-            case R.id.button_navigation_enter:
-            case R.id.button_enter:
+            case "navigationbar_enter":
+            case "functionbar_enter":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_ENTER);
                 break;
-            case R.id.button_navigation_i:
-            case R.id.button_i:
+            case "navigationbar_i":
+            case "functionbar_i":
                 sendKeyStrings("i", false);
                 if (!mHaveFullHwKeyboard) doShowSoftKeyboard();
                 break;
-            case R.id.button_navigation_colon:
-            case R.id.button_colon:
+            case "navigationbar_colon":
+            case "functionbar_colon":
                 sendKeyStrings(":", false);
                 break;
-            case R.id.button_navigation_slash:
-            case R.id.button_slash:
+            case "navigationbar_slash":
+            case "functionbar_slash":
                 sendKeyStrings("/", false);
                 break;
-            case R.id.button_navigation_equal:
-            case R.id.button_equal:
+            case "navigationbar_equal":
+            case "functionbar_equal":
                 sendKeyStrings("=", false);
                 break;
-            case R.id.button_navigation_asterisk:
-            case R.id.button_asterisk:
+            case "navigationbar_asterisk":
+            case "functionbar_asterisk":
                 sendKeyStrings("*", false);
                 break;
-            case R.id.button_navigation_pipe:
-            case R.id.button_pipe:
+            case "navigationbar_pipe":
+            case "functionbar_pipe":
                 sendKeyStrings("|", false);
                 break;
-            case R.id.button_navigation_plus:
-            case R.id.button_plus:
+            case "navigationbar_plus":
+            case "functionbar_plus":
                 sendKeyStrings("+", false);
                 break;
-            case R.id.button_navigation_minus:
-            case R.id.button_minus:
+            case "navigationbar_minus":
+            case "functionbar_minus":
                 sendKeyStrings("-", false);
                 break;
-            case R.id.button_navigation_vim_paste:
-            case R.id.button_vim_paste:
+            case "navigationbar_vim_paste":
+            case "functionbar_vim_paste":
                 sendKeyStrings("\"*p", false);
                 break;
-            case R.id.button_navigation_vim_yank:
-            case R.id.button_vim_yank:
+            case "navigationbar_vim_yank":
+            case "functionbar_vim_yank":
                 sendKeyStrings("\"*yy" + "\u001b", false);
                 break;
-            case R.id.button_navigation_menu_plus:
-            case R.id.button_menu_plus:
+            case "navigationbar_menu_plus":
+            case "functionbar_menu_plus":
                 doSendActionBarKey(view, mSettings.getActionBarPlusKeyAction());
                 break;
-            case R.id.button_navigation_menu_minus:
-            case R.id.button_menu_minus:
+            case "navigationbar_menu_minus":
+            case "functionbar_menu_minus":
                 doSendActionBarKey(view, mSettings.getActionBarMinusKeyAction());
                 break;
-            case R.id.button_navigation_menu_x:
-            case R.id.button_menu_x:
+            case "navigationbar_menu_x":
+            case "functionbar_menu_x":
                 doSendActionBarKey(view, mSettings.getActionBarXKeyAction());
                 break;
-            case R.id.button_navigation_menu_user:
-            case R.id.button_menu_user:
+            case "navigationbar_menu_user":
+            case "functionbar_menu_user":
                 doSendActionBarKey(view, mSettings.getActionBarUserKeyAction());
                 break;
-            case R.id.button_navigation_menu_quit:
-            case R.id.button_menu_quit:
+            case "navigationbar_menu_quit":
+            case "functionbar_menu_quit":
                 doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
                 break;
-            case R.id.button_navigation_softkeyboard:
-            case R.id.button_softkeyboard:
+            case "navigationbar_softkeyboard":
+            case "functionbar_softkeyboard":
                 doSendActionBarKey(view, mSettings.getActionBarIconKeyAction());
                 break;
-            case R.id.button_navigation_invert:
-            case R.id.button_invert:
+            case "navigationbar_invert":
+            case "functionbar_invert":
                 doSendActionBarKey(view, mSettings.getActionBarInvertKeyAction());
                 break;
-            case R.id.button_navigation_menu:
-            case R.id.button_menu:
+            case "navigationbar_menu":
+            case "functionbar_menu":
                 openOptionsMenu();
                 break;
-            case R.id.button_navigation_fn_toggle:
-            case R.id.button_navigation_menu_hide:
-            case R.id.button_menu_hide:
+            case "navigationbar_fn_toggle":
+            case "navigationbar_menu_hide":
+            case "functionbar_menu_hide":
                 setFunctionBar(2);
                 break;
-            case R.id.button_next_functionbar0:
-            case R.id.button_prev_functionbar:
-            case R.id.button_prev_functionbar2:
-            case R.id.button_next_functionbar2:
+            case "functionbar_next0":
+            case "functionbar_prev":
+            case "functionbar_prev2":
+            case "functionbar_next2":
                 mFunctionBarId = mFunctionBarId == 0 ? 1 : 0;
                 setFunctionKeyVisibility();
                 break;
-            case R.id.button_m1:
+            case "functionbar_m1":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F1);
                 break;
-            case R.id.button_m2:
+            case "functionbar_m2":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F2);
                 break;
-            case R.id.button_m3:
+            case "functionbar_m3":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F3);
                 break;
-            case R.id.button_m4:
+            case "functionbar_m4":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F4);
                 break;
-            case R.id.button_m5:
+            case "functionbar_m5":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F5);
                 break;
-            case R.id.button_m6:
+            case "functionbar_m6":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F6);
                 break;
-            case R.id.button_m7:
+            case "functionbar_m7":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F7);
                 break;
-            case R.id.button_m8:
+            case "functionbar_m8":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F8);
                 break;
-            case R.id.button_m9:
+            case "functionbar_m9":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F9);
                 break;
-            case R.id.button_m10:
+            case "functionbar_m10":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F10);
                 break;
-            case R.id.button_m11:
+            case "functionbar_m11":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F11);
                 break;
-            case R.id.button_m12:
+            case "functionbar_m12":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_F12);
                 break;
         }
@@ -4900,15 +4915,38 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     }
 
-    class FunctionKey {
-        public String key;
-        public int resid;
+    private static class FunctionKey {
+        private static HashMap<String, String> preferenceMap = new HashMap<>();
+        private static HashMap<String, String> resourceMap = new HashMap<>();
+        public String label;
+        public String prefId;
+        public int resId;
         public boolean defValue;
 
-        FunctionKey(String k, int i, boolean v) {
-            key = k;
-            resid = i;
-            defValue = v;
+        static String getPreferenceId(int id) {
+            String res = String.valueOf(id);
+            if (preferenceMap != null && preferenceMap.containsKey(res)) {
+                return  preferenceMap.get(res);
+            }
+            return null;
+        }
+
+        static int getResourceId(String id) {
+            if (resourceMap != null && resourceMap.containsKey(id)) {
+                String str = resourceMap.get(id);
+                if (str != null) return Integer.parseInt(str);
+                else return -1;
+            }
+            return -1;
+        }
+
+        FunctionKey(int resourceId, boolean defaultValue, String preferenceId, String labelStr) {
+            label = labelStr;
+            prefId = preferenceId;
+            resId = resourceId;
+            defValue = defaultValue;
+            resourceMap.put(preferenceId, String.valueOf(resourceId));
+            preferenceMap.put(String.valueOf(resourceId), preferenceId);
         }
     }
 

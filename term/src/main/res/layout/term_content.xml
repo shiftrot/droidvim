@@ -295,304 +295,364 @@
                     android:layout_height="45dp">
 
                     <Button
-                        android:id="@+id/button_tab"
+                        android:id="@+id/button_function_1"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="Tab"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_up"
+                        android:id="@+id/button_function_2"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_up"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_down"
+                        android:id="@+id/button_function_3"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_down"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_left"
+                        android:id="@+id/button_function_4"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_left"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_right"
+                        android:id="@+id/button_function_5"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_right"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_backspace"
+                        android:id="@+id/button_function_6"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="BS"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_enter"
+                        android:id="@+id/button_function_7"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_enter"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_page_up"
+                        android:id="@+id/button_function_8"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="PU"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_page_down"
+                        android:id="@+id/button_function_9"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="PD"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_colon"
+                        android:id="@+id/button_function_10"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text=":"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_i"
+                        android:id="@+id/button_function_11"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="i"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_slash"
+                        android:id="@+id/button_function_12"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="/"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_plus"
+                        android:id="@+id/button_function_13"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="+"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_minus"
+                        android:id="@+id/button_function_14"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="-"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_equal"
+                        android:id="@+id/button_function_15"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="="/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_asterisk"
+                        android:id="@+id/button_function_16"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="*"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_pipe"
+                        android:id="@+id/button_function_17"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="|"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_softkeyboard"
+                        android:id="@+id/button_function_18"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_dia"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_invert"
+                        android:id="@+id/button_function_19"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_circle"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu_user"
+                        android:id="@+id/button_function_20"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_square"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_ime_toggle"
+                        android:id="@+id/button_function_21"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_ime"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_voice_input"
+                        android:id="@+id/button_function_22"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_voice_input"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_vim_paste"
+                        android:id="@+id/button_function_23"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="&quot;*p"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_vim_yank"
+                        android:id="@+id/button_function_24"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="&quot;*yy"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu_plus"
+                        android:id="@+id/button_function_25"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="[＋]"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu_minus"
+                        android:id="@+id/button_function_26"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="[－]"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu_x"
+                        android:id="@+id/button_function_27"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="[×]"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu_quit"
+                        android:id="@+id/button_function_28"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="[Q]"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu"
+                        android:id="@+id/button_function_29"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_menu"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
-                        android:id="@+id/button_menu_hide"
+                        android:id="@+id/button_function_30"
+                        android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
                         android:minWidth="52dp"
-                        android:text="@string/key_fn_hide"/>
+                        android:minHeight="44dp"
+                        android:text=""/>
 
                     <Button
                         android:id="@+id/button_next_functionbar2"
@@ -618,344 +678,378 @@
             android:layout_height="45dp">
 
             <Button
-                android:id="@+id/button_navigation_esc"
+                android:id="@+id/button_navigation_1"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="Esc"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_ctrl"
+                android:id="@+id/button_navigation_2"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="Ctrl"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_alt"
+                android:id="@+id/button_navigation_3"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="Alt"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_tab"
+                android:id="@+id/button_navigation_4"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="Tab"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_up"
+                android:id="@+id/button_navigation_5"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_up"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_down"
+                android:id="@+id/button_navigation_6"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_down"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_left"
+                android:id="@+id/button_navigation_7"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_left"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_right"
+                android:id="@+id/button_navigation_8"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_right"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_backspace"
+                android:id="@+id/button_navigation_9"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="BS"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_enter"
+                android:id="@+id/button_navigation_10"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_enter"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_page_up"
+                android:id="@+id/button_navigation_11"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="PU"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_page_down"
+                android:id="@+id/button_navigation_12"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="PD"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_colon"
+                android:id="@+id/button_navigation_13"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text=":"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_i"
+                android:id="@+id/button_navigation_14"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="i"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_slash"
+                android:id="@+id/button_navigation_15"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="/"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_plus"
+                android:id="@+id/button_navigation_16"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="+"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_minus"
+                android:id="@+id/button_navigation_17"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="-"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_equal"
+                android:id="@+id/button_navigation_18"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="="/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_asterisk"
+                android:id="@+id/button_navigation_19"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="*"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_pipe"
+                android:id="@+id/button_navigation_20"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="|"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_softkeyboard"
+                android:id="@+id/button_navigation_21"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_dia"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_invert"
+                android:id="@+id/button_navigation_22"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_circle"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu_user"
+                android:id="@+id/button_navigation_23"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_square"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_vim_paste"
+                android:id="@+id/button_navigation_24"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="&quot;*p"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_vim_yank"
+                android:id="@+id/button_navigation_25"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="&quot;*yy"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu_plus"
+                android:id="@+id/button_navigation_26"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="[＋]"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu_minus"
+                android:id="@+id/button_navigation_27"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="[－]"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu_x"
+                android:id="@+id/button_navigation_28"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="[×]"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_fn_toggle"
+                android:id="@+id/button_navigation_29"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_toggle"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_voice_input"
+                android:id="@+id/button_navigation_30"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_voice_input"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_ime_toggle"
+                android:id="@+id/button_navigation_31"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="✏"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu_quit"
+                android:id="@+id/button_navigation_32"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="[Q]"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu"
+                android:id="@+id/button_navigation_33"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_menu"/>
+                android:text=""/>
 
             <Button
-                android:id="@+id/button_navigation_menu_hide"
+                android:id="@+id/button_navigation_34"
+                android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
-                android:text="@string/key_fn_hide"/>
+                android:text=""/>
 
         </LinearLayout>
 

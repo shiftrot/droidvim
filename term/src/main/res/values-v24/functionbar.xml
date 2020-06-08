@@ -1,0 +1,5 @@
+<resources>
+    <string name="string_functionbar_ime_toggle">⌨</string>
+    <string name="title_functionbar_ime_toggle">⌨ - Toggle keyboard</string>
+    <string name="key_ime">⌨</string>
+</resources>
