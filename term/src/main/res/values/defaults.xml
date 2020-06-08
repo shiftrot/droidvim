@@ -73,6 +73,6 @@
     <bool name="pref_use_app_files_button_default">true</bool>
     <string name="pref_cloud_dropbox_filepicker_default" translatable="false">1</string>
     <string name="pref_cloud_googledrive_filepicker_default" translatable="false">1</string>
-    <string name="pref_cloud_onedrive_filepicker_default" translatable="false">1</string>
+    <string name="pref_cloud_onedrive_filepicker_default" translatable="false">0</string>
     <string name="pref_html_viewer_mode_default" translatable="false">0</string>
 </resources>
