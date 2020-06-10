@@ -74,9 +74,10 @@ public class TermSettings {
     private int mUseDirectCookedIME;
     private String mMRUCommand;
     private String mExternalAppId;
-    private boolean mExternalAppButton;
     private int mExternalAppButtonMode;
     private boolean mUseFilesAppButton;
+    private String mFilerAppId;
+    private int mFilerAppButtonMode;
     private int mDropboxFilePicker;
     private int mGoogleDriveFilePicker;
     private int mOneDriveFilePicker;
@@ -152,8 +153,9 @@ public class TermSettings {
     private static final String IME_DIRECT_KEY = "ime_direct_input_method";
     private static final String MRU_COMMAND_KEY = "mru_command";
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
-    private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_button_mode";
-    private static final String EXTERNAL_APP_BUTTON_KEY = "external_app_button";
+    private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_action_mode";
+    private static final String FILER_APP_ID_KEY = "filer_app_package_name";
+    private static final String FILER_APP_BUTTON_MODE_KEY = "filer_app_action_mode";
     private static final String FILES_BUTTON_KEY = "use_app_files_button_rev2";
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
@@ -300,9 +302,10 @@ public class TermSettings {
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mMRUCommand = res.getString(R.string.pref_mru_command_default);
         mExternalAppId = res.getString(R.string.pref_external_app_id_default);
-        mExternalAppButtonMode = Integer.parseInt(res.getString(R.string.pref_external_app_button_mode_default));
-        mExternalAppButton = res.getBoolean(R.bool.pref_external_app_button_default);
+        mExternalAppButtonMode = Integer.parseInt(res.getString(R.string.pref_external_app_action_mode_default));
         mUseFilesAppButton = res.getBoolean(R.bool.pref_use_app_files_button_default);
+        mFilerAppId = res.getString(R.string.pref_filer_app_id_default);
+        mFilerAppButtonMode = Integer.parseInt(res.getString(R.string.pref_filer_app_action_mode_default));
         mDropboxFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_dropbox_filepicker_default));
         mGoogleDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_googledrive_filepicker_default));
         mOneDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_onedrive_filepicker_default));
@@ -380,8 +383,9 @@ public class TermSettings {
         mMRUCommand = readStringPref(MRU_COMMAND_KEY, mMRUCommand);
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY, mExternalAppId);
         mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
-        mExternalAppButton = readBooleanPref(EXTERNAL_APP_BUTTON_KEY, mExternalAppButton);
         mUseFilesAppButton = readBooleanPref(FILES_BUTTON_KEY, mUseFilesAppButton);
+        mFilerAppId = readStringPref(FILER_APP_ID_KEY, mFilerAppId);
+        mFilerAppButtonMode = readIntPref(FILER_APP_BUTTON_MODE_KEY, mFilerAppButtonMode, 2);
         mDropboxFilePicker = readIntPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker, 2);
         mGoogleDriveFilePicker = readIntPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker, 2);
         mOneDriveFilePicker = readIntPref(ONEDRIVE_FILE_PICKER_KEY, mOneDriveFilePicker, 2);
@@ -710,24 +714,17 @@ public class TermSettings {
         return mExternalAppId;
     }
 
-    public void setExternalAppId(String id) {
-        mExternalAppId = id;
-    }
-
-    public boolean getExternalAppButton() {
-        return mExternalAppButton;
-    }
-
     public int getExternalAppButtonMode() {
         return mExternalAppButtonMode;
     }
 
-    public void setExternalAppButton(boolean enable) {
-        mExternalAppButton = enable;
+    public String getFilerAppId() {
+        return mFilerAppId;
     }
 
-    public boolean getUseFilesAppButton() {
-        return mUseFilesAppButton;
+    public int getFilerAppButtonMode() {
+        return mUseFilesAppButton ? 2 : 0;
+        // return mFilerAppButtonMode;
     }
 
     public int getDropboxFilePicker() {

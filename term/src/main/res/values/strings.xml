@@ -501,7 +501,6 @@
     <string name="dropbox">Dropbox</string>
     <string name="googledrive">GoogleDrive</string>
     <string name="onedrive">OneDrive</string>
-    <string name="summary_app_filepicker_on_drawer">Choose the behavior of the application button on the drawer.</string>
     <string name="launch_app">\Launch %s</string>
     <string name="activity_not_found">Activity not found.\nPlease try again.</string>
     <string name="external_storage">Open file...</string>
@@ -572,8 +571,9 @@
     <string name="title_scoped_storage_startup_path_mode_preference">Use \"$HOME\" as Startup directory</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">Set the home directory as the startup directory.</string>
     <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
+    <string name="title_filer_app_preference">Filer App button</string>
     <string name="external_app_button">External App</string>
-    <string name="title_external_app_button_preference">External App Button</string>
+    <string name="title_external_app_preference">External App button</string>
     <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
     <string name="summary_external_app_button_off_preference">Hide App button on drawer.</string>
     <string name="title_external_app_id_preference">External App button</string>

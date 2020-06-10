@@ -179,14 +179,33 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             items.put(app.loadLabel(pm).toString(), app.packageName);
                     }
                     List<String> list = new ArrayList<>(items.keySet());
+                    String appId = getFilerApplicationId(pm);
+                    if (!"".equals(appId)) list.add(0, activity.getString(R.string.app_files));
                     mLabels = list.toArray(new String[0]);
                     list = new ArrayList<>(items.values());
+                    if (!"".equals(appId)) list.add(0, "");
                     mPackageNames = list.toArray(new String[0]);
                 }
             }.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getFilerApplicationId(PackageManager pm) {
+        try {
+            String[] appFilers = {
+                    "com.android.documentsui",
+                    "com.google.android.documentsui",
+            };
+            for (String pname : appFilers) {
+                Intent intent = pm.getLaunchIntentForPackage(pname);
+                if (intent != null) return pname;
+            }
+        } catch (Exception e) {
+            return "";
+        }
+        return "";
     }
 
     private void setupTheme() {
@@ -1193,19 +1212,22 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
-            boolean mFiles = !"".equals(Term.getAppFilerPackageName());
-            if (mFiles) {
+            if (AndroidCompat.SDK >= Build.VERSION_CODES.N) {
                 addPreferencesFromResource(R.xml.pref_apps);
             } else {
                 addPreferencesFromResource(R.xml.pref_apps_25);
             }
 
-            String id = "external_app_package_name";
-            ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
-            if (mTermPreference != null) {
-                if (mLabels != null) packageName.setEntries(mLabels);
-                if (mPackageNames != null) packageName.setEntryValues(mPackageNames);
+            String ids[] = {
+                "filer_app_package_name",
+                "external_app_package_name",
+            };
+            for (String id : ids) {
+                ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
+                if (mTermPreference != null && packageName != null) {
+                    if (mLabels != null) packageName.setEntries(mLabels);
+                    if (mPackageNames != null) packageName.setEntryValues(mPackageNames);
+                }
             }
             final String MRU_KEY = "mru_command";
             Preference prefsMru = getPreferenceScreen().findPreference(MRU_KEY);
@@ -1219,7 +1241,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
-            bindPreferenceSummaryToValue(findPreference("external_app_button_mode"));
+            bindPreferenceSummaryToValue(findPreference("external_app_action_mode"));
             bindPreferenceSummaryToValue(findPreference("cloud_dropbox_filepicker"));
             bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
             bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));

@@ -1,16 +1,37 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+<!--
     <PreferenceScreen
-        android:title="@string/title_external_app_id_preference"
-        android:summary="@string/summary_app_filepicker_on_drawer">
+        android:title="@string/title_filer_app_preference">
 
         <ListPreference
-            android:key="external_app_button_mode"
-            android:defaultValue="@string/pref_external_app_button_mode_default"
+            android:key="filer_app_action_mode"
+            android:defaultValue="@string/pref_filer_app_action_mode_default"
             android:title="@string/external_app_activity"
             android:entries="@array/entries_app_filepicker_preference"
             android:entryValues="@array/entryvalues_app_filepicker_preference"
-            android:dialogTitle="@string/title_external_app_button_preference"/>
+            android:dialogTitle="@string/title_filer_app_preference"/>
+
+        <ListPreference
+            android:key="filer_app_package_name"
+            android:defaultValue="@string/pref_filer_app_id_default"
+            android:title="@string/external_app"
+            android:entries="@array/entries_preference"
+            android:entryValues="@array/entries_preference"
+            android:dialogTitle="@string/title_filer_app_preference"/>
+
+    </PreferenceScreen>
+-->
+
+    <PreferenceScreen
+        android:title="@string/title_external_app_preference">
+
+        <ListPreference
+            android:key="external_app_action_mode"
+            android:defaultValue="@string/pref_external_app_action_mode_default"
+            android:title="@string/external_app_activity"
+            android:entries="@array/entries_app_filepicker_preference"
+            android:entryValues="@array/entryvalues_app_filepicker_preference"
+            android:dialogTitle="@string/title_external_app_preference"/>
 
         <ListPreference
             android:key="external_app_package_name"
@@ -18,7 +39,7 @@
             android:title="@string/external_app"
             android:entries="@array/entries_preference"
             android:entryValues="@array/entries_preference"
-            android:dialogTitle="@string/title_external_app_id_preference"/>
+            android:dialogTitle="@string/title_external_app_preference"/>
 
     </PreferenceScreen>
 
