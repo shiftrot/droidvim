@@ -367,8 +367,8 @@
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
-    <string name="google_file_chooser_warning_message">3ドットメニューで「内部ストレージ/SDカード」の「表示/非表示」を切り替えます.</string>
-    <string name="google_filer_app_warning_message">- 3ドットメニューで「内部ストレージ/SDカード」の「表示/非表示」を切り替えます.\n- Vimfiles(.vimrc, .vim)のバックアップには「ドロワーメニュー→ストレージ」のバックアップコマンドを使用してください.</string>
+    <string name="google_file_chooser_warning_message">3ドットメニューで以下の表示を切り替え可能です.\n - 内部ストレージ/SDカード\n - 隠しファイル(ドットファイル)</string>
+    <string name="google_filer_app_warning_message">- 3ドットメニューで以下の表示を切り替え可能です.\n - 内部ストレージ/SDカード\n - 隠しファイル(ドットファイル)\n\n- Vimfiles(.vimrc, .vim)のバックアップ/リストアには「ドロワーメニュー→ストレージ→バックアップ/リストア」を使用してください.</string>
 
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
     <string name="permdesc_run_script">アプリケーションに対して，端末エミュレータに新規ウインドウを開かせ，インターネットやSDカードへのアクセスを含む，端末エミュレータが持つすべてのパーミッションでコマンドを実行することを許可する.</string>
@@ -525,6 +525,7 @@
     <string name="external_app">アプリ名</string>
     <string name="external_app_activity">アクティビティ</string>
     <string name="external_app_button">外部アプリ</string>
+    <string name="summary_external_app_button">「外部アプリ」ボタンのアプリを選択します.</string>
     <string name="external_files_button">ファイル管理</string>
     <string name="title_use_app_files_button">「ファイル管理」ボタン</string>
     <string name="title_local_storage_provider_path_mode_preference">ローカルストレージプロバイダのパス</string>

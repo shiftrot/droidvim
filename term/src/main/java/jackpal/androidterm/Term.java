@@ -329,17 +329,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("SdCardPath")
     private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
-    private final BroadcastReceiver mBroadcastReceiever = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (AM_INTENT_ACTION.equals(action)) {
-                String command = intent.getStringExtra("action");
-                if (command == null) return;
-                doAndroidIntent(intent.getStringExtra("action"), intent.getStringExtra("param"), intent.getStringExtra("mime"));
-            }
-        }
-    };
     @SuppressLint("SdCardPath")
     private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
     @SuppressLint("SdCardPath")
@@ -791,9 +780,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             @Override
                             public void onClick(View v) {
                                 getDrawer().closeDrawers();
-                                if (!isAppInstalled(app.appId)) {
-                                    externalApp();
-                                } else if (app.appId.equals(APP_FILER)) {
+                                if (app.appId.equals(APP_FILER)) {
                                     final Runnable runFiler = new Runnable() {
                                         public void run() {
                                             launchExternalApp(2, APP_FILER);
@@ -801,8 +788,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                     };
                                     final String WARNING_ID_FILE_MANAGER = "file_manager_app_warning";
                                     doWarningDialogRun(null, getString(R.string.google_filer_app_warning_message), WARNING_ID_FILE_MANAGER, false, runFiler);
-                                } else {
+                                } else if (isAppInstalled(app.appId) || APP_DROPBOX.equals(app.appId) || APP_GOOGLEDRIVE.equals(app.appId) || APP_ONEDRIVE.equals(app.appId)) {
                                     launchExternalApp(app.action, app.appId);
+                                } else {
+                                    externalApp();
                                 }
                             }
                         });
@@ -819,7 +808,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
 
                 }
-                if (isAppInstalled(app.appId)) {
+                if (app.action > 0 && (APP_FILER.equals(app.appId) ||
+                                       APP_DROPBOX.equals(app.appId) ||
+                                       APP_GOOGLEDRIVE.equals(app.appId) ||
+                                       APP_ONEDRIVE.equals(app.appId))) {
                     mFilePickerItems.add(String.format(launchApp, app.label));
                 }
             }
@@ -924,6 +916,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean isAppInstalled(String appPackage) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) return true;
         PackageManager packageManager = getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(appPackage);
         return (intent != null);
@@ -1004,7 +997,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
         if (SCOPED_STORAGE) return;
-        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.N) return;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
         }
@@ -1217,31 +1210,24 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupFromHome() {
-        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
         ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void restoreToHome() {
-        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
         ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupAndRestoreHome() {
-        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP)  return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
 
-        final String[] items29 = {
+        final String[] items = {
             getString(R.string.backup_home_directory),
             getString(R.string.restore_home_directory)
         };
-        final String[] itemsScopedStorage = {
-            getString(R.string.backup_home_directory),
-            getString(R.string.restore_home_directory),
-            getString(R.string.backup_home_to_appextfiles),
-            getString(R.string.restore_home_from_appextfiles)
-        };
-        final String[] items = (SCOPED_STORAGE) ? itemsScopedStorage : items29;
 
         new AlertDialog.Builder(this)
             .setTitle(getString(R.string.backup_restore))
@@ -1790,11 +1776,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public void onPause() {
         super.onPause();
-        try {
-            unregisterReceiver(mBroadcastReceiever);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         if (AndroidCompat.SDK < 5) {
             /* If we lose focus between a back key down and a back key up,
@@ -1819,8 +1800,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public void onResume() {
         super.onResume();
-
-        registerReceiver(mBroadcastReceiever, new IntentFilter(AM_INTENT_ACTION));
 
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
@@ -2028,7 +2007,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_text_box) {
             setEditTextView(2);
         } else if (id == R.id.menu_drawer) {
-            drawerMenu();
+            storageMenu();
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if (id == R.id.action_help) {
@@ -2355,24 +2334,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void chooseExternalFileMru() {
         final LinkedList<SyncFileObserverMru> mruList = mSyncFileObserver.getMRU();
         final LinkedList<SyncFileObserverMru> list = new LinkedList<SyncFileObserverMru>();
-        ContentResolver contentResolver = getContentResolver();
         int MRU_FILES = 8;
         for (SyncFileObserverMru mru : mruList) {
-            Uri uri = mru.getUri();
             list.add(mru);
             if (list.size() == MRU_FILES) break;
-/*
-            try {
-                InputStream is = contentResolver.openInputStream(uri);
-                if (is != null) {
-                    is.close();
-                    list.add(mru);
-                    if (list.size() == MRU_FILES) break;
-                }
-            } catch (Exception e) {
-                // Do nothing
-            }
-*/
         }
         if (MRU_FILES > list.size()) MRU_FILES = list.size();
         if (MRU_FILES == 0) {
@@ -2457,9 +2422,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void storageMenu() {
-        final String[] items = new String[mFilePickerItems.size()];
+        final String[] items = new String[mFilePickerItems.size() + 1];
+        items[0] = getString(R.string.file_chooser);
         for (int i = 0; i < mFilePickerItems.size(); i++) {
-            items[i] = mFilePickerItems.get(i);
+            items[i+1] = mFilePickerItems.get(i);
         }
         new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -2468,6 +2434,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 String item = items[which];
                 if (item == null) {
                     // do nothing
+                } else if (item.equals(getString(R.string.file_chooser))) {
+                    filePicker();
                 } else if (item.equals(String.format(launchApp, getString(R.string.app_files)))) {
                     intentMainActivity(APP_FILER);
                 } else if (getString(R.string.create_file).equals(item)) {
@@ -2914,6 +2882,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return true;
             case 0xffff0006:
                 setEditTextView(2);
+                return true;
+            case 0xffff0007:
+                String file = getStringFromFile(new File(FILE_INTENT));
+                file = file != null ? file.replaceAll("[\n\r]", "") : "";
+                doAndroidIntent("share.file", file, null);
+                return true;
+            case 0xffff0008:
+                doAndroidIntent("share.text", FILE_INTENT, null);
                 return true;
             case 0xffff1010:
                 setFunctionBar(0);
@@ -3604,106 +3580,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return true;
         }
         return false;
-    }
-
-    private void drawerMenu() {
-        String externalApp = null;
-        if (mSettings.getExternalAppButtonMode() > 0) {
-            externalApp = getString(R.string.external_app_button);
-            try {
-                String appId = mSettings.getExternalAppId();
-                PackageManager pm = this.getApplicationContext().getPackageManager();
-                PackageInfo packageInfo = pm.getPackageInfo(appId, 0);
-                externalApp = packageInfo.applicationInfo.loadLabel(pm).toString();
-            } catch (Exception e) {
-                // Do nothing
-            }
-        }
-        final String externalAppLabel = externalApp;
-        final String[] externalApps = externalApp != null ? new String[]{externalApp} : new String[]{};
-
-        final Map<String, String> apps = new LinkedHashMap<String, String>() {
-            {
-                put(getString(R.string.dropbox), APP_DROPBOX);
-            }
-
-            {
-                put(getString(R.string.googledrive), APP_GOOGLEDRIVE);
-            }
-
-            {
-                put(getString(R.string.onedrive), APP_ONEDRIVE);
-            }
-        };
-/*
-        String[] appLabels = new String[apps.size()];
-        int storages = 0;
-        for (Map.Entry<String, String> entry : apps.entrySet()) {
-            String app = entry.getValue();
-            if (APP_DROPBOX.equals(app) && mSettings.getDropboxFilePicker() == 0) continue;
-            if (APP_GOOGLEDRIVE.equals(app) && mSettings.getGoogleDriveFilePicker() == 0) continue;
-            if (APP_ONEDRIVE.equals(app) && mSettings.getOneDriveFilePicker() == 0) continue;
-            if (isAppInstalled(entry.getValue())) {
-                appLabels[storages] = entry.getKey();
-                storages++;
-            }
-        }
-*/
-//        final String[] storageApps = new String[storages];
-//        System.arraycopy(appLabels, 0, storageApps, 0, storages);
-
-        final String[] base = {
-                getString(R.string.file_chooser),
-                getString(R.string.create_or_delete),
-        };
-
-        final String[] backup= {
-            getString(R.string.backup_restore)
-        };
-
-        final String[] items = new String[base.length + externalApps.length + backup.length];
-
-        int destPos = 0;
-        System.arraycopy(base, 0, items, destPos, base.length);
-        destPos += base.length;
-/*
-        System.arraycopy(appLabels, 0, items, destPos, storageApps.length);
-        destPos += storageApps.length;
-*/
-        System.arraycopy(externalApps, 0, items, destPos, externalApps.length);
-        destPos += externalApps.length;
-        System.arraycopy(backup, 0, items, destPos, backup.length);
-
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.storage_menu))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (getString(R.string.file_chooser).equals(items[which])) {
-                            filePicker();
-                        } else if (getString(R.string.create_or_delete).equals(items[which])) {
-                            storageMenu();
-                        } else if (getString(R.string.dropbox).equals(items[which])) {
-                            launchExternalApp(mSettings.getDropboxFilePicker(), APP_DROPBOX);
-                        } else if (getString(R.string.googledrive).equals(items[which])) {
-                            launchExternalApp(mSettings.getGoogleDriveFilePicker(), APP_GOOGLEDRIVE);
-                        } else if (getString(R.string.onedrive).equals(items[which])) {
-                            launchExternalApp(mSettings.getOneDriveFilePicker(), APP_ONEDRIVE);
-                        } else if (externalAppLabel.equals(items[which])) {
-                            externalApp();
-                        } else if (getString(R.string.backup_restore).equals(items[which])) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                backupAndRestoreHome();
-                            } else {
-                                alert("This feature requires Android 5 or later.");
-                            }
-                        } else if (getString(R.string.edit_vimrc).equals(items[which])) {
-                            editVimrc();
-                        }
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
     }
 
     private void shareIntentTextDialog() {

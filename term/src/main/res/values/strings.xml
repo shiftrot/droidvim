@@ -55,7 +55,7 @@
     <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME). See help for details.\n\n</string>
     <string name="edit_vimrc_message_symboliclink">- Symbolic link\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in \"$HOME\".\n\n</string>
     <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".</string>
-    <string name="edit_vimrc_message_scoped_storage_backup_restore">- Drawer menu > Storage > Backup / Restore\n- See vimfiles.txt in \"$APPEXTHOME\" via a file manager.\n- help > Vimfiles</string>
+    <string name="edit_vimrc_message_scoped_storage_backup_restore">- Drawer menu > Storage > Backup / Restore\n- help > Vimfiles</string>
     <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
@@ -368,8 +368,8 @@
     <string name="scoped_storage_warning_title">Scoped storage</string>
     <string name="scoped_storage_first_warning_message">Scoped Storage:\n\"Scoped storage\" is enabled for this device. Therefore, direct access via Vim commands to other than the \"HOME directory\" is prohibited. Please use \"Open File\" in the drawer menu (Double tap on the screen).</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in the \"Home directory\" will be deleted when uninstalling.</string>
-    <string name="google_file_chooser_warning_message">3-dot menu to show or hide the internal storage/SD card.</string>
-    <string name="google_filer_app_warning_message">- 3-dot menu to show or hide the internal storage/SD card\n- To backup Vimfiles (.vimrc and .vim), use the backup command in \"Drawer menu > Storage\".</string>
+    <string name="google_file_chooser_warning_message">3-dot menu to show or hide the following:\n - Internal storage/SD card.\n - hidden files (dot files)</string>
+    <string name="google_filer_app_warning_message">- 3-dot menu to show or hide the following:\n - Internal storage/SD card.\n - hidden files (dot files)\n\n- Use \"Drawer menu > Storage\" to backup/restore Vimfiles (.vimrc and .vim).</string>
 
     <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
     <string name="permdesc_run_script">Allows application to open new windows in Terminal Emulator for Android and run commands in those windows with all of Terminal Emulator for Android\'s permissions, including access to the Internet and your SD Card.</string>
@@ -574,7 +574,7 @@
     <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
     <string name="title_filer_app_preference">Filer App button</string>
     <string name="external_app_button">External App</string>
-    <string name="title_external_app_preference">External App button</string>
+    <string name="summary_external_app_button">Choose the app for the \"External App\" button.</string>
     <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
     <string name="summary_external_app_button_off_preference">Hide App button on drawer.</string>
     <string name="title_external_app_id_preference">External App button</string>

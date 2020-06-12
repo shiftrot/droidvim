@@ -1212,8 +1212,10 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (AndroidCompat.SDK >= Build.VERSION_CODES.N) {
+            if (AndroidCompat.SDK > Build.VERSION_CODES.Q) {
                 addPreferencesFromResource(R.xml.pref_apps);
+            } else if (AndroidCompat.SDK >= Build.VERSION_CODES.N) {
+                addPreferencesFromResource(R.xml.pref_apps_29);
             } else {
                 addPreferencesFromResource(R.xml.pref_apps_25);
             }
@@ -1240,8 +1242,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             });
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
-            bindPreferenceSummaryToValue(findPreference("external_app_action_mode"));
+            try {
+                bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
+                bindPreferenceSummaryToValue(findPreference("external_app_action_mode"));
+            } catch (Exception e) {
+                // Do nothing
+            }
             bindPreferenceSummaryToValue(findPreference("cloud_dropbox_filepicker"));
             bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
             bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));

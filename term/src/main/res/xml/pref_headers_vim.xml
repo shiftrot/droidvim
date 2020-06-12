@@ -13,6 +13,10 @@
         android:title="@string/gesture_preferences"/>
 
     <header
+        android:fragment="jackpal.androidterm.TermPreferences$AppsPreferenceFragment"
+        android:title="@string/external_apps_preferences"/>
+
+    <header
         android:fragment="jackpal.androidterm.TermPreferences$ScreenPreferenceFragment"
         android:title="@string/screen_preferences"/>
 
@@ -23,10 +27,6 @@
     <header
         android:fragment="jackpal.androidterm.TermPreferences$KeyboardPreferenceFragment"
         android:title="@string/keyboard_preferences"/>
-
-    <header
-        android:fragment="jackpal.androidterm.TermPreferences$AppsPreferenceFragment"
-        android:title="@string/external_apps_preferences"/>
 
     <header
         android:fragment="jackpal.androidterm.TermPreferences$ShellPreferenceFragment"
