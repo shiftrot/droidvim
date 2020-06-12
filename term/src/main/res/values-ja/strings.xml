@@ -469,6 +469,7 @@
     <string name="file_chooser">ファイルを開く</string>
     <string name="use_file_chooser">ファイル選択</string>
     <string name="use_mru_cache">外部ストレージMRU</string>
+    <string name="use_clear_mru_cache">MRUキャッシュをクリア</string>
     <string name="mru_hash_error">外部ストレージ上でファイルが削除されたか, 無効なURIです.\n\"ファイルを開く\"ボタンから再読込してください.</string>
     <string name="storage_menu">ストレージメニュー</string>
     <string name="create_symlinks">シンボリックリンクの作成</string>

@@ -517,6 +517,7 @@
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>
+    <string name="use_clear_mru_cache">Clear MRU cache</string>
     <string name="mru_hash_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file...\" button.</string>
     <string name="file_chooser">Open file...</string>
     <string name="create_or_delete">Storage</string>

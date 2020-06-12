@@ -879,7 +879,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                confirmClearCache();
+                confirmClearCache(true);
             }
         });
         findViewById(R.id.drawer_keyboard_button).setOnClickListener(new OnClickListener() {
@@ -977,7 +977,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-    private void confirmClearCache() {
+    private void confirmClearCache(boolean clearTmpdir) {
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_clear_cache_message);
@@ -995,7 +995,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
-
     }
 
     private DrawerLayout getDrawer() {
@@ -2315,9 +2314,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return;
         }
         String mru = mruCommand.equals("MRU") ? getString(R.string.use_mru_cache) : getString(R.string.use_mru);
-        final String[] items = {
+        final String[] mruCommands = {
                 getString(R.string.use_file_chooser),
                 mru};
+        final String[] mruCacheItems = {
+                getString(R.string.use_file_chooser),
+                mru,
+                getString(R.string.use_clear_mru_cache)};
+        final String[] items = mruCommand.equals("MRU") ? mruCacheItems :  mruCommands;
         new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -2328,6 +2332,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     sendKeyStrings(mruCommand + "\r", true);
                 } else if (item.equals(getString(R.string.use_mru_cache))) {
                     chooseExternalFileMru();
+                } else if (item.equals(getString(R.string.use_clear_mru_cache))) {
+                    confirmClearCache(false);
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
@@ -2475,7 +2481,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 } else if (item.equals(String.format(launchApp, getString(R.string.onedrive)))) {
                     intentMainActivity(APP_ONEDRIVE);
                 } else if (getString(R.string.clear_cache).equals(item)) {
-                    confirmClearCache();
+                    confirmClearCache(true);
                 } else if (getString(R.string.create_symlinks).equals(item)) {
                     setupStorageSymlinks(Term.this);
                 } else if (getString(R.string.backup_restore).equals(item)) {
