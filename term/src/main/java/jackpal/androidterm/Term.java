@@ -186,7 +186,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
-    private LinkedList <ExternalApp> mExternalApps;
+    private LinkedList<ExternalApp> mExternalApps;
     private String APP_FILER;
 
     private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
@@ -410,7 +410,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void showSnackbar(final String message) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_top), message, Snackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
-        TextView tv= (TextView) snackbarView.findViewById(R.id.snackbar_text);
+        TextView tv = (TextView) snackbarView.findViewById(R.id.snackbar_text);
         tv.setMaxLines(2);
         snackbar.show();
     }
@@ -613,7 +613,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (TermSettings.THEME_KEY.equals(s)
                 || TermSettings.COLOR_KEY.equals(s)
                 || TermSettings.STATUSBAR_ICON_KEY.equals(s)
-                ) {
+        ) {
             recreate();
         }
     }
@@ -802,7 +802,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         button.setText(defaultAppButton);
                     }
                 }
-                if (isAppInstalled(app.appId) && app.action > 0) {
+                if ((isAppInstalled(app.appId) && app.action > 0)
+                        && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q || app.appId.equals(APP_FILER))) {
                     mFilePickerItems.add(app.appId);
                 }
             }
@@ -920,7 +921,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         try {
             PackageManager pm = this.getApplicationContext().getPackageManager();
             Intent intent = pm.getLaunchIntentForPackage(packageName);
-            if (intent == null) throw new NullPointerException();
+            if (intent == null) {
+                throw new NullPointerException();
+            }
             startActivity(intent);
         } catch (Exception e) {
             alert(packageName + "\n" + getString(R.string.external_app_activity_error));
@@ -1178,7 +1181,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                 }
             }
-            alert("Symbolic links are created:\n\n"  + storageDir.toString());
+            alert("Symbolic links are created:\n\n" + storageDir.toString());
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up symbolic link", e);
             alert("Error setting up symbolic link");
@@ -1203,19 +1206,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupFromHome() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
         ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void restoreToHome() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
         ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupAndRestoreHome() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
 
         final String[] items = {
                 getString(R.string.backup_home_directory),
@@ -1223,41 +1226,41 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         };
 
         new AlertDialog.Builder(this)
-            .setTitle(getString(R.string.backup_restore))
-            .setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
-                    b.setIcon(android.R.drawable.ic_dialog_info);
-                    b.setMessage(items[which]);
-                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            if (getString(R.string.backup_home_directory).equals(items[which])) {
-                                backupFromHome();
-                            } else if (getString(R.string.restore_home_directory).equals(items[which])) {
-                                restoreToHome();
-                            } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
-                                showSnackbar(getString(R.string.message_please_wait));
-                                sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
-                            } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
-                                showSnackbar(getString(R.string.message_please_wait));
-                                sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
+                .setTitle(getString(R.string.backup_restore))
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
+                        b.setIcon(android.R.drawable.ic_dialog_info);
+                        b.setMessage(items[which]);
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                if (getString(R.string.backup_home_directory).equals(items[which])) {
+                                    backupFromHome();
+                                } else if (getString(R.string.restore_home_directory).equals(items[which])) {
+                                    restoreToHome();
+                                } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
+                                    showSnackbar(getString(R.string.message_please_wait));
+                                    sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
+                                } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
+                                    showSnackbar(getString(R.string.message_please_wait));
+                                    sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
+                                }
                             }
-                        }
-                    });
-                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            backupAndRestoreHome();
-                        }
-                    });
-                    b.show();
-                }
-            })
-            .setNegativeButton(android.R.string.cancel, null)
-            .show();
+                        });
+                        b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                backupAndRestoreHome();
+                            }
+                        });
+                        b.show();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void populateViewFlipper() {
@@ -2293,7 +2296,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 getString(R.string.use_file_chooser),
                 mru,
                 getString(R.string.use_clear_mru_cache)};
-        final String[] items = mruCommand.equals("MRU") ? mruCacheItems :  mruCommands;
+        final String[] items = mruCommand.equals("MRU") ? mruCacheItems : mruCommands;
         new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -2425,7 +2428,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         PackageManager pm = this.getApplicationContext().getPackageManager();
         String launchApp = getString(R.string.launch_app);
         for (int i = 0; i < mFilePickerItems.size(); i++) {
-            String id = mFilePickerItems.get(i);;
+            String id = mFilePickerItems.get(i);
+            ;
             String label = id;
             try {
                 PackageInfo packageInfo = pm.getPackageInfo(id, 0);
@@ -2591,7 +2595,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case REQUEST_VOICE_INPUT:
                 if (result == RESULT_OK && data != null) {
                     ArrayList<String> candidates = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    if(candidates.size() > 0) {
+                    if (candidates.size() > 0) {
                         String str = candidates.get(0);
                         TermSession session = getCurrentTermSession();
                         if (session == null) return;
@@ -3908,7 +3912,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (keepScreen) {
                         if (currentTimeMillis >= mLastKeyPress + timeoutMills) {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                            if (!mKeepScreenEnableAuto) showSnackbar(getString(R.string.keepscreen_deacitvated));
+                            if (!mKeepScreenEnableAuto)
+                                showSnackbar(getString(R.string.keepscreen_deacitvated));
                         } else {
                             mKeepScreenHandler.postDelayed(this, timeoutMills - (currentTimeMillis - mLastKeyPress));
                         }

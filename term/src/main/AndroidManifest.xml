@@ -44,6 +44,17 @@
     <uses-permission
         android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <queries>
+        <package android:name="com.google.android.documentsui" />
+        <package android:name="com.android.documentsui" />
+        <package android:name="com.dropbox.android" />
+        <package android:name="com.google.android.apps.docs" />
+        <package android:name="com.microsoft.skydrive" />
+        <package android:name="org.mozilla.firefox_beta" />
+        <package android:name="org.mozilla.firefox" />
+        <package android:name="com.amazon.cloud9" />
+    </queries>
 
     <application
         android:requestLegacyExternalStorage="true"

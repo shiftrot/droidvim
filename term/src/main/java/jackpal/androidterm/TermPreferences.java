@@ -39,6 +39,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -193,11 +194,11 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     public static String getFilerApplicationId(PackageManager pm) {
+        String[] appFilers = {
+                "com.google.android.documentsui",
+                "com.android.documentsui",
+        };
         try {
-            String[] appFilers = {
-                    "com.android.documentsui",
-                    "com.google.android.documentsui",
-            };
             for (String pname : appFilers) {
                 Intent intent = pm.getLaunchIntentForPackage(pname);
                 if (intent != null) return pname;
@@ -1225,10 +1226,14 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 "external_app_package_name",
             };
             for (String id : ids) {
-                ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
-                if (mTermPreference != null && packageName != null) {
-                    if (mLabels != null) packageName.setEntries(mLabels);
-                    if (mPackageNames != null) packageName.setEntryValues(mPackageNames);
+                try {
+                    ListPreference packageName = (ListPreference) getPreferenceScreen().findPreference(id);
+                    if (mTermPreference != null && packageName != null) {
+                        if (mLabels != null) packageName.setEntries(mLabels);
+                        if (mPackageNames != null) packageName.setEntryValues(mPackageNames);
+                    }
+                } catch (Exception e) {
+                    // Do nothing
                 }
             }
             final String MRU_KEY = "mru_command";
@@ -1243,8 +1248,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             try {
-                bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
                 bindPreferenceSummaryToValue(findPreference("external_app_action_mode"));
+                bindPreferenceSummaryToValue(findPreference("external_app_package_name"));
             } catch (Exception e) {
                 // Do nothing
             }
