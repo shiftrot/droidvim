@@ -106,7 +106,7 @@ public class ShellTermSession extends GenericTermSession {
             path = checkPath(path);
         }
 
-        int size = 10;
+        int size = 11;
         String[] env = new String[size];
         env[0] = "PATH=" + path;
         env[1] = "HOME=" + TermService.getHOME();
@@ -115,9 +115,10 @@ public class ShellTermSession extends GenericTermSession {
         env[4] = "APPFILES=" + TermService.getAPPFILES();
         env[5] = "APPEXTFILES=" + TermService.getAPPEXTFILES();
         env[6] = "APPEXTHOME=" + TermService.getAPPEXTHOME();
-        env[7] = "INTERNAL_STORAGE=" + TermService.getEXTSTORAGE();
-        env[8] = "TERM=" + settings.getTermType();
-        env[9] = "COLORFGBG=" + settings.getCOLORFGBG();
+        env[7] = "APPLIB=" + TermService.getAPPLIB();
+        env[8] = "INTERNAL_STORAGE=" + TermService.getEXTSTORAGE();
+        env[9] = "TERM=" + settings.getTermType();
+        env[10] = "COLORFGBG=" + settings.getCOLORFGBG();
 
         String[] envCmd = env;
         if (mFirst) {
