@@ -107,7 +107,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
 
 dependencies {
@@ -122,7 +122,7 @@ dependencies {
     api "androidx.appcompat:appcompat:${versions.appcompat}"
     api "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
     api "androidx.documentfile:documentfile:${versions.documentfile}"
-    api "androidx.preference:preference:${versions.preference}"
+    api "androidx.preference:preference-ktx:${versions.preference}"
     api "androidx.vectordrawable:vectordrawable:${versions.vectordrawable}"
     api "com.google.android.material:material:${versions.material}"
 }

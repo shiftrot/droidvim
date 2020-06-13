@@ -23,6 +23,7 @@ obj/
 *.class
 
 # Generated files
+release/
 bin/
 gen/
 out/
