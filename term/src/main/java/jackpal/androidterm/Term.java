@@ -28,7 +28,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -50,7 +49,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.system.Os;
 import android.text.TextUtils;
@@ -213,8 +211,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static int mOrientation = -1;
     private static int mFunctionBarId = 0;
     private static SyncFileObserver mSyncFileObserver = null;
-    private static String AM_INTENT_ACTION = "com.droidterm.am.intent.action";
-    private static Random mRandom = new Random();
+    private static final Random mRandom = new Random();
     private static boolean mInvertCursorDirection = false;
     private static boolean mDefaultInvertCursorDirection = false;
     private static boolean mUninstall = false;
@@ -231,7 +228,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private long mLastKeyPress = System.currentTimeMillis();
     private ArrayList<String> mFilePickerItems;
     private boolean mFirst = true;
-    private FunctionKey[] mFunctionKeys = {
+    private final FunctionKey[] mFunctionKeys = {
             new FunctionKey(R.id.button_next_functionbar0, true , "functionbar_next0"           , "∧"   ),
             new FunctionKey(R.id.button_esc              , false, "functionbar_esc"             , "Esc"  ),
             new FunctionKey(R.id.button_ctrl             , true , "functionbar_ctrl"            , "Ctrl" ),
@@ -321,7 +318,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private TermSettings mSettings;
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
-    private TermVimInstaller mTermVimInstaller = new TermVimInstaller();
+    private final TermVimInstaller mTermVimInstaller = new TermVimInstaller();
     private Intent TSIntent;
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -338,13 +335,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean mHaveFullHwKeyboard = false;
     private boolean mUseKeyboardShortcuts;
     private boolean mVolumeAsCursor = false;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private int mPrevHaveFullHwKeyboard = -1;
     private boolean mHideFunctionBar = false;
     private int mLibrary = -1;
     private boolean mFatalTroubleShooting = false;
     private boolean mKeepScreenEnableAuto = false;
-    private View.OnKeyListener mKeyListener = new View.OnKeyListener() {
+    private final View.OnKeyListener mKeyListener = new View.OnKeyListener() {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             onLastKey();
             return backkeyInterceptor(keyCode, event) || keyboardShortcuts(keyCode, event);
@@ -912,22 +909,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private boolean isAppInstalled(String appPackage) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) return true;
-        PackageManager packageManager = getPackageManager();
-        Intent intent = packageManager.getLaunchIntentForPackage(appPackage);
+    private boolean isAppInstalled(String packageName) {
+        PackageManager packageManager = this.getApplicationContext().getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(packageName);
         return (intent != null);
     }
 
-    private boolean intentMainActivity(String app) {
-        if (app == null || app.equals("")) return false;
+    private boolean intentMainActivity(String packageName) {
+        if (packageName == null || packageName.equals("")) return false;
         try {
             PackageManager pm = this.getApplicationContext().getPackageManager();
-            Intent intent = pm.getLaunchIntentForPackage(app);
+            Intent intent = pm.getLaunchIntentForPackage(packageName);
             if (intent == null) throw new NullPointerException();
             startActivity(intent);
         } catch (Exception e) {
-            alert(app + "\n" + getString(R.string.external_app_activity_error));
+            alert(packageName + "\n" + getString(R.string.external_app_activity_error));
             return true;
         }
         return true;
@@ -1222,8 +1218,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP)  return;
 
         final String[] items = {
-            getString(R.string.backup_home_directory),
-            getString(R.string.restore_home_directory)
+                getString(R.string.backup_home_directory),
+                getString(R.string.restore_home_directory)
         };
 
         new AlertDialog.Builder(this)
@@ -3272,12 +3268,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             br.close();
             doAndroidIntent(str[0], str[1], str[2]);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
         }
     }
 
@@ -3461,9 +3453,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             digest.update(s.getBytes());
             byte[] messageDigest = digest.digest();
 
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : messageDigest) {
+                hexString.append(Integer.toHexString(0xFF & b));
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
@@ -3851,8 +3843,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String[] keyNames = r.getStringArray(arrayId);
         String keyName = keyNames[keyId];
         String template = r.getString(enabledId);
-        String result = template.replaceAll(regex, keyName);
-        return result;
+        return template.replaceAll(regex, keyName);
     }
 
     private void doRestartSoftKeyboard() {
@@ -4763,8 +4754,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private static class FunctionKey {
-        private static HashMap<String, String> preferenceMap = new HashMap<>();
-        private static HashMap<String, String> resourceMap = new HashMap<>();
+        private final static HashMap<String, String> preferenceMap = new HashMap<>();
+        private final static HashMap<String, String> resourceMap = new HashMap<>();
         public String label;
         public String prefId;
         public int resId;
@@ -4773,7 +4764,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         static String getPreferenceId(int id) {
             String res = String.valueOf(id);
             if (preferenceMap != null && preferenceMap.containsKey(res)) {
-                return  preferenceMap.get(res);
+                return preferenceMap.get(res);
             }
             return null;
         }
