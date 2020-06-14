@@ -3175,7 +3175,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 dialog.dismiss();
                 mUninstall = true;
                 mLibrary = which;
-                troubleShooting(mFatalTroubleShooting);
+                doCloseCrashVimWindow();
             }
         });
         bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {

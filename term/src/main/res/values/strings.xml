@@ -340,7 +340,7 @@
     <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
 
     <string name="crash_title">Sorry, Vim has crashed.</string>
-    <string name="crash_message">Please use troubleshooting or close this app and restart.\nIf you can not solve it by troubleshooting, please contact us.</string>
+    <string name="crash_message">If you cannot solve the problem, please contact us.</string>
     <string name="crash_quit_button">Force stop this app</string>
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
     <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
