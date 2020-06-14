@@ -25,7 +25,6 @@ import android.app.Instrumentation;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -189,6 +188,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
+    private LinkedList <ExternalApp> mExternalApps;
     private String APP_FILER;
 
     private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
@@ -754,17 +754,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         PackageManager pm = this.getApplicationContext().getPackageManager();
         APP_FILER = TermPreferences.getFilerApplicationId(pm);
         String defaultAppButton = getString(R.string.external_app_button);
-        LinkedList <ExternalApp> mExternalApps = new LinkedList<>();
+        mExternalApps = new LinkedList<>();
         mExternalApps.add(new ExternalApp(R.id.drawer_files_button      , mSettings.getFilerAppId()   , defaultAppButton               , mSettings.getFilerAppButtonMode()   ));
         mExternalApps.add(new ExternalApp(R.id.drawer_app_button        , mSettings.getExternalAppId(), defaultAppButton               , mSettings.getExternalAppButtonMode()));
         mExternalApps.add(new ExternalApp(R.id.drawer_dropbox_button    , APP_DROPBOX                 , getString(R.string.dropbox)    , mSettings.getDropboxFilePicker()    ));
         mExternalApps.add(new ExternalApp(R.id.drawer_googledrive_button, APP_GOOGLEDRIVE             , getString(R.string.googledrive), mSettings.getGoogleDriveFilePicker()));
         mExternalApps.add(new ExternalApp(R.id.drawer_onedrive_button   , APP_ONEDRIVE                , getString(R.string.onedrive)   , mSettings.getOneDriveFilePicker()   ));
         if (FLAVOR_VIM) {
-            String launchApp = getString(R.string.launch_app);
             mFilePickerItems = new ArrayList<>();
             mFilePickerItems.add(getString(R.string.create_file));
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) mFilePickerItems.add(getString(R.string.delete_file));
             for (ExternalApp app : mExternalApps) {
                 if (app.appId.equals("")) {
                     app.appId = APP_FILER;
@@ -806,14 +804,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     } catch (Exception e) {
                         button.setText(defaultAppButton);
                     }
-
                 }
-                if (app.action > 0 && (APP_FILER.equals(app.appId) ||
-                                       APP_DROPBOX.equals(app.appId) ||
-                                       APP_GOOGLEDRIVE.equals(app.appId) ||
-                                       APP_ONEDRIVE.equals(app.appId))) {
-                    mFilePickerItems.add(String.format(launchApp, app.label));
+                if (isAppInstalled(app.appId) && app.action > 0) {
+                    mFilePickerItems.add(app.appId);
                 }
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                mFilePickerItems.add(getString(R.string.delete_file));
             }
             Button button;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -864,7 +861,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             @Override
             public void onClick(View v) {
                 getDrawer().closeDrawers();
-                storageMenu();
+                storageMenu(true);
             }
         });
         findViewById(R.id.drawer_clear_cache_button).setOnClickListener(new OnClickListener() {
@@ -2007,7 +2004,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_text_box) {
             setEditTextView(2);
         } else if (id == R.id.menu_drawer) {
-            storageMenu();
+            storageMenu(false);
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if (id == R.id.action_help) {
@@ -2421,33 +2418,46 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
-    private void storageMenu() {
-        final String[] items = new String[mFilePickerItems.size() + 1];
-        items[0] = getString(R.string.file_chooser);
-        for (int i = 0; i < mFilePickerItems.size(); i++) {
-            items[i+1] = mFilePickerItems.get(i);
+    private void storageMenu(boolean drawer) {
+        ArrayList<String> itemArray = new ArrayList<>();
+        ArrayList<String> appIdArray = new ArrayList<>();
+        if (!drawer) {
+            itemArray.add(getString(R.string.file_chooser));
+            appIdArray.add(itemArray.get(0));
         }
+
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        String launchApp = getString(R.string.launch_app);
+        for (int i = 0; i < mFilePickerItems.size(); i++) {
+            String id = mFilePickerItems.get(i);;
+            String label = id;
+            try {
+                PackageInfo packageInfo = pm.getPackageInfo(id, 0);
+                label = String.format(launchApp, packageInfo.applicationInfo.loadLabel(pm).toString());
+                if (drawer && !id.equals(APP_FILER)) continue;
+            } catch (Exception e) {
+                // Do nothing
+            }
+            if (id.equals(APP_FILER)) {
+                label = getString(R.string.app_files);
+            }
+            itemArray.add(label);
+            appIdArray.add(id);
+        }
+        final String[] items = itemArray.toArray(new String[0]);
+        final String[] appId = appIdArray.toArray(new String[0]);
         new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String launchApp = getString(R.string.launch_app);
                 String item = items[which];
                 if (item == null) {
                     // do nothing
                 } else if (item.equals(getString(R.string.file_chooser))) {
                     filePicker();
-                } else if (item.equals(String.format(launchApp, getString(R.string.app_files)))) {
-                    intentMainActivity(APP_FILER);
                 } else if (getString(R.string.create_file).equals(item)) {
                     fileCreate();
                 } else if (getString(R.string.delete_file).equals(item)) {
                     fileDelete();
-                } else if (item.equals(String.format(launchApp, getString(R.string.dropbox)))) {
-                    intentMainActivity(APP_DROPBOX);
-                } else if (item.equals(String.format(launchApp, getString(R.string.googledrive)))) {
-                    intentMainActivity(APP_GOOGLEDRIVE);
-                } else if (item.equals(String.format(launchApp, getString(R.string.onedrive)))) {
-                    intentMainActivity(APP_ONEDRIVE);
                 } else if (getString(R.string.clear_cache).equals(item)) {
                     confirmClearCache(true);
                 } else if (getString(R.string.create_symlinks).equals(item)) {
@@ -2456,6 +2466,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     backupAndRestoreHome();
                 } else if (getString(R.string.edit_vimrc).equals(item)) {
                     editVimrc();
+                } else {
+                    intentMainActivity(appId[which]);
                 }
             }
         }).setNegativeButton(android.R.string.cancel, null)
