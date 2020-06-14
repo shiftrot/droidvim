@@ -782,7 +782,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                         }
                                     };
                                     final String WARNING_ID_FILE_MANAGER = "file_manager_app_warning";
-                                    doWarningDialogRun(null, getString(R.string.google_filer_app_warning_message), WARNING_ID_FILE_MANAGER, false, runFiler);
+                                    String message = getString(R.string.google_file_chooser_warning_message) + getString(R.string.google_filer_app_warning_message);
+                                    doWarningDialogRun(null, message, WARNING_ID_FILE_MANAGER, false, runFiler);
                                 } else if (isAppInstalled(app.appId) || APP_DROPBOX.equals(app.appId) || APP_GOOGLEDRIVE.equals(app.appId) || APP_ONEDRIVE.equals(app.appId)) {
                                     launchExternalApp(app.action, app.appId);
                                 } else {
@@ -1195,11 +1196,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         };
         String message = getString(R.string.edit_vimrc_message);
-        if (SCOPED_STORAGE) {
-            message += getString(R.string.edit_vimrc_message_scoped_storage_backup_restore);
-        } else {
-            message += getString(R.string.edit_vimrc_message_symboliclink);
-            message += getString(R.string.edit_vimrc_message_backup_restore);
+        message += getString(R.string.edit_vimrc_message_symboliclink);
+        message += getString(R.string.edit_vimrc_message_backup_restore);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            message += getString(R.string.edit_vimrc_message_show_dotfiles);
         }
         doWarningDialogRun(getString(R.string.edit_vimrc), message, "edit_vimrc", false, editVimrc);
     }

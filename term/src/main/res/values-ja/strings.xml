@@ -52,9 +52,9 @@
 
     <string name="edit_vimrc">.vimrcを編集</string>
     <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.(詳しくはヘルプ参照)\n\n</string>
-    <string name="edit_vimrc_message_symboliclink">- シンボリックリンク\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.</string>
-    <string name="edit_vimrc_message_scoped_storage_backup_restore">- ドロワーメニュー→ストレージ→バックアップ/リストア\n- ファイルマネージャーから\"$APPEXTHOME\"のvimfiles.txtを開く.\n- ヘルプ→Vimfiles</string>
+    <string name="edit_vimrc_message_symboliclink">- シンボリックリンク (Android 10以前)\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
+    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.\n\n</string>
+    <string name="edit_vimrc_message_show_dotfiles">- ファイルマネージャー\n「環境設定→ドロワー＆外部アプリ→ドットファイルを表示」</string>
     <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
     <string name="text_box">一行テキスト入力</string>
@@ -367,8 +367,8 @@
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
-    <string name="google_file_chooser_warning_message">3ドットメニューで以下の表示を切り替え可能です.\n - 内部ストレージ/SDカード\n - 隠しファイル(ドットファイル)</string>
-    <string name="google_filer_app_warning_message">- 3ドットメニューで以下の表示を切り替え可能です.\n - 内部ストレージ/SDカード\n - 隠しファイル(ドットファイル)\n\n- Vimfiles(.vimrc, .vim)のバックアップ/リストアには「ドロワーメニュー→ストレージ→バックアップ/リストア」を使用してください.</string>
+    <string name="google_file_chooser_warning_message">- ファイルマネージャーの3ドットメニューで以下の表示を切り替え可能です.\n - 内部ストレージ/SDカード\n - 隠しファイル(ドットファイル)\n\n- ホームディレクトリのドットファイルを表示\n - このアプリの環境設定 > ドロワー＆外部アプリ > ドットファイルの表示</string>
+    <string name="google_filer_app_warning_message">\n\n- Vimfiles(.vimrc and .vim)のバックアップ/リストア\n - ドロワーメニュー > ストレージ > バックアップ/リストア</string>
 
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
     <string name="permdesc_run_script">アプリケーションに対して，端末エミュレータに新規ウインドウを開かせ，インターネットやSDカードへのアクセスを含む，端末エミュレータが持つすべてのパーミッションでコマンドを実行することを許可する.</string>
@@ -532,6 +532,9 @@
     <string name="summary_local_storage_provider_path_mode_preference">「ファイル管理」アプリに登録するパスを選択します.\n変更が反映されるまで時間がかかることがあります. 急ぎの場合はこのデバイスを再起動してください.</string>
     <string name="title_scoped_storage_startup_path_mode_preference">起動時にホームディレクトリへ移動</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">スタートアップディレクトリとしてホームディレクトリを使用します.</string>
+    <string name="title_show_dotfiles">ホームディレクトリのルートにあるドットファイルを表示</string>
+    <string name="summary_show_dotfiles">ファイルマネージャーを使用してホームディレクトリのルートへドットファイル(.bashrc, .vimrcなど)をコピーしたい場合などに一時的に有効にしてください.</string>
+
     <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
     <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>

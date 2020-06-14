@@ -136,26 +136,6 @@ public class LocalStorageProvider extends DocumentsProvider {
         row.add(Root.COLUMN_MIME_TYPES, getChildMimeTypes(mBaseDir));
         row.add(Root.COLUMN_AVAILABLE_BYTES, mBaseDir.getFreeSpace());
 
-        if (SCOPED_STORAGE) {
-            try {
-                final MatrixCursor.RowBuilder row2 = result.newRow();
-                String summary = "$APPEXTHOME";
-                File rootDir = null;
-                rootDir = new File(getContext().getExternalFilesDir(null).getAbsolutePath() + "/home");
-                if (rootDir != null && rootDir.canWrite()) {
-                    row2.add(Root.COLUMN_TITLE, TITLE);
-                    row2.add(Root.COLUMN_ICON, R.drawable.ic_folder);
-                    row2.add(Root.COLUMN_SUMMARY, summary);
-                    row2.add(Root.COLUMN_FLAGS, FLAGS);
-                    row2.add(Root.COLUMN_ROOT_ID, getDocIdForFile(rootDir));
-                    row2.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(rootDir));
-                    row2.add(Root.COLUMN_MIME_TYPES, getChildMimeTypes(rootDir));
-                    row2.add(Root.COLUMN_AVAILABLE_BYTES, rootDir.getFreeSpace());
-                }
-            } catch (Exception e) {
-                // Do nothing
-            }
-        }
         return result;
     }
 
@@ -232,6 +212,7 @@ public class LocalStorageProvider extends DocumentsProvider {
         // Start by adding the parent to the list of files to be processed
         pending.add(parent);
 
+        boolean secureMode = isSecureMode();
         // Do while we still have unexamined files, and fewer than the max search results
         while (!pending.isEmpty() && result.getCount() < MAX_SEARCH_RESULTS) {
             // Take a file from the list of unprocessed files
@@ -247,7 +228,7 @@ public class LocalStorageProvider extends DocumentsProvider {
             // }
             // if (!isInsideHome) continue;
             String filePath = file.getAbsolutePath();
-            if (filePath.startsWith(mBaseDir.getAbsolutePath() + "/.")) continue;
+            if (secureMode && filePath.startsWith(mBaseDir.getAbsolutePath() + "/.")) continue;
             if (file.isDirectory()) {
                 // If it's a directory, add all its children to the unprocessed list
                 Collections.addAll(pending, file.listFiles());
@@ -295,8 +276,9 @@ public class LocalStorageProvider extends DocumentsProvider {
         final MatrixCursor result = new MatrixCursor(projection != null ? projection : DEFAULT_DOCUMENT_PROJECTION);
         final File parent = getFileForDocId(parentDocumentId);
         boolean isHome = parent.getAbsolutePath().equals(mBaseDir.getAbsolutePath());
+        boolean secureMode = isSecureMode();
         for (File file : parent.listFiles()) {
-            if (!(isHome && file.getName().startsWith("."))) {
+            if (!secureMode || !(isHome && file.getName().startsWith("."))) {
                 includeFile(result, null, file);
             }
         }
@@ -349,7 +331,7 @@ public class LocalStorageProvider extends DocumentsProvider {
         String canonicalName = displayName.replaceAll("\\\\", "_");
         File file = new File(documentId, canonicalName);
         String parent = file.getParent();
-        if (parent == null || (canonicalName.startsWith(".") && parent.equals(mBaseDir.getAbsolutePath()))) {
+        if (parent == null || (canonicalName.startsWith(".") && parent.equals(mBaseDir.getAbsolutePath()) && isSecureMode())) {
             throw new FileNotFoundException("Failed to create document with id " + documentId);
         }
         try {
@@ -622,6 +604,16 @@ public class LocalStorageProvider extends DocumentsProvider {
      * Dummy function to determine whether the user is logged in.
      */
     private boolean isUserLoggedIn() {
+        return true;
+    }
+
+    private boolean isSecureMode() {
+        try {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+            return !pref.getBoolean("show_dotfiles", false);
+        } catch (Exception e) {
+            // Do nothing
+        }
         return true;
     }
 

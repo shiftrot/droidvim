@@ -59,4 +59,10 @@
         android:title="@string/title_mrucommand_preference"
         android:summary="@string/summary_mrucommand_preference"/>
 
+    <SwitchPreference
+        android:key="show_dotfiles"
+        android:title="@string/title_show_dotfiles"
+        android:summary="@string/summary_show_dotfiles"
+        android:defaultValue="@bool/pref_show_dotfiles_default"/>
+
 </PreferenceScreen>
