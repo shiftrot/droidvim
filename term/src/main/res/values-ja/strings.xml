@@ -533,7 +533,7 @@
     <string name="title_scoped_storage_startup_path_mode_preference">起動時にホームディレクトリへ移動</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">スタートアップディレクトリとしてホームディレクトリを使用します.</string>
     <string name="title_show_dotfiles">ホームディレクトリのルートにあるドットファイルを表示</string>
-    <string name="summary_show_dotfiles">ファイルマネージャーを使用してホームディレクトリのルートへドットファイル(.bashrc, .vimrcなど)をコピーしたい場合などに一時的に有効にしてください.</string>
+    <string name="summary_show_dotfiles">ファイルマネージャーを使用してホームディレクトリのルートへドットファイル(.bashrc, .vimrcなど)をコピーしたい場合は, 一時的に有効にしてください.</string>
 
     <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>

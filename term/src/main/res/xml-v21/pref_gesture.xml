@@ -1,14 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="backaction"
-        android:defaultValue="@string/pref_backaction_default"
-        android:title="@string/title_backaction_preference"
-        android:entries="@array/entries_vim_backaction_preference"
-        android:entryValues="@array/entryvalues_vim_backaction_preference"
-        android:dialogTitle="@string/dialog_title_backaction_preference"/>
-
-    <ListPreference
         android:key="double_tap_action"
         android:defaultValue="@string/pref_double_tap_default"
         android:title="@string/title_double_tap_preference"
@@ -40,7 +32,20 @@
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
         android:dialogTitle="@string/dialog_title_bottom_double_tap_preference"/>
 
-    <CheckBoxPreference
+    <ListPreference
+        android:key="backaction"
+        android:defaultValue="@string/pref_backaction_default"
+        android:title="@string/title_backaction_preference"
+        android:entries="@array/entries_vim_backaction_preference"
+        android:entryValues="@array/entryvalues_vim_backaction_preference"
+        android:dialogTitle="@string/dialog_title_backaction_preference"/>
+
+    <SwitchPreference
+        android:title="@string/title_volume_as_cursor_tracking_preference"
+        android:key="volume_as_cursor"
+        android:defaultValue="@bool/pref_volume_as_cursor_tracking_default" />
+
+    <SwitchPreference
         android:title="@string/title_mouse_tracking_preference"
         android:key="mouse_tracking"
         android:defaultValue="@bool/pref_mouse_tracking_default"

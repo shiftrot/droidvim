@@ -891,11 +891,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_functionbar);
-            } else {
-                addPreferencesFromResource(R.xml.pref_functionbar_20);
-            }
+            addPreferencesFromResource(R.xml.pref_functionbar);
             if (FLAVOR_VIM) {
                 findPreference("functionbar_vim_paste").setDefaultValue(true);
             }
@@ -922,11 +918,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_gesture);
-            } else {
-                addPreferencesFromResource(R.xml.pref_gesture_20);
-            }
+            addPreferencesFromResource(R.xml.pref_gesture);
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("backaction"));
@@ -951,11 +943,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_screen);
-            } else {
-                addPreferencesFromResource(R.xml.pref_screen_20);
-            }
+            addPreferencesFromResource(R.xml.pref_screen);
             final String APP_INFO_KEY = "notification";
             Preference appInfoPref = getPreferenceScreen().findPreference(APP_INFO_KEY);
             appInfoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -986,12 +974,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_font);
             if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                    addPreferencesFromResource(R.xml.pref_font);
-                } else {
-                    addPreferencesFromResource(R.xml.pref_font_20);
-                }
                 final String FONT_FILE_PICKER_KEY = "fontfile_picker";
                 Preference fontPrefs = getPreferenceScreen().findPreference(FONT_FILE_PICKER_KEY);
                 fontPrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -1002,7 +986,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     }
                 });
             } else {
-                addPreferencesFromResource(R.xml.pref_font_18);
                 final String FONTFILE = "fontfile";
                 ListPreference fontFileList = (ListPreference) findPreference(FONTFILE);
                 if (mTermPreference != null) mTermPreference.setFontList(fontFileList);
@@ -1048,11 +1031,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_keyboard);
-            } else {
-                addPreferencesFromResource(R.xml.pref_keyboard_20);
-            }
+            addPreferencesFromResource(R.xml.pref_keyboard);
             setHasOptionsMenu(true);
         }
 
@@ -1071,14 +1050,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            if (SCOPED_STORAGE) {
+                addPreferencesFromResource(R.xml.pref_shell_scoped_storage);
+            } else {
+                addPreferencesFromResource(R.xml.pref_shell);
+            }
             if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                if (SCOPED_STORAGE) {
-                    addPreferencesFromResource(R.xml.pref_shell);
-                } else if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                    addPreferencesFromResource(R.xml.pref_shell_28);
-                } else {
-                    addPreferencesFromResource(R.xml.pref_shell_20);
-                }
                 if (!SCOPED_STORAGE) {
                     final String STARTUP_KEY = "startup_dir_chooser";
                     Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
@@ -1114,8 +1091,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         }
                     });
                 }
-            } else {
-                addPreferencesFromResource(R.xml.pref_shell_18);
             }
             setHasOptionsMenu(true);
 
@@ -1213,13 +1188,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (AndroidCompat.SDK > Build.VERSION_CODES.Q) {
-                addPreferencesFromResource(R.xml.pref_apps);
-            } else if (AndroidCompat.SDK >= Build.VERSION_CODES.N) {
-                addPreferencesFromResource(R.xml.pref_apps_29);
-            } else {
-                addPreferencesFromResource(R.xml.pref_apps_25);
-            }
+            addPreferencesFromResource(R.xml.pref_apps);
 
             String ids[] = {
                 "filer_app_package_name",
@@ -1303,7 +1272,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (FLAVOR_VIM && AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_user_setting);
+                addPreferencesFromResource(R.xml.pref_user_setting_rw);
                 final String PREFS_KEY = "prefs_rw";
                 Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
                 prefsPicker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -1314,7 +1283,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     }
                 });
             } else {
-                addPreferencesFromResource(R.xml.pref_user_setting_18);
+                addPreferencesFromResource(R.xml.pref_user_setting);
             }
 
             final String APP_INFO_KEY = "app_info";

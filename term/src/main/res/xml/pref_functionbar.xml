@@ -1,18 +1,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="functionbar"
         android:defaultValue="@bool/pref_functionbar_default"
         android:title="@string/title_functionbar_preference"
         android:summary="@string/summary_functionbar_preference"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="functionbar_navigation_button"
         android:defaultValue="@bool/pref_functionbar_navigation_button_default"
         android:title="@string/title_navigation_button_preference"
         android:summary="@string/summary_navigation_button_preference"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:title="@string/title_auto_hide_functionbar"
         android:key="auto_hide_functionbar"
         android:defaultValue="@bool/pref_auto_hide_functionbar_default"
@@ -446,18 +446,18 @@
         android:entryValues="@array/entryvalues_cursor_direction_ctrl_mode_preference"
         android:summary="@string/summary_cursor_direction_ctrl_mode_preference"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="oneline_textbox"
         android:defaultValue="@bool/pref_one_line_textbox_default"
         android:title="@string/title_oneline_textbox_preference"
         android:summary="@string/summary_oneline_textbox_preference"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="oneline_textbox_cr"
         android:defaultValue="@bool/pref_one_line_textbox_cr_default"
         android:title="@string/title_oneline_textbox_cr_preference"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="oneline_textbox_esc"
         android:defaultValue="@bool/pref_one_line_textbox_esc_default"
         android:title="@string/title_oneline_textbox_esc_preference"

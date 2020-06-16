@@ -1,0 +1,22 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="app_info"
+        android:title="@string/title_app_info_preference"/>
+
+    <Preference
+        android:key="prefs_rw"
+        android:title="@string/title_prefs_preference"/>
+
+    <Preference
+        android:key="license"
+        android:title="@string/title_license"/>
+
+    <!-- <SwitchPreference -->
+    <!--     android:key="analytics" -->
+    <!--     android:defaultValue="@bool/pref_analytics_default" -->
+    <!--     android:title="@string/title_analytics_preference" -->
+    <!--     android:summary="@string/summary_analytics_preference"/> -->
+
+</PreferenceScreen>
+

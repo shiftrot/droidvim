@@ -12,7 +12,7 @@
         android:title="@string/keepscreen"
         android:summary="@string/summary_keepscreen_preference">
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="keepscreen_at_startup"
             android:defaultValue="@bool/pref_keepscreen_at_startup_default"
             android:title="@string/title_prefs_keepscreen_at_startup"/>
@@ -60,13 +60,6 @@
         android:entryValues="@array/entryvalues_composingtext_preference"
         android:dialogTitle="@string/dialog_title_composingtext_preference"/>
 
-    <SwitchPreference
-        android:key="statusbar_icon"
-        android:defaultValue="true"
-        android:title="@string/title_statusbar_icon_preference"
-        android:summaryOn="@string/summary_statusbar_icon_on_preference"
-        android:summaryOff="@string/summary_statusbar_icon_off_preference"/>
-
     <ListPreference
         android:key="theme"
         android:defaultValue="@string/pref_theme_default"
@@ -76,12 +69,19 @@
         android:entryValues="@array/entryvalues_theme_preference"
         android:dialogTitle="@string/dialog_title_theme_preference"/>
 
+    <CheckBoxPreference
+        android:key="statusbar_icon"
+        android:defaultValue="true"
+        android:title="@string/title_statusbar_icon_preference"
+        android:summaryOn="@string/summary_statusbar_icon_on_preference"
+        android:summaryOff="@string/summary_statusbar_icon_off_preference"/>
+
     <Preference
         android:key="notification"
         android:title="@string/title_notification_preference"
         android:summary="@string/summary_notification_preference"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="hw_acceleration_by_default"
         android:defaultValue="@bool/pref_hw_acceleration_by_default"
         android:title="@string/title_hw_acceleration_by_default_preference"/>

@@ -1,8 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:key="fontfile_picker"
-        android:title="@string/title_fontfile_preference"/>
+    <ListPreference
+        android:key="fontfile"
+        android:defaultValue="@string/pref_fontfile_default"
+        android:title="@string/title_fontfile_preference"
+        android:entries="@array/entries_fontfile_preference"
+        android:entryValues="@array/entries_fontfile_preference"
+        android:dialogTitle="@string/dialog_title_fontfile_preference"/>
 
     <EditTextPreference
         android:key="fontsize"
@@ -30,7 +34,7 @@
         android:dialogTitle="@string/dialog_title_ambiwidth_preference"
         android:inputType="number"/>
 
-    <SwitchPreference
+    <CheckBoxPreference
         android:title="@string/title_force_flush_drawtext_preference"
         android:key="force_flush_drawtext"
         android:defaultValue="@bool/pref_force_flush_drawtext"
