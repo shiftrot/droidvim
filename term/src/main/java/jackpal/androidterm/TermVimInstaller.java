@@ -199,6 +199,14 @@ final class TermVimInstaller {
 
     static public boolean ScopedStorageWarning = false;
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
+        File force32 = new File(TermService.getAPPEXTFILES() + "/.32bit");
+        File force64 = new File(TermService.getAPPEXTFILES() + "/.64bit");
+        if (force32.exists() || force64.exists()) {
+            Term.recoveryDelete();
+            force32.delete();
+            force64.delete();
+        }
+
         ScopedStorageWarning = SCOPED_STORAGE && new PrefValue(activity).getBoolean("enableScopedStorageWarning", true);
         final String path = TermService.getAPPFILES();
         final String versionPath = TermService.getVersionFilesDir();
