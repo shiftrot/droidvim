@@ -59,14 +59,15 @@
     <application
         android:requestLegacyExternalStorage="true"
         android:extractNativeLibs="true"
+        android:resizeableActivity="true"
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_terminal"
-        android:resizeableActivity="true"
         android:theme="@style/App_Theme_Light"
-        android:usesCleartextTraffic="true">
+        tools:targetApi="q" >
         <activity
             android:name=".ExtraContents"
             android:label="@string/title_activity_extra_contents"
@@ -91,12 +92,12 @@
             android:exported="false"
             android:targetActivity=".Term">
             <intent-filter>
-                <action android:name="shiftrot.androidterm.private.OPEN_NEW_WINDOW"/>
+                <action android:name="${applicationId}.shiftrot.androidterm.private.OPEN_NEW_WINDOW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="shiftrot.androidterm.private.SWITCH_WINDOW"/>
+                <action android:name="${applicationId}.shiftrot.androidterm.private.SWITCH_WINDOW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

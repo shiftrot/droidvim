@@ -56,8 +56,8 @@ import static jackpal.androidterm.Term.REQUEST_FOREGROUND_SERVICE_PERMISSION;
 import static jackpal.androidterm.Term.REQUEST_STORAGE;
 
 public class RemoteInterface extends AppCompatActivity {
-    protected static final String PRIVACT_OPEN_NEW_WINDOW = "shiftrot.androidterm.private.OPEN_NEW_WINDOW";
-    protected static final String PRIVACT_SWITCH_WINDOW = "shiftrot.androidterm.private.SWITCH_WINDOW";
+    protected static final String PRIVACT_OPEN_NEW_WINDOW = BuildConfig.APPLICATION_ID + ".shiftrot.androidterm.private.OPEN_NEW_WINDOW";
+    protected static final String PRIVACT_SWITCH_WINDOW = BuildConfig.APPLICATION_ID + ".shiftrot.androidterm.private.SWITCH_WINDOW";
 
     private static String mHandle = null;
     private static String mFname = null;
