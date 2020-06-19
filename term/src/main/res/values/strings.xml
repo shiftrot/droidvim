@@ -345,7 +345,8 @@
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
     <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
     <string name="revert_to_default_vim">Revert to Vim (default).</string>
-    <string name="quit_to_shell">Shell</string>
+    <string name="shell_exit_command_message">This application can be terminated by executing the \"exit\" command several times.</string>
+    <string name="quit_to_shell">Quit to shell</string>
 
     <string name="title_allow_prepend_path_preference">Allow PATH prepend</string>
     <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>

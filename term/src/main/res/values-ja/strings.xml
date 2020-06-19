@@ -344,7 +344,8 @@
     <string name="crash_trouble_shooting_button">トラブルシューティング</string>
     <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
     <string name="revert_to_default_vim">実行ファイルをデフォルトへ戻す.</string>
-    <string name="quit_to_shell">シェル</string>
+    <string name="quit_to_shell">シェルを起動</string>
+    <string name="shell_exit_command_message">\"exit\"コマンドを数回実行することにより, このアプリケーションを終了できます.</string>
 
     <string name="title_allow_prepend_path_preference">PATHへのプリペンドの許可</string>
     <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>

@@ -3033,7 +3033,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         setUninstallExtraContents(false);
         final String[] items = {
                 getString(R.string.launch_default_vim),
-                getString(R.string.revert_to_default_vim),
+                getString(R.string.quit_to_shell),
                 getString(R.string.crash_quit_button)};
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_choose))
@@ -3047,19 +3047,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             } else {
                                 sendKeyStrings("vim.app\r", false);
                             }
-                        } else if (getString(R.string.revert_to_default_vim).equals(items[which])) {
-                            setUninstallExtraContents(true);
-                            doCloseCrashVimWindow(getString(R.string.revert_to_default_vim));
+                        } else if (getString(R.string.quit_to_shell).equals(items[which])) {
+                            quitToShell();
                         } else if (getString(R.string.crash_quit_button).equals(items[which])) {
                             doCloseCrashVimWindow();
                         } else {
                             fatalCrashVim();
                         }
-                    }
-                })
-                .setPositiveButton(getString(R.string.quit_to_shell), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
@@ -3074,10 +3068,28 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dlg.show();
     }
 
+    private void quitToShell() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        String message = getString(R.string.quit_to_shell);
+        bld.setMessage(message);
+        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                alert(getString(R.string.shell_exit_command_message));
+            }
+        });
+        bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                fatalCrashVim();
+            }
+        });
+        bld.create().show();
+    }
+
     private void troubleShooting(boolean fatal) {
         mFatalTroubleShooting = fatal;
         final String[] items = {
-                getString(R.string.title_change_lib_preference)};
+                getString(R.string.revert_to_default_vim)};
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(getString(R.string.crash_trouble_shooting_button))
@@ -3085,17 +3097,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if (getString(R.string.title_change_lib_preference).equals(items[which])) {
-                            forceLibrary();
+                        if (getString(R.string.revert_to_default_vim).equals(items[which])) {
+                            setUninstallExtraContents(true);
+                            doCloseCrashVimWindow(getString(R.string.revert_to_default_vim));
                         }
-                    }
-                })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        String message = getString(R.string.confirm_do_close_troubleshooting) + getString(R.string.confirm_change_lib);
-                        doCloseCrashVimWindow(message);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
