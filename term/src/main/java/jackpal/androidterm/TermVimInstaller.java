@@ -723,7 +723,7 @@ final class TermVimInstaller {
     }
 
     static public boolean busybox(String cmd) {
-        String busybox = TermService.getAPPLIB() + "/busybox_"+ TermService.getARCH() +".so";
+        String busybox = TermService.getAPPLIB() + "/busybox_"+ TermService.getArch() +".so";
         if (!new File(busybox).canExecute()) {
             busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
         }
@@ -846,7 +846,7 @@ final class TermVimInstaller {
     }
 
     static String getArch() {
-        return TermService.getARCH();
+        return TermService.getArch();
     }
 
     static String getProp(String propName) {

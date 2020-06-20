@@ -484,7 +484,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static String getArch() {
-        return TermService.getARCH();
+        return TermService.getArch();
     }
 
     public static void writeStringToFile(String filename, String str) {
