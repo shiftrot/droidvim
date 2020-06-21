@@ -10,7 +10,7 @@
     <string name="string_functionbar_ime_toggle">✏</string>
     <string name="title_functionbar_ime_toggle">✏ - Toggle keyboard</string>
     <string name="title_navigationbar_fn_toggle">➖ - Toggle functionbar</string>
-    <string name="title_functionbar_voice_input">🎙 - Voice input</string>
+    <string name="title_functionbar_voice_input">🎤 - Voice input</string>
     <string name="title_functionbar_hide">▽ - Hide functionbar</string>
     <string name="title_functionbar_change">∧ - F1-F12</string>
     <string name="title_functionbar_change_fkey">∨ - Hide F1-F12</string>
@@ -24,7 +24,7 @@
     <string name="key_right">▶</string>
     <string name="key_ime">✏</string>
     <string name="key_toggle">➖</string>
-    <string name="key_voice_input">🎙</string>
+    <string name="key_voice_input">🎤</string>
     <string name="key_enter">↲</string>
     <string name="key_circle">○</string>
     <string name="key_square">□</string>

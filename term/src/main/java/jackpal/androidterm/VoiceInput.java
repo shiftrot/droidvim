@@ -1,6 +1,7 @@
 package jackpal.androidterm;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.speech.RecognizerIntent;
@@ -20,7 +21,14 @@ public class VoiceInput {
         try {
             activity.startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setMessage("No voice input activity was found.");
+                bld.setPositiveButton(android.R.string.ok, null);
+                bld.create().show();
+            } catch (Exception voice) {
+                // Do nothing
+            }
         }
     }
 

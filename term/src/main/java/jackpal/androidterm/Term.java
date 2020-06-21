@@ -256,7 +256,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             new FunctionKey(R.id.button_function_21      , false, "functionbar_menu_x"          , "×"   ),
             new FunctionKey(R.id.button_function_22      , false, "functionbar_menu_plus"       , "＋"   ),
             new FunctionKey(R.id.button_function_23      , false, "functionbar_menu_minus"      , "－"   ),
-            new FunctionKey(R.id.button_function_24      , true , "functionbar_voice_input"     , "🎙"   ),
+            new FunctionKey(R.id.button_function_24      , true , "functionbar_voice_input"     , "🎤"   ),
             new FunctionKey(R.id.button_function_25      , false, "functionbar_ime_toggle"      , "✏"    ),
             new FunctionKey(R.id.button_function_26      , true , "functionbar_vim_paste"       , "\"*p" ),
             new FunctionKey(R.id.button_function_27      , true , "functionbar_vim_yank"        , "\"*yy"),
@@ -307,7 +307,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             new FunctionKey(R.id.button_navigation_27    , false, "navigationbar_vim_paste"     , "\"*p" ),
             new FunctionKey(R.id.button_navigation_28    , false, "navigationbar_vim_yank"      , "\"yy" ),
             new FunctionKey(R.id.button_navigation_29    , true , "navigationbar_fn_toggle"     , "➖"   ),
-            new FunctionKey(R.id.button_navigation_30    , false, "navigationbar_voice_input"   , "🎙"   ),
+            new FunctionKey(R.id.button_navigation_30    , false, "navigationbar_voice_input"   , "🎤"   ),
             new FunctionKey(R.id.button_navigation_31    , true , "navigationbar_ime_toggle"    , "✏"    ),
             new FunctionKey(R.id.button_navigation_32    , false, "navigationbar_menu_quit"     , "[Q]"  ),
             new FunctionKey(R.id.button_navigation_33    , false, "navigationbar_menu"          , "≡"   ),
@@ -4199,6 +4199,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         button = findViewById(FunctionKey.getResourceId("functionbar_softkeyboard"));
         button.setText(label);
         button = findViewById(FunctionKey.getResourceId("navigationbar_softkeyboard"));
+        button.setText(label);
+        label = getString(R.string.key_voice_input);
+        button = findViewById(FunctionKey.getResourceId("functionbar_voice_input"));
+        button.setText(label);
+        button = findViewById(FunctionKey.getResourceId("navigationbar_voice_input"));
         button.setText(label);
     }
 
