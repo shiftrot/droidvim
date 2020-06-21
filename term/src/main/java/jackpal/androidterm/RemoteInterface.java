@@ -18,9 +18,11 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -49,7 +51,9 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.Term.REQUEST_FOREGROUND_SERVICE_PERMISSION;
+import static jackpal.androidterm.Term.REQUEST_STORAGE;
 
 public class RemoteInterface extends AppCompatActivity {
     protected static final String PRIVACT_OPEN_NEW_WINDOW = "shiftrot.androidterm.private.OPEN_NEW_WINDOW";
@@ -77,7 +81,7 @@ public class RemoteInterface extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
-            handleIntent();
+            permissionCheckExternalStorage();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -146,6 +150,22 @@ public class RemoteInterface extends AppCompatActivity {
                     }
                 }
                 break;
+            case REQUEST_STORAGE:
+                for (int i = 0; i < permissions.length; i++) {
+                    if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            handleIntent();
+                        } else {
+                            String permisson = permissions[i];
+                            if (shouldShowRequestPermissionRationale(permisson)) {
+                                alert(getString(R.string.storage_permission_error));
+                            }
+                            handleIntent();
+                        }
+                        break;
+                    }
+                }
+                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 break;
@@ -154,6 +174,19 @@ public class RemoteInterface extends AppCompatActivity {
 
     protected TermService getTermService() {
         return mTermService;
+    }
+
+    @SuppressLint("NewApi")
+    void permissionCheckExternalStorage() {
+        if ((SCOPED_STORAGE) || (AndroidCompat.SDK < Build.VERSION_CODES.M)) {
+            handleIntent();
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+        } else {
+            handleIntent();
+        }
     }
 
     protected void handleIntent() {
@@ -217,8 +250,24 @@ public class RemoteInterface extends AppCompatActivity {
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
                     mReplace = false;
+                    finish();
+                } else {
+                    try {
+                        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                        if (bld == null) return;
+                        bld.setMessage(getString(R.string.storage_read_error));
+                        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        });
+                        bld.setCancelable(false);
+                        bld.create().show();
+                    } catch (Exception e) {
+                        finish();
+                    }
+                    return;
                 }
-                finish();
             } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content") && flavorVim) {
                 Context context = this;
                 String command = null;
@@ -313,7 +362,6 @@ public class RemoteInterface extends AppCompatActivity {
             ShareText = myIntent.getExtras().getCharSequence(Intent.EXTRA_TEXT);
             shareText(ShareText);
         }
-
         finish();
     }
 
