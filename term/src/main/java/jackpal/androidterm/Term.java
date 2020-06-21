@@ -2962,14 +2962,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 AndroidIntent(FILE_INTENT);
                 return true;
             case 0xffff9998:
-                try {
-                    ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                            .getManager(getApplicationContext());
-                    String str = getCurrentEmulatorView().getTranscriptCurrentText();
-                    clip.setText(str);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 fatalCrashVim();
                 return true;
             default:
