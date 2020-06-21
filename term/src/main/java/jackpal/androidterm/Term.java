@@ -994,7 +994,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
         if (SCOPED_STORAGE) return;
-        if (AndroidCompat.SDK < Build.VERSION_CODES.N) return;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.M) return;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
         }
