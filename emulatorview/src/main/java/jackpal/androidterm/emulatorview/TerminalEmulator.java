@@ -415,7 +415,7 @@ class TerminalEmulator {
         mSession = session;
         mMainBuffer = screen;
         mScreen = mMainBuffer;
-        mAltBuffer = new TranscriptScreen(columns, 1024, rows, scheme);
+        mAltBuffer = new TranscriptScreen(columns, screen.getTotalRows(), rows, scheme);
         mRows = rows;
         mColumns = columns;
         mTabStop = new boolean[mColumns];

@@ -71,6 +71,10 @@ class TranscriptScreen implements Screen {
         mData.blockSet(0, 0, mColumns, mScreenRows, ' ', style);
     }
 
+    public int getTotalRows() {
+        return mTotalRows;
+    }
+
     public void setColorScheme(ColorScheme scheme) {
         mData.setDefaultStyle(TextStyle.kNormalTextStyle);
     }
