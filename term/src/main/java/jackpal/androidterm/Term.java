@@ -3321,7 +3321,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (str2 != null) {
             mime = str2;
         } else if (str1.matches("^(https?|ftp)://.*")) {
-            mime = MIME_HTML;
+            Uri uri = Uri.parse(str1);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+            return;
         } else if (str1.matches("^www\\..*")) {
             mime = MIME_HTML;
         } else {
