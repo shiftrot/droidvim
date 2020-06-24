@@ -1080,17 +1080,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         }
                     });
                 }
-                if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                    final String FORCE_64BIT_KEY = "force_64bit";
-                    Preference force64bitPref = getPreferenceScreen().findPreference(FORCE_64BIT_KEY);
-                    force64bitPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            if (mTermPreference != null) mTermPreference.forceLibrary();
-                            return true;
-                        }
-                    });
-                }
             }
             setHasOptionsMenu(true);
 
@@ -1106,78 +1095,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void forceLibrary() {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_alert);
-        bld.setTitle(R.string.title_change_lib_preference);
-        String message = this.getString(R.string.current_library) + " " + TermService.getArch();
-        message = message + "\n" + this.getString(R.string.message_change_lib_preference);
-        bld.setMessage(message);
-        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                chooseLibrary();
-            }
-        });
-        bld.setNegativeButton(this.getString(android.R.string.no), null);
-        bld.create().show();
-    }
-
-    void chooseLibrary() {
-        String[] items = {
-                this.getString(R.string.force_64bit),
-                this.getString(R.string.force_32bit),
-                this.getString(R.string.reset_to_default)
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_change_lib_preference))
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        confirmChangeLib(which);
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
-    }
-
-    void confirmChangeLib(final int which) {
-        final Context context = this;
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_alert);
-        int messageId = R.string.reset_to_default;
-        if (which < 2) messageId = which == 0 ? R.string.force_64bit : R.string.force_32bit;
-        bld.setTitle(messageId);
-        String message = this.getString(R.string.current_library) + " " + TermService.getArch() + "\n" + this.getString(R.string.confirm_change_lib);
-        bld.setMessage(message);
-        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                shell("rm " + TermService.getVersionFilesDir() + "/.64bit");
-                shell("rm " + TermService.getVersionFilesDir() + "/.32bit");
-                if (which == 0) {
-                    shell("cat " + TermService.getVersionFilesDir() + "/version > " + TermService.getVersionFilesDir() + "/.64bit");
-                } else if (which == 1) {
-                    shell("cat " + TermService.getVersionFilesDir() + "/version > " + TermService.getVersionFilesDir() + "/.32bit");
-                }
-                uninstallExtraContents();
-                AlertDialog.Builder bld = new AlertDialog.Builder(context);
-                bld.setIcon(android.R.drawable.ic_dialog_info);
-                bld.setMessage(context.getString(R.string.change_lib));
-                bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
-                    }
-                });
-                bld.show();
-            }
-        });
-        bld.setNegativeButton(this.getString(android.R.string.no), null);
-        bld.show();
     }
 
     private void uninstallExtraContents() {

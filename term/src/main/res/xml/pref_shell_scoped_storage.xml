@@ -30,12 +30,6 @@
         android:entryValues="@array/entries_termtype_preference"
         android:dialogTitle="@string/dialog_title_termtype_preference"/>
 
-    <SwitchPreference
-        android:key="verify_path"
-        android:defaultValue="@bool/pref_verify_path_default"
-        android:title="@string/title_verify_path_preference"
-        android:summary="@string/summary_verify_path_preference"/>
-
     <!-- <ListPreference -->
     <!--     android:key="scoped_storage_home_path_mode" -->
     <!--     android:defaultValue="@string/pref_scoped_storage_home_path_mode_default" -->
@@ -50,9 +44,5 @@
     <!--     android:defaultValue="@bool/pref_scoped_storage_startup_path_is_home_default" -->
     <!--     android:title="@string/title_scoped_storage_startup_path_mode_preference" -->
     <!--     android:summary="@string/summary_scoped_storage_startup_path_mode_preference"/> -->
-
-    <Preference
-        android:key="force_64bit"
-        android:title="@string/title_change_lib_preference"/>
 
 </PreferenceScreen>

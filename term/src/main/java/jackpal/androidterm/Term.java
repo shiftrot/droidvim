@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -179,10 +178,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final int RELEASED = 2;
     private static final int USED = 3;
     private static final int LOCKED = 4;
-    private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
-    private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
-    private static final String PERMISSION_PATH_BROADCAST = "jackpal.androidterm.permission.APPEND_TO_PATH";
-    private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
     private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
@@ -330,7 +325,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
     @SuppressLint("SdCardPath")
     private String FILE_INTENT = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.intent";
-    private int mPendingPathBroadcasts = 0;
     private TermService mTermService;
     private boolean mHaveFullHwKeyboard = false;
     private boolean mUseKeyboardShortcuts;
@@ -397,9 +391,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             Log.i(TermDebug.LOG_TAG, "Bound to TermService");
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
-            if (mPendingPathBroadcasts <= 0) {
-                populateViewFlipper();
-            }
+            populateViewFlipper();
         }
 
         public void onServiceDisconnected(ComponentName arg0) {
@@ -640,38 +632,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings = new TermSettings(getResources(), mPrefs);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
-
-        if (!FLAVOR_VIM && mSettings.doPathExtensions()) {
-            BroadcastReceiver pathReceiver = new BroadcastReceiver() {
-                public void onReceive(Context context, Intent intent) {
-                    String path = makePathFromBundle(getResultExtras(false));
-                    if (intent.getAction().equals(ACTION_PATH_PREPEND_BROADCAST)) {
-                        mSettings.setPrependPath(path);
-                    } else {
-                        mSettings.setAppendPath(path);
-                    }
-                    mPendingPathBroadcasts--;
-
-                    if (mPendingPathBroadcasts <= 0 && mTermService != null) {
-                        populateViewFlipper();
-                    }
-                }
-            };
-
-            Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
-            if (AndroidCompat.SDK >= 12) {
-                broadcast.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            }
-            mPendingPathBroadcasts++;
-            sendOrderedBroadcast(broadcast, PERMISSION_PATH_BROADCAST, pathReceiver, null, RESULT_OK, null, null);
-
-            if (!FLAVOR_VIM && mSettings.allowPathPrepend()) {
-                broadcast = new Intent(broadcast);
-                broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
-                mPendingPathBroadcasts++;
-                sendOrderedBroadcast(broadcast, PERMISSION_PATH_PREPEND_BROADCAST, pathReceiver, null, RESULT_OK, null, null);
-            }
-        }
 
         TSIntent = new Intent(this, TermService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

@@ -87,24 +87,7 @@ public class ShellTermSession extends GenericTermSession {
 
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
-
         String path = System.getenv("PATH");
-        if (settings.doPathExtensions()) {
-            String appendPath = settings.getAppendPath();
-            if (appendPath != null && appendPath.length() > 0) {
-                path = path + ":" + appendPath;
-            }
-
-            if (settings.allowPathPrepend()) {
-                String prependPath = settings.getPrependPath();
-                if (prependPath != null && prependPath.length() > 0) {
-                    path = prependPath + ":" + path;
-                }
-            }
-        }
-        if (settings.verifyPath()) {
-            path = checkPath(path);
-        }
 
         int size = 11;
         String[] env = new String[size];
