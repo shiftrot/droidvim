@@ -89,20 +89,20 @@ public class ShellTermSession extends GenericTermSession {
         TermSettings settings = mSettings;
         String path = System.getenv("PATH");
 
-        int size = 11;
-        String[] env = new String[size];
-        env[0] = "PATH=" + path;
-        env[1] = "HOME=" + TermService.getHOME();
-        env[2] = "TMPDIR=" + TermService.getTMPDIR();
-        env[3] = "APPBASE=" + TermService.getAPPBASE();
-        env[4] = "APPFILES=" + TermService.getAPPFILES();
-        env[5] = "APPEXTFILES=" + TermService.getAPPEXTFILES();
-        env[6] = "APPEXTHOME=" + TermService.getAPPEXTHOME();
-        env[7] = "APPLIB=" + TermService.getAPPLIB();
-        env[8] = "INTERNAL_STORAGE=" + TermService.getEXTSTORAGE();
-        env[9] = "TERM=" + settings.getTermType();
-        env[10] = "COLORFGBG=" + settings.getCOLORFGBG();
+        ArrayList<String> envList = new ArrayList<>();
+        envList.add("PATH=" + path);
+        envList.add("HOME=" + TermService.getHOME());
+        envList.add("TMPDIR=" + TermService.getTMPDIR());
+        envList.add("APPBASE=" + TermService.getAPPBASE());
+        envList.add("APPFILES=" + TermService.getAPPFILES());
+        envList.add("APPEXTFILES=" + TermService.getAPPEXTFILES());
+        envList.add("APPEXTHOME=" + TermService.getAPPEXTHOME());
+        envList.add("APPLIB=" + TermService.getAPPLIB());
+        envList.add("INTERNAL_STORAGE=" + TermService.getEXTSTORAGE());
+        envList.add("TERM=" + settings.getTermType());
+        envList.add("COLORFGBG=" + settings.getCOLORFGBG());
 
+        String[] env = envList.toArray(new String[0]);
         String[] envCmd = env;
         if (mFirst) {
             for (String str : env) {

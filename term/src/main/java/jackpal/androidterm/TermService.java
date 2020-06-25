@@ -314,12 +314,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (cmd == null || cmd.equals("")) return cmd;
 
         String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin" + ":\\$PATH";
-        String ld_library_path = mLD_LIBRARY_PATH;
-
-        String model = getProp("ro.product.model");
-        if ((AndroidCompat.SDK == Build.VERSION_CODES.N) && model != null && model.equals("SM-T585")) {
-            mLD_LIBRARY_PATH = "/system/lib:/vendor/lib:" + mLD_LIBRARY_PATH;
-        }
 
         mTERMINFO_INSTALL_DIR = mAPPFILES + "/usr/share";
         String terminfo = mTERMINFO_INSTALL_DIR + "/terminfo";
@@ -339,7 +333,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPLIB%", mAPPLIB);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
-        cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", ld_library_path);
+        cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
         cmd = cmd.replaceAll("%PATH%", path);
         cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUP_DIR);
         cmd = cmd.replaceAll("%TERMINFO%", terminfo);
