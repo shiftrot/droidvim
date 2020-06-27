@@ -26,7 +26,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/extra"/>
+            android:text="@string/menu_extra"/>
 
         <Button
             android:id="@+id/drawer_debug_button"
@@ -57,7 +57,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/external_files_button"/>
+            android:text="@string/menu_external_files_button"/>
 
         <Button
             android:id="@+id/drawer_app_button"
@@ -70,7 +70,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/external_app_button"/>
+            android:text="@string/menu_external_app_button"/>
 
         <Button
             android:id="@+id/drawer_dropbox_button"
@@ -83,7 +83,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dropbox"/>
+            android:text="@string/menu_dropbox"/>
 
         <Button
             android:id="@+id/drawer_googledrive_button"
@@ -96,7 +96,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/googledrive"/>
+            android:text="@string/menu_googledrive"/>
 
         <Button
             android:id="@+id/drawer_onedrive_button"
@@ -109,7 +109,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/onedrive"/>
+            android:text="@string/menu_onedrive"/>
 
         <Button
             android:id="@+id/drawer_storage_button"
@@ -122,7 +122,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/external_storage"/>
+            android:text="@string/menu_external_storage"/>
 
         <Button
             android:id="@+id/drawer_createfile_button"
@@ -135,7 +135,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_or_delete"/>
+            android:text="@string/menu_create_or_delete"/>
 
         <Button
             android:id="@+id/drawer_clear_cache_button"
@@ -148,20 +148,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/clear_cache"/>
-
-        <Button
-            android:id="@+id/drawer_keyboard_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:visibility="gone"
-            android:minHeight="38dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/sidebar_button"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/softkeyboard"/>
+            android:text="@string/menu_clear_cache"/>
 
         <Button
             android:id="@+id/drawer_menu_button"
@@ -173,7 +160,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_menu"/>
+            android:text="@string/menu_title_menu"/>
 
         <Button
             android:id="@+id/drawer_preference_button"
@@ -185,7 +172,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/preferences"/>
+            android:text="@string/menu_preferences"/>
 
         <Button
             android:id="@+id/drawer_quit_button"
@@ -197,7 +184,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/quit"/>
+            android:text="@string/menu_quit"/>
 
         <View
             android:layout_width="0dp"

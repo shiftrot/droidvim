@@ -472,7 +472,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                             flushCacheExec(uri, file, contentResolver);
                         }
                     });
-                    bld.setPositiveButton(R.string.external_storage, new DialogInterface.OnClickListener() {
+                    bld.setPositiveButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
                             mDialogIsActive = false;
@@ -516,7 +516,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                             mDialogIsActive = false;
                         }
                     });
-                    bld.setNeutralButton(R.string.external_storage, new DialogInterface.OnClickListener() {
+                    bld.setNeutralButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
                             mDialogIsActive = false;

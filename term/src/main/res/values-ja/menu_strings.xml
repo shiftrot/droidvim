@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_extra">追加メニュー</string>
+    <string name="menu_external_files_button">ファイル管理</string>
+    <string name="menu_external_app_button">外部アプリ</string>
+    <string name="menu_external_storage">ファイルを開く…</string>
+    <string name="menu_create_or_delete">ストレージ</string>
+    <string name="menu_clear_cache">ストレージキャッシュクリア</string>
+    <string name="menu_title_menu">メニュー</string>
+    <string name="menu_preferences">設定</string>
+    <string name="menu_quit">終了</string>
+
+    <string name="menu_toggle_soft_keyboard">ソフトキーボード</string>
+    <string name="menu_toggle_text_box">一行テキスト入力</string>
+    <string name="menu_toggle_function_bar">ファンクションバー</string>
+    <string name="menu_reload_file">エンコーディング指定</string>
+    <string name="menu_edit_vimrc">.vimrcを編集</string>
+    <string name="menu_clipboard">クリップボード</string>
+    <string name="menu_share_title">共有…</string>
+    <string name="menu_screen">画面</string>
+    <string name="menu_copy_screen">テキスト選択</string>
+    <string name="menu_help">ヘルプ</string>
+    <string name="menu_tutorial">Vimチュートリアル</string>
+    <string name="menu_window">ウインドウ</string>
+</resources>

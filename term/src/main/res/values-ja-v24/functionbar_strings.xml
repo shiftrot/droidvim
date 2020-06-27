@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="string_functionbar_ime_toggle">⌨</string>
     <string name="title_functionbar_ime_toggle">⌨ - IMEのトグル</string>
     <string name="title_functionbar_voice_input">🎙 - 音声入力</string>
-    <string name="key_ime">⌨</string>
-    <string name="key_voice_input">🎙</string>
 </resources>

@@ -58,7 +58,7 @@
                 android:layout_weight="0.15"
                 android:minHeight="44dp"
                 android:minWidth="56dp"
-                android:text="@string/key_clear"/>
+                android:text="@string/string_functionbar_clear"/>
 
             <Button
                 android:id="@+id/button_oneline_text_box_enter"
@@ -70,7 +70,7 @@
                 android:layout_weight="0.1"
                 android:minHeight="44dp"
                 android:minWidth="56dp"
-                android:text="@string/key_enter"/>
+                android:text="@string/string_functionbar_enter"/>
 
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
                     android:minWidth="0dp"
-                    android:text="@string/key_fn_down"/>
+                    android:text="@string/string_functionbar_fn_down"/>
 
                 <Button
                     android:id="@+id/button_m1"
@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
                     android:minWidth="0dp"
-                    android:text="@string/key_fn_down"/>
+                    android:text="@string/string_functionbar_fn_down"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -246,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="44dp"
                 android:minWidth="0dp"
-                android:text="@string/key_fn_up"/>
+                android:text="@string/string_functionbar_fn_up"/>
 
             <Button
                 android:id="@+id/button_esc"
@@ -663,7 +663,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
                         android:minWidth="0dp"
-                        android:text="@string/key_fn_up"/>
+                        android:text="@string/string_functionbar_fn_up"/>
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>

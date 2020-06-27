@@ -123,23 +123,13 @@
 
     <string name="perm_run_script">Beliebige Scripte im Terminal Emulator ausführen</string>
     <string name="permdesc_run_script">Erlaubt Anwendungen, neue Fenster im Terminal Emulator for Android zu öffnen und in diesen Befehle auszuführen. Dies schließt alle Berechtigungen von Terminal Emulator for Android ein, inklusive Internetzugang und Schreib-/Leserechte auf der SD-Karte.</string>
-    <string name="activity_term_here_title">Terminal hier</string>
-    <string name="activity_shortcut_create">"Terminal Verknüpfung"</string>
-    <string name="addshortcut_arguments_label">Argumente\:</string>
     <string name="alt_sends_esc">Alt Taste sendet ESC</string>
     <string name="alt_sends_esc_summary_on">Alt Taste sendet ESC.</string>
     <string name="alt_sends_esc_summary_off">Alt Taste sendet ESC nicht.</string>
-    <string name="colorvalue_letter_blue">B</string>
-    <string name="colorvalue_letter_green">G</string>
-    <string name="colorvalue_letter_red">R</string>
     <string name="dialog_title_orientation_preference">Bildschirmausrichtung</string>
     <string name="email_transcript_no_email_activity_found">Konnte keine App zum Verschicken der E-Mail finden</string>
     <string name="email_transcript_chooser_title">E-Mail Verschicken mit:</string>
     <string name="email_transcript_subject">Auszug von Terminal Emulator for Android</string>
-    <string name="fsnavigator_change_theme">Theme ändern</string>
-    <string name="fsnavigator_no_external_storage">Externer Speicher nicht verfügbar</string>
-    <string name="fsnavigator_optional_enter_path">Oder hier einen Pfad eingeben.</string>
-    <string name="fsnavigator_title">DATEI AUSWÄHLEN</string>
     <string name="help">Hilfe</string>
     <string name="perm_append_to_path">Befehle zum Terminal Emulator hinzufügen</string>
     <string name="perm_prepend_to_path">Befehle im Terminal Emulator Überschreiben</string>

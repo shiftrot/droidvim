@@ -24,7 +24,6 @@
     <string name="preferences">Preferences</string>
     <string name="new_window">New window</string>
     <string name="close_window">Close window</string>
-    <string name="menu_window">Window</string>
     <string name="window_list">Windows</string>
     <string name="prev_window">Prev window</string>
     <string name="next_window">Next window</string>
@@ -51,7 +50,6 @@
     <string name="copy_to_clipboard">Copy to the clipboard</string>
     <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)</string>
 
-    <string name="edit_vimrc">Edit .vimrc</string>
     <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME). See help for details.\n\n</string>
     <string name="edit_vimrc_message_symboliclink">- Symbolic link (Android 10 and earlier)\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in \"$HOME\".\n\n</string>
     <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".\n\n</string>
@@ -84,9 +82,10 @@
     <string name="title_prefs_keepscreen_at_startup">\"Keep screen\" at startup</string>
     <string name="summary_keepscreen_preference">Change the time to sleep while using this application.</string>
     <string name="title_prefs_keepscreen">\"Keep screen\" time</string>
-    <string name="dialog_prefs_keepscreen">Time to sleep (0-120min)</string>
+    <string name="dialog_prefs_keepscreen">Time to sleep (0–120min)</string>
     <string name="enable_keepscreen">\"Keep screen\" ON</string>
     <string name="disable_keepscreen">\"Keep screen\" OFF</string>
+    <string name="menu_disable_keepscreen">\"Keep screen\" OFF</string>
     <string name="keepscreen_notice">Keep the screen awake while this application running in the foreground.\nThis state lasts for% d minutes after the key was last pressed.</string>
     <string name="keepscreen_deacitvated">\"Keep screen\" has been deactivated.</string>
     <string name="keepscreen">Keep screen</string>
@@ -100,7 +99,6 @@
     <string name="select_text">Select text</string>
     <string name="copy_all">Copy all</string>
     <string name="copy_share_screen_buffer">Copy screen buffer</string>
-    <string name="menu_copy_screen">Text selection</string>
     <string name="copy_share_current_screen">Copy screen text</string>
     <string name="copy_screen">Copy screen text</string>
     <string name="copy_screen_current">Current screen</string>
@@ -135,7 +133,7 @@
 
     <string name="prefs_about">About</string>
     <string name="title_license">Open source licenses</string>
-    <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・Apache Commons\n・android-async-http\n・Terminal Emulator for Android\n・Termux\n・TermuxAm\n\n\nThis software is an open source project.</string>
+    <string name="license_text">This software includes the work that is distributed in the Apache License 2.0.\n\n・Apache Commons\n・Terminal Emulator for Android\n・Termux\n・TermuxAm\n\n\nThis software is an open source project.</string>
     <string name="github">github</string>
     <string name="github_url">https://github.com/shiftrot/droidvim</string>
 
@@ -310,7 +308,7 @@
     <string name="dialog_title_intentcommand_preference">Intent Command</string>
 
     <string name="title_mrucommand_preference">MRU command</string>
-    <string name="summary_mrucommand_preference">Set MRU Command to \"Open file...\" button.</string>
+    <string name="summary_mrucommand_preference">Set MRU Command to \"Open file…\" button.</string>
     <string name="dialog_title_mrucommand_preference">MRU Command</string>
     <string name="dialog_message_mrucommand_preference">- \"MRU\" : Enable external MRU cache. (Default)\n- Blank : Disable MRU.\n- Others : Send command to shell. (E.g. \":bro ol\" to call Vim MRU)</string>
 
@@ -383,7 +381,7 @@
     <string name="email_transcript_chooser_title">Mail transcript using:</string>
     <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
 
-    <string name="share_title">Share...</string>
+    <string name="share_title">Share…</string>
     <string name="share_buffer_text">Current Buffer</string>
     <string name="share_visual_text">Selected text (Visual mode)</string>
     <string name="share_unnamed_text">Unnamed register</string>
@@ -456,35 +454,6 @@
     <string name="tutorial">Vim tutorial</string>
     <string name="help">Help</string>
     <string name="help_url">https://github.com/jackpal/Android-Terminal-Emulator/wiki</string>
-    <string name="activity_term_here_title">Term here</string>
-    <!-- BEGIN SHORTCUT RELATED STRINGS -->
-    <!-- AndroidManifest.xml -->
-    <string name="activity_shortcut_create">"Term shortcut"</string>
-    <!-- FSNavigator.java -->
-    <string name="fsnavigator_title">FILE SELECTOR</string>
-    <string name="fsnavigator_no_external_storage">External storage not available</string>
-    <string name="fsnavigator_optional_enter_path">Or enter path here.</string>
-    <string name="fsnavigator_change_theme">Change theme</string>
-    <!-- AddShortcut.java -->
-    <string name="addshortcut_command_hint">command</string>
-    <string name="addshortcut_example_hint">--example=\""a\"</string>
-    <string name="addshortcut_button_find_command">Find command</string>
-    <string name="addshortcut_navigator_title">SELECT SHORTCUT TARGET</string>
-    <string name="addshortcut_command_window_instructions">Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard).</string>
-    <string name="addshortcut_arguments_label">Arguments\:</string>
-    <string name="addshortcut_shortcut_label">Shortcut label\:</string>
-    <string name="addshortcut_button_text_icon">Text icon</string>
-    <string name="addshortcut_make_text_icon">MAKE TEXT ICON</string>
-    <string name="addshortcut_text_icon_instructions"></string>
-    <string name="addshortcut_title">Term shortcut</string>
-    <!-- ColorValue.java -->
-    <string name="colorvalue_letter_alpha">α</string>
-    <string name="colorvalue_letter_red">R</string>
-    <string name="colorvalue_letter_green">G</string>
-    <string name="colorvalue_letter_blue">B</string>
-    <string name="colorvalue_label_lock_button_column">LOCK</string>
-    <string name="colorvalue_icon_text_entry_hint">Enter icon text</string>
-    <!-- END SHORTCUT RELATED STRINGS -->
 
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
@@ -504,7 +473,6 @@
     <string name="onedrive">OneDrive</string>
     <string name="launch_app">\Launch %s</string>
     <string name="activity_not_found">Activity not found.\nPlease try again.</string>
-    <string name="external_storage">Open file...</string>
     <string name="storage_menu">Storage menu</string>
     <string name="create_symlinks">Create symbolic links</string>
     <string name="backup_restore">Backup / Restore $HOME</string>
@@ -519,8 +487,8 @@
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>
     <string name="use_clear_mru_cache">Clear MRU cache</string>
-    <string name="mru_hash_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file...\" button.</string>
-    <string name="file_chooser">Open file...</string>
+    <string name="mru_hash_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file…\" button.</string>
+    <string name="file_chooser">Open file</string>
     <string name="create_or_delete">Storage</string>
     <string name="create_file">Create file</string>
     <string name="delete_file">Delete file</string>
@@ -532,9 +500,9 @@
     <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
     <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.\nIf the file is in cloud storage, check your network connection.</string>
     <string name="storage_write_error_title">Invalid URI</string>
-    <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Open file...\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
+    <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Open file…\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
     <string name="storage_hash_error_title">File hash error</string>
-    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file...\" button.</string>
+    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file…\" button.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
     <string name="storage_hash_reopen">Reload</string>
     <string name="storage_delete_file">Delete file from storage.</string>
@@ -548,7 +516,7 @@
     <string name="iabsetup_try_again">Unable to connect to Google Play Service.\nPlease check your network connection and try again.</string>
     <string name="installer_try_again">Installer was unable to download the file.\nPlease check your network connection and try again.</string>
     <string name="installer_try_again_button">Try again</string>
-    <string name="git_install_message_install_git">Check for update...</string>
+    <string name="git_install_message_install_git">Check for update…</string>
     <string name="git_install_confirm_install">Git : There is a new version available.\nDo you want to install Git?</string>
     <string name="git_install_confirm_update">Git : You already have the latest version.\nDo you want to overwrite the existing files?</string>
     <string name="git_install_success">Git has been successfully updated.</string>
@@ -558,7 +526,7 @@
     <string name="donate_confirm_title">Thank you for using DroidVim.</string>
     <string name="donate_confirm_button">Donate</string>
     <string name="donate_confirm_summary">If you like this application, please donate to support this project.\nYou will get Git-cui, curl, Busybox after donation!\n\nGit - Version Control System.\ncurl - A tool to upload/download files.\nBusybox - A collection of UNIX utilities that do not exist on Android.</string>
-    <string name="donate_confirm_summary_no_payed_function">Sorry, no payed functions for your device.\nThis is just a donate option ;)</string>
+    <string name="donate_confirm_summary_no_payed_function">Sorry, no paid functions for your device.\nThis is just a donate option ;)</string>
     <string name="donate_premium_purchase">Thank you for your donation!</string>
     <string name="donate_button">Donate</string>
     <string name="extra_button">Extra</string>

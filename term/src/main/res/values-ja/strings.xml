@@ -20,10 +20,10 @@
     <string name="x">Ｘ</string>
     <string name="user">？</string>
     <string name="application_terminal">端末エミュレータ</string>
+
     <string name="preferences">設定</string>
     <string name="new_window">新規ウインドウ</string>
     <string name="close_window">ウインドウを閉じる</string>
-    <string name="menu_window">ウインドウ</string>
     <string name="window_list">ウインドウ一覧</string>
     <string name="prev_window">前のウインドウ</string>
     <string name="next_window">次のウインドウ</string>
@@ -50,7 +50,6 @@
     <string name="copy_to_clipboard">クリップボードへコピー</string>
     <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)</string>
 
-    <string name="edit_vimrc">.vimrcを編集</string>
     <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.(詳しくはヘルプ参照)\n\n</string>
     <string name="edit_vimrc_message_symboliclink">- シンボリックリンク (Android 10以前)\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
     <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.\n\n</string>
@@ -66,11 +65,13 @@
     <string name="reload_file_title">ファイル再読込</string>
     <string name="force_encoding">必要に応じてエンコードを選択します.</string>
     <string name="webview_local_file_error">ローカルファイルを「インテントで開く」ことはできません.</string>
+    <string name="webview_missing_webview_package_error_title">Webviewパッケージが見つかりません.</string>
     <string name="webview_missing_webview_package_error_message">おそらくAndroid OSがバックグラウンドで更新を行っているため, webviewを表示できません. もう一度やり直してください.</string>
 
-    <string name="tips_vim_title">Tips</string>
-    <string name="tips_vim"></string>
-    <string name="tips_vim_list"></string>
+
+
+
+
 
     <string name="edit_text_view_warning_title">一行テキストボックス</string>
     <string name="edit_text_view_warning">一行テキストボックスは日本語, 絵文字入力と音声入力の補助手段です.\n\nESC - 全削除/一行テキストボックスから移動</string>
@@ -79,11 +80,12 @@
     <string name="menu_update_latest">アプリは最新です</string>
 
     <string name="title_prefs_keepscreen_at_startup">\"キープスクリーン\"を起動時から有効にする</string>
-    <string name="title_prefs_keepscreen">\"キープスクリーン\"の時間</string>
     <string name="summary_keepscreen_preference">このアプリの使用中はスリープまでの時間を変更.</string>
+    <string name="title_prefs_keepscreen">\"キープスクリーン\"の時間</string>
     <string name="dialog_prefs_keepscreen">スリープまでの時間 (0-120分)</string>
     <string name="enable_keepscreen">キープスクリーン有効化</string>
     <string name="disable_keepscreen">キープスクリーン解除</string>
+    <string name="menu_disable_keepscreen">\"キープスクリーン\" 解除</string>
     <string name="keepscreen_notice">フォアグラウンドでこのアプリケーションを実行していると, 画面がスリープしなくなります.\nこの状態は最後にキーが押されてから%d分間続きます.</string>
     <string name="keepscreen_deacitvated">キープスクリーンが解除されました.</string>
     <string name="keepscreen">キープスクリーン</string>
@@ -97,7 +99,6 @@
     <string name="select_text">テキスト選択</string>
     <string name="copy_all">すべてコピー</string>
     <string name="copy_share_screen_buffer">スクリーンバッファのコピー</string>
-    <string name="menu_copy_screen">テキスト選択</string>
     <string name="copy_share_current_screen">画面コピー</string>
     <string name="copy_screen">画面のテキストをコピー</string>
     <string name="copy_screen_current">現画面</string>
@@ -129,11 +130,21 @@
     <string name="prefs_write_confirm">バックアップファイルを上書きします.</string>
     <string name="prefs_write_info_success">バックアップファイルが作成されました.</string>
     <string name="prefs_write_info_failure">バックアップファイルを作成できません.</string>
+
+
+
+
+
+
+
     <string name="screen_preferences">スクリーン</string>
 
     <string name="title_statusbar_preference">ステータスバー</string>
     <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
     <string name="dialog_title_statusbar_preference">ステータスバー</string>
+
+
+
 
     <string name="title_notification_preference">アプリ情報</string>
     <string name="title_app_info_preference">アプリ情報</string>
@@ -158,18 +169,6 @@
     <string name="title_functionbar_key_2_preference">ファンクションキー (F1-F12)</string>
     <string name="title_navigation_key_preference">ファンクションキー (画面固定)</string>
     <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
-
-    <string name="title_menu">メニュー</string>
-    <string name="title_functionbar_menu">≡ - メニュー</string>
-    <string name="title_functionbar_softkeyboard">IMEのトグル</string>
-    <string name="title_functionbar_voice_input">🎤 - 音声入力</string>
-    <string name="title_functionbar_vim_yank">&quot;*yy - Vim ヤンクコマンド</string>
-    <string name="title_functionbar_vim_paste">&quot;*p - Vim 貼り付けコマンド</string>
-    <string name="title_functionbar_ime_toggle">✏ - IMEのトグル</string>
-    <string name="title_navigationbar_fn_toggle">➖ - ファンクションバーのトグル</string>
-    <string name="title_functionbar_hide">▽ - ファンクションバーを隠す</string>
-    <string name="title_functionbar_change">∧ - F1-F12表示</string>
-    <string name="title_functionbar_change_fkey">∨ - F1-F12非表示</string>
 
     <string name="title_actionbar_preference">アクションバー</string>
     <string name="summary_actionbar_preference">アクションバーの振舞いを選択する. (Android 3.0 以降)</string>
@@ -239,6 +238,9 @@
     <string name="title_actionbar_icon_preference">◇ボタン</string>
     <string name="summary_actionbar_icon_preference">◇ボタンの振舞いを選択</string>
     <string name="dialog_title_actionbar_icon_preference">◇ボタン</string>
+    <string name="title_actionbar_invert_preference">○ボタン</string>
+    <string name="summary_actionbar_invert_preference">○ボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_invert_preference">○ボタン</string>
     <string name="title_actionbar_plus_preference">＋ボタン</string>
     <string name="summary_actionbar_plus_preference">＋ボタンの振舞いを選択</string>
     <string name="dialog_title_actionbar_plus_preference">＋ボタン</string>
@@ -285,15 +287,15 @@
     <string name="summary_ime_inputtype_preference">◇ボタンで「通常入力」と切り替えます</string>
     <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
 
-    <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
-    <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へリセットします.</string>
-    <string name="dialog_title_vi_cooperative_mode_preference">vi協調モードを有効にするキーボードを選択.</string>
-
     <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>
     <string name="title_ime_preference">「通常入力」のインプットメソッド</string>
     <string name="summary_ime_preference">「通常入力」のインプットメソッドを選択</string>
     <string name="summary_ime_direct_input_method_preference">「直接入力」のインプットメソッドを選択</string>
     <string name="dialog_title_ime_preference">インプットメソッドを選択</string>
+
+    <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
+    <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へリセットします.</string>
+    <string name="dialog_title_vi_cooperative_mode_preference">vi協調モードを有効にするキーボードを選択.</string>
 
     <string name="shell_preferences">シェル</string>
     <string name="title_shell_preference">コマンドライン</string>
@@ -344,8 +346,8 @@
     <string name="crash_trouble_shooting_button">トラブルシューティング</string>
     <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
     <string name="revert_to_default_vim">実行ファイルをデフォルトへ戻す.</string>
-    <string name="quit_to_shell">シェルを起動</string>
     <string name="shell_exit_command_message">\"exit\"コマンドを数回実行することにより, このアプリケーションを終了できます.</string>
+    <string name="quit_to_shell">シェルを起動</string>
 
     <string name="title_allow_prepend_path_preference">PATHへのプリペンドの許可</string>
     <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
@@ -354,13 +356,13 @@
     <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ(要再起動)</string>
 
     <string name="control_key_dialog_title">コントロールキーとファンクションキー</string>
-    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
-         actual control key key name. -->
-    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+
+
+
     <string name="control_key_dialog_control_disabled_text">コントロールキーを設定してください.</string>
-    <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
-         actual function key key name. -->
-    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+
+
+
     <string name="control_key_dialog_fn_disabled_text">ファンクションキーを設定してください.</string>
 
     <string name="confirm_window_close_message">このウインドウを閉じますか?</string>
@@ -378,11 +380,11 @@
     <string name="perm_prepend_to_path">端末エミュレータのコマンドを上書きする</string>
     <string name="permdesc_prepend_to_path">アプリケーションに対して，端末エミュレータが持つ既存のコマンドを，アプリケーション独自のバージョンに置き換える(PATHの先頭にディレクトリを追加する)ことを許可する.</string>
 
-    <string name="email_transcript_subject">Transcript from Terminal Emulator for Android</string>
-    <string name="email_transcript_chooser_title">メール転写の選択:</string>
-    <string name="email_transcript_no_email_activity_found">転写を送信するEメール用アクティビティが選択できませんでした.</string>
 
-    <string name="share_title">共有...</string>
+
+
+
+    <string name="share_title">共有…</string>
     <string name="share_buffer_text">現バッファ</string>
     <string name="share_visual_text">選択テキスト (ビジュアルモード)</string>
     <string name="share_unnamed_text">無名レジスタ</string>
@@ -417,9 +419,14 @@
     <string name="summary_title_pre_ime_shortcuts_select">IMEショートカットを選択します</string>
     <string name="summary_title_pre_ime_shortcuts">IME制御のための物理キーボードショートカット.</string>
     <string name="pref_alt_grave">Alt + [半/全] | Alt + [`]</string>
+
+
+
+
     <string name="pref_zenkaku_hankaku">[半/全]</string>
-    <string name="pref_grave">[`]</string>
+
     <string name="pref_switch_charset">[漢字]</string>
+
 
     <string name="title_ime_shortcuts_action_preference">IMEショートカットアクション</string>
     <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>
@@ -427,6 +434,7 @@
 
     <string name="title_home_dir_chooser_preference">ホームディレクトリ</string>
     <string name="set_home_directory">ディレクトリは, 次の場所に設定されました. (要再起動)\n\n</string>
+
     <string name="title_startup_chooser_preference">起動時のディレクトリ</string>
     <string name="set_startup_directory">ディレクトリは, 次の場所に設定されました.\n\n</string>
     <string name="summary_startup_chooser_preference">起動時のディレクトリを選択</string>
@@ -441,7 +449,7 @@
     <string name="copy_startup_dir">選択したパスがクリップボードへコピーされました.\n起動時のディレクトリを指定したい場合は, `.vimrc`に以下を追加してみてください.\n\ncd </string>
     <string name="select_directory">選択</string>
     <string name="reset_directory">デフォルト</string>
-    <string name="choose_directory">Choose</string>
+
 
     <string name="open_in_browser">ブラウザで開く</string>
     <string name="scroll_to_top">先頭</string>
@@ -449,51 +457,53 @@
     <string name="tutorial">Vimチュートリアル</string>
     <string name="help">ヘルプ</string>
     <string name="help_url">https://sites.google.com/site/fudist/Home/qfixhowm/other-service/howm-android/android-terminal-emulator-mod</string>
-    <!-- AddShortcut.java -->
-    <string name="addshortcut_button_find_command">コマンド指定</string>
-    <string name="addshortcut_command_window_instructions">コマンドはフルパスで指定し引数は省略可. フルパスで指定しない場合は引数ウィンドウのみで設定 (例: cd /sdcard).</string>
-    <string name="addshortcut_arguments_label">引数\:</string>
-    <string name="addshortcut_shortcut_label">ラベル\:</string>
-    <string name="addshortcut_button_text_icon">テキストアイコン</string>
 
     <string name="button_yes">はい</string>
     <string name="button_no">いいえ</string>
     <string name="button_continue">続ける</string>
+    <string name="message_please_wait">しばらくお待ちください.</string>
     <string name="install_runtime_doc_message">Helpファイルもインストールします</string>
     <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
     <string name="title_remote_interface_installer_warning">インストールが終了しました</string>
-
     <string name="message_remote_interface_installer_warning">設定を有効にするため, このアプリを再起動してください.\nこのアプリを再起動しなくてもファイルを閲覧できますが, 書き込みができない場合があります.</string>
     <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- ◇ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
 
-    <string name="external_storage">ファイルを開く</string>
-    <string name="file_chooser">ファイルを開く</string>
-    <string name="use_file_chooser">ファイル選択</string>
-    <string name="use_mru_cache">外部ストレージMRU</string>
-    <string name="use_clear_mru_cache">MRUキャッシュをクリア</string>
-    <string name="mru_hash_error">外部ストレージ上でファイルが削除されたか, 無効なURIです.\n\"ファイルを開く\"ボタンから再読込してください.</string>
+
+
+
+
+
+
+    <string name="launch_app">%s (アプリ起動)</string>
+    <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
     <string name="storage_menu">ストレージメニュー</string>
     <string name="create_symlinks">シンボリックリンクの作成</string>
     <string name="backup_restore">$HOMEのバックアップ/リストア</string>
     <string name="backup_home_directory">\"$HOME\"をバックアップ</string>
     <string name="restore_home_directory">\"$HOME\"へリストア</string>
-    <string name="root_directory_error">このストレージまたはディレクトリはバックアップ/リストア先に指定できません.\n内部ストレージまたはSDカードのディレクトリを指定してください.</string>
+
+
     <string name="same_directory_error">送り側と受け側が同じです.</string>
+    <string name="root_directory_error">このストレージまたはディレクトリはバックアップ/リストア先に指定できません.\n内部ストレージまたはSDカードのディレクトリを指定してください.</string>
     <string name="backup_restore_complete">バックアップ/リストアを完了しました.\n\n - タイムスタンプが新しいファイルのみバックアップ/リストアしました.\n - シンボリックリンクはバックアップ/リストアしませんでした.\n - ミラーリングは行っていません.</string>
+    <string name="use_file_chooser">ファイル選択</string>
+
+    <string name="use_mru_cache">外部ストレージMRU</string>
+    <string name="use_clear_mru_cache">MRUキャッシュをクリア</string>
+    <string name="mru_hash_error">外部ストレージ上でファイルが削除されたか, 無効なURIです.\n\"ファイルを開く\"ボタンから再読込してください.</string>
+    <string name="file_chooser">ファイルを開く</string>
     <string name="create_or_delete">ストレージ</string>
     <string name="create_file">ファイル作成</string>
     <string name="delete_file">ファイル削除</string>
     <string name="app_files">ファイル管理</string>
     <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
     <string name="storage_manager">管理</string>
-    <string name="launch_app">%s (アプリ起動)</string>
-    <string name="activity_not_found">アクティビティを呼び出せませんでした.\nもう一度試してみてください.</string>
     <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
     <string name="storage_permission_granted">設定を有効にするため, このアプリを再起動してください.</string>
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
-    <string name="storage_write_error_title">無効なURI</string>
     <string name="storage_write_error">ファイルを編集するためのURIが無効になっています.\nドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください.\n(このバッファの編集状態は失われます.)</string>
+    <string name="storage_write_error_title">無効なURI</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>
     <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ファイルを開く\"ボタンから再読込してください.</string>
     <string name="storage_hash_overwrite">上書き</string>
@@ -509,7 +519,7 @@
     <string name="iabsetup_try_again">Google Playサービスへの接続に失敗しました。ネットワーク接続を確認して再実行してください.</string>
     <string name="installer_try_again">ファイルのダウンロードに失敗しました.\nネットワーク接続を確認して再実行してください.</string>
     <string name="installer_try_again_button">再実行</string>
-    <string name="git_install_message_install_git">アップデートをチェックしています...</string>
+    <string name="git_install_message_install_git">アップデートをチェックしています…</string>
     <string name="git_install_confirm_install">新しいバージョンのGitが存在します.\nGitのインストールを実行します.</string>
     <string name="git_install_confirm_update">既に同じバージョンのGitがインストールされています.\n上書きインストールしますか？</string>
     <string name="git_install_success">Gitのアップデートに成功しました.</string>
@@ -522,11 +532,11 @@
     <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
     <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
 
+
+
     <string name="external_apps_preferences">ドロワー &amp; 外部アプリ</string>
     <string name="external_app">アプリ名</string>
     <string name="external_app_activity">アクティビティ</string>
-    <string name="external_app_button">外部アプリ</string>
-    <string name="summary_external_app_button">「外部アプリ」ボタンのアプリを選択します.</string>
     <string name="external_files_button">ファイル管理</string>
     <string name="title_use_app_files_button">「ファイル管理」ボタン</string>
     <string name="title_local_storage_provider_path_mode_preference">ローカルストレージプロバイダのパス</string>
@@ -537,17 +547,21 @@
     <string name="summary_show_dotfiles">ファイルマネージャーを使用してホームディレクトリのルートへドットファイル(.bashrc, .vimrcなど)をコピーしたい場合は, 一時的に有効にしてください.</string>
 
     <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
+
+    <string name="external_app_button">外部アプリ</string>
+    <string name="summary_external_app_button">「外部アプリ」ボタンのアプリを選択します.</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
     <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>
     <string name="title_external_app_id_preference">外部アプリボタン</string>
     <string name="external_app_id_error">アプリケーションIDが正しくないか, 設定されていません.\n環境設定から設定してください.</string>
     <string name="external_app_activity_error">このアプリケーションは存在しないか, 呼び出し可能なアクティビティがありません.</string>
-    <string name="title_cloud_dropbox_preference">Dropbox</string>
-    <string name="title_cloud_googledrive_preference">GoogleDrive</string>
-    <string name="title_cloud_onedrive_preference">OneDrive</string>
+
+
+
     <string name="summary_cloud_file_picker_on_preference">アプリケーションを起動</string>
     <string name="summary_cloud_file_picker_off_preference">コンテントピッカーを起動</string>
-
     <string name="title_html_viewer_mode_preference">HTMLビューア</string>
+
+
 
 </resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_extra">Menu Extras</string>
+    <string name="menu_external_files_button">File Manager</string>
+    <string name="menu_external_app_button">External App</string>
+    <string name="menu_dropbox">Dropbox</string>
+    <string name="menu_googledrive">GoogleDrive</string>
+    <string name="menu_onedrive">OneDrive</string>
+    <string name="menu_external_storage">Open file…</string>
+    <string name="menu_create_or_delete">Storage</string>
+    <string name="menu_clear_cache">Clear storage cache</string>
+    <string name="menu_title_menu">Menu</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_quit">Quit</string>
+
+    <string name="menu_toggle_soft_keyboard">Soft keyboard</string>
+    <string name="menu_toggle_text_box">One-line text box</string>
+    <string name="menu_toggle_function_bar">Functionbar</string>
+    <string name="menu_reload_file">Reload (+encoding)</string>
+    <string name="menu_edit_vimrc">Edit .vimrc</string>
+    <string name="menu_clipboard">Clipboard</string>
+    <string name="menu_share_title">Share…</string>
+    <string name="menu_screen">Screen</string>
+    <string name="menu_copy_screen">Text selection</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_tutorial">Vim tutorial</string>
+    <string name="menu_window">Window</string>
+</resources>

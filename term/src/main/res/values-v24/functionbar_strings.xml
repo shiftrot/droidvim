@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="string_functionbar_ime_toggle">⌨</string>
     <string name="title_functionbar_ime_toggle">⌨ - Toggle keyboard</string>
     <string name="title_functionbar_voice_input">🎙 - Voice input</string>
-    <string name="key_ime">⌨</string>
-    <string name="key_voice_input">🎙</string>
+    <string name="string_functionbar_ime_toggle">⌨</string>
+    <string name="string_functionbar_voice_input">🎙</string>
 </resources>
