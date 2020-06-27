@@ -704,7 +704,11 @@ final class TermVimInstaller {
 */
                 is = new FileInputStream(soFile);
             } else {
-                is = getInputStream(activity, getLocalLibId(activity,"busybox_"));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    is = getInputStream(activity, getLocalLibId(activity,"busybox_"));
+                } else {
+                    is = getInputStream(activity, getLocalLibId(activity,"busybox_api16_"));
+                }
             }
             if (is != null) {
                 if (symlink.exists()) symlink.delete();
