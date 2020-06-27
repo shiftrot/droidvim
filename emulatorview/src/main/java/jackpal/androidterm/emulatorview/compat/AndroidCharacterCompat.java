@@ -1,7 +1,5 @@
 package jackpal.androidterm.emulatorview.compat;
 
-import android.text.AndroidCharacter;
-
 /**
  * Definitions related to android.text.AndroidCharacter
  */

@@ -70,8 +70,7 @@
         tools:targetApi="q" >
         <activity
             android:name=".ExtraContents"
-            android:label="@string/title_activity_extra_contents"
-            >
+            android:label="@string/title_activity_extra_contents" >
         </activity>
         <activity
             android:name=".Term"

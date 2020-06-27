@@ -2004,24 +2004,34 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public void setPreIMEShortcut(String key, boolean value) {
-        if (key.equals("AltGrave")) {
-            mAltGrave = value;
-        } else if (key.equals("AltEsc")) {
-            mAltEsc = value;
-        } else if (key.equals("AltSpace")) {
-            mAltSpace = value;
-        } else if (key.equals("CtrlSpace")) {
-            mCtrlSpace = value;
-        } else if (key.equals("ShiftSpace")) {
-            mShiftSpace = value;
-        } else if (key.equals("ZENKAKU_HANKAKU")) {
-            mZenkakuHankaku = value;
-        } else if (key.equals("GRAVE")) {
-            mGrave = value;
-        } else if (key.equals("SWITCH_CHARSET")) {
-            mSwitchCharset = value;
-        } else if (key.equals("CtrlJ")) {
-            mCtrlJ = value;
+        switch (key) {
+            case "AltGrave":
+                mAltGrave = value;
+                break;
+            case "AltEsc":
+                mAltEsc = value;
+                break;
+            case "AltSpace":
+                mAltSpace = value;
+                break;
+            case "CtrlSpace":
+                mCtrlSpace = value;
+                break;
+            case "ShiftSpace":
+                mShiftSpace = value;
+                break;
+            case "ZENKAKU_HANKAKU":
+                mZenkakuHankaku = value;
+                break;
+            case "GRAVE":
+                mGrave = value;
+                break;
+            case "SWITCH_CHARSET":
+                mSwitchCharset = value;
+                break;
+            case "CtrlJ":
+                mCtrlJ = value;
+                break;
         }
     }
 

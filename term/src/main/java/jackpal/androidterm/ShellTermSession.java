@@ -116,17 +116,6 @@ public class ShellTermSession extends GenericTermSession {
         mProcId = createSubprocess(shell, envCmd);
     }
 
-    private String checkPath(String path) {
-        String[] dirs = path.split(":");
-        StringBuilder checkedPath = new StringBuilder(path.length());
-        for (String dirname : dirs) {
-            File dir = new File(dirname);
-            if (dir.isDirectory() && FileCompat.canExecute(dir)) {
-                checkedPath.append(dirname);
-                checkedPath.append(":");
-            }
-        }
-        return checkedPath.substring(0, checkedPath.length() - 1);
     }
 
     static private String mPostCmd = null;
