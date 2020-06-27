@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
@@ -99,6 +100,7 @@ public class ShellTermSession extends GenericTermSession {
         envList.add("APPEXTHOME=" + TermService.getAPPEXTHOME());
         envList.add("APPLIB=" + TermService.getAPPLIB());
         envList.add("INTERNAL_STORAGE=" + TermService.getEXTSTORAGE());
+        envList.add("LANG=" + getLang());
         envList.add("TERM=" + settings.getTermType());
         envList.add("COLORFGBG=" + settings.getCOLORFGBG());
 
@@ -116,6 +118,11 @@ public class ShellTermSession extends GenericTermSession {
         mProcId = createSubprocess(shell, envCmd);
     }
 
+    static public String getLang() {
+        Locale locale = Locale.getDefault();
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        return language + "_" + country +".UTF-8";
     }
 
     static private String mPostCmd = null;
@@ -141,66 +148,10 @@ public class ShellTermSession extends GenericTermSession {
             write(mEnvInitialCommand + '\r');
             mFirst = false;
         }
-        sendCommand(getAdditionalEnv());
         sendCommand(getProotCommand());
 
         if (initialCommand != null && initialCommand.length() > 0) {
             write(initialCommand + '\r');
-        }
-    }
-
-    static private String[] getAdditionalEnv() {
-        List<String> AdditonalCommands = new ArrayList<>();
-        String locale;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            LocaleList localeList = LocaleList.getDefault();
-            locale = localeList.get(0).toLanguageTag();
-        } else {
-            locale = getprop("persist.sys.locale");
-            if ("".equals(locale)) {
-                String language = getprop("persist.sys.language");
-                String country = getprop("persist.sys.country");
-                if (!"".equals(language) && !"".equals(country)) {
-                    locale = language + "_" + country;
-                }
-            }
-        }
-        if ("".equals(locale)) locale = "en-US";
-        locale = locale.replace("-", "_");
-        AdditonalCommands.add("export LANG=" + locale + ".UTF-8");
-        return AdditonalCommands.toArray(new String[0]);
-    }
-
-    static private String getprop(String propName) {
-        String GETPROP_EXECUTABLE_PATH = "/system/bin/getprop";
-        String TAG = "getprop";
-
-        Process process = null;
-        BufferedReader bufferedReader = null;
-
-        try {
-            process = new ProcessBuilder().command(GETPROP_EXECUTABLE_PATH, propName).redirectErrorStream(true).start();
-            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = bufferedReader.readLine();
-            if (line == null) {
-                line = "";
-            }
-            Log.i(TAG, "read System Property: " + propName + "=" + line);
-            return line;
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to read System Property " + propName, e);
-            return "";
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    // Do nothing
-                }
-            }
-            if (process != null) {
-                process.destroy();
-            }
         }
     }
 
