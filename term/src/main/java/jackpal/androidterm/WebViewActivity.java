@@ -373,17 +373,19 @@ public class WebViewActivity extends Activity {
         int theme = mSettings.getColorTheme();
         switch (theme) {
             case 0:
+            case 2:
                 setTheme(R.style.App_Theme_Dark);
                 break;
             case 1:
+            case 3:
                 setTheme(R.style.App_Theme_Light);
                 break;
-            case 2:
-                setTheme(R.style.App_Theme_Dark_api26);
-                break;
-            case 3:
-                setTheme(R.style.App_Theme_Light_api26);
-                break;
+            // case 2:
+            //     setTheme(R.style.App_Theme_Dark_api26);
+            //     break;
+            // case 3:
+            //     setTheme(R.style.App_Theme_Light_api26);
+            //     break;
             default:
                 break;
         }
