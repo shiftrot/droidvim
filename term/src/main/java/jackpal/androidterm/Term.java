@@ -2647,7 +2647,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     doExitShell();
                 }
                 return true;
-            case 0xffff0000:
+            case 0xffff1000:
                 setFunctionBar(2);
                 return true;
             case KeyEvent.KEYCODE_ESCAPE:
