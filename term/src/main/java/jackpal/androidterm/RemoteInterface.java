@@ -195,7 +195,7 @@ public class RemoteInterface extends AppCompatActivity {
             finish();
             return;
         }
-        mDoInstall = StaticConfig.FLAVOR_VIM && !new File(this.getFilesDir() + "/bin").isDirectory();
+        mDoInstall = StaticConfig.FLAVOR_VIM && (!new File(this.getFilesDir() + "/usr").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory() );
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
@@ -385,7 +385,10 @@ public class RemoteInterface extends AppCompatActivity {
                 String filename = FILE_CLIPBOARD;
                 Term.writeStringToFile(filename, "\n" + str.toString());
                 String command = "\u001b" + ":ATEMod _paste";
-                if (mDoInstall) command = DO_INSTALL;
+                if (mDoInstall) {
+                    IntentCommand = "";
+                    command = DO_INSTALL;
+                }
                 // Find the target window
                 mReplace = true;
                 mHandle = switchToWindow(mHandle, command);

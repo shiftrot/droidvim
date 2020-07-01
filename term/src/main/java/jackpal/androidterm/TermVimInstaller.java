@@ -61,10 +61,12 @@ final class TermVimInstaller {
     static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
     static public boolean doInstallVim = false;
     static private final String DEBUG_OLD_LST = "";
+    static private String SOLIB_PATH;
 
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
 
+        SOLIB_PATH = getSolibPath(activity);
         String arch = getArch();
         if ((AndroidCompat.SDK < 16) || ((AndroidCompat.SDK < 18) && (arch.contains("x86") || arch.contains("i686")))) {
             activity.runOnUiThread(new Runnable() {
@@ -240,8 +242,10 @@ final class TermVimInstaller {
                     installInternalBusybox(activity, path + "/usr/bin");
                     setMessage(activity, pd, "binaries - busybox");
                     installBusyboxCommands();
+                    setMessage(activity, pd, "binaries - bin tools");
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
+                    setMessage(activity, pd, "binaries - zip tools");
                     installSoTar(path, "unzip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
                     installSoTar(path, "zip");
@@ -362,10 +366,18 @@ final class TermVimInstaller {
         return needUpdate;
     }
 
+    static private String getSolibPath(Activity activity) {
+        if (SOLIB_PATH != null) return SOLIB_PATH;
+        String soLibPath = TermService.getAPPLIB();
+        if (activity != null) soLibPath = activity.getApplicationContext().getApplicationInfo().nativeLibraryDir;
+        return soLibPath;
+    }
+
     static private void installSoTar(String path, String soLib) {
-        final String SOLIB_PATH = TermService.getAPPLIB();
         try {
-            String fname = "lib" + soLib + ".so";
+            SOLIB_PATH = getSolibPath(null);
+            final String arch = "_" + getArch();
+            String fname = "lib" + soLib + arch + ".so";
             String local = TermService.getTMPDIR() + "/" + fname;
             cp(SOLIB_PATH + "/" + fname, local);
             installTar(path, new FileInputStream(local));
@@ -690,8 +702,8 @@ final class TermVimInstaller {
     static private void installInternalBusybox(Activity activity, String target) {
         try {
             InputStream is = null;
+            SOLIB_PATH = getSolibPath(activity);
             final String arch = getArch();
-            final String SOLIB_PATH = TermService.getAPPLIB();
             File soFile = new File(SOLIB_PATH + "/libbusybox_" + arch + ".so");
             final File symlink = new File(target+"/busybox");
             if (soFile.exists()) {
@@ -795,9 +807,10 @@ final class TermVimInstaller {
     }
 
     static private void installSoZip(String path, String soLib) {
-        final String SOLIB_PATH = TermService.getAPPLIB();
         try {
-            File soFile = new File(SOLIB_PATH + "/lib" + soLib + ".so");
+            SOLIB_PATH = getSolibPath(null);
+            final String arch = "_" + getArch();
+            File soFile = new File(SOLIB_PATH + "/lib" + soLib + arch + ".so");
             installZip(path, new FileInputStream(soFile));
         } catch (Exception e) {
             e.printStackTrace();

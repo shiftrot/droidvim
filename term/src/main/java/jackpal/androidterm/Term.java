@@ -234,7 +234,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private TermSettings mSettings;
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
-    private final TermVimInstaller mTermVimInstaller = new TermVimInstaller();
     private Intent TSIntent;
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
@@ -1180,8 +1179,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String message = getString(R.string.scoped_storage_uninstall_warning_message);
         message += "\n - " + TermService.getAPPBASE();
         message += "\n - (Internal / SD Card)/Android/data/" + BuildConfig.APPLICATION_ID;
-        boolean first = mTermVimInstaller.ScopedStorageWarning;
-        mTermVimInstaller.ScopedStorageWarning = false;
+        boolean first = TermVimInstaller.ScopedStorageWarning;
+        TermVimInstaller.ScopedStorageWarning = false;
 
         boolean warning = getPrefBoolean(Term.this, key, true);
         if (!first && (!warning || mRandom.nextInt(100) != 1)) {
@@ -1275,9 +1274,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
         if (!FLAVOR_VIM) {
-            mTermVimInstaller.doInstallTerm(Term.this);
+            TermVimInstaller.doInstallTerm(Term.this);
             permissionCheckExternalStorage();
-        } else if (mTermVimInstaller.doInstallVim) {
+        } else if (TermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
 
             final DrawerLayout layout = findViewById(R.id.drawer_layout);
@@ -1295,7 +1294,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             final String postCmd = _postCmd;
             cmd = preCmd;
-            mTermVimInstaller.installVim(Term.this, new Runnable() {
+            TermVimInstaller.installVim(Term.this, new Runnable() {
                 @Override
                 public void run() {
                     if (vimApp) {
@@ -1337,7 +1336,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         final String riCmd = postCmd;
         try {
-            mTermVimInstaller.doInstallVim(Term.this, new Runnable() {
+            TermVimInstaller.doInstallVim(Term.this, new Runnable() {
                 @Override
                 public void run() {
                     String cmd = riCmd;
