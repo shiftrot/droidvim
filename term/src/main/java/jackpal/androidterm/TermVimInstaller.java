@@ -33,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,14 +41,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import androidx.preference.PreferenceManager;
 import jackpal.androidterm.compat.AndroidCompat;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
@@ -57,8 +54,7 @@ import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 
 final class TermVimInstaller {
-    static final String TERMVIM_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
-    static final boolean OS_AMAZON = System.getenv("AMAZON_COMPONENT_LIST") != null;
+    static final String APP_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static public boolean doInstallVim = false;
     static private final String DEBUG_OLD_LST = "";
     static private String SOLIB_PATH;
@@ -138,7 +134,7 @@ final class TermVimInstaller {
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
         String terminfoDir = TermService.getTerminfoInstallDir();
         File dir = new File(terminfoDir + "/terminfo");
-        boolean doInstall = !dir.isDirectory() || !pref.getString("versionName", "").equals(TERMVIM_VERSION);
+        boolean doInstall = !dir.isDirectory() || !pref.getString("versionNameTerm", "").equals(APP_VERSION);
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
@@ -171,17 +167,8 @@ final class TermVimInstaller {
                         shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                     }
                 }
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-                final SharedPreferences.Editor editor = prefs.edit();
-                String key = "functionbar_vim_paste";
-                boolean value = prefs.getBoolean(key, false);
-                editor.putBoolean(key, value);
-                key = "functionbar_vim_yank";
-                value = prefs.getBoolean(key, false);
-                editor.putBoolean(key, value);
-                editor.apply();
-                new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
             }
+            new PrefValue(activity).setString("versionNameTerm", APP_VERSION);
             return true;
         }
         return false;
@@ -319,7 +306,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
                     setupStorageSymlinks();
-                    new PrefValue(activity).setString("versionName", TERMVIM_VERSION);
+                    new PrefValue(activity).setString("versionName", APP_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
                         activity.runOnUiThread(new Runnable() {

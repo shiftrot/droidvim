@@ -96,12 +96,12 @@ public class TermService extends Service implements TermSession.FinishCallback {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         String defValue;
-        if (!BuildConfig.FLAVOR.equals("origin")) {
+        if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
+            defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        } else {
             defValue = getFilesDir().getAbsolutePath() + "/home";
             File home = new File(defValue);
             if (!home.exists()) home.mkdir();
-        } else {
-            defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
         }
         String homePath = prefs.getString("home_path", defValue);
         if (!new File(homePath).canWrite() || SCOPED_STORAGE) homePath = defValue;
@@ -109,6 +109,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         editor.apply();
         mHOME = homePath;
         mSTARTUP_DIR = prefs.getString("startup_path", homePath);
+        if (SCOPED_STORAGE) mSTARTUP_DIR = homePath;
 
         mAPPLIB = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         mARCH = getArch();
@@ -438,7 +439,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     private boolean getInstallStatus(String scriptFile, String zipFile) {
-        if (!TermVimInstaller.TERMVIM_VERSION.equals(new PrefValue(this).getString("versionName", "")))
+        if (!TermVimInstaller.APP_VERSION.equals(new PrefValue(this).getString("versionName", "")))
             return false;
         return new File(scriptFile).exists();
     }

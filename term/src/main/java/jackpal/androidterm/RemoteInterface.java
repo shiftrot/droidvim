@@ -195,7 +195,7 @@ public class RemoteInterface extends AppCompatActivity {
             finish();
             return;
         }
-        mDoInstall = StaticConfig.FLAVOR_VIM && (!new File(this.getFilesDir() + "/usr").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory() );
+        mDoInstall = StaticConfig.FLAVOR_VIM && (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory() );
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
@@ -232,16 +232,18 @@ public class RemoteInterface extends AppCompatActivity {
                 uri = myIntent.getData();
             }
             String intentCommand = mSettings.getIntentCommand();
+            String CMD_SH = new File(TermService.getAPPFILES() + "/usr/bin/bash").canExecute() ? "bash" : "sh";
             boolean flavorVim = mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*");
             if (intentCommand.equals("")) {
-                intentCommand = "sh";
+                intentCommand = CMD_SH;
                 if (flavorVim) intentCommand = ":e";
             }
-            if (uri != null && uri.toString().matches("^file:///.*") && flavorVim) {
+            String CMD_ESC = intentCommand.startsWith(":") ? "\u001b" : "";
+            if (uri != null && uri.toString().startsWith("file:///")) {
                 String path = uri.getPath();
                 if (new File(path).canRead()) {
-                    path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    String command = "\u001b" + intentCommand + " " + path;
+                    path = quotePath(path, "".equals(CMD_ESC));
+                    String command = CMD_ESC + intentCommand + " " + path;
                     if (mDoInstall) {
                         IntentCommand = command;
                         command = DO_INSTALL;
@@ -268,13 +270,13 @@ public class RemoteInterface extends AppCompatActivity {
                     }
                     return;
                 }
-            } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content") && flavorVim) {
+            } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content")) {
                 Context context = this;
                 String command = null;
                 String path = UriToPath.getPath(context, uri);
                 if (path != null) {
-                    path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b" + intentCommand + " " + path;
+                    path = quotePath(path, "".equals(CMD_ESC));
+                    command = CMD_ESC + intentCommand + " " + path;
                     if (mDoInstall) {
                         IntentCommand = command;
                         command = DO_INSTALL;
@@ -299,8 +301,8 @@ public class RemoteInterface extends AppCompatActivity {
                                 alert(fname + "\n" + this.getString(R.string.storage_read_error));
                                 finish();
                             }
-                            path = path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                            command = "\u001b" + intentCommand + " " + path;
+                            path = quotePath(path, "".equals(CMD_ESC));
+                            command = CMD_ESC + intentCommand + " " + path;
                         }
                         if (mDoInstall) {
                             IntentCommand = command;
@@ -313,6 +315,7 @@ public class RemoteInterface extends AppCompatActivity {
                 mHandle = switchToWindow(mHandle, command);
                 mReplace = false;
                 finish();
+                return;
             } else if (action.equals("com.googlecode.android_scripting.action.EDIT_SCRIPT")) {
                 url = myIntent.getExtras().getString("com.googlecode.android_scripting.extra.SCRIPT_PATH");
             } else if (myIntent.getScheme() != null && myIntent.getScheme() != null && myIntent.getScheme().equals("file")) {
@@ -321,12 +324,12 @@ public class RemoteInterface extends AppCompatActivity {
             if (url != null) {
                 String command = mSettings.getIntentCommand();
                 if (command.equals("")) {
-                    command = "sh";
+                    command = CMD_SH;
                     if (flavorVim) command = ":e";
                 }
                 if (command.matches("^:.*")) {
-                    url = url.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
-                    command = "\u001b" + command + " " + url;
+                    url = quotePath(url, "".equals(CMD_ESC));
+                    command = CMD_ESC + command + " " + url;
                     if (mDoInstall) {
                         IntentCommand = command;
                         command = DO_INSTALL;
@@ -366,12 +369,11 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     void alert(final String message) {
-        final Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        @SuppressLint("ShowToast") final Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         Term.showToast(toast);
     }
 
-    private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
     public void shareText(CharSequence str) {
         if (str == null) {
             alert(this.getString(R.string.toast_clipboard_error));
@@ -381,9 +383,8 @@ public class RemoteInterface extends AppCompatActivity {
                 .getManager(this.getApplicationContext());
         if (clip != null) {
             if (FLAVOR_VIM) {
-                FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
-                String filename = FILE_CLIPBOARD;
-                Term.writeStringToFile(filename, "\n" + str.toString());
+                String FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
+                Term.writeStringToFile(FILE_CLIPBOARD, "\n" + str.toString());
                 String command = "\u001b" + ":ATEMod _paste";
                 if (mDoInstall) {
                     IntentCommand = "";
@@ -397,6 +398,14 @@ public class RemoteInterface extends AppCompatActivity {
                 clip.setText(str);
                 alert(this.getString(R.string.toast_clipboard));
             }
+        }
+    }
+
+    private static String quotePath(String path, boolean bash) {
+        if (bash) {
+            return quoteForBash(path);
+        } else {
+            return path.replaceAll(Term.SHELL_ESCAPE, "\\\\$1");
         }
     }
 

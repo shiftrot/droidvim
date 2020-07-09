@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-import java.text.SimpleDateFormat
-
 android {
     compileSdkVersion versions.compileSdk
 
@@ -63,20 +61,20 @@ android {
         }
     }
 
-    flavorDimensions "default"
+    flavorDimensions "appType"
     productFlavors {
-        origin {
-            dimension "default"
-            versionName = new SimpleDateFormat("yyyy.M.dd.HH.mm.ss").format(new Date()) + ".dev"
+        terminal {
+            dimension "appType"
         }
         droidvim {
-            dimension "default"
+            dimension "appType"
             applicationId "com.droidvim"
         }
     }
 
     sourceSets {
-        origin {
+        terminal {
+            res.srcDirs += ['src/terminal-res/res']
             jniLibs.srcDirs = ['src/main/jniLibs']
             if (abiArm) {
                 res.srcDirs += ['src/main-arm/res']

@@ -361,6 +361,7 @@
 
     <string name="confirm_window_close_message">Close this window?</string>
 
+    <string name="scoped_storage">Scoped storage</string>
     <string name="scoped_storage_warning_title">Scoped storage</string>
     <string name="scoped_storage_first_warning_message">Scoped Storage:\n\"Scoped storage\" is enabled for this device. Therefore, direct access via Vim commands to other than the \"HOME directory\" is prohibited. Please use \"Open File\" in the drawer menu (Double tap on the screen).</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in the \"Home directory\" will be deleted when uninstalling.</string>

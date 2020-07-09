@@ -309,10 +309,12 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     private String getDefaultHome() {
         String defValue;
-        if (!BuildConfig.FLAVOR.equals("origin")) {
-            defValue = getFilesDir().getAbsolutePath() + "/home";
-        } else {
+        if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
             defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        } else {
+            defValue = getFilesDir().getAbsolutePath() + "/home";
+            File home = new File(defValue);
+            if (!home.exists()) home.mkdir();
         }
         return defValue;
     }
@@ -540,14 +542,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             if (key.equals("home_path")) {
                 if (!new File(loadVal).canWrite()) {
                     String defValue;
-                    if (!BuildConfig.FLAVOR.equals("origin")) {
-                        defValue = TermService.getAPPFILES() + "/home";
-                        File home = new File(defValue);
-                        if (!home.exists()) home.mkdir();
-                    } else {
-                        defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
-                    }
-                    loadVal = defValue;
+                    loadVal = getDefaultHome();
                 }
                 return edit.putString(key, loadVal);
             }
@@ -892,9 +887,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_functionbar);
-            if (FLAVOR_VIM) {
-                findPreference("functionbar_vim_paste").setDefaultValue(true);
-            }
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("functionbar_diamond_action_rev2"));

@@ -22,7 +22,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -135,6 +134,7 @@ import jackpal.androidterm.util.TermSettings;
 
 import static android.provider.DocumentsContract.Document;
 import static android.provider.DocumentsContract.deleteDocument;
+import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.copyScript;
@@ -351,7 +351,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static SyncFileObserver restoreSyncFileObserver(Activity activity) {
-        if (!FLAVOR_VIM) return null;
+        if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) return null;
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
         mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
@@ -481,7 +481,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public static boolean isInternalPrivateStorageDocument(Uri uri) {
-        return "com.droidvim.storage.documents".equals(uri.getAuthority());
+        String appId = BuildConfig.APPLICATION_ID;
+        return (appId + ".storage.documents").equals(uri.getAuthority());
     }
 
     public static boolean isDownloadDocument(Uri uri) {
@@ -633,29 +634,31 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String defaultAppButton = getString(R.string.external_app_button);
         mExternalApps = new LinkedList<>();
         mExternalApps.add(new ExternalApp(R.id.drawer_files_button      , mSettings.getFilerAppId()   , defaultAppButton               , mSettings.getFilerAppButtonMode()   ));
-        mExternalApps.add(new ExternalApp(R.id.drawer_app_button        , mSettings.getExternalAppId(), defaultAppButton               , mSettings.getExternalAppButtonMode()));
-        mExternalApps.add(new ExternalApp(R.id.drawer_dropbox_button    , APP_DROPBOX                 , getString(R.string.dropbox)    , mSettings.getDropboxFilePicker()    ));
-        mExternalApps.add(new ExternalApp(R.id.drawer_googledrive_button, APP_GOOGLEDRIVE             , getString(R.string.googledrive), mSettings.getGoogleDriveFilePicker()));
-        mExternalApps.add(new ExternalApp(R.id.drawer_onedrive_button   , APP_ONEDRIVE                , getString(R.string.onedrive)   , mSettings.getOneDriveFilePicker()   ));
         if (FLAVOR_VIM) {
-            mFilePickerItems = new ArrayList<>();
-            mFilePickerItems.add(getString(R.string.create_file));
-            for (ExternalApp app : mExternalApps) {
-                if (app.appId.equals("")) {
-                    app.appId = APP_FILER;
-                    app.label = getString(R.string.app_files);
-                }
-                int visibility = (app.action > 0) ? View.VISIBLE : View.GONE;
-                if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visibility = View.GONE;
-                Button button = findViewById(app.button);
-                button.setVisibility(visibility);
-                if (visibility == View.VISIBLE) {
-                    try {
-                        findViewById(app.button).setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getDrawer().closeDrawers();
-                                if (app.appId.equals(APP_FILER)) {
+            mExternalApps.add(new ExternalApp(R.id.drawer_app_button        , mSettings.getExternalAppId(), defaultAppButton               , mSettings.getExternalAppButtonMode()));
+            mExternalApps.add(new ExternalApp(R.id.drawer_dropbox_button    , APP_DROPBOX                 , getString(R.string.dropbox)    , mSettings.getDropboxFilePicker()    ));
+            mExternalApps.add(new ExternalApp(R.id.drawer_googledrive_button, APP_GOOGLEDRIVE             , getString(R.string.googledrive), mSettings.getGoogleDriveFilePicker()));
+            mExternalApps.add(new ExternalApp(R.id.drawer_onedrive_button   , APP_ONEDRIVE                , getString(R.string.onedrive)   , mSettings.getOneDriveFilePicker()   ));
+        }
+        mFilePickerItems = new ArrayList<>();
+        if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.create_file));
+        for (ExternalApp app : mExternalApps) {
+            if (app.appId.equals("")) {
+                app.appId = APP_FILER;
+                app.label = getString(R.string.app_files);
+            }
+            int visibility = (app.action > 0) ? View.VISIBLE : View.GONE;
+            if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visibility = View.GONE;
+            Button button = findViewById(app.button);
+            button.setVisibility(visibility);
+            if (visibility == View.VISIBLE) {
+                try {
+                    findViewById(app.button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getDrawer().closeDrawers();
+                            if (app.appId.equals(APP_FILER)) {
+                                if (FLAVOR_VIM) {
                                     final Runnable runFiler = new Runnable() {
                                         public void run() {
                                             launchExternalApp(2, APP_FILER);
@@ -664,34 +667,38 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                     final String WARNING_ID_FILE_MANAGER = "file_manager_app_warning";
                                     String message = getString(R.string.google_file_chooser_warning_message) + getString(R.string.google_filer_app_warning_message);
                                     doWarningDialogRun(null, message, WARNING_ID_FILE_MANAGER, false, runFiler);
-                                } else if (isAppInstalled(app.appId) || APP_DROPBOX.equals(app.appId) || APP_GOOGLEDRIVE.equals(app.appId) || APP_ONEDRIVE.equals(app.appId)) {
-                                    launchExternalApp(app.action, app.appId);
                                 } else {
-                                    externalApp();
+                                    launchExternalApp(2, APP_FILER);
                                 }
+                            } else if (isAppInstalled(app.appId) || APP_DROPBOX.equals(app.appId) || APP_GOOGLEDRIVE.equals(app.appId) || APP_ONEDRIVE.equals(app.appId)) {
+                                launchExternalApp(app.action, app.appId);
+                            } else {
+                                externalApp();
                             }
-                        });
-                        if (defaultAppButton.equals(app.label)) {
-                            PackageInfo packageInfo = pm.getPackageInfo(app.appId, 0);
-                            String label = packageInfo.applicationInfo.loadLabel(pm).toString();
-                            button.setText(label);
-                        } else {
-                            button.setText(app.label);
-                            if (!isAppInstalled(app.appId)) button.setVisibility(View.GONE);
                         }
-                    } catch (Exception e) {
-                        button.setText(defaultAppButton);
+                    });
+                    if (defaultAppButton.equals(app.label)) {
+                        PackageInfo packageInfo = pm.getPackageInfo(app.appId, 0);
+                        String label = packageInfo.applicationInfo.loadLabel(pm).toString();
+                        button.setText(label);
+                    } else {
+                        button.setText(app.label);
+                        if (!isAppInstalled(app.appId)) button.setVisibility(View.GONE);
                     }
-                }
-                if ((isAppInstalled(app.appId) && app.action > 0)
-                        && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q || app.appId.equals(APP_FILER))) {
-                    mFilePickerItems.add(app.appId);
+                } catch (Exception e) {
+                    button.setText(defaultAppButton);
                 }
             }
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                mFilePickerItems.add(getString(R.string.delete_file));
+            if ((isAppInstalled(app.appId) && app.action > 0)
+                    && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q || app.appId.equals(APP_FILER))) {
+                mFilePickerItems.add(app.appId);
             }
-            Button button;
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.delete_file));
+        }
+        Button button;
+        if (FLAVOR_VIM) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 button = findViewById(R.id.drawer_storage_button);
                 button.setVisibility(View.VISIBLE);
@@ -702,9 +709,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 button = findViewById(R.id.drawer_clear_cache_button);
                 button.setVisibility(View.VISIBLE);
             }
-            mFilePickerItems.add(getString(R.string.backup_restore));
-            if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.menu_edit_vimrc));
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                button = findViewById(R.id.drawer_createfile_button);
+                button.setVisibility(View.VISIBLE);
+                mFilePickerItems.add(getString(R.string.clear_cache));
+            } else {
+                button = findViewById(R.id.drawer_clear_cache_button);
+                button.setVisibility(View.VISIBLE);
+            }
         }
+        if (SCOPED_STORAGE && FLAVOR_TERMINAL) mFilePickerItems.add(getString(R.string.scoped_storage));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mFilePickerItems.add(getString(R.string.backup_restore));
+        }
+        if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.menu_edit_vimrc));
         setExtraButton();
         findViewById(R.id.drawer_extra_button).setOnClickListener(new OnClickListener() {
             @Override
@@ -2282,6 +2301,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     backupAndRestoreHome();
                 } else if (getString(R.string.menu_edit_vimrc).equals(item)) {
                     editVimrc();
+                } else if (getString(R.string.scoped_storage).equals(item)) {
+                    // Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    // startActivity(intent);
                 } else {
                     intentMainActivity(appId[which]);
                 }
@@ -2778,7 +2800,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 AndroidIntent(FILE_INTENT);
                 return true;
             case 0xffff9998:
-                fatalCrashVim();
+                fatalCrash();
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
@@ -2802,7 +2824,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mUninstall = false;
     }
 
-    private void fatalCrashVim() {
+    private void fatalCrash() {
         try {
             setUninstallExtraContents(false);
             mUninstall = false;
@@ -2814,7 +2836,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int m) {
                     dialog.dismiss();
-                    fatalCrashVimQuit();
+                    fatalCrashQuit();
                 }
             });
             bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
@@ -2836,13 +2858,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void fatalCrashVimQuit() {
+    private void fatalCrashQuit() {
         mFatalTroubleShooting = true;
         setUninstallExtraContents(false);
-        final String[] items = {
-                getString(R.string.launch_default_vim),
-                getString(R.string.quit_to_shell),
-                getString(R.string.crash_quit_button)};
+        ArrayList<String> itemList = new ArrayList<>();
+        itemList.add(getString(R.string.crash_quit_button));
+        if (FLAVOR_VIM) itemList.add(getString(R.string.launch_default_vim));
+        itemList.add(getString(R.string.quit_to_shell));
+        final String[] items = itemList.toArray(new String[0]);
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_choose))
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
@@ -2858,16 +2881,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else if (getString(R.string.quit_to_shell).equals(items[which])) {
                             quitToShell();
                         } else if (getString(R.string.crash_quit_button).equals(items[which])) {
-                            doCloseCrashVimWindow();
+                            doCloseCrashWindow();
                         } else {
-                            fatalCrashVim();
+                            fatalCrash();
                         }
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int m) {
                         dialog.dismiss();
-                        fatalCrashVim();
+                        fatalCrash();
                     }
                 })
                 .create();
@@ -2888,7 +2911,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
         bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                fatalCrashVim();
+                fatalCrash();
             }
         });
         bld.create().show();
@@ -2907,7 +2930,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         dialog.dismiss();
                         if (getString(R.string.revert_to_default_vim).equals(items[which])) {
                             setUninstallExtraContents(true);
-                            doCloseCrashVimWindow(getString(R.string.revert_to_default_vim));
+                            doCloseCrashWindow(getString(R.string.revert_to_default_vim));
                         }
                     }
                 })
@@ -2915,7 +2938,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     public void onClick(DialogInterface dialog, int m) {
                         dialog.dismiss();
                         if (mFatalTroubleShooting) {
-                            fatalCrashVim();
+                            fatalCrash();
                         } else {
                             mUninstall = false;
                             mLibrary = -1;
@@ -2988,7 +3011,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 dialog.dismiss();
                 mUninstall = true;
                 mLibrary = which;
-                doCloseCrashVimWindow();
+                doCloseCrashWindow();
             }
         });
         bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
@@ -3000,11 +3023,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.show();
     }
 
-    private void doCloseCrashVimWindow() {
-        doCloseCrashVimWindow(null);
+    private void doCloseCrashWindow() {
+        doCloseCrashWindow(null);
     }
 
-    private void doCloseCrashVimWindow(CharSequence message) {
+    private void doCloseCrashWindow(CharSequence message) {
         final AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_alert);
         bld.setCancelable(false);
@@ -3029,7 +3052,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                fatalCrashVim();
+                fatalCrash();
             }
         });
         AlertDialog dlg = bld.create();
@@ -3518,8 +3541,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void choosePasteMode() {
         final String[] items = {
-                getString(R.string.paste_vim),
-                getString(R.string.paste_shell)};
+                getString(R.string.paste_shell),
+                getString(R.string.paste_vim)};
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.clipboard))
@@ -3870,104 +3893,104 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void setFunctionBarSize() {
-        int size;
-        size = findViewById(R.id.view_function_bar).getHeight();
-        if (mFunctionBarId == 1) size += size;
-    }
-
     private void setFunctionKey() {
-        final String FUNCTIONBAR_ENTER = getString(R.string.string_functionbar_enter);
-        final String FUNCTIONBAR_IME_TOGGLE = getString(R.string.string_functionbar_ime_toggle);
-        final String FUNCTIONBAR_SOFTKEYBOARD = getString(R.string.string_functionbar_dia);
-        final String FUNCTIONBAR_VOICE_INPUT = getString(R.string.string_functionbar_voice_input);
-        final String FUNCTIONBAR_FN_UP = getString(R.string.string_functionbar_fn_up);
-        final String FUNCTIONBAR_FN_DOWN = getString(R.string.string_functionbar_fn_down);
+        final String UP = FUNCTIONBAR_UP;
+        final String DOWN = FUNCTIONBAR_DOWN;
+        final String RIGHT = FUNCTIONBAR_RIGHT;
+        final String LEFT = FUNCTIONBAR_LEFT;
+        final String FN_UP = getString(R.string.string_functionbar_fn_up);
+        final String FN_DOWN = getString(R.string.string_functionbar_fn_down);
+        final String FN_TOGGLE = getString(R.string.string_functionbar_fn_toggle);
+        final String ENTER = getString(R.string.string_functionbar_enter);
+        final String IME_TOGGLE = getString(R.string.string_functionbar_ime_toggle);
+        final String SOFTKEYBOARD = getString(R.string.string_functionbar_dia);
+        final String VOICE_INPUT = getString(R.string.string_functionbar_voice_input);
 
+        Resources res = getResources();
         mFunctionKeys = new ArrayList<>();
-        mFunctionKeys.add(new FunctionKey(R.id.button_next_functionbar0, true , "functionbar_next0"           , FUNCTIONBAR_FN_UP));
-        mFunctionKeys.add(new FunctionKey(R.id.button_next_functionbar2, true , "functionbar_next2"           , FUNCTIONBAR_FN_UP));
-        mFunctionKeys.add(new FunctionKey(R.id.button_prev_functionbar , true , "functionbar_prev"            , FUNCTIONBAR_FN_DOWN));
-        mFunctionKeys.add(new FunctionKey(R.id.button_prev_functionbar2, true , "functionbar_prev2"           , FUNCTIONBAR_FN_DOWN));
-        mFunctionKeys.add(new FunctionKey(R.id.button_esc              , false, "functionbar_esc"             , "Esc"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_ctrl             , true , "functionbar_ctrl"            , "Ctrl" ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_alt              , false, "functionbar_alt"             , "Alt"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_1       , true , "functionbar_tab"             , "Tab"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_2       , false, "functionbar_up"              , FUNCTIONBAR_UP));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_3       , false, "functionbar_down"            , FUNCTIONBAR_DOWN));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_4       , false, "functionbar_left"            , FUNCTIONBAR_LEFT));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_5       , false, "functionbar_right"           , FUNCTIONBAR_RIGHT));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_6       , false, "functionbar_backspace"       , "BS"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_7       , false, "functionbar_enter"           , FUNCTIONBAR_ENTER));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_8       , false, "functionbar_page_up"         , "PU"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_9       , false, "functionbar_page_down"       , "PD"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_10      , true , "functionbar_colon"           , ":"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_11      , false, "functionbar_i"               , "i"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_12      , false, "functionbar_slash"           , "/"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_13      , false, "functionbar_plus"            , "+"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_14      , false, "functionbar_minus"           , "-"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_15      , false, "functionbar_equal"           , "="    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_16      , false, "functionbar_asterisk"        , "*"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_17      , false, "functionbar_pipe"            , "|"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_18      , false, "functionbar_softkeyboard"    , FUNCTIONBAR_SOFTKEYBOARD));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_19      , true , "functionbar_invert"          , "○"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_20      , true , "functionbar_menu_user"       , "□"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_21      , false, "functionbar_menu_x"          , "×"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_22      , false, "functionbar_menu_plus"       , "＋"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_23      , false, "functionbar_menu_minus"      , "－"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_24      , true , "functionbar_voice_input"     , FUNCTIONBAR_VOICE_INPUT));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_25      , false, "functionbar_ime_toggle"      , FUNCTIONBAR_IME_TOGGLE));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_26      , true , "functionbar_vim_paste"       , "\"*p" ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_27      , true , "functionbar_vim_yank"        , "\"*yy"));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_28      , true , "functionbar_menu_quit"       , "[Q]"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_29      , true , "functionbar_menu"            , "≡"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_30      , true , "functionbar_menu_hide"       , "∇"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m1               , true , "functionbar_m1"              , "F1"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m2               , true , "functionbar_m2"              , "F2"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m3               , true , "functionbar_m3"              , "F3"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m4               , true , "functionbar_m4"              , "F4"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m5               , true , "functionbar_m5"              , "F5"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m6               , true , "functionbar_m6"              , "F6"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m7               , true , "functionbar_m7"              , "F7"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m8               , true , "functionbar_m8"              , "F8"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m9               , true , "functionbar_m9"              , "F9"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m10              , true , "functionbar_m10"             , "F10"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m11              , true , "functionbar_m11"             , "F11"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m12              , true , "functionbar_m12"             , "F12"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_1     , true , "navigationbar_esc"           , "Esc"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_2     , false, "navigationbar_ctrl"          , "Ctrl" ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_3     , false, "navigationbar_alt"           , "Alt"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_4     , false, "navigationbar_tab"           , "Tab"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_5     , true , "navigationbar_up"            , FUNCTIONBAR_UP));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_6     , true , "navigationbar_down"          , FUNCTIONBAR_DOWN));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_7     , false, "navigationbar_left"          , FUNCTIONBAR_LEFT));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_8     , false, "navigationbar_right"         , FUNCTIONBAR_RIGHT));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_9     , false, "navigationbar_backspace"     , "BS"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_10    , false, "navigationbar_enter"         , FUNCTIONBAR_ENTER));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_11    , false, "navigationbar_page_up"       , "PU"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_12    , false, "navigationbar_page_down"     , "PD"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13    , false, "navigationbar_colon"         , ":"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_14    , false, "navigationbar_i"             , "i"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_15    , false, "navigationbar_slash"         , "/"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_16    , false, "navigationbar_plus"          , "+"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_17    , false, "navigationbar_minus"         , "-"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_18    , false, "navigationbar_equal"         , "="    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_19    , false, "navigationbar_asterisk"      , "*"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_20    , false, "navigationbar_pipe"          , "|"    ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_21    , true , "navigationbar_softkeyboard"  , FUNCTIONBAR_SOFTKEYBOARD));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_22    , false, "navigationbar_invert"        , "○"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_23    , false, "navigationbar_menu_user"     , "□"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_24    , false, "navigationbar_menu_x"        , "×"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_25    , false, "navigationbar_menu_plus"     , "＋"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_26    , false, "navigationbar_menu_minus"    , "－"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_27    , false, "navigationbar_vim_paste"     , "\"*p" ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_28    , false, "navigationbar_vim_yank"      , "\"yy" ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29    , true , "navigationbar_fn_toggle"     , "➖"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30    , false, "navigationbar_voice_input"   , FUNCTIONBAR_VOICE_INPUT));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31    , true , "navigationbar_ime_toggle"    , FUNCTIONBAR_IME_TOGGLE));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32    , false, "navigationbar_menu_quit"     , "[Q]"  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33    , false, "navigationbar_menu"          , "≡"   ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_34    , false, "navigationbar_menu_hide"     , "∇"   ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_next_functionbar0 , "functionbar_next0"          , FN_UP        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_next_functionbar2 , "functionbar_next2"          , FN_UP        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_prev_functionbar  , "functionbar_prev"           , FN_DOWN      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_prev_functionbar2 , "functionbar_prev2"          , FN_DOWN      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_esc               , "functionbar_esc"            , "Esc"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_ctrl              , "functionbar_ctrl"           , "Ctrl"       , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_alt               , "functionbar_alt"            , "Alt"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_1        , "functionbar_tab"            , "Tab"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_2        , "functionbar_up"             , UP           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_3        , "functionbar_down"           , DOWN         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_4        , "functionbar_left"           , LEFT         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_5        , "functionbar_right"          , RIGHT        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_6        , "functionbar_backspace"      , "BS"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_7        , "functionbar_enter"          , ENTER        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_8        , "functionbar_page_up"        , "PU"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_9        , "functionbar_page_down"      , "PD"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_10       , "functionbar_colon"          , ":"          , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_11       , "functionbar_i"              , "i"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_12       , "functionbar_slash"          , "/"          , res.getBoolean(R.bool.pref_functionbar_slash_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_13       , "functionbar_plus"           , "+"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_14       , "functionbar_minus"          , "-"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_15       , "functionbar_equal"          , "="          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_16       , "functionbar_asterisk"       , "*"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_17       , "functionbar_pipe"           , "|"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_18       , "functionbar_softkeyboard"   , SOFTKEYBOARD , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_19       , "functionbar_invert"         , "○"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_20       , "functionbar_menu_user"      , "□"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_menu_x"         , "×"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_menu_plus"      , "＋"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_menu_minus"     , "－"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_menu_quit"      , "[Q]"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_menu"           , "≡"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_menu_hide"      , "∇"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , "F1"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , "F2"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , "F3"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m4                , "functionbar_m4"             , "F4"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m5                , "functionbar_m5"             , "F5"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m6                , "functionbar_m6"             , "F6"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m7                , "functionbar_m7"             , "F7"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m8                , "functionbar_m8"             , "F8"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m9                , "functionbar_m9"             , "F9"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m10               , "functionbar_m10"            , "F10"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m11               , "functionbar_m11"            , "F11"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m12               , "functionbar_m12"            , "F12"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_1      , "navigationbar_esc"          , "Esc"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_2      , "navigationbar_ctrl"         , "Ctrl"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_3      , "navigationbar_alt"          , "Alt"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_4      , "navigationbar_tab"          , "Tab"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_5      , "navigationbar_up"           , UP           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_6      , "navigationbar_down"         , DOWN         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_7      , "navigationbar_left"         , LEFT         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_8      , "navigationbar_right"        , RIGHT        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_9      , "navigationbar_backspace"    , "BS"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_10     , "navigationbar_enter"        , ENTER        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_11     , "navigationbar_page_up"      , "PU"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_12     , "navigationbar_page_down"    , "PD"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13     , "navigationbar_colon"        , ":"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_14     , "navigationbar_i"            , "i"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_15     , "navigationbar_slash"        , "/"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_16     , "navigationbar_plus"         , "+"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_17     , "navigationbar_minus"        , "-"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_18     , "navigationbar_equal"        , "="          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_19     , "navigationbar_asterisk"     , "*"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_20     , "navigationbar_pipe"         , "|"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_21     , "navigationbar_softkeyboard" , SOFTKEYBOARD , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_22     , "navigationbar_invert"       , "○"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_23     , "navigationbar_menu_user"    , "□"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_24     , "navigationbar_menu_x"       , "×"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_25     , "navigationbar_menu_plus"    , "＋"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_26     , "navigationbar_menu_minus"   , "－"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_27     , "navigationbar_vim_paste"    , "\"*p"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_28     , "navigationbar_vim_yank"     , "\"yy"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_menu_quit"    , "[Q]"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33     , "navigationbar_menu"         , "≡"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_34     , "navigationbar_menu_hide"    , "∇"         , false ));
 
         for (FunctionKey fkey : mFunctionKeys) {
             Button button = findViewById(fkey.resId);
@@ -4139,7 +4162,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             visibility = View.GONE;
             findViewById(R.id.view_function_bar).setVisibility(visibility);
             findViewById(R.id.view_function_bar2).setVisibility(visibility);
-            setFunctionBarSize();
             return;
         }
 
@@ -4153,7 +4175,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.view_function_bar1).setVisibility(visibility);
         visibility = (mFunctionBar == 1 && mFunctionBarId == 1) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar2).setVisibility(visibility);
-        setFunctionBarSize();
     }
 
     @SuppressLint("NewApi")
@@ -4631,7 +4652,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return -1;
         }
 
-        FunctionKey(int resourceId, boolean defaultValue, String preferenceId, String labelStr) {
+        FunctionKey(int resourceId, String preferenceId, String labelStr, boolean defaultValue) {
             label = labelStr;
             prefId = preferenceId;
             resId = resourceId;

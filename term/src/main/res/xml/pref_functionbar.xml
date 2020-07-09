@@ -99,7 +99,7 @@
 
         <CheckBoxPreference
             android:key="functionbar_slash"
-            android:defaultValue="false"
+            android:defaultValue="@bool/pref_functionbar_slash_default"
             android:title="/"/>
 
         <CheckBoxPreference
@@ -144,7 +144,7 @@
 
         <CheckBoxPreference
             android:key="functionbar_voice_input"
-            android:defaultValue="true"
+            android:defaultValue="@bool/pref_functionbar_voice_input_default"
             android:title="@string/title_functionbar_voice_input"/>
 
         <CheckBoxPreference
@@ -154,12 +154,12 @@
 
         <CheckBoxPreference
             android:key="functionbar_vim_paste"
-            android:defaultValue="true"
+            android:defaultValue="@bool/pref_functionbar_vim_paste_default"
             android:title="@string/title_functionbar_vim_paste"/>
 
         <CheckBoxPreference
             android:key="functionbar_vim_yank"
-            android:defaultValue="true"
+            android:defaultValue="@bool/pref_functionbar_vim_yank_default"
             android:title="@string/title_functionbar_vim_yank"/>
 
         <CheckBoxPreference

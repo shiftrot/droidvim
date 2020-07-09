@@ -153,7 +153,7 @@
             android:label="@string/preferences" />
         <activity
             android:name=".WebViewActivity"
-            android:label="@string/application_term_app"/>
+            android:label="@string/application_terminal"/>
 
         <service android:name=".TermService">
             <intent-filter>
