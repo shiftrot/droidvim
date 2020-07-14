@@ -307,12 +307,10 @@ class TranscriptScreen implements Screen {
             if ((imeColor <= IME_UNDERLINE) || (imeSpannableString == null)) {
                 int underline = imeSpannableString == null ? 0 : splitComposingText(imeSpannableString);
                 int textStyle = underline == 0 ? TextStyle.fxUnderline : TextStyle.fxNormal;
-                int fg = 0x0f;
-                int bg = 0x00;
+                int fg = 257;
+                int bg = 256;
                 boolean selectionStyle = true;
                 if (imeSpannableString == null) {
-                    fg = 256;
-                    bg = 257;
                     selectionStyle = false;
                 } else if (imeColor == IME_NONE) {
                     underline = 0;
@@ -331,11 +329,16 @@ class TranscriptScreen implements Screen {
                             -1, 0, 0, 0, 0);
                 }
             } else {
-                // FIXME:
                 int effect = TextStyle.fxUnderline;
-                if (imeColor == IME_GOOGLE) effect |= TextStyle.fxImeBackground;
+                int fg = 257;
+                int bg = 256;
+                if (imeColor == IME_GOOGLE) {
+                    fg = 0x0f;
+                    bg = 0x00;
+                    effect |= TextStyle.fxImeBackground;
+                }
                 renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                        imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, effect),
+                        imeOffset, imeLength, true, TextStyle.encode(fg, bg, effect),
                         -1, 0, 0, 0, 0);
                 TextPaint paint = new TextPaint();
                 int length = imeSpannableString.length();
