@@ -1325,6 +1325,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
 //                    dismissProgressRing(layout, progressBar);
                     permissionCheckExternalStorage();
+                    openDrawerAfterInstall();
                 }
             });
         } else {
@@ -2001,6 +2002,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             ((Button) findViewById(FunctionKey.getResourceId("navigationbar_up"))).setText(FUNCTIONBAR_LEFT);
             ((Button) findViewById(FunctionKey.getResourceId("navigationbar_down"))).setText(FUNCTIONBAR_RIGHT);
         }
+    }
+
+    private void openDrawerAfterInstall() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                openDrawer();
+                /*
+                String key = "open_drawer_after_first_install";
+                boolean warning = getPrefBoolean(Term.this, key, true);
+                if (warning) {
+                    openDrawer();
+                    setPrefBoolean(Term.this, key, false);
+                }
+                 */
+            }
+        });
     }
 
     private void toggleDrawer() {
