@@ -51,7 +51,7 @@ public class FastXmlSerializer implements XmlSerializer {
 
     private static final int BUFFER_LEN = 8192;
 
-    private static String sSpace = "                                                              ";
+    private static final String sSpace = "                                                              ";
 
     private final char[] mText = new char[BUFFER_LEN];
     private int mPos;
@@ -60,7 +60,7 @@ public class FastXmlSerializer implements XmlSerializer {
 
     private OutputStream mOutputStream;
     private CharsetEncoder mCharset;
-    private ByteBuffer mBytes = ByteBuffer.allocate(BUFFER_LEN);
+    private final ByteBuffer mBytes = ByteBuffer.allocate(BUFFER_LEN);
 
     private boolean mIndent = false;
     private boolean mInTag;

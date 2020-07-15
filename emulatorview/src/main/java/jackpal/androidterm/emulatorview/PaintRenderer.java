@@ -200,11 +200,11 @@ class PaintRenderer extends BaseTextRenderer {
         return mCharDescent;
     }
 
-    private Paint mTextPaint;
+    private final Paint mTextPaint;
     private TextPaint mImePaint = null;
-    private float mCharWidth;
+    private final float mCharWidth;
     private int mCharHeight;
-    private int mCharAscent;
+    private final int mCharAscent;
     private int mCharDescent;
     private static final char[] EXAMPLE_CHAR = {'M'};
 

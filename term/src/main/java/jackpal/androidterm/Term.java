@@ -322,7 +322,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void showSnackbar(final String message) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_top), message, Snackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
-        TextView tv = (TextView) snackbarView.findViewById(R.id.snackbar_text);
+        TextView tv = snackbarView.findViewById(R.id.snackbar_text);
         tv.setMaxLines(2);
         snackbar.show();
     }
@@ -336,7 +336,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     View c = g.getChildAt(i);
                     if (c instanceof TextView) {
                         ((TextView) c).setTextColor(Color.DKGRAY);
-                        ((TextView) c).setBackgroundColor(Color.argb(60, 255, 255, 255));
+                        c.setBackgroundColor(Color.argb(60, 255, 255, 255));
                     }
                 }
             }
@@ -1469,7 +1469,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         registerForContextMenu(emulatorView);
 
         if (mFirstInputtype) {
-            emulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
+            EmulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
             emulatorView.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             mFirstInputtype = false;
         }
@@ -2264,7 +2264,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String launchApp = getString(R.string.launch_app);
         for (int i = 0; i < mFilePickerItems.size(); i++) {
             String id = mFilePickerItems.get(i);
-            ;
             String label = id;
             try {
                 PackageInfo packageInfo = pm.getPackageInfo(id, 0);
@@ -2466,13 +2465,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     Uri uri = data.getData();
                     if (uri != null) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             getContentResolver().takePersistableUriPermission(uri, takeFlags);
                             switch (request) {
                                 case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        ASFUtils.backupToTreeUri(Term.this, uri, TermService.getHOME());
-                                    }
+                                    ASFUtils.backupToTreeUri(Term.this, uri, TermService.getHOME());
                                     break;
                                 case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
                                     ASFUtils.restoreHomeFromTreeUri(Term.this, uri, TermService.getHOME());
@@ -3530,7 +3527,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         copyScript(getResources().openRawResource(id), file, strings);
         Intent intent;
         intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra("url", file.toString());
+        intent.putExtra("url", file);
         WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_HTML_LOG_FONT_SIZE, 140));
         startActivityForResult(intent, REQUEST_HTML_LOG_ACTIVITY);
     }
@@ -4532,7 +4529,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private class EmulatorViewGestureListener extends SimpleOnGestureListener {
         private final int mDeltaColumnsEdge = 3;
-        private EmulatorView view;
+        private final EmulatorView view;
         private float mDeltaColumnsReminder;
 
         public EmulatorViewGestureListener(EmulatorView view) {
@@ -4601,7 +4598,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private class EmulatorViewDoubleTapListener implements GestureDetector.OnDoubleTapListener {
-        private EmulatorView view;
+        private final EmulatorView view;
 
         public EmulatorViewDoubleTapListener(EmulatorView view) {
             this.view = view;

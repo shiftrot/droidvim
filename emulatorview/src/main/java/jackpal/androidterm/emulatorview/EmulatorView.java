@@ -203,7 +203,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static boolean sTrapAltAndMeta = Build.MODEL.contains("Transformer TF101");
     private static InputConnection mInputConnection;
 
-    private Runnable mBlinkCursor = new Runnable() {
+    private final Runnable mBlinkCursor = new Runnable() {
         public void run() {
             if (mCursorBlink != 0) {
                 if (!mImeBuffer.equals("")) {
@@ -225,7 +225,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private GestureDetector.OnGestureListener mExtGestureListener;
     private GestureDetector.OnDoubleTapListener mDoubleTapListener;
     private Scroller mScroller;
-    private Runnable mFlingRunner = new Runnable() {
+    private final Runnable mFlingRunner = new Runnable() {
         public void run() {
             if (mScroller.isFinished()) {
                 return;
@@ -252,7 +252,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * A hash table of underlying URLs to implement clickable links.
      */
-    private Hashtable<Integer, URLSpan[]> mLinkLayer = new Hashtable<Integer, URLSpan[]>();
+    private final Hashtable<Integer, URLSpan[]> mLinkLayer = new Hashtable<Integer, URLSpan[]>();
 
     /**
      * Sends mouse wheel codes to terminal in response to fling.
@@ -296,8 +296,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
-    ;
-    private MouseTrackingFlingRunner mMouseTrackingFlingRunner = new MouseTrackingFlingRunner();
+    private final MouseTrackingFlingRunner mMouseTrackingFlingRunner = new MouseTrackingFlingRunner();
 
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
@@ -314,7 +313,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Called by the TermSession when the contents of the view need updating
      */
-    private UpdateCallback mUpdateNotify = new UpdateCallback() {
+    private final UpdateCallback mUpdateNotify = new UpdateCallback() {
         public void onUpdate() {
             doEscCtrl();
             if (mIsSelectingText) {
@@ -1156,10 +1155,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onDoubleTap(MotionEvent e) {
         Log.w(TAG, "onDoubleTap");
-        if (mDoubleTapListener != null && mDoubleTapListener.onDoubleTap(e)) {
-            return true;
-        }
-        return false;
+        return mDoubleTapListener != null && mDoubleTapListener.onDoubleTap(e);
     }
 
     public boolean onDoubleTapEvent(MotionEvent e) {
@@ -1503,7 +1499,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private boolean IMECtrlBeginBatchEditDisable() {
-        boolean flag = mIMECtrlBeginBatchEditDisableHwKbdChk ? mHaveFullHwKeyboard : true;
+        boolean flag = !mIMECtrlBeginBatchEditDisableHwKbdChk || mHaveFullHwKeyboard;
         return flag && mIMECtrlBeginBatchEditDisable;
     }
 
@@ -1744,7 +1740,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // com.google.android.inputmethod.japanese/.MozcService
     private final static String IME_GOOGLE_JA = ".*/.MozcService.*";
     private final static String IME_SWIFT = "com.touchtype.swiftkey.*";
-    private static String IME_GOOGLE_JA_CLONE = "";
+    private static final String IME_GOOGLE_JA_CLONE = "";
     private final int IME_ID_ERROR     = 0;
     private final int IME_ID_NONE      = 1;
     private final int IME_ID_NORMAL    = 2;
@@ -1886,8 +1882,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         return super.onKeyPreIme(keyCode, event);
     }
-
-    ;
 
     private boolean preIMEShortcuts(int keyCode, KeyEvent event) {
         int stat = getPreIMEShortcutsStatus(keyCode, event);

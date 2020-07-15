@@ -11,9 +11,9 @@ import java.util.Stack;
 public class RecursiveFileObserver extends FileObserver {
 
     private final Map<String, FileObserver> mObservers = new HashMap<>();
-    private String mPath;
-    private int mMask;
-    private EventListener mListener;
+    private final String mPath;
+    private final int mMask;
+    private final EventListener mListener;
 
     public interface EventListener {
         void onEvent(int event, File file);
@@ -159,7 +159,7 @@ public class RecursiveFileObserver extends FileObserver {
     }
 
     private class SingleFileObserver extends FileObserver {
-        private String filePath;
+        private final String filePath;
 
         public SingleFileObserver(String path, int mask) {
             super(path, mask);

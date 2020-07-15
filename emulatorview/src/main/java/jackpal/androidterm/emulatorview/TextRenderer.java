@@ -24,15 +24,15 @@ import android.text.TextPaint;
  */
 
 interface TextRenderer {
-    public static final int MODE_OFF = 0;
-    public static final int MODE_ON = 1;
-    public static final int MODE_LOCKED = 2;
-    public static final int MODE_MASK = 3;
+    int MODE_OFF = 0;
+    int MODE_ON = 1;
+    int MODE_LOCKED = 2;
+    int MODE_MASK = 3;
 
-    public static final int MODE_SHIFT_SHIFT = 0;
-    public static final int MODE_ALT_SHIFT = 2;
-    public static final int MODE_CTRL_SHIFT = 4;
-    public static final int MODE_FN_SHIFT = 6;
+    int MODE_SHIFT_SHIFT = 0;
+    int MODE_ALT_SHIFT = 2;
+    int MODE_CTRL_SHIFT = 4;
+    int MODE_FN_SHIFT = 6;
 
     void setReverseVideo(boolean reverseVideo);
     float getCharacterWidth();

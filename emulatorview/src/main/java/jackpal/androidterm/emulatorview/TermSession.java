@@ -76,17 +76,17 @@ public class TermSession {
 
     private boolean mDefaultUTF8Mode;
 
-    private Thread mReaderThread;
-    private ByteQueue mByteQueue;
-    private byte[] mReceiveBuffer;
+    private final Thread mReaderThread;
+    private final ByteQueue mByteQueue;
+    private final byte[] mReceiveBuffer;
 
-    private Thread mWriterThread;
-    private ByteQueue mWriteQueue;
+    private final Thread mWriterThread;
+    private final ByteQueue mWriteQueue;
     private Handler mWriterHandler;
 
-    private CharBuffer mWriteCharBuffer;
-    private ByteBuffer mWriteByteBuffer;
-    private CharsetEncoder mUTF8Encoder;
+    private final CharBuffer mWriteCharBuffer;
+    private final ByteBuffer mWriteByteBuffer;
+    private final CharsetEncoder mUTF8Encoder;
 
     // Number of rows in the transcript
     private static final int TRANSCRIPT_ROWS = 10000;
@@ -112,7 +112,7 @@ public class TermSession {
     private FinishCallback mFinishCallback;
 
     private boolean mIsRunning = false;
-    private Handler mMsgHandler = new Handler() {
+    private final Handler mMsgHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (!mIsRunning) {
@@ -147,7 +147,7 @@ public class TermSession {
         mReceiveBuffer = new byte[4 * 1024];
         mByteQueue = new ByteQueue(4 * 1024);
         mReaderThread = new Thread() {
-            private byte[] mBuffer = new byte[4096];
+            private final byte[] mBuffer = new byte[4096];
 
             @Override
             public void run() {
@@ -179,7 +179,7 @@ public class TermSession {
 
         mWriteQueue = new ByteQueue(4096);
         mWriterThread = new Thread() {
-            private byte[] mBuffer = new byte[4096];
+            private final byte[] mBuffer = new byte[4096];
 
             @Override
             public void run() {

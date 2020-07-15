@@ -118,7 +118,7 @@ class ByteQueue {
         }
     }
 
-    private byte[] mBuffer;
+    private final byte[] mBuffer;
     private int mHead;
     private int mStoredBytes;
 }

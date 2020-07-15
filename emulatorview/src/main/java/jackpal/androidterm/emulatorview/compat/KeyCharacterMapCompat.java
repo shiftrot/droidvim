@@ -33,7 +33,7 @@ public abstract class KeyCharacterMapCompat {
 
     private static class KeyCharacterMapApi11OrLater
         extends KeyCharacterMapCompat {
-        private KeyCharacterMap mMap;
+        private final KeyCharacterMap mMap;
         public KeyCharacterMapApi11OrLater(Object map) {
             mMap = (KeyCharacterMap) map;
         }

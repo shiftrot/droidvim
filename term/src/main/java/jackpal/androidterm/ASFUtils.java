@@ -127,8 +127,7 @@ public class ASFUtils {
         String authority = uri.getAuthority();
         if ("com.android.providers.downloads.documents".equals(authority)) return true;
         String path = uri.getPath();
-        if (path != null && path.endsWith(":")) return true;
-        return false;
+        return path != null && path.endsWith(":");
     }
 
     static private void alertDialog(Activity activity, String message) {
@@ -216,6 +215,7 @@ public class ASFUtils {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void restoreHomeFromTreeUri(final Activity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
@@ -284,7 +284,6 @@ public class ASFUtils {
                             if (!dir.exists() || dir.isDirectory()) {
                                 doRestoreHomeFromTreeUri(activity, uri, dir.toString());
                             }
-                            ;
                         }
                     } else {
                         File dstFile = new File(path + "/" + fileName);

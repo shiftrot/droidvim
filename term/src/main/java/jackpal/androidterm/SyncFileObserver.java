@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Map;
 
 class SyncFileObserverMru {
-    private Uri uri;
-    private String path;
+    private final Uri uri;
+    private final String path;
     SyncFileObserverMru() {
         this.uri = null;
         this.path = null;
@@ -129,11 +129,11 @@ class SyncFileObserver extends RecursiveFileObserver {
         }
     }
 
-    static private Map<String, Info> mHashMap = new HashMap<>();
-    private File mCacheDir;
+    static private final Map<String, Info> mHashMap = new HashMap<>();
+    private final File mCacheDir;
     private ContentResolver mContentResolver = null;
     private static Object mObjectActivity = null;
-    private boolean mConfirmDeleteFromStorage = false;
+    private final boolean mConfirmDeleteFromStorage = false;
     private boolean mActive;
 
     SyncFileObserver(String path) {
@@ -376,7 +376,7 @@ class SyncFileObserver extends RecursiveFileObserver {
      * 1 : Check if the destination file has changed.
      * 2 : Upload only if the local hash and destination hash are different.
      */
-    private static int HASH_CHECK_MODE = 2;
+    private static final int HASH_CHECK_MODE = 2;
 
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;

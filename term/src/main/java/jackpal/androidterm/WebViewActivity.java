@@ -55,10 +55,10 @@ public class WebViewActivity extends Activity {
     private static int mFontSize = 140;
     private static int mInitialInterval = 0;
     private static int mNormalInterval = 100;
-    private static int mZoom = 5;
+    private static final int mZoom = 5;
     private boolean mBack = false;
     private WebView mWebView;
-    private View.OnClickListener mButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener mButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {

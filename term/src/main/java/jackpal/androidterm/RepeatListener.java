@@ -19,13 +19,13 @@ import android.view.View.OnTouchListener;
  */
 public class RepeatListener implements OnTouchListener {
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private View downView;
 
-    private int initialInterval;
+    private final int initialInterval;
     private final int normalInterval;
     private final OnClickListener clickListener;
-    private Runnable handlerRunnable = new Runnable() {
+    private final Runnable handlerRunnable = new Runnable() {
         @Override
         public void run() {
             handler.postDelayed(this, normalInterval);

@@ -22,8 +22,8 @@ import android.util.Log;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.TermSession;
@@ -54,7 +54,7 @@ class GenericTermSession extends TermSession {
 
     private String mProcessExitMessage;
 
-    private UpdateCallback mUTF8ModeNotify = new UpdateCallback() {
+    private final UpdateCallback mUTF8ModeNotify = new UpdateCallback() {
         public void onUpdate() {
             setPtyUTF8Mode(getUTF8Mode());
         }
@@ -111,9 +111,13 @@ class GenericTermSession extends TermSession {
         if (mSettings.closeWindowOnProcessExit()) {
             finish();
         } else if (mProcessExitMessage != null) {
-            byte[] msg = ("\r\n[" + mProcessExitMessage + "]").getBytes(StandardCharsets.UTF_8);
-            appendToEmulator(msg, 0, msg.length);
-            notifyUpdate();
+            try {
+                byte[] msg = ("\r\n[" + mProcessExitMessage + "]").getBytes("UTF-8");
+                appendToEmulator(msg, 0, msg.length);
+                notifyUpdate();
+            } catch (UnsupportedEncodingException e) {
+                // Never happens
+            }
         }
     }
 

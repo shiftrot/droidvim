@@ -32,15 +32,15 @@ import java.lang.reflect.Method;
    The idea for the implementation comes from an example in the documentation of
    android.app.Service */
 public class ServiceForegroundCompat {
-    private static Class<?>[] mSetForegroundSig = new Class[]{
+    private static final Class<?>[] mSetForegroundSig = new Class[]{
             boolean.class};
-    private static Class<?>[] mStartForegroundSig = new Class[]{
+    private static final Class<?>[] mStartForegroundSig = new Class[]{
             int.class, Notification.class};
-    private static Class<?>[] mStopForegroundSig = new Class[]{
+    private static final Class<?>[] mStopForegroundSig = new Class[]{
             boolean.class};
 
-    private Service service;
-    private NotificationManager mNM;
+    private final Service service;
+    private final NotificationManager mNM;
     private Method mSetForeground;
     private Method mStartForeground;
     private Method mStopForeground;

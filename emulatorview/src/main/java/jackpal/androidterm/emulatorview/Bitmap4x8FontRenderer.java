@@ -33,11 +33,11 @@ import android.text.TextPaint;
 class Bitmap4x8FontRenderer extends BaseTextRenderer {
     private final static int kCharacterWidth = 4;
     private final static int kCharacterHeight = 8;
-    private Bitmap mFont;
+    private final Bitmap mFont;
     private int mCurrentForeColor;
     private int mCurrentBackColor;
     private float[] mColorMatrix;
-    private Paint mPaint;
+    private final Paint mPaint;
     private static final float BYTE_SCALE = 1.0f / 255.0f;
 
     public Bitmap4x8FontRenderer(Resources resources, ColorScheme scheme) {

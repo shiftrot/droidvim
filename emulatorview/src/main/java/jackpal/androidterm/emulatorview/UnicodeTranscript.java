@@ -45,19 +45,19 @@ import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 class UnicodeTranscript {
     private static final String TAG = "UnicodeTranscript";
 
-    private Object[] mLines;
-    private StyleRow[] mColor;
-    private boolean[] mLineWrap;
-    private int mTotalRows;
+    private final Object[] mLines;
+    private final StyleRow[] mColor;
+    private final boolean[] mLineWrap;
+    private final int mTotalRows;
     private int mScreenRows;
-    private int mColumns;
+    private final int mColumns;
     private int mActiveTranscriptRows = 0;
     private int mDefaultStyle = 0;
 
     private int mScreenFirstRow = 0;
 
     private char[] tmpLine;
-    private StyleRow tmpColor;
+    private final StyleRow tmpColor;
 
     private static int mAmbiWidthMode = 1;
     private static int mAmbiWidth = 1;
@@ -571,7 +571,7 @@ class UnicodeTranscript {
     }
 
     // from vim/src/mbyte.c
-    private static final int ambiguous[][] =
+    private static final int[][] ambiguous =
     {
         {0x00a1, 0x00a1},
         {0x00a4, 0x00a4},

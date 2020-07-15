@@ -39,6 +39,7 @@ import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 /**
  * Manages documents and exposes them to the Android system for sharing.
  */
+@TargetApi(Build.VERSION_CODES.KITKAT)
 public class LocalStorageProvider extends DocumentsProvider {
     private static final String TAG = "LocalStorageProvider";
     private static final String TITLE = "DroidVim";

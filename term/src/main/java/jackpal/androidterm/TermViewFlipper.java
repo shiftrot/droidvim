@@ -44,8 +44,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
 
     private int mCurWidth;
     private int mCurHeight;
-    private Rect mVisibleRect = new Rect();
-    private Rect mWindowRect = new Rect();
+    private final Rect mVisibleRect = new Rect();
+    private final Rect mWindowRect = new Rect();
     private LayoutParams mChildParams = null;
     private boolean mRedoLayout = false;
 
@@ -57,7 +57,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private final boolean mbPollForWindowSizeChange = (AndroidCompat.SDK < 8);
     private static final int SCREEN_CHECK_PERIOD = 1000;
     private final Handler mHandler = new Handler();
-    private Runnable mCheckSize = new Runnable() {
+    private final Runnable mCheckSize = new Runnable() {
         public void run() {
             adjustChildSize();
             mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);

@@ -63,14 +63,14 @@ class TerminalEmulator {
     /**
      * Stores the characters that appear on the screen of the emulated terminal.
      */
-    private TranscriptScreen mMainBuffer;
+    private final TranscriptScreen mMainBuffer;
     private TranscriptScreen mAltBuffer;
     private TranscriptScreen mScreen;
 
     /**
      * The terminal session this emulator is bound to.
      */
-    private TermSession mSession;
+    private final TermSession mSession;
 
     /**
      * Keeps track of the current argument of the current escape sequence.
@@ -87,12 +87,12 @@ class TerminalEmulator {
     /**
      * Holds the arguments of the current escape sequence.
      */
-    private int[] mArgs = new int[MAX_ESCAPE_PARAMETERS];
+    private final int[] mArgs = new int[MAX_ESCAPE_PARAMETERS];
 
     /**
      * Holds OSC arguments, which can be strings.
      */
-    private byte[] mOSCArg = new byte[MAX_OSC_STRING_LENGTH];
+    private final byte[] mOSCArg = new byte[MAX_OSC_STRING_LENGTH];
 
     private int mOSCArgLength;
 
@@ -324,7 +324,7 @@ class TerminalEmulator {
     private final static int CHAR_SET_ALT_SPECIAL_GRAPICS = 4;
 
     /** What is the current graphics character set. [0] == G0, [1] == G1 */
-    private int[] mCharSet = new int[2];
+    private final int[] mCharSet = new int[2];
 
     /** Derived from mAlternateCharSet and mCharSet.
      *  True if we're supposed to be drawing the special graphics.
@@ -392,9 +392,9 @@ class TerminalEmulator {
     private boolean mUTF8Mode = false;
     private boolean mUTF8EscapeUsed = false;
     private int mUTF8ToFollow = 0;
-    private ByteBuffer mUTF8ByteBuffer;
-    private CharBuffer mInputCharBuffer;
-    private CharsetDecoder mUTF8Decoder;
+    private final ByteBuffer mUTF8ByteBuffer;
+    private final CharBuffer mInputCharBuffer;
+    private final CharsetDecoder mUTF8Decoder;
     private UpdateCallback mUTF8ModeNotify;
 
     /** This is not accurate, but it makes the terminal more useful on
@@ -673,7 +673,7 @@ class TerminalEmulator {
                 mProcessedCharCount++;
             } catch (Exception e) {
                 Log.e(EmulatorDebug.LOG_TAG, "Exception while processing character "
-                        + Integer.toString(mProcessedCharCount) + " code "
+                        + mProcessedCharCount + " code "
                         + Integer.toString(b), e);
             }
         }
@@ -683,7 +683,7 @@ class TerminalEmulator {
         process(b, true);
     }
 
-    private static Queue<Integer> mEscSeq = new LinkedList<Integer>();
+    private static final Queue<Integer> mEscSeq = new LinkedList<Integer>();
     public void setEscCtrlMode() {
         int esc = 0;
         for (int i = 0; i <= mArgIndex; i++) {
@@ -1952,7 +1952,7 @@ class TerminalEmulator {
 
     private void emit(byte b) {
         if (mUseAlternateCharSet && b < 128) {
-            emit((int) mSpecialGraphicsCharMap[b]);
+            emit(mSpecialGraphicsCharMap[b]);
         } else {
             emit((int) b);
         }
@@ -1967,7 +1967,7 @@ class TerminalEmulator {
         if (Character.isHighSurrogate(c[0])) {
             emit(Character.toCodePoint(c[0], c[1]));
         } else {
-            emit((int) c[0]);
+            emit(c[0]);
         }
     }
 
@@ -1985,7 +1985,7 @@ class TerminalEmulator {
                 emit(Character.toCodePoint(c[i], c[i+1]), style);
                 ++i;
             } else {
-                emit((int) c[i], style);
+                emit(c[i], style);
             }
         }
     }

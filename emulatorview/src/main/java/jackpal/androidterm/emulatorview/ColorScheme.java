@@ -32,8 +32,8 @@ package jackpal.androidterm.emulatorview;
  */
 
 public class ColorScheme {
-    private int foreColor;
-    private int backColor;
+    private final int foreColor;
+    private final int backColor;
     private int cursorForeColor;
     private int cursorBackColor;
     private static int sDefaultCursorBackColor = 0xff808080;

@@ -43,12 +43,12 @@ import jackpal.androidterm.util.TermSettings;
  */
 public class ShellTermSession extends GenericTermSession {
     private int mProcId;
-    private Thread mWatcherThread;
+    private final Thread mWatcherThread;
 
-    private String mInitialCommand;
+    private final String mInitialCommand;
 
     private static final int PROCESS_EXITED = 1;
-    private Handler mMsgHandler = new Handler() {
+    private final Handler mMsgHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (!isRunning()) {

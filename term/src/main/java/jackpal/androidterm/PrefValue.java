@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 class PrefValue {
-    private SharedPreferences mPref;
-    private SharedPreferences.Editor mEditor;
+    private final SharedPreferences mPref;
+    private final SharedPreferences.Editor mEditor;
 
     @SuppressLint("CommitPrefEdits")
     PrefValue(Context context, String database) {

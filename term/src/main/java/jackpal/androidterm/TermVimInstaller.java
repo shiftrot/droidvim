@@ -56,7 +56,6 @@ import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 final class TermVimInstaller {
     static final String APP_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static public boolean doInstallVim = false;
-    static private final String DEBUG_OLD_LST = "";
     static private String SOLIB_PATH;
 
     static void installVim(final Activity activity, final Runnable whenDone) {
@@ -315,6 +314,7 @@ final class TermVimInstaller {
                                 try {
                                     pd.dismiss();
                                 } catch (Exception e) {
+                                    // Do nothing
                                 }
                                 doInstallVim = false;
                                 if (whenDone != null) whenDone.run();
@@ -425,10 +425,10 @@ final class TermVimInstaller {
     @SuppressLint("StaticFieldLeak")
     static private Activity mActivity;
     static private boolean mProgressToast = false;
-    static private Handler mProgressToastHandler = new Handler();
+    static private final Handler mProgressToastHandler = new Handler();
     static private int mProgressToastHandlerMillis = 0;
     static private final int PROGRESS_TOAST_HANDLER_MILLIS = 5000;
-    static private Runnable mProgressToastRunner = new Runnable() {
+    static private final Runnable mProgressToastRunner = new Runnable() {
         @Override
         public void run() {
             if (mProgressToastHandler != null) {
@@ -896,7 +896,7 @@ final class TermVimInstaller {
         }
     }
 
-    private static Random mRandom = new Random();
+    private static final Random mRandom = new Random();
 
     static void toast(final Activity activity, final String message) {
         try {
@@ -905,7 +905,7 @@ final class TermVimInstaller {
                 public void run() {
                     Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.term_coordinator_layout_top), message, Snackbar.LENGTH_LONG);
                     View snackbarView = snackbar.getView();
-                    TextView tv= (TextView) snackbarView.findViewById(R.id.snackbar_text);
+                    TextView tv= snackbarView.findViewById(R.id.snackbar_text);
                     tv.setMaxLines(3);
                     snackbar.show();
                 }

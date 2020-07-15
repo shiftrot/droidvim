@@ -34,8 +34,8 @@ class TermKeyListener {
 
     private static Map<Integer, String> mKeyMap;
 
-    private String[] mKeyCodes = new String[256];
-    private String[] mAppKeyCodes = new String[256];
+    private final String[] mKeyCodes = new String[256];
+    private final String[] mAppKeyCodes = new String[256];
 
     private void initKeyCodes() {
         mKeyMap = new HashMap<Integer, String>();
@@ -293,19 +293,19 @@ class TermKeyListener {
         }
     }
 
-    private ModifierKey mAltKey = new ModifierKey();
+    private final ModifierKey mAltKey = new ModifierKey();
 
-    private ModifierKey mCapKey = new ModifierKey();
+    private final ModifierKey mCapKey = new ModifierKey();
 
-    private ModifierKey mControlKey = new ModifierKey();
+    private final ModifierKey mControlKey = new ModifierKey();
 
-    private ModifierKey mFnKey = new ModifierKey();
+    private final ModifierKey mFnKey = new ModifierKey();
 
     private int mCursorMode;
 
     private boolean mHardwareControlKey;
 
-    private TermSession mTermSession;
+    private final TermSession mTermSession;
 
     private int mBackKeyCode;
     private boolean mAltSendsEsc;
