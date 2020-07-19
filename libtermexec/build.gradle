@@ -31,6 +31,16 @@ android {
         }
     }
 
+    splits {
+        abi {
+            enable abiSplits
+            reset()
+            if (abiArm) include 'arm64-v8a', 'armeabi-v7a'
+            if (abiX86) include 'x86_64', 'x86'
+            universalApk buildUniversalApk
+        }
+    }
+
     compileOptions {
         sourceCompatibility = versions.sourceCompatibility
         targetCompatibility = versions.targetCompatibility

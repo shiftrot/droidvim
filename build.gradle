@@ -13,6 +13,8 @@ buildscript {
     ext {
         abiArm = true
         abiX86 = true
+        abiSplits = false
+        buildUniversalApk = true
     }
 
     ext.versions += [
