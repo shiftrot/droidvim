@@ -20,12 +20,14 @@ public class JniLibsToBin {
             put("libxxd.so",         "/bin/xxd");
             put("libdiff.so",        "/usr/bin/diff");
             put("libgrep.so",        "/usr/bin/grep");
+            put("libgrep32.so",      "/usr/bin/grep");
         }
     };
 
     static public void jniLibsToBin(String targetDir, Map <String, String> maps) {
         String SOLIB_PATH = TermService.getAPPLIB();
         for (Map.Entry<String, String> entry : maps.entrySet()) {
+            if (entry.getKey().contains("grep32") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) continue;
             try {
                 File soFile = new File(SOLIB_PATH + "/" + entry.getKey());
                 File symlink = new File(targetDir + "/" + entry.getValue());
