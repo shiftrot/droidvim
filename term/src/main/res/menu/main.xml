@@ -17,11 +17,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_toggle_soft_keyboard"
-        android:title="@string/menu_toggle_soft_keyboard"/>
-    <item
         android:id="@+id/menu_drawer"
         android:title="@string/menu_create_or_delete"/>
+    <item
+        android:id="@+id/menu_toggle_soft_keyboard"
+        android:title="@string/menu_toggle_soft_keyboard"/>
     <item
         android:id="@+id/menu_toggle_text_box"
         android:title="@string/menu_toggle_text_box"/>
