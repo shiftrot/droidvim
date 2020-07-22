@@ -58,7 +58,7 @@
     <integer name="pref_ime_inputtype_default">53</integer>
     <string name="pref_local_storage_provider_path_mode_default">1</string>
     <string name="pref_scoped_storage_home_path_mode_default">0</string>
-    <bool name="pref_scoped_storage_startup_path_is_home_default">true</bool>
+    <bool name="pref_scoped_storage_startup_path_mode_default">false</bool>
     <string name="pref_mru_command_default">MRU</string>
     <string name="pref_filer_app_id_default"></string>
     <string name="pref_filer_app_action_mode_default" translatable="false">2</string>

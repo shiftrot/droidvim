@@ -536,8 +536,8 @@
     <string name="title_use_app_files_button">\"File Manager\" button</string>
     <string name="title_local_storage_provider_path_mode_preference">Local Storage Provider path</string>
     <string name="summary_local_storage_provider_path_mode_preference">Choose the path to register to \"File Manager\".\nIt takes time for the setting change to take effect. If you want to change immediately, reboot this device.</string>
-    <string name="title_scoped_storage_startup_path_mode_preference">Use \"$HOME\" as Startup directory</string>
-    <string name="summary_scoped_storage_startup_path_mode_preference">Set the home directory as the startup directory.</string>
+    <string name="title_scoped_storage_startup_path_mode_preference">Change Startup directory</string>
+    <string name="summary_scoped_storage_startup_path_mode_preference">Use \"$APPEXTHOME\" as the startup directory.</string>
     <string name="title_show_dotfiles">Show dotfiles ($HOME)</string>
     <string name="summary_show_dotfiles">If you use a file manager to copy dotfiles (.vimrc, .bashrc, etc.) to the root of your home directory, enable it temporarily.</string>
 

@@ -95,22 +95,17 @@ public class TermService extends Service implements TermSession.FinishCallback {
         // should really belong to the Application class, but we don't use one...
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
-        String defValue;
+        String defHomeValue;
         if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
-            defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+            defHomeValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
         } else {
-            defValue = getFilesDir().getAbsolutePath() + "/home";
-            File home = new File(defValue);
+            defHomeValue = getFilesDir().getAbsolutePath() + "/home";
+            File home = new File(defHomeValue);
             if (!home.exists()) home.mkdir();
         }
-        String homePath = prefs.getString("home_path", defValue);
-        if (!new File(homePath).canWrite() || SCOPED_STORAGE) homePath = defValue;
-        editor.putString("home_path", homePath);
-        editor.apply();
+        String homePath = prefs.getString("home_path", defHomeValue);
+        if (!new File(homePath).canWrite() || SCOPED_STORAGE) homePath = defHomeValue;
         mHOME = homePath;
-        mSTARTUP_DIR = prefs.getString("startup_path", homePath);
-        if (SCOPED_STORAGE) mSTARTUP_DIR = homePath;
-
         mAPPLIB = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         mARCH = getArch();
         mAPPBASE = this.getApplicationInfo().dataDir;
@@ -128,10 +123,23 @@ public class TermService extends Service implements TermSession.FinishCallback {
             mAPPEXTHOME = mAPPEXTFILES + "/home";
         }
 
-        mEXTSTORAGE = Environment.getExternalStorageDirectory().toString();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            mEXTSTORAGE = mHOME;
+        if (SCOPED_STORAGE) {
+            int modeHome = Integer.parseInt( prefs.getString("scoped_storage_home_path_mode", "0"));
+            mHOME = modeHome == 0 ? defHomeValue : mAPPEXTHOME;
+            boolean modeStartup = prefs.getBoolean("scoped_storage_startup_path_is_APPEXTHOME", false);
+            mSTARTUP_DIR = modeStartup ? mAPPEXTHOME : mHOME;
+            mEXTSTORAGE = mAPPEXTHOME;
+        } else {
+            mSTARTUP_DIR = prefs.getString("startup_path", homePath);
+            mEXTSTORAGE = Environment.getExternalStorageDirectory().toString();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                mEXTSTORAGE = mHOME;
+            }
         }
+
+        editor.putString("home_path", mHOME);
+        editor.apply();
+
         mTMPDIR = getCacheDir() + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
         File tmpdir = new File(mTMPDIR);

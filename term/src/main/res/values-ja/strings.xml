@@ -537,8 +537,8 @@
     <string name="title_use_app_files_button">「ファイル管理」ボタン</string>
     <string name="title_local_storage_provider_path_mode_preference">ローカルストレージプロバイダのパス</string>
     <string name="summary_local_storage_provider_path_mode_preference">「ファイル管理」アプリに登録するパスを選択します.\n変更が反映されるまで時間がかかることがあります. 急ぎの場合はこのデバイスを再起動してください.</string>
-    <string name="title_scoped_storage_startup_path_mode_preference">起動時にホームディレクトリへ移動</string>
-    <string name="summary_scoped_storage_startup_path_mode_preference">スタートアップディレクトリとしてホームディレクトリを使用します.</string>
+    <string name="title_scoped_storage_startup_path_mode_preference">スタートアップディレクトリを変更</string>
+    <string name="summary_scoped_storage_startup_path_mode_preference">\"$APPEXTHOME\"をスタートアップディレクトリとして使用します.</string>
     <string name="title_show_dotfiles">ドットファイルを表示 ($HOME)</string>
     <string name="summary_show_dotfiles">ファイルマネージャーを使用してホームディレクトリのルートへドットファイル(.bashrc, .vimrcなど)をコピーしたい場合は, 一時的に有効にしてください.</string>
 

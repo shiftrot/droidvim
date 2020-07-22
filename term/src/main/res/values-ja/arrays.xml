@@ -247,15 +247,9 @@
         <item>Ctrlボタンがロックモードの間</item>
     </string-array>
 
-    <string-array name="entries_local_storage_provider_path_mode_preference">
-        <item>$APPEXTFILES\n(\"echo $APPEXTFILES\"で実際のパスを確認できます)</item>
-        <item>起動時のディレクトリ\n(\"設定\" -> \"シェル\" -> \"起動時のディレクトリ\")</item>
-        <item>$INTERNAL_STORAGE\n(\"echo $INTERNAL_STORAGE\"で実際のパスを確認できます)</item>
-    </string-array>
-
     <string-array name="entries_scoped_storage_home_path_mode_preference">
-        <item>Default\n($APPFILES/home)</item>
-        <item>$APPEXTFILES\n(\"echo $APPEXTFILES\"で実際のパスを確認できます)</item>
+        <item>デフォルト ($APPFILES/home)</item>
+        <item>内部ストレージ ($APPEXTHOME)</item>
     </string-array>
 
 </resources>
