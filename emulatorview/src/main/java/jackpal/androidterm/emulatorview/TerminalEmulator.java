@@ -155,6 +155,8 @@ class TerminalEmulator {
      */
     private static final int ESC_RIGHT_SQUARE_BRACKET_ESC = 9;
 
+    private static final int ESC_LEFT_SQUARE_BRACKET_LARGER_THAN = 10;
+
     /**
      * True if the current escape sequence should continue, false if the current
      * escape sequence should be terminated. Used when parsing a single
@@ -806,6 +808,10 @@ class TerminalEmulator {
                 doEscLeftSquareBracket(b); // CSI
                 break;
 
+            case ESC_LEFT_SQUARE_BRACKET_LARGER_THAN:
+                parseArg(b);
+                break;
+
             case ESC_LEFT_SQUARE_BRACKET_QUESTION_MARK:
                 doEscLSBQuest(b); // CSI ?
                 break;
@@ -1340,6 +1346,10 @@ class TerminalEmulator {
             continueSequence(ESC_LEFT_SQUARE_BRACKET_QUESTION_MARK);
             break;
 
+        case '>': // Esc [ >
+            continueSequence(ESC_LEFT_SQUARE_BRACKET_LARGER_THAN);
+            break;
+
         case 'c': // Send device attributes
             sendDeviceAttributes();
             break;
@@ -1470,7 +1480,10 @@ class TerminalEmulator {
             default:
                 break;
             }
-            parseArg(b);
+            if (mArgIndex < mArgs.length) {
+                mArgIndex++;
+            }
+            continueSequence();
             break;
         case 't':
             setEscCtrlMode();
@@ -1616,10 +1629,6 @@ class TerminalEmulator {
             changeTitle(ps, nextOSCString(-1));
             break;
         default:
-            if (ps >= 10000) {
-                setOSCMode(ps-10000);
-                break;
-            }
             unknownParameter(ps);
             break;
         }
@@ -1741,7 +1750,7 @@ class TerminalEmulator {
                 mArgs[mArgIndex] = value;
             }
             continueSequence();
-        } else if (b == ';' || b == ' ') {
+        } else if (b == ';') {
             if (mArgIndex < mArgs.length) {
                 mArgIndex++;
             }
