@@ -44,8 +44,11 @@ public class LocalStorageProvider extends DocumentsProvider {
     private static final String TAG = "LocalStorageProvider";
     private static final String TITLE = "DroidVim";
     private static final String mSUMMARY = "HOME";
+    private static final String PREF_KEY_SHOW_DOTFILES = "pref_key_show_dotfiles";
+    private static final boolean SHOW_DOTFILES_DEFAULT = true;
     @SuppressLint("SdCardPath")
     private static final String BASE_DEFAULT_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/home";
+    private static final String PREF_KEY_HOME_PATH = "home_path";
 
     // Use these as the default columns to return information about a root if no specific
     // columns are requested in a query.
@@ -93,7 +96,7 @@ public class LocalStorageProvider extends DocumentsProvider {
             mBaseDir = new File(BASE_DEFAULT_DIR);
             if (getContext() != null) mBaseDir = new File(getContext().getFilesDir().getAbsolutePath() + "/home");
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String appHOME = pref.getString("home_path", mBaseDir.getAbsolutePath());
+            String appHOME = pref.getString(PREF_KEY_HOME_PATH, mBaseDir.getAbsolutePath());
             if (appHOME != null) mBaseDir = new File(appHOME);
         } catch (Exception e) {
             // Do nothing
@@ -611,7 +614,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     private boolean isSecureMode() {
         try {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-            return !pref.getBoolean("show_dotfiles", false);
+            return !pref.getBoolean(PREF_KEY_SHOW_DOTFILES, SHOW_DOTFILES_DEFAULT);
         } catch (Exception e) {
             // Do nothing
         }

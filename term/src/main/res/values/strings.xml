@@ -539,7 +539,9 @@
     <string name="title_scoped_storage_startup_path_mode_preference">Change Startup directory</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">Use \"$APPEXTHOME\" as the startup directory.</string>
     <string name="title_show_dotfiles">Show dotfiles ($HOME)</string>
-    <string name="summary_show_dotfiles">If you use a file manager to copy dotfiles (.vimrc, .bashrc, etc.) to the root of your home directory, enable it temporarily.</string>
+    <string name="summary_show_dotfiles">Allows you to access the dotfiles (.vimrc, .bashrc, etc.) in the home directory using the file manager.\nFor security reasons, we recommend disabling the option only when necessary.</string>
+    <string name="title_show_dotfiles_warning">Dotfiles in the Home directory</string>
+    <string name="show_dotfiles_warning_message">For security reasons, we recommend disabling \"Show dotfiles in the home directory\" option only when necessary.\n\n\"Preferences\" > \"Drawer &amp; External apps\" > \"Show dotfiles ($HOME)\"</string>
 
     <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
     <string name="title_filer_app_preference">Filer App button</string>

@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.preference.PreferenceManager;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -202,13 +204,13 @@ final class TermVimInstaller {
         INSTALL_WARNING = "\n\n" + activity.getString(R.string.update_warning);
         if (FLAVOR_VIM) INSTALL_WARNING += "\n" + activity.getString(R.string.update_vim_warning);
         final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_message), true, false);
+        boolean first = !new File(TermService.getAPPFILES() + "/bin").isDirectory();
         new Thread() {
             @Override
             public void run() {
                 final int orientation = activity.getRequestedOrientation();
                 fixOrientation(activity, orientationLock(activity));
                 try {
-                    boolean first = !new File(TermService.getAPPFILES() + "/bin").isDirectory();
                     showWhatsNew(activity, first);
                     setMessage(activity, pd, "scripts");
                     doInstallTerm(activity);

@@ -540,7 +540,9 @@
     <string name="title_scoped_storage_startup_path_mode_preference">スタートアップディレクトリを変更</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">\"$APPEXTHOME\"をスタートアップディレクトリとして使用します.</string>
     <string name="title_show_dotfiles">ドットファイルを表示 ($HOME)</string>
-    <string name="summary_show_dotfiles">ファイルマネージャーを使用してホームディレクトリのルートへドットファイル(.bashrc, .vimrcなど)をコピーしたい場合は, 一時的に有効にしてください.</string>
+    <string name="summary_show_dotfiles">「ファイル管理」からホームディレクトリ内のドットファイル（.bashrc、.vimrcなど）へアクセス可能にします.\nセキュリティ上の理由から、必要な場合以外はオプションを無効にすることをお勧めします.</string>
+    <string name="title_show_dotfiles_warning">ホームディレクトリ内のドットファイル</string>
+    <string name="show_dotfiles_warning_message">セキュリティ上の理由から, 必要なとき以外は「ドットファイルを表示」オプションを無効にすることをおすすめします.\n\n「設定」>「ドロワー &amp; 外部アプリ」>「ドットファイルを表示 ($HOME)」</string>
 
     <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
 
