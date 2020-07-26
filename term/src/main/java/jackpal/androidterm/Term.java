@@ -2833,7 +2833,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         shell("rm " + TermService.getAPPFILES() + "/bin/vim");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.default");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.python");
-        shell("rm -rf " + TermService.getVimRuntimeInstallDir() + "/runtime/pack/shiftrot");
+        shell("rm -rf " + TermService.getVIMRUNTIME() + "/pack/shiftrot");
         shell("rm " + TermService.getVersionFilesDir() + "/version");
         shell("rm " + TermService.getVersionFilesDir() + "/version.*");
         mUninstall = false;

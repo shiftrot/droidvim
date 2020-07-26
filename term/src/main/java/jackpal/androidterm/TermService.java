@@ -47,11 +47,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.UUID;
 
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
-import jackpal.androidterm.compat.AndroidCompat;
+
 import jackpal.androidterm.compat.ServiceForegroundCompat;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.libtermexec.v1.ITerminal;
@@ -309,31 +310,32 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     @SuppressLint("NewApi")
-    private static String mARCH;
-    private static String mAPPLIB;
     private static String mAPPBASE;
-    private static String mAPPFILES;
     private static String mAPPEXTFILES;
     private static String mAPPEXTHOME;
+    private static String mAPPFILES;
+    private static String mAPPLIB;
+    private static String mARCH;
     private static String mEXTSTORAGE;
-    private static String mLD_LIBRARY_PATH;
-    private static String mTMPDIR;
     private static String mHOME;
+    private static String mLD_LIBRARY_PATH;
+    private static String mPATH;
     private static String mSTARTUP_DIR;
+    private static String mTERMINFO;
+    private static String mTMPDIR;
     private static String mVERSION_FILES_DIR;
-    private static String mTERMINFO_INSTALL_DIR;
+    private static String mVIM;
+    private static String mVIMRUNTIME;
     private static String mVIMRUNTIME_INSTALL_DIR;
 
     public String getInitialCommand(String cmd, boolean bFirst) {
         if (cmd == null || cmd.equals("")) return cmd;
 
-        String path = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin" + ":\\$PATH";
-
-        mTERMINFO_INSTALL_DIR = mAPPFILES + "/usr/share";
-        String terminfo = mTERMINFO_INSTALL_DIR + "/terminfo";
+        mPATH = mAPPFILES + "/bin:" + mAPPFILES + "/usr/bin" + ":" + System.getenv("PATH");
+        mTERMINFO = mAPPFILES + "/usr/share/terminfo";
+        mVIM = mAPPFILES;
         mVIMRUNTIME_INSTALL_DIR = mAPPFILES;
-        String vimruntime = mVIMRUNTIME_INSTALL_DIR + "/runtime";
-        String vim = mVIMRUNTIME_INSTALL_DIR;
+        mVIMRUNTIME = mVIMRUNTIME_INSTALL_DIR + "/runtime";
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             cmd = cmd.replaceAll("(^|\n)bash", "$1#bash");
@@ -348,11 +350,11 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
         cmd = cmd.replaceAll("%LD_LIBRARY_PATH%", mLD_LIBRARY_PATH);
-        cmd = cmd.replaceAll("%PATH%", path);
+        cmd = cmd.replaceAll("%PATH%", mPATH);
         cmd = cmd.replaceAll("%STARTUP_DIR%", mSTARTUP_DIR);
-        cmd = cmd.replaceAll("%TERMINFO%", terminfo);
-        cmd = cmd.replaceAll("%VIMRUNTIME%", vimruntime);
-        cmd = cmd.replaceAll("%VIM%", vim);
+        cmd = cmd.replaceAll("%TERMINFO%", mTERMINFO);
+        cmd = cmd.replaceAll("%VIMRUNTIME%", mVIMRUNTIME);
+        cmd = cmd.replaceAll("%VIM%", mVIM);
         cmd = cmd.replaceAll("\n#.*\n|\n\n", "\n");
         cmd = cmd.replaceAll("^#.*\n|\n#.*$|\n$", "");
         cmd = cmd.replaceAll("(^|\n)bash([ \t]*|[ \t][^\n]+)?$", "$1bash.app$2");
@@ -400,12 +402,20 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return mVERSION_FILES_DIR;
     }
 
-    static public String getTerminfoInstallDir() {
-        return mTERMINFO_INSTALL_DIR;
+    static public String getTERMINFO() {
+        return mTERMINFO;
+    }
+
+    static public String getVIM() {
+        return mVIM;
     }
 
     static public String getVimRuntimeInstallDir() {
         return mVIMRUNTIME_INSTALL_DIR;
+    }
+
+    static public String getVIMRUNTIME() {
+        return mVIMRUNTIME;
     }
 
     static public String getHOME() {
@@ -423,6 +433,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static public String getAPPBASE() {
         return mAPPBASE;
+    }
+
+    static public String getLANG() {
+        Locale locale = Locale.getDefault();
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        return language + "_" + country +".UTF-8";
     }
 
     static public String getAPPFILES() {
@@ -444,6 +461,10 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static public String getLD_LIBRARY_PATH() {
         return mLD_LIBRARY_PATH;
+    }
+
+    static public String getPATH() {
+        return mPATH;
     }
 
     static public final String VERSION_NAME_KEY = "AppVersionName";

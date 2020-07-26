@@ -18,23 +18,21 @@ package jackpal.androidterm;
 
 import android.os.Build;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
+
+import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 
 /**
  * A terminal session, controlling the process attached to the session (usually
@@ -88,10 +86,9 @@ public class ShellTermSession extends GenericTermSession {
 
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
-        String path = System.getenv("PATH");
 
         ArrayList<String> envList = new ArrayList<>();
-        envList.add("PATH=" + path);
+        envList.add("PATH=" + TermService.getPATH());
         envList.add("HOME=" + TermService.getHOME());
         envList.add("TMPDIR=" + TermService.getTMPDIR());
         envList.add("APPBASE=" + TermService.getAPPBASE());
@@ -99,10 +96,16 @@ public class ShellTermSession extends GenericTermSession {
         envList.add("APPEXTFILES=" + TermService.getAPPEXTFILES());
         envList.add("APPEXTHOME=" + TermService.getAPPEXTHOME());
         envList.add("APPLIB=" + TermService.getAPPLIB());
+        envList.add("LD_LIBRARY_PATH=" + TermService.getLD_LIBRARY_PATH());
         envList.add("INTERNAL_STORAGE=" + TermService.getEXTSTORAGE());
-        envList.add("LANG=" + getLang());
+        envList.add("LANG=" + TermService.getLANG());
         envList.add("TERM=" + settings.getTermType());
+        envList.add("TERMINFO=" + TermService.getTERMINFO());
         envList.add("COLORFGBG=" + settings.getCOLORFGBG());
+        if (FLAVOR_VIM) {
+            envList.add("VIMRUNTIME=" + TermService.getVIMRUNTIME());
+            envList.add("VIM=" + TermService.getVIM());
+        }
 
         String[] env = envList.toArray(new String[0]);
         String[] envCmd = env;
@@ -116,13 +119,6 @@ public class ShellTermSession extends GenericTermSession {
 
         String shell = settings.getShell();
         mProcId = createSubprocess(shell, envCmd);
-    }
-
-    static public String getLang() {
-        Locale locale = Locale.getDefault();
-        String language = locale.getLanguage();
-        String country = locale.getCountry();
-        return language + "_" + country +".UTF-8";
     }
 
     static private String mPostCmd = null;

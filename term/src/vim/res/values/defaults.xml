@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_initialcommand_default" translatable="false">cd %STARTUP_DIR%\nexport PATH=%PATH%\nexport LD_LIBRARY_PATH=%LD_LIBRARY_PATH%\nexport TERMINFO=%TERMINFO%\nexport VIMRUNTIME=%VIMRUNTIME%\nexport VIM=%VIM%\nbash\n-vim.app</string>
+    <string name="pref_initialcommand_default" translatable="false">cd %STARTUP_DIR%\nbash\n-vim.app</string>
     <bool name="pref_one_line_textbox_default">true</bool>
     <bool name="pref_ignore_xoff_default">true</bool>
     <string name="pref_color_default" translatable="false">0</string>

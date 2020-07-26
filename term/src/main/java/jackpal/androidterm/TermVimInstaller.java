@@ -44,12 +44,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
@@ -58,6 +58,7 @@ import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 final class TermVimInstaller {
     static public boolean doInstallVim = false;
     static private String SOLIB_PATH;
+    static private TermSettings mSettings;
 
     static void installVim(final Activity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
@@ -133,8 +134,9 @@ final class TermVimInstaller {
     static boolean doInstallTerm(final Activity activity) {
         final String VERSION_KEY = "versionNameTerm";
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
-        String terminfoDir = TermService.getTerminfoInstallDir();
-        File dir = new File(terminfoDir + "/terminfo");
+        mSettings = new TermSettings(activity.getResources(), pref);
+        String terminfoDir = TermService.getTERMINFO();
+        File dir = new File(terminfoDir);
         boolean doInstall = !dir.isDirectory() || !pref.getString(VERSION_KEY, "").equals(TermService.APP_VERSION);
 
         if (doInstall) {
@@ -274,6 +276,10 @@ final class TermVimInstaller {
                     String dst = TermService.getAPPFILES() + "/bin/suvim";
                     copyScript(activity.getResources().openRawResource(id), dst);
                     shell("chmod 755 " + dst);
+                    id = activity.getResources().getIdentifier("suvim_sh", "raw", activity.getPackageName());
+                    dst = TermService.getAPPFILES() + "/bin/vim.sh";
+                    copyScript(activity.getResources().openRawResource(id), dst);
+                    shell("chmod 755 " + dst);
 
                     String runtimeDir = TermService.getVimRuntimeInstallDir();
                     setMessage(activity, pd, "runtime");
@@ -388,6 +394,7 @@ final class TermVimInstaller {
     }
 
     static public boolean cpStream(InputStream is, OutputStream os) {
+        if (is == null || os == null) return false;
         try {
             byte[] buf = new byte[1024 * 4];
             int len = 0;
@@ -638,17 +645,42 @@ final class TermVimInstaller {
         try {
             try {
                 String appBase = TermService.getAPPBASE();
-                String appFiles = TermService.getAPPFILES();
                 String appExtFiles = TermService.getAPPEXTFILES();
+                String appExtHome = TermService.getAPPEXTHOME();
+                String appFiles = TermService.getAPPFILES();
+                String appLib = TermService.getAPPLIB();
+                String colorFgBg = mSettings.getCOLORFGBG();
+                String home = TermService.getHOME();
                 String internalStorage = TermService.getEXTSTORAGE();
+                String lang = TermService.getLANG();
+                String ld_library_path = TermService.getLD_LIBRARY_PATH();
+                String path = TermService.getPATH();
+                String term = mSettings.getTermType();
+                String terminfo = TermService.getTERMINFO();
+                String tmpDir = TermService.getTMPDIR();
+                String vim = TermService.getVIM();
+                String vimRuntime = TermService.getVIMRUNTIME();
+
                 br = new BufferedReader(new InputStreamReader(is));
                 PrintWriter writer = new PrintWriter(new FileOutputStream(fname));
                 String str;
                 while ((str = br.readLine()) != null) {
                     str = str.replaceAll("%APPBASE%", appBase);
-                    str = str.replaceAll("%APPFILES%", appFiles);
                     str = str.replaceAll("%APPEXTFILES%", appExtFiles);
+                    str = str.replaceAll("%APPEXTHOME%", appExtHome);
+                    str = str.replaceAll("%APPFILES%", appFiles);
+                    str = str.replaceAll("%APPLIB%", appLib);
+                    str = str.replaceAll("%COLORFGBG%", colorFgBg);
+                    str = str.replaceAll("%HOME%", home);
                     str = str.replaceAll("%INTERNAL_STORAGE%", internalStorage);
+                    str = str.replaceAll("%LANG%", lang);
+                    str = str.replaceAll("%LD_LIBRARY_PATH%", ld_library_path);
+                    str = str.replaceAll("%PATH%", path);
+                    str = str.replaceAll("%TERM%", term);
+                    str = str.replaceAll("%TERMINFO%", terminfo);
+                    str = str.replaceAll("%TMPDIR%", tmpDir);
+                    str = str.replaceAll("%VIM%", vim);
+                    str = str.replaceAll("%VIMRUNTIME%", vimRuntime);
                     if (strings != null && str.contains("%%STRINGS%%")) {
                         String prev = str.replaceFirst("%%STRINGS%%.*", "");
                         if (!prev.equals("")) writer.print(prev);
@@ -706,7 +738,7 @@ final class TermVimInstaller {
                             shell("ln -s " + soFile.getAbsolutePath() + " " + symlink.getAbsolutePath());
                         }
                         shell("chmod 755 " + symlink.getAbsolutePath());
-                        if (symlink.exists() && symlink.canExecute())return;
+                        if (symlink.exists() && symlink.canExecute()) return;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -720,7 +752,7 @@ final class TermVimInstaller {
                 }
             }
             if (is != null) {
-                if (symlink.exists()) symlink.delete();
+                shell("rm " + symlink.getAbsolutePath());
                 cpStream(is , new FileOutputStream(symlink.getAbsolutePath()));
                 shell("chmod 755 " + symlink.getAbsolutePath());
             }
