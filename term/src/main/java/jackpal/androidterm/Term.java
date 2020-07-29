@@ -1193,19 +1193,36 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void destroyAppWarning() {
-        String key = "scoped_storage_warning_backup";
-        String title = getString(R.string.scoped_storage_warning_title);
-        String message = getString(R.string.scoped_storage_uninstall_warning_message);
-        message += "\n - " + TermService.getAPPBASE();
-        message += "\n - (Internal / SD Card)/Android/data/" + BuildConfig.APPLICATION_ID;
         boolean first = TermVimInstaller.ScopedStorageWarning;
         TermVimInstaller.ScopedStorageWarning = false;
 
+        String title = null;
+        String message = null;
+        String key = "scoped_storage_warning_backup";
         boolean warning = getPrefBoolean(Term.this, key, true);
-        if (!first && (!warning || mRandom.nextInt(100) != 1)) {
+        if (SCOPED_STORAGE) {
+            if (first || (warning && mRandom.nextInt(100) == 1)) {
+                title = getString(R.string.scoped_storage_warning_title);
+                message = getString(R.string.scoped_storage_uninstall_warning_message);
+                message += "\n - " + TermService.getAPPBASE();
+                message += "\n - (Internal / SD Card)/Android/data/" + BuildConfig.APPLICATION_ID;
+            }
+        }
+
+        key = "show_dotfiles_warning";
+        warning = getPrefBoolean(Term.this, key, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && message == null && mSettings.getShowDotfiles()) {
+            if (warning && mRandom.nextInt(50) == 1) {
+                title = getString(R.string.title_show_dotfiles_warning);
+                message = getString(R.string.show_dotfiles_warning_message);
+            }
+        }
+
+        if (message == null) {
             doExitShell();
             return;
         }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setTitle(title);
@@ -1232,7 +1249,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             });
         }
-        if (isAppInstalled(APP_FILER)) {
+        if (key.equals("scoped_storage_warning_backup") && isAppInstalled(APP_FILER)) {
             builder.setNeutralButton(getString(R.string.app_files), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
                     intentMainActivity(APP_FILER);
@@ -2673,11 +2690,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 // fall into next
             case 0xffff0999:
-                if (SCOPED_STORAGE) {
-                    destroyAppWarning();
-                } else {
-                    doExitShell();
-                }
+                destroyAppWarning();
                 return true;
             case 0xffff1000:
                 setFunctionBar(2);

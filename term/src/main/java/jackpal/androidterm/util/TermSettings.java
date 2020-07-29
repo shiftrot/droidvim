@@ -75,6 +75,7 @@ public class TermSettings {
     private String mMRUCommand;
     private String mExternalAppId;
     private int mExternalAppButtonMode;
+    private boolean mShowDotfiles;
     private boolean mUseFilesAppButton;
     private String mFilerAppId;
     private int mFilerAppButtonMode;
@@ -172,6 +173,7 @@ public class TermSettings {
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action_rev2";
     private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
     private static final String IME_VI_COOPERATIVE_MODE = "vi_cooperative_mode";
+    private static String SHOW_DOTFILES_KEY;
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -292,6 +294,8 @@ public class TermSettings {
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mMRUCommand = res.getString(R.string.pref_mru_command_default);
+        SHOW_DOTFILES_KEY = res.getString(R.string.pref_key_show_dotfiles);
+        mShowDotfiles = res.getBoolean(R.bool.pref_show_dotfiles_default);
         mExternalAppId = res.getString(R.string.pref_external_app_id_default);
         mExternalAppButtonMode = Integer.parseInt(res.getString(R.string.pref_external_app_action_mode_default));
         mUseFilesAppButton = res.getBoolean(R.bool.pref_use_app_files_button_default);
@@ -369,6 +373,7 @@ public class TermSettings {
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mUseDirectCookedIME = readIntPref(IME_DIRECT_KEY, mUseDirectCookedIME, 1);
         mMRUCommand = readStringPref(MRU_COMMAND_KEY, mMRUCommand);
+        mShowDotfiles = readBooleanPref(SHOW_DOTFILES_KEY, mShowDotfiles);
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY, mExternalAppId);
         mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
         mUseFilesAppButton = readBooleanPref(FILES_BUTTON_KEY, mUseFilesAppButton);
@@ -693,6 +698,10 @@ public class TermSettings {
 
     public String getMRUCommand() {
         return mMRUCommand;
+    }
+
+    public boolean getShowDotfiles() {
+        return mShowDotfiles;
     }
 
     public String getExternalAppId() {
