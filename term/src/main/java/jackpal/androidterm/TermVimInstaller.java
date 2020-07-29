@@ -3,7 +3,6 @@ package jackpal.androidterm;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,9 +16,10 @@ import android.system.Os;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.preference.PreferenceManager;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -205,8 +205,19 @@ final class TermVimInstaller {
         INSTALL_ZIP = activity.getString(R.string.update_message);
         INSTALL_WARNING = "\n\n" + activity.getString(R.string.update_warning);
         if (FLAVOR_VIM) INSTALL_WARNING += "\n" + activity.getString(R.string.update_vim_warning);
-        final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_message), true, false);
         boolean first = !new File(TermService.getAPPFILES() + "/bin").isDirectory();
+
+//        final ProgressDialog pd = ProgressDialog.show(activity, null, activity.getString(R.string.update_message), true, false);
+        final AlertDialog pd = new AlertDialog.Builder(activity).create();
+        pd.setTitle(null);
+        pd.setMessage(activity.getString(R.string.update_message));
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
+
+        final DrawerLayout layout = activity.findViewById(R.id.drawer_layout);
+        final ProgressBar progressBar = activity.findViewById(R.id.progressbar);
+        Term.showProgressRing(layout, progressBar);
         new Thread() {
             @Override
             public void run() {
@@ -322,6 +333,7 @@ final class TermVimInstaller {
                             public void run() {
                                 try {
                                     pd.dismiss();
+                                    Term.dismissProgressRing(layout, progressBar);
                                 } catch (Exception e) {
                                     // Do nothing
                                 }
@@ -828,7 +840,7 @@ final class TermVimInstaller {
     static private String INSTALL_ZIP = "";
     static private String INSTALL_WARNING = "";
 
-    static private void setMessage(final Activity activity, final ProgressDialog pd, final String message) {
+    static private void setMessage(final Activity activity, final AlertDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
             activity.runOnUiThread(new Runnable() {
                 @Override

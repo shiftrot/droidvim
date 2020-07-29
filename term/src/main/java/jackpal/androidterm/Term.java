@@ -1298,9 +1298,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (TermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
 
-            final DrawerLayout layout = findViewById(R.id.drawer_layout);
-            final ProgressBar progressBar = new ProgressBar(this.getApplicationContext(), null, android.R.attr.progressBarStyleLarge);
-//            showProgressRing(layout, progressBar);
             String _postCmd = "";
             String[] list = cmd.split("\n");
             String preCmd = "";
@@ -1323,7 +1320,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             ShellTermSession.setPostCmd(postCmd);
                         }
                     }
-//                    dismissProgressRing(layout, progressBar);
                     permissionCheckExternalStorage();
                     openDrawerAfterInstall();
                 }
@@ -1392,25 +1388,25 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void showProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
-        if (layout == null || progressBar == null) return;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
-        progressBar.setLayoutParams(params);
-        layout.addView(progressBar);
-        progressBar.setVisibility(View.VISIBLE);
+    static public void showProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
+        try {
+            if (layout == null || progressBar == null) return;
+            layout.removeView(progressBar);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
+            progressBar.setLayoutParams(params);
+            layout.addView(progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            // Do nothing
+        }
     }
 
-    private void dismissProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (layout != null) layout.removeView(progressBar);
-                } catch (Exception e) {
-                    // Do nothing
-                }
-            }
-        });
+    static public void dismissProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
+        try {
+            if (layout != null) layout.removeView(progressBar);
+        } catch (Exception e) {
+            // Do nothing
+        }
     }
 
     private void showVimTips() {
