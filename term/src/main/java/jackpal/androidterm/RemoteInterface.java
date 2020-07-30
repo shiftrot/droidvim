@@ -189,13 +189,26 @@ public class RemoteInterface extends AppCompatActivity {
         }
     }
 
+    private boolean isInstalled(String nativeLibraryDir) {
+        if (StaticConfig.FLAVOR_VIM) {
+            boolean status = (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory());
+            if (status) return false;
+        }
+        String APP_VERSION = TermService.APP_VERSION_KEY + nativeLibraryDir;
+        if (!APP_VERSION.equals(new PrefValue(this).getString(TermService.VERSION_NAME_KEY, "")))
+            return false;
+        return true;
+    }
+
     protected void handleIntent() {
         TermService service = getTermService();
         if (service == null) {
             finish();
             return;
         }
-        mDoInstall = StaticConfig.FLAVOR_VIM && (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory() );
+        String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
+        mDoInstall = !isInstalled(nativeLibraryDir);
+        if (mDoInstall) TermVimInstaller.doInstallVim = true;
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();

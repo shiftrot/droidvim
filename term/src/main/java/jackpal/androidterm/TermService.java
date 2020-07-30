@@ -295,7 +295,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     @SuppressLint("NewApi")
     private boolean install() {
-        boolean status = getInstallStatus(TermVimInstaller.getInstallVersionFile(this), "res/raw/version");
+        boolean status = getInstallStatus(TermVimInstaller.getInstallVersionFile(this), mAPPLIB);
         TermVimInstaller.doInstallVim = !status;
         return status;
     }
@@ -438,8 +438,12 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return mLD_LIBRARY_PATH;
     }
 
-    private boolean getInstallStatus(String scriptFile, String zipFile) {
-        if (!TermVimInstaller.APP_VERSION.equals(new PrefValue(this).getString("versionName", "")))
+    static public final String VERSION_NAME_KEY = "AppVersionName";
+    static public String APP_VERSION_KEY = BuildConfig.VERSION_CODE + " + " + BuildConfig.VERSION_NAME + " + ";
+    static public String APP_VERSION;
+    private boolean getInstallStatus(String scriptFile, String nativeLibraryDir) {
+        APP_VERSION = APP_VERSION_KEY + nativeLibraryDir;
+        if (!APP_VERSION.equals(new PrefValue(this).getString(VERSION_NAME_KEY, "")))
             return false;
         return new File(scriptFile).exists();
     }

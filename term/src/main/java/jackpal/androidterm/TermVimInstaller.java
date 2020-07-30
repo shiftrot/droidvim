@@ -54,7 +54,6 @@ import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 
 final class TermVimInstaller {
-    static final String APP_VERSION = String.format(Locale.US, "%d : %s", BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME);
     static public boolean doInstallVim = false;
     static private String SOLIB_PATH;
 
@@ -130,10 +129,11 @@ final class TermVimInstaller {
     }
 
     static boolean doInstallTerm(final Activity activity) {
+        final String VERSION_KEY = "versionNameTerm";
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
         String terminfoDir = TermService.getTerminfoInstallDir();
         File dir = new File(terminfoDir + "/terminfo");
-        boolean doInstall = !dir.isDirectory() || !pref.getString("versionNameTerm", "").equals(APP_VERSION);
+        boolean doInstall = !dir.isDirectory() || !pref.getString(VERSION_KEY, "").equals(TermService.APP_VERSION);
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
@@ -167,7 +167,7 @@ final class TermVimInstaller {
                     }
                 }
             }
-            new PrefValue(activity).setString("versionNameTerm", APP_VERSION);
+            new PrefValue(activity).setString(VERSION_KEY, TermService.APP_VERSION);
             return true;
         }
         return false;
@@ -266,6 +266,7 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries - vim");
                     installSoTar(path, "vim");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "vim_")));
+                    JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
 
                     id = activity.getResources().getIdentifier("suvim", "raw", activity.getPackageName());
                     String dst = TermService.getAPPFILES() + "/bin/suvim";
@@ -305,7 +306,7 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
                     setupStorageSymlinks();
-                    new PrefValue(activity).setString("versionName", APP_VERSION);
+                    new PrefValue(activity).setString(TermService.VERSION_NAME_KEY, TermService.APP_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
                         activity.runOnUiThread(new Runnable() {
@@ -691,16 +692,23 @@ final class TermVimInstaller {
             InputStream is = null;
             SOLIB_PATH = getSolibPath(activity);
             final String arch = getArch();
-            File soFile = new File(SOLIB_PATH + "/libbusybox_" + arch + ".so");
+            File soFile = new File(SOLIB_PATH + "/libbusybox.so");
             final File symlink = new File(target+"/busybox");
             if (soFile.exists()) {
-/*
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    if (symlink.exists()) symlink.delete();
-                    Os.symlink(soFile.getAbsolutePath(), symlink.getAbsolutePath());
-                    return;
+                shell("rm " + symlink.getAbsolutePath());
+                if (SOLIB_PATH.startsWith("/data")) {
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Os.symlink(soFile.getAbsolutePath(), symlink.getAbsolutePath());
+                        } else {
+                            shell("ln -s " + soFile.getAbsolutePath() + " " + symlink.getAbsolutePath());
+                        }
+                        shell("chmod 755 " + symlink.getAbsolutePath());
+                        if (symlink.exists() && symlink.canExecute())return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-*/
                 is = new FileInputStream(soFile);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -726,9 +734,24 @@ final class TermVimInstaller {
     }
 
     static public boolean busybox(String cmd) {
-        String busybox = TermService.getAPPLIB() + "/busybox_"+ TermService.getArch() +".so";
+        String busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
         if (!new File(busybox).canExecute()) {
-            busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
+            busybox = TermService.getAPPFILES() + "/busybox";
+            if (!new File(busybox).canExecute()) {
+                File soFile = new File(TermService.getAPPLIB() + "/libbusybox.so");
+                File symlink = new File(busybox);
+                shell("rm " + symlink.getAbsolutePath());
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Os.symlink(soFile.getAbsolutePath(), symlink.getAbsolutePath());
+                    } else {
+                        shell("ln -s " + soFile.getAbsolutePath() + " " + symlink.getAbsolutePath());
+                    }
+                    shell("chmod 755 " + symlink.getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         boolean canExecute = new File(busybox).canExecute();
         if (cmd == null || !canExecute) return canExecute;
