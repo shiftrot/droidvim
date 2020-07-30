@@ -89,12 +89,16 @@ android {
             res.srcDirs += ['src/droidvim/res', 'src/vim/res']
             jniLibs.srcDirs += ['src/main/jniLibs']
             if (abiArm) {
-                res.srcDirs += ['src/main-arm/res', 'src/vim-arm/res']
-                jniLibs.srcDirs += ['src/main-arm/jniLibs']
+                // res.srcDirs += ['src/main-arm/res', 'src/vim-arm/res']
+                // jniLibs.srcDirs += ['src/main-arm/jniLibs']
+                res.srcDirs += ['src/main-arm/res']
+                jniLibs.srcDirs += ['src/main-arm/jniLibs', 'src/vim-arm/jniLibs']
             }
             if (abiX86) {
-                res.srcDirs += ['src/main-x86/res', 'src/vim-x86/res']
-                jniLibs.srcDirs += ['src/main-x86/jniLibs']
+                // res.srcDirs += ['src/main-x86/res', 'src/vim-x86/res']
+                // jniLibs.srcDirs += ['src/main-x86/jniLibs']
+                res.srcDirs += ['src/main-x86/res']
+                jniLibs.srcDirs += ['src/main-x86/jniLibs', 'src/vim-x86/jniLibs']
             }
         }
     }
