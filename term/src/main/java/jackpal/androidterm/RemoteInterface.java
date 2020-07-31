@@ -395,9 +395,10 @@ public class RemoteInterface extends AppCompatActivity {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(this.getApplicationContext());
         if (clip != null) {
+            String shareText = str.toString().replaceAll("[\\xC2\\xA0]", " ");
             if (FLAVOR_VIM) {
                 String FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
-                Term.writeStringToFile(FILE_CLIPBOARD, "\n" + str.toString());
+                Term.writeStringToFile(FILE_CLIPBOARD, "\n" + shareText);
                 String command = "\u001b" + ":ATEMod _paste";
                 if (mDoInstall) {
                     IntentCommand = "";
@@ -408,7 +409,7 @@ public class RemoteInterface extends AppCompatActivity {
                 mHandle = switchToWindow(mHandle, command);
                 mReplace = false;
             } else {
-                clip.setText(str);
+                clip.setText(shareText);
                 alert(this.getString(R.string.toast_clipboard));
             }
         }
