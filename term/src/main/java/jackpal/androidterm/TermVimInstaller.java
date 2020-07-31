@@ -388,6 +388,7 @@ final class TermVimInstaller {
                     JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
                     installBusyboxCommands();
                     setupStorageSymlinks();
+                    JniLibsToBin.symlinkDebugReport(path);
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
                     new PrefValue(activity).setString(TermService.VERSION_NAME_KEY, TermService.APP_VERSION);

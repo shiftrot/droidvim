@@ -131,4 +131,20 @@ public class JniLibsToBin {
         }
         return true;
     }
+
+    static public void symlinkDebugReport(String targetDir) {
+        try {
+            String arch = TermVimInstaller.getArch();
+            Map<String, String> maps = new LinkedHashMap<String, String>() {
+                {
+                    put("lib" + arch + ".so", "/usr/bin/"+arch);
+                }
+            };
+            File symlink = new File(targetDir + "/usr/bin/" + arch);
+            shell("rm " + symlink.getAbsolutePath());
+            jniLibsToBin(targetDir, maps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
