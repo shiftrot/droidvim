@@ -750,7 +750,7 @@ final class TermVimInstaller {
                             shell("ln -s " + soFile.getAbsolutePath() + " " + symlink.getAbsolutePath());
                         }
                         shell("chmod 755 " + symlink.getAbsolutePath());
-                        if (symlink.exists() && symlink.canExecute()) return;
+                        if (symlink.exists() && ASFUtils.isSymlink(symlink)) return;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

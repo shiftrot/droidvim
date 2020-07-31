@@ -57,7 +57,7 @@ public class JniLibsToBin {
             } else {
                 shell("ln -s " + src.getAbsolutePath() + " " + symlink.getAbsolutePath());
             }
-            if (!symlink.exists()) return false;
+            if (!symlink.exists() || !ASFUtils.isSymlink(symlink)) return false;
         } catch (Exception e) {
             return false;
         }
