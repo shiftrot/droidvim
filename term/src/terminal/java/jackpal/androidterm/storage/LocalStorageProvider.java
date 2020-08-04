@@ -34,6 +34,7 @@ import java.util.Set;
 import jackpal.androidterm.BuildConfig;
 import jackpal.androidterm.R;
 
+import static android.content.Context.MODE_PRIVATE;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 
 /**
@@ -47,7 +48,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     private static final String PREF_KEY_SHOW_DOTFILES = "pref_key_show_dotfiles";
     private static final boolean SHOW_DOTFILES_DEFAULT = true;
     @SuppressLint("SdCardPath")
-    private static final String BASE_DEFAULT_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/home";
+    private static final String BASE_DEFAULT_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/app_HOME";
     private static final String PREF_KEY_HOME_PATH = "home_path";
 
     // Use these as the default columns to return information about a root if no specific
@@ -94,10 +95,12 @@ public class LocalStorageProvider extends DocumentsProvider {
     private void setBaseDir() {
         try {
             mBaseDir = new File(BASE_DEFAULT_DIR);
-            if (getContext() != null) mBaseDir = new File(getContext().getFilesDir().getAbsolutePath() + "/home");
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String appHOME = pref.getString(PREF_KEY_HOME_PATH, mBaseDir.getAbsolutePath());
-            if (appHOME != null) mBaseDir = new File(appHOME);
+            if (getContext() != null) {
+                mBaseDir = new File(getContext().getDir("HOME", MODE_PRIVATE).getAbsolutePath());
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String appHOME = pref.getString(PREF_KEY_HOME_PATH, mBaseDir.getAbsolutePath());
+                if (appHOME != null) mBaseDir = new File(appHOME);
+            }
         } catch (Exception e) {
             // Do nothing
         }
