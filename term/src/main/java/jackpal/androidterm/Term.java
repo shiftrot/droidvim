@@ -999,6 +999,55 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     protected void onStart() {
         super.onStart();
+        String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
+        if (new File(nativeLibraryDir + "/libjackpal-termexec2.so").exists()) {
+            doOnStart();
+        } else {
+            final String title = "Native library not found";
+            String message = "The possible causes are:\n\n";
+            message += " - Installed using an apk file extracted from another device.\n";
+            message += " - You are using a custom ROM and have different native library settings applied than what the Play Store expects.\n";
+            message += "\n\n";
+            message += "If you think your device is okay, tap \"Continue\" button.\nIf the problem persists, please contact us.";
+
+            final String warningKey = "native_library_check";
+            boolean warning = getPrefBoolean(Term.this, warningKey, true);
+            if (!warning) {
+                doOnStart();
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            if (title != null) builder.setTitle(title);
+            if (message != null) builder.setMessage(message);
+            LayoutInflater flater = LayoutInflater.from(this);
+            View view = flater.inflate(R.layout.alert_checkbox, null);
+            builder.setView(view);
+            final CheckBox cb = view.findViewById(R.id.dont_show_again);
+            cb.setChecked(false);
+            builder.setPositiveButton(getString(R.string.button_continue), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    if (cb.isChecked()) {
+                        setPrefBoolean(Term.this, warningKey, false);
+                    }
+                    doOnStart();
+                }
+            });
+            builder.setNeutralButton(R.string.quit, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    doExitShell();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positive.requestFocus();
+        }
+    }
+
+    private void doOnStart() {
         if (!bindTermService(TSIntent, mTSConnection, BIND_AUTO_CREATE)) {
             final String MESSAGE = getString(R.string.faild_to_bind_to_termservice);
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
