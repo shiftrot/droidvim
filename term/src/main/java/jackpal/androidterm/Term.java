@@ -2921,7 +2921,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(getString(R.string.crash_title) + " (" + getArch() + ")");
-            bld.setMessage(getString(R.string.crash_message));
+            String message = getString(R.string.crash_message);
+            File file = new File(TermService.getAPPFILES() + "/bin/vim.default");
+            if (file.exists() && !file.canExecute()) {
+                message += "\n\n";
+                message += getString(R.string.security_error_message);
+            }
+            bld.setMessage(message);
             bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int m) {
                     dialog.dismiss();
