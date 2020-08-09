@@ -131,13 +131,58 @@ final class TermVimInstaller {
         return TermService.getVersionFilesDir() + "/version";
     }
 
+    static void installTerm(final Activity activity) {
+        installTerm(activity, null);
+    }
+
+    static void installTerm(final Activity activity, Runnable whenDone) {
+        final DrawerLayout layout = activity.findViewById(R.id.drawer_layout);
+        final ProgressBar progressBar = activity.findViewById(R.id.progressbar);
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Term.showProgressRing(layout, progressBar);
+                } catch (Exception e) {
+                    // Do nothing
+                }
+            }
+        });
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    doInstallTerm(activity, whenDone);
+                } finally {
+                    if (!activity.isFinishing()) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Term.dismissProgressRing(layout, progressBar);
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }.start();
+    }
+
+    static public boolean doInstallTerm = false;
     static boolean doInstallTerm(final Activity activity) {
+        return doInstallTerm(activity, null);
+    }
+
+    static boolean doInstallTerm(final Activity activity, Runnable whenDone) {
         final String VERSION_KEY = "versionNameTerm";
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
         mSettings = new TermSettings(activity.getResources(), pref);
         String terminfoDir = TermService.getTERMINFO();
         File dir = new File(terminfoDir);
-        boolean doInstall = !dir.isDirectory() || !pref.getString(VERSION_KEY, "").equals(TermService.APP_VERSION);
+        boolean doInstall = doInstallTerm || !dir.isDirectory() || !pref.getString(VERSION_KEY, "").equals(TermService.APP_VERSION);
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
@@ -171,7 +216,9 @@ final class TermVimInstaller {
                     }
                 }
             }
+            doInstallTerm = false;
             new PrefValue(activity).setString(VERSION_KEY, TermService.APP_VERSION);
+            if (whenDone != null) whenDone.run();
             return true;
         }
         return false;

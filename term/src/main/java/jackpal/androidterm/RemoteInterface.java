@@ -51,6 +51,7 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.Term.REQUEST_FOREGROUND_SERVICE_PERMISSION;
 import static jackpal.androidterm.Term.REQUEST_STORAGE;
@@ -190,13 +191,16 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     private boolean isInstalled(String nativeLibraryDir) {
-        if (StaticConfig.FLAVOR_VIM) {
+        if (FLAVOR_TERMINAL) {
             boolean status = (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory());
             if (status) return false;
+        } else if (FLAVOR_VIM) {
+            boolean status = (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory());
+            if (status) return false;
+            String APP_VERSION = TermService.APP_VERSION_KEY + nativeLibraryDir;
+            if (!APP_VERSION.equals(new PrefValue(this).getString(TermService.VERSION_NAME_KEY, "")))
+                return false;
         }
-        String APP_VERSION = TermService.APP_VERSION_KEY + nativeLibraryDir;
-        if (!APP_VERSION.equals(new PrefValue(this).getString(TermService.VERSION_NAME_KEY, "")))
-            return false;
         return true;
     }
 
@@ -208,7 +212,13 @@ public class RemoteInterface extends AppCompatActivity {
         }
         String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         mDoInstall = !isInstalled(nativeLibraryDir);
-        if (mDoInstall) TermVimInstaller.doInstallVim = true;
+        if (mDoInstall) {
+            if (FLAVOR_TERMINAL) {
+                TermVimInstaller.doInstallTerm = true;
+            } else if (FLAVOR_VIM) {
+                TermVimInstaller.doInstallVim = true;
+            }
+        }
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
@@ -428,7 +438,11 @@ public class RemoteInterface extends AppCompatActivity {
         if (iInitialCommand != null) {
             if (initialCommand != null) {
                 if (mDoInstall) {
-                    if (FLAVOR_VIM) initialCommand = initialCommand.replaceFirst("-?vim.app\\s*$", "");
+                    if (FLAVOR_TERMINAL) {
+                        initialCommand = initialCommand.replaceFirst("-?bash.app\\s*$", "");
+                    } else if (FLAVOR_VIM) {
+                        initialCommand = initialCommand.replaceFirst("-?vim.app\\s*$", "");
+                    }
                     iInitialCommand = DO_INSTALL;
                 }
                 initialCommand += "\r" + iInitialCommand;

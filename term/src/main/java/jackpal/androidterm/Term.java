@@ -1359,7 +1359,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
         if (!FLAVOR_VIM) {
-            TermVimInstaller.doInstallTerm(Term.this);
+            TermVimInstaller.installTerm(Term.this);
             permissionCheckExternalStorage();
         } else if (TermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
@@ -1409,14 +1409,30 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         if (RemoteInterface.IntentCommand != null) {
-            postCmd += "\u001b" + RemoteInterface.IntentCommand + "\n";
+            String ESC_CMD = FLAVOR_VIM ? "\u001b" : "";
+            postCmd += ESC_CMD + RemoteInterface.IntentCommand + "\n";
+        }
+        final String riCmd = postCmd;
+        if (FLAVOR_TERMINAL) {
+            TermVimInstaller.installTerm(Term.this, new Runnable() {
+                @Override
+                public void run() {
+                    String cmd = riCmd;
+                    if (getCurrentTermSession() != null) {
+                        sendKeyStrings(cmd, false);
+                    } else {
+                        ShellTermSession.setPostCmd(cmd);
+                    }
+                    permissionCheckExternalStorage();
+                }
+            });
+            return;
         }
         if (RemoteInterface.ShareText != null) {
             String filename = FILE_CLIPBOARD;
             Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
             postCmd += "\u001b" + ":ATEMod _paste\n";
         }
-        final String riCmd = postCmd;
         try {
             TermVimInstaller.doInstallVim(Term.this, new Runnable() {
                 @Override
