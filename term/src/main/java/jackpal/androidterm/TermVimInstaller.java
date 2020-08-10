@@ -135,7 +135,18 @@ final class TermVimInstaller {
         installTerm(activity, null);
     }
 
+    private static final String TERM_VERSION_KEY = "versionNameTerm";
+    static boolean getTermInstallStatus(final Activity activity) {
+        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
+        mSettings = new TermSettings(activity.getResources(), pref);
+        String terminfoDir = TermService.getTERMINFO();
+        File dir = new File(terminfoDir);
+        boolean doInstall = doInstallTerm || !dir.isDirectory() || !pref.getString(TERM_VERSION_KEY, "").equals(TermService.APP_VERSION);
+        return !doInstall;
+    }
+
     static void installTerm(final Activity activity, Runnable whenDone) {
+        if (getTermInstallStatus(activity)) return;
         final DrawerLayout layout = activity.findViewById(R.id.drawer_layout);
         final ProgressBar progressBar = activity.findViewById(R.id.progressbar);
         activity.runOnUiThread(new Runnable() {
@@ -177,15 +188,11 @@ final class TermVimInstaller {
     }
 
     static boolean doInstallTerm(final Activity activity, Runnable whenDone) {
-        final String VERSION_KEY = "versionNameTerm";
-        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
-        mSettings = new TermSettings(activity.getResources(), pref);
-        String terminfoDir = TermService.getTERMINFO();
-        File dir = new File(terminfoDir);
-        boolean doInstall = doInstallTerm || !dir.isDirectory() || !pref.getString(VERSION_KEY, "").equals(TermService.APP_VERSION);
+        boolean doInstall = !getTermInstallStatus(activity);
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
+            String terminfoDir = TermService.getTERMINFO();
             installZip(terminfoDir, getInputStream(activity, id));
             final String path = TermService.getAPPFILES();
             id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
@@ -217,7 +224,7 @@ final class TermVimInstaller {
                 }
             }
             doInstallTerm = false;
-            new PrefValue(activity).setString(VERSION_KEY, TermService.APP_VERSION);
+            new PrefValue(activity).setString(TERM_VERSION_KEY, TermService.APP_VERSION);
             if (whenDone != null) whenDone.run();
             return true;
         }

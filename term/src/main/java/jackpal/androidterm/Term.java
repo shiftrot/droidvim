@@ -1359,8 +1359,32 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
         if (!FLAVOR_VIM) {
-            TermVimInstaller.installTerm(Term.this);
-            permissionCheckExternalStorage();
+            if (!TermVimInstaller.getTermInstallStatus(this)) {
+                String preCmd = "";
+                String postCmd = "";
+                String[] list = cmd.split("\n");
+                for (String str : list) {
+                    if (str.matches("^(bash|vim.app).*")) {
+                        postCmd = postCmd + str + "\n";
+                    } else {
+                        preCmd = preCmd + str + "\n";
+                    }
+                }
+                final String riCmd = postCmd;
+                TermVimInstaller.installTerm(Term.this, new Runnable() {
+                    @Override
+                    public void run() {
+                        String cmd = riCmd;
+                        if (getCurrentTermSession() != null) {
+                            sendKeyStrings(cmd, false);
+                        } else {
+                            ShellTermSession.setPostCmd(cmd);
+                        }
+                        permissionCheckExternalStorage();
+                    }
+                });
+                permissionCheckExternalStorage();
+            }
         } else if (TermVimInstaller.doInstallVim) {
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
 
