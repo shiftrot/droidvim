@@ -15,9 +15,10 @@ android {
         versionName versions.versionName
         versionCode versions.versionCode
 
-        buildConfigField "String", "WHATS_NEW", '""'
+        //* Vim 9.0.2155.
+        //* Minor improvements.
+        buildConfigField "String", "WHATS_NEW", '"* Vim 9.0.2155.\\n* Minor improvements."'
         buildConfigField "String", "BASE64_PUBLIC_KEY", String.format('"%s"', file('base64-public-key.txt').getText().replaceAll("[\r\n].*", ""))
-
     }
 
     defaultConfig {

@@ -1,7 +1,8 @@
 #!/data/data/com.droidvim/files/usr/bin/sh
-# $Id: ncurses-config.in,v 1.37 2018/06/09 22:29:01 tom Exp $
+# $Id: ncurses-config.in,v 1.52 2022/07/26 21:36:28 tom Exp $
 ##############################################################################
-# Copyright (c) 2006-2017,2018 Free Software Foundation, Inc.                #
+# Copyright 2018-2021,2022 Thomas E. Dickey                                  #
+# Copyright 2006-2015,2017 Free Software Foundation, Inc.                    #
 #                                                                            #
 # Permission is hereby granted, free of charge, to any person obtaining a    #
 # copy of this software and associated documentation files (the "Software"), #
@@ -54,7 +55,7 @@ includesubdir="${prefix}/include/${THIS}"
 # Ensure that RPATH_LIST contains only absolute pathnames, if it is nonempty.
 # We cannot filter it out within the build-process since the variable is used
 # in some special cases of installation using a relative path.
-if test -n "$RPATH_LIST"
+if [ -n "$RPATH_LIST" ]
 then
 	save_IFS="$IFS"
 	IFS=':'
@@ -65,7 +66,7 @@ then
 		./*|../*|*/..|*/../*)
 			;;
 		*)
-			test -n "$filtered" && filtered="${filtered}:"
+			[ -n "$filtered" ] && filtered="${filtered}:"
 			filtered="${filtered}${item}"
 			;;
 		esac
@@ -78,7 +79,7 @@ fi
 # with --disable-overwrite, we installed into a subdirectory, but transformed
 # the headers to include like this:
 #	<ncursesw/curses.h>
-if test xyes = xno ; then
+if [ xyes = xno ]; then
 	case $includedir in
 	$prefix/include/ncursesw)
 		includedir=`echo "$includedir" | sed -e 's,/[^/]*$,,'`
@@ -86,9 +87,95 @@ if test xyes = xno ; then
 	esac
 fi
 
-test $# = 0 && exec /bin/sh $0 --error
+LIBS=""
+if [ "ncurses" = "ncurses" ]; then
+	LIBS="-l${THIS} $LIBS"
+else
+	LIBS="-l${THIS} -l${TINFO_LIB} $LIBS"
+fi
 
-while test $# -gt 0; do
+# Ignore -L options which do not correspond to an actual directory, or which
+# are standard library directories (i.e., the linker is supposed to search
+# those directories).
+#
+# There is no portable way to find the list of standard library directories.
+# Require a POSIX shell anyway, to keep this simple.
+lib_flags=
+for opt in -L$libdir -L/data/data/com.droidvim/files/usr/lib -Wl,-z,relro,-z,now  $LIBS
+do
+	case $opt in
+	-specs*) # ignore linker specs-files which were used to build library
+		continue
+		;;
+	-Wl,-z,*) # ignore flags used to manipulate shared image
+		continue
+		;;
+	-Wl,--dynamic-linker*) # ignore ELF interpreter
+		continue
+		;;
+	-Wl,--as-needed|-Wl,--build-id=*|-Wl,-dT,*|-Wl,-T,*)
+		continue
+		;;
+	-L*)
+		lib_check=`echo "x$opt" | sed -e 's/^.-L//'`
+		[ -d "$lib_check" ] || continue
+		case "$lib_check" in
+		/usr/lib|/lib) # skip standard libdir
+			if [ "$lib_check" = "$libdir" ]
+			then
+				lib_first=yes
+				IFS_save="$IFS"
+				IFS='|'
+				LIBDIRS="/usr/lib|/lib"
+				for lib_check in $LIBDIRS
+				do
+					if [ -d "$lib_check" ]
+					then
+						if [ "$lib_check" != "$libdir" ]
+						then
+							lib_first=no
+						fi
+						break
+					fi
+				done
+				IFS="$IFS_save"
+				[ $lib_first = yes ] && continue
+				found=no
+				for check in $lib_flags
+				do
+					if [ "x$check" = "x$opt" ]
+					then
+						found=yes
+						break
+					fi
+				done
+				[ $found = yes ] && continue
+				:
+			else
+				continue
+			fi
+			;;
+		*)
+			found=no
+			for check in $lib_flags
+			do
+				if [ "x$check" = "x$opt" ]
+				then
+					found=yes
+					break
+				fi
+			done
+			[ $found = yes ] && continue
+			;;
+		esac
+		;;
+	esac
+	lib_flags="$lib_flags $opt"
+done
+
+[ $# = 0 ] && exec /bin/sh "$0" --error
+
+while [ $# -gt 0 ]; do
 	case "$1" in
 	# basic configuration
 	--prefix)
@@ -99,11 +186,11 @@ while test $# -gt 0; do
 		;;
 	# compile/link
 	--cflags)
-		INCS=" -D_XOPEN_SOURCE=600"
-		if test "xyes" = xno ; then
+		INCS=" -DNCURSES_WIDECHAR"
+		if [ "xyes" = xno ]; then
 			INCS="$INCS -I${includesubdir}"
 		fi
-		if test "${includedir}" != /usr/include ; then
+		if [ "${includedir}" != /usr/include ]; then
 			INCS="$INCS -I${includedir}"
 		fi
 		sed -e 's,^[ ]*,,' -e 's, [ ]*, ,g' -e 's,[ ]*$,,' <<-ENDECHO
@@ -111,26 +198,58 @@ while test $# -gt 0; do
 ENDECHO
 		;;
 	--libs)
-		if test "$libdir" = /usr/lib
-		then
-			LIBDIR=
-		else
-			LIBDIR=-L$libdir
-		fi
-		LIBS=" "
-		if test ncurses = ncurses ; then
-		sed -e 's,^[ ]*,,' -e 's, [ ]*, ,g' -e 's,[ ]*$,,' <<-ENDECHO
-			$LIBDIR  -l${THIS} $LIBS
-ENDECHO
-		else
-		sed -e 's,^[ ]*,,' -e 's, [ ]*, ,g' -e 's,[ ]*$,,' <<-ENDECHO
-			$LIBDIR  -l${THIS} -l${TINFO_LIB} $LIBS
-ENDECHO
-		fi
+		OPTS=
+		for opt in $lib_flags
+		do
+			[ -n "$OPTS" ] && OPTS="$OPTS "
+			OPTS="${OPTS}${opt}"
+		done
+		printf '%s\n' "$OPTS"
+		;;
+	--libs-only-L)
+		OPTS=
+		for opt in $lib_flags
+		do
+			case "x$opt" in
+			x-L*)
+				[ -n "$OPTS" ] && OPTS="$OPTS "
+				OPTS="${OPTS}${opt}"
+				;;
+			esac
+		done
+		printf '%s\n' "$OPTS"
+		;;
+	--libs-only-l)
+		OPTS=
+		for opt in $lib_flags
+		do
+			case "x$opt" in
+			x-l*)
+				[ -n "$OPTS" ] && OPTS="$OPTS "
+				OPTS="${OPTS}${opt}"
+				;;
+			esac
+		done
+		printf '%s\n' "$OPTS"
+		;;
+	--libs-only-other)
+		OPTS=
+		for opt in $lib_flags
+		do
+			case "x$opt" in
+			x-[lL]*)
+				;;
+			*)
+				[ -n "$OPTS" ] && OPTS="$OPTS "
+				OPTS="${OPTS}${opt}"
+				;;
+			esac
+		done
+		printf '%s\n' "$OPTS"
 		;;
 	# identification
 	--version)
-		echo "6.1.20190511"
+		echo "6.4.20231001"
 		;;
 	--abi-version)
 		echo "6"
@@ -147,12 +266,12 @@ ENDECHO
 		;;
 	--includedir)
 		INCS=
-		if test "xyes" = xno ; then
+		if [ "xyes" = xno ]; then
 			INCS="${includesubdir}"
-		elif test "${includedir}" != /usr/include ; then
+		elif [ "${includedir}" != /usr/include ]; then
 			INCS="${includedir}"
 		fi
-		echo $INCS
+		echo "$INCS"
 		;;
 	--libdir)
 		echo "${libdir}"
@@ -172,7 +291,7 @@ ENDECHO
 	# general info
 	--help)
 		cat <<ENDHELP
-Usage: `basename $0` [options]
+Usage: `basename "$0"` [options]
 
 Options:
   --prefix           echos the package-prefix of ${THIS}
@@ -180,6 +299,10 @@ Options:
 
   --cflags           echos the C compiler flags needed to compile with ${THIS}
   --libs             echos the libraries needed to link with ${THIS}
+
+  --libs-only-L      echos -L linker options (search path) for ${THIS}
+  --libs-only-l      echos -l linker options (libraries) for ${THIS}
+  --libs-only-other  echos linker options other than -L/-l
 
   --version          echos the release+patchdate version of ${THIS}
   --abi-version      echos the ABI version of ${THIS}
@@ -198,7 +321,7 @@ Options:
 ENDHELP
 		;;
 	--error|*)
-		/bin/sh $0 --help 1>&2
+		/bin/sh "$0" --help 1>&2
 		exit 1
 		;;
 	esac
