@@ -15,9 +15,11 @@ android {
         versionName versions.versionName
         versionCode versions.versionCode
 
-        buildConfigField "String", "WHATS_NEW", '""'
+        //* Vim 9.1.0374.
+        //* Add MANAGE_EXTERNAL_STORAGE permission.
+        //  Direct access to internal storage is now possible even with Android 11 or later.
+        buildConfigField "String", "WHATS_NEW", '"* Vim 9.1.0374.\\n* Add MANAGE_EXTERNAL_STORAGE permission.\\n  Direct access to internal storage is now possible even with Android 11 or later."'
         buildConfigField "String", "BASE64_PUBLIC_KEY", String.format('"%s"', file('base64-public-key.txt').getText().replaceAll("[\r\n].*", ""))
-
     }
 
     defaultConfig {

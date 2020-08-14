@@ -10,10 +10,10 @@ libterm-bash00008.so|usr/bin/tput
 libterm-bash00009.so|usr/bin/tset
 libterm-bash00010.so|usr/lib/libandroid-support.so
 libterm-bash00011.so|usr/lib/libcharset.so
-libterm-bash00012.so|usr/lib/libformw.so.6.1
+libterm-bash00012.so|usr/lib/libformw.so.6.4
 libterm-bash00013.so|usr/lib/libhistory.so.8.0
 libterm-bash00014.so|usr/lib/libiconv.so
-libterm-bash00015.so|usr/lib/libmenuw.so.6.1
-libterm-bash00016.so|usr/lib/libncursesw.so.6.1
-libterm-bash00017.so|usr/lib/libpanelw.so.6.1
+libterm-bash00015.so|usr/lib/libmenuw.so.6.4
+libterm-bash00016.so|usr/lib/libncursesw.so.6.4
+libterm-bash00017.so|usr/lib/libpanelw.so.6.4
 libterm-bash00018.so|usr/lib/libreadline.so.8.0
