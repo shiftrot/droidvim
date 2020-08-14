@@ -1,0 +1,50 @@
+#!/system/bin/sh
+_esc() {
+  echo -n -e "\0033["$1"t"
+}
+
+_usage() {
+  echo ime off
+  echo ime on
+  echo ime toggle
+  echo ime default
+  echo ime pass
+  echo ime uri
+  echo ime google \(password\)
+  echo ""
+  echo funcbar off
+  echo funcbar on
+  echo funcbar toggle
+  echo ""
+  echo clipboard \(\$HOME/.clipboard\)
+  echo menu
+  echo shutdown
+  echo ""
+  echo esc \{num\}
+}
+
+case "$1" in
+  "ime" )
+    case "$2" in
+      "off" ) _esc 0;;
+      "on" ) _esc 1;;
+      "toggle" ) _esc 2;;
+      "normal" ) _esc 50;;
+      "pass" ) _esc 51;;
+      "uri" ) _esc 52;;
+      "google" ) _esc 53;;
+    esac ;;
+  "funcbar" )
+    case "$2" in
+      "off" ) _esc 1010;;
+      "on" ) _esc 1011;;
+      "toggle" ) _esc 1002;;
+      "" ) _esc 1002;;
+    esac ;;
+  "clipboard" ) _esc 10;;
+  "menu" ) _esc 1003;;
+  "shutdown" ) _esc 999;;
+  "esc" ) _esc $2;;
+  "" ) _usage;;
+  *) _esc $1;;
+esac

@@ -1,0 +1,4 @@
+#!/system/bin/sh
+echo "symlinks" > $APPFILES/.intent
+echo -n -e "\0033[1001t"
+

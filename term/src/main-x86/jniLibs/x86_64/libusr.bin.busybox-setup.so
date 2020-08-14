@@ -1,0 +1,151 @@
+#!/system/bin/sh
+
+export LD_LIBRARY_PATH=
+BBDIR=$APPFILES/usr/bin
+BUSYBOX=busybox
+SYS_PATH=/system/bin
+SH_PATH=$APPFILES/usr/bin
+
+_mksh()
+{
+if [ $1 == "busybox" ]; then
+  return 0
+fi
+if [ $1 == "sh" ]; then
+  return 0
+fi
+if [ $1 == "bash" ]; then
+  return 0
+fi
+if [ $1 == "zsh" ]; then
+  return 0
+fi
+if [ -f "$SH_PATH/$1" ]; then
+  $BBDIR/$BUSYBOX rm $SH_PATH/$1
+fi
+$BBDIR/$BUSYBOX cat << EOF > $SH_PATH/$1
+#!$SYS_PATH/sh
+export LD_LIBRARY_PATH=
+$2 \$*
+EOF
+$SYS_PATH/chmod 755 $SH_PATH/$1
+}
+
+if [ $# -eq 1 ]; then
+  if [ $1 == "all" ]; then
+    for f in `$BBDIR/$BUSYBOX --list`; do
+      if [ -L "$BBDIR/$f" -o ! -f "$BBDIR/$f" ]; then
+        $BBDIR/$BUSYBOX ln -sf $BBDIR/$BUSYBOX $BBDIR/$f
+      fi
+    done
+    f=am
+    _mksh $f $SYS_PATH/$f
+    f=input
+    _mksh $f $SYS_PATH/$f
+    f=ping
+    _mksh $f $SYS_PATH/$f
+    f=ping6
+    _mksh $f $SYS_PATH/$f
+    echo Added all busybox commands.
+    echo Please restart shell \(or this app\).
+    exit 0
+  elif [ $1 == "clean" ]; then
+    echo remove $BUSYBOX commands...
+    for f in `$BBDIR/$BUSYBOX --list`; do
+        if [ -L "$BBDIR/$f" ]; then
+          $BBDIR/$BUSYBOX rm $BBDIR/$f
+        fi
+    done
+    $BBDIR/$BUSYBOX mv $BBDIR/$BUSYBOX $BBDIR/$BUSYBOX.bin
+    echo remove sysbin...
+    for f in `$SYS_PATH/ls $SYS_PATH`; do
+      if [ -f "$SH_PATH/$f" ]; then
+        $BBDIR/$BUSYBOX.bin rm $SH_PATH/$f
+      fi
+    done
+    echo remove sysxbin...
+    for f in `$SYS_PATH/ls /system/xbin`; do
+      if [ -f "$SH_PATH/$f" ]; then
+        $BBDIR/$BUSYBOX.bin rm $SH_PATH/$f
+      fi
+    done
+    $BBDIR/$BUSYBOX.bin mv $BBDIR/$BUSYBOX.bin $BBDIR/$BUSYBOX
+    echo busybox and sysbin commands are removed.
+    exit 0
+  elif [ $1 == "sysbin" ]; then
+    echo add sysbin...
+    for f in `$SYS_PATH/ls $SYS_PATH`; do
+      _mksh $f $SYS_PATH/$f
+    done
+    echo add sysxbin...
+    for f in `$SYS_PATH/ls /system/xbin`; do
+      _mksh $f $SYS_PATH/$f
+    done
+    echo add sysbin commands
+    exit 0
+  else
+    for f in `$BBDIR/$BUSYBOX --list`; do
+        if [ $f == $1 ]; then
+        if [ -L "$BBDIR/$f" -o ! -f "$BBDIR/$f" ]; then
+            $BBDIR/$BUSYBOX ln -sf $BBDIR/$BUSYBOX $BBDIR/$f
+            echo add busybox $1
+            exit 0
+          else
+            echo $1 is not symbolic link
+            exit 1
+          fi
+        fi
+    done
+    echo unknown option $1
+    exit 1
+  fi
+fi
+
+if [ $# -gt 1 ]; then
+  if [ $1 == "sysbin" ]; then
+    echo Generate $1 $2
+    for f in `$SYS_PATH/ls $SYS_PATH`; do
+      if [ $f == $2 ]; then
+        _mksh $f $SYS_PATH/$f
+        echo add sysbin $f
+        exit 0
+      fi
+    done
+    for f in `$SYS_PATH/ls /system/xbin`; do
+      if [ $f == $2 ]; then
+        _mksh $f $SYS_PATH/$f
+        echo add sysbin $f
+        exit 0
+      fi
+    done
+    echo Unknown command $2
+    exit 1
+  else
+    echo invalid options
+    exit 1
+  fi
+fi
+
+for f in `$BBDIR/$BUSYBOX --list`; do
+  if [ -f "$SYS_PATH/$f" ]; then
+    if [ -L "$BBDIR/$f" ]; then
+      $BBDIR/$BUSYBOX rm $BBDIR/$f
+    fi
+  elif [ -f "/system/xbin/$f" ]; then
+    if [ -L "$BBDIR/$f" -o ! -f "$BBDIR/$f" ]; then
+      $BBDIR/$BUSYBOX ln -sf $BBDIR/$BUSYBOX $BBDIR/$f
+    fi
+  else
+    if [ -L "$BBDIR/$f" -o ! -f "$BBDIR/$f" ]; then
+      $BBDIR/$BUSYBOX ln -sf $BBDIR/$BUSYBOX $BBDIR/$f
+    fi
+  fi
+done
+
+f=am
+_mksh $f $SYS_PATH/$f
+f=input
+_mksh $f $SYS_PATH/$f
+
+echo Added busybox commands.
+echo Please restart shell \(or this app\).

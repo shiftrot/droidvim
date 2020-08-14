@@ -1,0 +1,6 @@
+if [ -x $APPFILES/usr/bin/bash ]; then
+    bash $@
+else
+    sh $@
+fi
+echo -n -e "\0033[999t"

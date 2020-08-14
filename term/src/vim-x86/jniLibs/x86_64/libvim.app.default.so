@@ -1,0 +1,8 @@
+vim.default $@
+if [ $? -ne 0 ]; then
+  echo -n -e "\0033[9998t"
+  exit
+else
+  echo -n -e "\0033[999t"
+fi
+

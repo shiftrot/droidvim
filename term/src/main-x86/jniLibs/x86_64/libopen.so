@@ -1,0 +1,8 @@
+#!/system/bin/sh
+if [ $# -eq 0 ]; then
+  echo "Usage: open {url}"
+  exit 0
+fi
+echo "android.intent.action.VIEW\n%open%$*" > $APPFILES/.intent
+echo -n -e "\0033[1001t"
+

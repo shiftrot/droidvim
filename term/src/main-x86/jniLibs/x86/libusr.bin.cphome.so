@@ -1,0 +1,55 @@
+#!/system/bin/sh
+CMD="$APPFILES/usr/bin/busybox cp -RTPpu "
+
+_usage() {
+  echo
+  echo " Usage : cphome SRC DEST"
+  echo "  - Same as \"cp -RTPpu src dest\"."
+  echo "  - Recursively copy a directory."
+  echo "  - Copy only the file with the new timestamp."
+  echo "  - Symbolic links are not copied."
+  echo
+  echo " Usage : cphome {push | pull}"
+  echo "       : cphome {backup | restore}"
+  echo "       : cphome {b | r}"
+  echo "  - push \(backup\)  : \$HOME -> \$APPEXTHOME"
+  echo "  - pull \(restore\) : \$APPEXTHOME -> \$HOME"
+}
+
+_done() {
+  echo "Completed successfully."
+  echo ""
+  echo "If you uninstall this app, \$HOME and \$APPEXTHOME will be deleted."
+  echo "Please backup regularly."
+}
+
+if [ $# -eq 1 ]; then
+  case "$1" in
+    "push" |"backup" | "b" )
+      $CMD $HOME $APPEXTHOME 2>/dev/null
+      # if [ $? -ne 0 ] ;then
+      #   echo "An unexpected error has occurred."
+      #   exit 0
+      # fi
+      _done
+      exit 0
+      ;;
+    "pull" | "restore" | "r" )
+      $CMD $APPEXTHOME $HOME
+      if [ $? -ne 0 ] ;then
+        exit 1
+      fi
+      _done
+      exit 0
+      ;;
+    *) _usage;;
+  esac
+  exit 0
+fi
+if [ $# -eq 2 ]; then
+  if [ -d $1 -a -d $2 ]; then
+    $CMD $1 $2
+    exit 0
+  fi
+fi
+_usage

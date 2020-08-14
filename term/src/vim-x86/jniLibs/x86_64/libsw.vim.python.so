@@ -1,0 +1,21 @@
+#!/system/bin/sh
+
+if [ -x "$APPFILES/bin/vim.python" ]; then
+  if [ $# -eq 0 ]; then
+    echo "sw.vim.python scriptname"
+    echo "scriptname : default | alt1"
+  elif [ $1 = "default" ]; then
+    cat $APPFILES/usr/etc/src.vim.python > $APPFILES/bin/vim
+    chmod 755 $APPFILES/bin/vim
+    echo switch to "default" vim.python script.
+  elif [ $1 = "alt1" ]; then
+    cat $APPFILES/usr/etc/src.vim.python.alt > $APPFILES/bin/vim
+    chmod 755 $APPFILES/bin/vim
+    echo switch to "alternate" vim.python script.
+  else
+    echo "sw.vim.python scriptname"
+    echo "scriptname : default | alt1"
+  fi
+else
+  echo vim.python does not exist.
+fi
