@@ -158,22 +158,11 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return getArch(false);
     }
 
-    static private int mGetArchMode = 1;
-    static public void setArchMode(int mode) {
-        mGetArchMode = mode;
-    }
-
-    static private boolean mArchOverrideMode = false;
-    static public boolean getArchOverrideMode() {
-        return mArchOverrideMode;
-    }
-
     static public String getArch(boolean raw) {
         String libPath = getAPPLIB();
         String cpu = null;
-        mArchOverrideMode = false;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mGetArchMode == 1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             for (String androidArch : Build.SUPPORTED_ABIS) {
                 if (androidArch.contains("arm64")) {
                     cpu = "arm64";
@@ -198,22 +187,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
             else if (new File(libPath + "/libarm.so").exists()) cpu = "arm";
         }
 
-        if (cpu != null) {
-            if (raw) return cpu;
-            if (cpu.contains("64")) {
-                if (new File(getVersionFilesDir() + "/.32bit").exists()) {
-                    mArchOverrideMode = true;
-                    return cpu.contains("arm") ? "arm" : "x86";
-                }
-                return cpu;
-            } else {
-                if (new File(getVersionFilesDir() + "/.64bit").exists()) {
-                    mArchOverrideMode = true;
-                    return cpu.contains("arm") ? "arm64" : "x86_64";
-                }
-                return cpu;
-            }
-        }
+        if (cpu != null) return cpu;
 
         // Unreachable
         return "arm";

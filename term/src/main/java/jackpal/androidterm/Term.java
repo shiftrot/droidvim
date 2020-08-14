@@ -47,6 +47,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.system.Os;
 import android.text.TextUtils;
@@ -163,6 +164,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_STORAGE_DELETE = 10001;
     public static final int REQUEST_STORAGE_CREATE = 10002;
     public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
+    public static final String EXEC_STATUS_CHECK_CMD = "/exec-check";
+    public static final String EXEC_STATUS_FILE      = "/exec.ok";
     public static final String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
     public static final String FKEY_LABEL = "fkey_label";
     private static final int VIEW_FLIPPER = R.id.view_flipper;
@@ -1389,6 +1392,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
 
             String _postCmd = "";
+
+            _postCmd = _postCmd + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
+            _postCmd = _postCmd + "rm " + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
             String[] list = cmd.split("\n");
             String preCmd = "";
             for (String str : list) {
@@ -1425,6 +1431,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String initialCmd = mSettings.getInitialCommand();
         initialCmd = mTermService.getInitialCommand(initialCmd, true);
         String postCmd = "";
+        postCmd = postCmd + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
+        postCmd = postCmd + "rm " + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
         String[] list = initialCmd.split("\n");
         for (String str : list) {
             if (str.matches("^(bash|vim.app).*")) {
@@ -2421,8 +2429,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 } else if (getString(R.string.menu_edit_vimrc).equals(item)) {
                     editVimrc();
                 } else if (getString(R.string.scoped_storage).equals(item)) {
-                    // Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                    // startActivity(intent);
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    startActivity(intent);
                 } else {
                     intentMainActivity(appId[which]);
                 }
@@ -2946,10 +2954,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(getString(R.string.crash_title) + " (" + getArch() + ")");
             String message = getString(R.string.crash_message);
-            File file = new File(TermService.getAPPFILES() + "/bin/vim.default");
-            if (file.exists() && !file.canExecute()) {
+            File file = new File(TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
+            if (!file.exists()) {
                 message += "\n\n";
                 message += getString(R.string.security_error_message);
+            }
+            if (!TermService.getAPPFILES().startsWith("/data/")) {
+                message += "\n\n";
+                message += getString(R.string.security_app_in_sdcard_message);
             }
             bld.setMessage(message);
             bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {

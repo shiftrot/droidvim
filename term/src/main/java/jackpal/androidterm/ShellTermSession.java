@@ -83,6 +83,7 @@ public class ShellTermSession extends GenericTermSession {
 
     static private boolean mFirst = true;
     static private String mEnvInitialCommand = "";
+    static private boolean mProotEnable = true;
 
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
@@ -118,7 +119,9 @@ public class ShellTermSession extends GenericTermSession {
         }
 
         String shell = settings.getShell();
+        mProotEnable = !new File(TermService.getVersionFilesDir() + "/proot.off").exists();
         mProcId = createSubprocess(shell, envCmd);
+
     }
 
     static private String mPostCmd = null;
@@ -156,10 +159,9 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     static String[] getProotCommand(String... commands) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return new String[]{};
+        if (!mProotEnable || Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return new String[]{};
         String appLib = TermService.getAPPLIB();
         List<String> prootCommands = new ArrayList<>();
-        prootCommands.add("export APPLIB=" + appLib);
         if (!new File(appLib + "/libproot.so").canExecute()) return prootCommands.toArray(new String[0]);
 
         prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());

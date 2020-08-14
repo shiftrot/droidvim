@@ -3,11 +3,17 @@ package jackpal.androidterm;
 import android.os.Build;
 import android.system.Os;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static jackpal.androidterm.TermVimInstaller.shell;
@@ -21,8 +27,66 @@ public class JniLibsToBin {
             put("libdiff.so",        "/usr/bin/diff");
             put("libgrep.so",        "/usr/bin/grep");
             put("libgrep32.so",      "/usr/bin/grep");
+            put("libam.so"                   , "/bin/am");
+            put("libatemod.so"               , "/bin/atemod");
+            put("libbash.app.so"             , "/bin/bash.app");
+            put("libgetprop.so"              , "/bin/getprop");
+            put("libopen.so"                 , "/bin/open");
+            put("libsetup-storage.so"        , "/bin/setup-storage");
+            put("libxdg-open.so"             , "/bin/xdg-open");
+            put("libusr.bin.busybox-setup.so", "/usr/bin/busybox-setup");
+            put("libusr.bin.cphome.so"       , "/usr/bin/cphome");
+            put("libvim.app.default.so"      , "/bin/vim.app.default");
+            put("libvim.app.so"              , "/bin/vim.app");
         }
     };
+
+    static public boolean jniLibsToBin(String targetDir, InputStream is) {
+        Map<String, String> maps = readSymlinks(is);
+        if (maps != null && maps.size() > 0) jniLibsToBin(targetDir, maps);
+        return true;
+    }
+
+    static public Map<String, String> readSymlinks(InputStream inputStream) {
+        try (
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")))) {
+            Map<String, String> result = new HashMap<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                try {
+                    List<String> item = Arrays.asList(line.split("\\|"));
+                    if (item.size() != 2) continue;
+                    String lib = item.get(0);
+                    String file = item.get(1);
+                    result.put(lib, file);
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    static public boolean jniLibsToBin(String targetDir, String lib, String symlinkName) {
+        Map<String, String> maps = new LinkedHashMap<String, String>() {
+            {
+                put(lib, symlinkName);
+            }
+        };
+        jniLibsToBin(targetDir, maps);
+        File symlink = new File(targetDir + symlinkName);
+        if (symlink.exists() && ASFUtils.isSymlink(symlink)) return true;
+        long size = 0;
+        try {
+            size = symlink.length();
+        } catch (Exception symlinkError) {
+            size = -1;
+        }
+        if (symlink.exists() && size > (1024.0 * 5.0)) return true;
+        return false;
+    }
 
     static public void jniLibsToBin(String targetDir, Map <String, String> maps) {
         String SOLIB_PATH = TermService.getAPPLIB();
@@ -30,17 +94,21 @@ public class JniLibsToBin {
             if (entry.getKey().contains("grep32") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) continue;
             try {
                 File soFile = new File(SOLIB_PATH + "/" + entry.getKey());
+                if (!soFile.exists()) continue;
                 File symlink = new File(targetDir + "/" + entry.getValue());
                 File parent = new File(symlink.getParent());
                 if (!parent.isDirectory()) {
                     parent.mkdirs();
                 }
+                shell("rm " + symlink.getAbsolutePath());
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || !SOLIB_PATH.startsWith("/data") || !symlink(soFile, symlink)) {
                     InputStream is = new FileInputStream(soFile);
                     TermVimInstaller.cpStream(is , new FileOutputStream(symlink.getAbsolutePath()));
                 }
-                if ((symlink.getAbsolutePath().contains("/bin/")) || (symlink.getAbsolutePath().contains("/lib/"))) {
-                    shell("chmod 755 " + symlink.getAbsolutePath());
+                if ((symlink.getAbsolutePath().contains("/bin/")) ||
+                    (symlink.getAbsolutePath().contains("/lib/")) ||
+                    (symlink.getAbsolutePath().contains("/libexec/"))) {
+                        shell("chmod 755 " + symlink.getAbsolutePath());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -64,4 +132,3 @@ public class JniLibsToBin {
         return true;
     }
 }
-

@@ -210,17 +210,21 @@ final class TermVimInstaller {
             }
             if (!FLAVOR_VIM) {
                 if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                    installInternalBusybox(activity, path + "/usr/bin");
-                    installBusyboxCommands();
+                    installInternalBusybox(path + "/usr/bin");
                     installSoTar(path, "unzip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "unzip_symlinks_")));
                     installSoTar(path, "zip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "zip_symlinks_")));
                     installSoTar(path, "bash");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
                     if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                         shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                     }
+                    JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
+                    installBusyboxCommands();
                 }
             }
             doInstallTerm = false;
@@ -245,8 +249,8 @@ final class TermVimInstaller {
 
     static public boolean ScopedStorageWarning = false;
     static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
-        File force32 = new File(TermService.getAPPEXTFILES() + "/.32bit");
-        File force64 = new File(TermService.getAPPEXTFILES() + "/.64bit");
+        File force32 = new File(TermService.getVersionFilesDir() + "/.32bit");
+        File force64 = new File(TermService.getVersionFilesDir() + "/.64bit");
         if (force32.exists() || force64.exists()) {
             Term.recoveryDelete();
             force32.delete();
@@ -285,26 +289,30 @@ final class TermVimInstaller {
                     installZip(path, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("shell_vim", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    String defaultVim = TermService.getAPPFILES() + "/bin/vim.default";
                     String vimsh = TermService.getAPPFILES() + "/bin/vim";
-                    if ((!new File(defaultVim).exists()) || (!new File(vimsh).exists())) {
-                        shell("cat " + TermService.getAPPFILES() + "/usr/etc/src.vim.default" + " > " + vimsh);
-                        shell("chmod 755 " + vimsh);
+                    if (!new File(vimsh).exists()) {
+                        String libSrcDefaultVim = TermService.getAPPLIB() + "/libsrc.vim.default.so";
+                        if (new File(libSrcDefaultVim).exists()) {
+                            JniLibsToBin.jniLibsToBin(path, "libsrc.vim.default.so", "/bin/vim");
+                        } else {
+                            shell("cat " + TermService.getAPPFILES() + "/usr/etc/src.vim.default" + " > " + vimsh);
+                            shell("chmod 755 " + vimsh);
+                        }
                     }
                     setMessage(activity, pd, "binaries");
                     id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    installInternalBusybox(activity, path + "/usr/bin");
-                    setMessage(activity, pd, "binaries - busybox");
-                    installBusyboxCommands();
+                    installInternalBusybox(path + "/usr/bin");
                     setMessage(activity, pd, "binaries - bin tools");
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
                     setMessage(activity, pd, "binaries - zip tools");
                     installSoTar(path, "unzip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "unzip_symlinks_")));
                     installSoTar(path, "zip");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "zip_symlinks_")));
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         setMessage(activity, pd, "binaries - shell");
@@ -320,6 +328,7 @@ final class TermVimInstaller {
                             id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
                             copyScript(activity.getResources().openRawResource(id), versionPath + "/version.bash");
                         }
+                        JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
                         targetVer.delete();
                         if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                             shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
@@ -335,8 +344,6 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries - vim");
                     installSoTar(path, "vim");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "vim_")));
-                    JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
-
                     id = activity.getResources().getIdentifier("suvim", "raw", activity.getPackageName());
                     String dst = TermService.getAPPFILES() + "/bin/suvim";
                     copyScript(activity.getResources().openRawResource(id), dst);
@@ -376,10 +383,21 @@ final class TermVimInstaller {
                         // id = activity.getResources().getIdentifier("app_ext_home", "raw", activity.getPackageName());
                         // installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
                     }
+                    setMessage(activity, pd, "symlinks");
+                    JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
+                    installBusyboxCommands();
+                    setupStorageSymlinks();
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
-                    setupStorageSymlinks();
                     new PrefValue(activity).setString(TermService.VERSION_NAME_KEY, TermService.APP_VERSION);
+                    try {
+                        id = activity.getResources().getIdentifier("exec_check", "raw", activity.getPackageName());
+                        dst = TermService.getVersionFilesDir() + Term.EXEC_STATUS_CHECK_CMD;
+                        copyScript(activity.getResources().openRawResource(id), dst);
+                        shell("chmod 755 " + dst);
+                    } catch (Exception e) {
+                        // Do nothing
+                    }
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
                         activity.runOnUiThread(new Runnable() {
@@ -566,9 +584,13 @@ final class TermVimInstaller {
 
     public static void extractXZ(final String in, final String outDir) {
         try {
+            String opt = (in.matches(".*.tar.xz|.*.so$")) ? " Jxf " : " xf ";
             if (busybox(null)) {
-                String opt = (in.matches(".*.tar.xz|.*.so$")) ? " Jxf " : " xf ";
                 busybox("tar " + opt + " " + new File(in).getAbsolutePath() + " -C " + outDir);
+                busybox("chmod -R 755 " + TermService.getAPPFILES() + "/bin");
+                busybox("chmod -R 755 " + TermService.getAPPFILES() + "/usr/bin");
+                busybox("chmod -R 755 " + TermService.getAPPFILES() + "/usr/lib");
+                busybox("chmod -R 755 " + TermService.getAPPFILES() + "/usr/libexec");
                 return;
             }
             TarArchiveInputStream fin;
@@ -647,11 +669,11 @@ final class TermVimInstaller {
             if (!internalDir.canWrite()) {
                 internalDir = new File(TermService.getAPPEXTHOME());
             }
+            shell("rm " + new File(storageDir, symlink).getAbsolutePath());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                shell("rm " + new File(storageDir, symlink).getAbsolutePath());
                 Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
             } else {
-                busybox("ln -sf " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
+                shell("ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
@@ -787,44 +809,12 @@ final class TermVimInstaller {
         }
     }
 
-    static private void installInternalBusybox(Activity activity, String target) {
-        try {
-            InputStream is = null;
-            SOLIB_PATH = getSolibPath(activity);
-            final String arch = getArch();
-            File soFile = new File(SOLIB_PATH + "/libbusybox.so");
-            final File symlink = new File(target+"/busybox");
-            if (soFile.exists()) {
-                shell("rm " + symlink.getAbsolutePath());
-                if (SOLIB_PATH.startsWith("/data")) {
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Os.symlink(soFile.getAbsolutePath(), symlink.getAbsolutePath());
-                        } else {
-                            shell("ln -s " + soFile.getAbsolutePath() + " " + symlink.getAbsolutePath());
-                        }
-                        shell("chmod 755 " + symlink.getAbsolutePath());
-                        if (symlink.exists() && ASFUtils.isSymlink(symlink)) return;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                is = new FileInputStream(soFile);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    is = getInputStream(activity, getLocalLibId(activity,"busybox_"));
-                } else {
-                    is = getInputStream(activity, getLocalLibId(activity,"busybox_api16_"));
-                }
-            }
-            if (is != null) {
-                shell("rm " + symlink.getAbsolutePath());
-                cpStream(is , new FileOutputStream(symlink.getAbsolutePath()));
-                shell("chmod 755 " + symlink.getAbsolutePath());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    static private void installInternalBusybox(String target) {
+        String bin = "libbusybox.so";
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            bin = "libbusybox_api16.so";
         }
+        JniLibsToBin.jniLibsToBin(target, bin, "/busybox");
     }
 
     static public void installBusyboxCommands() {
@@ -835,25 +825,11 @@ final class TermVimInstaller {
 
     static public boolean busybox(String cmd) {
         String busybox = TermService.getAPPFILES() + "/usr/bin/busybox";
-        if (!new File(busybox).canExecute()) {
-            busybox = TermService.getAPPFILES() + "/busybox";
-            if (!new File(busybox).canExecute()) {
-                File soFile = new File(TermService.getAPPLIB() + "/libbusybox.so");
-                File symlink = new File(busybox);
-                shell("rm " + symlink.getAbsolutePath());
-                try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Os.symlink(soFile.getAbsolutePath(), symlink.getAbsolutePath());
-                    } else {
-                        shell("ln -s " + soFile.getAbsolutePath() + " " + symlink.getAbsolutePath());
-                    }
-                    shell("chmod 755 " + symlink.getAbsolutePath());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        File file = new File(busybox);
+        if (!file.canExecute()) {
+            installInternalBusybox(file.getParent());
         }
-        boolean canExecute = new File(busybox).canExecute();
+        boolean canExecute = file.canExecute();
         if (cmd == null || !canExecute) return canExecute;
 
         String busyboxCommand = busybox + " " + cmd;

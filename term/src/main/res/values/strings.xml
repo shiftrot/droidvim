@@ -334,13 +334,14 @@
     <string name="confirm_change_lib">If you change the system library, it may not work properly.\nIf it does not work, use \"Long press menu\">\"Window\">\"Close window\" or \"Force stop\" in \"App info\".</string>
     <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
 
-    <string name="crash_title">Sorry, Vim has crashed.</string>
+    <string name="crash_title">Sorry, Vim crashed.</string>
     <string name="crash_message">If you cannot solve the problem, please contact us.</string>
-    <string name="security_error_message">The security policy of this device may prohibit the execution of shell commands.</string>
+    <string name="security_error_message"> - The security policy of this device may prohibit the execution of shell commands.</string>
+    <string name="security_app_in_sdcard_message"> - This app is installed in external storage. We recommend that you move this app to internal storage.</string>
     <string name="crash_quit_button">Force stop this app</string>
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
     <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
-    <string name="revert_to_default_vim">Revert to Vim (default).</string>
+    <string name="revert_to_default_vim">System recovery</string>
     <string name="shell_exit_command_message">This application can be terminated by executing the \"exit\" command several times.</string>
     <string name="quit_to_shell">Quit to shell (Exit this menu)</string>
 
