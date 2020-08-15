@@ -192,7 +192,7 @@ final class TermVimInstaller {
 
         if (doInstall) {
             int id = activity.getResources().getIdentifier("terminfo_min", "raw", activity.getPackageName());
-            String terminfoDir = TermService.getTERMINFO();
+            String terminfoDir = TermService.getAPPFILES() + "/usr/share";
             installZip(terminfoDir, getInputStream(activity, id));
             final String path = TermService.getAPPFILES();
             id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
