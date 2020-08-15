@@ -97,16 +97,16 @@ android {
             res.srcDirs += ['src/droidvim/res', 'src/vim/res']
             jniLibs.srcDirs += ['src/main/jniLibs']
             if (abiArm) {
-                res.srcDirs += ['src/vim-arm/res']
-                res.srcDirs += ['src/bash-arm/res']
-                res.srcDirs += ['src/zip-arm/res', 'src/unzip-arm/res']
-                jniLibs.srcDirs += ['src/main-arm/jniLibs']
+                res.srcDirs += ['src/main-arm/res']
+                jniLibs.srcDirs += ['src/main-arm/jniLibs', 'src/vim-arm/jniLibs']
+                jniLibs.srcDirs += ['src/bash-arm/jniLibs']
+                jniLibs.srcDirs += ['src/zip-arm/jniLibs', 'src/unzip-arm/jniLibs']
             }
             if (abiX86) {
-                res.srcDirs += ['src/vim-x86/res']
-                res.srcDirs += ['src/bash-x86/res']
-                res.srcDirs += ['src/zip-x86/res', 'src/unzip-x86/res']
-                jniLibs.srcDirs += ['src/main-x86/jniLibs']
+                res.srcDirs += ['src/main-x86/res']
+                jniLibs.srcDirs += ['src/main-x86/jniLibs', 'src/vim-x86/jniLibs']
+                jniLibs.srcDirs += ['src/bash-x86/jniLibs']
+                jniLibs.srcDirs += ['src/zip-x86/jniLibs', 'src/unzip-x86/jniLibs']
             }
         }
     }

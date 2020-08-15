@@ -1,0 +1,10 @@
+libunzip00000.so|usr/bin/bzdiff
+libunzip00001.so|usr/bin/bzgrep
+libunzip00002.so|usr/bin/bzip2
+libunzip00003.so|usr/bin/bzip2recover
+libunzip00004.so|usr/bin/bzmore
+libunzip00005.so|usr/bin/funzip
+libunzip00006.so|usr/bin/unzip
+libunzip00007.so|usr/bin/unzipsfx
+libunzip00008.so|usr/bin/zipgrep
+libunzip00009.so|usr/lib/libbz2.so.1.0.8
