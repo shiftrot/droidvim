@@ -4602,9 +4602,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     void alert(String message) {
+        alert(null, message);
+    }
+
+    void alert(String title, String message) {
         try {
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
             if (bld == null) return;
+            if (title != null) {
+                bld.setTitle(title);
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+            }
             bld.setMessage(message);
             bld.setPositiveButton(android.R.string.ok, null);
             Log.d(TermDebug.LOG_TAG, "Showing alert dialog: " + message);
