@@ -1,7 +1,6 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -22,7 +21,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,7 +36,7 @@ import jackpal.androidterm.util.TermSettings;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends AppCompatActivity {
     /*
      *  Open Android Settings
      *  If there is a link starting with "file:///android_asset/ACTION_SETTINGS/", open the corresponding setting screen.
@@ -61,42 +60,33 @@ public class WebViewActivity extends Activity {
     private final View.OnClickListener mButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.webview_back:
-                    if (mWebView.canGoBack()) {
-                        mBack = true;
-                        mWebView.goBack();
-                    } else {
-                        mWebView.stopLoading();
-                        finish();
-                    }
-                    break;
-                case R.id.webview_forward:
-                    if (mWebView.canGoForward()) {
-                        mWebView.goForward();
-                    }
-                    break;
-                case R.id.webview_reload:
-                    mWebView.reload();
-                    toast(R.string.reloading);
-                    break;
-                case R.id.webview_abort:
+            int vId = v.getId();
+            if (vId == R.id.webview_back) {
+                if (mWebView.canGoBack()) {
+                    mBack = true;
+                    mWebView.goBack();
+                } else {
                     mWebView.stopLoading();
-                    toast(R.string.stop_loading);
-                    break;
-                case R.id.webview_menu:
-                    menu();
-                    break;
-                case R.id.webview_plus:
-                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + mZoom);
-                    mFontSize = mWebView.getSettings().getTextZoom();
-                    break;
-                case R.id.webview_minus:
-                    mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - mZoom);
-                    mFontSize = mWebView.getSettings().getTextZoom();
-                    break;
-                default:
-                    break;
+                    finish();
+                }
+            } else if (vId == R.id.webview_forward) {
+                if (mWebView.canGoForward()) {
+                    mWebView.goForward();
+                }
+            } else if (vId == R.id.webview_reload) {
+                mWebView.reload();
+                toast(R.string.reloading);
+            } else if (vId == R.id.webview_abort) {
+                mWebView.stopLoading();
+                toast(R.string.stop_loading);
+            } else if (vId == R.id.webview_menu) {
+                menu();
+            } else if (vId == R.id.webview_plus) {
+                mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() + mZoom);
+                mFontSize = mWebView.getSettings().getTextZoom();
+            } else if (vId == R.id.webview_minus) {
+                mWebView.getSettings().setTextZoom(mWebView.getSettings().getTextZoom() - mZoom);
+                mFontSize = mWebView.getSettings().getTextZoom();
             }
         }
     };
@@ -149,7 +139,7 @@ public class WebViewActivity extends Activity {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.getSettings().setBuiltInZoomControls(true);
+        // mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setBlockNetworkImage(false);
         mWebView.getSettings().setBlockNetworkLoads(false);
         mWebView.getSettings().setAllowFileAccess(true);
@@ -374,12 +364,10 @@ public class WebViewActivity extends Activity {
         switch (theme) {
             case 0:
             case 2:
-                setTheme(R.style.App_Theme_Dark);
+                setTheme(R.style.App_WebView_Dark);
                 break;
             case 1:
             case 3:
-                setTheme(R.style.App_Theme_Light);
-                break;
             // case 2:
             //     setTheme(R.style.App_Theme_Dark_api26);
             //     break;
@@ -387,6 +375,7 @@ public class WebViewActivity extends Activity {
             //     setTheme(R.style.App_Theme_Light_api26);
             //     break;
             default:
+                setTheme(R.style.App_WebView_Light);
                 break;
         }
     }

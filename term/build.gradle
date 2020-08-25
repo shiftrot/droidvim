@@ -125,6 +125,7 @@ dependencies {
     api "androidx.documentfile:documentfile:${versions.documentfile}"
     api "androidx.preference:preference-ktx:${versions.preference}"
     api "androidx.vectordrawable:vectordrawable:${versions.vectordrawable}"
+    api "androidx.webkit:webkit:${versions.webkit}"
     api "com.google.android.material:material:${versions.material}"
 }
 
