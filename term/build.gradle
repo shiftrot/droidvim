@@ -75,7 +75,7 @@ android {
     sourceSets {
         terminal {
             res.srcDirs += ['src/terminal-res/res']
-            jniLibs.srcDirs = ['src/main/jniLibs']
+            jniLibs.srcDirs += ['src/main/jniLibs']
             if (abiArm) {
                 res.srcDirs += ['src/bash-arm/res']
                 res.srcDirs += ['src/zip-arm/res', 'src/unzip-arm/res']
