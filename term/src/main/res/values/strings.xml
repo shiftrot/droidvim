@@ -337,7 +337,7 @@
     <string name="crash_title">Sorry, Vim crashed.</string>
     <string name="crash_message">If you cannot solve the problem, please contact us.</string>
     <string name="security_error_message"> - The security policy of this device may prohibit the execution of shell commands.</string>
-    <string name="security_app_in_sdcard_message"> - This app is installed in external storage. We recommend that you move this app to internal storage.</string>
+    <string name="security_app_in_sdcard_message"> - This app is installed in external storage. Please move this app to internal storage.</string>
     <string name="crash_quit_button">Force stop this app</string>
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
     <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
