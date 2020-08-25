@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -164,7 +165,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_STORAGE_DELETE = 10001;
     public static final int REQUEST_STORAGE_CREATE = 10002;
     public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
-    public static final String EXEC_STATUS_CHECK_CMD = "/exec-check";
+    public static final String EXEC_STATUS_CHECK_CMD = "exec.check";
+    public static final String EXEC_STATUS_CHECK_CMD_FILE = "/" + EXEC_STATUS_CHECK_CMD;
     public static final String EXEC_STATUS_FILE      = "/exec.ok";
     public static final String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
     public static final String FKEY_LABEL = "fkey_label";
@@ -380,6 +382,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         session.setProcessExitMessage(context.getString(R.string.process_exit_message));
 
         return session;
+    }
+
+    public static int getUserId(Context context) {
+        int uid;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+            uid = info.uid;
+        } catch (Exception e) {
+            uid = -1;
+        }
+        return uid;
     }
 
     public static String getVersionName(Context context) {
@@ -1392,9 +1405,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
 
             String _postCmd = "";
-
-            _postCmd = _postCmd + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
-            _postCmd = _postCmd + "rm " + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
+            shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
+            _postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
             String[] list = cmd.split("\n");
             String preCmd = "";
             for (String str : list) {
@@ -1431,8 +1443,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String initialCmd = mSettings.getInitialCommand();
         initialCmd = mTermService.getInitialCommand(initialCmd, true);
         String postCmd = "";
-        postCmd = postCmd + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
-        postCmd = postCmd + "rm " + TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD + "\n";
+        shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
+        postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
         String[] list = initialCmd.split("\n");
         for (String str : list) {
             if (str.matches("^(bash|vim.app).*")) {

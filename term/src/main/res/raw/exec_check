@@ -1,1 +1,1 @@
-echo "Hello world!" > $APPFILES/exec.ok
+echo "Hello world!" > %APPFILES%/exec.ok

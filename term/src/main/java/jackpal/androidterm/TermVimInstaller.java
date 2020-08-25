@@ -352,6 +352,7 @@ final class TermVimInstaller {
                     dst = TermService.getAPPFILES() + "/bin/vim.sh";
                     copyScript(activity.getResources().openRawResource(id), dst);
                     shell("chmod 755 " + dst);
+                    createExecCheckCmdFile(activity);
 
                     String runtimeDir = TermService.getVimRuntimeInstallDir();
                     setMessage(activity, pd, "runtime");
@@ -390,14 +391,6 @@ final class TermVimInstaller {
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
                     new PrefValue(activity).setString(TermService.VERSION_NAME_KEY, TermService.APP_VERSION);
-                    try {
-                        id = activity.getResources().getIdentifier("exec_check", "raw", activity.getPackageName());
-                        dst = TermService.getVersionFilesDir() + Term.EXEC_STATUS_CHECK_CMD;
-                        copyScript(activity.getResources().openRawResource(id), dst);
-                        shell("chmod 755 " + dst);
-                    } catch (Exception e) {
-                        // Do nothing
-                    }
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
                         activity.runOnUiThread(new Runnable() {
@@ -418,6 +411,19 @@ final class TermVimInstaller {
                 }
             }
         }.start();
+    }
+
+    static public void createExecCheckCmdFile(Activity activity) {
+        try {
+            String dst = TermService.getVersionFilesDir() + Term.EXEC_STATUS_CHECK_CMD_FILE;
+            if (new File(dst).exists()) return;
+            int id = activity.getResources().getIdentifier("exec_check", "raw", activity.getPackageName());
+            copyScript(activity.getResources().openRawResource(id), dst);
+            shell("chmod 755 " + dst);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Do nothing
+        }
     }
 
     static private boolean isNeedUpdate(File target, File local) {

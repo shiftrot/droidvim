@@ -84,6 +84,7 @@ public class ShellTermSession extends GenericTermSession {
     static private boolean mFirst = true;
     static private String mEnvInitialCommand = "";
     static private boolean mProotEnable = true;
+    static public boolean mProotNoSecComp = false;
 
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
@@ -119,7 +120,10 @@ public class ShellTermSession extends GenericTermSession {
         }
 
         String shell = settings.getShell();
-        mProotEnable = !new File(TermService.getVersionFilesDir() + "/proot.off").exists();
+        mProotEnable = Build.VERSION.SDK_INT > Build.VERSION_CODES.P;
+        if (new File(TermService.getVersionFilesDir() + "/proot.enable").exists()) mProotEnable = true;
+        if (new File(TermService.getVersionFilesDir() + "/proot.disble").exists()) mProotEnable = false;
+        // mProotNoSecComp = new File(TermService.getVersionFilesDir() + "/proot.noseccomp").exists();
         mProcId = createSubprocess(shell, envCmd);
 
     }
@@ -158,8 +162,12 @@ public class ShellTermSession extends GenericTermSession {
         return getProotCommand(new String[]{});
     }
 
+    static public boolean getProotStatus() {
+        return mProotEnable;
+    }
+
     static String[] getProotCommand(String... commands) {
-        if (!mProotEnable || Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return new String[]{};
+        if (!mProotEnable) return new String[]{};
         String appLib = TermService.getAPPLIB();
         List<String> prootCommands = new ArrayList<>();
         if (!new File(appLib + "/libproot.so").canExecute()) return prootCommands.toArray(new String[0]);
@@ -169,6 +177,7 @@ public class ShellTermSession extends GenericTermSession {
         if (new File(appLib + "/libloader-m32.so").canExecute()) {
             prootCommands.add("export PROOT_LOADER_32=$APPLIB/libloader-m32.so");
         }
+        if (mProotNoSecComp) prootCommands.add("export PROOT_NO_SECCOMP=1");
         prootCommands.add("$APPLIB/libproot.so /system/bin/sh");
         if (commands != null && !Arrays.equals(commands, new String[]{})) {
             prootCommands.addAll(Arrays.asList(commands));
