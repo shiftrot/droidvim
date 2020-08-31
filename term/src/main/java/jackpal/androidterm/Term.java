@@ -63,6 +63,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -582,6 +584,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 e.printStackTrace();
             }
         }
+        if (!mAlreadyStarted) EmulatorView.setTextScale(1.0f);
 
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings = new TermSettings(getResources(), mPrefs);
@@ -1607,6 +1610,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
         emulatorView.setDoubleTapListener(new EmulatorViewDoubleTapListener(emulatorView));
+        emulatorView.setScaleGestureListener(new EmulatorViewScaleGestureListener(emulatorView));
         emulatorView.setOnKeyListener(mKeyListener);
         registerForContextMenu(emulatorView);
 
@@ -4808,6 +4812,48 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return false;
         }
 
+    }
+
+    private int mTextPinch = 0;
+
+    private class EmulatorViewScaleGestureListener extends SimpleOnScaleGestureListener {
+        private final EmulatorView view;
+
+        public EmulatorViewScaleGestureListener(EmulatorView view) {
+            this.view = view;
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+            float scaleFactor = scaleGestureDetector.getScaleFactor();
+            if (scaleFactor > 1.0f) {
+                mTextPinch += 1;
+            } else if (scaleFactor < 1.0f) {
+                mTextPinch -= 1;
+            }
+            final float TEXT_SCALE_STEP = 0.025f;
+            final int THRESHOLD = 1;
+            if (mTextPinch - THRESHOLD >= 0) {
+                mTextPinch -= THRESHOLD;
+                EmulatorView.setTextScale(EmulatorView.getTextScale() * (1.0f + TEXT_SCALE_STEP));
+                view.setFontSize();
+            } else if (mTextPinch + THRESHOLD <= 0) {
+                mTextPinch += THRESHOLD;
+                EmulatorView.setTextScale(EmulatorView.getTextScale() * (1.0f - TEXT_SCALE_STEP));
+                view.setFontSize();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+            mTextPinch = 0;
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+        }
     }
 
     private static class FunctionKey {

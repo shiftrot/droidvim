@@ -41,6 +41,7 @@ import android.view.Display;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
@@ -73,7 +74,7 @@ import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
  * take care of this for you.
  */
 public class EmulatorView extends View implements GestureDetector.OnGestureListener,
-        GestureDetector.OnDoubleTapListener {
+        GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener {
     private final static String TAG = "EmulatorView";
     private final static boolean LOG_KEY_EVENTS = false;
     private final static boolean LOG_IME = false;
@@ -225,6 +226,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
     private GestureDetector.OnDoubleTapListener mDoubleTapListener;
+    private ScaleGestureDetector mScaleGestureDetector;
+    private ScaleGestureDetector.SimpleOnScaleGestureListener mScaleGestureListener;
     private Scroller mScroller;
     private final Runnable mFlingRunner = new Runnable() {
         public void run() {
@@ -254,6 +257,25 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * A hash table of underlying URLs to implement clickable links.
      */
     private final Hashtable<Integer, URLSpan[]> mLinkLayer = new Hashtable<Integer, URLSpan[]>();
+
+    @Override
+    public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+        if (mScaleGestureListener != null) mScaleGestureListener.onScale(scaleGestureDetector);
+        return false;
+    }
+
+    @Override
+    public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+        mGestureDetector.setIsLongpressEnabled(false);
+        if (mScaleGestureListener != null) return mScaleGestureListener.onScaleBegin(scaleGestureDetector);
+        return true;
+    }
+
+    @Override
+    public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+        mGestureDetector.setIsLongpressEnabled(true);
+        if (mScaleGestureListener != null) mScaleGestureListener.onScaleEnd(scaleGestureDetector);
+    }
 
     /**
      * Sends mouse wheel codes to terminal in response to fling.
@@ -389,7 +411,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTopRow = 0;
         mLeftColumn = 0;
         mGestureDetector = new GestureDetector(this.getContext(), this);
-        // mGestureDetector.setIsLongpressEnabled(false);
+        mGestureDetector.setIsLongpressEnabled(true);
+        mScaleGestureDetector = new ScaleGestureDetector(this.getContext(), this);
+        mScaleGestureDetector.setQuickScaleEnabled(false);
         setVerticalScrollBarEnabled(true);
         setFocusable(true);
         setFocusableInTouchMode(true);
@@ -906,6 +930,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mDoubleTapListener = listener;
     }
 
+    public void setScaleGestureListener(ScaleGestureDetector.SimpleOnScaleGestureListener listener) {
+        mScaleGestureListener = listener;
+    }
+
     /**
      * Compute the vertical range that the vertical scrollbar represents.
      */
@@ -1050,14 +1078,31 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *
      * @param fontSize the new font size, in density-independent pixels.
      */
+    private static float mTextScale = 1.0f;
     public void setTextSize(float fontSize) {
-        if (fontSize == 0) {
+        if (fontSize <= 0) {
             fontSize = getTextSize((Activity) this.getContext());
         }
-        mTextSize = (int) Math.floor(fontSize * mDensity);
+        mFontSize = fontSize;
+        mTextSize = (int) (Math.floor(fontSize * mTextScale * mDensity));
         updateText();
     }
 
+    public void setFontSize() {
+        setTextSize(mFontSize);
+    }
+
+    static public void setTextScale(float scale) {
+        mTextScale = scale;
+        final float max = 3.0f;
+        if (mTextScale > max) mTextScale = max;
+    }
+
+    static public float getTextScale() {
+        return mTextScale;
+    }
+
+    static private float mFontSize = 14.0f;
     static public float getTextSize(Activity activity) {
         final float splashWidth = 30.4f;
         final float fontSizeMax = 20.0f;
@@ -1075,6 +1120,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("fontsize", (String.valueOf(fontSize)));
         editor.apply();
+        mFontSize = fontSize;
         return fontSize;
     }
 
@@ -1169,7 +1215,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void onLongPress(MotionEvent e) {
         // XXX hook into external gesture listener
-        showContextMenu();
+        if (mGestureDetector.isLongpressEnabled()) {
+            showContextMenu();
+        }
     }
 
     public int getCharacterHeight() {
@@ -1259,7 +1307,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mScrollRemainder = 0.0f;
         return true;
     }
-
     // End GestureDetector.OnGestureListener methods
 
     @Override
@@ -1267,6 +1314,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mIsSelectingText) {
             return onTouchEventWhileSelectingText(ev);
         } else {
+            if (mScaleGestureListener != null) mScaleGestureDetector.onTouchEvent(ev);
             return mGestureDetector.onTouchEvent(ev);
         }
     }
@@ -2117,7 +2165,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void updateText() {
         ColorScheme scheme = mColorScheme;
         if (mTextSize > 0) {
-            mTextRenderer = new PaintRenderer(mTextSize, scheme, mTextFont, mTextLeading);
+            mTextRenderer = new PaintRenderer(mTextSize, scheme, mTextFont, (int) Math.ceil(mTextLeading * mTextScale));
         } else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);
         }

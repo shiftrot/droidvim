@@ -51,6 +51,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.documentfile.provider.DocumentFile;
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
@@ -1005,6 +1006,16 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     }
                 });
             }
+
+            final String FONTSIZE = "fontsize";
+            Preference fontSize = findPreference(FONTSIZE);
+            fontSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    EmulatorView.setTextScale(1.0f);
+                    return true;
+                }
+            });
             setHasOptionsMenu(true);
         }
 
@@ -1015,6 +1026,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 startActivity(new Intent(getActivity(), TermPreferences.class));
                 return true;
             }
+
             return super.onOptionsItemSelected(item);
         }
     }
