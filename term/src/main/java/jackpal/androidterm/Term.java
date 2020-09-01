@@ -188,6 +188,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
     private LinkedList<ExternalApp> mExternalApps;
     private String APP_FILER;
+    public static final int TERMINAL_MODE_DISABLE = 0x00;
+    public static final int TERMINAL_MODE_ENABLE = 0x01;
+    public static final int TERMINAL_MODE_BASH = 0x02;
+    public static final int TERMINAL_MODE_PROOT = 0x04;
+    public static int mTerminalMode = TERMINAL_MODE_DISABLE;
+    public static final String TERMINAL_MODE_FILE = "/.terminal.mode";
 
     private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
         {
@@ -565,6 +571,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         if (icicle == null)
             onNewIntent(getIntent());
+
+        mTerminalMode = TERMINAL_MODE_DISABLE;
+        File terminalModeFile = new File(getFilesDir() + TERMINAL_MODE_FILE);
+        if (terminalModeFile.exists()) {
+            try (BufferedReader in = new BufferedReader(new FileReader(terminalModeFile))){
+                String line;
+                if ((line = in.readLine()) != null) mTerminalMode = Integer.parseInt(line);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
         final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings = new TermSettings(getResources(), mPrefs);

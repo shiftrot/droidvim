@@ -14,6 +14,11 @@ export TERMINFO=%TERMINFO%
 export TMPDIR=%TMPDIR%
 export VIM=%VIM%
 export VIMRUNTIME=%VIMRUNTIME%
+# export PROOT_TMP_DIR=$TMPDIR
+# export PROOT_LOADER=$APPLIB/libloader.so
+# export PROOT_LOADER_32=$APPLIB/libloader-m32.so
+# $APPLIB/libproot.so /system/bin/sh"
+
 vim.default -u $VIM/vimrc $@
 if [ $? -ne 0 ]; then
   exit 1

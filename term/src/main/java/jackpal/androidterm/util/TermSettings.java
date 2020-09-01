@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import java.util.Locale;
 
 import jackpal.androidterm.R;
+import jackpal.androidterm.Term;
 import jackpal.androidterm.TermService;
 import jackpal.androidterm.compat.AndroidCompat;
 
@@ -385,6 +386,14 @@ public class TermSettings {
         mHtmlViewerMode = readIntPref(HTML_VIEWER_MODE_KEY, mHtmlViewerMode, 2);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
+        if (Term.mTerminalMode != 0) {
+            mInitialCommand = "cd %STARTUP_DIR%";
+            if ((Term.mTerminalMode & Term.TERMINAL_MODE_BASH) != 0) {
+                mInitialCommand += "\nbash.app";
+            } else {
+                mInitialCommand += "\nsh.app";
+            }
+        }
         mIntentCommand = readStringPref(INTENTCOMMAND_KEY, mIntentCommand);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);

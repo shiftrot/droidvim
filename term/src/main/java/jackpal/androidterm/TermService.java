@@ -455,6 +455,14 @@ public class TermService extends Service implements TermSession.FinishCallback {
     public void onDestroy() {
         stopNotificationService();
         destroySessions();
+        clearTerminalMode();
+    }
+
+    private void clearTerminalMode() {
+        File local = new File(mVERSION_FILES_DIR + Term.TERMINAL_MODE_FILE);
+        if (Term.mTerminalMode != 0 && local.exists()) {
+            local.delete();
+        }
     }
 
     private void stopNotificationService() {

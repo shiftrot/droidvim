@@ -121,8 +121,12 @@ public class ShellTermSession extends GenericTermSession {
 
         String shell = settings.getShell();
         mProotEnable = Build.VERSION.SDK_INT > Build.VERSION_CODES.P;
-        if (new File(TermService.getVersionFilesDir() + "/proot.enable").exists()) mProotEnable = true;
-        if (new File(TermService.getVersionFilesDir() + "/proot.disble").exists()) mProotEnable = false;
+        if (Term.mTerminalMode != 0) {
+            mProotEnable = (Term.mTerminalMode & Term.TERMINAL_MODE_PROOT) != 0;
+        } else {
+            if (new File(TermService.getVersionFilesDir() + "/proot.enable").exists()) mProotEnable = true;
+            if (new File(TermService.getVersionFilesDir() + "/proot.disble").exists()) mProotEnable = false;
+        }
         // mProotNoSecComp = new File(TermService.getVersionFilesDir() + "/proot.noseccomp").exists();
         mProcId = createSubprocess(shell, envCmd);
 
