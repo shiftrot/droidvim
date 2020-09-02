@@ -322,12 +322,12 @@ final class TermVimInstaller {
                         copyScript(activity.getResources().openRawResource(id), target);
                         File targetVer = new File(target);
                         File localVer = new File(local);
-                        if (isNeedUpdate(targetVer, localVer)) {
+                        // if (isNeedUpdate(targetVer, localVer)) {
                             installSoTar(path, "bash");
                             installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
                             id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
                             copyScript(activity.getResources().openRawResource(id), versionPath + "/version.bash");
-                        }
+                        // }
                         JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
                         targetVer.delete();
                         if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
