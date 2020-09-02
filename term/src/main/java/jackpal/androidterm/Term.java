@@ -2988,7 +2988,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 message += "\n\n";
                 message += getString(R.string.security_error_message);
             }
-            if (!TermService.getAPPFILES().startsWith("/data/")) {
+
+            if (isInExternalStorage()) {
                 message += "\n\n";
                 message += getString(R.string.security_app_in_sdcard_message);
             }
@@ -3016,6 +3017,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 sendKeyStrings("vim.app\r", false);
             }
         }
+    }
+
+    private boolean isInExternalStorage() {
+        if (!TermService.getAPPFILES().startsWith("/data/")) return true;
+        return !ASFUtils.isSymlink(new File(TermService.getAPPFILES() + "/usr/bin/" + TermVimInstaller.getArch()));
     }
 
     private void fatalCrashQuit() {

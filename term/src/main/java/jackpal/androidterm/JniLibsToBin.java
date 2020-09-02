@@ -78,14 +78,22 @@ public class JniLibsToBin {
         jniLibsToBin(targetDir, maps);
         File symlink = new File(targetDir + symlinkName);
         if (symlink.exists() && ASFUtils.isSymlink(symlink)) return true;
+        String SOLIB_PATH = TermService.getAPPLIB();
+        File libFile = new File(SOLIB_PATH + "/" + lib);
         long size = 0;
+        long libSize = 0;
         try {
             size = symlink.length();
+            libSize = libFile.length();
         } catch (Exception symlinkError) {
             size = -1;
         }
-        if (symlink.exists() && size > (1024.0 * 5.0)) return true;
+        if (symlink.exists() && size == libSize) return true;
         return false;
+    }
+
+    static public boolean isSymlink(File symlink) {
+        return (symlink.exists() && ASFUtils.isSymlink(symlink));
     }
 
     static public void jniLibsToBin(String targetDir, Map <String, String> maps) {

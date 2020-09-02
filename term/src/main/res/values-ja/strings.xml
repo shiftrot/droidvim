@@ -338,8 +338,8 @@
 
     <string name="crash_title">Vimがクラッシュしました.</string>
     <string name="crash_message">問題を解決できない場合は開発者までご連絡ください.</string>
-    <string name="security_error_purchase_warning_message">・このデバイスのセキュリティポリシーによりshellコマンドの実行が禁止されている可能性があります.</string>
-    <string name="security_app_in_sdcard_message">・このアプリは外部ストレージにインストールされています. このアプリを内部ストレージに移動してください.</string>
+    <string name="security_error_message">・このデバイスのセキュリティポリシーによりshellコマンドの実行が禁止されている可能性があります.</string>
+    <string name="security_app_in_sdcard_message">・このアプリは外部ストレージにインストールされている可能性があります. このアプリを内部ストレージに移動してください.</string>
     <string name="crash_quit_button">強制終了</string>
     <string name="crash_trouble_shooting_button">トラブルシューティング</string>
     <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
