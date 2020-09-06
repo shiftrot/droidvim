@@ -338,6 +338,7 @@
 
     <string name="crash_title">Vimがクラッシュしました.</string>
     <string name="crash_message">問題を解決できない場合は開発者までご連絡ください.</string>
+    <string name="proot_error_message">・prootでエラーが発生しました. (OSのアップデートで改善する可能性があります)</string>
     <string name="security_error_message">・このデバイスのセキュリティポリシーによりshellコマンドの実行が禁止されている可能性があります.</string>
     <string name="security_app_in_sdcard_message">・このアプリは外部ストレージにインストールされている可能性があります. このアプリを内部ストレージに移動してください.</string>
     <string name="crash_quit_button">強制終了</string>

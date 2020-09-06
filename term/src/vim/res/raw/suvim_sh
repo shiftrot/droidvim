@@ -17,7 +17,7 @@ export VIMRUNTIME=%VIMRUNTIME%
 # export PROOT_TMP_DIR=$TMPDIR
 # export PROOT_LOADER=$APPLIB/libloader.so
 # export PROOT_LOADER_32=$APPLIB/libloader-m32.so
-# $APPLIB/libproot.so /system/bin/sh"
+# $APPLIB/libproot.so -0 -w / /system/bin/sh"
 
 vim.default -u $VIM/vimrc $@
 if [ $? -ne 0 ]; then

@@ -182,7 +182,7 @@ public class ShellTermSession extends GenericTermSession {
             prootCommands.add("export PROOT_LOADER_32=$APPLIB/libloader-m32.so");
         }
         if (mProotNoSecComp) prootCommands.add("export PROOT_NO_SECCOMP=1");
-        prootCommands.add("$APPLIB/libproot.so /system/bin/sh");
+        if (!FLAVOR_TERMINAL) prootCommands.add(appLib + "/libproot.sh.so");
         if (commands != null && !Arrays.equals(commands, new String[]{})) {
             prootCommands.addAll(Arrays.asList(commands));
         }

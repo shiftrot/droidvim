@@ -1366,6 +1366,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         new File(FILE_CLIPBOARD).delete();
         File cacheDir = new File(INTENT_CACHE_DIR);
         shell("rm -rf " + cacheDir.getAbsolutePath());
+        shell("rm " + TermService.getAPPFILES() + "/proot.err");
         mTermService = null;
         mTSConnection = null;
         super.onDestroy();
@@ -2969,6 +2970,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.default");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.python");
         shell("rm -rf " + TermService.getVIMRUNTIME() + "/pack/shiftrot");
+        shell("rm " + TermService.getVersionFilesDir() + "/proot.err");
         shell("rm " + TermService.getVersionFilesDir() + "/version");
         shell("rm " + TermService.getVersionFilesDir() + "/version.*");
         mUninstall = false;
@@ -2983,7 +2985,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(getString(R.string.crash_title) + " (" + getArch() + ")");
             String message = getString(R.string.crash_message);
-            File file = new File(TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
+            File file = new File(TermService.getAPPFILES() + "/proot.err");
+            if (file.exists()) {
+                message += "\n\n";
+                message += getString(R.string.proot_error_message);
+            }
+
+            file = new File(TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
             if (!file.exists()) {
                 message += "\n\n";
                 message += getString(R.string.security_error_message);

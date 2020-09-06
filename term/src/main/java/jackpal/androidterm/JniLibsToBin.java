@@ -38,6 +38,7 @@ public class JniLibsToBin {
             put("libusr.bin.cphome.so"       , "/usr/bin/cphome");
             put("libvim.app.default.so"      , "/bin/vim.app.default");
             put("libvim.app.so"              , "/bin/vim.app");
+            put("libproot.sh.so"             , "/bin/proot.sh");
         }
     };
 
