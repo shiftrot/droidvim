@@ -120,6 +120,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private String mTextFont;
 
     static private int mCursorBlink = 0;
+    static private int mCursorBlinkDefault = 0;
 
     /**
      * Color scheme (default foreground/background colors).
@@ -2340,6 +2341,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     static public void setCursorBlink(int blink) {
+        if (mCursorBlinkDefault == 0) return;
+        mCursorBlink = blink;
+    }
+
+    static public void setCursorBlinkDefault(int blink) {
+        mCursorBlinkDefault = blink;
         mCursorBlink = blink;
     }
 
