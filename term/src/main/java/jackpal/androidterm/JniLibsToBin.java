@@ -39,6 +39,7 @@ public class JniLibsToBin {
             put("libvim.app.default.so"      , "/bin/vim.app.default");
             put("libvim.app.so"              , "/bin/vim.app");
             put("libproot.sh.so"             , "/bin/proot.sh");
+            put("libsuvim.so"                , "/bin/suvim");
         }
     };
 
