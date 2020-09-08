@@ -139,7 +139,7 @@ public class WebViewActivity extends AppCompatActivity {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
-        // mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setBlockNetworkImage(false);
         mWebView.getSettings().setBlockNetworkLoads(false);
         mWebView.getSettings().setAllowFileAccess(true);
