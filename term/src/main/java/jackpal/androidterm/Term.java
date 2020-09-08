@@ -1398,7 +1398,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 String postCmd = "";
                 String[] list = cmd.split("\n");
                 for (String str : list) {
-                    if (str.matches("^(bash|vim.app).*")) {
+                    if (str.matches("^(bash|-?vim.app).*")) {
                         postCmd = postCmd + str + "\n";
                     } else {
                         preCmd = preCmd + str + "\n";
@@ -1421,7 +1421,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 permissionCheckExternalStorage();
             }
         } else if (TermVimInstaller.doInstallVim) {
-            final boolean vimApp = cmd.replaceAll(".*\n", "").matches("vim.app\\s*");
+            final boolean vimApp = cmd.replaceAll(".*\n", "").matches("-?vim.app\\s*");
 
             String _postCmd = "";
             shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
@@ -1429,7 +1429,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             String[] list = cmd.split("\n");
             String preCmd = "";
             for (String str : list) {
-                if (str.matches("^(bash|vim.app).*")) {
+                if (str.matches("^(bash|-?vim.app).*")) {
                     _postCmd = _postCmd + str + "\n";
                 } else {
                     preCmd = preCmd + str + "\n";
@@ -1466,7 +1466,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
         String[] list = initialCmd.split("\n");
         for (String str : list) {
-            if (str.matches("^(bash|vim.app).*")) {
+            if (str.matches("^(bash|-?vim.app).*")) {
                 postCmd = postCmd + str + "\n";
             }
         }
