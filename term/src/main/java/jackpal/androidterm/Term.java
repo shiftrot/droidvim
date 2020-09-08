@@ -167,7 +167,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
     public static final String EXEC_STATUS_CHECK_CMD = "exec.check";
     public static final String EXEC_STATUS_CHECK_CMD_FILE = "/" + EXEC_STATUS_CHECK_CMD;
-    public static final String EXEC_STATUS_FILE      = "/exec.ok";
+    public static final String EXEC_STATUS_FILE = "/exec.ok";
     public static final String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
     public static final String FKEY_LABEL = "fkey_label";
     private static final int VIEW_FLIPPER = R.id.view_flipper;
@@ -575,10 +575,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mTerminalMode = TERMINAL_MODE_DISABLE;
         File terminalModeFile = new File(getFilesDir() + TERMINAL_MODE_FILE);
         if (terminalModeFile.exists()) {
-            try (BufferedReader in = new BufferedReader(new FileReader(terminalModeFile))){
+            try (BufferedReader in = new BufferedReader(new FileReader(terminalModeFile))) {
                 String line;
                 if ((line = in.readLine()) != null) mTerminalMode = Integer.parseInt(line);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
