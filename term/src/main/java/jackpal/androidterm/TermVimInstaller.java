@@ -147,39 +147,17 @@ final class TermVimInstaller {
 
     static void installTerm(final Activity activity, Runnable whenDone) {
         if (getTermInstallStatus(activity)) return;
-        final DrawerLayout layout = activity.findViewById(R.id.drawer_layout);
-        final ProgressBar progressBar = activity.findViewById(R.id.progressbar);
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Term.showProgressRing(layout, progressBar);
+                    toast(activity, activity.getString(R.string.message_please_wait));
+                    doInstallTerm(activity, whenDone);
                 } catch (Exception e) {
-                    // Do nothing
+                    e.printStackTrace();
                 }
             }
         });
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    doInstallTerm(activity, whenDone);
-                } finally {
-                    if (!activity.isFinishing()) {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Term.dismissProgressRing(layout, progressBar);
-                                } catch (Exception e) {
-                                    // Do nothing
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        }.start();
     }
 
     static public boolean doInstallTerm = false;

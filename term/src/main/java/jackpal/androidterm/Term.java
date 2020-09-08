@@ -1414,9 +1414,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         } else {
                             ShellTermSession.setPostCmd(cmd);
                         }
-                        permissionCheckExternalStorage();
                     }
                 });
+                permissionCheckExternalStorage();
+            } else {
                 permissionCheckExternalStorage();
             }
         } else if (TermVimInstaller.doInstallVim) {

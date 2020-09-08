@@ -32,6 +32,7 @@ import java.util.List;
 import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 
 /**
