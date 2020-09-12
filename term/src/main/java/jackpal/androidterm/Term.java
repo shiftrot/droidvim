@@ -547,6 +547,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         mSettings.readPrefs(sharedPreferences);
         setDrawerButtons();
+        if (TermSettings.AMBIWIDTH_KEY.equals(s)) {
+            TermVimInstaller.setAmbiWidthToVimrc(mSettings.getAmbiWidth());
+        }
         if (TermSettings.THEME_KEY.equals(s)
                 || TermSettings.COLOR_KEY.equals(s)
                 || TermSettings.STATUSBAR_ICON_KEY.equals(s)

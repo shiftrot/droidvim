@@ -365,6 +365,7 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "symlinks");
                     JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
                     installBusyboxCommands();
+                    setAmbiWidthToVimrc(mSettings.getAmbiWidth());
                     setupStorageSymlinks();
                     JniLibsToBin.symlinkDebugReport(path);
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
@@ -390,6 +391,14 @@ final class TermVimInstaller {
                 }
             }
         }.start();
+    }
+
+    static public void setAmbiWidthToVimrc(int ambiWidth) {
+        if (ambiWidth == 1) {
+            busybox("sed -i -e 's/set ambiwidth=double/set ambiwidth=single/g' " + TermService.getAPPFILES() + "/vimrc");
+        } else {
+            busybox("sed -i -e 's/set ambiwidth=single/set ambiwidth=double/g' " + TermService.getAPPFILES() + "/vimrc");
+        }
     }
 
     static public void createExecCheckCmdFile(Activity activity) {

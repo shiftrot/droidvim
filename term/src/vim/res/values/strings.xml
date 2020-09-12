@@ -4,7 +4,7 @@
     <string name="help_git">https://droidterm-e8a40.firebaseapp.com/droidvim/index.html#git-libpath</string>
 
     <string name="summary_color_preference">After changing the terminal color, we recommended restart this app.</string>
-    <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts. (:help ambiwidth)</string>
+    <string name="summary_ambiwidth_preference">Treat Ambiguous Characters as full width character for East Asian fonts. (You need to change Vim\'s \"ambiwidth\" option or restart this app)</string>
     <string name="summary_home_dir_chooser_preference">`.vimrc` and `.vim` are read from `$HOME` (Restart required)</string>
 
     <string name="tips_vim">How to quit:\n- Type \":qa\".\n- Double tap -> \"QUIT\".\n\nToggle keyboard:\n- Double tap near the bottom of the screen\n- Back button\n\nDirect input:\n- If you need to enable word suggestions or to input Non-Alphanumeric characters, tap \"◇\" button on function bar. \n- One-line text box can be turned on/off by \"Double tap near the right edge of the screen\".\n\nVim tutorial:\n- Tap \"Vim tutorial\" from the long press menu or type \":Vimtutor\".</string>

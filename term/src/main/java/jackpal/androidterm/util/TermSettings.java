@@ -123,7 +123,7 @@ public class TermSettings {
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String FONTLEADING_KEY = "fontleading";
     private static final String FONTFILE_KEY = "fontfile";
-    private static final String AMBIWIDTH_KEY = "ambiwidth";
+    public static final String AMBIWIDTH_KEY = "ambiwidth";
     private static final String FORCE_FLUSH_DRAW_KEY = "force_flush_drawtext";
     public static final String THEME_KEY = "theme";
     private static final String KEEP_SCREEN_AT_STARTUP_KEY = "keepscreen_at_startup";
