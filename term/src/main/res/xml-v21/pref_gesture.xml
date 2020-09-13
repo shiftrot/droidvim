@@ -25,6 +25,14 @@
         android:dialogTitle="@string/dialog_title_left_double_tap_preference"/>
 
     <ListPreference
+        android:key="top_double_tap_action"
+        android:defaultValue="@string/pref_top_double_tap_default"
+        android:title="@string/title_top_double_tap_preference"
+        android:entries="@array/entries_actionbar_icon_preference"
+        android:entryValues="@array/entryvalues_actionbar_icon_preference"
+        android:dialogTitle="@string/dialog_title_top_double_tap_preference"/>
+
+    <ListPreference
         android:key="bottom_double_tap_action"
         android:defaultValue="@string/pref_bottom_double_tap_default"
         android:title="@string/title_bottom_double_tap_preference"

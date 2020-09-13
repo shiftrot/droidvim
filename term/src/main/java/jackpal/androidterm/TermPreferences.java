@@ -918,6 +918,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("right_double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("left_double_tap_action"));
+            bindPreferenceSummaryToValue(findPreference("top_double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("bottom_double_tap_action"));
         }
 

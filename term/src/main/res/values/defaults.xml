@@ -34,6 +34,7 @@
     <string name="pref_right_double_tap_default" translatable="false">1261</string>
     <string name="pref_left_double_tap_default" translatable="false">1355</string>
     <string name="pref_bottom_double_tap_default" translatable="false">1002</string>
+    <string name="pref_top_double_tap_default" translatable="false">1006</string>
     <string name="pref_backaction_default" translatable="false">5</string>
     <string name="pref_controlkey_default" translatable="false">7</string>
     <string name="pref_fnkey_default" translatable="false">7</string>

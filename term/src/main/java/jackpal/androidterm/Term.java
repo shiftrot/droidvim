@@ -2013,6 +2013,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             // do nothing
         } else if (key == 1002) {
             doToggleSoftKeyboard();
+        } else if (key == 1006) {
+            EmulatorView.setTextScale(1.0f);
+            view.setFontSize();
         } else if (key == 1249) {
             doPaste();
         } else if (key == 1250) {
@@ -2919,6 +2922,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
                 return true;
             case 0xffff1006:
+                doSendActionBarKey(getCurrentEmulatorView(), 1006);
                 return true;
             case 0xffff1007:
                 return true;
@@ -3248,7 +3252,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (v != null) {
             Resources resources = getApplicationContext().getResources();
             DisplayMetrics metrics = resources.getDisplayMetrics();
-            float EDGE = (float) 50.0;
+            float EDGE = (float) 54.0;
             float px = EDGE * (metrics.densityDpi / 160.0f);
             int size = (int) Math.ceil(px);
 
@@ -3257,6 +3261,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             int rightAction = mSettings.getRightDoubleTapAction();
             int leftAction = mSettings.getLeftDoubleTapAction();
             int bottomAction = mSettings.getBottomDoubleTapAction();
+            int topAction = mSettings.getTopDoubleTapAction();
 
             // if (mFunctionBar == 1 && rightAction == 1261 && mEditTextView) rightAction = 999;
             // if (mFunctionBar == 1 && leftAction == 1261 && mEditTextView) leftAction = 999;
@@ -3267,6 +3272,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 doSendActionBarKey(getCurrentEmulatorView(), leftAction);
             } else if (bottomAction != 999 && me.getY() > (height - size)) {
                 doSendActionBarKey(getCurrentEmulatorView(), bottomAction);
+            } else if (topAction != 999 && me.getY() < size + (size / 2)) {
+                EmulatorView.setTextScale(1.0f);
+                v.setFontSize();
             } else {
                 doSendActionBarKey(getCurrentEmulatorView(), mSettings.getDoubleTapAction());
             }

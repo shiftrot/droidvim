@@ -68,6 +68,7 @@ public class TermSettings {
     private int mRightDoubleTapAction;
     private int mLeftDoubleTapAction;
     private int mBottomDoubleTapAction;
+    private int mTopDoubleTapAction;
     private int mBackKeyAction;
     private int mControlKeyId;
     private int mFnKeyId;
@@ -142,6 +143,7 @@ public class TermSettings {
     private static final String RIGHT_DOUBLE_TAP_KEY = "right_double_tap_action";
     private static final String LEFT_DOUBLE_TAP_KEY = "left_double_tap_action";
     private static final String BOTTOM_DOUBLE_TAP_KEY = "bottom_double_tap_action";
+    private static final String TOP_DOUBLE_TAP_KEY = "top_double_tap_action";
     private static final String BACKACTION_KEY = "backaction";
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
@@ -294,6 +296,7 @@ public class TermSettings {
         mRightDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_right_double_tap_default));
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
+        mTopDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_top_double_tap_default));
         mMRUCommand = res.getString(R.string.pref_mru_command_default);
         SHOW_DOTFILES_KEY = res.getString(R.string.pref_key_show_dotfiles);
         mShowDotfiles = res.getBoolean(R.bool.pref_show_dotfiles_default);
@@ -368,6 +371,7 @@ public class TermSettings {
         mRightDoubleTapAction = readIntPref(RIGHT_DOUBLE_TAP_KEY, mRightDoubleTapAction, ACTIONBAR_KEY_MAX);
         mLeftDoubleTapAction = readIntPref(LEFT_DOUBLE_TAP_KEY, mLeftDoubleTapAction, ACTIONBAR_KEY_MAX);
         mBottomDoubleTapAction = readIntPref(BOTTOM_DOUBLE_TAP_KEY, mBottomDoubleTapAction, ACTIONBAR_KEY_MAX);
+        mTopDoubleTapAction = readIntPref(TOP_DOUBLE_TAP_KEY, mTopDoubleTapAction, ACTIONBAR_KEY_MAX);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId, CONTROL_KEY_SCHEMES.length - 1);
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId, FN_KEY_SCHEMES.length - 1);
@@ -619,6 +623,10 @@ public class TermSettings {
 
     public int getBottomDoubleTapAction() {
         return mBottomDoubleTapAction;
+    }
+
+    public int getTopDoubleTapAction() {
+        return mTopDoubleTapAction;
     }
 
     public int getActionBarQuitKeyAction() {
