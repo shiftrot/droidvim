@@ -408,6 +408,8 @@
     <string name="title_mouse_tracking_preference">マウスイベントの送出</string>
     <string name="summary_mouse_tracking_preference">タップやスワイプを端末へのエスケープシーケンスに変換する</string>
     <string name="title_volume_as_cursor_tracking_preference">ボリュームボタンをカーソルとして使用</string>
+    <string name="title_pinch_in_out_preference">ピンチイン・アウト</string>
+    <string name="summary_pinch_in_out_preference">フォントスケールを変更</string>
 
     <string name="title_use_keyboard_shortcuts">キーボードショートカット</string>
     <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: ウィンドウ移動, Ctrl-Shift-N: 新しいウィンドウ, Ctrl-Shift-V: 貼り付け</string>

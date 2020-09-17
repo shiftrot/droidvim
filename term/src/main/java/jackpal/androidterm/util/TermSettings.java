@@ -101,6 +101,7 @@ public class TermSettings {
 
     private boolean mMouseTracking;
     private boolean mVolumeAsCursor;
+    private boolean mPinchInOut;
 
     private boolean mUseKeyboardShortcuts;
     private boolean mAutoHideFunctionbar;
@@ -171,6 +172,7 @@ public class TermSettings {
     private static final String BACK_AS_ESC = "back_as_esc";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String VOLUME_AS_CURSOR = "volume_as_cursor";
+    private static final String PINCH_IN_OUT = "pinch_in_out";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
     private static final String AUTO_HIDE_FUNCTIONBAR = "auto_hide_functionbar";
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action_rev2";
@@ -327,6 +329,7 @@ public class TermSettings {
         mBackAsEsc = res.getBoolean(R.bool.pref_back_as_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mVolumeAsCursor = res.getBoolean(R.bool.pref_volume_as_cursor_tracking_default);
+        mPinchInOut = res.getBoolean(R.bool.pref_pinch_in_out_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
         mAutoHideFunctionbar = res.getBoolean(R.bool.pref_auto_hide_functionbar_default);
         mImeShortcutsAction = res.getInteger(R.integer.pref_ime_shortcuts_action_default);
@@ -408,6 +411,7 @@ public class TermSettings {
         mBackAsEsc = readBooleanPref(BACK_AS_ESC, mBackAsEsc);
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mVolumeAsCursor = readBooleanPref(VOLUME_AS_CURSOR, mVolumeAsCursor);
+        mPinchInOut = readBooleanPref(PINCH_IN_OUT, mPinchInOut);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS, mUseKeyboardShortcuts);
         mAutoHideFunctionbar = readBooleanPref(AUTO_HIDE_FUNCTIONBAR, mAutoHideFunctionbar);
         mImeShortcutsAction = readIntPref(IME_SHORTCUTS_ACTION, mImeShortcutsAction, IME_SHORTCUTS_ACTION_MAX);
@@ -664,6 +668,10 @@ public class TermSettings {
 
     public boolean getVolumeAsCursor() {
         return mVolumeAsCursor;
+    }
+
+    public boolean getPinchInOut() {
+        return mPinchInOut;
     }
 
     public boolean getUseKeyboardShortcutsFlag() {

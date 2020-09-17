@@ -59,4 +59,11 @@
         android:defaultValue="@bool/pref_mouse_tracking_default"
         android:summary="@string/summary_mouse_tracking_preference"/>
 
+    <CheckBoxPreference
+        android:title="@string/title_pinch_in_out_preference"
+        android:key="pinch_in_out"
+        android:defaultValue="@bool/pref_pinch_in_out_default"
+        android:summary="@string/summary_pinch_in_out_preference"/>
+
+
 </PreferenceScreen>

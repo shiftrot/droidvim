@@ -4836,6 +4836,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+            if (!mSettings.getPinchInOut()) return true;
             float scaleFactor = scaleGestureDetector.getScaleFactor();
             if (scaleFactor > 1.0f) {
                 mTextPinch += 1;
