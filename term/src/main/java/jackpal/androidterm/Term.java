@@ -1359,7 +1359,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .unregisterOnSharedPreferenceChangeListener(this);
 
         if (mStopServiceOnFinish) {
-            stopService(TSIntent);
             mFirstInputtype = true;
             mFunctionBar = -1;
             mOrientation = -1;
@@ -1368,6 +1367,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 saveSyncFileObserver();
             }
             mKeepScreenHandler.removeCallbacksAndMessages(null);
+            try {
+                stopService(TSIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         new File(FILE_CLIPBOARD).delete();
         File cacheDir = new File(INTENT_CACHE_DIR);
