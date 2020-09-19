@@ -726,18 +726,28 @@ final class TermVimInstaller {
         if (dir.getParent() != null) new File(dir.getParent()).mkdirs();
         try {
             try {
+                String term = ShellTermSession.getTermType();
+                String colorFgBg = ShellTermSession.getColorFGBG();
+                if (mSettings != null) {
+                    try {
+                        term = mSettings.getTermType();
+                        colorFgBg = mSettings.getCOLORFGBG();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (term == null) term = "screen-256color";
+                if (colorFgBg == null) colorFgBg = "";
                 String appBase = TermService.getAPPBASE();
                 String appExtFiles = TermService.getAPPEXTFILES();
                 String appExtHome = TermService.getAPPEXTHOME();
                 String appFiles = TermService.getAPPFILES();
                 String appLib = TermService.getAPPLIB();
-                String colorFgBg = mSettings.getCOLORFGBG();
                 String home = TermService.getHOME();
                 String internalStorage = TermService.getEXTSTORAGE();
                 String lang = TermService.getLANG();
                 String ld_library_path = TermService.getLD_LIBRARY_PATH();
                 String path = TermService.getPATH();
-                String term = mSettings.getTermType();
                 String terminfo = TermService.getTERMINFO();
                 String tmpDir = TermService.getTMPDIR();
                 String vim = TermService.getVIM();
@@ -776,6 +786,7 @@ final class TermVimInstaller {
             } catch (Exception e) {
                 return 1;
             } finally {
+                is.close();
                 if (br != null) br.close();
             }
         } catch (IOException e) {

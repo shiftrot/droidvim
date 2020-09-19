@@ -86,6 +86,8 @@ public class ShellTermSession extends GenericTermSession {
     static private String mEnvInitialCommand = "";
     static private boolean mProotEnable = true;
     static public boolean mProotNoSecComp = false;
+    static private String mTerm;
+    static private String mColorFGBG;
 
     private void initializeSession() throws IOException {
         TermSettings settings = mSettings;
@@ -102,9 +104,11 @@ public class ShellTermSession extends GenericTermSession {
         envList.add("LD_LIBRARY_PATH=" + TermService.getLD_LIBRARY_PATH());
         envList.add("INTERNAL_STORAGE=" + TermService.getEXTSTORAGE());
         envList.add("LANG=" + TermService.getLANG());
-        envList.add("TERM=" + settings.getTermType());
         envList.add("TERMINFO=" + TermService.getTERMINFO());
-        envList.add("COLORFGBG=" + settings.getCOLORFGBG());
+        mTerm = settings.getTermType();
+        mColorFGBG = settings.getCOLORFGBG();
+        envList.add("TERM=" + mTerm);
+        envList.add("COLORFGBG=" + mColorFGBG);
         if (FLAVOR_VIM) {
             envList.add("VIMRUNTIME=" + TermService.getVIMRUNTIME());
             envList.add("VIM=" + TermService.getVIM());
@@ -161,6 +165,14 @@ public class ShellTermSession extends GenericTermSession {
         if (initialCommand != null && initialCommand.length() > 0) {
             write(initialCommand + '\r');
         }
+    }
+
+    static public String getTermType() {
+        return mTerm;
+    }
+
+    static public String getColorFGBG() {
+        return mColorFGBG;
     }
 
     static public String[] getProotCommand() {
