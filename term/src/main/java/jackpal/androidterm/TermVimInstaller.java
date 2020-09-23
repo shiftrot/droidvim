@@ -109,6 +109,8 @@ final class TermVimInstaller {
         Configuration config = activity.getResources().getConfiguration();
         switch (config.orientation) {
             case Configuration.ORIENTATION_PORTRAIT:
+            case Configuration.ORIENTATION_SQUARE:
+            case Configuration.ORIENTATION_UNDEFINED:
                 return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
             case Configuration.ORIENTATION_LANDSCAPE:
                 return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
