@@ -130,7 +130,7 @@ public class ShellTermSession extends GenericTermSession {
             mProotEnable = (Term.mTerminalMode & Term.TERMINAL_MODE_PROOT) != 0;
         } else {
             if (new File(TermService.getVersionFilesDir() + "/proot.enable").exists()) mProotEnable = true;
-            if (new File(TermService.getVersionFilesDir() + "/proot.disble").exists()) mProotEnable = false;
+            if (new File(TermService.getVersionFilesDir() + "/proot.disable").exists()) mProotEnable = false;
         }
         // mProotNoSecComp = new File(TermService.getVersionFilesDir() + "/proot.noseccomp").exists();
         mProcId = createSubprocess(shell, envCmd);
