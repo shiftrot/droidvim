@@ -1060,31 +1060,31 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             } else {
                 addPreferencesFromResource(R.xml.pref_shell);
             }
-            if (AndroidCompat.SDK > Build.VERSION_CODES.KITKAT) {
-                if (!SCOPED_STORAGE) {
-                    final String STARTUP_KEY = "startup_dir_chooser";
-                    Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
-                    prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            if (mTermPreference != null && !SCOPED_STORAGE) {
-                                mTermPreference.startupDirectoryPicker(getActivity().getString(R.string.choose_startup_directory_message));
-                            }
-                            return true;
+            final String STARTUP_KEY = "startup_dir_chooser";
+            Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
+            if (prefsStartup != null) {
+                prefsStartup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null && !SCOPED_STORAGE) {
+                            mTermPreference.startupDirectoryPicker(getActivity().getString(R.string.choose_startup_directory_message));
                         }
-                    });
-                    final String HOME_KEY = "home_dir_chooser";
-                    Preference prefsHome = getPreferenceScreen().findPreference(HOME_KEY);
-                    prefsHome.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            if (mTermPreference != null) {
-                                mTermPreference.homeDirectoryPicker(getActivity().getString(R.string.choose_home_directory_message));
-                            }
-                            return true;
+                        return true;
+                    }
+                });
+            }
+            final String HOME_KEY = "home_dir_chooser";
+            Preference prefsHome = getPreferenceScreen().findPreference(HOME_KEY);
+            if (prefsHome != null) {
+                prefsHome.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) {
+                            mTermPreference.homeDirectoryPicker(getActivity().getString(R.string.choose_home_directory_message));
                         }
-                    });
-                }
+                        return true;
+                    }
+                });
             }
             setHasOptionsMenu(true);
 

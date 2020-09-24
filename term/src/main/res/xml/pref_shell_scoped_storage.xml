@@ -30,6 +30,16 @@
         android:entryValues="@array/entries_termtype_preference"
         android:dialogTitle="@string/dialog_title_termtype_preference"/>
 
+    <EditTextPreference
+        android:key="startup_path"
+        android:title="@string/title_startup_chooser_preference"
+        android:summary="@string/summary_startup_chooser_preference"/>
+
+    <EditTextPreference
+        android:key="home_path"
+        android:title="@string/title_home_path_preference"
+        android:summary="@string/summary_home_path_preference"/>
+
 <!--
     <ListPreference
         android:key="scoped_storage_home_path_mode"
