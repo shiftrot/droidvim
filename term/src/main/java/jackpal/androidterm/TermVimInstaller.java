@@ -358,6 +358,11 @@ final class TermVimInstaller {
 
                     id = activity.getResources().getIdentifier("runtime_extra", "raw", activity.getPackageName());
                     installZip(runtimeDir, getInputStream(activity, id));
+                    if (first) {
+                        id = activity.getResources().getIdentifier("runtime_user", "raw", activity.getPackageName());
+                        String homeDir = TermService.getHOME();
+                        installZip(homeDir, getInputStream(activity, id));
+                    }
                     File appExtHome= new File(TermService.getAPPEXTHOME());
                     if (!appExtHome.exists()) {
                         appExtHome.mkdirs();
