@@ -378,6 +378,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     }
 
     static public String getTERMINFO() {
+        if (mTERMINFO == null) return "/data/data/" + BuildConfig.APPLICATION_ID + "/files/usr/share/terminfo";
         return mTERMINFO;
     }
 
