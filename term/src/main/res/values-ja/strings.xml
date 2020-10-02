@@ -46,10 +46,13 @@
     <string name="copy_to_clipboard">クリップボードへコピー</string>
     <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)</string>
 
-    <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.(詳しくはヘルプ参照)\n\n</string>
-    <string name="edit_vimrc_message_symboliclink">- シンボリックリンク (Android 10以前)\n 1. Vimfilesを内部ストレージへコピー\n 2. \"$HOME\"にシンボリックリンクを作成\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- バックアップ/リストア\n 「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.\n\n</string>
     <string name="edit_vimrc_message_show_dotfiles">- ファイルマネージャー\n「DroidVimの設定→ドロワー＆外部アプリ→ドットファイルを表示」</string>
+    <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.\n(詳しくは「ヘルプ」>「Vimfiles」参照)\n\n</string>
+    <string name="edit_vimrc_message_symboliclink">・シンボリックリンク (Android 10以前)\n 　1. Vimfilesを内部ストレージへコピー\n 　2. \"$HOME\"にシンボリックリンクを作成\n</string>
+    <string name="edit_vimrc_message_file_manager">・「ドロワーメニュー」>「ファイル管理」 (Android 7以降)\n</string>
+    <string name="edit_vimrc_message_change_home">・ホームディレクトリを内部ストレージ内のディレクトリまたは\"$APPEXTHOME\"へ変更.\n</string>
+    <string name="edit_vimrc_message_backup_restore">・バックアップ/リストア\n　「長押しメニュー→ストレージ→バックアップ/リストア」を使用して内部ストレージまたはSDカードのVimfilesを\"$HOME\"へコピー.\n</string>
+
     <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
     <string name="text_box">一行テキスト入力</string>

@@ -47,10 +47,13 @@
     <string name="copy_to_clipboard">Copy to the clipboard</string>
     <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)</string>
 
-    <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME). See help for details.\n\n</string>
-    <string name="edit_vimrc_message_symboliclink">- Symbolic link (Android 10 and earlier)\n 1. Copy Vimfiles to internal storage.\n 2. Create symbolic link in \"$HOME\".\n\n</string>
-    <string name="edit_vimrc_message_backup_restore">- Backup / Restore\n Use \"Long press menu > Storage > Backup / Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".\n\n</string>
     <string name="edit_vimrc_message_show_dotfiles">- File manager\n DroidVim\'s preferences > Drawer &amp; External apps > Show dotfiles</string>
+    <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME).\nSee \"Help\" > \"Vimfiles\".\n\n</string>
+    <string name="edit_vimrc_message_symboliclink">- Symbolic link (Android 10 and earlier)\n   1. Copy Vimfiles to the internal storage.\n   2. Create symbolic link in \"$HOME\".\n</string>
+    <string name="edit_vimrc_message_file_manager">- \"Drawer menu > File Manager\" (Android 7 and later)\n</string>
+    <string name="edit_vimrc_message_change_home">- Change the Home directory to a directory in the internal storage or \"$APPEXTHOME\".\n</string>
+    <string name="edit_vimrc_message_backup_restore">- Backup/Restore\n Use \"Long press menu > Storage > Backup/Restore\" to copy Vimfiles from internal storage or SD card to \"$HOME\".\n</string>
+
     <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
