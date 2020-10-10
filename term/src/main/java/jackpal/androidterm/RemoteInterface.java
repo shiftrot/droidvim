@@ -75,6 +75,7 @@ public class RemoteInterface extends AppCompatActivity {
     private Intent mTSIntent;
     public static String IntentCommand = null;
     public static CharSequence ShareText = null;
+    public static String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
     private boolean mDoInstall = false;
     private final String DO_INSTALL = "echo -n -e \"\\0033[990t\"";
 
@@ -389,7 +390,7 @@ public class RemoteInterface extends AppCompatActivity {
         if (clip != null) {
             String shareText = str.toString().replaceAll("[\\xC2\\xA0]", " ");
             if (FLAVOR_VIM) {
-                String FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
+                FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
                 Term.writeStringToFile(FILE_CLIPBOARD, "\n" + shareText);
                 String command = "\u001b" + ":ATEMod _paste";
                 if (mDoInstall) IntentCommand = command;

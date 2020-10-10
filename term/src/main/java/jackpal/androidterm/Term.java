@@ -252,12 +252,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private ComponentName mPrivateAlias;
     private boolean mBackKeyPressed;
 
-    @SuppressLint("SdCardPath")
-    private String INTENT_CACHE_DIR = "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
-    @SuppressLint("SdCardPath")
-    private String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
-    @SuppressLint("SdCardPath")
-    private String FILE_INTENT = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.intent";
     private TermService mTermService;
     private boolean mHaveFullHwKeyboard = false;
     private boolean mUseKeyboardShortcuts;
@@ -620,9 +614,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mFunctionBar == 1) setFunctionBar(mFunctionBar);
         if (mOnelineTextBox == -1) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         initOnelineTextBox(mOnelineTextBox);
-        INTENT_CACHE_DIR = this.getApplicationContext().getCacheDir().toString() + "/intent";
-        FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
-        FILE_INTENT = TermService.getAPPFILES() + "/.intent";
 
         updatePrefs();
         setDrawerButtons();
@@ -1372,8 +1363,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 e.printStackTrace();
             }
         }
-        new File(FILE_CLIPBOARD).delete();
-        File cacheDir = new File(INTENT_CACHE_DIR);
+        new File(getClipboardFile()).delete();
+        File cacheDir = new File(getIntentCacheDir());
         shell("rm -rf " + cacheDir.getAbsolutePath());
         shell("rm " + TermService.getAPPFILES() + "/proot.err");
         mTermService = null;
@@ -1501,7 +1492,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return;
         }
         if (RemoteInterface.ShareText != null) {
-            String filename = FILE_CLIPBOARD;
+            String filename = RemoteInterface.FILE_CLIPBOARD;
             Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
             postCmd += "\u001b" + ":ATEMod _paste\n";
         }
@@ -2887,7 +2878,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 break;
             case 0xffff0003:
-                copyFileToClipboard(FILE_CLIPBOARD);
+                copyFileToClipboard(getClipboardFile());
                 return true;
             case 0xffff0004:
                 setEditTextView(0);
@@ -2899,12 +2890,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 setEditTextView(2);
                 return true;
             case 0xffff0007:
-                String file = getStringFromFile(new File(FILE_INTENT));
+                String file = getStringFromFile(new File(getIntentFile()));
                 file = file != null ? file.replaceAll("[\n\r]", "") : "";
                 doAndroidIntent("share.file", file, null);
                 return true;
             case 0xffff0008:
-                doAndroidIntent("share.text", FILE_INTENT, null);
+                doAndroidIntent("share.text", getIntentFile(), null);
                 return true;
             case 0xffff1010:
                 setFunctionBar(0);
@@ -2921,7 +2912,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     alert(getString(R.string.toast_clipboard_error));
                     return true;
                 }
-                copyClipboardToFile(FILE_CLIPBOARD);
+                copyClipboardToFile(getClipboardFile());
                 if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
                 return true;
             case 0xffff1006:
@@ -2963,7 +2954,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 clearClipBoard();
                 return true;
             case 0xffff1001:
-                AndroidIntent(FILE_INTENT);
+                AndroidIntent(getIntentFile());
                 return true;
             case 0xffff9998:
                 fatalCrash();
@@ -3414,7 +3405,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         String hash = getHashString(file.toString());
                         if (!ext.equals("")) hash += "." + ext;
 
-                        File cacheDir = new File(INTENT_CACHE_DIR);
+                        File cacheDir = new File(getIntentCacheDir());
                         File cache = new File(cacheDir.toString() + "/" + hash);
                         if (cache.isDirectory()) {
                             shell("rm -rf " + cache.getAbsolutePath());
@@ -3498,6 +3489,22 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             e.printStackTrace();
         }
         return "";
+    }
+
+    private String getIntentFile() {
+        return TermService.getAPPFILES() + "/.intent";
+    }
+
+    private String getClipboardFile() {
+        return TermService.getAPPFILES() + "/.clipboard";
+    }
+
+    private String getIntentCacheDir() {
+        try {
+            return getApplicationContext().getCacheDir().toString() + "/intent";
+        } catch(Exception e) {
+            return "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
+        }
     }
 
     private void copyFileToClipboard(String filename) {
