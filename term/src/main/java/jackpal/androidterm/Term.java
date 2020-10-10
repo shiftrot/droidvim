@@ -500,6 +500,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     public static boolean isInternalPrivateStorageDocument(Uri uri) {
         String appId = BuildConfig.APPLICATION_ID;
+        if (FLAVOR_TERMINAL) appId = "jackpal.androidterm";
         return (appId + ".storage.documents").equals(uri.getAuthority());
     }
 
