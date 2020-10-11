@@ -511,6 +511,8 @@
     <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
     <string name="storage_write_error">ファイルを編集するためのURIが無効になっています.\nドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください.\n(このバッファの編集状態は失われます.)</string>
     <string name="storage_write_error_title">無効なURI</string>
+    <string name="storage_write_check_error_title">書き込みチェックエラー</string>
+    <string name="storage_write_check_error">書き込みエラーまたは書き込みが完了していません.</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>
     <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ファイルを開く\"ボタンから再読込してください.\nクラウドストレージの場合はクラウドストレージのアプリを起動してファイル情報を更新すると, エラーが解消されるかもしれません.</string>
     <string name="storage_hash_overwrite">上書き</string>

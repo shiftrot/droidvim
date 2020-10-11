@@ -510,6 +510,8 @@
     <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.\nIf the file is in cloud storage, check your network connection.</string>
     <string name="storage_write_error_title">Invalid URI</string>
     <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Open file…\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
+    <string name="storage_write_check_error_title">Write check error</string>
+    <string name="storage_write_check_error">Write error or write not completed.</string>
     <string name="storage_hash_error_title">File hash error</string>
     <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file…\" button.\nFor cloud storage, launching the cloud storage app and reloading the file information may resolve the error.</string>
     <string name="storage_hash_overwrite">Overwrite</string>

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.FileObserver;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 
 import org.json.JSONArray;
@@ -370,17 +371,28 @@ class SyncFileObserver extends RecursiveFileObserver {
         return buff.toString();
     }
 
+    private static int HASH_CHECK_MODE = 0;
     /*
      * HASH_CHECK_MODE
      * 0 : No check
-     * 1 : Check if the destination file has changed.
-     * 2 : Upload only if the local hash and destination hash are different.
+     * 1 : Write & Check the result after 3 seconds.
+     * 2 : Write destination hash check & Write.
      */
-    private static final int HASH_CHECK_MODE = 2;
+    public void setHashCheckMode(int mode) {
+        HASH_CHECK_MODE = mode;
+    }
 
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
         if (contentResolver == null) return;
-        if (HASH_CHECK_MODE == 0) {
+        int hashCheckMode = HASH_CHECK_MODE;
+        final String APP_DROPBOX = "com.dropbox.android";
+        final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
+        final String APP_ONEDRIVE = "com.microsoft.skydrive";
+        if (uri.toString().startsWith("content://" + APP_DROPBOX)) hashCheckMode = 0;
+        if (uri.toString().startsWith("content://" + APP_GOOGLEDRIVE)) hashCheckMode = 2;
+        if (uri.toString().startsWith("content://" + APP_ONEDRIVE)) hashCheckMode = 0;
+
+        if (hashCheckMode == 0) {
             flushCacheExec(uri, file, contentResolver);
             return;
         }
@@ -389,20 +401,35 @@ class SyncFileObserver extends RecursiveFileObserver {
         try {
             InputStream dstIs = contentResolver.openInputStream(uri);
             if (dstIs != null) {
-                String hashDst = digest(dstIs);
-                dstIs.close();
+                String hashDst = getHash(dstIs);
                 if (hashDst.equals("")) {
                     flushCacheExec(uri, file, contentResolver);
                     return;
                 }
-                if (HASH_CHECK_MODE == 2) {
-                    InputStream srcIs = new FileInputStream(file.getAbsolutePath());
-                    String hashSrc = digest(srcIs);
-                    srcIs.close();
+                InputStream srcIs = new FileInputStream(file.getAbsolutePath());
+                final String hashSrc = getHash(srcIs);
+                if (hashCheckMode == 1 || hashCheckMode == 2) {
                     if (hashDst.equals(hashSrc)) return;
                 }
-                if (hashDst.equals(oldHash)) {
+                if (hashDst.equals(oldHash) || hashCheckMode == 1) {
                     flushCacheExec(uri, file, contentResolver);
+                    if (hashCheckMode == 1) {
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(3000);
+                                    InputStream is = contentResolver.openInputStream(uri);
+                                    String hashDst = getHash(is);
+                                    if (!hashDst.equals(hashSrc)) {
+                                        writeCheckErrorDialog((Activity) mObjectActivity, uri, file, contentResolver);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.start();
+                    }
                 } else {
                     hashErrorDialog((Activity) mObjectActivity, uri, file, contentResolver);
                 }
@@ -410,6 +437,17 @@ class SyncFileObserver extends RecursiveFileObserver {
         } catch (Exception e) {
             flushCacheExec(uri, file, contentResolver);
         }
+    }
+
+    private String getHash(InputStream is) {
+        String hash = "";
+        try {
+            hash = digest(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hash;
     }
 
     private static boolean mDialogIsActive = false;
@@ -425,21 +463,33 @@ class SyncFileObserver extends RecursiveFileObserver {
                 md = null;
             }
 
-            OutputStream os = contentResolver.openOutputStream(uri);
-            BufferedOutputStream writer = new BufferedOutputStream(os);
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream reader = new BufferedInputStream(fis);
 
-            InputStream is = new FileInputStream(file);
-            BufferedInputStream reader = new BufferedInputStream(is);
+            final String APP_ONEDRIVE = "com.microsoft.skydrive";
+            boolean altWriteMode = uri.toString().startsWith("content://" + APP_ONEDRIVE);
+            ParcelFileDescriptor pfd = null;
+            FileOutputStream fos = null;
+            pfd = contentResolver.openFileDescriptor(uri, "w");
+            fos = new FileOutputStream(pfd.getFileDescriptor());
+            BufferedOutputStream writer = new BufferedOutputStream(fos);
 
-            byte[] buf = new byte[16 * 1024];
+            byte[] buf = new byte[1024];
             int len;
             while ((len = reader.read(buf)) != -1) {
                 if (md != null) md.update(buf, 0, len);
                 writer.write(buf, 0, len);
             }
-            writer.flush();
             writer.close();
             reader.close();
+            try {
+                if (fos != null) fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (fis != null) fis.close();
+            if (pfd != null) pfd.close();
+
             if (md != null) {
                 byte[] digest = md.digest();
                 String hashValue = toHexString(digest);
@@ -490,6 +540,52 @@ class SyncFileObserver extends RecursiveFileObserver {
                             mDialogIsActive = false;
                         }
                     });
+                    bld.setCancelable(false);
+                    mDialogIsActive = true;
+                    try {
+                        bld.create().show();
+                    } catch (Exception e) {
+                        // do nothing
+                    }
+                }
+            }
+        });
+    }
+
+    private void writeCheckErrorDialog(final Activity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
+        if (activity != null) activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!mDialogIsActive) {
+                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                    bld.setIcon(android.R.drawable.ic_dialog_alert);
+                    bld.setTitle(R.string.storage_write_check_error_title);
+                    bld.setMessage(R.string.storage_write_check_error);
+                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            mDialogIsActive = false;
+                        }
+                    });
+                    bld.setNeutralButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            mDialogIsActive = false;
+                            try {
+                                Term term = (Term) activity;
+                                term.intentFilePicker();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            mDialogIsActive = false;
+                        }
+                    });
+                    bld.setCancelable(false);
                     mDialogIsActive = true;
                     try {
                         bld.create().show();
@@ -534,6 +630,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                             mDialogIsActive = false;
                         }
                     });
+                    bld.setCancelable(false);
                     mDialogIsActive = true;
                     try {
                         bld.create().show();
