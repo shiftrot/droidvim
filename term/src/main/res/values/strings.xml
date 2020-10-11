@@ -511,7 +511,7 @@
     <string name="storage_write_error_title">Invalid URI</string>
     <string name="storage_write_error">The URI for editing the file has become invalid.\nReopen the file for editing via \"Open file…\" button on the drawer menu.\n(The edit state of this buffer is lost.)</string>
     <string name="storage_hash_error_title">File hash error</string>
-    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file…\" button.</string>
+    <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file…\" button.\nFor cloud storage, launching the cloud storage app and reloading the file information may resolve the error.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
     <string name="storage_hash_reopen">Reload</string>
     <string name="storage_delete_file">Delete file from storage.</string>
