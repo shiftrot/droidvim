@@ -3924,12 +3924,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             startActivity(openLink);
     }
 
-    public void setPrefBoolean(Context context, String key, boolean value) {
+    static public void setPrefBoolean(Context context, String key, boolean value) {
         PrefValue pv = new PrefValue(context);
         pv.setBoolean(key, value);
     }
 
-    public boolean getPrefBoolean(Context context, String key, boolean defValue) {
+    static public boolean getPrefBoolean(Context context, String key, boolean defValue) {
         PrefValue pv = new PrefValue(context);
         return pv.getBoolean(key, defValue);
     }
