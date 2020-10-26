@@ -894,6 +894,31 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("actionbar_invert_action"));
             bindPreferenceSummaryToValue(findPreference("actionbar_user_action"));
             bindPreferenceSummaryToValue(findPreference("actionbar_x_action"));
+
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m1"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m2"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m3"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m4"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m5"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m6"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m7"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m8"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m9"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m10"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m11"));
+            bindPreferenceSummaryToValue(findPreference("function_key_label_m12"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m1"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m2"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m3"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m4"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m5"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m6"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m7"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m8"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m9"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m10"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m11"));
+            bindPreferenceSummaryToValue(findPreference("function_key_cmd_m12"));
         }
 
         @Override

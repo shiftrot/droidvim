@@ -545,10 +545,35 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (TermSettings.AMBIWIDTH_KEY.equals(s)) {
             TermVimInstaller.setAmbiWidthToVimrc(mSettings.getAmbiWidth());
         }
+        if ("function_key_label_m1".equals(s)  ||
+            "function_key_label_m2".equals(s)  ||
+            "function_key_label_m3".equals(s)  ||
+            "function_key_label_m4".equals(s)  ||
+            "function_key_label_m5".equals(s)  ||
+            "function_key_label_m6".equals(s)  ||
+            "function_key_label_m7".equals(s)  ||
+            "function_key_label_m8".equals(s)  ||
+            "function_key_label_m9".equals(s)  ||
+            "function_key_label_m10".equals(s) ||
+            "function_key_label_m11".equals(s) ||
+            "function_key_label_m12".equals(s) ||
+            "function_key_cmd_m1".equals(s)  ||
+            "function_key_cmd_m2".equals(s)  ||
+            "function_key_cmd_m3".equals(s)  ||
+            "function_key_cmd_m4".equals(s)  ||
+            "function_key_cmd_m5".equals(s)  ||
+            "function_key_cmd_m6".equals(s)  ||
+            "function_key_cmd_m7".equals(s)  ||
+            "function_key_cmd_m8".equals(s)  ||
+            "function_key_cmd_m9".equals(s)  ||
+            "function_key_cmd_m10".equals(s) ||
+            "function_key_cmd_m11".equals(s) ||
+            "function_key_cmd_m12".equals(s) ) {
+                setFunctionKey();
+        }
         if (TermSettings.THEME_KEY.equals(s)
                 || TermSettings.COLOR_KEY.equals(s)
-                || TermSettings.STATUSBAR_ICON_KEY.equals(s)
-        ) {
+                || TermSettings.STATUSBAR_ICON_KEY.equals(s)) {
             recreate();
         }
     }
@@ -2000,6 +2025,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void chooseEditVimFiles() {
         sendKeyStrings(":call ATETermVimVimrc()\r", true);
+    }
+
+    private boolean doSendActionBarFKey(EmulatorView view, int key, String cmd) {
+        if ("".equals(cmd)) return doSendActionBarKey(view, key);
+        cmd = cmd.replaceAll("\n", "\r");
+        cmd = cmd.replaceAll("<CR>$", "\r");
+        sendKeyStrings(cmd, false);
+        return true;
     }
 
     private boolean doSendActionBarKey(EmulatorView view, int key) {
@@ -4094,6 +4127,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    private static String mCmd_F1  =  "";
+    private static String mCmd_F2  =  "";
+    private static String mCmd_F3  =  "";
+    private static String mCmd_F4  =  "";
+    private static String mCmd_F5  =  "";
+    private static String mCmd_F6  =  "";
+    private static String mCmd_F7  =  "";
+    private static String mCmd_F8  =  "";
+    private static String mCmd_F9  =  "";
+    private static String mCmd_F10 =  "";
+    private static String mCmd_F11 =  "";
+    private static String mCmd_F12 =  "";
+
     private void setFunctionKey() {
         final String UP = FUNCTIONBAR_UP;
         final String DOWN = FUNCTIONBAR_DOWN;
@@ -4106,6 +4152,33 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String IME_TOGGLE = getString(R.string.string_functionbar_ime_toggle);
         final String SOFTKEYBOARD = getString(R.string.string_functionbar_dia);
         final String VOICE_INPUT = getString(R.string.string_functionbar_voice_input);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final String F1  = prefs.getString("function_key_label_m1", "F1");
+        final String F2  = prefs.getString("function_key_label_m2", "F2");
+        final String F3  = prefs.getString("function_key_label_m3", "F3");
+        final String F4  = prefs.getString("function_key_label_m4", "F4");
+        final String F5  = prefs.getString("function_key_label_m5", "F5");
+        final String F6  = prefs.getString("function_key_label_m6", "F6");
+        final String F7  = prefs.getString("function_key_label_m7", "F7");
+        final String F8  = prefs.getString("function_key_label_m8", "F8");
+        final String F9  = prefs.getString("function_key_label_m9", "F9");
+        final String F10 = prefs.getString("function_key_label_m10", "F10");
+        final String F11 = prefs.getString("function_key_label_m11", "F11");
+        final String F12 = prefs.getString("function_key_label_m12", "F12");
+
+        mCmd_F1  = prefs.getString("function_key_cmd_m1", "");
+        mCmd_F2  = prefs.getString("function_key_cmd_m2", "");
+        mCmd_F3  = prefs.getString("function_key_cmd_m3", "");
+        mCmd_F4  = prefs.getString("function_key_cmd_m4", "");
+        mCmd_F5  = prefs.getString("function_key_cmd_m5", "");
+        mCmd_F6  = prefs.getString("function_key_cmd_m6", "");
+        mCmd_F7  = prefs.getString("function_key_cmd_m7", "");
+        mCmd_F8  = prefs.getString("function_key_cmd_m8", "");
+        mCmd_F9  = prefs.getString("function_key_cmd_m9", "");
+        mCmd_F10 = prefs.getString("function_key_cmd_m10", "");
+        mCmd_F11 = prefs.getString("function_key_cmd_m11", "");
+        mCmd_F12 = prefs.getString("function_key_cmd_m12", "");
 
         Resources res = getResources();
         mFunctionKeys = new ArrayList<>();
@@ -4133,31 +4206,43 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_15       , "functionbar_equal"          , "="          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_16       , "functionbar_asterisk"       , "*"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_17       , "functionbar_pipe"           , "|"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_18       , "functionbar_softkeyboard"   , SOFTKEYBOARD , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_19       , "functionbar_invert"         , "○"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_20       , "functionbar_menu_user"      , "□"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_menu_x"         , "×"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_menu_plus"      , "＋"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_menu_minus"     , "－"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_menu_quit"      , "[Q]"        , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_menu"           , "≡"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_menu_hide"      , "∇"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , "F1"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , "F2"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , "F3"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m4                , "functionbar_m4"             , "F4"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m5                , "functionbar_m5"             , "F5"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m6                , "functionbar_m6"             , "F6"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m7                , "functionbar_m7"             , "F7"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m8                , "functionbar_m8"             , "F8"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m9                , "functionbar_m9"             , "F9"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m10               , "functionbar_m10"            , "F10"        , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m11               , "functionbar_m11"            , "F11"        , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m12               , "functionbar_m12"            , "F12"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_18       , "functionbar_f1"             , F1           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_19       , "functionbar_f2"             , F2           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_20       , "functionbar_f3"             , F3           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_f4"             , F4           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_f5"             , F5           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_f6"             , F6           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_f7"             , F7           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_f8"             , F8           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_f9"             , F9           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_f10"            , F10          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_f11"            , F11          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_f12"            , F12          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_softkeyboard"   , SOFTKEYBOARD , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_31       , "functionbar_invert"         , "○"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_menu_user"      , "□"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_33       , "functionbar_menu_x"         , "×"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_34       , "functionbar_menu_plus"      , "＋"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_35       , "functionbar_menu_minus"     , "－"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_36       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_37       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_38       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_39       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_40       , "functionbar_menu_quit"      , "[Q]"        , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_menu"           , "≡"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_menu_hide"      , "∇"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , F1           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , F2           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , F3           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m4                , "functionbar_m4"             , F4           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m5                , "functionbar_m5"             , F5           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m6                , "functionbar_m6"             , F6           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m7                , "functionbar_m7"             , F7           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m8                , "functionbar_m8"             , F8           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m9                , "functionbar_m9"             , F9           , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m10               , "functionbar_m10"            , F10          , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m11               , "functionbar_m11"            , F11          , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m12               , "functionbar_m12"            , F12          , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_1      , "navigationbar_esc"          , "Esc"        , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_2      , "navigationbar_ctrl"         , "Ctrl"       , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_3      , "navigationbar_alt"          , "Alt"        , false ));
@@ -4617,41 +4702,53 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 mFunctionBarId = mFunctionBarId == 0 ? 1 : 0;
                 setFunctionKeyVisibility();
                 break;
+            case "functionbar_f1":
             case "functionbar_m1":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F1);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F1, mCmd_F1);
                 break;
+            case "functionbar_f2":
             case "functionbar_m2":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F2);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F2, mCmd_F2);
                 break;
+            case "functionbar_f3":
             case "functionbar_m3":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F3);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F3, mCmd_F3);
                 break;
+            case "functionbar_f4":
             case "functionbar_m4":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F4);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F4, mCmd_F4);
                 break;
+            case "functionbar_f5":
             case "functionbar_m5":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F5);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F5, mCmd_F5);
                 break;
+            case "functionbar_f6":
             case "functionbar_m6":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F6);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F6, mCmd_F6);
                 break;
+            case "functionbar_f7":
             case "functionbar_m7":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F7);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F7, mCmd_F7);
                 break;
+            case "functionbar_f8":
             case "functionbar_m8":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F8);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F8, mCmd_F8);
                 break;
+            case "functionbar_f9":
             case "functionbar_m9":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F9);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F9, mCmd_F9);
                 break;
+            case "functionbar_f10":
             case "functionbar_m10":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F10);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F10, mCmd_F10);
                 break;
+            case "functionbar_f11":
             case "functionbar_m11":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F11);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F11, mCmd_F11);
                 break;
+            case "functionbar_f12":
             case "functionbar_m12":
-                doSendActionBarKey(view, KeycodeConstants.KEYCODE_F12);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F12, mCmd_F12);
                 break;
         }
     }

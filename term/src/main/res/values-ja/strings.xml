@@ -166,6 +166,12 @@
 
     <string name="title_functionbar_key_preference">ファンクションキー</string>
     <string name="title_functionbar_key_2_preference">ファンクションキー (F1-F12)</string>
+    <string name="title_functionbar_fkey_preference">ファンクションバー (F1-F12)</string>
+    <string name="title_functionbar_fkey_label_preference">ラベル名 (F1-F12)</string>
+    <string name="summary_functionbar_fkey_label_preferences">ファンクションキー(F1-F12)に表示されるラベル名を変更します.</string>
+    <string name="title_functionbar_fkey_command_preference">コマンド (F1-F12)</string>
+    <string name="summary_functionbar_fkey_command_preferences">ファンクションキー(F1-F12)で実行されるコマンドを設定します.</string>
+
     <string name="title_navigation_key_preference">ファンクションキー (画面固定)</string>
     <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
 

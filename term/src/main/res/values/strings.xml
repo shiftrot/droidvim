@@ -164,6 +164,12 @@
 
     <string name="title_functionbar_key_preference">Function key</string>
     <string name="title_functionbar_key_2_preference">Function key (F1-F12)</string>
+    <string name="title_functionbar_fkey_preference">Function bar (F1-F12)</string>
+    <string name="title_functionbar_fkey_label_preference">Label (F1-F12)</string>
+    <string name="summary_functionbar_fkey_label_preferences">Set the label to the function key (F1-F12).</string>
+    <string name="title_functionbar_fkey_command_preference">Command (F1-F12)</string>
+    <string name="summary_functionbar_fkey_command_preferences">Set the command to the function key (F1-F12).</string>
+
     <string name="title_navigation_key_preference">Function key (Screen fit)</string>
     <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
 
