@@ -4263,20 +4263,32 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_18     , "navigationbar_equal"        , "="          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_19     , "navigationbar_asterisk"     , "*"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_20     , "navigationbar_pipe"         , "|"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_21     , "navigationbar_softkeyboard" , SOFTKEYBOARD , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_22     , "navigationbar_invert"       , "○"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_23     , "navigationbar_menu_user"    , "□"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_24     , "navigationbar_menu_x"       , "×"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_25     , "navigationbar_menu_plus"    , "＋"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_26     , "navigationbar_menu_minus"   , "－"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_27     , "navigationbar_vim_paste"    , "\"*p"       , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_28     , "navigationbar_vim_yank"     , "\"yy"       , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_menu_quit"    , "[Q]"        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33     , "navigationbar_menu"         , "≡"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_34     , "navigationbar_menu_hide"    , "∇"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_21     , "navigationbar_f1"           , F1           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_22     , "navigationbar_f2"           , F2           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_23     , "navigationbar_f3"           , F3           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_24     , "navigationbar_f4"           , F4           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_25     , "navigationbar_f5"           , F5           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_26     , "navigationbar_f6"           , F6           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_27     , "navigationbar_f7"           , F7           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_28     , "navigationbar_f8"           , F8           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29     , "navigationbar_f9"           , F9           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30     , "navigationbar_f10"          , F10          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31     , "navigationbar_f11"          , F11          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_f12"          , F12          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33     , "navigationbar_softkeyboard" , SOFTKEYBOARD , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_34     , "navigationbar_invert"       , "○"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_35     , "navigationbar_menu_user"    , "□"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_36     , "navigationbar_menu_x"       , "×"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_37     , "navigationbar_menu_plus"    , "＋"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_38     , "navigationbar_menu_minus"   , "－"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_39     , "navigationbar_vim_paste"    , "\"*p"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_40     , "navigationbar_vim_yank"     , "\"yy"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_41     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_42     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_menu_quit"    , "[Q]"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_menu"         , "≡"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_menu_hide"    , "∇"         , false ));
 
         for (FunctionKey fkey : mFunctionKeys) {
             Button button = findViewById(fkey.resId);
@@ -4704,50 +4716,62 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case "functionbar_f1":
             case "functionbar_m1":
+            case "navigationbar_f1":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F1, mCmd_F1);
                 break;
             case "functionbar_f2":
             case "functionbar_m2":
+            case "navigationbar_f2":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F2, mCmd_F2);
                 break;
             case "functionbar_f3":
             case "functionbar_m3":
+            case "navigationbar_f3":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F3, mCmd_F3);
                 break;
             case "functionbar_f4":
             case "functionbar_m4":
+            case "navigationbar_f4":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F4, mCmd_F4);
                 break;
             case "functionbar_f5":
             case "functionbar_m5":
+            case "navigationbar_f5":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F5, mCmd_F5);
                 break;
+            case "navigationbar_f6":
             case "functionbar_f6":
             case "functionbar_m6":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F6, mCmd_F6);
                 break;
             case "functionbar_f7":
             case "functionbar_m7":
+            case "navigationbar_f7":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F7, mCmd_F7);
                 break;
             case "functionbar_f8":
             case "functionbar_m8":
+            case "navigationbar_f8":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F8, mCmd_F8);
                 break;
             case "functionbar_f9":
             case "functionbar_m9":
+            case "navigationbar_f9":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F9, mCmd_F9);
                 break;
             case "functionbar_f10":
             case "functionbar_m10":
+            case "navigationbar_f10":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F10, mCmd_F10);
                 break;
             case "functionbar_f11":
             case "functionbar_m11":
+            case "navigationbar_f11":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F11, mCmd_F11);
                 break;
             case "functionbar_f12":
             case "functionbar_m12":
+            case "navigationbar_f12":
                 doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F12, mCmd_F12);
                 break;
         }

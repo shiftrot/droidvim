@@ -349,6 +349,66 @@
             android:title="|"/>
 
         <CheckBoxPreference
+            android:key="navigationbar_f1"
+            android:defaultValue="false"
+            android:title="F1"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f2"
+            android:defaultValue="false"
+            android:title="F2"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f3"
+            android:defaultValue="false"
+            android:title="F3"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f4"
+            android:defaultValue="false"
+            android:title="F4"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f5"
+            android:defaultValue="false"
+            android:title="F5"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f6"
+            android:defaultValue="false"
+            android:title="F6"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f7"
+            android:defaultValue="false"
+            android:title="F7"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f8"
+            android:defaultValue="false"
+            android:title="F8"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f9"
+            android:defaultValue="false"
+            android:title="F9"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f10"
+            android:defaultValue="false"
+            android:title="F10"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f11"
+            android:defaultValue="false"
+            android:title="F11"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_f12"
+            android:defaultValue="false"
+            android:title="F12"/>
+
+        <CheckBoxPreference
             android:key="navigationbar_softkeyboard"
             android:defaultValue="true"
             android:title="◇"/>
