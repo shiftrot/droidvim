@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -41,6 +40,10 @@ android {
         ndkBuild {
             path 'src/main/jni/Android.mk'
         }
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     buildTypes {
