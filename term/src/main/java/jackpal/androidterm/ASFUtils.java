@@ -388,7 +388,11 @@ public class ASFUtils {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dlg.show();
+                    try {
+                        dlg.show();
+                    } catch (Exception e) {
+                        // Do nothing
+                    }
                 }
             });
         } catch (Exception e) {
