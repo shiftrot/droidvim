@@ -775,7 +775,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 button.setVisibility(View.VISIBLE);
             }
         }
-        if (SCOPED_STORAGE && FLAVOR_TERMINAL) mFilePickerItems.add(getString(R.string.scoped_storage));
+        if (SCOPED_STORAGE) mFilePickerItems.add(getString(R.string.manage_external_storage_permission));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mFilePickerItems.add(getString(R.string.backup_restore));
         }
@@ -2497,9 +2497,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     backupAndRestoreHome();
                 } else if (getString(R.string.menu_edit_vimrc).equals(item)) {
                     editVimrc();
-                } else if (getString(R.string.scoped_storage).equals(item)) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                    startActivity(intent);
+                } else if (getString(R.string.manage_external_storage_permission).equals(item)) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        Intent intent = null;
+                        intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                        startActivity(intent);
+                    }
                 } else {
                     intentMainActivity(appId[which]);
                 }
