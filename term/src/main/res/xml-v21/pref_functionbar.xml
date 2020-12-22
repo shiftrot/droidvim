@@ -190,7 +190,7 @@
         <CheckBoxPreference
             android:key="functionbar_softkeyboard"
             android:defaultValue="false"
-            android:title="◇"/>
+            android:title="🔤"/>
 
         <CheckBoxPreference
             android:key="functionbar_invert"
@@ -411,7 +411,7 @@
         <CheckBoxPreference
             android:key="navigationbar_softkeyboard"
             android:defaultValue="true"
-            android:title="◇"/>
+            android:title="🔤"/>
 
         <CheckBoxPreference
             android:key="navigationbar_invert"
