@@ -84,7 +84,7 @@ public class ShellTermSession extends GenericTermSession {
 
     static private boolean mFirst = true;
     static private String mEnvInitialCommand = "";
-    static private boolean mProotEnable = true;
+    static private boolean mProotEnable = false;
     static public boolean mProotNoSecComp = false;
     static private String mTerm;
     static private String mColorFGBG;
@@ -125,12 +125,9 @@ public class ShellTermSession extends GenericTermSession {
         }
 
         String shell = settings.getShell();
-        mProotEnable = Build.VERSION.SDK_INT > Build.VERSION_CODES.P;
+        mProotEnable = settings.isProot();
         if (Term.mTerminalMode != 0) {
             mProotEnable = (Term.mTerminalMode & Term.TERMINAL_MODE_PROOT) != 0;
-        } else {
-            if (new File(TermService.getVersionFilesDir() + "/proot.enable").exists()) mProotEnable = true;
-            if (new File(TermService.getVersionFilesDir() + "/proot.disable").exists()) mProotEnable = false;
         }
         // mProotNoSecComp = new File(TermService.getVersionFilesDir() + "/proot.noseccomp").exists();
         mProcId = createSubprocess(shell, envCmd);

@@ -1080,7 +1080,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (SCOPED_STORAGE) {
+            if (SCOPED_STORAGE || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 addPreferencesFromResource(R.xml.pref_shell_scoped_storage);
             } else {
                 addPreferencesFromResource(R.xml.pref_shell);

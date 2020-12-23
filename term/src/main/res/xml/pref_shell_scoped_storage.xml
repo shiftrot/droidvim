@@ -40,6 +40,12 @@
         android:title="@string/title_home_path_preference"
         android:summary="@string/summary_home_path_preference"/>
 
+    <SwitchPreference
+        android:key="proot"
+        android:defaultValue="@bool/pref_proot_default"
+        android:title="@string/title_proot_preference"
+        android:summary="@string/summary_proot_preference"/>
+
 <!--
     <ListPreference
         android:key="scoped_storage_home_path_mode"

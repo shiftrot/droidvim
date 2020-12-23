@@ -91,6 +91,7 @@ public class TermSettings {
     private String mIntentCommand;
     private String mTermType;
     private boolean mCloseOnExit;
+    private boolean mProot;
     private String mHomePath;
 
     private boolean mAltUses8bitMSB;
@@ -165,6 +166,7 @@ public class TermSettings {
     private static final String INTENTCOMMAND_KEY = "intent_command";
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
+    private static final String PROOT_KEY = "proot";
     private static final String HOMEPATH_KEY = "home_path";
     private static final String ALT_USES_8BIT_META = "alt_uses_8bit_meta";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
@@ -322,6 +324,7 @@ public class TermSettings {
         mIntentCommand = res.getString(R.string.pref_intent_command_default);
         mTermType = res.getString(R.string.pref_termtype_default);
         mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
+        mProot = res.getBoolean(R.bool.pref_proot_default);
         // the mHomePath default is set dynamically in readPrefs()
         mAltUses8bitMSB = res.getBoolean(R.bool.pref_alt_uses_8bit_meta_default);
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
@@ -404,6 +407,7 @@ public class TermSettings {
         mIntentCommand = readStringPref(INTENTCOMMAND_KEY, mIntentCommand);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);
+        mProot = readBooleanPref(PROOT_KEY, mProot);
         mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
         mAltUses8bitMSB = readBooleanPref(ALT_USES_8BIT_META, mAltUses8bitMSB);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
@@ -804,6 +808,10 @@ public class TermSettings {
 
     public boolean closeWindowOnProcessExit() {
         return mCloseOnExit;
+    }
+
+    public boolean isProot() {
+        return mProot;
     }
 
     public void setHomePath(String homePath) {
