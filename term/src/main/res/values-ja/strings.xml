@@ -304,6 +304,8 @@
     <string name="title_vi_cooperative_mode_preference">vi協調モード</string>
     <string name="summary_vi_cooperative_mode">ESCボタンで「起動時の入力モード」へリセットします.</string>
     <string name="dialog_title_vi_cooperative_mode_preference">vi協調モードを有効にするキーボードを選択.</string>
+    <string name="pref_force_normal_input_to_physical_keyboard">通常入力の強制</string>
+    <string name="summary_force_normal_input_to_physical_keyboard_preference">物理キーボードの接続時に通常入力に設定する</string>
 
     <string name="shell_preferences">シェル</string>
     <string name="title_shell_preference">コマンドライン</string>

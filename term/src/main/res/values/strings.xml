@@ -302,6 +302,8 @@
     <string name="title_vi_cooperative_mode_preference">vi-cooperative mode</string>
     <string name="summary_vi_cooperative_mode">Reset to \"Input mode at startup\" with ESC button.</string>
     <string name="dialog_title_vi_cooperative_mode_preference">Choose vi-cooperative mode.</string>
+    <string name="pref_force_normal_input_to_physical_keyboard">Force normal input</string>
+    <string name="summary_force_normal_input_to_physical_keyboard_preference">If a physical keyboard is connected, set to normal input mode.</string>
 
     <string name="shell_preferences">Shell</string>
     <string name="title_shell_preference">Command line</string>

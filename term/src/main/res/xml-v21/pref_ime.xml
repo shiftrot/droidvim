@@ -35,7 +35,7 @@
         android:entryValues="@array/entryvalues_vi_cooperative_mode_preference"
         android:dialogTitle="@string/dialog_title_vi_cooperative_mode_preference"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="force_normal_input_to_physical_keyboard"
         android:defaultValue="@bool/pref_force_normal_input_to_physical_keyboard"
         android:title="@string/pref_force_normal_input_to_physical_keyboard"

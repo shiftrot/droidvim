@@ -109,6 +109,7 @@ public class TermSettings {
     private int mImeShortcutsAction;
     private int mImeDefaultInputtype;
     private int mViCooperativeMode;
+    private boolean mForceNormalInputModeToPhysicalKeyboard;
 
     public static final String STATUSBAR_ICON_KEY = "statusbar_icon";
     private static final String STATUSBAR_KEY = "statusbar";
@@ -180,6 +181,7 @@ public class TermSettings {
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action_rev2";
     private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
     private static final String IME_VI_COOPERATIVE_MODE = "vi_cooperative_mode";
+    public static final String FORCE_NOMAL_INPUT_TO_PHYSICAL_KEYBOARD = "force_normal_input_to_physical_keyboard";
     private static String SHOW_DOTFILES_KEY;
 
     public static final int WHITE = 0xffffffff;
@@ -337,6 +339,7 @@ public class TermSettings {
         mAutoHideFunctionbar = res.getBoolean(R.bool.pref_auto_hide_functionbar_default);
         mImeShortcutsAction = res.getInteger(R.integer.pref_ime_shortcuts_action_default);
         mImeDefaultInputtype = res.getInteger(R.integer.pref_ime_inputtype_default);
+        mForceNormalInputModeToPhysicalKeyboard = res.getBoolean(R.bool.pref_force_normal_input_to_physical_keyboard);
         mViCooperativeMode = res.getInteger(R.integer.pref_vi_cooperative_mode_default);
     }
 
@@ -420,6 +423,7 @@ public class TermSettings {
         mAutoHideFunctionbar = readBooleanPref(AUTO_HIDE_FUNCTIONBAR, mAutoHideFunctionbar);
         mImeShortcutsAction = readIntPref(IME_SHORTCUTS_ACTION, mImeShortcutsAction, IME_SHORTCUTS_ACTION_MAX);
         mImeDefaultInputtype = readIntPref(IME_DEFAULT_INPUTTYPE, mImeDefaultInputtype, IME_SHORTCUTS_ACTION_MAX);
+        mForceNormalInputModeToPhysicalKeyboard = readBooleanPref(FORCE_NOMAL_INPUT_TO_PHYSICAL_KEYBOARD, mForceNormalInputModeToPhysicalKeyboard);
         mViCooperativeMode = readIntPref(IME_VI_COOPERATIVE_MODE, mViCooperativeMode, VI_COOPRATIVE_MODE_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
@@ -692,6 +696,10 @@ public class TermSettings {
 
     public int getImeDefaultInputtype() {
         return mImeDefaultInputtype;
+    }
+
+    public boolean getForceNormalInputModeToPhysicalKeyboard() {
+        return mForceNormalInputModeToPhysicalKeyboard;
     }
 
     public int getViCooperativeMode() {

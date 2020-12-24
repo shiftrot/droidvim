@@ -578,6 +578,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    private void setForceNormalInputModeToPhysicalKeyboard(EmulatorView view) {
+        setForceNormalInputModeToPhysicalKeyboard(view, false);
+    }
+
+    private void setForceNormalInputModeToPhysicalKeyboard(EmulatorView view, boolean forceDefault) {
+        if (view != null) {
+            boolean forceNormal = mHaveFullHwKeyboard && mSettings.getForceNormalInputModeToPhysicalKeyboard();
+            if (forceNormal) {
+                view.setImeShortcutsAction(50);
+            } else if (forceDefault) {
+                view.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
+            }
+        }
+    }
+
     private void onLastKey() {
         mLastKeyPress = System.currentTimeMillis();
         if (mKeepScreenEnableAuto) {
@@ -1642,6 +1657,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             emulatorView.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             mFirstInputtype = false;
         }
+        if (mHaveFullHwKeyboard) setForceNormalInputModeToPhysicalKeyboard(emulatorView);
         return emulatorView;
     }
 

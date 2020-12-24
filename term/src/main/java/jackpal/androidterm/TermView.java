@@ -61,6 +61,7 @@ public class TermView extends EmulatorView {
         setMouseTracking(settings.getMouseTrackingFlag());
         setPreIMEShortcutsAction(settings.getImeShortcutsAction());
         setViCooperativeMode(settings.getViCooperativeMode());
+        setForceNormalInputModeToPhysicalKeyboard(settings.getForceNormalInputModeToPhysicalKeyboard());
     }
 
     public void updatePrefs(TermSettings settings) {

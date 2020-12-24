@@ -1449,7 +1449,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mKeyListener.keyUp(keyCode, event);
         clearSpecialKeyStatus();
         if (keyCode == KeycodeConstants.KEYCODE_ESCAPE && mViCooperativeMode) {
-            setImeShortcutsAction(mIMEInputTypeDefault);
+            if (!(mHaveFullHwKeyboard && mForceNormalInputModeToPhysicalKeyboard)) {
+                setImeShortcutsAction(mIMEInputTypeDefault);
+            }
         }
         return true;
     }
@@ -2087,6 +2089,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setViCooperativeMode(int value) {
         mViCooperativeMode = ((value & 2) != 0);
+    }
+
+    private static boolean mForceNormalInputModeToPhysicalKeyboard = false;
+
+    public void setForceNormalInputModeToPhysicalKeyboard(boolean value) {
+        mForceNormalInputModeToPhysicalKeyboard = value;
     }
 
     public boolean setDevBoolean(Context context, String key, boolean value) {
