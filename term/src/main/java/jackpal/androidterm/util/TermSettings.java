@@ -135,7 +135,7 @@ public class TermSettings {
     private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";
-    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev2";
+    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev3";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
     private static final String ACTIONBAR_X_KEY = "actionbar_x_action";

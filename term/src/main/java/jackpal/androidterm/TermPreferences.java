@@ -890,7 +890,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_functionbar);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("functionbar_diamond_action_rev2"));
+            bindPreferenceSummaryToValue(findPreference("functionbar_diamond_action_rev3"));
             bindPreferenceSummaryToValue(findPreference("actionbar_invert_action"));
             bindPreferenceSummaryToValue(findPreference("actionbar_user_action"));
             bindPreferenceSummaryToValue(findPreference("actionbar_x_action"));
