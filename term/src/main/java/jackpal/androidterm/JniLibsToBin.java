@@ -33,6 +33,7 @@ public class JniLibsToBin {
             put("libgetprop.so"              , "/bin/getprop");
             put("libopen.so"                 , "/bin/open");
             put("libsetup-storage.so"        , "/bin/setup-storage");
+            put("libsh.app.so"               , "/bin/sh.app");
             put("libxdg-open.so"             , "/bin/xdg-open");
             put("libusr.bin.busybox-setup.so", "/usr/bin/busybox-setup");
             put("libusr.bin.cphome.so"       , "/usr/bin/cphome");
