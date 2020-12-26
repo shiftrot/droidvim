@@ -1317,9 +1317,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         String title = null;
         String message = null;
-        String key = "scoped_storage_warning_backup";
-        boolean warning = getPrefBoolean(Term.this, key, true);
-        if (SCOPED_STORAGE) {
+        String key = null;
+        boolean warning = false;
+
+        if (SCOPED_STORAGE && message == null) {
+            key = "scoped_storage_warning_backup";
+            warning = getPrefBoolean(Term.this, key, true);
             if (first || (warning && mRandom.nextInt(100) == 1)) {
                 title = getString(R.string.scoped_storage_warning_title);
                 message = getString(R.string.scoped_storage_uninstall_warning_message);
@@ -1328,9 +1331,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
 
-        key = "show_dotfiles_warning";
-        warning = getPrefBoolean(Term.this, key, true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && message == null && mSettings.getShowDotfiles()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mSettings.getShowDotfiles() && message == null) {
+            key = "show_dotfiles_warning";
+            warning = getPrefBoolean(Term.this, key, true);
             if (warning && mRandom.nextInt(50) == 1) {
                 title = getString(R.string.title_show_dotfiles_warning);
                 message = getString(R.string.show_dotfiles_warning_message);
