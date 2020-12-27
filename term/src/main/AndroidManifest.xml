@@ -66,8 +66,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_terminal"
-        android:theme="@style/App_Theme_Light"
-        tools:targetApi="q" >
+        android:theme="@style/App_Theme_Light" >
         <activity
             android:name=".ExtraContents"
             android:label="@string/title_activity_extra_contents" >
