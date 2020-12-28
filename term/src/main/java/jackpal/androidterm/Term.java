@@ -47,6 +47,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.StatFs;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
@@ -196,6 +197,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int TERMINAL_MODE_PROOT = 0x04;
     public static int mTerminalMode = TERMINAL_MODE_DISABLE;
     public static final String TERMINAL_MODE_FILE = "/.terminal.mode";
+    private boolean mLowStorageWarning = false;
+    private final String LOW_STORAGE_WARNING_KEY = "low_storage_check_" + BuildConfig.VERSION_CODE;
 
     private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
         {
@@ -628,16 +631,26 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mSettings = new TermSettings(getResources(), mPrefs);
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
-        TSIntent = new Intent(this, TermService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
-                this.getApplicationContext().startForegroundService(TSIntent);
-            } else {
-                requestPermissions(new String[]{Manifest.permission.FOREGROUND_SERVICE}, REQUEST_FOREGROUND_SERVICE_PERMISSION);
+        try {
+            if (getPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, true)) {
+                final long LOW_STORAGE_WARNING_SIZE = (long)(1.2 * 1024 * 1024);
+                mLowStorageWarning = getAvailableSize(Environment.getDataDirectory().getPath()) < LOW_STORAGE_WARNING_SIZE;
             }
-        } else {
-            startService(TSIntent);
+        } catch (Exception e) {
+            // Do nothing
         }
+        if (!mLowStorageWarning) {
+            TSIntent = new Intent(this, TermService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+                    this.getApplicationContext().startForegroundService(TSIntent);
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.FOREGROUND_SERVICE}, REQUEST_FOREGROUND_SERVICE_PERMISSION);
+                }
+            } else {
+                startService(TSIntent);
+            }
+        };
 
         setupTheme(mSettings.getColorTheme());
 
@@ -661,6 +674,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         restoreSyncFileObserver(this);
         TermPreferences.setAppPickerList(this);
         mAlreadyStarted = true;
+    }
+
+    private static long getAvailableSize(String path){
+        long size = -1;
+
+        if( path != null ) {
+            StatFs fs = new StatFs(path);
+            long blockSize = fs.getBlockSizeLong();
+            long availableBlockSize = fs.getAvailableBlocksLong();
+            size = (blockSize * availableBlockSize) / (long) (1024 * 1024);
+        }
+        return size;
     }
 
     private void setupTheme(int theme) {
@@ -1070,6 +1095,36 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     protected void onStart() {
         super.onStart();
+        if (mLowStorageWarning) {
+            final String title = getString(R.string.low_strage_warning_title);
+            String message = getString(R.string.low_strage_warning_message);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setTitle(title);
+            builder.setMessage(message);
+            LayoutInflater flater = LayoutInflater.from(this);
+            View view = flater.inflate(R.layout.alert_checkbox, null);
+            builder.setView(view);
+            final CheckBox cb = view.findViewById(R.id.dont_show_again);
+            cb.setText(getString(R.string.low_strage_warning_ignore));
+            cb.setChecked(false);
+            builder.setPositiveButton(getString(R.string.low_strage_warning_button), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int m) {
+                    if (cb.isChecked()) {
+                        setPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, false);
+                    }
+                    mLowStorageWarning = false;
+                    finish();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positive.requestFocus();
+            return;
+        };
         String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         if (new File(nativeLibraryDir + "/libjackpal-termexec2.so").exists()) {
             doOnStart();
