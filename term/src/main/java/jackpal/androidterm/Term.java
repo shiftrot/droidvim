@@ -633,7 +633,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         try {
             if (getPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, true)) {
-                final long LOW_STORAGE_WARNING_SIZE = (long)(1.2 * 1024 * 1024);
+                final long LOW_STORAGE_WARNING_SIZE = (long)(1.2 * 1024 * 1024 * 1024);
                 mLowStorageWarning = getAvailableSize(Environment.getDataDirectory().getPath()) < LOW_STORAGE_WARNING_SIZE;
             }
         } catch (Exception e) {
@@ -683,7 +683,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             StatFs fs = new StatFs(path);
             long blockSize = fs.getBlockSizeLong();
             long availableBlockSize = fs.getAvailableBlocksLong();
-            size = (blockSize * availableBlockSize) / (long) (1024 * 1024);
+            size = (blockSize * availableBlockSize);
         }
         return size;
     }
