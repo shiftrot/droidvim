@@ -95,10 +95,6 @@ public class JniLibsToBin {
         return false;
     }
 
-    static public boolean isSymlink(File symlink) {
-        return (symlink.exists() && ASFUtils.isSymlink(symlink));
-    }
-
     static public void jniLibsToBin(String targetDir, Map <String, String> maps) {
         String SOLIB_PATH = TermService.getAPPLIB();
         for (Map.Entry<String, String> entry : maps.entrySet()) {

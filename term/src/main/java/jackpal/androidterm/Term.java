@@ -1095,6 +1095,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (mLowStorageWarning) {
                         String manufacturer = Build.MANUFACTURER;
                         String model = Build.MODEL;
+                        mLowStorageWarning = false;
                     }
                 }
             } catch (Exception e) {
@@ -1127,7 +1128,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             dialog.show();
             Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positive.requestFocus();
-            mLowStorageWarning = false;
         }
 
         String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
