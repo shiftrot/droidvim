@@ -1114,7 +1114,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             View view = inflater.inflate(R.layout.alert_checkbox, null);
             builder.setView(view);
             final CheckBox cb = view.findViewById(R.id.dont_show_again);
-            cb.setChecked(false);
+            cb.setChecked(true);
             builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
                     if (cb.isChecked()) {
@@ -1372,6 +1372,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void destroyAppWarning() {
+        if (mUninstall) {
+            doExitShell();
+            return;
+        }
         boolean first = TermVimInstaller.ScopedStorageWarning;
         TermVimInstaller.ScopedStorageWarning = false;
 
