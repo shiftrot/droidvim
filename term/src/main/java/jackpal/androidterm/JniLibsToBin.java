@@ -107,36 +107,48 @@ public class JniLibsToBin {
                 if (!parent.isDirectory()) {
                     parent.mkdirs();
                 }
-                shell("rm " + symlink.getAbsolutePath());
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || !SOLIB_PATH.startsWith("/data") || !symlink(soFile, symlink)) {
-                    InputStream is = new FileInputStream(soFile);
-                    TermVimInstaller.cpStream(is , new FileOutputStream(symlink.getAbsolutePath()));
-                }
-                if ((symlink.getAbsolutePath().contains("/bin/")) ||
-                    (symlink.getAbsolutePath().contains("/lib/")) ||
-                    (symlink.getAbsolutePath().contains("/libexec/"))) {
-                        shell("chmod 755 " + symlink.getAbsolutePath());
-                }
+                symlink(soFile, symlink);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+    static public final boolean JNILIBS_FORCE_SYMLINK = true;
     static private boolean symlink(File src, File symlink) {
         try {
-            if (!src.exists() || !src.canExecute()) return false;
+            if (!src.exists()) return false;
             shell("rm " + symlink.getAbsolutePath());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Os.symlink(src.getAbsolutePath(), symlink.getAbsolutePath());
-            } else {
-                shell("ln -s " + src.getAbsolutePath() + " " + symlink.getAbsolutePath());
+            boolean useSymlink = true;
+            if (!TermService.getAPPFILES().matches("/data/.*")) useSymlink = JNILIBS_FORCE_SYMLINK;
+            if (useSymlink) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Os.symlink(src.getAbsolutePath(), symlink.getAbsolutePath());
+                } else {
+                    shell("ln -s " + src.getAbsolutePath() + " " + symlink.getAbsolutePath());
+                }
             }
-            if (!symlink.exists() || !ASFUtils.isSymlink(symlink)) return false;
+            boolean executable = setExecMode(symlink);
+            if (!symlink.exists() || !ASFUtils.isSymlink(symlink) || (executable && !symlink.canExecute())) {
+                shell("rm " + symlink.getAbsolutePath());
+                InputStream is = new FileInputStream(src);
+                TermVimInstaller.cpStream(is , new FileOutputStream(symlink.getAbsolutePath()));
+                setExecMode(symlink);
+            }
         } catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    static private boolean setExecMode(File symlink) {
+        if ((symlink.getAbsolutePath().contains("/bin/")) ||
+                (symlink.getAbsolutePath().contains("/lib/")) ||
+                (symlink.getAbsolutePath().contains("/libexec/"))) {
+            shell("chmod 755 " + symlink.getAbsolutePath());
+            return true;
+        }
+        return false;
     }
 
     static public void symlinkDebugReport(String targetDir) {
