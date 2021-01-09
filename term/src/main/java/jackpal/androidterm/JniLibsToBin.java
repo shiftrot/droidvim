@@ -21,12 +21,12 @@ import static jackpal.androidterm.TermVimInstaller.shell;
 public class JniLibsToBin {
     static final public Map<String, String> JNIlIBS_MAP = new LinkedHashMap<String, String>() {
         {
-            put("libctags.so",       "/bin/ctags");
-            put("libvim.default.so", "/bin/vim.default");
-            put("libxxd.so",         "/bin/xxd");
-            put("libdiff.so",        "/usr/bin/diff");
-            put("libgrep.so",        "/usr/bin/grep");
-            put("libgrep32.so",      "/usr/bin/grep");
+            put("libctags.so"                , "/bin/ctags");
+            put("libvim.default.so"          , "/bin/vim.default");
+            put("libxxd.so"                  , "/bin/xxd");
+            put("libdiff.so"                 , "/bin/diff");
+            put("libgrep.so"                 , "/bin/grep");
+            put("libgrep32.so"               , "/bin/grep");
             put("libam.so"                   , "/bin/am");
             put("libatemod.so"               , "/bin/atemod");
             put("libbash.app.so"             , "/bin/bash.app");
