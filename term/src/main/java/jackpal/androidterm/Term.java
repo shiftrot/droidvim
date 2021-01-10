@@ -4053,6 +4053,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return pv.getBoolean(key, defValue);
     }
 
+    static public void setPrefString(Context context, String key, String value) {
+        PrefValue pv = new PrefValue(context);
+        pv.setString(key, value);
+    }
+
+    static public String getPrefString(Context context, String key, String defValue) {
+        PrefValue pv = new PrefValue(context);
+        return pv.getString(key, defValue);
+    }
+
     private void initOnelineTextBox(int mode) {
         mEditText = findViewById(R.id.text_input);
         mEditText.setText("");
