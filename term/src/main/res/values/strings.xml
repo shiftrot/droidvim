@@ -372,7 +372,7 @@
     <string name="summary_home_path_preference">Path to a writable folder to be used as \"$HOME\". (Restart required)</string>
 
     <string name="title_proot_preference">proot</string>
-    <string name="summary_proot_preference">Allows scripts in the home directory to run on Android 10 or later. (Restart required)</string>
+    <string name="summary_proot_preference">Use proot to execute the file. (Restart required)</string>
 
     <string name="control_key_dialog_title">Control and Function Keys</string>
     <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
