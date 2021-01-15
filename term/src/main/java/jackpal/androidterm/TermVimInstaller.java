@@ -457,8 +457,7 @@ final class TermVimInstaller {
     static private void installSoTar(String path, String soLib) {
         try {
             SOLIB_PATH = getSolibPath(null);
-            final String arch = "_" + getArch();
-            String fname = "lib" + soLib + arch + ".so";
+            String fname = "lib" + soLib + ".tar.so";
             String local = TermService.getTMPDIR() + "/" + fname;
             cp(SOLIB_PATH + "/" + fname, local);
             installTar(path, new FileInputStream(local));
