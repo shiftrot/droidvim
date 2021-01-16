@@ -19,7 +19,7 @@
             android:id="@+id/drawer_extra_button"
             style="?android:attr/buttonBarButtonStyle"
             android:minHeight="25dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:background="@drawable/extra_button"
             android:layout_marginRight="20dp"

@@ -697,10 +697,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setExtraButton() {
-        Button button = findViewById(R.id.drawer_extra_button);
-        int visibilty = View.VISIBLE;
-        if (!FLAVOR_VIM || Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) visibilty = View.GONE;
-        button.setVisibility(visibilty);
     }
 
     private void setDebugButton() {
