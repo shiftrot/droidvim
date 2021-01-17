@@ -181,18 +181,17 @@ public class ShellTermSession extends GenericTermSession {
     }
 
     static String[] getProotCommand(String... commands) {
-        if (!mProotEnable) return new String[]{};
         String appLib = TermService.getAPPLIB();
         List<String> prootCommands = new ArrayList<>();
         if (!new File(appLib + "/libproot.so").canExecute()) return prootCommands.toArray(new String[0]);
 
         prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
-        prootCommands.add("export PROOT_LOADER=$APPLIB/libloader.so");
+        prootCommands.add("export PROOT_LOADER=" + appLib + "/libloader.so");
         if (new File(appLib + "/libloader-m32.so").canExecute()) {
-            prootCommands.add("export PROOT_LOADER_32=$APPLIB/libloader-m32.so");
+            prootCommands.add("export PROOT_LOADER_32=" + appLib + "/libloader-m32.so");
         }
         if (mProotNoSecComp) prootCommands.add("export PROOT_NO_SECCOMP=1");
-        if (!FLAVOR_TERMINAL) prootCommands.add(appLib + "/libproot.sh.so");
+        if (mProotEnable) prootCommands.add(appLib + "/libproot.sh.so");
         if (commands != null && !Arrays.equals(commands, new String[]{})) {
             prootCommands.addAll(Arrays.asList(commands));
         }

@@ -1,4 +1,1 @@
-$APPLIB/libproot.so -w / /system/bin/sh
-if [ $? -ne 0 ]; then
-  echo "Startup" > $APPFILES/proot.err
-fi
+$APPLIB/libproot.so -b /dev -b /proc -b /sys -b /system /system/bin/sh

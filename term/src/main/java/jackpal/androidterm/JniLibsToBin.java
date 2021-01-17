@@ -39,10 +39,38 @@ public class JniLibsToBin {
             put("libusr.bin.cphome.so"       , "/usr/bin/cphome");
             put("libvim.app.default.so"      , "/bin/vim.app.default");
             put("libvim.app.so"              , "/bin/vim.app");
+            put("libproot.so"                , "/bin/proot");
+            put("libproot.bash.so"           , "/bin/proot.bash");
             put("libproot.sh.so"             , "/bin/proot.sh");
             put("libsuvim.so"                , "/bin/suvim");
         }
     };
+
+    static public boolean jniLibsToBin(String targetDir, String[] lines) {
+        Map<String, String> maps = readSymlinks(lines);
+        if (maps != null && maps.size() > 0) jniLibsToBin(targetDir, maps);
+        return true;
+    }
+
+    static public Map<String, String> readSymlinks(String[] lines) {
+        try {
+            Map<String, String> result = new HashMap<>();
+            for (String line : lines) {
+                try {
+                    List<String> item = Arrays.asList(line.split("\\|"));
+                    if (item.size() != 2) continue;
+                    String lib = item.get(0);
+                    String file = item.get(1);
+                    result.put(lib, file);
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     static public boolean jniLibsToBin(String targetDir, InputStream is) {
         Map<String, String> maps = readSymlinks(is);

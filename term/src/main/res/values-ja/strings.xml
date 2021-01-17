@@ -374,7 +374,7 @@
     <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ(要再起動)</string>
 
     <string name="title_proot_preference">proot</string>
-    <string name="summary_proot_preference">prootを使用してファイルを実行します. (要再起動)</string>
+    <string name="summary_proot_preference">Android 10以降でホームディレクトリ内のシェルスクリプトを実行したい場合はprootを有効にします. (要再起動)\nsuなど一部のコマンドが動作しなくなります.</string>
 
     <string name="control_key_dialog_title">コントロールキーとファンクションキー</string>
 
