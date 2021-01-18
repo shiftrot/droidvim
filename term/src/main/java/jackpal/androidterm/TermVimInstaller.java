@@ -200,6 +200,9 @@ final class TermVimInstaller {
                     installSoTar(path, "bash");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
                     JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
+                    installSoTar(path, "term-bash");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "term_bash_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "term_bash_symlinks_")));
                     if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                         shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                     }
@@ -305,10 +308,13 @@ final class TermVimInstaller {
                         // if (isNeedUpdate(targetVer, localVer)) {
                             installSoTar(path, "bash");
                             installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
+                            JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
+                            installSoTar(path, "term-bash");
+                            installTar(path, getInputStream(activity, getLocalLibId(activity, "term_bash_")));
+                            JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "term_bash_symlinks_")));
                             id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
                             copyScript(activity.getResources().openRawResource(id), versionPath + "/version.bash");
                         // }
-                        JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
                         targetVer.delete();
                         if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                             shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");

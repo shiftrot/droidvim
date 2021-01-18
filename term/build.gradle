@@ -85,13 +85,13 @@ android {
             if (abiArm) {
                 res.srcDirs += ['src/main-arm/res']
                 jniLibs.srcDirs += ['src/main-arm/jniLibs']
-                jniLibs.srcDirs += ['src/bash-arm/jniLibs', 'src/cmd-tools-arm/jniLibs']
+                jniLibs.srcDirs += ['src/term-bash-arm/jniLibs', 'src/cmd-tools-arm/jniLibs']
                 jniLibs.srcDirs += ['src/zip-arm/jniLibs', 'src/unzip-arm/jniLibs']
             }
             if (abiX86) {
                 res.srcDirs += ['src/main-x86/res']
                 jniLibs.srcDirs += ['src/main-x86/jniLibs']
-                jniLibs.srcDirs += ['src/bash-x86/jniLibs', 'src/cmd-tools-x86/jniLibs']
+                jniLibs.srcDirs += ['src/term-bash-x86/jniLibs', 'src/cmd-tools-x86/jniLibs']
                 jniLibs.srcDirs += ['src/zip-x86/jniLibs', 'src/unzip-x86/jniLibs']
             }
         }
@@ -101,13 +101,13 @@ android {
             if (abiArm) {
                 res.srcDirs += ['src/main-arm/res']
                 jniLibs.srcDirs += ['src/main-arm/jniLibs', 'src/vim-arm/jniLibs']
-                jniLibs.srcDirs += ['src/bash-arm/jniLibs', 'src/cmd-tools-arm/jniLibs']
+                jniLibs.srcDirs += ['src/term-bash-arm/jniLibs', 'src/cmd-tools-arm/jniLibs']
                 jniLibs.srcDirs += ['src/zip-arm/jniLibs', 'src/unzip-arm/jniLibs']
             }
             if (abiX86) {
                 res.srcDirs += ['src/main-x86/res']
                 jniLibs.srcDirs += ['src/main-x86/jniLibs', 'src/vim-x86/jniLibs']
-                jniLibs.srcDirs += ['src/bash-x86/jniLibs', 'src/cmd-tools-x86/jniLibs']
+                jniLibs.srcDirs += ['src/term-bash-x86/jniLibs', 'src/cmd-tools-x86/jniLibs']
                 jniLibs.srcDirs += ['src/zip-x86/jniLibs', 'src/unzip-x86/jniLibs']
             }
         }
