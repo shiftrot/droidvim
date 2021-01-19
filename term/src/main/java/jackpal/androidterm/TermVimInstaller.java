@@ -258,7 +258,8 @@ final class TermVimInstaller {
         pd.show();
 
         final DrawerLayout layout = activity.findViewById(R.id.drawer_layout);
-        final ProgressBar progressBar = activity.findViewById(R.id.progressbar);
+        final ProgressBar progressBar = new ProgressBar(activity);
+        progressBar.setIndeterminate(true);
         Term.showProgressRing(layout, progressBar);
         new Thread() {
             @Override

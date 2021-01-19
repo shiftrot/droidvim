@@ -1601,7 +1601,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     static public void showProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
         try {
             if (layout == null || progressBar == null) return;
-            layout.removeView(progressBar);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
             progressBar.setLayoutParams(params);
             layout.addView(progressBar);
