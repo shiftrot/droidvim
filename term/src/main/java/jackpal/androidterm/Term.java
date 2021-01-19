@@ -1496,40 +1496,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
-        if (!FLAVOR_VIM) {
-            if (!TermVimInstaller.getTermInstallStatus(this)) {
-                String preCmd = "";
-                String postCmd = "";
-                String[] list = cmd.split("\n");
-                for (String str : list) {
-                    if (str.matches("^(bash|-?vim.app).*")) {
-                        postCmd = postCmd + str + "\n";
-                    } else {
-                        preCmd = preCmd + str + "\n";
-                    }
-                }
-                final String riCmd = postCmd;
-                TermVimInstaller.installTerm(Term.this, new Runnable() {
-                    @Override
-                    public void run() {
-                        String cmd = riCmd;
-                        if (getCurrentTermSession() != null) {
-                            sendKeyStrings(cmd, false);
-                        } else {
-                            ShellTermSession.setPostCmd(cmd);
-                        }
-                    }
-                });
-                permissionCheckExternalStorage();
-            } else {
-                permissionCheckExternalStorage();
-            }
-        } else if (TermVimInstaller.doInstallVim) {
-            final boolean vimApp = cmd.replaceAll(".*\n", "").matches("-?vim.app\\s*");
-
+        boolean doInstall = TermVimInstaller.doInstallVim;
+        if (FLAVOR_TERMINAL) {
+            doInstall = !TermVimInstaller.getTermInstallStatus(this);
+        }
+        if (doInstall) {
             String _postCmd = "";
-            shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
-            _postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
+            if (FLAVOR_VIM) {
+                shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
+                _postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
+            }
             String[] list = cmd.split("\n");
             String preCmd = "";
             for (String str : list) {
@@ -1544,15 +1520,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             TermVimInstaller.installVim(Term.this, new Runnable() {
                 @Override
                 public void run() {
-                    if (vimApp) {
-                        if (getCurrentTermSession() != null) {
-                            sendKeyStrings(postCmd, false);
-                        } else {
-                            ShellTermSession.setPostCmd(postCmd);
-                        }
+                    if (getCurrentTermSession() != null) {
+                        sendKeyStrings(postCmd, false);
+                    } else {
+                        ShellTermSession.setPostCmd(postCmd);
                     }
                     permissionCheckExternalStorage();
-                    openDrawerAfterInstall();
+                    if (FLAVOR_VIM) openDrawerAfterInstall();
                 }
             });
         } else {
@@ -1580,25 +1554,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             postCmd += ESC_CMD + RemoteInterface.IntentCommand + "\n";
         }
         final String riCmd = postCmd;
-        if (FLAVOR_TERMINAL) {
-            TermVimInstaller.installTerm(Term.this, new Runnable() {
-                @Override
-                public void run() {
-                    String cmd = riCmd;
-                    if (getCurrentTermSession() != null) {
-                        sendKeyStrings(cmd, false);
-                    } else {
-                        ShellTermSession.setPostCmd(cmd);
-                    }
-                    permissionCheckExternalStorage();
-                }
-            });
-            return;
-        }
-        if (RemoteInterface.ShareText != null) {
-            String filename = RemoteInterface.FILE_CLIPBOARD;
-            Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
-            postCmd += "\u001b" + ":ATEMod _paste\n";
+        if (!FLAVOR_TERMINAL) {
+            if (RemoteInterface.ShareText != null) {
+                String filename = RemoteInterface.FILE_CLIPBOARD;
+                Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
+                postCmd += "\u001b" + ":ATEMod _paste\n";
+            }
         }
         try {
             TermVimInstaller.doInstallVim(Term.this, new Runnable() {

@@ -185,11 +185,11 @@ public class ShellTermSession extends GenericTermSession {
         List<String> prootCommands = new ArrayList<>();
         if (!new File(appLib + "/libproot.so").canExecute()) return prootCommands.toArray(new String[0]);
 
-        prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
         prootCommands.add("export PROOT_LOADER=" + appLib + "/libloader.so");
         if (new File(appLib + "/libloader-m32.so").canExecute()) {
             prootCommands.add("export PROOT_LOADER_32=" + appLib + "/libloader-m32.so");
         }
+        prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
         if (mProotNoSecComp) prootCommands.add("export PROOT_NO_SECCOMP=1");
         if (mProotEnable) prootCommands.add(appLib + "/libproot.sh.so");
         if (commands != null && !Arrays.equals(commands, new String[]{})) {

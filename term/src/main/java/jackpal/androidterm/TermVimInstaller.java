@@ -52,6 +52,7 @@ import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
+import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 
@@ -265,9 +266,11 @@ final class TermVimInstaller {
                 final int orientation = activity.getRequestedOrientation();
                 fixOrientation(activity, orientationLock(activity));
                 try {
-                    showWhatsNew(activity, first);
-                    setMessage(activity, pd, "scripts");
+                    if (FLAVOR_VIM) showWhatsNew(activity, first);
+                    setMessage(activity, pd, "term");
                     doInstallTerm(activity);
+                    if (FLAVOR_TERMINAL) return;
+                    setMessage(activity, pd, "scripts");
                     int id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
                     id = activity.getResources().getIdentifier("shell_vim", "raw", activity.getPackageName());
