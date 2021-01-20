@@ -35,71 +35,17 @@
         android:entryValues="@array/entryvalues_vi_cooperative_mode_preference"
         android:dialogTitle="@string/dialog_title_vi_cooperative_mode_preference"/>
 
+
     <SwitchPreference
-        android:key="force_normal_input_to_physical_keyboard"
-        android:defaultValue="@bool/pref_force_normal_input_to_physical_keyboard"
-        android:title="@string/pref_force_normal_input_to_physical_keyboard"
-        android:summary="@string/summary_force_normal_input_to_physical_keyboard_preference"/>
+        android:title="@string/ignore_xoff"
+        android:key="ignore_xoff"
+        android:defaultValue="@bool/pref_ignore_xoff_default"
+        android:summaryOn="@string/ignore_xoff_summary_on"
+        android:summaryOff="@string/ignore_xoff_summary_off"/>
 
-    <PreferenceScreen
-        android:title="@string/title_pre_ime_shortcuts"
-        android:summary="@string/summary_title_pre_ime_shortcuts">
-
-        <ListPreference
-            android:key="ime_shortcuts_action_rev2"
-            android:defaultValue="@integer/pref_ime_shortcuts_action_default"
-            android:title="@string/title_ime_shortcuts_action_preference"
-            android:summary="@string/summary_ime_shortcuts_action_preference"
-            android:entries="@array/entries_ime_shortcuts_action_preference"
-            android:entryValues="@array/entryvalues_ime_shortcuts_action_preference"
-            android:dialogTitle="@string/dialog_titleime_shortcuts_action_preference"/>
-
-        <PreferenceScreen
-            android:title="@string/title_pre_ime_shortcuts"
-            android:summary="@string/summary_title_pre_ime_shortcuts_select">
-
-            <CheckBoxPreference
-                android:key="AltGrave"
-                android:defaultValue="false"
-                android:title="@string/pref_alt_grave"/>
-
-            <CheckBoxPreference
-                android:key="AltEsc"
-                android:defaultValue="false"
-                android:title="@string/pref_alt_esc"/>
-
-            <CheckBoxPreference
-                android:key="AltSpace"
-                android:defaultValue="false"
-                android:title="@string/pref_alt_space"/>
-
-            <CheckBoxPreference
-                android:key="CtrlSpace"
-                android:defaultValue="false"
-                android:title="@string/pref_ctrl_space"/>
-
-            <CheckBoxPreference
-                android:key="ShiftSpace"
-                android:defaultValue="false"
-                android:title="@string/pref_shift_space"/>
-
-            <CheckBoxPreference
-                android:key="ZENKAKU_HANKAKU"
-                android:defaultValue="false"
-                android:title="@string/pref_zenkaku_hankaku"/>
-
-            <CheckBoxPreference
-                android:key="GRAVE"
-                android:defaultValue="false"
-                android:title="@string/pref_grave"/>
-
-            <CheckBoxPreference
-                android:key="CtrlJ"
-                android:defaultValue="false"
-                android:title="@string/pref_ctrl_j"/>
-
-        </PreferenceScreen>
-
-    </PreferenceScreen>
+    <SwitchPreference
+        android:title="@string/alt_sends_esc"
+        android:key="alt_sends_esc"
+        android:defaultValue="@bool/pref_alt_sends_esc_default"/>
 
 </PreferenceScreen>

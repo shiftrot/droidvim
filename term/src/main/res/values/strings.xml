@@ -275,7 +275,7 @@
     <string name="summary_functionbar_preferences">Select the functionbar key to use.</string>
     <string name="gesture_preferences">Gestures &amp; Buttons</string>
 
-    <string name="keyboard_preferences">Keyboard</string>
+    <string name="keyboard_preferences">Physical keyboard</string>
 
     <string name="title_backaction_preference">Back button</string>
     <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
@@ -413,12 +413,12 @@
     <string name="share_screen_text">Share screen text</string>
     <string name="share_file">File</string>
 
-    <string name="alt_uses_8bit_meta">Alt key uses 8bit MSB (Physical keyboard)</string>
+    <string name="alt_uses_8bit_meta">Alt key uses 8bit MSB</string>
     <string name="alt_sends_esc">Alt key sends ESC</string>
     <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
     <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
-    <string name="back_as_esc">Back button as ESC (Physical keyboard)</string>
+    <string name="back_as_esc">Back button as ESC</string>
     <string name="summary_back_as_esc_preference">Enable it if ESC key of physical keyboard is handled as Back button.</string>
 
     <string name="ignore_xoff">Ignore XOFF flow control</string>
@@ -451,6 +451,8 @@
     <string name="pref_grave">[`]</string>
     <string name="pref_switch_charset">[Kanji]</string>
     <string name="pref_ctrl_j">Ctrl + [j]</string>
+    <string name="pref_title_ctrl_space_to_shell"> Send Ctrl+[Space] to the shell</string>
+    <string name="pref_summary_ctrl_space_to_shell">Send Ctrl+[Space] on the physical keyboard to the shell.\nThis option takes precedence over IME shortcuts.</string>
 
     <string name="title_ime_shortcuts_action_preference">IME shortcut action</string>
     <string name="summary_ime_shortcuts_action_preference">Choose IME shortcut action</string>

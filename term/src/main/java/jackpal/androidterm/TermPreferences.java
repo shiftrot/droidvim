@@ -684,7 +684,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             case REQUEST_PREFS_READ_PICKER:
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
-                    if (readPrefs(uri, false)) onCreate(null);
+                    if (readPrefs(uri, false)) recreate();
                     break;
                 }
                 break;
@@ -869,7 +869,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference("ime"));
             bindPreferenceSummaryToValue(findPreference("ime_direct_input_method"));
-            bindPreferenceSummaryToValue(findPreference("ime_shortcuts_action_rev2"));
         }
 
         @Override
@@ -1063,6 +1062,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_keyboard);
             setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("ime_shortcuts_action_rev2"));
         }
 
         @Override

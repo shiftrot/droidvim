@@ -277,7 +277,7 @@
     <string name="summary_functionbar_preferences">使用したいファンクションキーを選択</string>
     <string name="gesture_preferences">ジェスチャー &amp; ボタン</string>
 
-    <string name="keyboard_preferences">キーボード</string>
+    <string name="keyboard_preferences">物理キーボード</string>
 
     <string name="title_backaction_preference">Backボタン</string>
     <string name="summary_backaction_preference">Backボタンの振舞いを選択</string>
@@ -414,12 +414,12 @@
     <string name="share_screen_text">画面のテキストを共有</string>
     <string name="share_file">ファイル</string>
 
-    <string name="alt_uses_8bit_meta">Altキー出力に8bit MSBを使用 (物理キーボード)</string>
+    <string name="alt_uses_8bit_meta">Altキー出力に8bit MSBを使用</string>
     <string name="alt_sends_esc">AltキーでESCを送出</string>
     <string name="alt_sends_esc_summary_on">Altキーの代わりにESCを送出する</string>
     <string name="alt_sends_esc_summary_off">Altキーの代わりにESCを送出しない</string>
 
-    <string name="back_as_esc">BackボタンをESCとして扱う (物理キーボード)</string>
+    <string name="back_as_esc">BackボタンをESCとして扱う</string>
     <string name="summary_back_as_esc_preference">物理キーボードのESCキーがBackボタンとして扱われてしまう場合に有効にしてください.</string>
 
     <string name="ignore_xoff">XOFFフロー制御を無視</string>
@@ -452,6 +452,8 @@
 
     <string name="pref_switch_charset">[漢字]</string>
 
+    <string name="pref_title_ctrl_space_to_shell">Ctrl+[Space]をシェルに送出</string>
+    <string name="pref_summary_ctrl_space_to_shell">物理キーボードのCtrl+[Space]をシェルに送出します.\nこのオプションはIMEショートカットより優先されます.</string>
 
     <string name="title_ime_shortcuts_action_preference">IMEショートカットアクション</string>
     <string name="summary_ime_shortcuts_action_preference">IMEショートカットに割り当てる機能を選択する</string>

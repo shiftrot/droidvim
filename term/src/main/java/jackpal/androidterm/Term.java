@@ -1857,6 +1857,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         v.setPreIMEShortcut("AltSpace", value);
         value = mPrefs.getBoolean("CtrlSpace", false);
         v.setPreIMEShortcut("CtrlSpace", value);
+        value = mPrefs.getBoolean("CtrlSpaceToShell", false);
+        v.setPreIMEShortcut("CtrlSpaceToShell", value);
         value = mPrefs.getBoolean("ShiftSpace", false);
         v.setPreIMEShortcut("ShiftSpace", value);
         value = mPrefs.getBoolean("ZENKAKU_HANKAKU", false);

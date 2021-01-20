@@ -1462,6 +1462,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private static boolean mAltEsc = false;
     private static boolean mAltSpace = false;
     private static boolean mCtrlSpace = false;
+    private static boolean mCtrlSpaceToShell = false;
     private static boolean mShiftSpace = false;
     private static boolean mZenkakuHankaku = false;
     private static boolean mGrave = false;
@@ -1942,6 +1943,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             doImeShortcutsAction(1261);
         } else if (stat == PREIME_SHORTCUT_ACTION_MENU) {
             ((Activity) this.getContext()).onKeyUp(stat, null);
+        } else if (stat == PREIME_CTRL_SPACE_UP) {
+            mTermSession.write(0);
         }
         return (stat > PREIME_SHORTCUT_ACTION_NULL);
     }
@@ -1950,6 +1953,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public final static int PREIME_SHORTCUT_ACTION_DONE = 1;
     public final static int PREIME_SHORTCUT_ACTION      = 2;
     public final static int PREIME_SHORTCUT_ACTION2     = 3;
+    public final static int PREIME_CTRL_SPACE_UP        = 4;
     public final static int PREIME_SHORTCUT_ACTION_MENU = KeyEvent.KEYCODE_MENU;
 
     static public int getPreIMEShortcutsStatus(int keyCode, KeyEvent event) {
@@ -1967,12 +1971,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         boolean ae = mAltEsc && aesc;
         boolean as = mAltSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (altOn && !ctrlOn && !metashiftOn);
         boolean cesc = (keyCode == KeycodeConstants.KEYCODE_ESCAPE) && (!altOn && ctrlOn && !metashiftOn);
-        boolean cs = mCtrlSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (!altOn && ctrlOn && !metashiftOn);
+        boolean cs = (mCtrlSpace || mCtrlSpaceToShell) && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (!altOn && ctrlOn && !metashiftOn);
         boolean ss = mShiftSpace && (keyCode == KeycodeConstants.KEYCODE_SPACE) && (!altOn && !ctrlOn && shiftOn && !metaOn);
         boolean zh = mZenkakuHankaku && (keyCode == 211) && (!ctrlOn && !altOn && !metashiftOn);  // KeyEvent.KEYCODE_ZENKAKU_HANKAKU;
         boolean grave = mGrave && (keyCode == KeycodeConstants.KEYCODE_GRAVE) && (!ctrlOn && !altOn && !metashiftOn);
         boolean sc = mSwitchCharset && (keyCode == KeycodeConstants.KEYCODE_SWITCH_CHARSET);
         boolean cj = mCtrlJ && keyCode == (KeycodeConstants.KEYCODE_J) && (!altOn && ctrlOn && !metashiftOn);
+        if (cs && mCtrlSpaceToShell) {
+            if (keyAction == KeyEvent.ACTION_UP) return PREIME_CTRL_SPACE_UP;
+        }
         if (cesc) {
             if (keyAction == KeyEvent.ACTION_DOWN) return PREIME_SHORTCUT_ACTION_MENU;
             return PREIME_SHORTCUT_ACTION_DONE;
@@ -2062,6 +2069,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 break;
             case "CtrlSpace":
                 mCtrlSpace = value;
+                break;
+            case "CtrlSpaceToShell":
+                mCtrlSpaceToShell = value;
                 break;
             case "ShiftSpace":
                 mShiftSpace = value;
