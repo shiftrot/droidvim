@@ -384,6 +384,7 @@
     <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
     <string name="control_key_dialog_fn_disabled_text">No function key set.</string>
 
+    <string name="press_back_again">Press back again to Exit</string>
     <string name="confirm_window_close_message">Close this window?\nThe currently running program will be killed.</string>
 
     <string name="scoped_storage">Scoped storage</string>

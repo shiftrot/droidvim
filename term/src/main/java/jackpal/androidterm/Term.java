@@ -2886,6 +2886,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
+    private boolean mPressBackTwice = false;
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -2924,10 +2925,35 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     sendKeyStrings("\u001b", false);
                     return true;
                 }
-                switch (mSettings.getBackKeyAction()) {
+                int backAction = mSettings.getBackKeyAction();
+                if (!mPressBackTwice) {
+                    if (backAction == TermSettings.BACK_KEY_STOPS_SERVICE) {
+                        String message = getString(R.string.press_back_again);
+                        int length = Snackbar.LENGTH_SHORT;
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_bottom), message, length);
+                        View snackbarView = snackbar.getView();
+                        TextView tv = snackbarView.findViewById(R.id.snackbar_text);
+                        tv.setMaxLines(2);
+                        snackbar.addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                                    mPressBackTwice = false;
+                                }
+                            }
+                            @Override
+                            public void onShown(Snackbar snackbar) {
+                                mPressBackTwice = true;
+                            }
+                        });
+                        snackbar.show();
+                        return true;
+                    }
+                }
+                switch (backAction) {
                     case TermSettings.BACK_KEY_STOPS_SERVICE:
-                        // mStopServiceOnFinish = true;
-                        // finish();
+                        mStopServiceOnFinish = true;
+                        finish();
                     case TermSettings.BACK_KEY_CLOSES_WINDOW:
                         doSendActionBarKey(getCurrentEmulatorView(), 1251);
                         return true;

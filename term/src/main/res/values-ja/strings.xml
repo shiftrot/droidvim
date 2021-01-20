@@ -386,6 +386,7 @@
 
     <string name="control_key_dialog_fn_disabled_text">ファンクションキーを設定してください.</string>
 
+    <string name="press_back_again">もう一度バックボタンを押すと終了します</string>
     <string name="confirm_window_close_message">このウインドウを閉じますか?\n現在実行中のプログラムは強制終了されます.</string>
 
     <string name="manage_external_storage_permission">MANAGE_EXTERNAL_STORAGES権限</string>
