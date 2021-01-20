@@ -352,16 +352,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         toast.show();
     }
 
-    public static File getScratchCacheDir(Activity activity) {
-        int sdcard = TermService.getSDCard(activity.getApplicationContext());
-        String cacheDir = TermService.getCacheDir(activity.getApplicationContext(), sdcard);
+    public static File getScratchCacheDir() {
+        String cacheDir = TermService.getCACHE_DIR();
         return new File(cacheDir + "/scratch");
     }
 
     static SyncFileObserver restoreSyncFileObserver(Activity activity) {
         if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) return null;
         saveSyncFileObserver();
-        File dir = getScratchCacheDir(activity);
+        File dir = getScratchCacheDir();
         mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
         File sfofile = new File(dir.getAbsolutePath() + "/" + mSyncFileObserverFile);
         mSyncFileObserver.restoreHashMap(sfofile);
@@ -948,6 +947,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             public void run() {
                 if (mSyncFileObserver != null) mSyncFileObserver.clearCache();
                 if (mTermService != null) mTermService.clearTMPDIR();
+                String cacheDir = TermService.getCACHE_DIR();
+                TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "tmp"));
+                TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "vim"));
             }
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -3083,6 +3085,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         shell("rm " + TermService.getVersionFilesDir() + "/proot.err");
         shell("rm " + TermService.getVersionFilesDir() + "/version");
         shell("rm " + TermService.getVersionFilesDir() + "/version.*");
+        shell("rm -rf " + TermService.getCACHE_DIR() + "/apt");
+        shell("rm -rf " + TermService.getCACHE_DIR() + "/tmp");
+        shell("rm -rf " + TermService.getCACHE_DIR() + "/vim");
         mUninstall = false;
     }
 

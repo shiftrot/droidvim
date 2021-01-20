@@ -142,7 +142,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         editor.putString("home_path", mHOME);
         editor.apply();
 
-        mTMPDIR = getCacheDir() + "/tmp";
+        mCACHE_DIR = getCacheDir().getAbsolutePath();
+        mTMPDIR = mCACHE_DIR + "/tmp";
         mLD_LIBRARY_PATH = mAPPFILES + "/usr/lib";
         File tmpdir = new File(mTMPDIR);
         if (!tmpdir.exists()) tmpdir.mkdir();
@@ -291,6 +292,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private static String mAPPFILES;
     private static String mAPPLIB;
     private static String mARCH;
+    private static String mCACHE_DIR;
     private static String mEXTSTORAGE;
     private static String mHOME;
     private static String mLD_LIBRARY_PATH;
@@ -361,6 +363,10 @@ public class TermService extends Service implements TermSession.FinishCallback {
         }
         if (cache == null || !cache.canWrite()) cache = context.getCacheDir();
         return cache.getAbsolutePath();
+    }
+
+    static public String getCACHE_DIR() {
+        return mCACHE_DIR;
     }
 
     public void clearTMPDIR() {
