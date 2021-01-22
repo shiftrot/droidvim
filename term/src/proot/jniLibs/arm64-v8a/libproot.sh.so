@@ -1,0 +1,5 @@
+if [ -x $APPFILES/usr/bin/bash ]; then
+    proot -b /dev -b /proc -b /sys -b /system $APPFILES/usr/bin/bash $@
+else
+    proot -b /dev -b /proc -b /sys -b /system /system/bin/sh $@
+fi

@@ -1,0 +1,6 @@
+if [ `$APPFILES/usr/bin/busybox whoami` == "root" ]; then
+    export PROOT_TMP_DIR=$TMPDIR
+    export PROOT_LOADER=$APPFILES/bin/libloader
+    export PROOT_LOADER_32=$APPFILES/bin/libloader-m32
+    proot -0 -b /dev -b /proc -b /sys -b /system /system/bin/sh
+fi

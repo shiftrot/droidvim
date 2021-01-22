@@ -81,7 +81,7 @@ android {
     sourceSets {
         terminal {
             res.srcDirs += ['src/terminal-res/res']
-            jniLibs.srcDirs += ['src/main/jniLibs']
+            jniLibs.srcDirs += ['src/main/jniLibs', 'src/proot/jniLibs']
             if (abiArm) {
                 res.srcDirs += ['src/main-arm/res']
                 jniLibs.srcDirs += ['src/main-arm/jniLibs']
@@ -97,7 +97,7 @@ android {
         }
         droidvim {
             res.srcDirs += ['src/droidvim/res', 'src/vim/res']
-            jniLibs.srcDirs += ['src/main/jniLibs']
+            jniLibs.srcDirs += ['src/main/jniLibs', 'src/proot/jniLibs']
             if (abiArm) {
                 res.srcDirs += ['src/main-arm/res']
                 jniLibs.srcDirs += ['src/main-arm/jniLibs', 'src/vim-arm/jniLibs']

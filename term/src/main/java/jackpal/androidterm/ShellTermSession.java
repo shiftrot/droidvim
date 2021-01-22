@@ -183,15 +183,24 @@ public class ShellTermSession extends GenericTermSession {
     static String[] getProotCommand(String... commands) {
         String appLib = TermService.getAPPLIB();
         List<String> prootCommands = new ArrayList<>();
-        if (!new File(appLib + "/libproot.so").canExecute()) return prootCommands.toArray(new String[0]);
-
-        prootCommands.add("export PROOT_LOADER=" + appLib + "/libloader.so");
-        if (new File(appLib + "/libloader-m32.so").canExecute()) {
-            prootCommands.add("export PROOT_LOADER_32=" + appLib + "/libloader-m32.so");
-        }
+        if (!new File(appLib + "/libproot.so").exists()) return prootCommands.toArray(new String[0]);
         prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
         if (mProotNoSecComp) prootCommands.add("export PROOT_NO_SECCOMP=1");
-        if (mProotEnable) prootCommands.add(appLib + "/libproot.sh.so");
+
+        if (new File(appLib + "/libproot.so").canExecute()) {
+            prootCommands.add("export PROOT_LOADER=" + appLib + "/libloader.so");
+            if (new File(appLib + "/libloader-m32.so").exists()) {
+                prootCommands.add("export PROOT_LOADER_32=" + appLib + "/libloader-m32.so");
+            }
+            if (mProotEnable) prootCommands.add(appLib + "/libproot.sh.symlink.so");
+        } else {
+            String prootDir = TermService.getAPPFILES() + "/bin";
+            prootCommands.add("export PROOT_LOADER=" + prootDir + "/loader");
+            if (new File(appLib + "/libloader-m32.so").exists()) {
+                prootCommands.add("export PROOT_LOADER_32=" + prootDir + "/loader-m32");
+            }
+            if (mProotEnable) prootCommands.add(prootDir + "/proot.sh");
+        }
         if (commands != null && !Arrays.equals(commands, new String[]{})) {
             prootCommands.addAll(Arrays.asList(commands));
         }
