@@ -1219,8 +1219,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (FLAVOR_VIM && AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                addPreferencesFromResource(R.xml.pref_user_setting_rw);
+            addPreferencesFromResource(R.xml.pref_user_setting);
+            if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
                 final String PREFS_KEY = "prefs_rw";
                 Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
                 prefsPicker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -1230,8 +1230,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                         return true;
                     }
                 });
-            } else {
-                addPreferencesFromResource(R.xml.pref_user_setting);
             }
 
             final String APP_INFO_KEY = "app_info";

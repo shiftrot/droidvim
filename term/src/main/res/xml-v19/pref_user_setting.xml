@@ -12,11 +12,5 @@
         android:key="license"
         android:title="@string/title_license"/>
 
-    <!-- <SwitchPreference -->
-    <!--     android:key="analytics" -->
-    <!--     android:defaultValue="@bool/pref_analytics_default" -->
-    <!--     android:title="@string/title_analytics_preference" -->
-    <!--     android:summary="@string/summary_analytics_preference"/> -->
-
 </PreferenceScreen>
 
