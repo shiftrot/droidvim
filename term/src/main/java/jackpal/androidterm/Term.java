@@ -1093,6 +1093,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (mLowStorageWarning) {
                         String manufacturer = Build.MANUFACTURER;
                         String model = Build.MODEL;
+                        setPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, false);
                         mLowStorageWarning = false;
                     }
                 }
@@ -1108,18 +1109,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             builder.setIcon(android.R.drawable.ic_dialog_info);
             builder.setTitle(title);
             builder.setMessage(message);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View view = inflater.inflate(R.layout.alert_checkbox, null);
-            builder.setView(view);
-            final CheckBox cb = view.findViewById(R.id.dont_show_again);
-            cb.setChecked(true);
-            builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    if (cb.isChecked()) {
-                        setPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, false);
-                    }
-                }
-            });
+            builder.setPositiveButton(getString(android.R.string.ok), null);
             AlertDialog dialog = builder.create();
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
