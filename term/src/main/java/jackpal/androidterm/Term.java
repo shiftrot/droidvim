@@ -352,15 +352,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         toast.show();
     }
 
-    public static File getScratchCacheDir() {
-        String cacheDir = TermService.getCACHE_DIR();
+    public static File getScratchCacheDir(Activity activity) {
+        int sdcard = TermService.getSDCard(activity.getApplicationContext());
+        String cacheDir = TermService.getCacheDir(activity.getApplicationContext(), sdcard);
         return new File(cacheDir + "/scratch");
     }
 
     static SyncFileObserver restoreSyncFileObserver(Activity activity) {
         if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) return null;
         saveSyncFileObserver();
-        File dir = getScratchCacheDir();
+        File dir = getScratchCacheDir(activity);
         mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
         File sfofile = new File(dir.getAbsolutePath() + "/" + mSyncFileObserverFile);
         mSyncFileObserver.restoreHashMap(sfofile);
