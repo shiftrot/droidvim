@@ -238,6 +238,7 @@ class SyncFileObserver extends RecursiveFileObserver {
         if (mCacheDir == null) return;
         mHashMap.clear();
         if (mCacheDir.isDirectory()) deleteFileOrFolderRecursive(mCacheDir);
+        mCacheDir.mkdirs();
         stopWatching();
     }
 

@@ -950,6 +950,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 String cacheDir = TermService.getCACHE_DIR();
                 TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "tmp"));
                 TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "vim"));
+                new File(cacheDir, "tmp").mkdirs();
+                new File(cacheDir, "vim").mkdirs();
             }
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
