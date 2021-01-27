@@ -1080,46 +1080,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return path.substring(0, path.length() - 1);
     }
 
-    private long mStorageAvailableSize = -1;
     @Override
     protected void onStart() {
         super.onStart();
-        boolean mLowStorageWarning = false;
-        final String LOW_STORAGE_WARNING_KEY = "low_storage_check_" + BuildConfig.VERSION_CODE;
-        if (mStorageAvailableSize == -1) {
-            try {
-                if (getPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, true)) {
-                    final long LOW_STORAGE_WARNING_SIZE = (long)(0.8 * 1024 * 1024 * 1024);
-                    mStorageAvailableSize = getAvailableSize(Environment.getDataDirectory().getPath());
-                    mLowStorageWarning =  mStorageAvailableSize < LOW_STORAGE_WARNING_SIZE;
-                    if (mLowStorageWarning) {
-                        String manufacturer = Build.MANUFACTURER;
-                        String model = Build.MODEL;
-                        setPrefBoolean(Term.this, LOW_STORAGE_WARNING_KEY, false);
-                        mLowStorageWarning = false;
-                    }
-                }
-            } catch (Exception e) {
-                // Do nothing
-            }
-        }
-
-        if (mLowStorageWarning) {
-            final String title = getString(R.string.low_strage_warning_title);
-            String message = getString(R.string.low_strage_warning_message);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setIcon(android.R.drawable.ic_dialog_info);
-            builder.setTitle(title);
-            builder.setMessage(message);
-            builder.setPositiveButton(getString(android.R.string.ok), null);
-            AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-            Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positive.requestFocus();
-        }
-
         String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         if (new File(nativeLibraryDir + "/libjackpal-termexec2.so").exists()) {
             doOnStart();
@@ -1372,6 +1335,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String title = null;
         String message = null;
         String key = null;
+        boolean doNotShowAgain = false;
         boolean warning = false;
 
         if (SCOPED_STORAGE && message == null) {
@@ -1382,6 +1346,26 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 message = getString(R.string.scoped_storage_uninstall_warning_message);
                 message += "\n - " + TermService.getAPPBASE();
                 message += "\n - (Internal / SD Card)/Android/data/" + BuildConfig.APPLICATION_ID;
+            }
+        }
+
+        if (message == null) {
+            key = "low_storage_check_" + BuildConfig.VERSION_CODE;
+            warning = getPrefBoolean(Term.this, key, true);
+            try {
+                if (warning) {
+                    final long LOW_STORAGE_WARNING_SIZE = (long)(0.6 * 1024 * 1024 * 1024);
+                    long mStorageAvailableSize = getAvailableSize(Environment.getDataDirectory().getPath());
+                    if (mStorageAvailableSize < LOW_STORAGE_WARNING_SIZE) {
+                        String manufacturer = Build.MANUFACTURER;
+                        String model = Build.MODEL;
+                        title = getString(R.string.low_strage_warning_title);
+                        message = getString(R.string.low_strage_warning_message);
+                        doNotShowAgain = true;
+                    }
+                }
+            } catch (Exception e) {
+                // Do nothing
             }
         }
 
@@ -1409,7 +1393,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             builder.setView(view);
             final CheckBox cb = view.findViewById(R.id.dont_show_again);
             final String warningKey = key;
-            cb.setChecked(false);
+            cb.setChecked(doNotShowAgain);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int m) {
                     if (cb.isChecked()) {

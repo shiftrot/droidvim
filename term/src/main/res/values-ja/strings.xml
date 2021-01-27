@@ -339,7 +339,7 @@
     <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
 
     <string name="low_strage_warning_title">十分な空き容量がありません</string>
-    <string name="low_strage_warning_message">このデバイスに十分な空きストレージ容量がないため, タスクの切り替え時などにこのアプリがクラッシュする可能性があります.\n1.5ギガバイト以上の空き容量を確保することをお勧めします.\n\n（これはほとんどのデバイスにとって問題ではありませんが、一部のデバイスは十分な空きストレージスペースがない場合にフォアグラウンドサービスを適切に処理できません.）</string>
+    <string name="low_strage_warning_message">このデバイスに十分な空きストレージ容量がないため, タスクの切り替え時などにこのアプリがクラッシュする可能性があります.\n1.0ギガバイト以上の空き容量を確保することをお勧めします.\n\n（これはほとんどのデバイスにとって問題ではありませんが、一部のデバイスは十分な空きストレージスペースがない場合にフォアグラウンドサービスを適切に処理できません.）</string>
     <string name="low_strage_warning_ignore">次回からこの警告を無視してアプリを実行.</string>
     <string name="low_strage_warning_button">アプリを閉じる</string>
 

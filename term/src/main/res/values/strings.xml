@@ -337,7 +337,7 @@
     <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
 
     <string name="low_strage_warning_title">Low storage space warning</string>
-    <string name="low_strage_warning_message">There is not enough free storage space on this device, which can cause this app to crash, such as when switching tasks.\nWe recommend that you have at least 1.5 gigabytes of free space.\n\nThis is not a problem for most devices, but a few devices will not be able to handle foreground services properly if there is not enough free storage space.</string>
+    <string name="low_strage_warning_message">There is not enough free storage space on this device, which can cause this app to crash, such as when switching tasks.\nWe recommend that you have at least 1.0 gigabytes of free space.\n\nThis is not a problem for most devices, but a few devices will not be able to handle foreground services properly if there is not enough free storage space.</string>
     <string name="low_strage_warning_ignore">Ignore this warning and run this app next time.</string>
     <string name="low_strage_warning_button">Close this app</string>
 
