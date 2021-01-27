@@ -1081,10 +1081,23 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (SCOPED_STORAGE || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (SCOPED_STORAGE) {
                 addPreferencesFromResource(R.xml.pref_shell_scoped_storage);
             } else {
                 addPreferencesFromResource(R.xml.pref_shell);
+            }
+            final String MANAGE_EXTERNAL_STORAGE_KEY = "MANAGE_EXTERNAL_STORAGE";
+            Preference manageExternalStorage = getPreferenceScreen().findPreference(MANAGE_EXTERNAL_STORAGE_KEY);
+            if (manageExternalStorage != null) {
+                manageExternalStorage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Intent intent = null;
+                        intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                        startActivity(intent);
+                        return true;
+                    }
+                });
             }
             final String STARTUP_KEY = "startup_dir_chooser";
             Preference prefsStartup = getPreferenceScreen().findPreference(STARTUP_KEY);
