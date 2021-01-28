@@ -1259,10 +1259,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         };
         String message = getString(R.string.edit_vimrc_message);
-        message += getString(R.string.edit_vimrc_message_symboliclink);
-        message += getString(R.string.edit_vimrc_message_file_manager);
-        message += getString(R.string.edit_vimrc_message_backup_restore);
-        message += getString(R.string.edit_vimrc_message_change_home);
+        // message += getString(R.string.edit_vimrc_message_symboliclink);
+        // message += getString(R.string.edit_vimrc_message_file_manager);
+        // message += getString(R.string.edit_vimrc_message_backup_restore);
+        // message += getString(R.string.edit_vimrc_message_change_home);
         doWarningDialogRun(getString(R.string.menu_edit_vimrc), message, "menu_edit_vimrc", false, editVimrc);
     }
 
