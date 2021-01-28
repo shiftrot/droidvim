@@ -529,8 +529,10 @@
     <string name="storage_permission_granted">設定を有効にするため, このアプリを再起動してください.</string>
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
-    <string name="storage_write_error">ファイルを編集するためのURIが無効になっています.\nドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください.\n(このバッファの編集状態は失われます.)</string>
-    <string name="storage_write_error_title">無効なURI</string>
+    <string name="storage_write_error_title">ファイルの書き込みに失敗しました</string>
+    <string name="storage_write_error">ファイルの書き込み先が正常に動作しているか確認してください.\nまたはドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)</string>
+    <string name="storage_offline_write_error_title">オフラインでのファイルの書き込みに失敗しました</string>
+    <string name="storage_offline_write_error">このデバイスがオンラインになった後に再度書き込んでください.</string>
     <string name="storage_write_check_error_title">書き込みチェックエラー</string>
     <string name="storage_write_check_error">書き込みエラーまたは書き込みが完了していません.</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>

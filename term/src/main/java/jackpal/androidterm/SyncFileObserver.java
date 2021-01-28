@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.FileObserver;
@@ -147,9 +150,24 @@ class SyncFileObserver extends RecursiveFileObserver {
         mActive = true;
     }
 
+    private boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = null;
+        if (cm != null) info = cm.getActiveNetworkInfo();
+        if (info != null) {
+            return info.isConnected();
+        }
+        return false;
+    }
+
+    static private boolean mCloseWrite = false;
     @Override
     public void onEvent(int event, String path) {
         if (!mActive || !mHashMap.containsKey(path)) return;
+        if (event == FileObserver.CLOSE_WRITE) {
+            if (mCloseWrite) return;
+            mCloseWrite = true;
+        }
         switch (event) {
             // case FileObserver.DELETE_SELF:
             case FileObserver.DELETE:
@@ -160,8 +178,13 @@ class SyncFileObserver extends RecursiveFileObserver {
                 break;
             // case FileObserver.MODIFY:
             case FileObserver.CLOSE_WRITE:
-                mHashMap.get(path).setTime(System.currentTimeMillis());
-                flushCache(mHashMap.get(path).getUri(), new File(path), mContentResolver);
+                try {
+                    mHashMap.get(path).setTime(System.currentTimeMillis());
+                    flushCache(mHashMap.get(path).getUri(), new File(path), mContentResolver);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mCloseWrite = false;
                 break;
             // case FileObserver.ACCESS:
             //     mHashMap.get(path).setTime(System.currentTimeMillis());
@@ -497,7 +520,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                 mHashMap.get(file.getAbsolutePath()).setHash(hashValue);
             }
         } catch (Exception e) {
-            writeErrorDialog((Activity) mObjectActivity);
+            writeErrorDialog((Activity) mObjectActivity, file, contentResolver);
         }
     }
 
@@ -542,9 +565,9 @@ class SyncFileObserver extends RecursiveFileObserver {
                         }
                     });
                     bld.setCancelable(false);
-                    mDialogIsActive = true;
                     try {
                         bld.create().show();
+                        mDialogIsActive = true;
                     } catch (Exception e) {
                         // do nothing
                     }
@@ -587,9 +610,9 @@ class SyncFileObserver extends RecursiveFileObserver {
                         }
                     });
                     bld.setCancelable(false);
-                    mDialogIsActive = true;
                     try {
                         bld.create().show();
+                        mDialogIsActive = true;
                     } catch (Exception e) {
                         // do nothing
                     }
@@ -598,33 +621,52 @@ class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void writeErrorDialog(final Activity activity) {
+    private void writeErrorDialog(final Activity activity, File file, ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (!mDialogIsActive) {
+                    String title = activity.getString(R.string.storage_write_error_title);
+                    String message = activity.getString(R.string.storage_write_error);
+                    boolean isConnected = mObjectActivity != null && isConnected(activity.getApplicationContext());
+                    if (!isConnected) {
+                        title = activity.getString(R.string.storage_offline_write_error_title);
+                        message = activity.getString(R.string.storage_offline_write_error);
+                    }
                     AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    bld.setTitle(R.string.storage_write_error_title);
-                    bld.setMessage(R.string.storage_write_error);
-                    bld.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    bld.setTitle(title);
+                    bld.setMessage(message);
+                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
                             mDialogIsActive = false;
                         }
                     });
-                    bld.setNeutralButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            mDialogIsActive = false;
-                            try {
-                                Term term = (Term) activity;
-                                term.openDrawer();
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    if (isConnected) {
+                        bld.setNeutralButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                mDialogIsActive = false;
+                                try {
+                                    Term term = (Term) activity;
+                                    term.openDrawer();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        final String path = file.getPath();
+                        bld.setNeutralButton(R.string.button_overwrite, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mHashMap.get(path).setTime(System.currentTimeMillis());
+                                flushCache(mHashMap.get(path).getUri(), new File(path), contentResolver);
+                                mDialogIsActive = false;
+                                dialog.cancel();
+                            }
+                        });
+                    }
                     bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override
                         public void onCancel(DialogInterface dialog) {
@@ -632,9 +674,9 @@ class SyncFileObserver extends RecursiveFileObserver {
                         }
                     });
                     bld.setCancelable(false);
-                    mDialogIsActive = true;
                     try {
                         bld.create().show();
+                        mDialogIsActive = true;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
