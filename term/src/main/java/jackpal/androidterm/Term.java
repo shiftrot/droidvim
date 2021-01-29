@@ -3715,19 +3715,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private String getStringFromFile(File file) {
-        if (!file.canRead()) return null;
-        StringBuilder builder = new StringBuilder();
         try {
+            if (!file.canRead()) return null;
+            StringBuilder builder = new StringBuilder();
             BufferedReader reader = new BufferedReader(new FileReader(file.toString()));
             String string = reader.readLine();
             while (string != null) {
                 builder.append(string).append(System.getProperty("line.separator"));
                 string = reader.readLine();
             }
+            return builder.toString();
         } catch (Exception e) {
+            alert(e.getMessage());
             return null;
         }
-        return builder.toString();
     }
 
     private void doShareIntentText(String text) {
