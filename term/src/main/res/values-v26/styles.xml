@@ -3,18 +3,24 @@
     <style name="App_Theme_Dark_api26" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:background">#B0282828</item>
-        <item name="android:colorPrimary">#B0282828</item>
         <item name="android:textColorPrimary">#FFF0F0F0</item>
         <item name="android:textColorSecondary">#FFF0F0F0</item>
-        <item name="android:theme">@style/Theme.AppCompat.Dialog</item>
+        <item name="android:theme">@style/Theme.Design.NoActionBar</item>
+        <item name="android:dialogTheme">@style/Theme.AppCompat.Dialog</item>
+        <item name="android:popupTheme">@style/Theme.MaterialComponents</item>
+        <item name="android:actionBarPopupTheme">@style/Theme.MaterialComponents</item>
+        <item name="android:presentationTheme">@style/Theme.MaterialComponents</item>
     </style>
 
     <style name="App_Theme_Light_api26" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:background">#B0E8E8E8</item>
-        <item name="android:colorPrimary">#B0E8E8E8</item>
         <item name="android:textColorPrimary">#FF202020</item>
         <item name="android:textColorSecondary">#FF202020</item>
-        <item name="android:theme">@style/Theme.AppCompat.Light.Dialog</item>
+        <item name="android:theme">@style/Theme.Design.Light.NoActionBar</item>
+        <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
+        <item name="android:popupTheme">@style/Theme.MaterialComponents.Light</item>
+        <item name="android:actionBarPopupTheme">@style/Theme.MaterialComponents.Light</item>
+        <item name="android:presentationTheme">@style/Theme.MaterialComponents.Light</item>
     </style>
 </resources>

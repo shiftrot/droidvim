@@ -6,7 +6,15 @@
     <style name="App_Theme_Light_api26" parent="Theme.AppCompat.Light.NoActionBar" />
     <style name="App_Preference_Theme_Dark" parent="Theme.AppCompat" />
     <style name="App_Preference_Theme_Light" parent="Theme.AppCompat.Light" />
-    <style name="App_WebView_Dark" parent="Theme.AppCompat.NoActionBar" />
-    <style name="App_WebView_Light" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="App_WebView_Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:theme">@style/Theme.AppCompat.Dialog</item>
+        <item name="android:popupTheme">@style/Theme.AppCompat</item>
+    </style>
+    <style name="App_WebView_Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:theme">@style/Theme.AppCompat.Light.Dialog</item>
+        <item name="android:popupTheme">@style/Theme.AppCompat.Light</item>
+    </style>
 </resources>
 
