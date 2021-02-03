@@ -2418,7 +2418,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                     final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
                     b.setIcon(android.R.drawable.ic_dialog_alert);
-                    b.setMessage(getString(R.string.mru_hash_error));
+                    b.setMessage(getString(R.string.storage_url_error));
                     b.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SyncFileObserverMru mru = list.get(which);

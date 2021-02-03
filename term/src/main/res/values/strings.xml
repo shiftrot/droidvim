@@ -516,7 +516,6 @@
     <string name="use_mru">MRU</string>
     <string name="use_mru_cache">External storage MRU</string>
     <string name="use_clear_mru_cache">Clear MRU cache</string>
-    <string name="mru_hash_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file…\" button.</string>
     <string name="file_chooser">Open file</string>
     <string name="create_or_delete">Storage</string>
     <string name="create_file">Create file</string>
@@ -533,7 +532,9 @@
     <string name="storage_offline_write_error_title">Failed to write the file offline</string>
     <string name="storage_offline_write_error">Please write again after this device comes online.</string>
     <string name="storage_write_check_error_title">Write check error</string>
-    <string name="storage_write_check_error">Write error or write not completed.</string>
+    <string name="storage_write_check_error">Write error or write not completed. (The edit state of this buffer is lost.)</string>
+    <string name="storage_url_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file…\" button.</string>
+    <string name="storage_flush_cache_error">Failed to write to the file in the external storage. This file may be lost.</string>
     <string name="storage_hash_error_title">File hash error</string>
     <string name="storage_hash_error">This file may have been modified/deleted in external storage.\nPlease overwrite or re-open using \"Open file…\" button.\nFor cloud storage, launching the cloud storage app and reloading the file information may resolve the error.</string>
     <string name="storage_hash_overwrite">Overwrite</string>
