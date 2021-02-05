@@ -530,7 +530,11 @@
     <string name="storage_write_error_title">Failed to write the file</string>
     <string name="storage_write_error">Check if the file write destination is working properly. \nReopen the file for editing via \"Open file…\" button on the drawer menu if you need. (The edit state of this buffer is lost.)</string>
     <string name="storage_offline_write_error_title">Failed to write the file offline</string>
-    <string name="storage_offline_write_error">Please write again after this device comes online.</string>
+    <string name="storage_offline_write_error">The edit state of this file is lost. Please write again after this device comes online.</string>
+    <string name="title_cloud_storage_read_check">Cloud storage read check</string>
+    <string name="summary_cloud_storage_read_check">Before writing the file, check the status of the writing destination.\n(Dropbox/GoogleDrive/OneDrive)</string>
+    <string name="title_cloud_storage_write_check">Cloud storage write check</string>
+    <string name="summary_cloud_storage_write_check">Check the write status a few seconds after writing the file.\n(Dropbox/GoogleDrive/OneDrive)</string>
     <string name="storage_write_check_error_title">Write check error</string>
     <string name="storage_write_check_error">Write error or write not completed. (The edit state of this buffer is lost.)</string>
     <string name="storage_url_error">This file may have been deleted in external storage or invalid URI.\nPlease re-open using \"Open file…\" button.</string>

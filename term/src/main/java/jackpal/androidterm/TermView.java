@@ -62,6 +62,7 @@ public class TermView extends EmulatorView {
         setPreIMEShortcutsAction(settings.getImeShortcutsAction());
         setViCooperativeMode(settings.getViCooperativeMode());
         setForceNormalInputModeToPhysicalKeyboard(settings.getForceNormalInputModeToPhysicalKeyboard());
+        SyncFileObserver.setCloudStorageHashCheckMode(settings.getCloudStorageCheck());
     }
 
     public void updatePrefs(TermSettings settings) {

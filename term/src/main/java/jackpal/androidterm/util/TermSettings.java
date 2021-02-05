@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import java.util.Locale;
 
 import jackpal.androidterm.R;
+import jackpal.androidterm.SyncFileObserver;
 import jackpal.androidterm.Term;
 import jackpal.androidterm.TermService;
 import jackpal.androidterm.compat.AndroidCompat;
@@ -84,6 +85,8 @@ public class TermSettings {
     private int mDropboxFilePicker;
     private int mGoogleDriveFilePicker;
     private int mOneDriveFilePicker;
+    private boolean mCloudStorageReadCheck;
+    private boolean mCloudStorageWriteCheck;
     private int mHtmlViewerMode;
     private String mShell;
     private String mFailsafeShell;
@@ -161,6 +164,8 @@ public class TermSettings {
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
     private static final String GOOGLEDRIVE_FILE_PICKER_KEY = "cloud_googledrive_filepicker";
     private static final String ONEDRIVE_FILE_PICKER_KEY = "cloud_onedrive_filepicker";
+    private static final String CLOUD_STRAGE_READ_CHECK_KEY = "cloud_storage_read_check";
+    private static final String CLOUD_STRAGE_WRITE_CHECK_KEY = "cloud_storage_write_check";
     private static final String HTML_VIEWER_MODE_KEY = "html_viewer_mode";
     private static final String SHELL_KEY = "android_shell_path";
     private static final String INITIALCOMMAND_KEY = "initialcommand_rev6";
@@ -314,6 +319,8 @@ public class TermSettings {
         mDropboxFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_dropbox_filepicker_default));
         mGoogleDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_googledrive_filepicker_default));
         mOneDriveFilePicker = Integer.parseInt(res.getString(R.string.pref_cloud_onedrive_filepicker_default));
+        mCloudStorageReadCheck = res.getBoolean(R.bool.pref_cloud_storage_read_check_default);
+        mCloudStorageWriteCheck = res.getBoolean(R.bool.pref_cloud_storage_write_check_default);
         mHtmlViewerMode = Integer.parseInt(res.getString(R.string.pref_html_viewer_mode_default));
         mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
@@ -396,6 +403,8 @@ public class TermSettings {
         mDropboxFilePicker = readIntPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker, 2);
         mGoogleDriveFilePicker = readIntPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker, 2);
         mOneDriveFilePicker = readIntPref(ONEDRIVE_FILE_PICKER_KEY, mOneDriveFilePicker, 2);
+        mCloudStorageReadCheck = readBooleanPref(CLOUD_STRAGE_READ_CHECK_KEY, mCloudStorageReadCheck);
+        mCloudStorageWriteCheck = readBooleanPref(CLOUD_STRAGE_WRITE_CHECK_KEY, mCloudStorageWriteCheck);
         mHtmlViewerMode = readIntPref(HTML_VIEWER_MODE_KEY, mHtmlViewerMode, 2);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
@@ -780,6 +789,13 @@ public class TermSettings {
 
     public void setOneDriveFilePicker(int value) {
         mOneDriveFilePicker = value;
+    }
+
+    public int getCloudStorageCheck() {
+        int mode = SyncFileObserver.HASH_CHECK_MODE_NONE;
+        if (mCloudStorageReadCheck) mode += SyncFileObserver.HASH_CHECK_MODE_READ;
+        if (mCloudStorageWriteCheck) mode += SyncFileObserver.HASH_CHECK_MODE_WRITE;
+        return mode;
     }
 
     public int getHtmlViewerMode() {

@@ -56,6 +56,18 @@
         android:entryValues="@array/entryvalues_app_filepicker_preference"
         android:dialogTitle="@string/title_cloud_onedrive_preference"/>
 
+    <SwitchPreference
+        android:title="@string/title_cloud_storage_read_check"
+        android:key="cloud_storage_read_check"
+        android:summary="@string/summary_cloud_storage_read_check"
+        android:defaultValue="@bool/pref_cloud_storage_read_check_default"/>
+
+    <SwitchPreference
+        android:title="@string/title_cloud_storage_write_check"
+        android:key="cloud_storage_write_check"
+        android:summary="@string/summary_cloud_storage_write_check"
+        android:defaultValue="@bool/pref_cloud_storage_write_check_default"/>
+
     <ListPreference
         android:key="html_viewer_mode"
         android:defaultValue="@string/pref_html_viewer_mode_default"

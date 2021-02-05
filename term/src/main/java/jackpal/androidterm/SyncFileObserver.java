@@ -63,7 +63,7 @@ class SyncFileObserverMru {
     }
 }
 
-class SyncFileObserver extends RecursiveFileObserver {
+public class SyncFileObserver extends RecursiveFileObserver {
     class Info {
         private String uriString;
         private String hash;
@@ -387,32 +387,41 @@ class SyncFileObserver extends RecursiveFileObserver {
         return buff.toString();
     }
 
-    private static final int HASH_CHECK_MODE_NONE  = 0;
-    private static final int HASH_CHECK_MODE_READ  = 1;
-    private static final int HASH_CHECK_MODE_WRITE = 2;
-    private static final int HASH_CHECK_MODE_READ_WRITE = HASH_CHECK_MODE_READ + HASH_CHECK_MODE_WRITE;
+    public static final int HASH_CHECK_MODE_NONE  = 0;
+    public static final int HASH_CHECK_MODE_READ  = 1;
+    public static final int HASH_CHECK_MODE_WRITE = 2;
+    public static final int HASH_CHECK_MODE_READ_WRITE = HASH_CHECK_MODE_READ + HASH_CHECK_MODE_WRITE;
     private static final int HASH_CHECK_MODE_WRITE_SEC = 3000;
     private static int HASH_CHECK_MODE  = HASH_CHECK_MODE_NONE;
+    private static int CLOUD_STORAGE_HASH_CHECK_MODE = HASH_CHECK_MODE_NONE;
     /*
      * HASH_CHECK_MODE
      * HASH_CHECK_MODE_NONE  : No check
      * HASH_CHECK_MODE_READ  : Check destination hash before Write.
      * HASH_CHECK_MODE_WRITE : Write check after 3 seconds.
      */
-    public void setHashCheckMode(int mode) {
+    static public void setHashCheckMode(int mode) {
         HASH_CHECK_MODE = mode;
     }
 
+    static public void setCloudStorageHashCheckMode(int mode) {
+        CLOUD_STORAGE_HASH_CHECK_MODE = mode;
+    }
+
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver) {
+        flushCache(uri, file, contentResolver, false);
+    }
+
+    private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver, boolean overWrite) {
         if (contentResolver == null) return;
         int hashCheckMode = HASH_CHECK_MODE;
-        final String APP_DROPBOX = "com.dropbox.android";
+        final String APP_DROPBOX = "com.dropbox";
         final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
         final String APP_ONEDRIVE = "com.microsoft.skydrive";
-        if (uri.toString().startsWith("content://" + APP_DROPBOX)) hashCheckMode = HASH_CHECK_MODE_NONE;
-        if (uri.toString().startsWith("content://" + APP_GOOGLEDRIVE)) hashCheckMode = HASH_CHECK_MODE_READ;
-        if (uri.toString().startsWith("content://" + APP_ONEDRIVE)) hashCheckMode = HASH_CHECK_MODE_NONE;
-
+        if (uri.toString().startsWith("content://" + APP_DROPBOX)) hashCheckMode = CLOUD_STORAGE_HASH_CHECK_MODE;
+        if (uri.toString().startsWith("content://" + APP_GOOGLEDRIVE)) hashCheckMode = CLOUD_STORAGE_HASH_CHECK_MODE;
+        if (uri.toString().startsWith("content://" + APP_ONEDRIVE)) hashCheckMode = CLOUD_STORAGE_HASH_CHECK_MODE;
+        if (overWrite) hashCheckMode = HASH_CHECK_MODE_NONE;
         if (hashCheckMode == HASH_CHECK_MODE_NONE) {
             flushCacheExec(uri, file, contentResolver);
             return;
@@ -626,7 +635,7 @@ class SyncFileObserver extends RecursiveFileObserver {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
                             mDialogIsActive = false;
-                            flushCacheExec(uri, file, contentResolver);
+                            flushCache(uri, file, contentResolver, true);
                         }
                     });
                     bld.setPositiveButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
@@ -740,15 +749,15 @@ class SyncFileObserver extends RecursiveFileObserver {
                             }
                         });
                     } else {
-                        final String path = file.getPath();
-                        bld.setNeutralButton(R.string.button_overwrite, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                mHashMap.get(path).setTime(System.currentTimeMillis());
-                                flushCache(mHashMap.get(path).getUri(), new File(path), contentResolver);
-                                mDialogIsActive = false;
-                                dialog.cancel();
-                            }
-                        });
+                        // final String path = file.getPath();
+                        // bld.setNeutralButton(R.string.button_overwrite, new DialogInterface.OnClickListener() {
+                        //     public void onClick(DialogInterface dialog, int id) {
+                        //         mHashMap.get(path).setTime(System.currentTimeMillis());
+                        //         flushCache(mHashMap.get(path).getUri(), new File(path), contentResolver);
+                        //         mDialogIsActive = false;
+                        //         dialog.cancel();
+                        //     }
+                        // });
                     }
                     bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override

@@ -531,7 +531,11 @@
     <string name="storage_write_error_title">ファイルの書き込みに失敗しました</string>
     <string name="storage_write_error">ファイルの書き込み先が正常に動作しているか確認してください.\nまたはドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)</string>
     <string name="storage_offline_write_error_title">オフラインでのファイルの書き込みに失敗しました</string>
-    <string name="storage_offline_write_error">このデバイスがオンラインになった後に再度書き込んでください.</string>
+    <string name="storage_offline_write_error">このファイルの編集状態は保存されていません. このデバイスがオンラインになった後に再度書き込んでください.</string>
+    <string name="title_cloud_storage_read_check">クラウドストレージ読み込みチェック</string>
+    <string name="summary_cloud_storage_read_check">クラウドストレージへの書き込み前に書き込み先の状態チェックを行う\n(Dropbox/GoogleDrive/OneDrive)</string>
+    <string name="title_cloud_storage_write_check">クラウドストレージ書き込みチェック</string>
+    <string name="summary_cloud_storage_write_check">クラウドストレージへ書き込んだ数秒後に書き込み結果をチェックする\n(Dropbox/GoogleDrive/OneDrive)</string>
     <string name="storage_write_check_error_title">書き込みチェックエラー</string>
     <string name="storage_write_check_error">書き込みエラーまたは書き込みが完了していません. (このバッファの編集状態は失われます.)</string>
     <string name="storage_url_error">外部ストレージ上でファイルが削除されたか, 無効なURIです.\n\"ファイルを開く\"ボタンから再読込してください.</string>
