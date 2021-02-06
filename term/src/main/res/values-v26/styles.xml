@@ -14,7 +14,7 @@
 
     <style name="App_Theme_Light_api26" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="android:background">#B0E8E8E8</item>
+        <item name="android:background">#80FAFAFA</item>
         <item name="android:textColorPrimary">#FF202020</item>
         <item name="android:textColorSecondary">#FF202020</item>
         <item name="android:theme">@style/Theme.Design.Light.NoActionBar</item>
