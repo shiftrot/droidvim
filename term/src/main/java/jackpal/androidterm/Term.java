@@ -710,7 +710,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setDrawerButtons() {
         PackageManager pm = this.getApplicationContext().getPackageManager();
-        APP_FILER = TermPreferences.getFilerApplicationId(pm);
+        APP_FILER = TermPreferences.getFilerApplicationId();
         String defaultAppButton = getString(R.string.external_app_button);
         mExternalApps = new LinkedList<>();
         mExternalApps.add(new ExternalApp(R.id.drawer_files_button      , mSettings.getFilerAppId()   , defaultAppButton               , mSettings.getFilerAppButtonMode()   ));
@@ -884,6 +884,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean isAppInstalled(String packageName) {
+        if ("".equals(packageName)) return false;
+        if (TermPreferences.getFilerApplicationId().equals(packageName)) return true;
         PackageManager packageManager = this.getApplicationContext().getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(packageName);
         return (intent != null);
@@ -899,10 +901,62 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             startActivity(intent);
         } catch (Exception e) {
+            if (packageName.equals(APP_FILER)) {
+                if (launchDocumentsuiActivity()) return true;
+            }
             alert(packageName + "\n" + getString(R.string.external_app_activity_error));
             return true;
         }
         return true;
+    }
+
+    private boolean launchDocumentsuiActivity() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setType("*/*");
+        String[] activities = {
+                "com.android.documentsui.files.FilesActivity",
+                "com.android.documentsui.DocumentsActivity",
+        };
+        addDocumentsuiClassName(this.getApplicationContext(), intent, activities);
+        if (intent != null) {
+            startActivity(intent);
+            return true;
+        }
+        return false;
+    }
+
+    static public Intent addDocumentsuiClassName(Context context, Intent intent) {
+        final String[] activities = {
+                "com.android.documentsui.picker.PickActivity",
+                "com.android.documentsui.files.FilesActivity",
+                "com.android.documentsui.DocumentsActivity",
+        };
+        return addDocumentsuiClassName(context, intent, activities);
+    }
+
+    static public Intent addDocumentsuiClassName(Context context, Intent intent, String[] activities) {
+        String[] packageNames = {
+                "com.google.android.documentsui",
+                "com.android.documentsui",
+        };
+        for (String packageName : packageNames) {
+            for (String activity : activities) {
+                try {
+                    intent.setClassName(packageName, activity);
+                    PackageManager pm = context.getPackageManager();
+                    List<ResolveInfo> apps = pm.queryIntentActivities(intent, 0);
+                    if (apps.size() > 0) return intent;
+                } catch (Exception e) {
+                    // Do nothing
+                }
+            }
+        }
+        return null;
+    }
+
+   static public Intent getDocumentsuiIntent(Context context, Intent intent) {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return intent;
+        return addDocumentsuiClassName(context, intent);
     }
 
     private void externalApp() {
@@ -2448,6 +2502,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void documentTreePicker(int requestCode) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
             doStartActivityForResult(intent, requestCode);
         }
     }
@@ -2464,6 +2519,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
+        intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
         if (checkImplicitIntent(this, intent))
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
@@ -2541,6 +2597,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
+        intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
         if (checkImplicitIntent(this, intent))
             doStartActivityForResult(intent, REQUEST_FILE_DELETE);
     }
@@ -2590,6 +2647,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_TITLE, "Newfile.txt");
+        intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
         if (checkImplicitIntent(this, intent))
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }

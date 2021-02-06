@@ -181,7 +181,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             items.put(app.loadLabel(pm).toString(), app.packageName);
                     }
                     List<String> list = new ArrayList<>(items.keySet());
-                    String appId = getFilerApplicationId(pm);
+                    String appId = getFilerApplicationId();
                     if (!"".equals(appId)) list.add(0, activity.getString(R.string.app_files));
                     mLabels = list.toArray(new String[0]);
                     list = new ArrayList<>(items.values());
@@ -194,19 +194,9 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    public static String getFilerApplicationId(PackageManager pm) {
-        String[] appFilers = {
-                "com.google.android.documentsui",
-                "com.android.documentsui",
-        };
-        try {
-            for (String pname : appFilers) {
-                Intent intent = pm.getLaunchIntentForPackage(pname);
-                if (intent != null) return pname;
-            }
-        } catch (Exception e) {
-            return "";
-        }
+    public static String getFilerApplicationId() {
+        final String DOCUMENTSUI_INTERNAL = "documentsui.internal";
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return DOCUMENTSUI_INTERNAL;
         return "";
     }
 
@@ -272,6 +262,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void documentTreePicker(int requestCode) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent = Term.getDocumentsuiIntent(this.getApplicationContext(), intent);
             doStartActivityForResult(intent, requestCode);
         }
     }
@@ -421,6 +412,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     @SuppressLint("NewApi")
     private void doPrefsPicker() {
+        final Context context = this;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setMessage(this.getString(R.string.prefs_dialog_rw));
@@ -436,6 +428,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("text/xml");
+                intent = Term.getDocumentsuiIntent(context, intent);
                 doStartActivityForResult(intent, REQUEST_PREFS_READ_PICKER);
             }
         });
@@ -451,6 +444,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("text/xml");
             intent.putExtra(Intent.EXTRA_TITLE, fileName);
+            intent = Term.getDocumentsuiIntent(this.getApplicationContext(), intent);
             if (checkImplicitIntent(this, intent, fileName))
                 doStartActivityForResult(intent, REQUEST_WRITE_PREFS_PICKER);
         } else {
@@ -559,6 +553,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void doFontFilePicker() {
+        Context context = this;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setMessage(this.getString(R.string.font_file_error));
@@ -568,6 +563,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("*/*");
+                intent = Term.getDocumentsuiIntent(context, intent);
                 doStartActivityForResult(intent, REQUEST_FONT_PICKER);
             }
         });
