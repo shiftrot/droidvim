@@ -5,7 +5,7 @@
         android:defaultValue="@bool/pref_use_app_files_button_default"/>
 
     <SwitchPreference
-        android:key="@string/pref_key_show_dotfiles"
+        android:key="pref_key_show_dotfiles"
         android:title="@string/title_show_dotfiles"
         android:summary="@string/summary_show_dotfiles"
         android:defaultValue="@bool/pref_show_dotfiles_default"/>
