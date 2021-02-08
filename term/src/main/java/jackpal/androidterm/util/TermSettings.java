@@ -124,7 +124,7 @@ public class TermSettings {
     private static final String ONELINE_TEXTBOX_CR_KEY = "oneline_textbox_cr";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
-    private static final String CURSORSTYLE_KEY = "cursorstyle";
+    public static final String CURSORSTYLE_KEY = "cursorstyle";
     private static final String CURSORBLINK_KEY = "cursorblink";
     private static final String CURSORCOLOR_KEY = "cursorcolor";
     private static final String FONTSIZE_KEY = "fontsize";

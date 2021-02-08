@@ -572,6 +572,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             "function_key_cmd_m12".equals(s) ) {
                 setFunctionKey();
         }
+
+        if (TermSettings.CURSORSTYLE_KEY.equals(s)) {
+            EmulatorView.setCursorHeight(mSettings.getCursorStyle());
+            recreate();
+        }
+
         if (TermSettings.THEME_KEY.equals(s)
                 || TermSettings.COLOR_KEY.equals(s)
                 || TermSettings.STATUSBAR_ICON_KEY.equals(s)) {
@@ -1754,7 +1760,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 ((EmulatorView) v).setIMECtrlBeginBatchEditDisable(false);
             }
         }
-        EmulatorView.setCursorHeight(mSettings.getCursorStyle());
         EmulatorView.setCursorBlinkDefault(mSettings.getCursorBlink());
         EmulatorView.setForceFlush(mSettings.getForceFlushDrawText());
         EmulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
