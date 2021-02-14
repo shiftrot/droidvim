@@ -363,10 +363,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
         mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
+        mSyncFileObserver.setActivity(activity);
         File sfofile = new File(dir.getAbsolutePath() + "/" + mSyncFileObserverFile);
         mSyncFileObserver.restoreHashMap(sfofile);
-        mSyncFileObserver.setActivity(activity);
-        mSyncFileObserver.startWatching();
+        mSyncFileObserver.restoreStartWatching();
         return mSyncFileObserver;
     }
 

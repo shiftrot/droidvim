@@ -160,7 +160,6 @@ public class SyncFileObserver extends RecursiveFileObserver {
         return false;
     }
 
-    static private boolean mCloseWrite = false;
     @Override
     public void onEvent(int event, String path) {
         if (!mActive || !mHashMap.containsKey(path)) return;
@@ -360,8 +359,11 @@ public class SyncFileObserver extends RecursiveFileObserver {
         } catch (Exception e) {
             hashValue = HASH_ERROR;
         }
-        // startWatching(dst.getAbsolutePath());
-        startWatching();
+        if (dst.getAbsolutePath().startsWith(getObserverDir())) {
+            startWatching();
+        } else {
+            startWatching(dst.getAbsolutePath());
+        }
         mActive = true;
         return hashValue;
     }
@@ -807,6 +809,17 @@ public class SyncFileObserver extends RecursiveFileObserver {
                 b.show();
             }
         });
+    }
+
+    void restoreStartWatching() {
+        if (mHashMap.size() > 0) {
+            String cacheDir = mCacheDir.getAbsolutePath();
+            for (Map.Entry<String, Info> entry : mHashMap.entrySet()) {
+                String path = entry.getKey();
+                if (!path.startsWith(cacheDir)) startWatching(path);
+            }
+        }
+        startWatching();
     }
 
     boolean restoreHashMap(File hashMapFile) {
