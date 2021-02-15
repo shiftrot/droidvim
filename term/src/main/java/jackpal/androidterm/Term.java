@@ -923,12 +923,25 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 "com.android.documentsui.files.FilesActivity",
                 "com.android.documentsui.DocumentsActivity",
         };
-        addDocumentsuiClassName(this.getApplicationContext(), intent, activities);
+        intent = addDocumentsuiClassName(this.getApplicationContext(), intent, activities);
         if (intent != null) {
+            try {
+                startActivity(intent);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        try {
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setType("*/*");
             startActivity(intent);
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     static public Intent addDocumentsuiClassName(Context context, Intent intent) {
