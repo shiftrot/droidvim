@@ -2376,9 +2376,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public boolean checkImplicitIntent(Context context, Intent intent) {
-        PackageManager pm = context.getPackageManager();
-        List<ResolveInfo> apps = pm.queryIntentActivities(intent, 0);
-        if (apps.size() < 1) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            List<ResolveInfo> apps = pm.queryIntentActivities(intent, 0);
+            if (apps.size() < 1) {
+                alert(getString(R.string.storage_intent_error));
+                return false;
+            }
+        } catch (Exception e) {
             alert(getString(R.string.storage_intent_error));
             return false;
         }
