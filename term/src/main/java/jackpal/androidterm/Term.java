@@ -197,20 +197,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int TERMINAL_MODE_PROOT = 0x04;
     public static int mTerminalMode = TERMINAL_MODE_DISABLE;
     public static final String TERMINAL_MODE_FILE = "/.terminal.mode";
-
-    private static final Map<String, String> mAltBrowser = new LinkedHashMap<String, String>() {
-        {
-            put("org.mozilla.firefox_beta", "org.mozilla.firefox_beta.App");
-        }
-
-        {
-            put("org.mozilla.firefox", "org.mozilla.firefox.App");
-        }
-
-        {
-            put("com.amazon.cloud9", "com.amazon.cloud9.browsing.BrowserActivity");
-        }
-    };
     private static final String mSyncFileObserverFile = "SyncFileObserver.json";
     private static final String HASH_ALGORITHM = "SHA-1";
     private static final int KEYEVENT_SENDER_SHIFT_SPACE = -1;
@@ -3524,31 +3510,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (!mime.equals(MIME_HTML) && !(privateStorage || extFilesStorage) && AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
                     uri = Uri.fromFile(file);
                 } else {
-                    if (mime.equals(MIME_HTML)) {
+                    if (mime.equals(MIME_HTML) && mSettings.getHtmlViewerMode() <= 1) {
                         try {
-                            if ((mSettings.getHtmlViewerMode() == 2) && (!privateStorage)) {
-                                String pkg = null;
-                                String cls = null;
-                                for (String key : mAltBrowser.keySet()) {
-                                    if (isAppInstalled(key)) {
-                                        pkg = key;
-                                        cls = mAltBrowser.get(pkg);
-                                        break;
-                                    }
-                                }
-                                if (pkg != null) {
-                                    try {
-                                        Intent altIntent = new Intent(action);
-                                        altIntent.setComponent(new ComponentName(pkg, cls));
-                                        uri = Uri.parse(path);
-                                        altIntent.setDataAndType(uri, mime);
-                                        startActivity(altIntent);
-                                        return;
-                                    } catch (Exception altWebViewErr) {
-                                        Log.d(TermDebug.LOG_TAG, altWebViewErr.getMessage());
-                                    }
-                                }
-                            }
                             intent = new Intent(this, WebViewActivity.class);
                             intent.putExtra("url", file.toString());
                             WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
@@ -3590,14 +3553,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (mime.equals("")) mime = "text/*";
             intent.setDataAndType(uri, mime);
             try {
-                if (mSettings.getHtmlViewerMode() == 1) {
+                if (mSettings.getHtmlViewerMode() <= 1) {
                     intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra("url", uri.toString());
                     PackageManager pm = this.getApplicationContext().getPackageManager();
                     if (intent.resolveActivity(pm) != null) {
                         WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
                         startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
-
                     }
                 } else {
                     intent.setAction(action);

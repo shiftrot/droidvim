@@ -242,9 +242,8 @@
     </string-array>
 
     <string-array name="entries_html_viewer_mode_preference">
-        <item>Default</item>
         <item>Internal browser</item>
-        <item>Auto detect</item>
+        <item>Default browser</item>
     </string-array>
 
     <string-array name="entries_cursor_direction_ctrl_mode_preference">
