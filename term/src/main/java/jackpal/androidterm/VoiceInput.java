@@ -1,15 +1,16 @@
 package jackpal.androidterm;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.speech.RecognizerIntent;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
 public class VoiceInput {
-    public static void start(Activity activity, int REQUEST_CODE) {
+    public static void start(AppCompatActivity activity, int REQUEST_CODE) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, getLocaleId());
         if (!Term.isConnected(activity.getApplicationContext())) {

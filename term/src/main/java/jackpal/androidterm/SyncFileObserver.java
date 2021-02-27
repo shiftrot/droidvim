@@ -1,8 +1,6 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +11,9 @@ import android.os.Build;
 import android.os.FileObserver;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -188,7 +189,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
         mContentResolver = cr;
     }
 
-    void setActivity(Activity activity) {
+    void setActivity(AppCompatActivity activity) {
         mObjectActivity = activity;
         if (activity != null) setContentResolver(activity.getContentResolver());
     }
@@ -444,7 +445,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
                 final String hashSrc = getHash(srcIs);
                 if (hashDst.equals(hashSrc)) return;
                 if (readCheck && !hashDst.equals(oldHash)) {
-                    hashErrorDialog((Activity) mObjectActivity, uri, file, contentResolver);
+                    hashErrorDialog((AppCompatActivity) mObjectActivity, uri, file, contentResolver);
                 } else {
                     flushCacheExec(uri, file, contentResolver);
                     if (writeCheck) {
@@ -456,7 +457,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
                                     InputStream is = contentResolver.openInputStream(uri);
                                     String hashDst = getHash(is);
                                     if (!hashDst.equals(hashSrc)) {
-                                        writeCheckErrorDialog((Activity) mObjectActivity, uri, file, contentResolver);
+                                        writeCheckErrorDialog((AppCompatActivity) mObjectActivity, uri, file, contentResolver);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -466,11 +467,11 @@ public class SyncFileObserver extends RecursiveFileObserver {
                     }
                 }
             } else {
-                urlErrorDialog((Activity) mObjectActivity, contentResolver);
+                urlErrorDialog((AppCompatActivity) mObjectActivity, contentResolver);
             }
         } catch (Exception e) {
             flushCacheExec(uri, file, contentResolver);
-            flushCacheErrorDialog((Activity) mObjectActivity, e.getMessage(), uri, file, contentResolver);
+            flushCacheErrorDialog((AppCompatActivity) mObjectActivity, e.getMessage(), uri, file, contentResolver);
         }
     }
 
@@ -529,11 +530,11 @@ public class SyncFileObserver extends RecursiveFileObserver {
                 mHashMap.get(file.getAbsolutePath()).setHash(hashValue);
             }
         } catch (Exception e) {
-            writeErrorDialog((Activity) mObjectActivity, file, contentResolver);
+            writeErrorDialog((AppCompatActivity) mObjectActivity, file, contentResolver);
         }
     }
 
-    private void urlErrorDialog(final Activity activity, final ContentResolver contentResolver) {
+    private void urlErrorDialog(final AppCompatActivity activity, final ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -578,7 +579,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void flushCacheErrorDialog(final Activity activity, final  String errorMessage, final Uri uri, final File file, final ContentResolver contentResolver) {
+    private void flushCacheErrorDialog(final AppCompatActivity activity, final  String errorMessage, final Uri uri, final File file, final ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -618,7 +619,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void hashErrorDialog(final Activity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
+    private void hashErrorDialog(final AppCompatActivity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -670,7 +671,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void writeCheckErrorDialog(final Activity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
+    private void writeCheckErrorDialog(final AppCompatActivity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -715,7 +716,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void writeErrorDialog(final Activity activity, File file, ContentResolver contentResolver) {
+    private void writeErrorDialog(final AppCompatActivity activity, File file, ContentResolver contentResolver) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -782,7 +783,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
     @SuppressLint("NewApi")
     private void confirmDelete(final Uri uri, final File path, final ContentResolver contentResolver) {
         if (!mConfirmDeleteFromStorage || mObjectActivity == null) return;
-        final Activity activity = (Activity) mObjectActivity;
+        final AppCompatActivity activity = (AppCompatActivity) mObjectActivity;
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
             return;
         }

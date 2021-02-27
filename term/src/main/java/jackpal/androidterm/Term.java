@@ -19,8 +19,6 @@ package jackpal.androidterm;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.ComponentName;
 import android.content.Context;
@@ -49,7 +47,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.StatFs;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.system.Os;
 import android.text.TextUtils;
@@ -88,6 +85,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -120,11 +118,9 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 import jackpal.androidterm.compat.AndroidCompat;
@@ -338,13 +334,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         toast.show();
     }
 
-    public static File getScratchCacheDir(Activity activity) {
+    public static File getScratchCacheDir(AppCompatActivity activity) {
         int sdcard = TermService.getSDCard(activity.getApplicationContext());
         String cacheDir = TermService.getCacheDir(activity.getApplicationContext(), sdcard);
         return new File(cacheDir + "/scratch");
     }
 
-    static SyncFileObserver restoreSyncFileObserver(Activity activity) {
+    static SyncFileObserver restoreSyncFileObserver(AppCompatActivity activity) {
         if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) return null;
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
@@ -3969,8 +3965,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void doShowSoftKeyboard() {
         if (getCurrentEmulatorView() == null) return;
-        Activity activity = this;
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null)
             imm.showSoftInput(getCurrentEmulatorView(), InputMethodManager.SHOW_FORCED);
         requestFocusView();

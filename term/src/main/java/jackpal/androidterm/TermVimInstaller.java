@@ -1,8 +1,6 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +17,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -61,7 +61,7 @@ final class TermVimInstaller {
     static private String SOLIB_PATH;
     static private TermSettings mSettings;
 
-    static void installVim(final Activity activity, final Runnable whenDone) {
+    static void installVim(final AppCompatActivity activity, final Runnable whenDone) {
         if (!doInstallVim) return;
 
         SOLIB_PATH = getSolibPath(activity);
@@ -103,7 +103,7 @@ final class TermVimInstaller {
         }
     }
 
-    static private int orientationLock(Activity activity) {
+    static private int orientationLock(AppCompatActivity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return ActivityInfo.SCREEN_ORIENTATION_LOCKED;
         }
@@ -119,7 +119,7 @@ final class TermVimInstaller {
         return ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
     }
 
-    static private void fixOrientation(final Activity activity, final int orientation) {
+    static private void fixOrientation(final AppCompatActivity activity, final int orientation) {
         if (activity != null && !activity.isFinishing()) {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -134,12 +134,12 @@ final class TermVimInstaller {
         return TermService.getVersionFilesDir() + "/version";
     }
 
-    static void installTerm(final Activity activity) {
+    static void installTerm(final AppCompatActivity activity) {
         installTerm(activity, null);
     }
 
     private static final String TERM_VERSION_KEY = "versionNameTerm";
-    static boolean getTermInstallStatus(final Activity activity) {
+    static boolean getTermInstallStatus(final AppCompatActivity activity) {
         SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("dev", Context.MODE_PRIVATE);
         mSettings = new TermSettings(activity.getResources(), pref);
         String terminfoDir = TermService.getTERMINFO();
@@ -148,7 +148,7 @@ final class TermVimInstaller {
         return !doInstall;
     }
 
-    static void installTerm(final Activity activity, Runnable whenDone) {
+    static void installTerm(final AppCompatActivity activity, Runnable whenDone) {
         if (getTermInstallStatus(activity)) return;
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -164,11 +164,11 @@ final class TermVimInstaller {
     }
 
     static public boolean doInstallTerm = false;
-    static boolean doInstallTerm(final Activity activity) {
+    static boolean doInstallTerm(final AppCompatActivity activity) {
         return doInstallTerm(activity, null);
     }
 
-    static boolean doInstallTerm(final Activity activity, Runnable whenDone) {
+    static boolean doInstallTerm(final AppCompatActivity activity, Runnable whenDone) {
         boolean doInstall = !getTermInstallStatus(activity);
 
         if (doInstall) {
@@ -219,7 +219,7 @@ final class TermVimInstaller {
         return false;
     }
 
-    static private int getLocalLibId(Activity activity, String tarName) {
+    static private int getLocalLibId(AppCompatActivity activity, String tarName) {
         String arch = getArch();
         String arch32 = arch.contains("arm") ? "arm" : "x86";
         String bin = tarName + arch;
@@ -232,7 +232,7 @@ final class TermVimInstaller {
     }
 
     static public boolean ScopedStorageWarning = false;
-    static void doInstallVim(final Activity activity, final Runnable whenDone, final boolean installHelp) {
+    static void doInstallVim(final AppCompatActivity activity, final Runnable whenDone, final boolean installHelp) {
         File force32 = new File(TermService.getVersionFilesDir() + "/.32bit");
         File force64 = new File(TermService.getVersionFilesDir() + "/.64bit");
         if (force32.exists() || force64.exists()) {
@@ -418,7 +418,7 @@ final class TermVimInstaller {
         }
     }
 
-    static public void createExecCheckCmdFile(Activity activity) {
+    static public void createExecCheckCmdFile(AppCompatActivity activity) {
         try {
             String dst = TermService.getVersionFilesDir() + Term.EXEC_STATUS_CHECK_CMD_FILE;
             if (new File(dst).exists()) return;
@@ -457,7 +457,7 @@ final class TermVimInstaller {
         return needUpdate;
     }
 
-    static private String getSolibPath(Activity activity) {
+    static private String getSolibPath(AppCompatActivity activity) {
         if (SOLIB_PATH != null) return SOLIB_PATH;
         String soLibPath = TermService.getAPPLIB();
         if (activity != null) soLibPath = activity.getApplicationContext().getApplicationInfo().nativeLibraryDir;
@@ -527,7 +527,7 @@ final class TermVimInstaller {
     }
 
     @SuppressLint("StaticFieldLeak")
-    static private Activity mActivity;
+    static private AppCompatActivity mActivity;
     static private boolean mProgressToast = false;
     static private final Handler mProgressToastHandler = new Handler();
     static private int mProgressToastHandlerMillis = 0;
@@ -564,7 +564,7 @@ final class TermVimInstaller {
         }
     };
 
-    private static void showProgressToast(final Activity activity, boolean show) {
+    private static void showProgressToast(final AppCompatActivity activity, boolean show) {
         if (!show) {
             mProgressToast = false;
             return;
@@ -587,7 +587,7 @@ final class TermVimInstaller {
         }
     }
 
-    public static void extractXZ(final Activity activity, final String in, final String outDir) {
+    public static void extractXZ(final AppCompatActivity activity, final String in, final String outDir) {
         showProgressToast(activity, true);
         extractXZ(in, outDir);
     }
@@ -690,7 +690,7 @@ final class TermVimInstaller {
         }
     }
 
-    static void showWhatsNew(final Activity activity, final boolean first) {
+    static void showWhatsNew(final AppCompatActivity activity, final boolean first) {
         final String whatsNew = BuildConfig.WHATS_NEW;
         if (!first && whatsNew.equals("")) return;
         activity.runOnUiThread(new Runnable() {
@@ -812,7 +812,7 @@ final class TermVimInstaller {
         return 0;
     }
 
-    static private InputStream getInputStream(final Activity activity, int id) {
+    static private InputStream getInputStream(final AppCompatActivity activity, int id) {
         InputStream is = null;
         try {
             is = activity.getResources().openRawResource(id);
@@ -891,7 +891,7 @@ final class TermVimInstaller {
     static private String INSTALL_ZIP = "";
     static private String INSTALL_WARNING = "";
 
-    static private void setMessage(final Activity activity, final AlertDialog pd, final String message) {
+    static private void setMessage(final AppCompatActivity activity, final AlertDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -902,7 +902,7 @@ final class TermVimInstaller {
         }
     }
 
-    static private void setMessage(final Activity activity, final ProgressRingDialog pd, final String message) {
+    static private void setMessage(final AppCompatActivity activity, final ProgressRingDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -998,7 +998,7 @@ final class TermVimInstaller {
         }
     }
 
-    public static void showVimTips(final Activity activity) {
+    public static void showVimTips(final AppCompatActivity activity) {
         if (!FLAVOR_VIM) return;
         try {
             String title = activity.getString(R.string.tips_vim_title);
@@ -1018,7 +1018,7 @@ final class TermVimInstaller {
 
     private static final Random mRandom = new Random();
 
-    static void toast(final Activity activity, final String message) {
+    static void toast(final AppCompatActivity activity, final String message) {
         try {
             activity.runOnUiThread(new Runnable() {
                 @Override

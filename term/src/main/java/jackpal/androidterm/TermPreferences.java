@@ -3,7 +3,6 @@ package jackpal.androidterm;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +28,12 @@ import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -39,17 +44,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.documentfile.provider.DocumentFile;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
@@ -156,7 +156,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setAppPickerList(this);
+        setAppPickerList(this.getApplicationContext());
         setupTheme();
         setupActionBar();
         mTermPreference = this;
@@ -167,9 +167,9 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private static String[] mLabels = null;
     private static String[] mPackageNames = null;
 
-    public static void setAppPickerList(Activity activity) {
+    public static void setAppPickerList(Context context) {
         try {
-            final PackageManager pm = activity.getApplicationContext().getPackageManager();
+            final PackageManager pm = context.getApplicationContext().getPackageManager();
             new Thread() {
                 @Override
                 public void run() {
@@ -182,7 +182,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     }
                     List<String> list = new ArrayList<>(items.keySet());
                     String appId = getFilerApplicationId();
-                    if (!"".equals(appId)) list.add(0, activity.getString(R.string.app_files));
+                    if (!"".equals(appId)) list.add(0, context.getString(R.string.app_files));
                     mLabels = list.toArray(new String[0]);
                     list = new ArrayList<>(items.values());
                     if (!"".equals(appId)) list.add(0, "");
@@ -211,7 +211,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
+     * Set up the {@link ActionBar}, if the API is available.
      */
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -270,7 +270,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void homeDirectoryPicker(String mes) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
-        final Activity activity = this;
+        final TermPreferences activity = this;
 
         directoryPicker(REQUEST_HOME_DIRECTORY, mes, new ChooserDialog.Result() {
             @Override
@@ -314,7 +314,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void startupDirectoryPicker(String mes) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
-        final Activity activity = this;
+        final TermPreferences activity = this;
 
         directoryPicker(REQUEST_STARTUP_DIRECTORY, mes, new ChooserDialog.Result() {
             @Override
@@ -568,7 +568,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
         });
         bld.setNegativeButton(this.getString(android.R.string.no), null);
-        final Activity activity = this;
+        final TermPreferences activity = this;
         bld.setNeutralButton(this.getString(R.string.entry_fontfile_default), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
@@ -636,27 +636,26 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     Uri uri = data.getData();
                     String path;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        path = getDirectory(this, uri);
-                        final Activity activity = this;
+                        path = getDirectory(this.getApplicationContext(), uri);
                         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         final SharedPreferences.Editor editor = prefs.edit();
                         AlertDialog.Builder bld = new AlertDialog.Builder(this);
                         if (path == null) {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(activity.getString(R.string.invalid_directory));
+                            bld.setMessage(this.getString(R.string.invalid_directory));
                         } else if (new File(path).canWrite()) {
                             String vimrcMessage = "";
                             if (request == REQUEST_HOME_DIRECTORY) {
                                 editor.putString("home_path", path);
                                 // if (FLAVOR_VIM && !path.startsWith("/data")) {
-                                //     vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
+                                //     vimrcMessage = this.getString(R.string.vimrc_home_directory_warning_message);
                                 // }
                             } else if (request == REQUEST_STARTUP_DIRECTORY) {
                                 editor.putString("startup_path", path);
                             }
                             editor.apply();
                             bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
+                            bld.setMessage(this.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
                             if (!vimrcMessage.equals("")) {
                                 bld.setNeutralButton(this.getString(R.string.copy_to_clipboard), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -669,7 +668,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             }
                         } else {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(activity.getString(R.string.invalid_directory));
+                            bld.setMessage(this.getString(R.string.invalid_directory));
                         }
                         bld.setPositiveButton(this.getString(android.R.string.ok), null);
                         bld.create().show();
@@ -776,10 +775,10 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         if (intent.resolveActivity(pm) != null) startActivityForResult(intent, requestCode);
     }
 
-    public static String getDirectory(Activity activity, Uri uri) {
+    public static String getDirectory(Context context, Uri uri) {
         if (uri == null) return null;
         String path = null;
-        path = UriToPath.getPath(activity.getApplicationContext(), uri);
+        path = UriToPath.getPath(context, uri);
         if (path != null && new File(path).canWrite()) return path;
         final String AUTHORITY_DROIDVIM = "content://" + BuildConfig.APPLICATION_ID + ".storage.documents/tree/";
         String scheme = uri.getScheme();

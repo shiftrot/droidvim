@@ -1,7 +1,6 @@
 package jackpal.androidterm;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.webkit.MimeTypeMap;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.Closeable;
@@ -29,7 +29,7 @@ public class ASFUtils {
     static AlertDialog mProcessingDialog = null;
     static private boolean mCANCEL = false;
 
-    static public void directoryPicker(final Activity activity, final int request, String mes, final ChooserDialog.Result r) {
+    static public void directoryPicker(final AppCompatActivity activity, final int request, String mes, final ChooserDialog.Result r) {
         AlertDialog.Builder bld = new AlertDialog.Builder(activity);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setTitle(activity.getString(R.string.select_directory_message));
@@ -54,7 +54,7 @@ public class ASFUtils {
         bld.create().show();
     }
 
-    static public void documentTreePicker(final Activity activity, int requestCode) {
+    static public void documentTreePicker(final AppCompatActivity activity, int requestCode) {
         mCANCEL = false;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
@@ -62,7 +62,7 @@ public class ASFUtils {
         }
     }
 
-    static private void doStartActivityForResult(Activity activity, Intent intent, int requestCode) {
+    static private void doStartActivityForResult(AppCompatActivity activity, Intent intent, int requestCode) {
         PackageManager pm = activity.getApplicationContext().getPackageManager();
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         if (intent.resolveActivity(pm) != null)
@@ -70,7 +70,7 @@ public class ASFUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    static public void backupToTreeUri(final Activity activity, final Uri rootUri, final String path) {
+    static public void backupToTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         if (isHomeDirectory(activity, rootUri)) return;
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
@@ -106,7 +106,7 @@ public class ASFUtils {
         }
     }
 
-    static private boolean isHomeDirectory(Activity activity, Uri rootUri) {
+    static private boolean isHomeDirectory(AppCompatActivity activity, Uri rootUri) {
         if (rootUri == null) return false;
         String local = rootUri.getPath();
         if (local != null) local = local.replaceFirst("/tree/", "");
@@ -130,14 +130,14 @@ public class ASFUtils {
         return path != null && path.endsWith(":");
     }
 
-    static private void alertDialog(Activity activity, String message) {
+    static private void alertDialog(AppCompatActivity activity, String message) {
         final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
         bld.setMessage(message);
         bld.setPositiveButton(android.R.string.ok, null);
         showDialog(activity, bld.create());
     }
 
-    static private void doBackupToTreeUri(Activity activity, String rootPath, DocumentFile docRoot) {
+    static private void doBackupToTreeUri(AppCompatActivity activity, String rootPath, DocumentFile docRoot) {
         File dir = new File(rootPath);
         File[] list = dir.listFiles();
         if (list != null) {
@@ -216,7 +216,7 @@ public class ASFUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    static public void restoreHomeFromTreeUri(final Activity activity, final Uri rootUri, final String path) {
+    static public void restoreHomeFromTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
         if (isRootDirectory(root)) {
@@ -248,7 +248,7 @@ public class ASFUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    static public void doRestoreHomeFromTreeUri(final Activity activity, final Uri rootUri, final String path) {
+    static public void doRestoreHomeFromTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         if (isHomeDirectory(activity, rootUri)) return;
         ContentResolver contentResolver = activity.getContentResolver();
@@ -349,7 +349,7 @@ public class ASFUtils {
         }
     }
 
-    static private AlertDialog createProcessingDialog(Activity activity) {
+    static private AlertDialog createProcessingDialog(AppCompatActivity activity) {
         AlertDialog.Builder bld = new AlertDialog.Builder(activity);
         bld.setMessage(activity.getString(R.string.message_please_wait));
         bld.setNegativeButton(activity.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
@@ -362,7 +362,7 @@ public class ASFUtils {
         return bld.create();
     }
 
-    static private void setDialogMessage(Activity activity, AlertDialog dlg, String message) {
+    static private void setDialogMessage(AppCompatActivity activity, AlertDialog dlg, String message) {
         try {
             dlg.setMessage(activity.getString(R.string.message_please_wait) + "\n - " + message);
         } catch (Exception e) {
@@ -370,7 +370,7 @@ public class ASFUtils {
         }
     }
 
-    static private void dismissDialog(Activity activity, AlertDialog dlg) {
+    static private void dismissDialog(AppCompatActivity activity, AlertDialog dlg) {
         try {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -383,7 +383,7 @@ public class ASFUtils {
         }
     }
 
-    static private void showDialog(Activity activity, AlertDialog dlg) {
+    static private void showDialog(AppCompatActivity activity, AlertDialog dlg) {
         try {
             activity.runOnUiThread(new Runnable() {
                 @Override

@@ -1,7 +1,6 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +20,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,10 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.preference.PreferenceManager;
 import jackpal.androidterm.util.TermSettings;
-
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
 public class WebViewActivity extends AppCompatActivity {
     /*

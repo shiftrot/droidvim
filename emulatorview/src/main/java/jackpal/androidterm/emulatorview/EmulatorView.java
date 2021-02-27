@@ -53,10 +53,12 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Scroller;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+
 import java.io.IOException;
 import java.util.Hashtable;
 
-import androidx.preference.PreferenceManager;
 import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
@@ -1081,7 +1083,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private static float mTextScale = 1.0f;
     public void setTextSize(float fontSize) {
         if (fontSize <= 0) {
-            fontSize = getTextSize((Activity) this.getContext());
+            fontSize = getTextSize((AppCompatActivity) this.getContext());
         }
         mFontSize = fontSize;
         mTextSize = (int) (Math.floor(fontSize * mTextScale * mDensity));
@@ -1103,7 +1105,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     static private float mFontSize = 14.0f;
-    static public float getTextSize(Activity activity) {
+    static public float getTextSize(AppCompatActivity activity) {
         final float splashWidth = 30.4f;
         final float fontSizeMax = 20.0f;
         float fontSize = 14.0f;
@@ -1577,33 +1579,33 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     doToggleSoftKeyboard();
                     break;
                 case 3:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0003, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0003, null);
                     break;
                 case 4:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0004, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0004, null);
                     break;
                 case 5:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0005, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0005, null);
                     break;
                 case 6:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0006, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0006, null);
                     break;
                 case 7:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0007, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0007, null);
                     break;
                 case 8:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0008, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0008, null);
                     break;
                 case 9:
                     break;
                 case 30:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0030, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0030, null);
                     break;
                 case 33:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0033, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0033, null);
                     break;
                 case 333:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0333, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0333, null);
                     break;
                 case 50:
                     setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
@@ -1624,26 +1626,26 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     doImeShortcutsAction();
                     break;
                 case 56:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0056, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0056, null);
                     break;
                 case 57:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0057, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0057, null);
                     break;
                 case 58:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0058, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0058, null);
                     break;
                 case 61:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0061, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0061, null);
                     break;
                 case 62:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0062, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0062, null);
                     break;
                 case 63:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0063, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0063, null);
                     break;
                 case 1061:
                     if (mIme == IME_ID_GBOARD && mHaveFullHwKeyboard) {
-                        ((Activity) this.getContext()).onKeyUp(0xffff0061, null);
+                        ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0061, null);
                     }
                     break;
                 case 500:
@@ -1733,46 +1735,46 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     if (mKeyListener != null) mKeyListener.setJpYenRo(yr);
                     break;
                 case 990:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0990, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0990, null);
                     break;
                 case 998:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0998, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0998, null);
                     break;
                 case 999:
-                    ((Activity) this.getContext()).onKeyUp(0xffff0999, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0999, null);
                     break;
                 case 1000:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1000, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1000, null);
                     break;
                 case 1001:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1001, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1001, null);
                     break;
                 case 1010:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1010, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1010, null);
                     break;
                 case 1011:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1011, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1011, null);
                     break;
                 case 1002:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1002, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1002, null);
                     break;
                 case 1003:
-                    ((Activity) this.getContext()).onKeyUp(KeycodeConstants.KEYCODE_MENU, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(KeycodeConstants.KEYCODE_MENU, null);
                     break;
                 case 1006:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1006, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1006, null);
                     break;
                 case 1007:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1007, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1007, null);
                     break;
                 case 1008:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1008, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1008, null);
                     break;
                 case 1009:
-                    ((Activity) this.getContext()).onKeyUp(0xffff1009, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1009, null);
                     break;
                 case 9998:
-                    ((Activity) this.getContext()).onKeyUp(0xffff9998, null);
+                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff9998, null);
                     break;
                 default:
                     break;
@@ -1860,7 +1862,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void restartInput() {
-        Activity activity = (Activity) this.getContext();
+        AppCompatActivity activity = (AppCompatActivity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.restartInput(this);
     }
@@ -1871,25 +1873,25 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void doShowSoftKeyboard() {
-        Activity activity = (Activity) this.getContext();
+        AppCompatActivity activity = (AppCompatActivity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
     }
 
     private void doHideSoftKeyboard() {
-        Activity activity = (Activity) this.getContext();
+        AppCompatActivity activity = (AppCompatActivity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
     private void doToggleSoftKeyboard() {
-        Activity activity = (Activity) this.getContext();
+        AppCompatActivity activity = (AppCompatActivity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void doInputMethodPicker() {
-        Activity activity = (Activity) this.getContext();
+        AppCompatActivity activity = (AppCompatActivity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.showInputMethodPicker();
     }
@@ -1942,7 +1944,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else if (stat == PREIME_SHORTCUT_ACTION2) {
             doImeShortcutsAction(1261);
         } else if (stat == PREIME_SHORTCUT_ACTION_MENU) {
-            ((Activity) this.getContext()).onKeyUp(stat, null);
+            ((AppCompatActivity) this.getContext()).onKeyUp(stat, null);
         } else if (stat == PREIME_CTRL_SPACE_UP) {
             mTermSession.write(0);
         }
@@ -2013,13 +2015,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (action == 0) {
             doToggleSoftKeyboard();
         } else if (action == 1261) {
-            ((Activity) this.getContext()).onKeyUp(0xffff0056, null);
+            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0056, null);
         } else if (action == 1361) {
-            ((Activity) this.getContext()).onKeyUp(0xffff0061, null);
+            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0061, null);
         } else if (action == 1362) {
-            ((Activity) this.getContext()).onKeyUp(0xffff0062, null);
+            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0062, null);
         } else if (action == 1365) {
-            ((Activity) this.getContext()).onKeyUp(0xffff0063, null);
+            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0063, null);
         } else {
             int imeType = mUseCookedIme ? EditorInfo.TYPE_CLASS_TEXT : EditorInfo.TYPE_NULL;
             if (mIMEInputType == imeType) {

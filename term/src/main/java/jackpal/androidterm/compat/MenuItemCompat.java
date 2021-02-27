@@ -13,7 +13,7 @@ public class MenuItemCompat {
 
     private static class Api11OrLater {
         public static void setShowAsAction(MenuItem item, int actionEnum) {
-            item.setShowAsAction(actionEnum);
+            androidx.core.view.MenuItemCompat.setShowAsAction(item, actionEnum);
         }
     }
 
