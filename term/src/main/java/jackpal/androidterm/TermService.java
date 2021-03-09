@@ -63,6 +63,7 @@ import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.getProp;
 
 public class TermService extends Service implements TermSession.FinishCallback {
+    public static int TermServiceState = -1;
     private static final int RUNNING_NOTIFICATION = 1;
     private ServiceForegroundCompat compat;
 
@@ -93,6 +94,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     @Override
     @SuppressLint("NewApi")
     public void onCreate() {
+        if (TermServiceState == -1) TermServiceState = 0;
         // should really belong to the Application class, but we don't use one...
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
@@ -461,6 +463,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     @Override
     public void onDestroy() {
+        TermServiceState = -1;
         stopNotificationService();
         destroySessions();
         clearTerminalMode();

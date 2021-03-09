@@ -649,6 +649,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         setDrawerButtons();
         restoreSyncFileObserver(this);
         TermPreferences.setAppPickerList(this);
+        if (TermService.TermServiceState < 1) {
+            EmulatorView.setCursorHeight(mSettings.getCursorStyle());
+            TermService.TermServiceState = 1;
+        }
         mAlreadyStarted = true;
     }
 
