@@ -396,7 +396,7 @@ public class RemoteInterface extends AppCompatActivity {
             String shareText = str.toString().replaceAll("[\\xC2\\xA0]", " ");
             if (FLAVOR_VIM) {
                 FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
-                Term.writeStringToFile(FILE_CLIPBOARD, "\n" + shareText);
+                Term.writeStringToFile(FILE_CLIPBOARD, shareText);
                 String command = "\u001b" + ":ATEMod _paste";
                 if (mDoInstall) IntentCommand = command;
                 // Find the target window
