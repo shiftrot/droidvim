@@ -1413,7 +1413,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             warning = getPrefBoolean(Term.this, key, true);
             try {
                 if (warning) {
-                    final long LOW_STORAGE_WARNING_SIZE = (long)(0.6 * 1024 * 1024 * 1024);
+                    final long LOW_STORAGE_WARNING_SIZE = (long)(0.4 * 1024 * 1024 * 1024);
                     long mStorageAvailableSize = getAvailableSize(Environment.getDataDirectory().getPath());
                     if (mStorageAvailableSize < LOW_STORAGE_WARNING_SIZE) {
                         String manufacturer = Build.MANUFACTURER;
