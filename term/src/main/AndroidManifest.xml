@@ -74,6 +74,7 @@
         </activity>
         <activity
             android:name=".Term"
+            android:exported="true"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:immersive="false"
             android:launchMode="singleTask"
@@ -104,6 +105,7 @@
 
         <activity
             android:name=".RemoteInterface"
+            android:exported="true"
             android:excludeFromRecents="false">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW"/>
@@ -155,7 +157,8 @@
             android:name=".WebViewActivity"
             android:label="Local HTML Viewer"/>
 
-        <service android:name=".TermService">
+        <service android:name=".TermService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="jackpal.androidterm.action.START_TERM.v1"/>
 
