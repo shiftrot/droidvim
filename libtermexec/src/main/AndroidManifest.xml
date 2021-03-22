@@ -5,5 +5,5 @@
       android:installLocation="auto">
     <application
         android:extractNativeLibs="true"
-        tools:targetApi="m" />
+        tools:targetApi="q" />
 </manifest>
