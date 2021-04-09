@@ -358,6 +358,7 @@
     <string name="proot_error_message"> - An error occurred in proot. (It may be improved by OS update)</string>
     <string name="security_error_message"> - The security policy of this device may prohibit the execution of shell commands.</string>
     <string name="security_app_in_sdcard_message"> - This app may be installed in external storage. Please move this app to internal storage.</string>
+    <string name ="playstore_policy_error">Google Play Policy restricts the use of this feature.</string>
     <string name="crash_quit_button">Force stop this app</string>
     <string name="crash_trouble_shooting_button">Troubleshooting</string>
     <string name="launch_default_vim">Launch Vim (default) temporarily.</string>
@@ -389,6 +390,7 @@
 
     <string name="scoped_storage">Scoped storage</string>
     <string name="manage_external_storage_permission">MANAGE_EXTERNAL_STORAGES permission</string>
+    <string name="manage_external_storage_permission_summary">Request permission to allow direct access to internal storage.</string>
     <string name="scoped_storage_warning_title">Scoped storage</string>
     <string name="scoped_storage_first_warning_message">Scoped Storage:\n\"Scoped storage\" is enabled for this device. Therefore, direct access via Vim commands to other than the \"HOME directory\" is prohibited. Please use \"Open File\" in the drawer menu (Double tap on the screen).</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in the \"Home directory\" will be deleted when uninstalling.</string>

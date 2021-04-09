@@ -360,6 +360,7 @@
     <string name="proot_error_message">・prootでエラーが発生しました. (OSのアップデートで改善する可能性があります)</string>
     <string name="security_error_message">・このデバイスのセキュリティポリシーによりshellコマンドの実行が禁止されている可能性があります.</string>
     <string name="security_app_in_sdcard_message">・このアプリは外部ストレージにインストールされている可能性があります. このアプリを内部ストレージに移動してください.</string>
+    <string name="playstore_policy_error">Google Playのポリシーにより, この機能の使用は制限されています.</string>
     <string name="crash_quit_button">強制終了</string>
     <string name="crash_trouble_shooting_button">トラブルシューティング</string>
     <string name="launch_default_vim">一時的にデフォルトのVimを起動.</string>
@@ -389,7 +390,8 @@
     <string name="press_back_again">もう一度バックボタンを押すと終了します</string>
     <string name="confirm_window_close_message">このウインドウを閉じますか?\n現在実行中のプログラムは強制終了されます.</string>
 
-    <string name="manage_external_storage_permission">MANAGE_EXTERNAL_STORAGES権限</string>
+    <string name="manage_external_storage_permission">MANAGE_EXTERNAL_STORAGES</string>
+    <string name="manage_external_storage_permission_summary">内部ストレージへの直接アクセスを可能にする権限をリクエストします.</string>
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>

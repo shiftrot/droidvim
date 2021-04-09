@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_external_app_id_v30_default">アプリケーションIDをセットしてください.\n(例: com.android.chrome)</string>
+</resources>

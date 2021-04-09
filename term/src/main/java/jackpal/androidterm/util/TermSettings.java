@@ -158,7 +158,6 @@ public class TermSettings {
     private static final String MRU_COMMAND_KEY = "mru_command";
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
     private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_action_mode";
-    private static final String FILER_APP_ID_KEY = "filer_app_package_name";
     private static final String FILER_APP_BUTTON_MODE_KEY = "filer_app_action_mode";
     private static final String FILES_BUTTON_KEY = "use_app_files_button_rev2";
     private static final String DROPBOX_FILE_PICKER_KEY = "cloud_dropbox_filepicker";
@@ -398,7 +397,6 @@ public class TermSettings {
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY, mExternalAppId);
         mExternalAppButtonMode = readIntPref(EXTERNAL_APP_BUTTON_MODE_KEY, mExternalAppButtonMode, 2);
         mUseFilesAppButton = readBooleanPref(FILES_BUTTON_KEY, mUseFilesAppButton);
-        mFilerAppId = readStringPref(FILER_APP_ID_KEY, mFilerAppId);
         mFilerAppButtonMode = readIntPref(FILER_APP_BUTTON_MODE_KEY, mFilerAppButtonMode, 2);
         mDropboxFilePicker = readIntPref(DROPBOX_FILE_PICKER_KEY, mDropboxFilePicker, 2);
         mGoogleDriveFilePicker = readIntPref(GOOGLEDRIVE_FILE_PICKER_KEY, mGoogleDriveFilePicker, 2);

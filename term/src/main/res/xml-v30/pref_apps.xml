@@ -1,0 +1,81 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:title="@string/title_use_app_files_button"
+        android:key="use_app_files_button_rev2"
+        android:defaultValue="@bool/pref_use_app_files_button_default"/>
+
+    <SwitchPreference
+        android:key="pref_key_show_dotfiles"
+        android:title="@string/title_show_dotfiles"
+        android:summary="@string/summary_show_dotfiles"
+        android:defaultValue="@bool/pref_show_dotfiles_default"/>
+
+    <PreferenceScreen
+        android:title="@string/external_app_button"
+        android:summary="@string/summary_external_app_button" >
+
+        <ListPreference
+            android:key="external_app_action_mode"
+            android:defaultValue="@string/pref_external_app_action_mode_default"
+            android:title="@string/external_app_activity"
+            android:entries="@array/entries_app_filepicker_preference"
+            android:entryValues="@array/entryvalues_app_filepicker_preference"
+            android:dialogTitle="@string/external_app_button"/>
+
+        <EditTextPreference
+            android:key="external_app_package_name"
+            android:defaultValue="@string/pref_external_app_id_v30_default"
+            android:title="@string/external_app" />
+
+    </PreferenceScreen>
+
+    <ListPreference
+        android:key="cloud_dropbox_filepicker"
+        android:defaultValue="@string/pref_cloud_dropbox_filepicker_default"
+        android:title="@string/title_cloud_dropbox_preference"
+        android:entries="@array/entries_app_filepicker_preference"
+        android:entryValues="@array/entryvalues_app_filepicker_preference"
+        android:dialogTitle="@string/title_cloud_dropbox_preference"/>
+
+    <ListPreference
+        android:key="cloud_googledrive_filepicker"
+        android:defaultValue="@string/pref_cloud_googledrive_filepicker_default"
+        android:title="@string/title_cloud_googledrive_preference"
+        android:entries="@array/entries_app_filepicker_preference"
+        android:entryValues="@array/entryvalues_app_filepicker_preference"
+        android:dialogTitle="@string/title_cloud_googledrive_preference"/>
+
+    <ListPreference
+        android:key="cloud_onedrive_filepicker"
+        android:defaultValue="@string/pref_cloud_onedrive_filepicker_default"
+        android:title="@string/title_cloud_onedrive_preference"
+        android:entries="@array/entries_app_filepicker_preference"
+        android:entryValues="@array/entryvalues_app_filepicker_preference"
+        android:dialogTitle="@string/title_cloud_onedrive_preference"/>
+
+    <SwitchPreference
+        android:title="@string/title_cloud_storage_read_check"
+        android:key="cloud_storage_read_check"
+        android:summary="@string/summary_cloud_storage_read_check"
+        android:defaultValue="@bool/pref_cloud_storage_read_check_default"/>
+
+    <SwitchPreference
+        android:title="@string/title_cloud_storage_write_check"
+        android:key="cloud_storage_write_check"
+        android:summary="@string/summary_cloud_storage_write_check"
+        android:defaultValue="@bool/pref_cloud_storage_write_check_default"/>
+
+    <ListPreference
+        android:key="html_viewer_mode"
+        android:defaultValue="@string/pref_html_viewer_mode_default"
+        android:title="@string/title_html_viewer_mode_preference"
+        android:summary="@string/summary_html_viewer_mode"
+        android:entries="@array/entries_html_viewer_mode_preference"
+        android:entryValues="@array/entryvalues_html_viewer_mode_preference"/>
+
+    <Preference
+        android:key="mru_command"
+        android:title="@string/title_mrucommand_preference"
+        android:summary="@string/summary_mrucommand_preference"/>
+
+</PreferenceScreen>

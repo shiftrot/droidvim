@@ -3,6 +3,7 @@ package jackpal.androidterm;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,6 +57,7 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.TermSettings;
 
+import static jackpal.androidterm.StaticConfig.FLAVOR_DROIDVIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
 import static jackpal.androidterm.TermVimInstaller.shell;
 
@@ -637,25 +639,26 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     String path;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         path = getDirectory(this.getApplicationContext(), uri);
+                        final Activity activity = this;
                         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         final SharedPreferences.Editor editor = prefs.edit();
                         AlertDialog.Builder bld = new AlertDialog.Builder(this);
                         if (path == null) {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(this.getString(R.string.invalid_directory));
+                            bld.setMessage(activity.getString(R.string.invalid_directory));
                         } else if (new File(path).canWrite()) {
                             String vimrcMessage = "";
                             if (request == REQUEST_HOME_DIRECTORY) {
                                 editor.putString("home_path", path);
                                 // if (FLAVOR_VIM && !path.startsWith("/data")) {
-                                //     vimrcMessage = this.getString(R.string.vimrc_home_directory_warning_message);
+                                //     vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
                                 // }
                             } else if (request == REQUEST_STARTUP_DIRECTORY) {
                                 editor.putString("startup_path", path);
                             }
                             editor.apply();
                             bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(this.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
+                            bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
                             if (!vimrcMessage.equals("")) {
                                 bld.setNeutralButton(this.getString(R.string.copy_to_clipboard), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -668,7 +671,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             }
                         } else {
                             bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(this.getString(R.string.invalid_directory));
+                            bld.setMessage(activity.getString(R.string.invalid_directory));
                         }
                         bld.setPositiveButton(this.getString(android.R.string.ok), null);
                         bld.create().show();
@@ -1076,11 +1079,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (SCOPED_STORAGE) {
-                addPreferencesFromResource(R.xml.pref_shell_scoped_storage);
-            } else {
-                addPreferencesFromResource(R.xml.pref_shell);
-            }
+            addPreferencesFromResource(R.xml.pref_shell);
             final String MANAGE_EXTERNAL_STORAGE_KEY = "MANAGE_EXTERNAL_STORAGE";
             Preference manageExternalStorage = getPreferenceScreen().findPreference(MANAGE_EXTERNAL_STORAGE_KEY);
             if (manageExternalStorage != null) {
@@ -1147,7 +1146,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_apps);
 
             String[] ids = {
-                "filer_app_package_name",
                 "external_app_package_name",
             };
             for (String id : ids) {
