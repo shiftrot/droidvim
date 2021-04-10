@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_navigationbar_fn_toggle">➖ - Toggle functionbar</string>
-    <string name="title_functionbar_voice_input">🎤 - Voice input</string>
+    <string name="title_navigationbar_fn_toggle">"➖" - Toggle functionbar</string>
+    <string name="title_functionbar_open_file">"📁" - Open File</string>
+    <string name="title_functionbar_voice_input">"🎤" - Voice input</string>
 
-    <string name="string_functionbar_fn_toggle">➖</string>
-    <string name="string_functionbar_voice_input">🎤</string>
+    <string name="string_functionbar_fn_toggle">"➖"</string>
+    <string name="string_functionbar_open_file">"📁"</string>
+    <string name="string_functionbar_voice_input">"🎤"</string>
 </resources>

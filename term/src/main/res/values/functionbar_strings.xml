@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_menu">Menu</string>
-    <string name="title_functionbar_softkeyboard">Soft keyboard</string>
     <string name="title_functionbar_menu">≡ - Menu</string>
     <string name="title_functionbar_vim_yank">&quot;*yy - Vim yank command</string>
     <string name="title_functionbar_vim_paste">&quot;*p - Vim paste command</string>
-    <string name="title_functionbar_ime_toggle">✏ - Toggle keyboard</string>
+    <string name="title_functionbar_ime_toggle">"✏" - Toggle keyboard</string>
+    <string name="title_functionbar_softkeyboard">"🔤"</string>
     <string name="title_navigationbar_fn_toggle">Fn - Toggle functionbar</string>
+    <string name="title_functionbar_open_file">[F] - Open File</string>
     <string name="title_functionbar_voice_input">VI - Voice input</string>
     <string name="title_functionbar_hide">▽ - Hide functionbar</string>
     <string name="title_functionbar_change">∧ - F1-F12</string>
     <string name="title_functionbar_change_fkey">∨ - Hide F1-F12</string>
 
-    <string name="string_functionbar_dia">🔤</string>
-    <string name="string_functionbar_enter">↲</string>
+    <string name="string_functionbar_dia">"🔤"</string>
+    <string name="string_functionbar_enter">"↲"</string>
+    <string name="string_functionbar_open_file">[F]</string>
     <string name="string_functionbar_ime_toggle">✏</string>
     <string name="string_functionbar_voice_input">VI</string>
     <string name="string_functionbar_fn_toggle">Fn</string>

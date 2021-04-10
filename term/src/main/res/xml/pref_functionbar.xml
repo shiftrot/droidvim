@@ -188,11 +188,6 @@
             android:title="F12"/>
 
         <CheckBoxPreference
-            android:key="functionbar_softkeyboard"
-            android:defaultValue="false"
-            android:title="🔤"/>
-
-        <CheckBoxPreference
             android:key="functionbar_invert"
             android:defaultValue="true"
             android:title="○"/>
@@ -201,6 +196,16 @@
             android:key="functionbar_menu_user"
             android:defaultValue="true"
             android:title="□"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_softkeyboard"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_softkeyboard"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_open_file"
+            android:defaultValue="true"
+            android:title="@string/title_functionbar_open_file"/>
 
         <CheckBoxPreference
             android:key="functionbar_voice_input"
@@ -409,11 +414,6 @@
             android:title="F12"/>
 
         <CheckBoxPreference
-            android:key="navigationbar_softkeyboard"
-            android:defaultValue="true"
-            android:title="🔤"/>
-
-        <CheckBoxPreference
             android:key="navigationbar_invert"
             android:defaultValue="false"
             android:title="○"/>
@@ -422,6 +422,21 @@
             android:key="navigationbar_menu_user"
             android:defaultValue="false"
             android:title="□"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_softkeyboard"
+            android:defaultValue="true"
+            android:title="@string/title_functionbar_softkeyboard"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_open_file"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_open_file"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_voice_input"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_voice_input"/>
 
         <CheckBoxPreference
             android:key="navigationbar_vim_paste"
@@ -437,11 +452,6 @@
             android:key="navigationbar_fn_toggle"
             android:defaultValue="true"
             android:title="@string/title_navigationbar_fn_toggle"/>
-
-        <CheckBoxPreference
-            android:key="navigationbar_voice_input"
-            android:defaultValue="false"
-            android:title="@string/title_functionbar_voice_input"/>
 
         <CheckBoxPreference
             android:key="navigationbar_ime_toggle"
@@ -667,14 +677,6 @@
     </PreferenceScreen>
 
     <ListPreference
-        android:key="functionbar_diamond_action_rev3"
-        android:defaultValue="@string/pref_actionbar_diamond_default"
-        android:title="@string/title_actionbar_icon_preference"
-        android:entries="@array/entries_actionbar_icon_preference"
-        android:entryValues="@array/entryvalues_actionbar_icon_preference"
-        android:dialogTitle="@string/dialog_title_actionbar_icon_preference"/>
-
-    <ListPreference
         android:key="actionbar_invert_action"
         android:defaultValue="@string/pref_actionbar_invert_default"
         android:title="@string/title_actionbar_invert_preference"
@@ -689,6 +691,14 @@
         android:entries="@array/entries_actionbar_icon_preference"
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
         android:dialogTitle="@string/dialog_title_actionbar_user_preference"/>
+
+    <ListPreference
+        android:key="functionbar_diamond_action_rev3"
+        android:defaultValue="@string/pref_actionbar_diamond_default"
+        android:title="@string/title_actionbar_icon_preference"
+        android:entries="@array/entries_actionbar_icon_preference"
+        android:entryValues="@array/entryvalues_actionbar_icon_preference"
+        android:dialogTitle="@string/dialog_title_actionbar_icon_preference"/>
 
     <ListPreference
         android:key="actionbar_x_action"

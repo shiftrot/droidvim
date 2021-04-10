@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_functionbar_menu">≡ - メニュー</string>
-    <string name="title_functionbar_softkeyboard">IMEのトグル</string>
-    <string name="title_functionbar_voice_input">🎤 - 音声入力</string>
+    <string name="title_functionbar_softkeyboard">"🔤"</string>
+    <string name="title_functionbar_voice_input">"🎤" - 音声入力</string>
     <string name="title_functionbar_vim_yank">&quot;*yy - Vim ヤンクコマンド</string>
     <string name="title_functionbar_vim_paste">&quot;*p - Vim 貼り付けコマンド</string>
-    <string name="title_functionbar_ime_toggle">✏ - IMEのトグル</string>
-    <string name="title_navigationbar_fn_toggle">➖ - ファンクションバーのトグル</string>
+    <string name="title_functionbar_ime_toggle">"✏" - IMEのトグル</string>
+    <string name="title_navigationbar_fn_toggle">"➖" - ファンクションバーのトグル</string>
     <string name="title_functionbar_hide">▽ - ファンクションバーを隠す</string>
     <string name="title_functionbar_change">∧ - F1-F12表示</string>
     <string name="title_functionbar_change_fkey">∨ - F1-F12非表示</string>

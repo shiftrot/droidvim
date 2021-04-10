@@ -240,9 +240,9 @@
     <string name="dialog_title_composingtext_preference">IME変換中の文字色</string>
 
     <string name="actionbar_key_preferences">アクションバーボタン</string>
-    <string name="title_actionbar_icon_preference">🔤ボタン</string>
-    <string name="summary_actionbar_icon_preference">🔤ボタンの振舞いを選択</string>
-    <string name="dialog_title_actionbar_icon_preference">🔤ボタン</string>
+    <string name="title_actionbar_icon_preference">"🔤"ボタン</string>
+    <string name="summary_actionbar_icon_preference">"🔤"ボタンの振舞いを選択</string>
+    <string name="dialog_title_actionbar_icon_preference">"🔤"ボタン</string>
     <string name="title_actionbar_invert_preference">○ボタン</string>
     <string name="summary_actionbar_invert_preference">○ボタンの振舞いを選択</string>
     <string name="dialog_title_actionbar_invert_preference">○ボタン</string>
@@ -292,7 +292,7 @@
     <string name="dialog_title_fnkey_preference">Fnキー</string>
 
     <string name="title_ime_inputtype_preference">起動時の入力モード</string>
-    <string name="summary_ime_inputtype_preference">🔤ボタンで「通常入力」と切り替えます</string>
+    <string name="summary_ime_inputtype_preference">"🔤"ボタンで「通常入力」と切り替えます</string>
     <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
 
     <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>
@@ -495,7 +495,7 @@
     <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
     <string name="title_remote_interface_installer_warning">インストールが終了しました</string>
     <string name="message_remote_interface_installer_warning">設定を有効にするため, このアプリを再起動してください.\nこのアプリを再起動しなくてもファイルを閲覧できますが, 書き込みができない場合があります.</string>
-    <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- 🔤ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
+    <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- "🔤"ボタン\n- IMEショートカット\n- \"起動時の入力モード\"を\"通常入力\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
 
 
 
