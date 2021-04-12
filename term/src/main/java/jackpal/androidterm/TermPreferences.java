@@ -890,7 +890,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("functionbar_diamond_action_rev3"));
             bindPreferenceSummaryToValue(findPreference("actionbar_invert_action"));
             bindPreferenceSummaryToValue(findPreference("actionbar_user_action"));
-            bindPreferenceSummaryToValue(findPreference("actionbar_x_action"));
 
             bindPreferenceSummaryToValue(findPreference("function_key_label_m1"));
             bindPreferenceSummaryToValue(findPreference("function_key_label_m2"));

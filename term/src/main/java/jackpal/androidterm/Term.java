@@ -4260,6 +4260,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String IME_TOGGLE = getString(R.string.string_functionbar_ime_toggle);
         final String SOFTKEYBOARD = getString(R.string.string_functionbar_dia);
         final String VOICE_INPUT = getString(R.string.string_functionbar_voice_input);
+        final String MENU_QUIT = getString(R.string.string_functionbar_quit);
+        final String MENU = "≡";
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final String F1  = prefs.getString("function_key_label_m1", "F1");
@@ -4337,8 +4339,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_38       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_39       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_40       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_menu_quit"      , "[Q]"        , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_menu"           , "≡"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_menu_quit"      , MENU_QUIT    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_menu"           , MENU         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_43       , "functionbar_menu_hide"      , "∇"         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , F1           , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , F2           , true  ));
@@ -4394,11 +4396,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_40     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_41     , "navigationbar_vim_paste"    , "\"*p"       , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_42     , "navigationbar_vim_yank"     , "\"yy"       , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_menu_quit"    , "[Q]"        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_menu"         , "≡"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_47     , "navigationbar_menu_hide"    , "∇"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_menu_quit"    , MENU_QUIT    , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_menu"         , MENU         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_menu_hide"    , "∇"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_47     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
 
         for (FunctionKey fkey : mFunctionKeys) {
             Button button = findViewById(fkey.resId);

@@ -230,7 +230,7 @@
         <CheckBoxPreference
             android:key="functionbar_menu_quit"
             android:defaultValue="true"
-            android:title="[Q]"/>
+            android:title="@string/title_functionbar_quit"/>
 
         <CheckBoxPreference
             android:key="functionbar_menu"
@@ -447,6 +447,16 @@
             android:key="navigationbar_vim_yank"
             android:defaultValue="false"
             android:title="@string/title_functionbar_vim_yank"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_menu_quit"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_quit"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_menu"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_menu"/>
 
         <CheckBoxPreference
             android:key="navigationbar_fn_toggle"
@@ -699,14 +709,6 @@
         android:entries="@array/entries_actionbar_icon_preference"
         android:entryValues="@array/entryvalues_actionbar_icon_preference"
         android:dialogTitle="@string/dialog_title_actionbar_icon_preference"/>
-
-    <ListPreference
-        android:key="actionbar_x_action"
-        android:defaultValue="@string/pref_actionbar_x_default"
-        android:title="@string/title_actionbar_x_preference"
-        android:entries="@array/entries_actionbar_icon_preference"
-        android:entryValues="@array/entryvalues_actionbar_icon_preference"
-        android:dialogTitle="@string/dialog_title_actionbar_x_preference"/>
 
     <ListPreference
         android:key="cursor_direction_ctrl_mode"

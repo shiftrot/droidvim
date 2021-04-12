@@ -142,7 +142,7 @@ public class TermSettings {
     private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev3";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
-    private static final String ACTIONBAR_X_KEY = "actionbar_x_action";
+    private static final String ACTIONBAR_X_KEY = "actionbar_x_action_rev2";
     private static final String ACTIONBAR_USER_KEY = "actionbar_user_action";
     private static final String ACTIONBAR_INVERT_KEY = "actionbar_invert_action";
     private static final String DOUBLE_TAP_KEY = "double_tap_action";

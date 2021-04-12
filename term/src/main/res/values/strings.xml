@@ -250,9 +250,9 @@
     <string name="title_actionbar_minus_preference">- button</string>
     <string name="summary_actionbar_minus_preference">Choose what pressing the - button does.</string>
     <string name="dialog_title_actionbar_minus_preference">- button</string>
-    <string name="title_actionbar_x_preference">Q button</string>
-    <string name="summary_actionbar_x_preference">Choose what pressing the Q button does.</string>
-    <string name="dialog_title_actionbar_x_preference">Q button</string>
+    <string name="title_actionbar_x_preference">[Q] button</string>
+    <string name="summary_actionbar_x_preference">Choose what pressing the [Q] button does.</string>
+    <string name="dialog_title_actionbar_x_preference">[Q] button</string>
     <string name="title_actionbar_user_preference">□ button</string>
     <string name="summary_actionbar_user_preference">Choose what pressing the □ button does.</string>
     <string name="dialog_title_actionbar_user_preference">□ button</string>
