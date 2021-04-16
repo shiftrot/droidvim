@@ -715,7 +715,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFilePickerItems = new ArrayList<>();
         if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.create_file));
         for (ExternalApp app : mExternalApps) {
-            if (app.appId.equals("")) {
+            if (app.appId.equals(getString(R.string.pref_filer_app_id_default))) {
                 app.appId = APP_FILER;
                 app.label = getString(R.string.app_files);
             }

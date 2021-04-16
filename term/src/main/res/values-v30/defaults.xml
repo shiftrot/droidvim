@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="external_app">Application ID</string>
+    <string name="pref_external_app_id_hint">(E.g. com.android.chrome)</string>
+    <string name="pref_external_app_id_default"></string>
+</resources>

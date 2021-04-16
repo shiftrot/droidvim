@@ -749,7 +749,8 @@ public class TermSettings {
     }
 
     public String getExternalAppId() {
-        return mExternalAppId;
+        String appId = mExternalAppId.replaceAll(" ", "");
+        return appId;
     }
 
     public int getExternalAppButtonMode() {

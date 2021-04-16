@@ -24,7 +24,8 @@
 
         <EditTextPreference
             android:key="external_app_package_name"
-            android:defaultValue="@string/pref_external_app_id_v30_default"
+            android:defaultValue="@string/pref_external_app_id_default"
+            android:hint="@string/pref_external_app_id_hint"
             android:title="@string/external_app" />
 
     </PreferenceScreen>
