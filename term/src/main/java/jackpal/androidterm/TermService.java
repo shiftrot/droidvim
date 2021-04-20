@@ -97,6 +97,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (TermServiceState == -1) TermServiceState = 0;
         // should really belong to the Application class, but we don't use one...
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean showStatusIcon = prefs.getBoolean(TermSettings.STATUSBAR_ICON_KEY, true);
+        startForegroundServiceNotification(showStatusIcon);
         SharedPreferences.Editor editor = prefs.edit();
         String defHomeValue;
         if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
@@ -199,23 +201,30 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean showStatusIcon = prefs.getBoolean(TermSettings.STATUSBAR_ICON_KEY, true);
+        startForegroundServiceNotification(showStatusIcon);
+        return START_NOT_STICKY;
+    }
+
+    private boolean startForegroundServiceNotification(boolean showStatusIcon) {
         try {
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            boolean showStatusIcon = pref.getBoolean(TermSettings.STATUSBAR_ICON_KEY, true);
             String channelId = getText(R.string.application_term_app) + "_channel";
             setNotificationChannel(channelId, showStatusIcon);
             Notification notification = buildNotification(channelId, showStatusIcon);
-            if (useNotificationForgroundService()) {
-                startForeground(RUNNING_NOTIFICATION, notification);
-            } else {
-                compat = new ServiceForegroundCompat(this);
-                if (notification != null)
+            if (notification != null) {
+                if (useNotificationForgroundService()) {
+                    startForeground(RUNNING_NOTIFICATION, notification);
+                } else {
+                    compat = new ServiceForegroundCompat(this);
                     compat.startForeground(RUNNING_NOTIFICATION, notification);
+                }
             }
         } catch (Exception e) {
             Log.e("TermService", e.toString());
+            return false;
         }
-        return START_STICKY;
+        return true;
     }
 
     void setNotificationChannel(String channelId, boolean showStatusIcon) {
