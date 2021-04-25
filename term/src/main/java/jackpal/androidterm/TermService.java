@@ -247,7 +247,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private Notification buildNotification(String channelId, boolean showStatusIcon) {
         Intent notifyIntent = new Intent(this, Term.class);
         notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, PendingIntent.FLAG_IMMUTABLE);
 
         CharSequence contentText = getText(R.string.application_term_app);
         Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
@@ -534,7 +534,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
                     .putExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, sessionHandle);
 
             final PendingIntent result = PendingIntent.getActivity(getApplicationContext(), sessionHandle.hashCode(),
-                    switchIntent, 0);
+                    switchIntent, PendingIntent.FLAG_IMMUTABLE);
 
             final PackageManager pm = getPackageManager();
             final String[] pkgs = pm.getPackagesForUid(getCallingUid());
