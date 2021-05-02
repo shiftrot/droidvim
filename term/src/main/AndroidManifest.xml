@@ -50,8 +50,12 @@
         <package android:name="com.google.android.apps.docs" />
         <package android:name="com.google.android.documentsui" />
         <package android:name="com.amazon.cloud9" />
+        <package android:name="com.box.android" />
         <package android:name="com.dropbox.android" />
         <package android:name="com.microsoft.skydrive" />
+        <package android:name="com.microsoft.emmx" />
+        <package android:name="com.nextcloud.client" />
+        <package android:name="com.owncloud.android" />
         <package android:name="com.ttxapps.dropsync" />
         <package android:name="org.mozilla.firefox" />
         <package android:name="org.mozilla.firefox_beta" />
