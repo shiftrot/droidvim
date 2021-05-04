@@ -196,7 +196,11 @@ public class WebViewActivity extends AppCompatActivity {
         }
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
