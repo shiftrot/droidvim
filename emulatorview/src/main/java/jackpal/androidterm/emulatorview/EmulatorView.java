@@ -328,7 +328,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private String mImeBuffer = "";
     private SpannableString mImeSpannableString = null;
-    private boolean mRestartInput = false;
 
     /**
      * Our message handler class. Implements a periodic callback.
@@ -632,10 +631,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     Log.w(TAG, "endBatchEdit");
                 }
                 boolean result = super.endBatchEdit();
-                if (mRestartInput) {
-                    restartInput();
-                    mRestartInput = false;
-                }
                 return true;
             }
 
@@ -741,7 +736,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 setImeBuffer("");
                 mCursor = 0;
                 if ((mIme == IME_ID_SWIFT) && text.toString().matches("[-']")) {
-                    restartInput();
+                    restartInput(true);
                 }
                 return true;
             }
@@ -840,7 +835,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     if (text.length() > 0) {
                         clearComposingText();
                         sendText(text);
-                        restartInput();
+                        restartInput(true);
                     }
                 }
                 invalidate();
@@ -868,10 +863,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             public boolean setComposingRegion(int start, int end) {
                 if (LOG_IME) {
                     Log.w(TAG, "setComposingRegion " + start + "," + end);
-                }
-                if (mIme == IME_ID_GBOARD) {
-                    restartInput();
-                    return true;
                 }
                 int s = start < end ? start : end;
                 int e = start > end ? start : end;
@@ -1374,10 +1365,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
         }
-        if (mIme == IME_ID_SWIFT && !mHaveFullHwKeyboard && keyCode == KeyEvent.KEYCODE_DEL) {
-            mTermSession.write("\u007f");
-            restartInput();
-            return true;
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            if (mRestartInput && !mHaveFullHwKeyboard) {
+                mTermSession.write("\u007f");
+                restartInput();
+                return true;
+            }
         }
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             mInputConnection.performEditorAction(EditorInfo.IME_ACTION_UNSPECIFIED);
@@ -1807,7 +1800,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // jp.co.omronsoft.wnnlab/.standardcommon.IWnnLanguageSwitcher
     // jp.co.omronsoft.iwnnime.ml/.standardcommon.IWnnLanguageSwitcher
     // private final static String IME_WNN = "jp.co.omronsoft..*wnn.*";
-    private final static String IME_WNNLAB = "jp.co.omronsoft.wnnlab.*";
+    // private final static String IME_WNNLAB = "jp.co.omronsoft.wnnlab.*";
     private static int mIme = -1;
 
     private int setIME(TerminalEmulator view) {
@@ -1850,7 +1843,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIMEGoogleInput = google;
         if (mIMEInputType == attr) return;
         mIMEInputType = attr;
-        restartInput();
+        restartInput(true);
     }
 
     static public void setIMEInputTypeDefault(int attr) {
@@ -1861,10 +1854,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         setIMEInputType(attr, false);
     }
 
+    private static boolean mRestartInput = true;
     private void restartInput() {
+        restartInput(false);
+    }
+    private void restartInput(boolean force) {
+        if (!mRestartInput && !force) return;
         AppCompatActivity activity = (AppCompatActivity) this.getContext();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.restartInput(this);
+    }
+
+    static public void setRestartInput(boolean mode) {
+        mRestartInput = mode;
     }
 
     public void restartInputGoogleIme() {

@@ -427,6 +427,9 @@
     <string name="ignore_xoff_summary_on">Ignore Ctrl-s.</string>
     <string name="ignore_xoff_summary_off">Ctrl-s sends xoff.</string>
 
+    <string name="restart_ime">Reset IME</string>
+    <string name="summary_restart_ime">Use IME reset for some IME control commands.</string>
+
     <string name="title_mouse_tracking_preference">Send mouse events</string>
     <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
     <string name="title_volume_as_cursor_tracking_preference">Volume button as cursor</string>

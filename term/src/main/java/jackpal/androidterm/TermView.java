@@ -55,6 +55,7 @@ public class TermView extends EmulatorView {
         setAltSendsEsc(settings.getAltSendsEscFlag());
         setSupport8bitMeta(settings.getAltUses8bitMSB());
         setIgnoreXoff(settings.getIgnoreXoff());
+        setRestartInput(settings.getRestartIME());
         setControlKeyCode(settings.getControlKeyCode());
         setFnKeyCode(settings.getFnKeyCode());
         setTermType(settings.getTermType());

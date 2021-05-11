@@ -48,4 +48,10 @@
         android:key="alt_sends_esc"
         android:defaultValue="@bool/pref_alt_sends_esc_default"/>
 
+    <CheckBoxPreference
+        android:title="@string/restart_ime"
+        android:key="restart_ime"
+        android:defaultValue="@bool/pref_restart_ime_default"
+        android:summary="@string/summary_restart_ime"/>
+
 </PreferenceScreen>

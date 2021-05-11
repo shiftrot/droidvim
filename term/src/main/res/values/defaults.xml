@@ -46,6 +46,7 @@
     <bool name="pref_alt_sends_esc_default">false</bool>
     <bool name="pref_ignore_xoff_default">false</bool>
     <bool name="pref_back_as_esc_default">false</bool>
+    <bool name="pref_restart_ime_default">true</bool>
     <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
     <string name="pref_initialcommand_default" translatable="false">export PS1=\"\\$ \"\ncd %STARTUP_DIR%\nbash</string>
     <string name="pref_intent_command_default" translatable="false"></string>

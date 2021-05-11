@@ -103,6 +103,8 @@ public class TermSettings {
     private boolean mIgnoreXoff;
     private boolean mBackAsEsc;
 
+    private boolean mRestartIME;
+
     private boolean mMouseTracking;
     private boolean mVolumeAsCursor;
     private boolean mPinchInOut;
@@ -176,6 +178,7 @@ public class TermSettings {
     private static final String ALT_USES_8BIT_META = "alt_uses_8bit_meta";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String IGNORE_XON = "ignore_xoff";
+    private static final String RESTART_IME = "restart_ime";
     private static final String BACK_AS_ESC = "back_as_esc";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String VOLUME_AS_CURSOR = "volume_as_cursor";
@@ -337,6 +340,7 @@ public class TermSettings {
         mAltUses8bitMSB = res.getBoolean(R.bool.pref_alt_uses_8bit_meta_default);
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mIgnoreXoff = res.getBoolean(R.bool.pref_ignore_xoff_default);
+        mRestartIME = res.getBoolean(R.bool.pref_restart_ime_default);
         mBackAsEsc = res.getBoolean(R.bool.pref_back_as_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mVolumeAsCursor = res.getBoolean(R.bool.pref_volume_as_cursor_tracking_default);
@@ -422,6 +426,7 @@ public class TermSettings {
         mAltUses8bitMSB = readBooleanPref(ALT_USES_8BIT_META, mAltUses8bitMSB);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mIgnoreXoff = readBooleanPref(IGNORE_XON, mIgnoreXoff);
+        mRestartIME = readBooleanPref(RESTART_IME, mRestartIME);
         mBackAsEsc = readBooleanPref(BACK_AS_ESC, mBackAsEsc);
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mVolumeAsCursor = readBooleanPref(VOLUME_AS_CURSOR, mVolumeAsCursor);
@@ -671,6 +676,10 @@ public class TermSettings {
 
     public boolean getIgnoreXoff() {
         return mIgnoreXoff;
+    }
+
+    public boolean getRestartIME() {
+        return mRestartIME;
     }
 
     public boolean getBackAsEscFlag() {
