@@ -25,7 +25,7 @@ buildscript {
         'documentfile'     : '1.0.1',
         'drawerlayout'     : '1.1.1',
         'fragment_ktx'     : '1.3.3',
-        'kotlin'           : '1.4.32',
+        'kotlin'           : '1.5.0',
         'material'         : '1.3.0',
         'preference'       : '1.1.1',
         'vectordrawable'   : '1.1.0',
@@ -35,19 +35,19 @@ buildscript {
     ]
 
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
 
