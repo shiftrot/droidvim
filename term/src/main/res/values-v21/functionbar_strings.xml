@@ -3,10 +3,10 @@
     <string name="title_navigationbar_fn_toggle">"➖" - Toggle functionbar</string>
     <string name="title_functionbar_open_file">"📁" - Open File</string>
     <string name="title_functionbar_voice_input">"🎤" - Voice input</string>
-    <string name="title_functionbar_quit">"🔚" - Quit</string>
+    <string name="title_functionbar_quit">"📲" - Quit</string>
 
     <string name="string_functionbar_fn_toggle">"➖"</string>
     <string name="string_functionbar_open_file">"📁"</string>
     <string name="string_functionbar_voice_input">"🎤"</string>
-    <string name="string_functionbar_quit">"🔚"</string>
+    <string name="string_functionbar_quit">"📲"</string>
 </resources>
