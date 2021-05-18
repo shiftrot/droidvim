@@ -290,7 +290,7 @@
     <string name="dialog_title_fnkey_preference">Fn key</string>
 
     <string name="title_ime_inputtype_preference">Input mode at startup</string>
-    <string name="summary_ime_inputtype_preference">Switch to \"Normal input\" with "🔤" button.</string>
+    <string name="summary_ime_inputtype_preference">Switch to \"Normal input\" with "🔤" button.\n(Need to switch the input mode with the "🔤" button or restart.)</string>
     <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
 
     <string name="title_ime_direct_input_method_preference">Input method for \"Direct input\"</string>

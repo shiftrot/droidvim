@@ -186,7 +186,7 @@ public class TermSettings {
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
     private static final String AUTO_HIDE_FUNCTIONBAR = "auto_hide_functionbar";
     private static final String IME_SHORTCUTS_ACTION = "ime_shortcuts_action_rev2";
-    private static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
+    public static final String IME_DEFAULT_INPUTTYPE = "ime_default_inputtype";
     private static final String IME_VI_COOPERATIVE_MODE = "vi_cooperative_mode";
     public static final String FORCE_NOMAL_INPUT_TO_PHYSICAL_KEYBOARD = "force_normal_input_to_physical_keyboard";
     private static String SHOW_DOTFILES_KEY;

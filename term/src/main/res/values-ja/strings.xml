@@ -292,7 +292,7 @@
     <string name="dialog_title_fnkey_preference">Fnキー</string>
 
     <string name="title_ime_inputtype_preference">起動時の入力モード</string>
-    <string name="summary_ime_inputtype_preference">"🔤"ボタンで「通常入力」と切り替えます</string>
+    <string name="summary_ime_inputtype_preference">"🔤"ボタンで「通常入力」と切り替えます.\n("🔤"ボタンでの入力モード切替または再起動が必要)</string>
     <string name="dialog_titleime_inputtype_preference">起動時の入力モードを選択</string>
 
     <string name="title_ime_direct_input_method_preference">「直接入力」のインプットメソッド</string>

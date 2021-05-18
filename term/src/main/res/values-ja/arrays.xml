@@ -215,11 +215,11 @@
     </string-array>
 
     <string-array name="entries_ime_inputtype_preference">
-        <item>直接入力 : パスワード</item>
-        <item>直接入力 : URI</item>
+        <item>直接入力 : TYPE_TEXT_VARIATION_PASSWORD</item>
+        <item>直接入力 : TYPE_TEXT_VARIATION_URI</item>
         <item>直接入力 : デフォルト</item>
-        <item>通常入力 : Raw</item>
-        <item>通常入力 : 単語ベース</item>
+        <item>通常入力 : TYPE_NULL</item>
+        <item>通常入力 : TYPE_CLASS_TEXT</item>
     </string-array>
 
     <string-array name="entries_vi_cooperative_mode_preference">

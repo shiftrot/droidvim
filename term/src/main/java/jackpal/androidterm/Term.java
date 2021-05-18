@@ -1713,6 +1713,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         registerForContextMenu(emulatorView);
 
         if (mFirstInputtype) {
+            String defime = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+            EmulatorView.setDefaultIME(defime);
             EmulatorView.setIMEInputTypeDefault(mSettings.getImeDefaultInputtype());
             emulatorView.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             mFirstInputtype = false;
@@ -1828,7 +1830,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             } else {
                                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                                         .getManager(getApplicationContext());
-                                clip.setText(strings);
+                                clip_setText(clip, strings);
                                 String mes = getString(R.string.toast_clipboard);
                                 showSnackbar(mes);
                             }
@@ -2067,7 +2069,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             } else {
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
-                clip.setText(strings);
+                clip_setText(clip, strings);
                 String mes = getString(R.string.toast_clipboard);
                 showSnackbar(mes);
             }
@@ -3652,7 +3654,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 String str = cbuf.toString();
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
-                clip.setText(str);
+                clip_setText(clip, str);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -3677,10 +3679,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return false;
     }
 
+    private void clip_setText(ClipboardManagerCompat clip, String str) {
+        clip.setText(str);
+    }
+
     private void clearClipBoard() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        clip.setText("");
+        clip_setText(clip, "");
     }
 
     // Called when the list of sessions changes
@@ -3830,11 +3836,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String mes;
         if (mode == 0) {
             str = getCurrentEmulatorView().getTranscriptCurrentText();
-            clip.setText(str);
+            clip_setText(clip, str);
             mes = getString(R.string.toast_clipboard);
         } else if (mode == 1) {
             str = getCurrentEmulatorView().getTranscriptText().trim();
-            clip.setText(str);
+            clip_setText(clip, str);
             mes = getString(R.string.toast_clipboard);
         } else if (mode == 2) {
             str = getCurrentEmulatorView().getTranscriptCurrentText();
@@ -3963,10 +3969,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doRestartSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
         EmulatorView view = getCurrentEmulatorView();
-        if (imm != null && view != null) imm.restartInput(view);
+        if (view != null) view.restartInput(true);
     }
 
     private void doToggleSoftKeyboard() {
@@ -4143,6 +4147,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case 53:
                 inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                EmulatorView view = getCurrentEmulatorView();
+                if (view != null) inputType = view.getNoSuggestionModeIMEInputType();
                 break;
             case 54:
                 inputType = EditorInfo.TYPE_NULL;
