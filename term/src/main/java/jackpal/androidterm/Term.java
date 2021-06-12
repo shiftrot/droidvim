@@ -47,6 +47,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.StatFs;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.system.Os;
 import android.text.TextUtils;
