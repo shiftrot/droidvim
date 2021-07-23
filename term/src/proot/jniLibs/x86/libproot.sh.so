@@ -1,5 +1,42 @@
-if [ -x $APPFILES/usr/bin/bash ]; then
-    proot -b /dev -b /proc -b /sys -b /system $APPFILES/usr/bin/bash $@
-else
-    proot -b /dev -b /proc -b /sys -b /system /system/bin/sh $@
+# For the /system/bin/linker(64) to be found:
+ARGS="-b /system:/system"
+
+# On some devices /vendor is required for termux packages to work correctly
+# See https://github.com/termux/proot/issues/2#issuecomment-303995382
+ARGS="$ARGS -b /vendor:/vendor"
+
+# Bind /data to include system folders such as /data/misc. Also $PREFIX
+# and $HOME so that Termux programs with hard-coded paths continue to work:
+ARGS="$ARGS -b /data:/data"
+
+
+# Bind Magisk binary directories so root works, closing per Issue #2100.
+if [ -d /sbin ] && [ -d /root ]; then
+	# Both of these directories exist under Android even without Magisk installed,
+	# The existence check is to ensure that it doesn't break if this changes.
+	ARGS="$ARGS -b /sbin:/sbin -b /root:/root"
 fi
+
+# Android 10 needs /apex for /system/bin/linker:
+# https://github.com/termux/proot/issues/95#issuecomment-584779998
+if [ -d /apex ]; then
+	ARGS="$ARGS -b /apex:/apex"
+fi
+
+# Android 11.
+if [ -e "/linkerconfig/ld.config.txt" ]; then
+	ARGS="$ARGS -b /linkerconfig/ld.config.txt:/linkerconfig/ld.config.txt"
+fi
+
+if [ -f /property_contexts ]; then
+	# Used by getprop (see https://github.com/termux/termux-packages/issues/1076)
+	# but does not exist on Android 8.
+	ARGS="$ARGS -b /property_contexts:/property_contexts"
+fi
+
+# Expose external and internal storage:
+if [ -d /storage ]; then
+	ARGS="$ARGS -b /storage:/storage"
+fi
+
+$APPLIB/libproot.so $ARGS
