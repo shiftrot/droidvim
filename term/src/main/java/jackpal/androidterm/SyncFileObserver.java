@@ -323,14 +323,17 @@ public class SyncFileObserver extends RecursiveFileObserver {
         return makeCache(uri, dst, mContentResolver);
     }
 
+    static public String ErrorState = "";
     private String makeCache(final Uri uri, final File dst, final ContentResolver contentResolver) {
         if (dst == null || uri == null || contentResolver == null) return "";
 
         String hashValue = "";
+        ErrorState = hashValue;
         mActive = false;
-        deleteFileOrFolderRecursive(dst);
-        File parent = dst.getParentFile();
+        File temp = new File(mCacheDir, ".temp");
+        File parent = temp.getParentFile();
         if (parent != null) parent.mkdirs();
+        deleteFileOrFolderRecursive(temp);
         try {
             MessageDigest md;
             try {
@@ -342,7 +345,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
             InputStream is = contentResolver.openInputStream(uri);
             BufferedInputStream reader = new BufferedInputStream(is);
 
-            OutputStream os = new FileOutputStream(dst);
+            OutputStream os = new FileOutputStream(temp);
             BufferedOutputStream writer = new BufferedOutputStream(os);
             byte[] buf = new byte[4096];
             int len;
@@ -357,8 +360,13 @@ public class SyncFileObserver extends RecursiveFileObserver {
                 byte[] digest = md.digest();
                 hashValue = toHexString(digest);
             }
+            deleteFileOrFolderRecursive(dst);
+            parent = dst.getParentFile();
+            if (parent != null) parent.mkdirs();
+            renameFile(temp, dst);
         } catch (Exception e) {
             hashValue = HASH_ERROR;
+            ErrorState = e.getLocalizedMessage();
         }
         if (dst.getAbsolutePath().startsWith(getObserverDir())) {
             startWatching();
@@ -367,6 +375,15 @@ public class SyncFileObserver extends RecursiveFileObserver {
         }
         mActive = true;
         return hashValue;
+    }
+
+    private boolean renameFile(File src, File dst) {
+        try {
+            deleteFileOrFolderRecursive(dst);
+            return src.renameTo(dst);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     static String digest(InputStream is)

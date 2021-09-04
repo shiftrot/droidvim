@@ -2485,7 +2485,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         public void onClick(DialogInterface dialog, int id) {
                             SyncFileObserverMru mru = list.get(which);
                             mSyncFileObserver.remove(mru);
-                            chooseExternalFileMru();
+                            filePicker();
                         }
                     });
                     b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
