@@ -376,8 +376,8 @@ final class TermVimInstaller {
                     File appExtHome= new File(TermService.getAPPEXTHOME());
                     if (!appExtHome.exists()) {
                         appExtHome.mkdirs();
-                        // id = activity.getResources().getIdentifier("app_ext_home", "raw", activity.getPackageName());
-                        // installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
+                        id = activity.getResources().getIdentifier("app_ext_home", "raw", activity.getPackageName());
+                        installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
                     }
                     setMessage(activity, pd, "symlinks");
                     JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);

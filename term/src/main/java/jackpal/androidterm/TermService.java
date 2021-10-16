@@ -100,17 +100,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
         boolean showStatusIcon = prefs.getBoolean(TermSettings.STATUSBAR_ICON_KEY, true);
         startForegroundServiceNotification(showStatusIcon);
         SharedPreferences.Editor editor = prefs.edit();
-        String defHomeValue;
-        if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
-            defHomeValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
-        } else {
-            defHomeValue = getFilesDir().getAbsolutePath() + "/home";
-            File home = new File(defHomeValue);
-            if (!home.exists()) home.mkdir();
-        }
-        String homePath = prefs.getString("home_path", defHomeValue);
-        if (!new File(homePath).canWrite()) homePath = defHomeValue;
-        mHOME = homePath;
         mAPPLIB = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
         mARCH = getArch();
         mAPPBASE = this.getApplicationInfo().dataDir;
@@ -128,6 +117,18 @@ public class TermService extends Service implements TermSession.FinishCallback {
             mAPPEXTHOME = mAPPEXTFILES + "/home";
         }
 
+        String defHomeValue;
+        if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
+            defHomeValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        } else {
+            defHomeValue = getFilesDir().getAbsolutePath() + "/home";
+            File home = new File(defHomeValue);
+            if (!home.exists()) home.mkdir();
+        }
+        String homePath = prefs.getString("home_path", defHomeValue);
+        if ("$APPEXTHOME".equals(homePath)) homePath = mAPPEXTHOME;
+        if (!new File(homePath).canWrite()) homePath = defHomeValue;
+        mHOME = homePath;
         if (SCOPED_STORAGE) {
             int modeHome = Integer.parseInt( prefs.getString("scoped_storage_home_path_mode", "0"));
             if (modeHome != 0) mHOME = mAPPEXTHOME;
