@@ -281,6 +281,9 @@ public class TermService extends Service implements TermSession.FinishCallback {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId(channelId);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE);
+        }
         return builder.build();
     }
 
