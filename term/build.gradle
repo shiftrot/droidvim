@@ -121,7 +121,7 @@ dependencies {
 
 dependencies {
     implementation "androidx.core:core-ktx:${versions.core_ktx}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 }
 
 // Libraries which can be re-used in other modules should use the `api` keyword.
