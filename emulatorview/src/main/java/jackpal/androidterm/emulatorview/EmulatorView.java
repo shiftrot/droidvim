@@ -460,7 +460,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mKeyListener != null) {
             mKeyListener.onResume();
         }
-        restartInput();
     }
 
     /**
@@ -666,9 +665,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (LOG_IME) {
                     Log.w(TAG, "getExtractedText" + arg0 + "," + arg1);
                 }
-                ExtractedText et = new ExtractedText();
-                et.text = mImeBuffer;
-                return et;
+                return null;
             }
 
             @Override
@@ -724,7 +721,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (LOG_IME) {
                     Log.w(TAG, "commitCorrection");
                 }
-                return false;
+                return true;
             }
 
             @Override
@@ -1367,7 +1364,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             Log.w(TAG, "onKeyDown " + keyCode);
         }
         if (keyCode == KeyEvent.KEYCODE_DEL) {
-            if (mRestartInput && !mHaveFullHwKeyboard) {
+            if (mIme == IME_ID_SWIFT && mRestartInput && !mHaveFullHwKeyboard) {
                 mTermSession.write("\u007f");
                 restartInput();
                 return true;
@@ -1852,8 +1849,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public int getNoSuggestionModeIMEInputType() {
-        int inputType = EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
-        if (mIme == IME_ID_GBOARD) inputType = EditorInfo.TYPE_NULL;
+        int inputType = EditorInfo.TYPE_NULL;
         return inputType;
     }
 

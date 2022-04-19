@@ -4147,7 +4147,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 inputType = EditorInfo.TYPE_TEXT_VARIATION_URI;
                 break;
             case 53:
-                inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                inputType = EditorInfo.TYPE_NULL;
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) inputType = view.getNoSuggestionModeIMEInputType();
                 break;

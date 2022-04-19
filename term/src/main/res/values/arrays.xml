@@ -223,7 +223,7 @@
     <string-array name="entries_ime_inputtype_preference">
         <item>Direct input : TYPE_TEXT_VARIATION_PASSWORD</item>
         <item>Direct input : TYPE_TEXT_VARIATION_URI</item>
-        <item>Direct input : Default</item>
+        <item>Default</item>
         <item>Normal input : TYPE_NULL</item>
         <item>Normal input : TYPE_CLASS_TEXT</item>
     </string-array>
