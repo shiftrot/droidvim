@@ -670,7 +670,6 @@ final class TermVimInstaller {
     }
 
     static public void setupStorageSymlinks() {
-        if (SCOPED_STORAGE) return;
         try {
             File storageDir = new File(TermService.getHOME());
             String symlink = "internalStorage";
