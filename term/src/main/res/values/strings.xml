@@ -289,9 +289,9 @@
     <string name="summary_fnkey_preference">Choose Fn key.</string>
     <string name="dialog_title_fnkey_preference">Fn key</string>
 
-    <string name="title_ime_inputtype_preference">Input mode at startup</string>
-    <string name="summary_ime_inputtype_preference">Switch to \"Normal input\" with "🔤" button.\n(Need to switch the input mode with the "🔤" button or restart.)</string>
-    <string name="dialog_titleime_inputtype_preference">Choose input mode at startup</string>
+    <string name="title_ime_inputtype_preference">Command input mode</string>
+    <string name="summary_ime_inputtype_preference">Choose option for command input mode (alphanumeric direct input)</string>
+    <string name="dialog_titleime_inputtype_preference">Choose command input mode</string>
 
     <string name="title_ime_direct_input_method_preference">Input method for \"Direct input\"</string>
     <string name="title_ime_preference">Input method for \"Normal input\"</string>
@@ -300,7 +300,7 @@
     <string name="dialog_title_ime_preference">Choose input method</string>
 
     <string name="title_vi_cooperative_mode_preference">vi-cooperative mode</string>
-    <string name="summary_vi_cooperative_mode">Reset to \"Input mode at startup\" with ESC button.</string>
+    <string name="summary_vi_cooperative_mode">Reset to \"Command input mode\" with ESC button.</string>
     <string name="dialog_title_vi_cooperative_mode_preference">Choose vi-cooperative mode.</string>
     <string name="pref_force_normal_input_to_physical_keyboard">Force normal input</string>
     <string name="summary_force_normal_input_to_physical_keyboard_preference">If a physical keyboard is connected, set to normal input mode.</string>
@@ -497,7 +497,7 @@
     <string name="error_not_supported_device">Sorry, this device is not supported.\nPlease update Android 4.3 or greater.</string>
     <string name="title_remote_interface_installer_warning">Installation finished</string>
     <string name="message_remote_interface_installer_warning">Please restart this app for the settings to take effect.\nYou can view the file without restarting this app, but you may not be able to write.</string>
-    <string name="keyboard_warning">By default direct input is forced, so you may not be able to input non-alphanumeric characters from the physical keyboard.\nIn that case please try the following:\n\n- "🔤" Button\n- IME shortcuts\n- Change \"Input mode at startup\" to \"Normal input\"\n- Change input mode with Vim script.\n\nPlease see the help for details.</string>
+    <string name="keyboard_warning">By default direct input is forced, so you may not be able to input non-alphanumeric characters from the physical keyboard.\nIn that case please try the following:\n\n- "🔤" Button\n- IME shortcuts\n- Change \"Command input mode\" to \"Normal input mode\"\n- Change input mode with Vim script.\n\nPlease see the help for details.</string>
 
     <string name="extra">Extra</string>
     <string name="debug">Debug</string>

@@ -125,7 +125,7 @@
         <item>ターミナルから : を送出</item>
         <item>ターミナルから / を送出</item>
         <item>IMEアクション</item>
-        <item>「通常入力」/「起動時の入力モード」のトグル</item>
+        <item>「コマンド入力モード」/「通常入力モード」のトグル</item>
         <item>ファンクションバーのカーソルキーの方向をトグル"</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
@@ -207,7 +207,7 @@
 
     <string-array name="entries_ime_shortcuts_action_preference">
         <item>IMEのトグル</item>
-        <item>「通常入力」/「起動時の入力モード」のトグル</item>
+        <item>「コマンド入力モード」/「通常入力モード」のトグル</item>
         <item>一行テキスト入力</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
