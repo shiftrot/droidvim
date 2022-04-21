@@ -46,4 +46,28 @@
         android:title="@string/title_proot_preference"
         android:summary="@string/summary_proot_preference"/>
 
+    <Preference
+        android:key="MANAGE_EXTERNAL_STORAGE"
+        android:title="@string/manage_external_storage_permission"
+        android:summary="@string/manage_external_storage_permission_summary"/>
+
+<!--
+    <ListPreference
+        android:key="scoped_storage_home_path_mode"
+        android:defaultValue="@string/pref_scoped_storage_home_path_mode_default"
+        android:title="@string/title_home_dir_chooser_preference"
+        android:summary="@string/summary_home_dir_chooser_preference"
+        android:entries="@array/entries_scoped_storage_home_path_mode_preference"
+        android:entryValues="@array/entries_scoped_storage_home_path_mode_preference_value"
+        android:dialogTitle="@string/dialog_title_scoped_storage_home_path_mode_preference"/>
+-->
+
+<!--
+    <SwitchPreference
+        android:key="scoped_storage_startup_path_is_APPEXTHOME"
+        android:defaultValue="@bool/pref_scoped_storage_startup_path_mode_default"
+        android:title="@string/title_scoped_storage_startup_path_mode_preference"
+        android:summary="@string/summary_scoped_storage_startup_path_mode_preference"/>
+-->
+
 </PreferenceScreen>
