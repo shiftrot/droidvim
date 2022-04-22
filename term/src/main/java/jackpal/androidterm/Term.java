@@ -2201,10 +2201,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
             view.restartInputGoogleIme();
             if (onelineTextBoxEsc()) return true;
-            KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
-            dispatchKeyEvent(event);
-            event = new KeyEvent(KeyEvent.ACTION_UP, key);
-            dispatchKeyEvent(event);
+            dispatchKeyEventUD(key);
             if ((mSettings.getViCooperativeMode() & 1) != 0) {
                 view.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             }
@@ -2216,10 +2213,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     (key == KeycodeConstants.KEYCODE_DPAD_RIGHT)) {
                 view.setControlKeyState(UNPRESSED);
             }
-            KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, key);
-            dispatchKeyEvent(event);
-            event = new KeyEvent(KeyEvent.ACTION_UP, key);
-            dispatchKeyEvent(event);
+            dispatchKeyEventUD(key);
             view.setControlKeyState(state);
         }
         return true;
@@ -2917,10 +2911,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mVolumeAsCursor) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                 int key = keyCode == KeyEvent.KEYCODE_VOLUME_UP ? KeycodeConstants.KEYCODE_DPAD_UP : KeycodeConstants.KEYCODE_DPAD_DOWN;
-                KeyEvent vdEvent = new KeyEvent(KeyEvent.ACTION_DOWN, key);
-                dispatchKeyEvent(vdEvent);
-                vdEvent = new KeyEvent(KeyEvent.ACTION_UP, key);
-                dispatchKeyEvent(vdEvent);
+                dispatchKeyEventUD(key);
                 return true;
             }
         }
@@ -2937,6 +2928,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else {
             return super.onKeyDown(keyCode, event);
         }
+    }
+
+    private void dispatchKeyEventUD(int keyCode) {
+        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, keyCode);
+        dispatchKeyEvent(event);
+        event = new KeyEvent(KeyEvent.ACTION_UP, keyCode);
+        dispatchKeyEvent(event);
     }
 
     private boolean mPressBackTwice = false;
@@ -4512,12 +4510,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean onelineTextBoxEsc() {
         if (mEditTextView) {
             if (mEditText != null && mEditText.isFocused()) {
+                int key = KeycodeConstants.KEYCODE_ESCAPE;
                 EmulatorView view = getCurrentEmulatorView();
                 if (view != null) view.requestFocusFromTouch();
                 if (mSettings != null && mSettings.getOneLineTextBoxEsc()) {
                     setEditTextView(0);
+                    dispatchKeyEventUD(key);
                     return false;
                 }
+                dispatchKeyEventUD(key);
                 return true;
             }
         }

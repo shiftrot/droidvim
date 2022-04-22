@@ -122,7 +122,7 @@ public class TermSettings {
     private static final String FUNCTIONBAR_NAVIAGATION_BUTTON_KEY = "functionbar_navigation_button";
     private static final String CURSOR_DIRECTION_CTRL = "cursor_direction_ctrl_mode";
     private static final String ONELINE_TEXTBOX_KEY = "oneline_textbox";
-    private static final String ONELINE_TEXTBOX_ESC_KEY = "oneline_textbox_esc";
+    private static final String ONELINE_TEXTBOX_ESC_KEY = "oneline_textbox_esc_rev2";
     private static final String ONELINE_TEXTBOX_CR_KEY = "oneline_textbox_cr";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
@@ -141,7 +141,7 @@ public class TermSettings {
     private static final String IMECOLOR_KEY = "composingtext";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String HWACCELERATION_KEY = "hw_acceleration_by_default";
-    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev3";
+    private static final String ACTIONBAR_ICON_KEY = "functionbar_diamond_action_rev4";
     private static final String ACTIONBAR_PLUS_KEY = "actionbar_plus_action";
     private static final String ACTIONBAR_MINUS_KEY = "actionbar_minus_action";
     private static final String ACTIONBAR_X_KEY = "actionbar_x_action_rev2";
