@@ -100,19 +100,20 @@ public class TermService extends Service implements TermSession.FinishCallback {
         boolean showStatusIcon = prefs.getBoolean(TermSettings.STATUSBAR_ICON_KEY, true);
         startForegroundServiceNotification(showStatusIcon);
         SharedPreferences.Editor editor = prefs.edit();
-        mAPPLIB = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
+        Context context = this.getApplicationContext();
+        mAPPLIB = context.getApplicationInfo().nativeLibraryDir;
         mARCH = getArch();
-        mAPPBASE = this.getApplicationInfo().dataDir;
-        mAPPFILES = this.getFilesDir().toString();
-        File externalFiles = this.getExternalFilesDir(null);
+        mAPPBASE = context.getApplicationInfo().dataDir;
+        mAPPFILES = context.getFilesDir().toString();
+        File externalFiles = context.getExternalFilesDir(null);
         mAPPEXTFILES = externalFiles != null ? externalFiles.toString() : mAPPFILES;
         int sdcard = getSDCard(this);
         if (sdcard > 0) {
-            File[] dirs = this.getApplicationContext().getExternalFilesDirs(null);
+            File[] dirs = context.getExternalFilesDirs(null);
             mAPPEXTFILES = dirs[sdcard].toString();
         }
         try {
-            mAPPEXTHOME = getExternalFilesDir(null).getAbsolutePath() + "/home";
+            mAPPEXTHOME = context.getExternalFilesDir(null).getAbsolutePath() + "/home";
         } catch (Exception e) {
             mAPPEXTHOME = mAPPEXTFILES + "/home";
         }
