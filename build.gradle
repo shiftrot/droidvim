@@ -25,7 +25,7 @@ buildscript {
         'documentfile'     : '1.0.1',
         'drawerlayout'     : '1.1.1',
         'fragment_ktx'     : '1.4.1',
-        'kotlin'           : '1.6.20',
+        'kotlin'           : '1.6.21',
         'material'         : '1.5.0',
         'preference'       : '1.2.0',
         'vectordrawable'   : '1.1.0',
