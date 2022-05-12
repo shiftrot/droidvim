@@ -792,6 +792,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 button.setVisibility(View.VISIBLE);
             }
         }
+        mFilePickerItems.add(getString(R.string.create_symlinks));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mFilePickerItems.add(getString(R.string.backup_restore));
         }

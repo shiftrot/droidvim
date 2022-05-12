@@ -676,7 +676,7 @@ final class TermVimInstaller {
 
             File internalDir = Environment.getExternalStorageDirectory();
             if (!internalDir.canWrite()) {
-                internalDir = new File(TermService.getAPPEXTHOME());
+                internalDir = new File(TermService.getEXTSTORAGE());
             }
             shell("rm " + new File(storageDir, symlink).getAbsolutePath());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
