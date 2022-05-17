@@ -1849,7 +1849,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public int getNoSuggestionModeIMEInputType() {
-        int inputType = EditorInfo.TYPE_NULL;
+        int inputType = EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+        if (mIme == IME_ID_GBOARD) inputType = EditorInfo.TYPE_NULL;
         return inputType;
     }
 
@@ -2060,7 +2061,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
                 break;
             case 51:
-                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+                setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 break;
             case 52:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
