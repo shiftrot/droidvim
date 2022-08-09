@@ -8,7 +8,7 @@ To avoid repository bloat, the latest Vim binaries are included in the `build` b
 The `build` branch will be rebased to the `master` branch.  
 
 This code is based on the "[Terminal Emulator for Android](https://github.com/jackpal/Android-Terminal-Emulator)".  
-By selecting the "terminal" flavor, you can build the "Terminal Emulator for Android" compatible application with various functions of the DroidVim.  
+By choosing the `terminal` flavor, you can build the "Terminal Emulator for Android" compatible application with various functions of the DroidVim.  
 
 # Licensing
 
