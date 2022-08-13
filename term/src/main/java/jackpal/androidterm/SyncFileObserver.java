@@ -488,7 +488,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
             }
         } catch (Exception e) {
             flushCacheExec(uri, file, contentResolver);
-            flushCacheErrorDialog((AppCompatActivity) mObjectActivity, e.getMessage(), uri, file, contentResolver);
+            flushCacheErrorDialog((AppCompatActivity) mObjectActivity, e.getMessage(), uri, file, contentResolver, e);
         }
     }
 
@@ -547,7 +547,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
                 mHashMap.get(file.getAbsolutePath()).setHash(hashValue);
             }
         } catch (Exception e) {
-            writeErrorDialog((AppCompatActivity) mObjectActivity, file, contentResolver);
+            writeErrorDialog((AppCompatActivity) mObjectActivity, file, contentResolver, e);
         }
     }
 
@@ -596,7 +596,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void flushCacheErrorDialog(final AppCompatActivity activity, final  String errorMessage, final Uri uri, final File file, final ContentResolver contentResolver) {
+    private void flushCacheErrorDialog(final AppCompatActivity activity, final  String errorMessage, final Uri uri, final File file, final ContentResolver contentResolver, final Exception e) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -604,7 +604,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
                     AlertDialog.Builder bld = new AlertDialog.Builder(activity);
                     bld.setIcon(android.R.drawable.ic_dialog_alert);
                     bld.setTitle(R.string.storage_write_error_title);
-                    bld.setMessage(errorMessage + "\n" + R.string.storage_flush_cache_error);
+                    bld.setMessage(errorMessage + "\n" + R.string.storage_flush_cache_error + "\n\n" + e.getMessage());
                     bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
@@ -733,13 +733,14 @@ public class SyncFileObserver extends RecursiveFileObserver {
         });
     }
 
-    private void writeErrorDialog(final AppCompatActivity activity, File file, ContentResolver contentResolver) {
+    private void writeErrorDialog(final AppCompatActivity activity, File file, ContentResolver contentResolver, Exception e) {
         if (activity != null) activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (!mDialogIsActive) {
                     String title = activity.getString(R.string.storage_write_error_title);
                     String message = activity.getString(R.string.storage_write_error);
+                    message += "\n\n" + e.getMessage();
                     boolean isConnected = mObjectActivity != null && isConnected(activity.getApplicationContext());
                     if (!isConnected) {
                         title = activity.getString(R.string.storage_offline_write_error_title);
