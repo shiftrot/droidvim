@@ -1803,6 +1803,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     static public void setDefaultIME(String defime) {
         if (mIme != IME_ID_NONE) return;
         mIme = getIMEID(defime);
+        TranscriptScreen.setIME(mIme);
     }
 
     static private int getIMEID(String defime) {
@@ -1822,11 +1823,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         String defime = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
         int ime = getIMEID(defime);
         if (mIme != ime) {
-            TranscriptScreen transcriptScreen = view.getScreen();
-            if (transcriptScreen != null) {
-                transcriptScreen.setIME(ime);
-                mIme = ime;
-            }
+            TranscriptScreen.setIME(ime);
+            mIme = ime;
         }
         return ime;
     }

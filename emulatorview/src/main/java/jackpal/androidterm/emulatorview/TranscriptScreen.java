@@ -393,7 +393,7 @@ class TranscriptScreen implements Screen {
         mIMEColor = mode;
     }
 
-    public void setIME(int ime) {
+    static public void setIME(int ime) {
         mIMEDetect = (ime == IME_GBOARD) ? IME_GOOGLE : ime;
     }
 
