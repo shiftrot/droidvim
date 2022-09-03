@@ -1046,7 +1046,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 for (int i = 0; i < permissions.length; i++) {
                     if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                            TermVimInstaller.setupStorageSymlinks();
+                            TermVimInstaller.setupStorageSymlinks(this);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1234,11 +1234,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             return;
         }
         try {
-            File storageDir = new File(mSettings.getHomePath(), "storage");
+            File storageDir = new File(mSettings.getHomePath());
 
             if (!storageDir.exists() && !storageDir.mkdirs()) {
-                Log.e(TermDebug.LOG_TAG, "Unable to mkdirs() for $HOME/storage");
-                alert("Unable to mkdirs() for $HOME/storage");
+                Log.e(TermDebug.LOG_TAG, "Unable to mkdirs()");
                 return;
             }
 

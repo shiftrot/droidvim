@@ -383,7 +383,7 @@ final class TermVimInstaller {
                     JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
                     installBusyboxCommands();
                     setAmbiWidthToVimrc(mSettings.getAmbiWidth());
-                    setupStorageSymlinks();
+                    setupStorageSymlinks(activity);
                     JniLibsToBin.symlinkDebugReport(path);
                     id = activity.getResources().getIdentifier("version", "raw", activity.getPackageName());
                     copyScript(activity.getResources().openRawResource(id), versionPath + "/version");
@@ -669,7 +669,7 @@ final class TermVimInstaller {
         }
     }
 
-    static public void setupStorageSymlinks() {
+    static public void setupStorageSymlinks(final AppCompatActivity activity) {
         try {
             File storageDir = new File(TermService.getHOME());
             String symlink = "internalStorage";
@@ -683,6 +683,20 @@ final class TermVimInstaller {
                 Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
             } else {
                 shell("ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
+            }
+
+            final File[] dirs = activity.getExternalFilesDirs(null);
+            if (dirs != null && dirs.length > 1) {
+                for (int i = 1; i < dirs.length; i++) {
+                    File dir = dirs[i];
+                    if (dir == null) continue;
+                    String symlinkName = "external-" + i;
+                    if (dir.canWrite()) {
+                        File link = new File(storageDir, symlinkName);
+                        shell("rm " + link.getAbsolutePath());
+                        Os.symlink(dir.getAbsolutePath(), link.getAbsolutePath());
+                    }
+                }
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
