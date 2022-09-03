@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -410,6 +411,29 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     @SuppressLint("NewApi")
     void prefsPicker() {
         doPrefsPicker();
+    }
+
+    void batteryOptimizations() {
+        String message = getString(R.string.battery_optimizations_dialog_message);
+        if (mTermPreference != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            final String packageName = mTermPreference.getPackageName();
+            PowerManager powerManager = mTermPreference.getSystemService(PowerManager.class);
+            if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    intent.setData(Uri.parse("package:" + packageName));
+                    startActivity(intent);
+                    return;
+                } catch (Exception e) {
+                    message = e.getMessage();
+                }
+            }
+        }
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_info);
+        bld.setMessage(message);
+        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+        bld.create().show();
     }
 
     @SuppressLint("NewApi")
@@ -1225,6 +1249,37 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_user_setting);
+
+            final String BATTERY_OPTIMIZATIONS_KEY = "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS";
+            Preference manageBatteryOptimizations = getPreferenceScreen().findPreference(BATTERY_OPTIMIZATIONS_KEY);
+            if (manageBatteryOptimizations != null) {
+                manageBatteryOptimizations.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) mTermPreference.batteryOptimizations();
+                        return true;
+                    }
+                });
+            }
+
+            final String MANAGE_EXTERNAL_STORAGE_KEY = "MANAGE_EXTERNAL_STORAGE";
+            Preference manageExternalStorage = getPreferenceScreen().findPreference(MANAGE_EXTERNAL_STORAGE_KEY);
+            if ((manageExternalStorage != null) && (AndroidCompat.SDK >= Build.VERSION_CODES.S)) {
+                manageExternalStorage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        try {
+                            Intent intent = null;
+                            intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    }
+                });
+            }
+
             if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
                 final String PREFS_KEY = "prefs_rw";
                 Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
@@ -1246,6 +1301,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     return true;
                 }
             });
+
             final String LICENSE_KEY = "license";
             Preference licensePrefs = getPreferenceScreen().findPreference(LICENSE_KEY);
             licensePrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

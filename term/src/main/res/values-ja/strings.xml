@@ -120,6 +120,9 @@
 
     <!-- Preference dialog -->
     <string name="prefs_preferences">設定</string>
+    <string name="title_battery_optimizations">バッテリーの最適化を無効化</string>
+    <string name="battery_optimizations_summary">バッテリー最適化を無効にして, バックグラウンドでの強制終了を防ぎます.</string>
+    <string name="battery_optimizations_dialog_message">すでに無効化されている, または実行する必要がありません</string>
     <string name="title_prefs_preference">保存/読込</string>
     <string name="prefs_dialog_rw">設定の保存/読込を行います.</string>
     <string name="prefs_read">読込</string>
