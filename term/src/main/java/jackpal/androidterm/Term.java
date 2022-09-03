@@ -1250,7 +1250,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
             File appDir = new File(TermService.getAPPEXTFILES());
             if (appDir.canWrite()) {
-                File symlink = new File(storageDir, "app-internal");
+                File symlink = new File(storageDir, "internal");
                 shell("rm " + symlink.getAbsolutePath());
                 Os.symlink(appDir.getAbsolutePath(), symlink.getAbsolutePath());
             }
@@ -1260,7 +1260,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 for (int i = 1; i < dirs.length; i++) {
                     File dir = dirs[i];
                     if (dir == null) continue;
-                    String symlinkName = "app-external-" + i;
+                    String symlinkName = "external-" + i;
                     if (dir.canWrite()) {
                         File symlink = new File(storageDir, symlinkName);
                         shell("rm " + symlink.getAbsolutePath());

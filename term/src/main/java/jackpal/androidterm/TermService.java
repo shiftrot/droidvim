@@ -135,19 +135,12 @@ public class TermService extends Service implements TermSession.FinishCallback {
             if (modeHome != 0) mHOME = mAPPEXTHOME;
             boolean appExtHome = prefs.getBoolean("scoped_storage_startup_path_is_APPEXTHOME", false);
             if (appExtHome) mSTARTUP_DIR = mAPPEXTHOME;
-            File internalDir = Environment.getExternalStorageDirectory();
-            if (!internalDir.canWrite()) {
-                mEXTSTORAGE = "/Android/data/"+BuildConfig.APPLICATION_ID+"/files";
-                internalDir = new File(mEXTSTORAGE);
-                if (!internalDir.canWrite()) {
-                    mEXTSTORAGE = mAPPEXTFILES;
-                }
-            }
+        }
+        File sharedDir = Environment.getExternalStorageDirectory();
+        if (sharedDir.canWrite()) {
+            mEXTSTORAGE = sharedDir.toString();
         } else {
-            mEXTSTORAGE = Environment.getExternalStorageDirectory().toString();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                mEXTSTORAGE = mHOME;
-            }
+            mEXTSTORAGE = mAPPEXTFILES;
         }
         mSTARTUP_DIR = prefs.getString("startup_path", mHOME);
         if (!new File(mSTARTUP_DIR).canWrite()) mSTARTUP_DIR = mHOME;
