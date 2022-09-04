@@ -4,7 +4,7 @@ buildscript {
         'versionName' : '1.0.0',
         'versionCode' : 1,
         'compileSdk'  : 32,
-        'targetSdk'   : 28,
+        'targetSdk'   : 31,
         'minSdk'      : 16,
         'sourceCompatibility' : '1.8',
         'targetCompatibility' : '1.8'

@@ -394,7 +394,8 @@
     <string name="confirm_window_close_message">このウインドウを閉じますか?\n現在実行中のプログラムは強制終了されます.</string>
 
     <string name="manage_external_storage_permission">MANAGE_EXTERNAL_STORAGES</string>
-    <string name="manage_external_storage_permission_summary">内部ストレージへの直接アクセスを可能にする権限をリクエストします.</string>
+    <string name="manage_external_storage_permission_summary">内部ストレージへの直接アクセスを可能にする権限をリクエストします.\n変更した後は, \"ストレージ\"ボタンからシンボリックリンクを作成してください.</string>
+    <string name="this_function_is_not_available">この機能は使用できません.</string>
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>

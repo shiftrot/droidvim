@@ -270,6 +270,13 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
+    private void notAvailable() {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setMessage(getString(R.string.this_function_is_not_available));
+        bld.setPositiveButton(getString(android.R.string.ok), null);
+        bld.create().show();
+    }
+
     private void homeDirectoryPicker(String mes) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = prefs.edit();
@@ -1256,11 +1263,10 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         try {
-                            Intent intent = null;
-                            intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
                             startActivity(intent);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            if (mTermPreference != null) mTermPreference.notAvailable();
                         }
                         return true;
                     }

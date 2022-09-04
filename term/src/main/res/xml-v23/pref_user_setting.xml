@@ -5,6 +5,11 @@
         android:title="@string/title_battery_optimizations"
         android:summary="@string/battery_optimizations_summary"/>
 
+    <!-- <Preference -->
+    <!--     android:key="MANAGE_EXTERNAL_STORAGE" -->
+    <!--     android:title="@string/manage_external_storage_permission" -->
+    <!--     android:summary="@string/manage_external_storage_permission_summary"/> -->
+
     <Preference
         android:key="app_info"
         android:title="@string/title_app_info_preference"/>

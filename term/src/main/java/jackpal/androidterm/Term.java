@@ -1031,11 +1031,33 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("NewApi")
     void permissionCheckExternalStorage() {
-        if (SCOPED_STORAGE) return;
         if (AndroidCompat.SDK < Build.VERSION_CODES.M) return;
+        if (manageExternalStoragePermission()) return;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
         }
+    }
+
+    boolean manageExternalStoragePermission() {
+        if (!SCOPED_STORAGE) return false;
+        File sharedDir = Environment.getExternalStorageDirectory();
+        if (sharedDir.canWrite()) return true;
+        String key = "manage_storage_permission";
+        boolean warning = getPrefBoolean(Term.this, key, true);
+        if (!warning) return true;
+        Runnable whenDone = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        doWarningDialogRun(getString(R.string.manage_external_storage_permission), getString(R.string.manage_external_storage_permission_summary), key, false, whenDone);
+        return true;
     }
 
     @Override
