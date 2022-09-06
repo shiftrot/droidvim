@@ -194,6 +194,10 @@ public class SyncFileObserver extends RecursiveFileObserver {
         if (activity != null) setContentResolver(activity.getContentResolver());
     }
 
+    AppCompatActivity getActivity() {
+        return (AppCompatActivity) mObjectActivity;
+    }
+
     String getObserverDir() {
         return mCacheDir.getAbsolutePath();
     }
@@ -299,9 +303,17 @@ public class SyncFileObserver extends RecursiveFileObserver {
     private final static String HASH_ERROR = "HASH_ERROR";
     private final static String HASH_ALGORITHM = "SHA-1";
 
-    boolean putUriAndLoad(Uri uri, String path) {
+    public static String normalizePath(String srcPath) {
+        if (srcPath == null) return "";
+        String path = srcPath.replaceAll("\\%+", "/");
+        path = path.replaceAll("\\/+", "/");
+        path = new File(path).getAbsolutePath();
+        return path;
+    }
+
+    boolean putUriAndLoad(Uri uri, String srcPath) {
         mActive = true;
-        path = path.replaceAll("//", "/");
+        String path = srcPath.replaceAll("\\/+", "/");
         path = new File(path).getAbsolutePath();
         String hash = makeCache(uri, new File(path));
         if (!hash.equals(HASH_ERROR)) {
@@ -763,7 +775,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
                                 mDialogIsActive = false;
                                 try {
                                     Term term = (Term) activity;
-                                    term.openDrawer();
+                                    term.intentFilePicker();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

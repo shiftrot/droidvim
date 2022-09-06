@@ -345,8 +345,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) return null;
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
-        mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
-        mSyncFileObserver.setActivity(activity);
+        AppCompatActivity prevActivity = null;
+        if (mSyncFileObserver != null) prevActivity = mSyncFileObserver.getActivity();
+        if (prevActivity == null || prevActivity.isDestroyed()) {
+            mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
+            mSyncFileObserver.setActivity(activity);
+        }
         File sfofile = new File(dir.getAbsolutePath() + "/" + mSyncFileObserverFile);
         mSyncFileObserver.restoreHashMap(sfofile);
         mSyncFileObserver.restoreStartWatching();
@@ -1967,8 +1971,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         if (mSyncFileObserver != null) {
             mSyncFileObserver.setActivity(this);
-        } else {
-            restoreSyncFileObserver(this);
         }
     }
 

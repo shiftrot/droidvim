@@ -439,6 +439,7 @@ public class RemoteInterface extends AppCompatActivity {
 
     protected String openNewWindow(String iInitialCommand) {
         TermService service = getTermService();
+        Term.restoreSyncFileObserver(this);
 
         String initialCommand = getInitialCommand();
         if (iInitialCommand != null) {
