@@ -470,6 +470,7 @@ public class RemoteInterface extends AppCompatActivity {
             Intent intent = new Intent(PRIVACT_OPEN_NEW_WINDOW);
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setClassName(BuildConfig.APPLICATION_ID, PRIVACT_ACTIVITY_ALIAS);
             startActivity(intent);
 
             return handle;
@@ -516,6 +517,7 @@ public class RemoteInterface extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PRIVEXTRA_TARGET_WINDOW, index);
+        intent.setClassName(BuildConfig.APPLICATION_ID, PRIVACT_ACTIVITY_ALIAS);
         startActivity(intent);
 
         return handle;
@@ -565,6 +567,7 @@ public class RemoteInterface extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PRIVEXTRA_TARGET_WINDOW, index);
+        intent.setClassName(BuildConfig.APPLICATION_ID, PRIVACT_ACTIVITY_ALIAS);
         startActivity(intent);
         return handle;
     }

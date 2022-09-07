@@ -104,12 +104,10 @@
             android:targetActivity=".Term">
             <intent-filter>
                 <action android:name="${applicationId}.shiftrot.androidterm.private.OPEN_NEW_WINDOW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="${applicationId}.shiftrot.androidterm.private.SWITCH_WINDOW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity-alias>
