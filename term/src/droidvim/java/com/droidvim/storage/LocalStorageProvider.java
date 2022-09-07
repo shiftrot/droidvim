@@ -1,4 +1,5 @@
 package com.droidvim.storage;
+import static android.os.Build.VERSION.SDK_INT;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -16,20 +17,22 @@ import android.provider.DocumentsContract.Root;
 import android.provider.DocumentsProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
-
 import androidx.preference.PreferenceManager;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Set;
+import org.apache.commons.io.FileUtils;
 
 import jackpal.androidterm.BuildConfig;
 import jackpal.androidterm.R;
@@ -123,23 +126,61 @@ public class LocalStorageProvider extends DocumentsProvider {
         // Construct one row for a root called "MyCloud".
         final MatrixCursor.RowBuilder row = result.newRow();
 
-        row.add(Root.COLUMN_TITLE, TITLE);
-        row.add(Root.COLUMN_ICON, R.mipmap.ic_launcher);
+        row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(mBaseDir));
         row.add(Root.COLUMN_SUMMARY, mSUMMARY);
 
         // FLAG_SUPPORTS_CREATE means at least one directory under the root supports creating
         // documents.  FLAG_SUPPORTS_RECENTS means your application's most recently used
         // documents will show up in the "Recents" category.  FLAG_SUPPORTS_SEARCH allows users
-        // to search all documents the application shares.
-        final int FLAGS = Root.FLAG_SUPPORTS_CREATE |
-                          Root.FLAG_SUPPORTS_RECENTS |
-                          Root.FLAG_SUPPORTS_SEARCH;
-        row.add(Root.COLUMN_FLAGS, FLAGS);
-        row.add(Root.COLUMN_ROOT_ID, getDocIdForFile(mBaseDir));
+        // to search all documents the application shares. FLAG_SUPPORTS_IS_CHILD allows
+        // testing parent child relationships, available after SDK 21 (Lollipop).
+        if (SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            row.add(Root.COLUMN_FLAGS, Root.FLAG_SUPPORTS_CREATE |
+                    Root.FLAG_SUPPORTS_RECENTS |
+                    Root.FLAG_SUPPORTS_SEARCH );
+        } else {
+            row.add(Root.COLUMN_FLAGS, Root.FLAG_SUPPORTS_CREATE |
+                    Root.FLAG_SUPPORTS_RECENTS |
+                    Root.FLAG_SUPPORTS_SEARCH |
+                    Root.FLAG_SUPPORTS_IS_CHILD);
+        }
+
+        // COLUMN_TITLE is the root title (e.g. what will be displayed to identify your provider).
+        row.add(Root.COLUMN_TITLE, TITLE);
+
+        // This document id must be unique within this provider and consistent across time.  The
+        // system picker UI may save it and refer to it later.
         row.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(mBaseDir));
+
+        // The child MIME types are used to filter the roots and only present to the user roots
+        // that contain the desired type somewhere in their file hierarchy.
         row.add(Root.COLUMN_MIME_TYPES, getChildMimeTypes(mBaseDir));
         row.add(Root.COLUMN_AVAILABLE_BYTES, mBaseDir.getFreeSpace());
+        row.add(Root.COLUMN_ICON, R.mipmap.ic_launcher);
 
+        if (SCOPED_STORAGE) {
+            try {
+                final MatrixCursor.RowBuilder row2 = result.newRow();
+                String summary = "$APPEXTFILES";
+                File rootDir = null;
+                rootDir = new File(getContext().getExternalFilesDir(null).getAbsolutePath());
+                if (rootDir != null && rootDir.canWrite()) {
+                    row2.add(Root.COLUMN_TITLE, TITLE);
+                    row2.add(Root.COLUMN_ICON, R.drawable.ic_folder);
+                    row2.add(Root.COLUMN_SUMMARY, summary);
+                    row2.add(Root.COLUMN_FLAGS, Root.FLAG_SUPPORTS_CREATE |
+                            Root.FLAG_SUPPORTS_RECENTS |
+                            Root.FLAG_SUPPORTS_SEARCH |
+                            Root.FLAG_SUPPORTS_IS_CHILD);
+                    row2.add(Root.COLUMN_ROOT_ID, getDocIdForFile(rootDir));
+                    row2.add(Root.COLUMN_DOCUMENT_ID, getDocIdForFile(rootDir));
+                    row2.add(Root.COLUMN_MIME_TYPES, getChildMimeTypes(rootDir));
+                    row2.add(Root.COLUMN_AVAILABLE_BYTES, rootDir.getFreeSpace());
+                }
+            } catch (Exception e) {
+                // Do nothing
+            }
+        }
         return result;
     }
 
@@ -327,6 +368,26 @@ public class LocalStorageProvider extends DocumentsProvider {
         }
     }
 
+
+    public boolean isChildFile(File parentFile, File childFile){
+        File realFileParent = childFile.getParentFile();
+        return realFileParent == null || realFileParent.equals(parentFile);
+    }
+
+    @Override
+    public boolean isChildDocument(String parentDocumentId, String documentId) {
+        Log.v(TAG, "isChildDocument");
+        try {
+            File parentFile = getFileForDocId(parentDocumentId);
+            File childFile = getFileForDocId(documentId);
+            return isChildFile(parentFile, childFile);
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "FileNotFound in isChildDocument: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public String createDocument(String documentId, String mimeType, String displayName)
             throws FileNotFoundException {
@@ -334,94 +395,149 @@ public class LocalStorageProvider extends DocumentsProvider {
 
         String canonicalName = displayName.replaceAll("\\\\", "_");
         File file = new File(documentId, canonicalName);
-        String parent = file.getParent();
-        if (parent == null || (canonicalName.startsWith(".") && parent.equals(mBaseDir.getAbsolutePath()) && isSecureMode())) {
+        String parentDir = file.getParent();
+        if (parentDir == null || (isSecureMode() && canonicalName.startsWith(".") && parentDir.equals(mBaseDir.getAbsolutePath()))) {
             throw new FileNotFoundException("Failed to create document with id " + documentId);
         }
+
+        File parent = getFileForDocId(documentId);
+        file = new File(parent.getPath(), displayName);
         try {
+            // Create the new File to copy into
+            boolean wasNewFileCreated = false;
             if (Document.MIME_TYPE_DIR.equals(mimeType)) {
                 file.mkdirs();
+                if (file.isDirectory()) wasNewFileCreated = true;
             } else {
                 file.createNewFile();
+                if (file.isFile() && file.setWritable(true) && file.setReadable(true)) {
+                    wasNewFileCreated = true;
+                }
             }
-            file.setWritable(true);
-            file.setReadable(true);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                revokeDocumentPermission(documentId);
+
+            if (!wasNewFileCreated) {
+                throw new FileNotFoundException("Failed to create document with name " +
+                        displayName +" and documentId " + documentId);
             }
-            return getDocIdForFile(file);
-        } catch (Exception e) {
-            Log.v(TAG, "Failed to create document with id " + documentId);
-            throw new FileNotFoundException("Failed to create document with id " + documentId);
+        } catch (IOException e) {
+            throw new FileNotFoundException("Failed to create document with name " +
+                    displayName +" and documentId " + documentId);
         }
+        return getDocIdForFile(file);
     }
 
     @Override
-    public String renameDocument(final String documentId, final String displayName) throws FileNotFoundException {
-        File existingFile = getFileForDocId(documentId);
-        if (!existingFile.exists()) {
-            throw new FileNotFoundException(documentId + " does not exist");
+    public String renameDocument(String documentId, String displayName)
+            throws FileNotFoundException {
+        Log.v(TAG, "renameDocument");
+        if (displayName == null) {
+            throw new FileNotFoundException("Failed to rename document, new name is null");
         }
-        String canonicalName = displayName.replaceAll("\\\\", "_");
-        if (existingFile.getName().equals(canonicalName)) {
-            return getDocIdForFile(existingFile);
+
+        // Create the destination file in the same directory as the source file
+        File sourceFile = getFileForDocId(documentId);
+        File sourceParentFile = sourceFile.getParentFile();
+        if (sourceParentFile == null) {
+            throw new FileNotFoundException("Failed to rename document. File has no parent.");
         }
-        File parentDirectory = existingFile.getParentFile();
-        File newFile = new File(parentDirectory, canonicalName);
-        boolean success = existingFile.renameTo(newFile);
-        if (!success) {
-            throw new FileNotFoundException("Unable to rename " + documentId + " to " + existingFile.getAbsolutePath());
+        File destFile = new File(sourceParentFile.getPath(), displayName);
+
+        // Try to do the rename
+        try {
+            boolean renameSucceeded = sourceFile.renameTo(destFile);
+            if (!renameSucceeded) {
+                throw new FileNotFoundException("Failed to rename document. Renamed failed.");
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Rename exception : " + e.getLocalizedMessage() + e.getCause());
+            throw new FileNotFoundException("Failed to rename document. Error: " + e.getMessage());
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            revokeDocumentPermission(documentId);
-        }
-        return getDocIdForFile(newFile);
+
+        return getDocIdForFile(destFile);
     }
 
     @Override
     public void deleteDocument(String documentId) throws FileNotFoundException {
         Log.v(TAG, "deleteDocument");
-
         File file = getFileForDocId(documentId);
         deleteFileOrFolder(file);
-        if (file.exists()) {
-            throw new FileNotFoundException("Failed to delete document with id " + documentId);
-        }
-
-        Log.i(TAG, "Deleted file with id " + documentId);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            revokeDocumentPermission(documentId);
-        }
     }
 
-    /*
-     * This function requires "implementation 'commons-io:commons-io:2.6'" in build.gradle
-     * for the following reasons.
-     * File.delete() cannot delete a non-empty directory.
-     * In directory deletion simply using recursion, if the symbolic link is deleted,
-     * the target directory is also deleted.
-     */
-    private void deleteFileOrFolder(File fileOrDirectory) {
-        if (fileOrDirectory == null || !fileOrDirectory.exists()) return;
-        try {
-            if (fileOrDirectory.isDirectory()) {
-                FileUtils.deleteDirectory(fileOrDirectory);
-            } else {
-                if (!fileOrDirectory.delete()) {
-                    Log.v(TAG, "Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
-                }
-            }
-        } catch (Exception e) {
-            Log.v(TAG, "Exception in FileUtils.deleteDirectory(). " + e.toString() + " " + fileOrDirectory.getAbsolutePath());
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void removeDocument(String documentId, String parentDocumentId) throws FileNotFoundException {
+    public void removeDocument(String documentId, String parentDocumentId)
+            throws FileNotFoundException {
+        Log.v(TAG, "removeDocument");
+
         File file = getFileForDocId(documentId);
         deleteDocument(file.getAbsolutePath());
+    }
+
+    /**
+     * overload copyDocument to insist that the parent matches
+     */
+    public String copyDocument(String sourceDocumentId, String sourceParentDocumentId,
+                               String targetParentDocumentId) throws FileNotFoundException {
+        Log.v(TAG, "copyDocument with document parent");
+        if (!isChildDocument(sourceParentDocumentId, sourceDocumentId)) {
+            throw new FileNotFoundException("Failed to copy document with id " +
+                    sourceDocumentId + ". Parent is not: " + sourceParentDocumentId);
+        }
+        return copyDocument(sourceDocumentId, targetParentDocumentId);
+    }
+
+    @Override
+    public String copyDocument(String sourceDocumentId, String targetParentDocumentId)
+            throws FileNotFoundException {
+        Log.v(TAG, "copyDocument");
+
+        File parent = getFileForDocId(targetParentDocumentId);
+        File oldFile = getFileForDocId(sourceDocumentId);
+        File newFile = new File(parent.getPath(), oldFile.getName());
+        try {
+            // Create the new File to copy into
+            boolean wasNewFileCreated = false;
+            newFile.createNewFile();
+            if (newFile.isFile() && newFile.setWritable(true) && newFile.setReadable(true)) {
+                wasNewFileCreated = true;
+            }
+
+            if (!wasNewFileCreated) {
+                throw new FileNotFoundException("Failed to copy document " + sourceDocumentId +
+                        ". Could not create new file.");
+            }
+
+            // Copy the bytes into the new file
+            try (InputStream inStream = new FileInputStream(oldFile)) {
+                try (OutputStream outStream = new FileOutputStream(newFile)) {
+                    // Transfer bytes from in to out
+                    byte[] buf = new byte[4096]; // ideal range for network: 2-8k, disk: 8-64k
+                    int len;
+                    while ((len = inStream.read(buf)) > 0) {
+                        outStream.write(buf, 0, len);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new FileNotFoundException("Failed to copy document: " + sourceDocumentId +
+                    ". " + e.getMessage());
+        }
+        return getDocIdForFile(newFile);
+    }
+
+    @Override
+    public String moveDocument(String sourceDocumentId, String sourceParentDocumentId,
+                               String targetParentDocumentId) throws FileNotFoundException {
+        Log.v(TAG, "moveDocument");
+        try {
+            // Copy document, insisting that the parent is correct
+            String newDocumentId = copyDocument(sourceDocumentId, sourceParentDocumentId,
+                    targetParentDocumentId);
+            // Remove old document
+            removeDocument(sourceDocumentId,sourceParentDocumentId);
+            return newDocumentId;
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("Failed to move document " + sourceDocumentId);
+        }
     }
 
     @Override
@@ -512,20 +628,6 @@ public class LocalStorageProvider extends DocumentsProvider {
     private String getDocIdForFile(File file) {
         String path = file.getAbsolutePath();
         return path;
-
-/*
-        // Start at first char of path under root
-        final String rootPath = mBaseDir.getPath();
-        if (rootPath.equals(path)) {
-            path = "";
-        } else if (rootPath.endsWith("/")) {
-            path = path.substring(rootPath.length());
-        } else {
-            path = path.substring(rootPath.length() + 1);
-        }
-
-        return "root" + ':' + path;
-*/
     }
 
     /**
@@ -534,7 +636,7 @@ public class LocalStorageProvider extends DocumentsProvider {
      * @param result the cursor to modify
      * @param docId  the document ID representing the desired file (may be null if given file)
      * @param file   the File object representing the desired file (may be null if given docID)
-     * @throws java.io.FileNotFoundException
+     * @throws FileNotFoundException
      */
     private void includeFile(MatrixCursor result, String docId, File file)
             throws FileNotFoundException {
@@ -561,14 +663,16 @@ public class LocalStorageProvider extends DocumentsProvider {
             // FLAG_SUPPORTS_DELETE
             flags |= Document.FLAG_SUPPORTS_WRITE;
             flags |= Document.FLAG_SUPPORTS_DELETE;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            flags |= Document.FLAG_SUPPORTS_RENAME;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            flags |= Document.FLAG_SUPPORTS_MOVE;
-            flags |= Document.FLAG_SUPPORTS_COPY;
-            flags |= Document.FLAG_SUPPORTS_REMOVE;
+
+            // Add SDK specific flags if appropriate
+            if (SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                flags |= Document.FLAG_SUPPORTS_RENAME;
+            }
+            if (SDK_INT >= Build.VERSION_CODES.N) {
+                flags |= Document.FLAG_SUPPORTS_REMOVE;
+                flags |= Document.FLAG_SUPPORTS_MOVE;
+                flags |= Document.FLAG_SUPPORTS_COPY;
+            }
         }
 
         final String displayName = file.getName();
@@ -605,7 +709,7 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     /**
-     * Dummy function to determine whether the user is logged in.
+     * Placeholder function to determine whether the user is logged in.
      */
     private boolean isUserLoggedIn() {
         return true;
@@ -619,6 +723,28 @@ public class LocalStorageProvider extends DocumentsProvider {
             // Do nothing
         }
         return true;
+    }
+
+    /*
+     * This function requires "implementation 'commons-io:commons-io:2.6'" in build.gradle
+     * for the following reasons.
+     * File.delete() cannot delete a non-empty directory.
+     * In directory deletion simply using recursion, if the symbolic link is deleted,
+     * the target directory is also deleted.
+     */
+    private void deleteFileOrFolder(File fileOrDirectory) {
+        if (fileOrDirectory == null || !fileOrDirectory.exists()) return;
+        try {
+            if (fileOrDirectory.isDirectory()) {
+                FileUtils.deleteDirectory(fileOrDirectory);
+            } else {
+                if (!fileOrDirectory.delete()) {
+                    Log.v(TAG, "Unable to delete " + (fileOrDirectory.isDirectory() ? "directory " : "file ") + fileOrDirectory.getAbsolutePath());
+                }
+            }
+        } catch (Exception e) {
+            Log.v(TAG, "Exception in FileUtils.deleteDirectory(). " + e.toString() + " " + fileOrDirectory.getAbsolutePath());
+        }
     }
 
 }
