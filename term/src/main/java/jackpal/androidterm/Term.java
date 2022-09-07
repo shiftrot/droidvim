@@ -108,6 +108,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -470,17 +471,42 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 path = uri.toString().replaceFirst("content://", "/");
             }
             if (path != null) {
-                path = "/" + path.replaceAll("\\%(2F|3A|3B|3D|0A)", "/");
+                path = "/" + path;
                 String fname = new File(path).getName();
-                if (displayName != null && !(fname == null || fname.equals(displayName))) {
+                if (displayName != null && !fname.equals(displayName)) {
                     path = path + "/" + displayName;
                 }
                 path = path.replaceAll(":|\\|", "-");
                 path = path.replaceAll("//+", "/");
             }
         }
+        path = shortenPath(path);
         return path;
     }
+
+    public static String shortenPath(String srcPath) {
+        if (srcPath == null) return null;
+        String HASH_ALGORITHM = "SHA-1";
+        String HASH_FORMAT_STRING = "%040x";
+        try {
+            String fname = new File(srcPath).getName();
+            if (fname.equals("")) throw new FileNotFoundException(srcPath);
+
+            MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
+            byte[] hash = md.digest(srcPath.getBytes());
+            String dir = String.format(HASH_FORMAT_STRING, new BigInteger(1, hash));
+            dir = new File(dir).getPath();
+            String head = srcPath.replaceAll("^/", "");
+            head = head.replaceAll("/.*$", "");
+            if (!head.equals("")) dir = new File(head, dir).getPath();
+            String path = "/" + new File(dir, fname).getPath();
+            path = path.replaceAll("//+", "/");
+            return path;
+        } catch (Exception e) {
+            return srcPath;
+        }
+    }
+
 
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());

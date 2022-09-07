@@ -306,14 +306,14 @@ public class SyncFileObserver extends RecursiveFileObserver {
     public static String normalizePath(String srcPath) {
         if (srcPath == null) return "";
         String path = srcPath.replaceAll("\\%+", "/");
-        path = path.replaceAll("\\/+", "/");
+        path = path.replaceAll("//+", "/");
         path = new File(path).getAbsolutePath();
         return path;
     }
 
     boolean putUriAndLoad(Uri uri, String srcPath) {
         mActive = true;
-        String path = srcPath.replaceAll("\\/+", "/");
+        String path = srcPath.replaceAll("//+", "/");
         path = new File(path).getAbsolutePath();
         String hash = makeCache(uri, new File(path));
         if (!hash.equals(HASH_ERROR)) {
