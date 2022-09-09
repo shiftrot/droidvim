@@ -876,7 +876,7 @@ class UnicodeTranscript {
     };
 
     // * based on http://unicode.org/emoji/charts/emoji-list.html */
-    private static final int[][] emoji_width = {
+    private static final int[][] emoji_wide = {
         {0x23ed, 0x23ef},
         {0x23f1, 0x23f2},
         {0x23f8, 0x23fa},
@@ -936,7 +936,7 @@ class UnicodeTranscript {
     private static int vimCharWidth(int codePoint) {
         if (intable(codePoint, ambiguous)) return mAmbiWidth;
         if (intable(codePoint, doublewidth)) return 2;
-        if (intable(codePoint, emoji_width)) return 2;
+        if (intable(codePoint, emoji_wide)) return 2;
         return 1;
     }
 
