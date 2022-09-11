@@ -537,7 +537,7 @@
     <string name="storage_permission_warning">File access is restricted, such as inability to access internal storage directly or access to specific external storage.</string>
     <string name="storage_read_error">The file cannot be read or edited.\nFile does not exist, or you do not have permission.\nIf the file is in cloud storage, check your network connection.</string>
     <string name="storage_write_error_title">Failed to write the file</string>
-    <string name="storage_write_error">Check if the file write destination is working properly. \nReopen the file for editing via \"Open file…\" button on the drawer menu if you need. (The edit state of this buffer is lost.)</string>
+    <string name="storage_write_error">* Reopen the file for editing via \"Open file…\" button on the drawer menu. (The edit state of this buffer is lost.)\n* Check if the file write destination is working properly.</string>
     <string name="storage_offline_write_error_title">Failed to write the file offline</string>
     <string name="storage_offline_write_error">The edit state of this file is lost. Please write again after this device comes online.</string>
     <string name="title_cloud_storage_read_check">Cloud storage read check</string>

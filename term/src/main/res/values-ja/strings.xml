@@ -538,7 +538,7 @@
     <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
     <string name="storage_write_error_title">ファイルの書き込みに失敗しました</string>
-    <string name="storage_write_error">ファイルの書き込み先が正常に動作しているか確認してください.\nまたはドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)</string>
+    <string name="storage_write_error">・ドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)\n・ファイルの書き込み先が正常に動作しているか確認してください.</string>
     <string name="storage_offline_write_error_title">オフラインでのファイルの書き込みに失敗しました</string>
     <string name="storage_offline_write_error">このファイルの編集状態は保存されていません. このデバイスがオンラインになった後に再度書き込んでください.</string>
     <string name="title_cloud_storage_read_check">クラウドストレージ読み込みチェック</string>
@@ -550,7 +550,7 @@
     <string name="storage_url_error">外部ストレージ上でファイルが削除されたか, 無効なURIです.\n\"ファイルを開く\"ボタンから再読込してください.</string>
     <string name="storage_flush_cache_error">外部ストレージへのファイル書き込みに失敗しました. このファイルが失われる可能性があります.</string>
     <string name="storage_hash_error_title">ハッシュエラー</string>
-    <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ファイルを開く\"ボタンから再読込してください.\nクラウドストレージの場合はクラウドストレージのアプリを起動してファイル情報を更新すると, エラーが解消されるかもしれません.</string>
+    <string name="storage_hash_error">外部ストレージ上でファイルが変更/削除された可能性があります.\n上書きするか, \"ファイルを開く\"ボタンから再読込してください.\nクラウドストレージの場合はクラウドストレージのアプリを起動してファイル情報を更新してみてください.</string>
     <string name="storage_hash_overwrite">上書き</string>
     <string name="storage_hash_reopen">再読込く</string>
     <string name="storage_delete_file">外部ストレージからファイルを削除します.</string>
