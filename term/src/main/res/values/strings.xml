@@ -344,17 +344,8 @@
     <string name="low_strage_warning_ignore">Ignore this warning and run this app next time.</string>
     <string name="low_strage_warning_button">Close this app</string>
 
-    <string name="title_change_lib_preference">Change system library</string>
     <string name="title_choose">Choose</string>
-    <string name="summary_change_lib_preference">Change system library.</string>
-    <string name="message_change_lib_preference">Please do not change if the app is working properly.</string>
-    <string name="current_library">Current library : </string>
-    <string name="reset_to_default">Reset to default</string>
-    <string name="force_64bit">Set to 64-bit library</string>
-    <string name="force_32bit">Set to 32-bit library</string>
     <string name="confirm_do_close_troubleshooting">* The settings you set in Troubleshooting can also be changed from \"Preferences\">\"Shell\".\n* If you cancel, the settings set in troubleshooting will be lost.\n\n</string>
-    <string name="confirm_change_lib">If you change the system library, it may not work properly.\nIf it does not work, use \"Long press menu\">\"Window\">\"Close window\" or \"Force stop\" in \"App info\".</string>
-    <string name="change_lib">Ready to change the library.\nPlease restart the app.</string>
 
     <string name="crash_title">Sorry, Vim crashed.</string>
     <string name="crash_message">If you cannot solve the problem, please contact us.</string>

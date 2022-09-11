@@ -346,17 +346,8 @@
     <string name="low_strage_warning_ignore">次回からこの警告を無視してアプリを実行.</string>
     <string name="low_strage_warning_button">アプリを閉じる</string>
 
-    <string name="title_change_lib_preference">システムライブラリを強制変更</string>
     <string name="title_choose">選択</string>
-    <string name="summary_change_lib_preference">システムライブラリを強制変更します.</string>
-    <string name="message_change_lib_preference">特に問題がない場合は, システムライブラリを変更しないでください.</string>
-    <string name="current_library">現在のライブラリ : </string>
-    <string name="reset_to_default">デフォルトに設定</string>
-    <string name="force_64bit">64ビットライブラリへ変更</string>
-    <string name="force_32bit">32ビットライブラリへ変更</string>
     <string name="confirm_do_close_troubleshooting">* トラブルシューティングで設定した設定は, \"環境設定\">\"シェル\"からも変更できます.\n* キャンセルすると, トラブルシューティングで設定した設定が失われます.\n\n</string>
-    <string name="confirm_change_lib">システムライブラリを変更した場合, 正常に動作しなくなることがあります.\n動作しなくなった場合は, 「アプリ情報」から強制的に終了するか, ストレージをクリアしてください.</string>
-    <string name="change_lib">ライブラリ変更の用意ができました.\nアプリを再起動してください.</string>
 
     <string name="crash_title">Vimがクラッシュしました.</string>
     <string name="crash_message">問題を解決できない場合は開発者までご連絡ください.</string>

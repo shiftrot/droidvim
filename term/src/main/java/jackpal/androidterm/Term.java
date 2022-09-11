@@ -244,7 +244,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private final Handler mHandler = new Handler();
     private int mPrevHaveFullHwKeyboard = -1;
     private boolean mHideFunctionBar = false;
-    private int mLibrary = -1;
     private boolean mFatalTroubleShooting = false;
     private boolean mKeepScreenEnableAuto = false;
     private final View.OnKeyListener mKeyListener = new View.OnKeyListener() {
@@ -3192,7 +3191,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         try {
             setUninstallExtraContents(false);
             mUninstall = false;
-            mLibrary = -1;
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(getString(R.string.crash_title) + " (" + getArch() + ")");
@@ -3327,7 +3325,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             fatalCrash();
                         } else {
                             mUninstall = false;
-                            mLibrary = -1;
                         }
                     }
                 })
@@ -3335,78 +3332,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         dlg.setCancelable(false);
         dlg.setCanceledOnTouchOutside(false);
         dlg.show();
-    }
-
-    private void forceLibrary() {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_alert);
-        bld.setTitle(R.string.title_change_lib_preference);
-        String message = getString(R.string.current_library) + " " + getArch();
-        message = message + "\n" + getString(R.string.message_change_lib_preference);
-        bld.setMessage(message);
-        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                chooseLibrary();
-            }
-        });
-        bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                troubleShooting(mFatalTroubleShooting);
-            }
-        });
-        bld.create().show();
-    }
-
-    void chooseLibrary() {
-        String[] items = {
-                getString(R.string.force_64bit),
-                getString(R.string.force_32bit),
-                getString(R.string.reset_to_default)
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_change_lib_preference))
-                .setSingleChoiceItems(items, mLibrary, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        confirmChangeLib(which);
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        troubleShooting(mFatalTroubleShooting);
-                    }
-                })
-                .show();
-    }
-
-    void confirmChangeLib(final int which) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_alert);
-        int messageId = R.string.reset_to_default;
-        if (which < 2) messageId = which == 0 ? R.string.force_64bit : R.string.force_32bit;
-        bld.setTitle(messageId);
-        String message = getString(R.string.current_library) + " " + getArch() + "\n" + getString(R.string.confirm_change_lib);
-        bld.setMessage(message);
-        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                mUninstall = true;
-                mLibrary = which;
-                doCloseCrashWindow();
-            }
-        });
-        bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                troubleShooting(mFatalTroubleShooting);
-            }
-        });
-        bld.show();
     }
 
     private void doCloseCrashWindow() {
@@ -3423,15 +3348,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
                 if (mUninstall) doUninstallExtraContents();
-                if (mLibrary != -1) {
-                    shell("rm " + TermService.getVersionFilesDir() + "/.64bit");
-                    shell("rm " + TermService.getVersionFilesDir() + "/.32bit");
-                    if (mLibrary == 0) {
-                        shell("cat " + TermService.getVersionFilesDir() + "/version > " + TermService.getVersionFilesDir() + "/.64bit");
-                    } else if (mLibrary == 1) {
-                        shell("cat " + TermService.getVersionFilesDir() + "/version > " + TermService.getVersionFilesDir() + "/.32bit");
-                    }
-                }
                 doCloseWindow();
             }
         });
