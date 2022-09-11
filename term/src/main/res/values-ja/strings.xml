@@ -119,7 +119,7 @@
     <string name="stop_loading">このページの読込を中止</string>
 
     <!-- Preference dialog -->
-    <string name="prefs_preferences">設定</string>
+    <string name="prefs_preferences">アプリ設定</string>
     <string name="title_battery_optimizations">バッテリーの最適化を無効化</string>
     <string name="battery_optimizations_summary">バッテリー最適化を無効にして, バックグラウンドでの強制終了を防ぎます.</string>
     <string name="battery_optimizations_dialog_message">すでに無効化されている, または実行する必要がありません</string>

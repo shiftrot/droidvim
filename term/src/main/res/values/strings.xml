@@ -120,7 +120,7 @@
     <string name="stop_loading">Stop loading this page.</string>
 
     <!-- Preference dialog -->
-    <string name="prefs_preferences">User Settings</string>
+    <string name="prefs_preferences">App Settings</string>
     <string name="title_battery_optimizations">Ignore Battery optimization</string>
     <string name="battery_optimizations_summary">Ignore battery optimization to prevent forced termination in the background.</string>
     <string name="battery_optimizations_dialog_message">Already disabled or does not need to be done</string>
