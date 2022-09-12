@@ -87,8 +87,8 @@
         <item>Alleen huidige terminalvensters sluiten</item>
         <item>App sluiten, sessies open laten</item>
         <item>ESC naar terminal sturen</item>
-        <item>TAB naar terminal sturen</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

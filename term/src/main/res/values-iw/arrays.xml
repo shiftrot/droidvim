@@ -79,8 +79,8 @@
         <item>סוגר את חלון המסוף הנוכחי בלבד</item>
         <item>סוגר פעילות, ומשאיר הפעלות רצות</item>
         <item>שולח ESC למסוף</item>
-        <item>שולח TAB למסוף</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
     <string-array name="entries_controlkey_preference">
         <item>רענון הכדור</item>

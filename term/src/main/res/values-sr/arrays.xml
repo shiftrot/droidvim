@@ -88,8 +88,8 @@
         <item>Затвара само овај прозор терминала</item>
         <item>Затвара активност, оставља сесије покренуте</item>
         <item>Шаље ESC терминалу</item>
-        <item>Шаље TAB терминалу</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

@@ -152,7 +152,7 @@ public class TermSettings {
     private static final String LEFT_DOUBLE_TAP_KEY = "left_double_tap_action";
     private static final String BOTTOM_DOUBLE_TAP_KEY = "bottom_double_tap_action";
     private static final String TOP_DOUBLE_TAP_KEY = "top_double_tap_action";
-    private static final String BACKACTION_KEY = "backaction";
+    public static final String BACKACTION_KEY = "backaction";
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
@@ -660,12 +660,8 @@ public class TermSettings {
 
     public int getBackKeyAction() {
         if (mBackKeyAction == BACK_KEY_TOGGLE_IME_ESC) mBackKeyAction = BACK_KEY_TOGGLE_IME;
+        if (mBackKeyAction == BACK_KEY_DEFAULT && mBackAsEsc) return BACK_KEY_CLOSES_ACTIVITY;
         return mBackKeyAction;
-    }
-
-    public boolean backKeySendsCharacter() {
-        if (mBackKeyAction == BACK_KEY_TOGGLE_IME) return false;
-        return mBackKeyAction >= BACK_KEY_SENDS_ESC;
     }
 
     public boolean getAltSendsEscFlag() {

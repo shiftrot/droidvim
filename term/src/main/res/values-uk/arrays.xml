@@ -59,8 +59,8 @@
         <item>Закрити тільки це вікно терміналу</item>
         <item>Активне закриття, решти запущених сеансів</item>
         <item>Послати ESC в термінал</item>
-        <item>Послати TAB в термінал</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
     <string-array name="entries_controlkey_preference">
         <item>Куля Jog</item>

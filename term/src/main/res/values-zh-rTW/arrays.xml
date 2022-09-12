@@ -82,8 +82,8 @@
         <item>Closes this terminal window only</item>
         <item>Closes activity, leaving sessions running</item>
         <item>Sends ESC to terminal</item>
-        <item>Sends TAB to terminal</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

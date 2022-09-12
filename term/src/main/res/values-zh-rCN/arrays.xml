@@ -88,8 +88,8 @@
         <item>关闭当前窗口</item>
         <item>关闭当前实例，保留正在运行的会话</item>
         <item>给终端发送 ESC</item>
-        <item>给终端发送 TAB</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

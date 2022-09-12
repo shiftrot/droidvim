@@ -307,7 +307,6 @@ class TermKeyListener {
 
     private final TermSession mTermSession;
 
-    private int mBackKeyCode;
     private boolean mAltSendsEsc;
 
     private boolean mIgnoreXoff;
@@ -325,10 +324,6 @@ class TermKeyListener {
         mTermSession = termSession;
         initKeyCodes();
         updateCursorMode();
-    }
-
-    public void setBackKeyCharacter(int code) {
-        mBackKeyCode = code;
     }
 
     public void setAltSendsEsc(boolean flag) {
@@ -565,10 +560,6 @@ class TermKeyListener {
         case KEYCODE_FUNCTION:
             // Ignore the function key.
             return;
-
-        case KeyEvent.KEYCODE_BACK:
-            result = mBackKeyCode;
-            break;
 
         default: {
             int metaState = event.getMetaState();

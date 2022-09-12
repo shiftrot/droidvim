@@ -82,8 +82,8 @@
         <item>Zamyka tylko aktualne okno terminala</item>
         <item>Ukrywa program, pozostawiając sesję w tle</item>
         <item>Wysyła klawisz ESC do terminala</item>
-        <item>Wysyła klawisz TAB do terminala</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

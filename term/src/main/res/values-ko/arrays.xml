@@ -88,8 +88,8 @@
         <item>현재 터미널 창만 닫기</item>
         <item>어플리케이션 및 세션 종료</item>
         <item>ESC키 입력</item>
-        <item>TAB키 입력</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

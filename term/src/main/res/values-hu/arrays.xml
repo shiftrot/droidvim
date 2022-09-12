@@ -88,8 +88,8 @@
         <item>Bezárja az aktív terminál ablakot</item>
         <item>Kilép a programból, de a munkamenetből nem</item>
         <item>ESC-et küld a terminálra</item>
-        <item>TAB-ot küld a terminálra</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

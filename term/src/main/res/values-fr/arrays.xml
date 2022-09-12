@@ -64,8 +64,8 @@
         <item>Fermer la fenêtre en cours</item>
         <item>Quitter en laissant les sessions activées</item>
         <item>Simuler la touche ESC</item>
-        <item>Simuler la touche TAB</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

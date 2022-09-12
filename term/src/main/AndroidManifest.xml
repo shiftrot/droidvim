@@ -75,6 +75,7 @@
     </queries>
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:requestLegacyExternalStorage="true"
         android:extractNativeLibs="true"
         android:resizeableActivity="true"

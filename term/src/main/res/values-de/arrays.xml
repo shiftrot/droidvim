@@ -88,8 +88,8 @@
         <item>Schließt das aktuelle Terminalfenster</item>
         <item>Aktivität schließen, Sessions erhalten lassen</item>
         <item>Sendet ESC zum Terminal</item>
-        <item>Sendet TAB zum Terminal</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

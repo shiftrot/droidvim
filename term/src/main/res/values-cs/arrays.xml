@@ -82,8 +82,8 @@
         <item>Zavřít pouze toto terminálové okno</item>
         <item>Zavřít terminál, ale dál poběží na pozadí</item>
         <item>Poslat klávesu ESC do terminálu</item>
-        <item>Poslat klávesu TAB do terminálu</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

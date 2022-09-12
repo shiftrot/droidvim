@@ -20,8 +20,8 @@
         <item>Закрыть текущее окно терминала</item>
         <item>Закрывает приложение, но оставляет запущенным терминал</item>
         <item>Посылает ESC в терминал</item>
-        <item>Посылает TAB в терминал</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
     <string-array name="entries_color_preference">
         <item>Чёрный на белом</item>

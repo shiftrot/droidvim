@@ -88,8 +88,8 @@
         <item>Chiude solo questa finestra terminale</item>
         <item>Chiude l\'attività, lasciando attive le sessioni</item>
         <item>Invia ESC al terminale</item>
-        <item>Invia TAB al terminale</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

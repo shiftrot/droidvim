@@ -178,7 +178,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean mIsSelectingText = false;
 
-    private boolean mBackKeySendsCharacter = false;
     private int mControlKeyCode;
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
@@ -1448,7 +1447,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true;
         }
-        return keyCode == KeyEvent.KEYCODE_BACK && mBackKeySendsCharacter;
+        return false;
     }
 
     /**
@@ -2447,14 +2446,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIsFnKeySent = true;
         mKeyListener.handleFnKey(true);
         invalidate();
-    }
-
-    /**
-     * Set the key code to be sent when the Back key is pressed.
-     */
-    public void setBackKeyCharacter(int keyCode) {
-        mKeyListener.setBackKeyCharacter(keyCode);
-        mBackKeySendsCharacter = (keyCode != 0);
     }
 
     /**

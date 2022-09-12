@@ -74,8 +74,8 @@
         <item>Cierra sólo la ventana actual</item>
         <item>Sale del terminal, dejándolo en segundo plano</item>
         <item>Envía ESC al terminal</item>
-        <item>Envía TAB al terminal</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">

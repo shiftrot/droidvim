@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebResourceRequest;
@@ -20,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
@@ -67,6 +67,7 @@ public class WebViewActivity extends AppCompatActivity {
                     mWebView.stopLoading();
                     finish();
                 }
+                mOnBackPressedCallback.setEnabled(mWebView.canGoBack());
             } else if (vId == R.id.webview_forward) {
                 if (mWebView.canGoForward()) {
                     mWebView.goForward();
@@ -88,6 +89,8 @@ public class WebViewActivity extends AppCompatActivity {
             }
         }
     };
+
+    private OnBackPressedCallback mOnBackPressedCallback;
 
     static public int getFontSize() {
         return mFontSize;
@@ -149,6 +152,7 @@ public class WebViewActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 if (mBack && url.startsWith("file:")) {
                     mBack = false;
+                    mOnBackPressedCallback.setEnabled(mBack);
                 }
             }
 
@@ -186,6 +190,27 @@ public class WebViewActivity extends AppCompatActivity {
                 Log.d("WebViewAcitivity", "Load error : " + url);
             }
         }
+
+        mOnBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mWebView.canGoBack()) {
+                    mBack = true;
+                    mWebView.goBack();
+                    if (!mWebView.canGoBack()) setEnabled(false);
+                } else {
+                    finish();
+                }
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, mOnBackPressedCallback);
+    }
+
+    @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
+    @Override
+    public void onDestroy() {
+        if (mOnBackPressedCallback != null) mOnBackPressedCallback.remove();
+        super.onDestroy();
     }
 
     private boolean overrideUrlLoading(WebView view, String url) {
@@ -268,18 +293,6 @@ public class WebViewActivity extends AppCompatActivity {
             builder.setPositiveButton(android.R.string.ok, null);
             builder.create().show();
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mWebView.canGoBack()) {
-                mBack = true;
-                mWebView.goBack();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     private boolean load(WebView webView, String url, String prev) {

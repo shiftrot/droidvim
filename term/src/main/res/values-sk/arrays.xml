@@ -87,8 +87,8 @@
         <item>Zavrieť iba aktuálne okno terminálu</item>
         <item>Zavrieť aktivitu, ponechať reláciu bežiacou</item>
         <item>Odoslať ESC do terminálu</item>
-        <item>Odoslať TAB do terminálu</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

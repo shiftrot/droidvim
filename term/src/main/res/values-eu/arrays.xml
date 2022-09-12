@@ -82,8 +82,8 @@
         <item>Soilik terminal leiho hau ixten du</item>
         <item>Jarduera ixten du, saioak martxan utziz</item>
         <item>ESC bidaltzen du terminalera</item>
-        <item>TAB bidaltzen du terminalera</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

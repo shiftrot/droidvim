@@ -88,8 +88,8 @@
         <item>Lukker kun dette terminalviduet</item>
         <item>Lukker aktiviteten, men lar økten kjøre</item>
         <item>Sender ESC til terminalen</item>
-        <item>Sender TAB til terminalen</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

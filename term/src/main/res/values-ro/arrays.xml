@@ -82,8 +82,8 @@
         <item>Se închide această fereastră numai</item>
         <item>Se închide activitatea, lăsând sesiunea să funcţioneze</item>
         <item>Trimite ESC spre terminal</item>
-        <item>Trimite TAB spre terminal</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

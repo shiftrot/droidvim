@@ -84,7 +84,11 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -236,7 +240,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private Intent TSIntent;
     private int onResumeSelectWindow = -1;
     private ComponentName mPrivateAlias;
-    private boolean mBackKeyPressed;
+    private OnBackPressedCallback mOnBackPressedCallback;
+    private OnBackInvokedCallback mOnBackInvokedCallback;
 
     private TermService mTermService;
     private boolean mHaveFullHwKeyboard = false;
@@ -250,7 +255,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private final View.OnKeyListener mKeyListener = new View.OnKeyListener() {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             onLastKey();
-            return backkeyInterceptor(keyCode, event) || keyboardShortcuts(keyCode, event);
+            return keyboardShortcuts(keyCode, event);
         }
 
         /**
@@ -289,12 +294,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
 
-        /**
-         * Make sure the back button always leaves the application.
-         */
-        private boolean backkeyInterceptor(int keyCode, KeyEvent event) {
-            return false;
-        }
     };
     private int mOnelineTextBox = -1;
     private EditText mEditText;
@@ -586,6 +585,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 setFunctionKey();
         }
 
+        if (TermSettings.BACKACTION_KEY.equals(s)) {
+            setOnBackPressedCallbackEnabled(mSettings.getBackKeyAction() != TermSettings.BACK_KEY_DEFAULT);
+        }
+
         if (TermSettings.CURSORSTYLE_KEY.equals(s)) {
             EmulatorView.setCursorHeight(mSettings.getCursorStyle());
             recreate();
@@ -676,6 +679,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (mOnelineTextBox == -1) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         initOnelineTextBox(mOnelineTextBox);
 
+        setOnBackPressedCallback();
+        setOnBackPressedCallbackEnabled(mSettings.getBackKeyAction() != TermSettings.BACK_KEY_DEFAULT);
+
         updatePrefs();
         setDrawerButtons();
         restoreSyncFileObserver(this);
@@ -685,6 +691,42 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             TermService.TermServiceState = 1;
         }
         mAlreadyStarted = true;
+    }
+
+    private void setOnBackPressedCallback() {
+        if (mOnBackPressedCallback == null) {
+            mOnBackPressedCallback = new OnBackPressedCallback(false) {
+                @Override
+                public void handleOnBackPressed() {
+                    if (!backkey()) finish();
+                }
+            };
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (mOnBackInvokedCallback == null) {
+                mOnBackInvokedCallback = new OnBackInvokedCallback() {
+                    @Override
+                    public void onBackInvoked() {
+                        if (mOnBackPressedCallback != null && mOnBackPressedCallback.isEnabled()) {
+                            mOnBackPressedCallback.handleOnBackPressed();
+                        }
+                    }
+                };
+            }
+        } else {
+            getOnBackPressedDispatcher().addCallback(this, mOnBackPressedCallback);
+        }
+    }
+
+    private void setOnBackPressedCallbackEnabled(boolean enabled) {
+        if (mOnBackPressedCallback != null) mOnBackPressedCallback.setEnabled(enabled);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            OnBackInvokedDispatcher invokedDispatcher = getOnBackInvokedDispatcher();
+            if (invokedDispatcher != null) {
+                invokedDispatcher.unregisterOnBackInvokedCallback(mOnBackInvokedCallback);
+                if (enabled) invokedDispatcher.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT, mOnBackInvokedCallback);
+            }
+        }
     }
 
     private static long getAvailableSize(String path){
@@ -1944,13 +1986,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onPause() {
         super.onPause();
 
-        if (AndroidCompat.SDK < 5) {
-            /* If we lose focus between a back key down and a back key up,
-               we shouldn't respond to the next back key up event unless
-               we get another key down first */
-            mBackKeyPressed = false;
-        }
-
         /* Explicitly close the input method
            Otherwise, the soft keyboard could cover up whatever activity takes
            our place */
@@ -3008,19 +3043,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return true;
             }
         }
-        /* The pre-Eclair default implementation of onKeyDown() would prevent
-           our handling of the Back key in onKeyUp() from taking effect, so
-           ignore it here */
-        if (AndroidCompat.SDK < 5 && keyCode == KeyEvent.KEYCODE_BACK) {
-            /* Android pre-Eclair has no key event tracking, and a back key
-               down event delivered to an activity above us in the back stack
-               could be succeeded by a back key up event to us, so we need to
-               keep track of our own back key presses */
-            mBackKeyPressed = true;
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void dispatchKeyEventUD(int keyCode) {
@@ -3051,9 +3074,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case KeyEvent.KEYCODE_ESCAPE:
                 if (onelineTextBoxEsc()) return true;
                 break;
-            case KeyEvent.KEYCODE_BACK:
-                if (!backkey()) return super.onKeyUp(keyCode, event);
-                return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 if (mVolumeAsCursor) return true;
@@ -3150,14 +3170,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean backkey() {
-        if (AndroidCompat.SDK < 5) {
-            if (!mBackKeyPressed) {
-                    /* This key up event might correspond to a key down
-                       delivered to another activity -- ignore */
-                return false;
-            }
-            mBackKeyPressed = false;
-        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -3193,6 +3205,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
         switch (backAction) {
+            case TermSettings.BACK_KEY_SENDS_ESC:
+                sendKeyStrings("\u001b", false);
+                return true;
+            case TermSettings.BACK_KEY_SENDS_TAB:
+                sendKeyStrings("\u0009", false);
+                return true;
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 mStopServiceOnFinish = true;
                 finish();

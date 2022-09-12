@@ -82,8 +82,8 @@
         <item>Fechar esta janela</item>
         <item>Fechar atividades e manter sessão</item>
         <item>Envia ESC ao terminal</item>
-        <item>Envia TAB ao terminal</item>
         <item>Toggle soft keyboard</item>
+        <item>Android Back Button</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
