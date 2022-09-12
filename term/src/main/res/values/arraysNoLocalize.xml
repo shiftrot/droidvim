@@ -146,6 +146,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="entryvalues_vim_backaction_preference">
@@ -155,6 +156,7 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="entryvalues_controlkey_preference">

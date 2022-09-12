@@ -3008,65 +3008,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (onelineTextBoxEsc()) return true;
                 break;
             case KeyEvent.KEYCODE_BACK:
-                if (AndroidCompat.SDK < 5) {
-                    if (!mBackKeyPressed) {
-                    /* This key up event might correspond to a key down
-                       delivered to another activity -- ignore */
-                        return false;
-                    }
-                    mBackKeyPressed = false;
-                }
-                DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                if (drawer.isDrawerOpen(GravityCompat.START)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                    return true;
-                }
-                if (mHaveFullHwKeyboard && mSettings.getBackAsEscFlag()) {
-                    sendKeyStrings("\u001b", false);
-                    return true;
-                }
-                int backAction = mSettings.getBackKeyAction();
-                if (!mPressBackTwice) {
-                    if (backAction == TermSettings.BACK_KEY_STOPS_SERVICE) {
-                        String message = getString(R.string.press_back_again);
-                        int length = Snackbar.LENGTH_SHORT;
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_bottom), message, length);
-                        View snackbarView = snackbar.getView();
-                        TextView tv = snackbarView.findViewById(R.id.snackbar_text);
-                        tv.setMaxLines(2);
-                        snackbar.addCallback(new Snackbar.Callback() {
-                            @Override
-                            public void onDismissed(Snackbar snackbar, int event) {
-                                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                                    mPressBackTwice = false;
-                                }
-                            }
-                            @Override
-                            public void onShown(Snackbar snackbar) {
-                                mPressBackTwice = true;
-                            }
-                        });
-                        snackbar.show();
-                        return true;
-                    }
-                }
-                switch (backAction) {
-                    case TermSettings.BACK_KEY_STOPS_SERVICE:
-                        mStopServiceOnFinish = true;
-                        finish();
-                    case TermSettings.BACK_KEY_CLOSES_WINDOW:
-                        doSendActionBarKey(getCurrentEmulatorView(), 1251);
-                        return true;
-                    case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
-                        finish();
-                        return true;
-                    case TermSettings.BACK_KEY_TOGGLE_IME:
-                    case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
-                        doToggleSoftKeyboard();
-                        return true;
-                    default:
-                        return false;
-                }
+                if (!backkey()) return super.onKeyUp(keyCode, event);
+                return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 if (mVolumeAsCursor) return true;
@@ -3165,6 +3108,69 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return super.onKeyUp(keyCode, event);
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    private boolean backkey() {
+        if (AndroidCompat.SDK < 5) {
+            if (!mBackKeyPressed) {
+                    /* This key up event might correspond to a key down
+                       delivered to another activity -- ignore */
+                return false;
+            }
+            mBackKeyPressed = false;
+        }
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        if (mHaveFullHwKeyboard && mSettings.getBackAsEscFlag()) {
+            sendKeyStrings("\u001b", false);
+            return true;
+        }
+        int backAction = mSettings.getBackKeyAction();
+        if (!mPressBackTwice) {
+            if (backAction == TermSettings.BACK_KEY_STOPS_SERVICE) {
+                String message = getString(R.string.press_back_again);
+                int length = Snackbar.LENGTH_SHORT;
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.term_coordinator_layout_bottom), message, length);
+                View snackbarView = snackbar.getView();
+                TextView tv = snackbarView.findViewById(R.id.snackbar_text);
+                tv.setMaxLines(2);
+                snackbar.addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                            mPressBackTwice = false;
+                        }
+                    }
+                    @Override
+                    public void onShown(Snackbar snackbar) {
+                        mPressBackTwice = true;
+                    }
+                });
+                snackbar.show();
+                return true;
+            }
+        }
+        switch (backAction) {
+            case TermSettings.BACK_KEY_STOPS_SERVICE:
+                mStopServiceOnFinish = true;
+                finish();
+            case TermSettings.BACK_KEY_CLOSES_WINDOW:
+                doSendActionBarKey(getCurrentEmulatorView(), 1251);
+                return true;
+            case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
+                finish();
+                return true;
+            case TermSettings.BACK_KEY_TOGGLE_IME:
+            case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
+                doToggleSoftKeyboard();
+                return true;
+            case TermSettings.BACK_KEY_DEFAULT:
+            default:
+                return false;
+        }
     }
 
     private void doUninstallExtraContents() {

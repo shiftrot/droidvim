@@ -264,7 +264,8 @@ public class TermSettings {
     public static final int BACK_KEY_SENDS_TAB = 4;
     public static final int BACK_KEY_TOGGLE_IME = 5;
     public static final int BACK_KEY_TOGGLE_IME_ESC = 6;
-    private static final int BACK_KEY_MAX = 6;
+    public static final int BACK_KEY_DEFAULT = 7;
+    private static final int BACK_KEY_MAX = 7;
     private static final int ACTIONBAR_KEY_MAX = 65535;
     private static final int IME_SHORTCUTS_ACTION_MAX = 65535;
     private static final int VI_COOPRATIVE_MODE_MAX = 3;
