@@ -152,6 +152,8 @@
                 <data android:mimeType="application/x-troff*"/>
                 <data android:mimeType="application/xhtml+xml"/>
                 <data android:mimeType="application/xml*"/>
+                <data android:mimeType="application/zip"/>
+                <data android:mimeType="application/x-zip-compressed"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="com.googlecode.android_scripting.action.EDIT_SCRIPT"/>

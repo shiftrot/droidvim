@@ -192,12 +192,6 @@ final class TermVimInstaller {
             if (!FLAVOR_VIM) {
                 if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                     installInternalBusybox(path + "/usr/bin");
-                    installSoTar(path, "unzip");
-                    installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
-                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "unzip_symlinks_")));
-                    installSoTar(path, "zip");
-                    installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
-                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "zip_symlinks_")));
                     installSoTar(path, "bash");
                     installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
                     JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
@@ -209,6 +203,7 @@ final class TermVimInstaller {
                     }
                     JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
                     installBusyboxCommands();
+                    installZipCommands(activity, path);
                 }
             }
             doInstallTerm = false;
@@ -285,13 +280,6 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "binaries - bin tools");
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
-                    setMessage(activity, pd, "binaries - zip tools");
-                    installSoTar(path, "unzip");
-                    installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
-                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "unzip_symlinks_")));
-                    installSoTar(path, "zip");
-                    installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
-                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "zip_symlinks_")));
 
                     if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
                         setMessage(activity, pd, "binaries - shell");
@@ -374,6 +362,7 @@ final class TermVimInstaller {
                     setMessage(activity, pd, "symlinks");
                     JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
                     installBusyboxCommands();
+                    installZipCommands(activity, path);
                     setAmbiWidthToVimrc(mSettings.getAmbiWidth());
                     setupStorageSymlinks(activity);
                     JniLibsToBin.symlinkDebugReport(path);
@@ -847,6 +836,15 @@ final class TermVimInstaller {
         final File destDir = new File(TermService.getAPPFILES());
         final File outDir = new File(TermService.getAPPFILES() + "/usr/bin");
         shell("export APPFILES=" + destDir.toString(), outDir + "/busybox-setup all");
+    }
+
+    static public void installZipCommands(AppCompatActivity activity, String path) {
+        installSoTar(path, "unzip");
+        installTar(path, getInputStream(activity, getLocalLibId(activity, "unzip_")));
+        JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "unzip_symlinks_")));
+        installSoTar(path, "zip");
+        installTar(path, getInputStream(activity, getLocalLibId(activity, "zip_")));
+        JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "zip_symlinks_")));
     }
 
     static public boolean busybox(String cmd) {
