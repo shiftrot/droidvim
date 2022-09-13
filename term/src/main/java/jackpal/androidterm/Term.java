@@ -2523,7 +2523,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                     final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
                     b.setIcon(android.R.drawable.ic_dialog_alert);
-                    b.setMessage(getString(R.string.storage_url_error));
+                    String message = getString(R.string.storage_url_error);
+                    message += "\n\n" + jackpal.androidterm.SyncFileObserver.ErrorState;
+                    b.setMessage(message);
                     b.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SyncFileObserverMru mru = list.get(which);
@@ -2592,6 +2594,27 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }
 
+    public void requestDocumentTreeWritePermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
+
+        final AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setIcon(android.R.drawable.ic_dialog_info);
+        b.setMessage(getString(R.string.open_document_tree_summary));
+        final AppCompatActivity activity = this;
+        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                intent = getDocumentsuiIntent(activity.getApplicationContext(), intent);
+                if (checkImplicitIntent(activity, intent))
+                    doStartActivityForResult(intent, REQUEST_DOCUMENT_TREE);
+            }
+        });
+        b.setNegativeButton(android.R.string.no, null);
+        b.show();
+    }
+
     private void storageMenu(boolean drawer) {
         ArrayList<String> itemArray = new ArrayList<>();
         ArrayList<String> appIdArray = new ArrayList<>();
@@ -2628,6 +2651,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     // do nothing
                 } else if (item.equals(getString(R.string.file_chooser))) {
                     filePicker();
+                } else if (getString(R.string.open_document_tree).equals(item)) {
+                    requestDocumentTreeWritePermission();
                 } else if (getString(R.string.create_file).equals(item)) {
                     fileCreate();
                 } else if (getString(R.string.delete_file).equals(item)) {
@@ -2790,6 +2815,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case REQUEST_DOCUMENT_TREE:
                 if (result == RESULT_OK && data != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Uri uri = data.getData();
+                            final int takeFlags =
+                                     (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                            alert(getString(R.string.request_approved));
+                        } catch (Exception e) {
+                            alert(getString(R.string.request_approved) + "\n\n" + e.toString());
+                            break;
+                        }
+                    }
                 }
                 break;
             case REQUEST_COPY_DOCUMENT_TREE_TO_HOME:
@@ -2799,8 +2837,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
             case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
                 if (result == RESULT_OK && data != null) {
-                    final int takeFlags = data.getFlags()
-                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    final int takeFlags =
+                             (Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     Uri uri = data.getData();
                     if (uri != null) {

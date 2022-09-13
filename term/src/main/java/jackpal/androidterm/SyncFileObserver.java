@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -313,6 +314,15 @@ public class SyncFileObserver extends RecursiveFileObserver {
 
     boolean putUriAndLoad(Uri uri, String srcPath) {
         mActive = true;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                final int takeFlags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                mContentResolver.takePersistableUriPermission(uri, takeFlags);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String path = srcPath.replaceAll("//+", "/");
         path = new File(path).getAbsolutePath();
         String hash = makeCache(uri, new File(path));

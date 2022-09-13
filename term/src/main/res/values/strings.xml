@@ -521,6 +521,10 @@
     <string name="create_file">Create file</string>
     <string name="delete_file">Delete file</string>
     <string name="app_files">File manager</string>
+    <string name="open_document_tree">Request write permission</string>
+    <string name="open_document_tree_summary">Requests write permission to all files under a specific directory.</string>
+    <string name="request_approved">Request approved.</string>
+    <string name="request_error">Request was not approved.</string>
     <string name="storage_intent_error">No storage can perform this action.\nPlease wait a few seconds and try again.</string>
     <string name="storage_manager">New/Delete</string>
     <string name="storage_permission_error">Storage permission does not granted.</string>

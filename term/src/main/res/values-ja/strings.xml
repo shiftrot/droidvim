@@ -522,6 +522,10 @@
     <string name="create_file">ファイル作成</string>
     <string name="delete_file">ファイル削除</string>
     <string name="app_files">ファイル管理</string>
+    <string name="open_document_tree">書き込み権限のリクエスト</string>
+    <string name="open_document_tree_summary">特定のディレクトリ以下にある全てのファイルへの書き込み権限をリクエストします.</string>
+    <string name="request_approved">リクエストは承認されました.</string>
+    <string name="request_error">リクエストは承認されませんでした.</string>
     <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
     <string name="storage_manager">管理</string>
     <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
