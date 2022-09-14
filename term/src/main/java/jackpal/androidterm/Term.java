@@ -1356,10 +1356,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void backupAndRestoreHome() {
         if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
 
-        final String[] items = {
-                getString(R.string.backup_home_directory),
-                getString(R.string.restore_home_directory)
-        };
+        ArrayList<String> itemList = new ArrayList<>();
+        itemList.add(getString(R.string.backup_home_directory));
+        itemList.add(getString(R.string.restore_home_directory));
+        if (SCOPED_STORAGE) {
+            itemList.add(getString(R.string.backup_home_to_appextfiles));
+            itemList.add(getString(R.string.restore_home_from_appextfiles));
+        }
+        final String[] items = itemList.toArray(new String[0]);
 
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.backup_restore))
