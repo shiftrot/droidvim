@@ -28,6 +28,7 @@ public class JniLibsToBin {
             put("libgrep.so"                 , "/bin/grep");
             put("libgrep32.so"               , "/bin/grep");
             put("libam.so"                   , "/bin/am");
+            put("libam.apk.so"               , "/bin/am.apk");
             put("libatemod.so"               , "/bin/atemod");
             put("libbash.app.so"             , "/bin/bash.app");
             put("libgetprop.so"              , "/bin/getprop");
