@@ -278,6 +278,16 @@
                 android:minWidth="52dp"
                 android:text="Alt"/>
 
+            <Button
+                android:id="@+id/button_tab"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="44dp"
+                android:minWidth="52dp"
+                android:text="Tab"/>
+
             <HorizontalScrollView
                 android:id="@+id/view_function_bar1"
                 android:focusable="false"
@@ -800,6 +810,42 @@
 
                     <Button
                         android:id="@+id/button_function_43"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="52dp"
+                        android:minHeight="44dp"
+                        android:text=""/>
+
+                    <Button
+                        android:id="@+id/button_function_44"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="52dp"
+                        android:minHeight="44dp"
+                        android:text=""/>
+
+                    <Button
+                        android:id="@+id/button_function_45"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="52dp"
+                        android:minHeight="44dp"
+                        android:text=""/>
+
+                    <Button
+                        android:id="@+id/button_function_46"
                         android:visibility="gone"
                         android:focusable="false"
                         android:focusableInTouchMode="false"

@@ -30,21 +30,41 @@
         <CheckBoxPreference
             android:key="functionbar_esc"
             android:defaultValue="false"
-            android:title="Esc"/>
+            android:title="Esc (Fixed)"/>
 
         <CheckBoxPreference
             android:key="functionbar_ctrl"
             android:defaultValue="true"
-            android:title="Ctrl"/>
+            android:title="Ctrl (Fixed)"/>
 
         <CheckBoxPreference
             android:key="functionbar_alt"
             android:defaultValue="false"
-            android:title="Alt"/>
+            android:title="Alt (Fixed)"/>
 
         <CheckBoxPreference
             android:key="functionbar_tab"
             android:defaultValue="true"
+            android:title="Tab (Fixed)"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_esc2"
+            android:defaultValue="false"
+            android:title="Esc"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_ctrl2"
+            android:defaultValue="false"
+            android:title="Ctrl"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_alt2"
+            android:defaultValue="false"
+            android:title="Alt"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_tab2"
+            android:defaultValue="false"
             android:title="Tab"/>
 
         <CheckBoxPreference

@@ -4314,49 +4314,53 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_esc               , "functionbar_esc"            , "Esc"        , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_ctrl              , "functionbar_ctrl"           , "Ctrl"       , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_alt               , "functionbar_alt"            , "Alt"        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_1        , "functionbar_tab"            , "Tab"        , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_2        , "functionbar_up"             , UP           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_3        , "functionbar_down"           , DOWN         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_4        , "functionbar_left"           , LEFT         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_5        , "functionbar_right"          , RIGHT        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_6        , "functionbar_backspace"      , "BS"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_7        , "functionbar_enter"          , ENTER        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_8        , "functionbar_page_up"        , "PU"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_9        , "functionbar_page_down"      , "PD"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_10       , "functionbar_colon"          , ":"          , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_11       , "functionbar_i"              , "i"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_12       , "functionbar_slash"          , "/"          , res.getBoolean(R.bool.pref_functionbar_slash_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_13       , "functionbar_plus"           , "+"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_14       , "functionbar_minus"          , "-"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_15       , "functionbar_equal"          , "="          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_16       , "functionbar_asterisk"       , "*"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_17       , "functionbar_pipe"           , "|"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_18       , "functionbar_f1"             , F1           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_19       , "functionbar_f2"             , F2           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_20       , "functionbar_f3"             , F3           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_f4"             , F4           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_f5"             , F5           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_f6"             , F6           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_f7"             , F7           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_f8"             , F8           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_f9"             , F9           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_f10"            , F10          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_f11"            , F11          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_f12"            , F12          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_invert"         , "○"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_31       , "functionbar_menu_user"      , "□"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_menu_x"         , "×"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_33       , "functionbar_menu_plus"      , "＋"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_34       , "functionbar_menu_minus"     , "－"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_35       , "functionbar_softkeyboard"   , SOFTKEYBOARD , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_36       , "functionbar_open_file"      , OPEN_FILE    , res.getBoolean(R.bool.pref_functionbar_open_file_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_37       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_38       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_39       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_40       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_menu_quit"      , MENU_QUIT    , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_menu"           , MENU         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_43       , "functionbar_menu_hide"      , "∇"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_tab               , "functionbar_tab"            , "Tab"        , true ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_1        , "functionbar_esc2"           , "Esc"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_2        , "functionbar_ctrl2"          , "Ctrl"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_3        , "functionbar_alt2"           , "Alt"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_4        , "functionbar_tab2"           , "Tab"        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_5        , "functionbar_up"             , UP           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_6        , "functionbar_down"           , DOWN         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_7        , "functionbar_left"           , LEFT         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_8        , "functionbar_right"          , RIGHT        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_9        , "functionbar_backspace"      , "BS"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_10       , "functionbar_enter"          , ENTER        , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_11       , "functionbar_page_up"        , "PU"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_12       , "functionbar_page_down"      , "PD"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_13       , "functionbar_colon"          , ":"          , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_14       , "functionbar_i"              , "i"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_15       , "functionbar_slash"          , "/"          , res.getBoolean(R.bool.pref_functionbar_slash_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_16       , "functionbar_plus"           , "+"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_17       , "functionbar_minus"          , "-"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_18       , "functionbar_equal"          , "="          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_19       , "functionbar_asterisk"       , "*"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_20       , "functionbar_pipe"           , "|"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_f1"             , F1           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_f2"             , F2           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_f3"             , F3           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_f4"             , F4           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_f5"             , F5           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_f6"             , F6           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_f7"             , F7           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_f8"             , F8           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_f9"             , F9           , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_f10"            , F10          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_31       , "functionbar_f11"            , F11          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_f12"            , F12          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_33       , "functionbar_invert"         , "○"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_34       , "functionbar_menu_user"      , "□"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_35       , "functionbar_menu_x"         , "×"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_36       , "functionbar_menu_plus"      , "＋"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_37       , "functionbar_menu_minus"     , "－"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_38       , "functionbar_softkeyboard"   , SOFTKEYBOARD , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_39       , "functionbar_open_file"      , OPEN_FILE    , res.getBoolean(R.bool.pref_functionbar_open_file_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_40       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_43       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_44       , "functionbar_menu_quit"      , MENU_QUIT    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_45       , "functionbar_menu"           , MENU         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_46       , "functionbar_menu_hide"      , "∇"         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , F1           , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , F2           , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , F3           , true  ));
@@ -4672,6 +4676,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case "navigationbar_esc":
             case "functionbar_esc":
+            case "functionbar_esc2":
                 if (view.getControlKeyState() != 0 || view.getAltKeyState() != 0 || (getInvertCursorDirection() != getDefaultInvertCursorDirection())) {
                     mInvertCursorDirection = getDefaultInvertCursorDirection();
                     setCursorDirectionLabel();
@@ -4683,6 +4688,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case "navigationbar_ctrl":
             case "functionbar_ctrl":
+            case "functionbar_ctrl2":
                 int ctrl = view.getControlKeyState();
                 if (ctrl == LOCKED) {
                     mInvertCursorDirection = getDefaultInvertCursorDirection();
@@ -4702,10 +4708,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case "navigationbar_alt":
             case "functionbar_alt":
+            case "functionbar_alt2":
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_ALT_LEFT);
                 break;
             case "navigationbar_tab":
             case "functionbar_tab":
+            case "functionbar_tab2":
                 if (onelineTextBoxTab()) break;
                 doSendActionBarKey(view, KeycodeConstants.KEYCODE_TAB);
                 break;
