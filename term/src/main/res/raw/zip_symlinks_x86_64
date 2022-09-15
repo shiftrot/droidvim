@@ -1,0 +1,10 @@
+libzip00000.so|usr/bin/bzdiff
+libzip00001.so|usr/bin/bzgrep
+libzip00002.so|usr/bin/bzip2
+libzip00003.so|usr/bin/bzip2recover
+libzip00004.so|usr/bin/bzmore
+libzip00005.so|usr/bin/zip
+libzip00006.so|usr/bin/zipcloak
+libzip00007.so|usr/bin/zipnote
+libzip00008.so|usr/bin/zipsplit
+libzip00009.so|usr/lib/libbz2.so.1.0.8

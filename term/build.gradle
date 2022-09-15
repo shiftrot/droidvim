@@ -81,35 +81,16 @@ android {
     sourceSets {
         terminal {
             res.srcDirs += ['src/terminal-res/res']
-            jniLibs.srcDirs += ['src/main/jniLibs', 'src/proot/jniLibs']
-            if (abiArm) {
-                res.srcDirs += ['src/main-arm/res']
-                jniLibs.srcDirs += ['src/main-arm/jniLibs']
-                jniLibs.srcDirs += ['src/term-bash-arm/jniLibs', 'src/cmd-tools-arm/jniLibs']
-                jniLibs.srcDirs += ['src/zip-arm/jniLibs', 'src/unzip-arm/jniLibs']
-            }
-            if (abiX86) {
-                res.srcDirs += ['src/main-x86/res']
-                jniLibs.srcDirs += ['src/main-x86/jniLibs']
-                jniLibs.srcDirs += ['src/term-bash-x86/jniLibs', 'src/cmd-tools-x86/jniLibs']
-                jniLibs.srcDirs += ['src/zip-x86/jniLibs', 'src/unzip-x86/jniLibs']
-            }
+            jniLibs.srcDirs += ['src/term-bash/jniLibs', 'src/cmd-tools/jniLibs']
+            jniLibs.srcDirs += ['src/zip/jniLibs', 'src/unzip/jniLibs']
+            jniLibs.srcDirs += ['src/proot/jniLibs']
         }
         droidvim {
-            res.srcDirs += ['src/droidvim/res', 'src/vim/res']
-            jniLibs.srcDirs += ['src/main/jniLibs', 'src/proot/jniLibs']
-            if (abiArm) {
-                res.srcDirs += ['src/main-arm/res']
-                jniLibs.srcDirs += ['src/main-arm/jniLibs', 'src/vim-arm/jniLibs']
-                jniLibs.srcDirs += ['src/term-bash-arm/jniLibs', 'src/cmd-tools-arm/jniLibs']
-                jniLibs.srcDirs += ['src/zip-arm/jniLibs', 'src/unzip-arm/jniLibs']
-            }
-            if (abiX86) {
-                res.srcDirs += ['src/main-x86/res']
-                jniLibs.srcDirs += ['src/main-x86/jniLibs', 'src/vim-x86/jniLibs']
-                jniLibs.srcDirs += ['src/term-bash-x86/jniLibs', 'src/cmd-tools-x86/jniLibs']
-                jniLibs.srcDirs += ['src/zip-x86/jniLibs', 'src/unzip-x86/jniLibs']
-            }
+            res.srcDirs += ['src/vim/res']
+            jniLibs.srcDirs += ['src/term-bash/jniLibs', 'src/cmd-tools/jniLibs']
+            jniLibs.srcDirs += ['src/zip/jniLibs', 'src/unzip/jniLibs']
+            jniLibs.srcDirs += ['src/proot/jniLibs']
+            jniLibs.srcDirs += ['src/vim/jniLibs']
         }
     }
 
