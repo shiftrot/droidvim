@@ -18,7 +18,7 @@
         <Button
             android:id="@+id/drawer_extra_button"
             style="?android:attr/buttonBarButtonStyle"
-            android:minHeight="25dp"
+            android:minHeight="38dp"
             android:visibility="gone"
             android:textColor="@android:color/white"
             android:background="@drawable/extra_button"
@@ -31,7 +31,7 @@
         <Button
             android:id="@+id/drawer_debug_button"
             style="?android:attr/buttonBarButtonStyle"
-            android:minHeight="25dp"
+            android:minHeight="38dp"
             android:visibility="gone"
             android:textColor="@android:color/white"
             android:background="@drawable/extra_button"

@@ -554,25 +554,10 @@
     <string name="confirm_clear_cache_message">ストレージキャッシュを削除します.</string>
     <string name="softkeyboard">キーボード</string>
 
-    <string name="git_install_dialog_title">Gitのインストール</string>
-    <string name="network_error">ネットワーク接続を確認してください.</string>
-    <string name="iabsetup_try_again">Google Playサービスへの接続に失敗しました。ネットワーク接続を確認して再実行してください.</string>
-    <string name="installer_try_again">ファイルのダウンロードに失敗しました.\nネットワーク接続を確認して再実行してください.</string>
-    <string name="installer_try_again_button">再実行</string>
-    <string name="git_install_message_install_git">アップデートをチェックしています…</string>
-    <string name="git_install_confirm_install">新しいバージョンのGitが存在します.\nGitのインストールを実行します.</string>
-    <string name="git_install_confirm_update">既に同じバージョンのGitがインストールされています.\n上書きインストールしますか？</string>
-    <string name="git_install_success">Gitのアップデートに成功しました.</string>
-
-    <string name="iab_null">PlayStoreがみつかりません.</string>
-    <string name="iab_wait">しばらくおまちください.</string>
-    <string name="donate_confirm_title">DroidVimのご使用ありがとうございます.</string>
-    <string name="donate_confirm_button">寄付する</string>
-    <string name="donate_confirm_summary">このプロジェクトに寄付していただければgit-cui, curl, busyboxが使用可能になります.</string>
-    <string name="donate_confirm_summary_no_payed_function">申し訳ありませんが, このデバイス用の追加機能は用意されていません.\nこれは純粋な寄付になります.</string>
-    <string name="donate_premium_purchase">サポートいただきまして、ありがとうございます！</string>
-
-
+    <string name="extra_contents_dialog_title">追加コンテンツ</string>
+    <string name="choose_extra_contents_dialog_title">コンテンツを選択</string>
+    <string name="extra_contents_action_clean">システムリカバリ</string>
+    <string name="confirm_uninstall_extra_contents">システムファイルを上書きして, 追加コンテンツを削除します. (再起動が必要になります)\nホームディレクトリ内のファイルは変更/削除しません.</string>
 
     <string name="external_apps_preferences">ドロワー &amp; 外部アプリ</string>
     <string name="external_app">アプリ名</string>

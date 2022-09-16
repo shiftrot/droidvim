@@ -719,6 +719,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void setExtraButton() {
+        Button button = findViewById(R.id.drawer_extra_button);
+        int visibilty = View.VISIBLE;
+        button.setVisibility(visibilty);
+        int color = mSettings.getColorTheme() % 2 == 0 ? R.drawable.sidebar_button_dark : R.drawable.sidebar_button;
     }
 
     private void setDebugButton() {
@@ -4931,8 +4935,56 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public void onExtraButtonClicked(View arg0) {
-        Intent intent = new Intent(this, ExtraContents.class);
-        startActivity(intent);
+        doExtraContentsAction(this, arg0);
+    }
+
+    private void doExtraContentsAction(final AppCompatActivity activity, final View arg0) {
+        String[] standardItems = {
+            getString(R.string.extra_contents_action_clean)
+        };
+
+        final String[] items;
+        items = standardItems;
+        AlertDialog dialog = new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.choose_extra_contents_dialog_title))
+            .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    String item = items[which];
+                    if (getString(R.string.extra_contents_action_clean).equals(item)) {
+                        uninstallExtraContents(activity, arg0);
+                    }
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
+    }
+
+    private void uninstallExtraContents(final AppCompatActivity activity, final View arg0) {
+        final AlertDialog.Builder b = new AlertDialog.Builder(this);
+        final AlertDialog.Builder r = new AlertDialog.Builder(activity.getApplicationContext());
+        b.setIcon(android.R.drawable.ic_dialog_alert);
+        b.setMessage(R.string.confirm_uninstall_extra_contents);
+        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                mUninstall = true;
+                shell("rm " + TermService.getVersionFilesDir() + "/version");
+                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
+                    sendKeyStrings(":confirm qa\r", true);
+                } else {
+                    doExitShell();
+                }
+            }
+        });
+        b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                doExtraContentsAction(activity, arg0);
+            }
+        });
+        b.show();
     }
 
     public void updateUi() {
