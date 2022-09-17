@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.hardware.input.InputManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -76,7 +78,7 @@ import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
  * take care of this for you.
  */
 public class EmulatorView extends View implements GestureDetector.OnGestureListener,
-        GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener {
+        GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, InputManager.InputDeviceListener{
     private final static String TAG = "EmulatorView";
     private final static boolean LOG_KEY_EVENTS = false;
     private final static boolean LOG_IME = false;
@@ -228,6 +230,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
     private GestureDetector.OnDoubleTapListener mDoubleTapListener;
+    private InputManager.InputDeviceListener mInputDeviceListener;
     private ScaleGestureDetector mScaleGestureDetector;
     private ScaleGestureDetector.SimpleOnScaleGestureListener mScaleGestureListener;
     private Scroller mScroller;
@@ -277,6 +280,37 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
         mGestureDetector.setIsLongpressEnabled(true);
         if (mScaleGestureListener != null) mScaleGestureListener.onScaleEnd(scaleGestureDetector);
+    }
+
+    @Override
+    public void onInputDeviceAdded(int i) {
+        Log.w(TAG, "onInputDeviceAdded");
+        if (mInputDeviceListener != null) mInputDeviceListener.onInputDeviceAdded(i);
+    }
+
+    @Override
+    public void onInputDeviceRemoved(int i) {
+        Log.w(TAG, "onInputDeviceRemoved");
+        if (mInputDeviceListener != null) mInputDeviceListener.onInputDeviceRemoved(i);
+    }
+
+    @Override
+    public void onInputDeviceChanged(int i) {
+        Log.w(TAG, "onInputDeviceChanged");
+        if (mInputDeviceListener != null) mInputDeviceListener.onInputDeviceChanged(i);
+    }
+
+    @Override
+    public boolean onGenericMotionEvent(MotionEvent event) {
+        final int MOUSE_WHEELUP_BUTTON   = 64;
+        final int MOUSE_WHEELDOWN_BUTTON = 65;
+        if (event.isFromSource(InputDevice.SOURCE_MOUSE) && event.getAction() == MotionEvent.ACTION_SCROLL) {
+            boolean up = event.getAxisValue(MotionEvent.AXIS_VSCROLL) > 0.0f;
+            int button = up ? MOUSE_WHEELUP_BUTTON : MOUSE_WHEELDOWN_BUTTON;
+            sendMouseEventCode(event, button);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -923,6 +957,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setScaleGestureListener(ScaleGestureDetector.SimpleOnScaleGestureListener listener) {
         mScaleGestureListener = listener;
+    }
+
+    public void setInputDeviceListener(InputManager.InputDeviceListener listener) {
+        mInputDeviceListener = listener;
     }
 
     /**
