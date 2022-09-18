@@ -22,11 +22,13 @@
             android:entryValues="@array/entryvalues_app_filepicker_preference"
             android:dialogTitle="@string/external_app_button"/>
 
-        <EditTextPreference
+        <ListPreference
             android:key="external_app_package_name"
             android:defaultValue="@string/pref_external_app_id_default"
-            android:hint="@string/pref_external_app_id_hint"
-            android:title="@string/external_app" />
+            android:title="@string/external_app"
+            android:entries="@array/entries_preference"
+            android:entryValues="@array/entries_preference"
+            android:dialogTitle="@string/external_app_button"/>
 
     </PreferenceScreen>
 
