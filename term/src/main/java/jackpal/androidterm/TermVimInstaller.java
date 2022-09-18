@@ -52,6 +52,7 @@ import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
+import static jackpal.androidterm.StaticConfig.FLAVOR_DROIDVIM;
 import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
 import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
@@ -650,38 +651,43 @@ final class TermVimInstaller {
         }
     }
 
-    static public void setupStorageSymlinks(final AppCompatActivity activity) {
+    static public boolean setupStorageSymlinks(final AppCompatActivity activity) {
         try {
             File storageDir = new File(TermService.getHOME());
-            String symlink = "internalStorage";
-
-            File internalDir = Environment.getExternalStorageDirectory();
-            if (!internalDir.canWrite()) {
-                internalDir = new File(TermService.getEXTSTORAGE());
+            if (!storageDir.exists() && !storageDir.mkdirs()) {
+                Log.e(TermDebug.LOG_TAG, "Unable to mkdirs()");
+                return false;
             }
+
+            String symlink = "internalStorage";
+            File src = new File(TermService.getEXTSTORAGE());
             shell("rm " + new File(storageDir, symlink).getAbsolutePath());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Os.symlink(internalDir.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
+                Os.symlink(src.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
             } else {
-                shell("ln -s " + internalDir.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
+                shell("ln -s " + src.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
             }
 
-            final File[] dirs = activity.getExternalFilesDirs(null);
-            if (dirs != null && dirs.length > 1) {
-                for (int i = 1; i < dirs.length; i++) {
-                    File dir = dirs[i];
-                    if (dir == null) continue;
-                    String symlinkName = "external-" + i;
-                    if (dir.canWrite()) {
-                        File link = new File(storageDir, symlinkName);
-                        shell("rm " + link.getAbsolutePath());
-                        Os.symlink(dir.getAbsolutePath(), link.getAbsolutePath());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                final File[] dirs = activity.getExternalFilesDirs(null);
+                if (dirs != null && dirs.length > 1) {
+                    for (int i = 1; i < dirs.length; i++) {
+                        File dir = dirs[i];
+                        if (dir == null) continue;
+                        String symlinkName = "external-" + i;
+                        if (dir.canWrite()) {
+                            File link = new File(storageDir, symlinkName);
+                            shell("rm " + link.getAbsolutePath());
+                            Os.symlink(dir.getAbsolutePath(), link.getAbsolutePath());
+                        }
                     }
                 }
             }
         } catch (Exception e) {
             Log.e(TermDebug.LOG_TAG, "Error setting up link", e);
+            return false;
         }
+        return true;
     }
 
     static void showWhatsNew(final AppCompatActivity activity, final boolean first) {

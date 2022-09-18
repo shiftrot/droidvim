@@ -1288,45 +1288,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
-        try {
-            File storageDir = new File(mSettings.getHomePath());
 
-            if (!storageDir.exists() && !storageDir.mkdirs()) {
-                Log.e(TermDebug.LOG_TAG, "Unable to mkdirs()");
-                return;
-            }
-
-            File sharedDir = Environment.getExternalStorageDirectory();
-            if (sharedDir.canWrite()) {
-                File symlink = new File(storageDir, "shared");
-                shell("rm " + symlink.getAbsolutePath());
-                Os.symlink(sharedDir.getAbsolutePath(), symlink.getAbsolutePath());
-            }
-
-            File appDir = new File(TermService.getAPPEXTFILES());
-            if (appDir.canWrite()) {
-                File symlink = new File(storageDir, "internal");
-                shell("rm " + symlink.getAbsolutePath());
-                Os.symlink(appDir.getAbsolutePath(), symlink.getAbsolutePath());
-            }
-
-            final File[] dirs = context.getExternalFilesDirs(null);
-            if (dirs != null && dirs.length > 1) {
-                for (int i = 1; i < dirs.length; i++) {
-                    File dir = dirs[i];
-                    if (dir == null) continue;
-                    String symlinkName = "external-" + i;
-                    if (dir.canWrite()) {
-                        File symlink = new File(storageDir, symlinkName);
-                        shell("rm " + symlink.getAbsolutePath());
-                        Os.symlink(dir.getAbsolutePath(), symlink.getAbsolutePath());
-                    }
-                }
-            }
-            alert("Symbolic links are created:\n\n" + storageDir.toString());
-        } catch (Exception e) {
-            Log.e(TermDebug.LOG_TAG, "Error setting up symbolic link", e);
-            alert("Error setting up symbolic link");
+        if (TermVimInstaller.setupStorageSymlinks(this)) {
+            alert("Symbolic links are created.");
+        } else {
+            alert("ERORR : Symbolic links are not created.");
         }
     }
 
