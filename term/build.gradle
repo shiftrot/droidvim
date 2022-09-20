@@ -32,15 +32,19 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    compileOptions {
-        sourceCompatibility = versions.sourceCompatibility
-        targetCompatibility = versions.targetCompatibility
-    }
-
     externalNativeBuild {
         ndkBuild {
             path 'src/main/jni/Android.mk'
         }
+    }
+
+    packagingOptions {
+        jniLibs.useLegacyPackaging = true
+    }
+
+    compileOptions {
+        sourceCompatibility = versions.sourceCompatibility
+        targetCompatibility = versions.targetCompatibility
     }
 
     buildFeatures {

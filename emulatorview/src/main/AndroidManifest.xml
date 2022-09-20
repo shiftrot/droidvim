@@ -8,5 +8,6 @@
     <application
         android:requestLegacyExternalStorage="true"
         android:resizeableActivity="true"
+        android:extractNativeLibs="true"
         tools:targetApi="q" />
 </manifest>

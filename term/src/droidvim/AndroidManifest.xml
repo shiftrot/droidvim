@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" tools:node="remove" />
     <application
         android:label="@string/application_term_app"
+        android:extractNativeLibs="true"
         tools:replace="android:label">
         <provider
             android:name="com.droidvim.storage.LocalStorageProvider"

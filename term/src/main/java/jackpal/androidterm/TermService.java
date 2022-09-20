@@ -424,6 +424,11 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return mARCH;
     }
 
+    static public String getAPPLIB(Context context) {
+        mAPPLIB = context.getApplicationInfo().nativeLibraryDir;
+        return getAPPLIB();
+    }
+
     static public String getAPPLIB() {
         if (mAPPLIB == null) return "/data/data/" + BuildConfig.APPLICATION_ID + "/lib";
         return mAPPLIB;
