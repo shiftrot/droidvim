@@ -177,15 +177,6 @@ final class TermVimInstaller {
             String terminfoDir = TermService.getAPPFILES() + "/usr/share";
             installZip(terminfoDir, getInputStream(activity, id));
             final String path = TermService.getAPPFILES();
-            id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
-            installZip(path, getInputStream(activity, id));
-            if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                String bin_am = "bin_am";
-                id = activity.getResources().getIdentifier(bin_am, "raw", activity.getPackageName());
-                installZip(path, getInputStream(activity, id));
-                id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
-                copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
-            }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                 File fontPath = new File(TermPreferences.FONT_PATH);
                 if (!fontPath.exists()) fontPath.mkdirs();
@@ -260,8 +251,7 @@ final class TermVimInstaller {
                     doInstallTerm(activity);
                     if (FLAVOR_TERMINAL) return;
                     setMessage(activity, pd, "scripts");
-                    int id = activity.getResources().getIdentifier("shell", "raw", activity.getPackageName());
-                    installZip(path, getInputStream(activity, id));
+                    int id;
                     id = activity.getResources().getIdentifier("shell_vim", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
                     String vimsh = TermService.getAPPFILES() + "/bin/vim";
@@ -304,12 +294,6 @@ final class TermVimInstaller {
                         if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
                             shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                         }
-
-                        String bin_am = "bin_am";
-                        id = activity.getResources().getIdentifier(bin_am, "raw", activity.getPackageName());
-                        installZip(path, getInputStream(activity, id));
-                        id = activity.getResources().getIdentifier("am", "raw", activity.getPackageName());
-                        copyScript(activity.getResources().openRawResource(id), TermService.getAPPFILES() + "/bin/am");
                     }
 
                     setMessage(activity, pd, "binaries - vim");
@@ -736,12 +720,12 @@ final class TermVimInstaller {
     }
 
     static public int doCopyScript(InputStream is, String fname, String strings) {
-        if (is == null) return -1;
-        BufferedReader br = null;
-        File dir = new File(fname);
-        if (dir.getParent() != null) new File(dir.getParent()).mkdirs();
         try {
+            BufferedReader br = null;
             try {
+                if (is == null) return -1;
+                File dir = new File(fname);
+                if (dir.getParent() != null) new File(dir.getParent()).mkdirs();
                 String term = ShellTermSession.getTermType();
                 String colorFgBg = ShellTermSession.getColorFGBG();
                 if (mSettings != null) {

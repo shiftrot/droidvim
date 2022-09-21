@@ -8,6 +8,7 @@ SH_PATH=$APPFILES/usr/bin
 
 _mksh()
 {
+return 0
 if [ $1 == "busybox" ]; then
   return 0
 fi
