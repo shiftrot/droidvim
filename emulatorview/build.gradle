@@ -19,6 +19,12 @@ android {
         sourceCompatibility = versions.sourceCompatibility
         targetCompatibility = versions.targetCompatibility
     }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
 }
 
 dependencies {

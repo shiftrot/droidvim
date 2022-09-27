@@ -35,6 +35,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = versions.sourceCompatibility
+        targetCompatibility = versions.targetCompatibility
+    }
+
     splits {
         abi {
             enable abiSplits
@@ -45,9 +50,10 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = versions.sourceCompatibility
-        targetCompatibility = versions.targetCompatibility
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
     }
 }
 
