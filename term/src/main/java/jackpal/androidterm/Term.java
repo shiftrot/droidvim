@@ -3194,12 +3194,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static public void recoveryDelete() {
+        shell("rm -rf " + TermService.getAPPFILES() + "/bin");
         shell("rm -rf " + TermService.getAPPFILES() + "/usr");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.default");
         shell("rm " + TermService.getAPPFILES() + "/bin/vim.python");
         shell("rm -rf " + TermService.getVIMRUNTIME() + "/pack/shiftrot");
         shell("rm " + TermService.getVersionFilesDir() + "/proot.err");
+        shell("rm " + TermService.getVersionFilesDir() + "/vimrc");
         shell("rm " + TermService.getVersionFilesDir() + "/version");
         shell("rm " + TermService.getVersionFilesDir() + "/version.*");
         shell("rm -rf " + TermService.getCACHE_DIR() + "/apt");
