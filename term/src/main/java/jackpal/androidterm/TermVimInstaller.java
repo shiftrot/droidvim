@@ -917,22 +917,26 @@ final class TermVimInstaller {
         }
     }
 
-    static public void installZip(String path, InputStream is) {
+    static public void installZip(String dstDir, InputStream is) {
         if (is == null) return;
         try {
+            String path = new File(dstDir).getCanonicalPath();
             File outDir = new File(path);
             outDir.mkdirs();
             ZipInputStream zin = new ZipInputStream(new BufferedInputStream(is));
-            ZipEntry ze;
             int size;
             byte[] buffer = new byte[8192];
 
+            ZipEntry ze;
             while ((ze = zin.getNextEntry()) != null) {
+                File file = new File(path, ze.getName());
+                String canonicalPath = file.getCanonicalPath();
+                if (!canonicalPath.startsWith(path)) {
+                    throw new SecurityException();
+                }
                 if (ze.isDirectory()) {
-                    File file = new File(path + "/" + ze.getName());
                     if (!file.isDirectory()) file.mkdirs();
                 } else {
-                    File file = new File(path + "/" + ze.getName());
                     File parentFile = file.getParentFile();
                     parentFile.mkdirs();
 
@@ -959,6 +963,7 @@ final class TermVimInstaller {
             }
             zin.close();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
