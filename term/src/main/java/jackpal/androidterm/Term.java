@@ -131,6 +131,7 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.emulatorview.compat.EscCmd;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
@@ -605,7 +606,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (view != null) {
             boolean forceNormal = mHaveFullHwKeyboard && mSettings.getForceNormalInputModeToPhysicalKeyboard();
             if (forceNormal) {
-                view.setImeShortcutsAction(50);
+                view.setImeShortcutsAction(EmulatorView.SHORTCUTS_ACTION_50);
             } else if (forceDefault) {
                 view.setImeShortcutsAction(mSettings.getImeDefaultInputtype());
             }
@@ -2140,20 +2141,49 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
+    private static final int KEY_ACTION_0    = 0;
+    private static final int KEY_ACTION_999  = 999;
+    private static final int KEY_ACTION_1002 = 1002;
+    private static final int KEY_ACTION_1006 = 1006;
+    private static final int KEY_ACTION_1247 = 1247;
+    private static final int KEY_ACTION_1249 = 1249;
+    private static final int KEY_ACTION_1250 = 1250;
+    private static final int KEY_ACTION_1251 = 1251;
+    private static final int KEY_ACTION_1252 = 1252;
+    private static final int KEY_ACTION_1253 = 1253;
+    private static final int KEY_ACTION_1254 = 1254;
+    private static final int KEY_ACTION_1255 = 1255;
+    private static final int KEY_ACTION_1257 = 1257;
+    private static final int KEY_ACTION_1260 = 1260;
+    private static final int KEY_ACTION_1261 = 1261;
+    private static final int KEY_ACTION_1300 = 1300;
+    private static final int KEY_ACTION_1351 = 1351;
+    private static final int KEY_ACTION_1354 = 1354;
+    private static final int KEY_ACTION_1355 = 1355;
+    private static final int KEY_ACTION_1356 = 1356;
+    private static final int KEY_ACTION_1357 = 1357;
+    private static final int KEY_ACTION_1358 = 1358;
+    private static final int KEY_ACTION_1360 = 1360;
+    private static final int KEY_ACTION_1361 = 1361;
+    private static final int KEY_ACTION_1362 = 1362;
+    private static final int KEY_ACTION_1363 = 1363;
+    private static final int KEY_ACTION_1364 = 1364;
+    private static final int KEY_ACTION_1365 = 1365;
+
     private boolean doSendActionBarKey(EmulatorView view, int key) {
         if (view == null) return false;
-        if (key == 999) {
+        if (key == KEY_ACTION_999) {
             // do nothing
-        } else if (key == 1002) {
+        } else if (key == KEY_ACTION_1002) {
             doToggleSoftKeyboard();
-        } else if (key == 1006) {
+        } else if (key == KEY_ACTION_1006) {
             EmulatorView.setTextScale(1.0f);
             view.setFontSize();
-        } else if (key == 1249) {
+        } else if (key == KEY_ACTION_1249) {
             doPaste();
-        } else if (key == 1250) {
+        } else if (key == KEY_ACTION_1250) {
             doCreateNewWindow();
-        } else if (key == 1251) {
+        } else if (key == KEY_ACTION_1251) {
             if (mTermSessions != null) {
                 if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
                     sendKeyStrings(":confirm qa\r", true);
@@ -2161,67 +2191,67 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     confirmCloseWindow();
                 }
             }
-        } else if (key == 1252) {
+        } else if (key == KEY_ACTION_1252) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showInputMethodPicker();
-        } else if (key == 1253) {
+        } else if (key == KEY_ACTION_1253) {
             if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
                 sendKeyStrings(":confirm qa\r", true);
             } else {
                 confirmCloseWindow();
             }
-        } else if (key == 1254) {
+        } else if (key == KEY_ACTION_1254) {
             view.sendFnKeyCode();
         } else if (key == KeycodeConstants.KEYCODE_ALT_LEFT) {
             view.sendAltKeyCode();
         } else if (key == KeycodeConstants.KEYCODE_CTRL_LEFT) {
             view.sendControlKeyCode();
-        } else if (key == 1247) {
+        } else if (key == KEY_ACTION_1247) {
             sendKeyStrings(":", false);
-        } else if (key == 1255) {
+        } else if (key == KEY_ACTION_1255) {
             setFunctionBar(2);
-        } else if (key == 1257) {
+        } else if (key == KEY_ACTION_1257) {
             VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
-        } else if (key == 1260) {
+        } else if (key == KEY_ACTION_1260) {
             int action = mSettings.getImeShortcutsAction();
-            if (action == 0) {
+            if (action == KEY_ACTION_0) {
                 doToggleSoftKeyboard();
-            } else if (action == 1261) {
+            } else if (action == KEY_ACTION_1261) {
                 doEditTextFocusAction();
             } else {
                 setEditTextAltCmd();
                 view.doImeShortcutsAction();
             }
             return true;
-        } else if (key == 1261) {
+        } else if (key == KEY_ACTION_1261) {
             doEditTextFocusAction();
-        } else if (key == 1360 || (key >= 1351 && key <= 1354)) {
+        } else if (key == KEY_ACTION_1360 || (key >= KEY_ACTION_1351 && key <= KEY_ACTION_1354)) {
             if (setEditTextAltCmd()) return true;
-            view.doImeShortcutsAction(key - 1300);
-        } else if (key == 1361) {
+            view.doImeShortcutsAction(key - KEY_ACTION_1300);
+        } else if (key == KEY_ACTION_1361) {
             keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
-        } else if (key == 1362) {
+        } else if (key == KEY_ACTION_1362) {
             keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
-        } else if (key == 1363) {
+        } else if (key == KEY_ACTION_1363) {
             mInvertCursorDirection = !mInvertCursorDirection;
             mDefaultInvertCursorDirection = mInvertCursorDirection;
             setCursorDirectionLabel();
-        } else if (key == 1364) {
+        } else if (key == KEY_ACTION_1364) {
             if (getInvertCursorDirection() != getDefaultInvertCursorDirection()) {
                 mInvertCursorDirection = getDefaultInvertCursorDirection();
                 setCursorDirectionLabel();
             }
-        } else if (key == 1365) {
+        } else if (key == KEY_ACTION_1365) {
             sendVimIminsertKey();
-        } else if (key == 1355) {
+        } else if (key == KEY_ACTION_1355) {
             toggleDrawer();
-        } else if (key == 1356) {
+        } else if (key == KEY_ACTION_1356) {
             sendKeyStrings(":tabnew\r", true);
             openDrawer();
-        } else if (key == 1357) {
+        } else if (key == KEY_ACTION_1357) {
             setFunctionBar(2);
-        } else if (key == 1358) {
+        } else if (key == KEY_ACTION_1358) {
             setCurrentOrientation();
         } else if (key == KeycodeConstants.KEYCODE_ESCAPE) {
             view.restartInputGoogleIme();
@@ -3004,18 +3034,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
-            case 0xffff0990:
+            case EscCmd.VKEYCODE_0990:
                 installFromRemotoInterface();
                 return true;
-            case 0xffff0998:
+            case EscCmd.VKEYCODE_0998:
                 if (mTermSessions.size() > 1) {
                     return true;
                 }
                 // fall into next
-            case 0xffff0999:
+            case EscCmd.VKEYCODE_0999:
                 destroyAppWarning();
                 return true;
-            case 0xffff1000:
+            case EscCmd.VKEYCODE_1000:
                 setFunctionBar(2);
                 return true;
             case KeyEvent.KEYCODE_ESCAPE:
@@ -3031,86 +3061,86 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case KeyEvent.KEYCODE_MENU:
                 openOptionsMenu();
                 break;
-            case 0xffff0003:
+            case EscCmd.VKEYCODE_0003:
                 copyFileToClipboard(getClipboardFile());
                 return true;
-            case 0xffff0004:
+            case EscCmd.VKEYCODE_0004:
                 setEditTextView(0);
                 return true;
-            case 0xffff0005:
+            case EscCmd.VKEYCODE_0005:
                 setEditTextView(1);
                 return true;
-            case 0xffff0006:
+            case EscCmd.VKEYCODE_0006:
                 setEditTextView(2);
                 return true;
-            case 0xffff0007:
+            case EscCmd.VKEYCODE_0007:
                 String file = getStringFromFile(new File(getIntentFile()));
                 file = file != null ? file.replaceAll("[\n\r]", "") : "";
                 doAndroidIntent("share.file", file, null);
                 return true;
-            case 0xffff0008:
+            case EscCmd.VKEYCODE_0008:
                 doAndroidIntent("share.text", getIntentFile(), null);
                 return true;
-            case 0xffff1010:
+            case EscCmd.VKEYCODE_1010:
                 setFunctionBar(0);
                 return true;
-            case 0xffff1011:
+            case EscCmd.VKEYCODE_1011:
                 setFunctionBar(1);
                 return true;
-            case 0xffff1002:
+            case EscCmd.VKEYCODE_1002:
                 setFunctionBar(2);
                 return true;
-            case 0xffff0033:
-            case 0xffff0333:
+            case EscCmd.VKEYCODE_0033:
+            case EscCmd.VKEYCODE_0333:
                 if (!canPaste()) {
                     alert(getString(R.string.toast_clipboard_error));
                     return true;
                 }
                 copyClipboardToFile(getClipboardFile());
-                if (keyCode == 0xffff0333) sendKeyStrings(":ATEMod _paste\r", true);
+                if (keyCode == EscCmd.VKEYCODE_0333) sendKeyStrings(":ATEMod _paste\r", true);
                 return true;
-            case 0xffff1006:
+            case EscCmd.VKEYCODE_1006:
                 doSendActionBarKey(getCurrentEmulatorView(), 1006);
                 return true;
-            case 0xffff1007:
+            case EscCmd.VKEYCODE_1007:
                 return true;
-            case 0xffff1008:
+            case EscCmd.VKEYCODE_1008:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     setupStorageSymlinks(this);
                 }
                 return true;
-            case 0xffff1009:
+            case EscCmd.VKEYCODE_1009:
                 return true;
-            case 0xffff1364:
-                doSendActionBarKey(getCurrentEmulatorView(), 1364);
+            case EscCmd.VKEYCODE_1364:
+                doSendActionBarKey(getCurrentEmulatorView(), KEY_ACTION_1364);
                 return true;
-            case 0xffff0063:
-            case 0xffff1365:
+            case EscCmd.VKEYCODE_0063:
+            case EscCmd.VKEYCODE_1365:
                 sendVimIminsertKey();
                 return true;
-            case 0xffff0056:
+            case EscCmd.VKEYCODE_0056:
                 doEditTextFocusAction();
                 setEditTextInputType(50);
                 return true;
-            case 0xffff0057:
+            case EscCmd.VKEYCODE_0057:
                 setEditTextViewFocus(0);
                 return true;
-            case 0xffff0058:
+            case EscCmd.VKEYCODE_0058:
                 setEditTextViewFocus(1);
                 return true;
-            case 0xffff0061:
+            case EscCmd.VKEYCODE_0061:
                 keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
                 return true;
-            case 0xffff0062:
+            case EscCmd.VKEYCODE_0062:
                 keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
                 return true;
-            case 0xffff0030:
+            case EscCmd.VKEYCODE_0030:
                 clearClipBoard();
                 return true;
-            case 0xffff1001:
+            case EscCmd.VKEYCODE_1001:
                 AndroidIntent(getIntentFile());
                 return true;
-            case 0xffff9998:
+            case EscCmd.VKEYCODE_9998:
                 fatalCrash();
                 return true;
             default:
@@ -3167,7 +3197,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 mStopServiceOnFinish = true;
                 finish();
             case TermSettings.BACK_KEY_CLOSES_WINDOW:
-                doSendActionBarKey(getCurrentEmulatorView(), 1251);
+                doSendActionBarKey(getCurrentEmulatorView(), KEY_ACTION_1251);
                 return true;
             case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
                 finish();
@@ -3398,13 +3428,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             // if (mFunctionBar == 1 && rightAction == 1261 && mEditTextView) rightAction = 999;
             // if (mFunctionBar == 1 && leftAction == 1261 && mEditTextView) leftAction = 999;
             // if (mFunctionBar == 1 && bottomAction == 1261 && mEditTextView) bottomAction = 999;
-            if (rightAction != 999 && (me.getX() > (width - size))) {
+            if (rightAction != KEY_ACTION_999 && (me.getX() > (width - size))) {
                 doSendActionBarKey(getCurrentEmulatorView(), rightAction);
-            } else if (leftAction != 999 && (me.getX() < size)) {
+            } else if (leftAction != KEY_ACTION_999 && (me.getX() < size)) {
                 doSendActionBarKey(getCurrentEmulatorView(), leftAction);
-            } else if (bottomAction != 999 && me.getY() > (height - size)) {
+            } else if (bottomAction != KEY_ACTION_999 && me.getY() > (height - size)) {
                 doSendActionBarKey(getCurrentEmulatorView(), bottomAction);
-            } else if (topAction != 999 && me.getY() < size + (size / 2)) {
+            } else if (topAction != KEY_ACTION_999 && me.getY() < size + (size / 2)) {
                 EmulatorView.setTextScale(1.0f);
                 v.setFontSize();
             } else {
@@ -4090,13 +4120,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 int shortcut = EmulatorView.getPreIMEShortcutsStatus(keyCode, event);
                 if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION) {
                     int action = mSettings.getImeShortcutsAction();
-                    if (action == 0) {
+                    if (action == KEY_ACTION_0) {
                         doToggleSoftKeyboard();
-                    } else if (action == 1261) {
+                    } else if (action == KEY_ACTION_1261) {
                         doEditTextFocusAction();
-                    } else if (action == 1361) {
+                    } else if (action == KEY_ACTION_1361) {
                         keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
-                    } else if (action == 1362) {
+                    } else if (action == KEY_ACTION_1362) {
                         keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
                     } else {
                         int inputType = mEditText.getInputType();

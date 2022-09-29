@@ -17,7 +17,6 @@
 package jackpal.androidterm.emulatorview;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -64,6 +63,7 @@ import java.util.Hashtable;
 import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.emulatorview.compat.EscCmd;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 
 /**
@@ -1511,7 +1511,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // FIXME: SwiftKey's physicla keyboard handling is too buggy.
         if (mIme == IME_ID_SWIFT && mHaveFullHwKeyboard) {
             setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
-            if (mIMEShortcutsAction >= 50 && mIMEShortcutsAction <= 60) doImeShortcutsAction();
+            if (mIMEShortcutsAction >= SHORTCUTS_ACTION_50 && mIMEShortcutsAction <= SHORTCUTS_ACTION_60) doImeShortcutsAction();
         }
     }
 
@@ -1595,215 +1595,215 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 continue;
             }
             switch (ctrl) {
-                case 0:
-                case 70:
+                case EscCmd.COMMAND_0:
+                case EscCmd.COMMAND_70:
                     doHideSoftKeyboard();
                     break;
-                case 1:
-                case 71:
+                case EscCmd.COMMAND_1:
+                case EscCmd.COMMAND_71:
                     doShowSoftKeyboard();
                     break;
-                case 2:
-                case 72:
+                case EscCmd.COMMAND_2:
+                case EscCmd.COMMAND_72:
                     doToggleSoftKeyboard();
                     break;
-                case 3:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0003, null);
+                case EscCmd.COMMAND_3:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0003, null);
                     break;
-                case 4:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0004, null);
+                case EscCmd.COMMAND_4:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0004, null);
                     break;
-                case 5:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0005, null);
+                case EscCmd.COMMAND_5:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0005, null);
                     break;
-                case 6:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0006, null);
+                case EscCmd.COMMAND_6:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0006, null);
                     break;
-                case 7:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0007, null);
+                case EscCmd.COMMAND_7:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0007, null);
                     break;
-                case 8:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0008, null);
+                case EscCmd.COMMAND_8:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0008, null);
                     break;
-                case 9:
+                case EscCmd.COMMAND_9:
                     break;
-                case 30:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0030, null);
+                case EscCmd.COMMAND_30:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0030, null);
                     break;
-                case 33:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0033, null);
+                case EscCmd.COMMAND_33:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0033, null);
                     break;
-                case 333:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0333, null);
+                case EscCmd.COMMAND_333:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0333, null);
                     break;
-                case 50:
+                case EscCmd.COMMAND_50:
                     setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
                     break;
-                case 51:
+                case EscCmd.COMMAND_51:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     break;
-                case 52:
+                case EscCmd.COMMAND_52:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
                     break;
-                case 53:
+                case EscCmd.COMMAND_53:
                     setNoSuggestionModeIMEInputType();
                     break;
-                case 54:
+                case EscCmd.COMMAND_54:
                     setIMEInputType(EditorInfo.TYPE_NULL);
                     break;
-                case 55:
+                case EscCmd.COMMAND_55:
                     doImeShortcutsAction();
                     break;
-                case 56:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0056, null);
+                case EscCmd.COMMAND_56:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0056, null);
                     break;
-                case 57:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0057, null);
+                case EscCmd.COMMAND_57:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0057, null);
                     break;
-                case 58:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0058, null);
+                case EscCmd.COMMAND_58:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0058, null);
                     break;
-                case 61:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0061, null);
+                case EscCmd.COMMAND_61:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0061, null);
                     break;
-                case 62:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0062, null);
+                case EscCmd.COMMAND_62:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0062, null);
                     break;
-                case 63:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0063, null);
+                case EscCmd.COMMAND_63:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0063, null);
                     break;
-                case 1061:
+                case EscCmd.COMMAND_1061:
                     if (mIme == IME_ID_GBOARD && mHaveFullHwKeyboard) {
-                        ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0061, null);
+                        ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0061, null);
                     }
                     break;
-                case 500:
+                case EscCmd.COMMAND_500:
                     setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_NORMAL);
                     break;
-                case 501:
+                case EscCmd.COMMAND_501:
                     setIMEInputType(EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
                     break;
-                case 502:
+                case EscCmd.COMMAND_502:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                     break;
-                case 503:
+                case EscCmd.COMMAND_503:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
                     break;
-                case 504:
+                case EscCmd.COMMAND_504:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_FILTER);
                     break;
-                case 505:
+                case EscCmd.COMMAND_505:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_LONG_MESSAGE);
                     break;
-                case 506:
+                case EscCmd.COMMAND_506:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
                     break;
-                case 507:
+                case EscCmd.COMMAND_507:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
                     break;
-                case 508:
+                case EscCmd.COMMAND_508:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME);
                     break;
-                case 509:
+                case EscCmd.COMMAND_509:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_PHONETIC);
                     break;
-                case 510:
+                case EscCmd.COMMAND_510:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
                     break;
-                case 511:
+                case EscCmd.COMMAND_511:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
                     break;
-                case 512:
+                case EscCmd.COMMAND_512:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
                     break;
-                case 513:
+                case EscCmd.COMMAND_513:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     break;
-                case 514:
+                case EscCmd.COMMAND_514:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
                     break;
-                case 515:
+                case EscCmd.COMMAND_515:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
                     break;
-                case 516:
+                case EscCmd.COMMAND_516:
                     setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD);
                     break;
-                case 10:
+                case EscCmd.COMMAND_10:
                     pasteClipboard();
                     break;
-                case 11:
+                case EscCmd.COMMAND_11:
                     mIMECtrlBeginBatchEditDisable = !getDevBoolean(this.getContext(), "BatchEditDisable", false);
                     setDevBoolean(this.getContext(), "BatchEditDisable", mIMECtrlBeginBatchEditDisable);
                     break;
-                case 12:
+                case EscCmd.COMMAND_12:
                     mIMECtrlBeginBatchEditDisableHwKbdChk = !getDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", false);
                     setDevBoolean(this.getContext(), "BatchEditDisableHwKbdChk", mIMECtrlBeginBatchEditDisableHwKbdChk);
                     break;
-                case 13:
+                case EscCmd.COMMAND_13:
                     break;
-                case 14:
+                case EscCmd.COMMAND_14:
                     break;
-                case 15:
+                case EscCmd.COMMAND_15:
                     break;
-                case 99:
+                case EscCmd.COMMAND_99:
                     testFunc();
                     break;
-                case 100:
+                case EscCmd.COMMAND_100:
                     boolean tc = !getDevBoolean(this.getContext(), "ThumbCtrl", false);
                     setDevBoolean(this.getContext(), "ThumbCtrl", tc);
                     if (mKeyListener != null) mKeyListener.setThumbCtrl(tc);
                     break;
-                case 101:
+                case EscCmd.COMMAND_101:
                     boolean sez = !getDevBoolean(this.getContext(), "SwapESC2HZ", false);
                     setDevBoolean(this.getContext(), "SwapESC2HZ", sez);
                     if (mKeyListener != null) mKeyListener.setSwapESC2HZ(sez);
                     break;
-                case 102:
+                case EscCmd.COMMAND_102:
                     boolean yr = !getDevBoolean(this.getContext(), "JpYenRo", false);
                     setDevBoolean(this.getContext(), "JpYenRo", yr);
                     if (mKeyListener != null) mKeyListener.setJpYenRo(yr);
                     break;
-                case 990:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0990, null);
+                case EscCmd.COMMAND_990:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0990, null);
                     break;
-                case 998:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0998, null);
+                case EscCmd.COMMAND_998:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0998, null);
                     break;
-                case 999:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0999, null);
+                case EscCmd.COMMAND_999:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0999, null);
                     break;
-                case 1000:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1000, null);
+                case EscCmd.COMMAND_1000:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1000, null);
                     break;
-                case 1001:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1001, null);
+                case EscCmd.COMMAND_1001:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1001, null);
                     break;
-                case 1010:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1010, null);
+                case EscCmd.COMMAND_1010:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1010, null);
                     break;
-                case 1011:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1011, null);
+                case EscCmd.COMMAND_1011:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1011, null);
                     break;
-                case 1002:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1002, null);
+                case EscCmd.COMMAND_1002:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1002, null);
                     break;
-                case 1003:
+                case EscCmd.COMMAND_1003:
                     ((AppCompatActivity) this.getContext()).onKeyUp(KeycodeConstants.KEYCODE_MENU, null);
                     break;
-                case 1006:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1006, null);
+                case EscCmd.COMMAND_1006:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1006, null);
                     break;
-                case 1007:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1007, null);
+                case EscCmd.COMMAND_1007:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1007, null);
                     break;
-                case 1008:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1008, null);
+                case EscCmd.COMMAND_1008:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1008, null);
                     break;
-                case 1009:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff1009, null);
+                case EscCmd.COMMAND_1009:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1009, null);
                     break;
-                case 9998:
-                    ((AppCompatActivity) this.getContext()).onKeyUp(0xffff9998, null);
+                case EscCmd.COMMAND_9998:
+                    ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_9998, null);
                     break;
                 default:
                     break;
@@ -1995,7 +1995,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (stat == PREIME_SHORTCUT_ACTION) {
             doImeShortcutsAction();
         } else if (stat == PREIME_SHORTCUT_ACTION2) {
-            doImeShortcutsAction(1261);
+            doImeShortcutsAction(SHORTCUTS_ACTION_1261);
         } else if (stat == PREIME_SHORTCUT_ACTION_MENU) {
             ((AppCompatActivity) this.getContext()).onKeyUp(stat, null);
         } else if (stat == PREIME_CTRL_SPACE_UP) {
@@ -2064,17 +2064,32 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         doImeShortcutsAction(mIMEShortcutsAction);
     }
 
+    // Action
+    public static final int SHORTCUTS_ACTION_0  = 0;
+    public static final int SHORTCUTS_ACTION_50 = 50;
+    public static final int SHORTCUTS_ACTION_51 = 51;
+    public static final int SHORTCUTS_ACTION_52 = 52;
+    public static final int SHORTCUTS_ACTION_53 = 53;
+    public static final int SHORTCUTS_ACTION_54 = 54;
+    public static final int SHORTCUTS_ACTION_60 = 60;
+    public static final int SHORTCUTS_ACTION_1261 = 1261;
+    public static final int SHORTCUTS_ACTION_1300 = 1300;
+    public static final int SHORTCUTS_ACTION_1360 = 1360;
+    public static final int SHORTCUTS_ACTION_1361 = 1361;
+    public static final int SHORTCUTS_ACTION_1362 = 1362;
+    public static final int SHORTCUTS_ACTION_1365 = 1365;
+
     public void doImeShortcutsAction(int action) {
-        if (action == 0) {
+        if (action == SHORTCUTS_ACTION_0) {
             doToggleSoftKeyboard();
-        } else if (action == 1261) {
-            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0056, null);
-        } else if (action == 1361) {
-            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0061, null);
-        } else if (action == 1362) {
-            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0062, null);
-        } else if (action == 1365) {
-            ((AppCompatActivity) this.getContext()).onKeyUp(0xffff0063, null);
+        } else if (action == SHORTCUTS_ACTION_1261) {
+            ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0056, null);
+        } else if (action == SHORTCUTS_ACTION_1361) {
+            ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0061, null);
+        } else if (action == SHORTCUTS_ACTION_1362) {
+            ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0062, null);
+        } else if (action == SHORTCUTS_ACTION_1365) {
+            ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_0063, null);
         } else {
             int imeType = mUseCookedIme ? EditorInfo.TYPE_CLASS_TEXT : EditorInfo.TYPE_NULL;
             if (mIMEInputType == imeType) {
@@ -2086,23 +2101,23 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public void setImeShortcutsAction(int action) {
-        if (action == 60 || action == 1360) {
+        if (action == SHORTCUTS_ACTION_60 || action == SHORTCUTS_ACTION_1360) {
             action = mIMEInputTypeDefault;
         }
         switch (action) {
-            case 50:
+            case SHORTCUTS_ACTION_50:
                 setIMEInputType(EditorInfo.TYPE_CLASS_TEXT);
                 break;
-            case 51:
+            case SHORTCUTS_ACTION_51:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 break;
-            case 52:
+            case SHORTCUTS_ACTION_52:
                 setIMEInputType(EditorInfo.TYPE_TEXT_VARIATION_URI);
                 break;
-            case 53:
+            case SHORTCUTS_ACTION_53:
                 setNoSuggestionModeIMEInputType();
                 break;
-            case 54:
+            case SHORTCUTS_ACTION_54:
                 setIMEInputType(EditorInfo.TYPE_NULL);
                 break;
             default:
@@ -2347,7 +2362,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         int cursorStyle = mKeyListener.getCursorMode();
         if ((cursorStyle & CTRL_MODE_MASK) == 0) {
-            ((Activity) this.getContext()).onKeyUp(0xffff1364, null);
+            ((AppCompatActivity) this.getContext()).onKeyUp(EscCmd.VKEYCODE_1364, null);
         }
 
         for (int i = mTopRow; i < endLine; i++) {
