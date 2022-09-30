@@ -1949,9 +1949,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && (event.getAction() == KeyEvent.ACTION_UP)) {
-            ((Activity) this.getContext()).onKeyUp(0xffffffc0, null);
-        }
         return super.onKeyPreIme(keyCode, event);
     }
 

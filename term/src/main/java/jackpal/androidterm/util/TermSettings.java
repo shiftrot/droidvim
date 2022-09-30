@@ -659,6 +659,7 @@ public class TermSettings {
     }
 
     public int getBackKeyAction() {
+        if (mBackKeyAction == BACK_KEY_TOGGLE_IME_ESC) mBackKeyAction = BACK_KEY_TOGGLE_IME;
         return mBackKeyAction;
     }
 

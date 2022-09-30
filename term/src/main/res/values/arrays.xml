@@ -156,9 +156,7 @@
         <item>Quit</item>
         <item>Closes activity, leaving sessions running</item>
         <item>Sends ESC to terminal</item>
-        <item>Sends TAB to terminal</item>
         <item>Toggle soft keyboard</item>
-        <item>Toggle soft keyboard (+ESC)</item>
         <item>Default</item>
     </string-array>
 

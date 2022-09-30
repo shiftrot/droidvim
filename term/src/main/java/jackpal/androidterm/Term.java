@@ -2064,8 +2064,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         MenuItem item;
         boolean visibility;
         item = menu.findItem(R.id.menu_toggle_soft_keyboard);
-        visibility = (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME)
-                && (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME_ESC);
+        visibility = (mSettings.getBackKeyAction() != TermSettings.BACK_KEY_TOGGLE_IME);
         item.setVisible(visibility);
         item = menu.findItem(R.id.menu_disable_keepscreen);
         visibility = ((getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) != 0);
@@ -3032,11 +3031,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case KeyEvent.KEYCODE_MENU:
                 openOptionsMenu();
                 break;
-            case 0xffffffc0:
-                if (mSettings.getBackKeyAction() == TermSettings.BACK_KEY_TOGGLE_IME_ESC) {
-                    sendKeyStrings("\u001b", false);
-                }
-                break;
             case 0xffff0003:
                 copyFileToClipboard(getClipboardFile());
                 return true;
@@ -3179,7 +3173,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 finish();
                 return true;
             case TermSettings.BACK_KEY_TOGGLE_IME:
-            case TermSettings.BACK_KEY_TOGGLE_IME_ESC:
                 doToggleSoftKeyboard();
                 return true;
             case TermSettings.BACK_KEY_DEFAULT:

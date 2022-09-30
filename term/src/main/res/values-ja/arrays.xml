@@ -150,9 +150,7 @@
         <item>終了</item>
         <item>アクティビティを閉じ，セッションは実行を継続</item>
         <item>ターミナルにESCを送出</item>
-        <item>ターミナルにTABを送出</item>
         <item>IMEのトグル</item>
-        <item>IMEのトグル (+ESC)</item>
         <item>デフォルト</item>
     </string-array>
 
