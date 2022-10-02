@@ -75,6 +75,7 @@
     </queries>
 
     <application
+        android:localeConfig="@xml/locales_config"
         android:enableOnBackInvokedCallback="true"
         android:requestLegacyExternalStorage="true"
         android:extractNativeLibs="true"
