@@ -644,7 +644,14 @@ final class TermVimInstaller {
             }
 
             String symlink = "internalStorage";
-            File src = new File(TermService.getEXTSTORAGE());
+            String internal;
+            File sharedDir = Environment.getExternalStorageDirectory();
+            if (sharedDir.canWrite()) {
+                internal = sharedDir.toString();
+            } else {
+                internal = TermService.getAPPEXTFILES();
+            }
+            File src = new File(internal);
             shell("rm " + new File(storageDir, symlink).getAbsolutePath());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Os.symlink(src.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
