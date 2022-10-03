@@ -20,6 +20,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Instrumentation;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -171,6 +172,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_STORAGE_DELETE = 10001;
     public static final int REQUEST_STORAGE_CREATE = 10002;
     public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
+    public static final int REQUEST_NOTIFICATIONS = 10004;
     public static final String EXEC_STATUS_CHECK_CMD = "exec.check";
     public static final String EXEC_STATUS_CHECK_CMD_FILE = "/" + EXEC_STATUS_CHECK_CMD;
     public static final String EXEC_STATUS_FILE = "/exec.ok";
@@ -1106,8 +1108,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @SuppressLint("NewApi")
-    void permissionCheckExternalStorage() {
+    void permissionCheck() {
         if (AndroidCompat.SDK < Build.VERSION_CODES.M) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (!notificationManager.areNotificationsEnabled()) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_NOTIFICATIONS);
+            }
+        }
         if (SCOPED_STORAGE) {
             manageExternalStoragePermission();
         } else {
@@ -1143,6 +1151,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("NewApi")
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
+            case REQUEST_NOTIFICATIONS:
+                // Do nothing
+                break;
             case REQUEST_STORAGE:
                 for (int i = 0; i < permissions.length; i++) {
                     if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -1163,11 +1174,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                     dialog.show();
                                 }
                             });
-                        } else {
-                            String permisson = permissions[i];
-                            if (shouldShowRequestPermissionRationale(permisson)) {
-                                doWarningDialog(getString(R.string.storage_permission_error), getString(R.string.storage_permission_warning), "storage_permission", false);
-                            }
                         }
                         break;
                     }
@@ -1182,8 +1188,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             String permission = permissions[i];
                             if (shouldShowRequestPermissionRationale(permission)) {
                                 showSnackbar(getString(R.string.storage_permission_error));
-                            } else {
-                                doWarningDialog(getString(R.string.storage_permission_error), getString(R.string.storage_permission_warning), "storage_permission", false);
                             }
                         }
                         switch (requestCode) {
@@ -1634,12 +1638,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     } else {
                         ShellTermSession.setPostCmd(postCmd);
                     }
-                    permissionCheckExternalStorage();
+                    permissionCheck();
                     if (FLAVOR_VIM) openDrawerAfterInstall();
                 }
             });
         } else {
-            permissionCheckExternalStorage();
+            permissionCheck();
         }
         mFirst = false;
         return cmd;
@@ -1699,7 +1703,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     dlg.setCancelable(false);
                     dlg.setCanceledOnTouchOutside(false);
                     dlg.show();
-                    permissionCheckExternalStorage();
+                    permissionCheck();
                 }
             }, true);
         } catch (Exception e) {

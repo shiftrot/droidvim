@@ -84,7 +84,7 @@ public class RemoteInterface extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
-            permissionCheckExternalStorage();
+            permissionCheck();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -180,7 +180,7 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     @SuppressLint("NewApi")
-    void permissionCheckExternalStorage() {
+    void permissionCheck() {
         if ((SCOPED_STORAGE) || (AndroidCompat.SDK < Build.VERSION_CODES.M)) {
             handleIntent();
             return;

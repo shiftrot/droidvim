@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.BufferedInputStream;
@@ -238,11 +240,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
-        if (FLAVOR_VIM && AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-            loadHeadersFromResource(R.xml.pref_headers_vim, target);
-        } else {
-            loadHeadersFromResource(R.xml.pref_headers, target);
-        }
+        loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
     /**
@@ -259,6 +257,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 || KeyboardPreferenceFragment.class.getName().equals(fragmentName)
                 || AppsPreferenceFragment.class.getName().equals(fragmentName)
                 || ShellPreferenceFragment.class.getName().equals(fragmentName)
+                || PermissionPreferenceFragment.class.getName().equals(fragmentName)
                 || PrefsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -270,9 +269,9 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         }
     }
 
-    private void notAvailable() {
+    private void message(String message) {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setMessage(getString(R.string.this_function_is_not_available));
+        bld.setMessage(message);
         bld.setPositiveButton(getString(android.R.string.ok), null);
         bld.create().show();
     }
@@ -378,7 +377,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         bld.create().show();
     }
 
-    void applicationInfo() {
+    private void applicationInfo() {
         Intent intent = new Intent();
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
@@ -388,7 +387,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         startActivity(intent);
     }
 
-    void licensePrefs() {
+    private void licensePrefs() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setMessage(this.getString(R.string.license_text));
@@ -416,34 +415,70 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     @SuppressLint("NewApi")
-    void prefsPicker() {
+    private void prefsPicker() {
         doPrefsPicker();
     }
 
-    void batteryOptimizations() {
+    private void batteryOptimizations() {
         String message = getString(R.string.battery_optimizations_dialog_message);
-        if (mTermPreference != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             final String packageName = mTermPreference.getPackageName();
             PowerManager powerManager = mTermPreference.getSystemService(PowerManager.class);
             if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
                 try {
-                    Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    @SuppressLint("BatteryLife") Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                     intent.setData(Uri.parse("package:" + packageName));
                     startActivity(intent);
-                    return;
                 } catch (Exception e) {
-                    message = e.getMessage();
+                    if (mTermPreference != null) mTermPreference.message(e.getMessage());
                 }
+                return;
             }
         }
-        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-        bld.setIcon(android.R.drawable.ic_dialog_info);
-        bld.setMessage(message);
-        bld.setPositiveButton(this.getString(android.R.string.ok), null);
-        bld.create().show();
+        if (mTermPreference != null) mTermPreference.message(message);
     }
 
-    @SuppressLint("NewApi")
+    private void requestNotificationsPermission() {
+        String message = getString(R.string.request_permission_error);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            try {
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                if (!notificationManager.areNotificationsEnabled()) {
+                    requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_PERMISSION);
+                } else {
+                    if (mTermPreference != null) mTermPreference.message(message);
+                }
+            } catch (Exception e) {
+                if (mTermPreference != null) mTermPreference.message(e.getMessage());
+            }
+            return;
+        }
+        if (mTermPreference != null) mTermPreference.message(message);
+    }
+
+    private void requestStorageAccessPermission() {
+        String message = getString(R.string.request_permission_error);
+        if (SCOPED_STORAGE && !FLAVOR_DROIDVIM) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+            } catch (Exception e) {
+                if (mTermPreference != null) mTermPreference.message(e.getMessage());
+            }
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+            } else {
+                if (mTermPreference != null) mTermPreference.message(message);
+            }
+            return;
+        }
+        if (mTermPreference != null) mTermPreference.message(message);
+    }
+
     private void doPrefsPicker() {
         final Context context = this;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
@@ -619,11 +654,14 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     public static final int REQUEST_HOME_DIRECTORY = REQUEST_FONT_PICKER + 4;
     public static final int REQUEST_STARTUP_DIRECTORY = REQUEST_FONT_PICKER + 5;
     public static final int REQUEST_WRITE_PREFS_PICKER = REQUEST_FONT_PICKER + 6;
+    public static final int REQUEST_PERMISSION = REQUEST_FONT_PICKER + 7;
 
     @Override
     @SuppressLint("NewApi")
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
+            case REQUEST_PERMISSION:
+                break;
             case REQUEST_STORAGE_FONT_PICKER:
             case REQUEST_STORAGE_PREFS_PICKER:
                 for (int i = 0; i < permissions.length; i++) {
@@ -1238,11 +1276,11 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 }).show();
     }
 
-    public static class PrefsPreferenceFragment extends PreferenceFragment {
+    public static class PermissionPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_user_setting);
+            addPreferencesFromResource(R.xml.pref_permissions);
 
             final String BATTERY_OPTIMIZATIONS_KEY = "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS";
             Preference manageBatteryOptimizations = getPreferenceScreen().findPreference(BATTERY_OPTIMIZATIONS_KEY);
@@ -1256,22 +1294,50 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 });
             }
 
-            final String MANAGE_EXTERNAL_STORAGE_KEY = "MANAGE_EXTERNAL_STORAGE";
-            Preference manageExternalStorage = getPreferenceScreen().findPreference(MANAGE_EXTERNAL_STORAGE_KEY);
-            if ((manageExternalStorage != null) && (AndroidCompat.SDK >= Build.VERSION_CODES.S)) {
-                manageExternalStorage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            final String POST_NOTIFICATIONS_PERMISSON_KEY = "REQUEST_POST_NOTIFICATIONS_PERMISSION";
+            Preference postNotifications = getPreferenceScreen().findPreference(POST_NOTIFICATIONS_PERMISSON_KEY);
+            if (postNotifications != null) {
+                postNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        try {
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            if (mTermPreference != null) mTermPreference.notAvailable();
-                        }
+                        if (mTermPreference != null) mTermPreference.applicationInfo();
+                        // if (mTermPreference != null) mTermPreference.requestNotificationsPermission();
                         return true;
                     }
                 });
             }
+
+            final String STORAGE_ACCESS_PERMISSION_KEY = "REQUEST_STORAGE_ACCESS_PERMISSION";
+            Preference storageAccessPermissions = getPreferenceScreen().findPreference(STORAGE_ACCESS_PERMISSION_KEY);
+            if (storageAccessPermissions != null) {
+                storageAccessPermissions.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) mTermPreference.applicationInfo();
+                        // if (mTermPreference != null) mTermPreference.requestStorageAccessPermission();
+                        return true;
+                    }
+                });
+            }
+
+            final String APP_INFO_KEY = "app_info";
+            Preference appInfoPref = getPreferenceScreen().findPreference(APP_INFO_KEY);
+            appInfoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.applicationInfo();
+                    return true;
+                }
+            });
+
+            setHasOptionsMenu(true);
+        }
+    }
+    public static class PrefsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_user_setting);
 
             if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
                 final String PREFS_KEY = "prefs_rw";

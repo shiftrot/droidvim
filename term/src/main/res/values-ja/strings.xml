@@ -119,10 +119,16 @@
     <string name="stop_loading">このページの読込を中止</string>
 
     <!-- Preference dialog -->
+    <string name="permission_preferences">権限</string>
     <string name="prefs_preferences">アプリ設定</string>
     <string name="title_battery_optimizations">バッテリーの最適化を無効化</string>
-    <string name="battery_optimizations_summary">バッテリー最適化を無効にして, バックグラウンドでの強制終了を防ぎます.</string>
+    <string name="summary_battery_optimizations">バッテリー最適化を無効にして, バックグラウンドでの強制終了を防ぎます.</string>
     <string name="battery_optimizations_dialog_message">すでに無効化されている, または実行する必要がありません</string>
+    <string name="title_notifications_permission_request">通知の権限</string>
+    <string name="summary_notifications_permission_request">通知を許可しない場合, このアプリケーションの動作状況は表示されません.\n通知を有効にすることを強くおすすめします.</string>
+    <string name="title_storage_access_permisson_request">ストレージの権限</string>
+    <string name="summary_storage_access_permisson_request">内部ストレージへの直接アクセスには, ストレージの権限が必要です.</string>
+    <string name="request_permission_error">この権限はすでに有効になっている, またはこの権限をリクエストする必要がありません.</string>
     <string name="title_prefs_preference">保存/読込</string>
     <string name="prefs_dialog_rw">設定の保存/読込を行います.</string>
     <string name="prefs_read">読込</string>
@@ -151,6 +157,8 @@
     <string name="title_notification_preference">アプリ情報</string>
     <string name="title_app_info_preference">アプリ情報</string>
     <string name="summary_notification_preference">通知はアプリ情報から非表示にすることができますが, 重要度の低いメッセージは表示されなくなります.</string>
+
+    <string name="notifications_permission_warning">通知を許可しない場合, このアプリケーションの動作状況は表示されません.\n通知を有効にすることを強くおすすめします.</string>
 
     <string name="title_statusbar_icon_preference">ステータスバーアイコン</string>
     <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示</string>
@@ -530,7 +538,6 @@
     <string name="storage_manager">管理</string>
     <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
     <string name="storage_permission_granted">設定を有効にするため, このアプリを再起動してください.</string>
-    <string name="storage_permission_warning">内部ストレージに直接アクセスできない, 特定の外部ストレージにアクセスできないなどファイルアクセスが制限されています.</string>
     <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
     <string name="storage_write_error_title">ファイルの書き込みに失敗しました</string>
     <string name="storage_write_error">・ドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)\n・ファイルの書き込み先が正常に動作しているか確認してください.</string>

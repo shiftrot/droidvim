@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+        android:title="@string/title_battery_optimizations"
+        android:summary="@string/summary_battery_optimizations"/>
+
+    <Preference
+        android:key="REQUEST_POST_NOTIFICATIONS_PERMISSION"
+        android:title="@string/title_notifications_permission_request"
+        android:summary="@string/notifications_permission_warning"/>
+
+    <Preference
+        android:key="app_info"
+        android:title="@string/title_app_info_preference"/>
+
+</PreferenceScreen>
+
