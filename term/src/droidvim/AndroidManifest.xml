@@ -20,8 +20,7 @@
             android:authorities="com.droidvim.storage.documents"
             android:grantUriPermissions="true"
             android:exported="true"
-            android:permission="android.permission.MANAGE_DOCUMENTS"
-            android:enabled="@bool/atLeastKitKat">
+            android:permission="android.permission.MANAGE_DOCUMENTS">
             <intent-filter>
                 <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
             </intent-filter>

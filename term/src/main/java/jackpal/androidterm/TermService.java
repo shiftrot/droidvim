@@ -274,10 +274,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         builder.setSmallIcon(statusIcon);
         builder.setAutoCancel(false);
         builder.setOngoing(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            builder.setShowWhen(true);
-            builder.setWhen(System.currentTimeMillis());
-        }
+        builder.setShowWhen(true);
+        builder.setWhen(System.currentTimeMillis());
         builder.setPriority(priority);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

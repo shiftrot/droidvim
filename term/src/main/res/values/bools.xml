@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <bool name="atMostJellyBeanMR2">true</bool>
-    <bool name="atLeastKitKat">false</bool>
     <bool name="isTablet">false</bool>
 </resources>
 

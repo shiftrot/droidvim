@@ -1,4 +1,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="pref_key_show_dotfiles"
+        android:title="@string/title_show_dotfiles"
+        android:summary="@string/summary_show_dotfiles"
+        android:defaultValue="@bool/pref_show_dotfiles_default"/>
 
     <PreferenceScreen
         android:title="@string/external_app_button"
@@ -45,6 +50,18 @@
         android:entries="@array/entries_app_filepicker_preference"
         android:entryValues="@array/entryvalues_app_filepicker_preference"
         android:dialogTitle="@string/title_cloud_onedrive_preference"/>
+
+    <SwitchPreference
+        android:title="@string/title_cloud_storage_read_check"
+        android:key="cloud_storage_read_check"
+        android:summary="@string/summary_cloud_storage_read_check"
+        android:defaultValue="@bool/pref_cloud_storage_read_check_default"/>
+
+    <SwitchPreference
+        android:title="@string/title_cloud_storage_write_check"
+        android:key="cloud_storage_write_check"
+        android:summary="@string/summary_cloud_storage_write_check"
+        android:defaultValue="@bool/pref_cloud_storage_write_check_default"/>
 
     <ListPreference
         android:key="html_viewer_mode"

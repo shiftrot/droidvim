@@ -48,22 +48,21 @@
         android:entryValues="@array/entryvalues_vim_backaction_preference"
         android:dialogTitle="@string/dialog_title_backaction_preference"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/title_volume_as_cursor_tracking_preference"
         android:key="volume_as_cursor"
         android:defaultValue="@bool/pref_volume_as_cursor_tracking_default" />
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/title_mouse_tracking_preference"
         android:key="mouse_tracking"
         android:defaultValue="@bool/pref_mouse_tracking_default"
         android:summary="@string/summary_mouse_tracking_preference"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/title_pinch_in_out_preference"
         android:key="pinch_in_out"
         android:defaultValue="@bool/pref_pinch_in_out_default"
         android:summary="@string/summary_pinch_in_out_preference"/>
-
 
 </PreferenceScreen>

@@ -6,7 +6,7 @@
     <string name="title_functionbar_fixed_tab">Tab (固定)</string>
     <string name="title_functionbar_menu">≡ - メニュー</string>
     <string name="title_functionbar_softkeyboard">"🔤"</string>
-    <string name="title_functionbar_quit">[Q] - 終了</string>
+    <string name="title_functionbar_quit">"📲" - 終了</string>
     <string name="title_functionbar_voice_input">"🎤" - 音声入力</string>
     <string name="title_functionbar_vim_yank">&quot;*yy - Vim ヤンクコマンド</string>
     <string name="title_functionbar_vim_paste">&quot;*p - Vim 貼り付けコマンド</string>

@@ -36,19 +36,19 @@
         android:dialogTitle="@string/dialog_title_vi_cooperative_mode_preference"/>
 
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/ignore_xoff"
         android:key="ignore_xoff"
         android:defaultValue="@bool/pref_ignore_xoff_default"
         android:summaryOn="@string/ignore_xoff_summary_on"
         android:summaryOff="@string/ignore_xoff_summary_off"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/alt_sends_esc"
         android:key="alt_sends_esc"
         android:defaultValue="@bool/pref_alt_sends_esc_default"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/restart_ime"
         android:key="restart_ime"
         android:defaultValue="@bool/pref_restart_ime_default"

@@ -61,24 +61,24 @@
 
     </PreferenceScreen>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="CtrlSpaceToShell"
         android:defaultValue="false"
         android:title="@string/pref_title_ctrl_space_to_shell"
         android:summary="@string/pref_summary_ctrl_space_to_shell" />
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="force_normal_input_to_physical_keyboard"
         android:defaultValue="@bool/pref_force_normal_input_to_physical_keyboard"
         android:title="@string/pref_force_normal_input_to_physical_keyboard"
         android:summary="@string/summary_force_normal_input_to_physical_keyboard_preference"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/alt_uses_8bit_meta"
         android:key="alt_uses_8bit_meta"
         android:defaultValue="@bool/pref_alt_uses_8bit_meta_default"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:title="@string/back_as_esc"
         android:key="back_as_esc"
         android:defaultValue="@bool/pref_back_as_esc_default"
