@@ -24,9 +24,7 @@ public abstract class KeyCharacterMapCompat {
 
     public static KeyCharacterMapCompat wrap(Object map) {
         if (map != null) {
-            if (AndroidCompat.SDK >= 11) {
-                return new KeyCharacterMapApi11OrLater(map);
-            }
+            return new KeyCharacterMapApi11OrLater(map);
         }
         return null;
     }

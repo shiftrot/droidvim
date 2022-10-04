@@ -1,9 +1,7 @@
 package jackpal.androidterm;
 
-import android.annotation.TargetApi;
 import android.os.*;
 import androidx.annotation.NonNull;
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -102,21 +100,7 @@ public class TermExec {
     {
         final int integerFd;
 
-        if (Build.VERSION.SDK_INT >= 12)
-            integerFd = FdHelperHoneycomb.getFd(masterFd);
-        else {
-            try {
-                if (descriptorField == null) {
-                    descriptorField = FileDescriptor.class.getDeclaredField("descriptor");
-                    descriptorField.setAccessible(true);
-                }
-
-                integerFd = descriptorField.getInt(masterFd.getFileDescriptor());
-            } catch (Exception e) {
-                throw new IOException("Unable to obtain file descriptor on this OS version: " + e.getMessage());
-            }
-        }
-
+        integerFd = FdHelperHoneycomb.getFd(masterFd);
         return createSubprocessInternal(cmd, args, envVars, integerFd);
     }
 
@@ -124,7 +108,6 @@ public class TermExec {
 }
 
 // prevents runtime errors on old API versions with ruthless verifier
-@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 class FdHelperHoneycomb {
     static int getFd(ParcelFileDescriptor descriptor) {
         return descriptor.getFd();

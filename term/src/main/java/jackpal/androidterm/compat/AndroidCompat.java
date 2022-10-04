@@ -1,6 +1,6 @@
 package jackpal.androidterm.compat;
 
-import static android.os.Build.VERSION;
+import android.os.Build;
 
 /**
  * The classes in this package take advantage of the fact that the VM does
@@ -32,7 +32,7 @@ public class AndroidCompat {
         } catch (VerifyError e) {
             // We must be at an SDK level less than 4.
             try {
-                result = VERSION.SDK_INT;
+                result = Build.VERSION.SDK_INT;
             } catch (NumberFormatException e2) {
                 // Couldn't parse string, assume the worst.
                 result = 1;
@@ -44,6 +44,6 @@ public class AndroidCompat {
 
 class AndroidLevel4PlusCompat {
     static int getSDKInt() {
-        return VERSION.SDK_INT;
+        return Build.VERSION.SDK_INT;
     }
 }

@@ -18,7 +18,6 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Instrumentation;
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -50,7 +49,6 @@ import android.os.StatFs;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
-import android.system.Os;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -89,7 +87,6 @@ import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -130,7 +127,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
@@ -321,7 +317,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public static void showToast(final Toast toast) {
-        if (AndroidCompat.SDK >= Build.VERSION_CODES.O && mTheme == 2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mTheme == 2) {
             View v = toast.getView();
             if (v instanceof ViewGroup) {
                 ViewGroup g = (ViewGroup) v;
@@ -344,7 +340,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     static SyncFileObserver restoreSyncFileObserver(AppCompatActivity activity) {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) return null;
         saveSyncFileObserver();
         File dir = getScratchCacheDir(activity);
         AppCompatActivity prevActivity = null;
@@ -704,7 +699,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
             };
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (mOnBackInvokedCallback == null) {
                 mOnBackInvokedCallback = new OnBackInvokedCallback() {
                     @Override
@@ -722,7 +717,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setOnBackPressedCallbackEnabled(boolean enabled) {
         if (mOnBackPressedCallback != null) mOnBackPressedCallback.setEnabled(enabled);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             OnBackInvokedDispatcher invokedDispatcher = getOnBackInvokedDispatcher();
             if (invokedDispatcher != null) {
                 invokedDispatcher.unregisterOnBackInvokedCallback(mOnBackInvokedCallback);
@@ -799,7 +794,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 app.label = getString(R.string.app_files);
             }
             int visibility = (app.action > 0) ? View.VISIBLE : View.GONE;
-            if (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT) visibility = View.GONE;
             Button button = findViewById(app.button);
             button.setVisibility(visibility);
             if (visibility == View.VISIBLE) {
@@ -850,30 +844,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         Button button;
         if (FLAVOR_VIM) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                button = findViewById(R.id.drawer_storage_button);
-                button.setVisibility(View.VISIBLE);
-                button = findViewById(R.id.drawer_createfile_button);
-                button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(getString(R.string.clear_cache));
-            } else {
-                button = findViewById(R.id.drawer_clear_cache_button);
-                button.setVisibility(View.VISIBLE);
-            }
+            button = findViewById(R.id.drawer_storage_button);
+            button.setVisibility(View.VISIBLE);
+            button = findViewById(R.id.drawer_createfile_button);
+            button.setVisibility(View.VISIBLE);
+            mFilePickerItems.add(getString(R.string.clear_cache));
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                button = findViewById(R.id.drawer_createfile_button);
-                button.setVisibility(View.VISIBLE);
-                mFilePickerItems.add(getString(R.string.clear_cache));
-            } else {
-                button = findViewById(R.id.drawer_clear_cache_button);
-                button.setVisibility(View.VISIBLE);
-            }
+            button = findViewById(R.id.drawer_createfile_button);
+            button.setVisibility(View.VISIBLE);
+            mFilePickerItems.add(getString(R.string.clear_cache));
         }
         mFilePickerItems.add(getString(R.string.create_symlinks));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFilePickerItems.add(getString(R.string.backup_restore));
-        }
+        mFilePickerItems.add(getString(R.string.backup_restore));
         if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.menu_edit_vimrc));
         setExtraButton();
         findViewById(R.id.drawer_extra_button).setOnClickListener(new OnClickListener() {
@@ -1040,7 +1022,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
    static public Intent getDocumentsuiIntent(Context context, Intent intent) {
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return intent;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return intent;
         return addDocumentsuiClassName(context, intent);
     }
 
@@ -1109,7 +1091,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("NewApi")
     void permissionCheck() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.M) return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (!notificationManager.areNotificationsEnabled()) {
@@ -1333,12 +1315,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setupStorageSymlinks(final Context context) {
-        if (AndroidCompat.SDK < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            return;
-        }
-
         if (TermVimInstaller.setupStorageSymlinks(this)) {
             alert("Symbolic links are created.");
         } else {
@@ -1360,22 +1337,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         doWarningDialogRun(getString(R.string.menu_edit_vimrc), message, "menu_edit_vimrc", false, editVimrc);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupFromHome() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
         ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void restoreToHome() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
         ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backupAndRestoreHome() {
-        if (AndroidCompat.SDK < Build.VERSION_CODES.LOLLIPOP) return;
-
         ArrayList<String> itemList = new ArrayList<>();
         itemList.add(getString(R.string.backup_home_directory));
         itemList.add(getString(R.string.restore_home_directory));
@@ -1504,7 +1474,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mSettings.getShowDotfiles() && message == null) {
+        if (mSettings.getShowDotfiles() && message == null) {
             key = "show_dotfiles_warning";
             warning = getPrefBoolean(Term.this, key, true);
             if (warning && mRandom.nextInt(50) == 1) {
@@ -1591,12 +1561,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     @SuppressLint("NewApi")
     private void restart() {
-        if (AndroidCompat.SDK >= 11) {
-            recreate();
-        } else {
-            finish();
-            startActivity(getIntent());
-        }
+        recreate();
     }
 
     private TermSession createTermSession() throws IOException {
@@ -1901,15 +1866,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             setCurrentOrientation();
                         } else if (getString(R.string.copy_share_current_screen).equals(items[which])) {
                             String strings = getCurrentEmulatorView().getTranscriptCurrentText();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                showTextInWebview("html_text", strings);
-                            } else {
-                                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                                        .getManager(getApplicationContext());
-                                clip_setText(clip, strings);
-                                String mes = getString(R.string.toast_clipboard);
-                                showSnackbar(mes);
-                            }
+                            showTextInWebview("html_text", strings);
                         } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
                             doHideSoftKeyboard();
                             String strings = getCurrentEmulatorView().getTranscriptText().trim();
@@ -2093,9 +2050,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_edit_vimrc);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_reload);
         if (!FLAVOR_VIM) menu.removeItem(R.id.menu_tutorial);
-        if (!FLAVOR_VIM || (AndroidCompat.SDK < Build.VERSION_CODES.KITKAT)) {
-            menu.removeItem(R.id.menu_drawer);
-        }
+        if (!FLAVOR_VIM) menu.removeItem(R.id.menu_drawer);
         return true;
     }
 
@@ -2130,15 +2085,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             } else {
                 strings = getCurrentEmulatorView().getTranscriptText().trim();
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                showTextInWebview("html_text", strings);
-            } else {
-                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                        .getManager(getApplicationContext());
-                clip_setText(clip, strings);
-                String mes = getString(R.string.toast_clipboard);
-                showSnackbar(mes);
-            }
+            showTextInWebview("html_text", strings);
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
         } else if (id == R.id.menu_toggle_soft_keyboard) {
@@ -2521,7 +2468,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .show();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void doFilePicker() {
         if (SCOPED_STORAGE) {
             intentFilePicker();
@@ -2615,11 +2561,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void documentTreePicker(int requestCode) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
-            doStartActivityForResult(intent, requestCode);
-        }
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
+        doStartActivityForResult(intent, requestCode);
     }
 
     private void doStartActivityForResult(Intent intent, int requestCode) {
@@ -2629,7 +2573,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         startActivityForResult(intent, requestCode);
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void intentFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -2640,8 +2583,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public void requestDocumentTreeWritePermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_info);
         b.setMessage(getString(R.string.open_document_tree_summary));
@@ -2719,7 +2660,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .show();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileDelete() {
         if (SCOPED_STORAGE) {
             doFileDelete();
@@ -2730,7 +2670,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void doFileDelete() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -2768,7 +2707,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         b.show();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fileCreate() {
         if (SCOPED_STORAGE) {
             doFileCreate();
@@ -2779,7 +2717,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void doFileCreate() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -2860,18 +2797,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 break;
             case REQUEST_DOCUMENT_TREE:
                 if (result == RESULT_OK && data != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        try {
-                            Uri uri = data.getData();
-                            final int takeFlags =
-                                     (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                            getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                            alert(getString(R.string.request_approved));
-                        } catch (Exception e) {
-                            alert(getString(R.string.request_approved) + "\n\n" + e.toString());
-                            break;
-                        }
+                    try {
+                        Uri uri = data.getData();
+                        final int takeFlags =
+                                 (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                        alert(getString(R.string.request_approved));
+                    } catch (Exception e) {
+                        alert(getString(R.string.request_approved) + "\n\n" + e.toString());
+                        break;
                     }
                 }
                 break;
@@ -2887,16 +2822,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     Uri uri = data.getData();
                     if (uri != null) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                            switch (request) {
-                                case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
-                                    ASFUtils.backupToTreeUri(Term.this, uri, TermService.getHOME());
-                                    break;
-                                case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
-                                    ASFUtils.restoreHomeFromTreeUri(Term.this, uri, TermService.getHOME());
-                                    break;
-                            }
+                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                        switch (request) {
+                            case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
+                                ASFUtils.backupToTreeUri(Term.this, uri, TermService.getHOME());
+                                break;
+                            case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
+                                ASFUtils.restoreHomeFromTreeUri(Term.this, uri, TermService.getHOME());
+                                break;
                         }
                     }
                 }
@@ -3129,9 +3062,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case EscCmd.VKEYCODE_1007:
                 return true;
             case EscCmd.VKEYCODE_1008:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    setupStorageSymlinks(this);
-                }
+                setupStorageSymlinks(this);
                 return true;
             case EscCmd.VKEYCODE_1009:
                 return true;
@@ -3491,9 +3422,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (str0 == null) return;
         String action = str0;
         if (action.equalsIgnoreCase("symlinks")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                setupStorageSymlinks(this);
-            }
+            setupStorageSymlinks(this);
             return;
         }
         if (str1 == null) return;
@@ -3551,7 +3480,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             boolean privateStorage = path.matches("/data/.*");
             boolean extFilesStorage = path.matches(TermService.getAPPEXTFILES() + "/.*");
             if (file.canRead() || str1.matches("^file://.*")) {
-                if (!mime.equals(MIME_HTML) && !(privateStorage || extFilesStorage) && AndroidCompat.SDK < android.os.Build.VERSION_CODES.N) {
+                if (!mime.equals(MIME_HTML) && !(privateStorage || extFilesStorage) && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                     uri = Uri.fromFile(file);
                 } else {
                     if (mime.equals(MIME_HTML) && mSettings.getHtmlViewerMode() <= 1) {
@@ -4644,9 +4573,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (fs == 0) fs = EmulatorView.getTextSize(this);
         int height = (int) Math.ceil(fs * metrics.density * metrics.scaledDensity);
         button.setMinHeight(height);
-        if (AndroidCompat.SDK >= 14) {
-            button.setAllCaps(false);
-        }
+        button.setAllCaps(false);
         setScreenFitFunctionBarShortLabel();
     }
 

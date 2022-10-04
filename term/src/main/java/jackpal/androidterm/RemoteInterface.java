@@ -45,7 +45,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
@@ -181,7 +180,7 @@ public class RemoteInterface extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     void permissionCheck() {
-        if ((SCOPED_STORAGE) || (AndroidCompat.SDK < Build.VERSION_CODES.M)) {
+        if ((SCOPED_STORAGE) || (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)) {
             handleIntent();
             return;
         }
@@ -236,7 +235,7 @@ public class RemoteInterface extends AppCompatActivity {
             return;
         }
         ClipData clipData = myIntent.getClipData();
-        if ((AndroidCompat.SDK >= 19 && action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) ||
+        if ((action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) ||
                 (action.equals(Intent.ACTION_SEND) && clipData != null) ||
                 (action.equals("android.intent.action.VIEW")) ||
                 (action.equals("android.intent.action.EDIT")) ||
@@ -252,7 +251,7 @@ public class RemoteInterface extends AppCompatActivity {
                     finish();
                     return;
                 }
-            } else if (AndroidCompat.SDK >= 19 && action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) {
+            } else if (action.equals(Intent.ACTION_SEND) && myIntent.hasExtra(Intent.EXTRA_STREAM)) {
                 Object extraStream = myIntent.getExtras().get(Intent.EXTRA_STREAM);
                 if (extraStream instanceof Uri) {
                     uri = (Uri) extraStream;
@@ -296,7 +295,7 @@ public class RemoteInterface extends AppCompatActivity {
                     }
                     return;
                 }
-            } else if (AndroidCompat.SDK >= 19 && uri != null && uri.getScheme() != null && uri.getScheme().equals("content")) {
+            } else if (uri != null && uri.getScheme() != null && uri.getScheme().equals("content")) {
                 Context context = this;
                 String command = null;
                 String path = UriToPath.getPath(context, uri);

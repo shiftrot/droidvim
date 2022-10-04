@@ -1,6 +1,5 @@
 package jackpal.androidterm;
 
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.provider.DocumentsContract;
 import android.webkit.MimeTypeMap;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
@@ -56,10 +54,8 @@ public class ASFUtils {
 
     static public void documentTreePicker(final AppCompatActivity activity, int requestCode) {
         mCANCEL = false;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            doStartActivityForResult(activity, intent, requestCode);
-        }
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        doStartActivityForResult(activity, intent, requestCode);
     }
 
     static private void doStartActivityForResult(AppCompatActivity activity, Intent intent, int requestCode) {
@@ -69,7 +65,6 @@ public class ASFUtils {
             activity.startActivityForResult(intent, requestCode);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void backupToTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         if (isHomeDirectory(activity, rootUri)) return;
@@ -215,7 +210,6 @@ public class ASFUtils {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void restoreHomeFromTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         DocumentFile root = DocumentFile.fromTreeUri(activity, rootUri);
@@ -247,7 +241,6 @@ public class ASFUtils {
         }.start();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static public void doRestoreHomeFromTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
         if (isHomeDirectory(activity, rootUri)) return;
@@ -306,12 +299,10 @@ public class ASFUtils {
     }
 
     // Util method to check if the mime type is a directory
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     static private boolean isDirectory(String mimeType) {
         return DocumentsContract.Document.MIME_TYPE_DIR.equals(mimeType);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static boolean isSymlink(Uri uri) {
         return false;
     }

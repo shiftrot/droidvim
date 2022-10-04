@@ -315,11 +315,9 @@ public class SyncFileObserver extends RecursiveFileObserver {
     boolean putUriAndLoad(Uri uri, String srcPath) {
         mActive = true;
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                final int takeFlags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                mContentResolver.takePersistableUriPermission(uri, takeFlags);
-            }
+            final int takeFlags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            mContentResolver.takePersistableUriPermission(uri, takeFlags);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -824,9 +822,6 @@ public class SyncFileObserver extends RecursiveFileObserver {
     private void confirmDelete(final Uri uri, final File path, final ContentResolver contentResolver) {
         if (!mConfirmDeleteFromStorage || mObjectActivity == null) return;
         final AppCompatActivity activity = (AppCompatActivity) mObjectActivity;
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
-            return;
-        }
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

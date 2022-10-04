@@ -24,7 +24,6 @@ import androidx.preference.PreferenceManager;
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
-import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
@@ -39,12 +38,8 @@ public class TermView extends EmulatorView {
 
         setTextSize(settings.getFontSize());
         setTextLeading(settings.getFontLeading());
-        if (AndroidCompat.SDK >= 19) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-            setTextFont(sp.getString(TermPreferences.FONT_FILENAME, null));
-        } else {
-            setTextFont(settings.getFontFile());
-        }
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        setTextFont(sp.getString(TermPreferences.FONT_FILENAME, null));
         setAmbiWidth(settings.getAmbiWidth());
         setHwAcceleration(settings.getHwAcceleration());
         setUseCookedIME(settings.useCookedIME());

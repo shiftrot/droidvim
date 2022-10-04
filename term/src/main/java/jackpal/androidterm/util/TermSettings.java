@@ -27,7 +27,6 @@ import jackpal.androidterm.R;
 import jackpal.androidterm.SyncFileObserver;
 import jackpal.androidterm.Term;
 import jackpal.androidterm.TermService;
-import jackpal.androidterm.compat.AndroidCompat;
 
 /**
  * Terminal emulator settings
@@ -585,7 +584,7 @@ public class TermSettings {
         int theme = mTheme;
         if (mTheme == 4) {
             // FIXME: Android changes background color.
-            if (AndroidCompat.SDK >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 theme = getCOLORFGBG().equals("'0;15'") ? 3 : 2;
             } else {
                 theme = getCOLORFGBG().equals("'0;15'") ? 1 : 0;

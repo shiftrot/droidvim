@@ -2,7 +2,6 @@ package jackpal.androidterm;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.NotificationManager;
@@ -31,10 +30,8 @@ import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
@@ -54,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
@@ -201,7 +197,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     public static String getFilerApplicationId() {
         final String DOCUMENTSUI_INTERNAL = "documentsui.internal";
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return DOCUMENTSUI_INTERNAL;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return DOCUMENTSUI_INTERNAL;
         return "";
     }
 
@@ -238,7 +234,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
      * {@inheritDoc}
      */
     @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
@@ -262,11 +257,9 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     private void documentTreePicker(int requestCode) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            intent = Term.getDocumentsuiIntent(this.getApplicationContext(), intent);
-            doStartActivityForResult(intent, requestCode);
-        }
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent = Term.getDocumentsuiIntent(this.getApplicationContext(), intent);
+        doStartActivityForResult(intent, requestCode);
     }
 
     private void message(String message) {
@@ -421,7 +414,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     private void batteryOptimizations() {
         String message = getString(R.string.battery_optimizations_dialog_message);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final String packageName = mTermPreference.getPackageName();
             PowerManager powerManager = mTermPreference.getSystemService(PowerManager.class);
             if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
@@ -440,7 +433,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
 
     private void requestNotificationsPermission() {
         String message = getString(R.string.request_permission_error);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             try {
                 NotificationManager notificationManager = getSystemService(NotificationManager.class);
                 if (!notificationManager.areNotificationsEnabled()) {
@@ -507,22 +500,13 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     private void confirmWritePrefs() {
         @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
         final String fileName = BuildConfig.APPLICATION_ID + "-" + timestamp + ".xml";
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("text/xml");
-            intent.putExtra(Intent.EXTRA_TITLE, fileName);
-            intent = Term.getDocumentsuiIntent(this.getApplicationContext(), intent);
-            if (checkImplicitIntent(this, intent, fileName))
-                doStartActivityForResult(intent, REQUEST_WRITE_PREFS_PICKER);
-        } else {
-            File pathExternalPublicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            String downloadDir = pathExternalPublicDir.getPath();
-            if (!new File(downloadDir).isDirectory()) {
-                downloadDir = Environment.getExternalStorageDirectory().getPath();
-            }
-            writePrefs(downloadDir + "/" + fileName);
-        }
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/xml");
+        intent.putExtra(Intent.EXTRA_TITLE, fileName);
+        intent = Term.getDocumentsuiIntent(this.getApplicationContext(), intent);
+        if (checkImplicitIntent(this, intent, fileName))
+            doStartActivityForResult(intent, REQUEST_WRITE_PREFS_PICKER);
     }
 
     private boolean checkImplicitIntent(Context context, Intent intent, String fileName) {
@@ -619,7 +603,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         doFontFilePicker();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void doFontFilePicker() {
         Context context = this;
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
@@ -706,46 +689,44 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
                     String path;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        path = getDirectory(this.getApplicationContext(), uri);
-                        final Activity activity = this;
-                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        final SharedPreferences.Editor editor = prefs.edit();
-                        AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                        if (path == null) {
-                            bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(activity.getString(R.string.invalid_directory));
-                        } else if (new File(path).canWrite()) {
-                            String vimrcMessage = "";
-                            if (request == REQUEST_HOME_DIRECTORY) {
-                                editor.putString("home_path", path);
-                                // if (FLAVOR_VIM && !path.startsWith("/data")) {
-                                //     vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
-                                // }
-                            } else if (request == REQUEST_STARTUP_DIRECTORY) {
-                                editor.putString("startup_path", path);
-                            }
-                            editor.apply();
-                            bld.setIcon(android.R.drawable.ic_dialog_info);
-                            bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
-                            if (!vimrcMessage.equals("")) {
-                                bld.setNeutralButton(this.getString(R.string.copy_to_clipboard), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                                                .getManager(getApplicationContext());
-                                        clip.setText("set viminfo+=n$APPFILES/home/.viminfo");
-                                    }
-                                });
-                            }
-                        } else {
-                            bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setMessage(activity.getString(R.string.invalid_directory));
+                    path = getDirectory(this.getApplicationContext(), uri);
+                    final Activity activity = this;
+                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    final SharedPreferences.Editor editor = prefs.edit();
+                    AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                    if (path == null) {
+                        bld.setIcon(android.R.drawable.ic_dialog_alert);
+                        bld.setMessage(activity.getString(R.string.invalid_directory));
+                    } else if (new File(path).canWrite()) {
+                        String vimrcMessage = "";
+                        if (request == REQUEST_HOME_DIRECTORY) {
+                            editor.putString("home_path", path);
+                            // if (FLAVOR_VIM && !path.startsWith("/data")) {
+                            //     vimrcMessage = activity.getString(R.string.vimrc_home_directory_warning_message);
+                            // }
+                        } else if (request == REQUEST_STARTUP_DIRECTORY) {
+                            editor.putString("startup_path", path);
                         }
-                        bld.setPositiveButton(this.getString(android.R.string.ok), null);
-                        bld.create().show();
-                        break;
+                        editor.apply();
+                        bld.setIcon(android.R.drawable.ic_dialog_info);
+                        bld.setMessage(activity.getString(R.string.set_home_directory) + " " + path + vimrcMessage);
+                        if (!vimrcMessage.equals("")) {
+                            bld.setNeutralButton(this.getString(R.string.copy_to_clipboard), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                                            .getManager(getApplicationContext());
+                                    clip.setText("set viminfo+=n$APPFILES/home/.viminfo");
+                                }
+                            });
+                        }
+                    } else {
+                        bld.setIcon(android.R.drawable.ic_dialog_alert);
+                        bld.setMessage(activity.getString(R.string.invalid_directory));
                     }
+                    bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                    bld.create().show();
+                    break;
                 }
                 break;
             case REQUEST_PREFS_READ_PICKER:
@@ -810,29 +791,27 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 }
                 break;
             case REQUEST_WRITE_PREFS_PICKER:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    if (result == RESULT_OK && data != null) {
-                        Uri uri = data.getData();
-                        if (uri != null) {
-                            DocumentFile pickedFile = DocumentFile.fromSingleUri(this, uri);
-                            if (pickedFile != null) {
-                                @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-                                AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                                bld.setIcon(android.R.drawable.ic_dialog_info);
-                                bld.setPositiveButton(this.getString(android.R.string.ok), null);
-                                try {
-                                    OutputStream os = getContentResolver().openOutputStream(pickedFile.getUri());
-                                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-                                    XmlUtils.writeMapXml(pref.getAll(), os);
-                                    os.close();
-                                } catch (Exception e) {
-                                    bld.setMessage(this.getString(R.string.prefs_write_info_failure));
-                                    bld.create().show();
-                                    return;
-                                }
-                                bld.setMessage(this.getString(R.string.prefs_write_info_success));
+                if (result == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    if (uri != null) {
+                        DocumentFile pickedFile = DocumentFile.fromSingleUri(this, uri);
+                        if (pickedFile != null) {
+                            @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+                            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+                            bld.setIcon(android.R.drawable.ic_dialog_info);
+                            bld.setPositiveButton(this.getString(android.R.string.ok), null);
+                            try {
+                                OutputStream os = getContentResolver().openOutputStream(pickedFile.getUri());
+                                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                                XmlUtils.writeMapXml(pref.getAll(), os);
+                                os.close();
+                            } catch (Exception e) {
+                                bld.setMessage(this.getString(R.string.prefs_write_info_failure));
                                 bld.create().show();
+                                return;
                             }
+                            bld.setMessage(this.getString(R.string.prefs_write_info_success));
+                            bld.create().show();
                         }
                     }
                 }
@@ -1059,44 +1038,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_font);
-            if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                final String FONT_FILE_PICKER_KEY = "fontfile_picker";
-                Preference fontPrefs = getPreferenceScreen().findPreference(FONT_FILE_PICKER_KEY);
-                fontPrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mTermPreference != null) mTermPreference.fontFilePicker();
-                        return true;
-                    }
-                });
-            } else {
-                final String FONTFILE = "fontfile";
-                ListPreference fontFileList = (ListPreference) findPreference(FONTFILE);
-                if (mTermPreference != null) mTermPreference.setFontList(fontFileList);
-
-                Preference fontSelect = findPreference(FONTFILE);
-                Resources res = getResources();
-                fontSelect.setSummary(res.getString(R.string.summary_fontfile_preference) + String.format(" (%s)", FONT_PATH));
-                fontSelect.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        ListPreference fontFileList = (ListPreference) preference;
-                        if (mTermPreference != null) mTermPreference.setFontList(fontFileList);
-                        return true;
-                    }
-                });
-                fontSelect.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        ListPreference fontFileList = (ListPreference) preference;
-                        if (mTermPreference != null) {
-                            mTermPreference.setFontList(fontFileList);
-                            fontFileList.setDefaultValue(newValue);
-                        }
-                        return true;
-                    }
-                });
-            }
+            final String FONT_FILE_PICKER_KEY = "fontfile_picker";
+            Preference fontPrefs = getPreferenceScreen().findPreference(FONT_FILE_PICKER_KEY);
+            fontPrefs.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.fontFilePicker();
+                    return true;
+                }
+            });
 
             final String FONTSIZE = "fontsize";
             Preference fontSize = findPreference(FONTSIZE);
@@ -1339,17 +1289,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_user_setting);
 
-            if (AndroidCompat.SDK >= Build.VERSION_CODES.KITKAT) {
-                final String PREFS_KEY = "prefs_rw";
-                Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
-                prefsPicker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        if (mTermPreference != null) mTermPreference.prefsPicker();
-                        return true;
-                    }
-                });
-            }
+            final String PREFS_KEY = "prefs_rw";
+            Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);
+            prefsPicker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (mTermPreference != null) mTermPreference.prefsPicker();
+                    return true;
+                }
+            });
 
             final String APP_INFO_KEY = "app_info";
             Preference appInfoPref = getPreferenceScreen().findPreference(APP_INFO_KEY);

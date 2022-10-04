@@ -1,7 +1,6 @@
 package jackpal.androidterm;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -21,14 +20,10 @@ import static androidx.documentfile.provider.DocumentFile.isDocumentUri;
 import static jackpal.androidterm.Term.isInternalPrivateStorageDocument;
 
 public class UriToPath {
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri) {
         String realPath = getRealPathFromURI(context, uri);
         if (realPath != null && new File(realPath).exists() && new File(realPath).canWrite())
             return realPath;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return null;
-        }
         if (uri == null) return null;
         if (isDocumentUri(context, uri)) {
             try {
@@ -102,10 +97,9 @@ public class UriToPath {
     @SuppressLint("NewApi")
     private static String getRealPathFromURI(final Context context, final Uri uri) {
         try {
-            boolean isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
             // DocumentProvider
             Log.e(TermDebug.LOG_TAG, "uri:" + uri.getAuthority());
-            if (isAfterKitKat && isDocumentUri(context, uri)) {
+            if (isDocumentUri(context, uri)) {
                 if ("com.android.externalstorage.documents".equals(
                         uri.getAuthority())) { // ExternalStorageProvider
                     final String docId = getDocumentId(uri);
@@ -175,7 +169,7 @@ public class UriToPath {
         try {
             String selection = null;
             String[] selectionArgs = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
                 try {
                     File file = new File(getDocumentId(uri));
                     String path = file.getAbsolutePath();

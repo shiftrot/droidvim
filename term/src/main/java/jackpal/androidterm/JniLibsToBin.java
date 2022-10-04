@@ -153,11 +153,7 @@ public class JniLibsToBin {
             boolean useSymlink = true;
             if (!TermService.getAPPFILES().matches("/data/.*")) useSymlink = JNILIBS_FORCE_SYMLINK;
             if (useSymlink) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Os.symlink(src.getAbsolutePath(), symlink.getAbsolutePath());
-                } else {
-                    shell("ln -s " + src.getAbsolutePath() + " " + symlink.getAbsolutePath());
-                }
+                Os.symlink(src.getAbsolutePath(), symlink.getAbsolutePath());
             }
             boolean executable = setExecMode(symlink);
             if (!symlink.exists() || !ASFUtils.isSymlink(symlink) || (executable && !symlink.canExecute())) {

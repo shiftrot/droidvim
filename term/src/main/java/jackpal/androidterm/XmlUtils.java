@@ -16,7 +16,6 @@
 
 package jackpal.androidterm;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -47,7 +46,6 @@ import java.util.Set;
 /**
  * {@hide}
  */
-@TargetApi(Build.VERSION_CODES.KITKAT)
 public class XmlUtils {
 
     private static final String STRING_ARRAY_SEPARATOR = ":";

@@ -16,10 +16,8 @@
 
 package jackpal.androidterm.emulatorview;
 
+import android.os.Build;
 import android.util.Log;
-
-import jackpal.androidterm.emulatorview.compat.AndroidCharacterCompat;
-import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 
 /**
  * A backing store for a TranscriptScreen.
@@ -541,7 +539,7 @@ class UnicodeTranscript {
 
         if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
                 (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
-            if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
+            if (Build.VERSION.SDK_INT >= HANGUL_CONJOINING_MIN_SDK) {
                     /* Treat Hangul jamo medial vowels and final consonants as
                      * combining characters with width 0 to make jamo composition
                      * work correctly.

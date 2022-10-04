@@ -60,7 +60,6 @@ import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
-import static jackpal.androidterm.TermVimInstaller.getProp;
 
 public class TermService extends Service implements TermSession.FinishCallback {
     public static int TermServiceState = -1;
@@ -170,21 +169,19 @@ public class TermService extends Service implements TermSession.FinishCallback {
         String libPath = getAPPLIB();
         String cpu = null;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (String androidArch : Build.SUPPORTED_ABIS) {
-                if (androidArch.contains("arm64")) {
-                    cpu = "arm64";
-                    break;
-                } else if (androidArch.contains("armeabi")) {
-                    cpu = "arm";
-                    break;
-                } else if (androidArch.contains("x86_64")) {
-                    cpu = "x86_64";
-                    break;
-                } else if (androidArch.contains("x86")) {
-                    cpu = "x86";
-                    break;
-                }
+        for (String androidArch : Build.SUPPORTED_ABIS) {
+            if (androidArch.contains("arm64")) {
+                cpu = "arm64";
+                break;
+            } else if (androidArch.contains("armeabi")) {
+                cpu = "arm";
+                break;
+            } else if (androidArch.contains("x86_64")) {
+                cpu = "x86_64";
+                break;
+            } else if (androidArch.contains("x86")) {
+                cpu = "x86";
+                break;
             }
         }
 
@@ -261,7 +258,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         }
 
         Notification.Builder builder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new Notification.Builder(this, BuildConfig.APPLICATION_ID + ".running");
         } else {
             builder = new Notification.Builder(this);
@@ -328,9 +325,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
         mVIMRUNTIME_INSTALL_DIR = mAPPFILES;
         mVIMRUNTIME = mVIMRUNTIME_INSTALL_DIR + "/runtime";
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            cmd = cmd.replaceAll("(^|\n)bash", "$1#bash");
-        }
         String replace = bFirst ? "" : "#";
         cmd = cmd.replaceAll("(^|\n)-+", "$1" + replace);
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
@@ -354,15 +348,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static int getSDCard(Context context) {
         int sdcard = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            File[] dirs = context.getApplicationContext().getExternalFilesDirs(null);
-            if (dirs.length > 1) {
-                for (int i = 1; i < dirs.length; i++) {
-                    File dir = dirs[i];
-                    if (dir != null && dir.canWrite() && new File(dir.toString() + "/terminfo").isDirectory()) {
-                        sdcard = i;
-                        break;
-                    }
+        File[] dirs = context.getApplicationContext().getExternalFilesDirs(null);
+        if (dirs.length > 1) {
+            for (int i = 1; i < dirs.length; i++) {
+                File dir = dirs[i];
+                if (dir != null && dir.canWrite() && new File(dir.toString() + "/terminfo").isDirectory()) {
+                    sdcard = i;
+                    break;
                 }
             }
         }
@@ -371,7 +363,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static String getCacheDir(Context context, int sdcard) {
         File cache = context.getExternalCacheDir();
-        if (sdcard > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (sdcard > 0) {
             File[] dirs = context.getApplicationContext().getExternalCacheDirs();
             if (sdcard < dirs.length) cache = dirs[sdcard];
         }

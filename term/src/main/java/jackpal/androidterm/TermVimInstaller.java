@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.system.Os;
@@ -48,7 +46,6 @@ import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 import static jackpal.androidterm.ShellTermSession.getProotCommand;
@@ -67,19 +64,6 @@ final class TermVimInstaller {
 
         SOLIB_PATH = getSolibPath(activity);
         String arch = getArch();
-        if ((AndroidCompat.SDK < 16) || ((AndroidCompat.SDK < 18) && (arch.contains("x86") || arch.contains("i686")))) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setMessage(R.string.error_not_supported_device);
-                    bld.setPositiveButton("OK", null);
-                    bld.create().show();
-                    doInstallVim = false;
-                }
-            });
-            return;
-        }
         if (true) {
             doInstallVim(activity, whenDone, true);
         } else {
@@ -105,19 +89,7 @@ final class TermVimInstaller {
     }
 
     static private int orientationLock(AppCompatActivity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            return ActivityInfo.SCREEN_ORIENTATION_LOCKED;
-        }
-        Configuration config = activity.getResources().getConfiguration();
-        switch (config.orientation) {
-            case Configuration.ORIENTATION_PORTRAIT:
-            case Configuration.ORIENTATION_SQUARE:
-            case Configuration.ORIENTATION_UNDEFINED:
-                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-            case Configuration.ORIENTATION_LANDSCAPE:
-                return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-        }
-        return ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
+        return ActivityInfo.SCREEN_ORIENTATION_LOCKED;
     }
 
     static private void fixOrientation(final AppCompatActivity activity, final int orientation) {
@@ -177,26 +149,20 @@ final class TermVimInstaller {
             String terminfoDir = TermService.getAPPFILES() + "/usr/share";
             installZip(terminfoDir, getInputStream(activity, id));
             final String path = TermService.getAPPFILES();
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                File fontPath = new File(TermPreferences.FONT_PATH);
-                if (!fontPath.exists()) fontPath.mkdirs();
-            }
             if (!FLAVOR_VIM) {
-                if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                    installInternalBusybox(path + "/usr/bin");
-                    installSoTar(path, "bash");
-                    installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
-                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
-                    installSoTar(path, "term-bash");
-                    installTar(path, getInputStream(activity, getLocalLibId(activity, "term_bash_")));
-                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "term_bash_symlinks_")));
-                    if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
-                        shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
-                    }
-                    JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
-                    installBusyboxCommands();
-                    installZipCommands(activity, path);
+                installInternalBusybox(path + "/usr/bin");
+                installSoTar(path, "bash");
+                installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
+                JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
+                installSoTar(path, "term-bash");
+                installTar(path, getInputStream(activity, getLocalLibId(activity, "term_bash_")));
+                JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "term_bash_symlinks_")));
+                if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
+                    shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                 }
+                JniLibsToBin.jniLibsToBin(path, JniLibsToBin.JNIlIBS_MAP);
+                installBusyboxCommands();
+                installZipCommands(activity, path);
             }
             doInstallTerm = false;
             new PrefValue(activity).setString(TERM_VERSION_KEY, TermService.APP_VERSION);
@@ -272,28 +238,26 @@ final class TermVimInstaller {
                     installSoZip(path, "bin");
                     installZip(path, getInputStream(activity, getLocalLibId(activity, "bin_")));
 
-                    if (AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP) {
-                        setMessage(activity, pd, "binaries - shell");
-                        String local = versionPath + "/version.bash";
-                        String target = TermService.getTMPDIR() + "/version";
-                        id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
-                        copyScript(activity.getResources().openRawResource(id), target);
-                        File targetVer = new File(target);
-                        File localVer = new File(local);
-                        // if (isNeedUpdate(targetVer, localVer)) {
-                            installSoTar(path, "bash");
-                            installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
-                            JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
-                            installSoTar(path, "term-bash");
-                            installTar(path, getInputStream(activity, getLocalLibId(activity, "term_bash_")));
-                            JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "term_bash_symlinks_")));
-                            id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
-                            copyScript(activity.getResources().openRawResource(id), versionPath + "/version.bash");
-                        // }
-                        targetVer.delete();
-                        if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
-                            shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
-                        }
+                    setMessage(activity, pd, "binaries - shell");
+                    String local = versionPath + "/version.bash";
+                    String target = TermService.getTMPDIR() + "/version";
+                    id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
+                    copyScript(activity.getResources().openRawResource(id), target);
+                    File targetVer = new File(target);
+                    File localVer = new File(local);
+                    // if (isNeedUpdate(targetVer, localVer)) {
+                    installSoTar(path, "bash");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "bash_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "bash_symlinks_")));
+                    installSoTar(path, "term-bash");
+                    installTar(path, getInputStream(activity, getLocalLibId(activity, "term_bash_")));
+                    JniLibsToBin.jniLibsToBin(path, getInputStream(activity, getLocalLibId(activity, "term_bash_symlinks_")));
+                    id = activity.getResources().getIdentifier("version_bash", "raw", activity.getPackageName());
+                    copyScript(activity.getResources().openRawResource(id), versionPath + "/version.bash");
+                    // }
+                    targetVer.delete();
+                    if (!new File(TermService.getHOME() + "/.bashrc").exists()) {
+                        shell("cat " + TermService.getAPPFILES() + "/usr/etc/bash.bashrc > " + TermService.getHOME() + "/.bashrc");
                     }
 
                     setMessage(activity, pd, "binaries - vim");
@@ -613,14 +577,9 @@ final class TermVimInstaller {
                     try {
                         String symlink = file.getAbsolutePath();
                         String target = file.getAbsoluteFile().getParent() + "/" + entry.getLinkName();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            if (new File(target).exists()) {
-                                file.delete();
-                                Os.symlink(target, symlink);
-                            }
-                        } else {
+                        if (new File(target).exists()) {
                             file.delete();
-                            shell("ln -s " + file.getAbsolutePath() + " " + symlink);
+                            Os.symlink(target, symlink);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -653,24 +612,18 @@ final class TermVimInstaller {
             }
             File src = new File(internal);
             shell("rm " + new File(storageDir, symlink).getAbsolutePath());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Os.symlink(src.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
-            } else {
-                shell("ln -s " + src.getAbsolutePath() + " " + storageDir.getAbsolutePath() + "/" + symlink);
-            }
+            Os.symlink(src.getAbsolutePath(), new File(storageDir, symlink).getAbsolutePath());
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                final File[] dirs = activity.getExternalFilesDirs(null);
-                if (dirs != null && dirs.length > 1) {
-                    for (int i = 1; i < dirs.length; i++) {
-                        File dir = dirs[i];
-                        if (dir == null) continue;
-                        String symlinkName = "external-" + i;
-                        if (dir.canWrite()) {
-                            File link = new File(storageDir, symlinkName);
-                            shell("rm " + link.getAbsolutePath());
-                            Os.symlink(dir.getAbsolutePath(), link.getAbsolutePath());
-                        }
+            final File[] dirs = activity.getExternalFilesDirs(null);
+            if (dirs != null && dirs.length > 1) {
+                for (int i = 1; i < dirs.length; i++) {
+                    File dir = dirs[i];
+                    if (dir == null) continue;
+                    String symlinkName = "external-" + i;
+                    if (dir.canWrite()) {
+                        File link = new File(storageDir, symlinkName);
+                        shell("rm " + link.getAbsolutePath());
+                        Os.symlink(dir.getAbsolutePath(), link.getAbsolutePath());
                     }
                 }
             }
@@ -823,9 +776,6 @@ final class TermVimInstaller {
 
     static private void installInternalBusybox(String target) {
         String bin = "libbusybox.so";
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            bin = "libbusybox_api16.so";
-        }
         JniLibsToBin.jniLibsToBin(target, bin, "/busybox");
     }
 
@@ -956,10 +906,10 @@ final class TermVimInstaller {
                     bufferOut.flush();
                     bufferOut.close();
                     if (ze.getName().matches(".*/?bin/.*")) {
-                        if (AndroidCompat.SDK >= 9) file.setExecutable(true, false);
+                        file.setExecutable(true, false);
                     }
                     if (ze.getName().matches(".*/?lib/.*")) {
-                        if (AndroidCompat.SDK >= 9) file.setExecutable(true, false);
+                        file.setExecutable(true, false);
                     }
                 }
             }

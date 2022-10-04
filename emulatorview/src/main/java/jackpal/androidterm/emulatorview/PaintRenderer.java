@@ -25,8 +25,6 @@ import android.text.TextPaint;
 
 import java.io.File;
 
-import jackpal.androidterm.emulatorview.compat.AndroidCompat;
-
 class PaintRenderer extends BaseTextRenderer {
     private static final String FONTPATH = Environment.getExternalStorageDirectory().getPath() + "/fonts";
     private int mTextLeading = 0;
@@ -36,21 +34,17 @@ class PaintRenderer extends BaseTextRenderer {
         super(scheme);
         mTextPaint = new Paint();
         mTextLeading = textLeading;
-        if (AndroidCompat.SDK > 3) {
-            String fontPath;
-            if (AndroidCompat.SDK < 19 || fontFile == null) {
-                fontPath = String.format("%s/%s", FONTPATH, (fontFile != null ? fontFile : "default.ttf"));
-            } else {
-                fontPath = fontFile;
-            }
-            File file = new File(fontPath);
-            if (file.canRead()) {
-                try {
-                    mTextPaint.setTypeface(Typeface.createFromFile(file));
-                } catch (Exception e) {
-                    mTextPaint.setTypeface(Typeface.MONOSPACE);
-                }
-            } else {
+        String fontPath;
+        if (fontFile == null) {
+            fontPath = String.format("%s/%s", FONTPATH, (fontFile != null ? fontFile : "default.ttf"));
+        } else {
+            fontPath = fontFile;
+        }
+        File file = new File(fontPath);
+        if (file.canRead()) {
+            try {
+                mTextPaint.setTypeface(Typeface.createFromFile(file));
+            } catch (Exception e) {
                 mTextPaint.setTypeface(Typeface.MONOSPACE);
             }
         } else {

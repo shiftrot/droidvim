@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
-// AndroidCompat.SDK >= Build.VERSION_CODES.LOLLIPOP
+// Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
 //   final ProgressRingDialog pd = ProgressRingDialog.create(null, activity.getString(R.string.update_message), false);
 //   pd.show(((AppCompatActivity) activity).getSupportFragmentManager(), "PROGRESSBAR_DIALOG_INSTALL");
 //   ....

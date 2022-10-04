@@ -1019,7 +1019,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setHwAcceleration(boolean mode) {
         if (mHardwareAcceleration == mode) return;
         mHardwareAcceleration = mode;
-        if (AndroidCompat.SDK < 11) return;
         if (mode) {
             this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else {
