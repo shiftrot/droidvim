@@ -22,6 +22,7 @@ android {
 
     defaultConfig {
         externalNativeBuild {
+            ndkVersion versions.NDK
             ndkBuild {
                 arguments '-C', 'src/main', '-j', Runtime.runtime.availableProcessors() + ''
                 if (abiArm) abiFilters 'arm64-v8a', 'armeabi-v7a'
