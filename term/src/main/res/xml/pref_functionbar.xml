@@ -706,6 +706,13 @@
 
     </PreferenceScreen>
 
+    <EditTextPreference
+        android:key="function_key_width"
+        android:defaultValue="@string/pref_function_key_width_default"
+        android:title="@string/title_function_key_width_preference"
+        android:dialogTitle="@string/dialog_title_function_key_width_preference"
+        android:inputType="number"/>
+
     <ListPreference
         android:key="actionbar_invert_action"
         android:defaultValue="@string/pref_actionbar_invert_default"

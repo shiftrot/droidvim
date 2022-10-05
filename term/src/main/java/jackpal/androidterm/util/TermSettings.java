@@ -35,6 +35,7 @@ public class TermSettings {
     private SharedPreferences mPrefs;
 
     private int mStatusBar;
+    private int mFunctionKeyWidth;
     private boolean mFunctionBar;
     private boolean mFunctionBarNavigationButton;
     private int mCursorDirectionCtrl;
@@ -117,6 +118,7 @@ public class TermSettings {
 
     public static final String STATUSBAR_ICON_KEY = "statusbar_icon";
     private static final String STATUSBAR_KEY = "statusbar";
+    private static final String FUNCTIONBAR_KEY_WIDTH = "function_key_width";
     private static final String FUNCTIONBAR_KEY = "functionbar";
     private static final String FUNCTIONBAR_NAVIAGATION_BUTTON_KEY = "functionbar_navigation_button";
     private static final String CURSOR_DIRECTION_CTRL = "cursor_direction_ctrl_mode";
@@ -276,6 +278,7 @@ public class TermSettings {
 
     private void readDefaultPrefs(Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
+        mFunctionKeyWidth = Integer.parseInt(res.getString(R.string.pref_function_key_width_default));
         mFunctionBar = res.getBoolean(R.bool.pref_functionbar_default);
         mFunctionBarNavigationButton = res.getBoolean(R.bool.pref_functionbar_navigation_button_default);
         mCursorDirectionCtrl = Integer.parseInt(res.getString(R.string.pref_cursor_direction_ctrl_mode_default));
@@ -357,6 +360,7 @@ public class TermSettings {
         mPrefs = prefs;
         setLocalizedDefault();
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
+        mFunctionKeyWidth = readIntPref(FUNCTIONBAR_KEY_WIDTH, mFunctionKeyWidth, 100);
         mFunctionBar = readBooleanPref(FUNCTIONBAR_KEY, mFunctionBar);
         mFunctionBarNavigationButton = readBooleanPref(FUNCTIONBAR_NAVIAGATION_BUTTON_KEY, mFunctionBarNavigationButton);
         mCursorDirectionCtrl = readIntPref(CURSOR_DIRECTION_CTRL, mCursorDirectionCtrl, 3);
@@ -488,6 +492,11 @@ public class TermSettings {
 
     public boolean showStatusBar() {
         return true;
+    }
+
+    public int getFunctionKeyWidth() {
+        if (mFunctionKeyWidth == 0) return 52;
+        return mFunctionKeyWidth;
     }
 
     public boolean showFunctionBar() {

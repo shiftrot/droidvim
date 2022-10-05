@@ -4570,8 +4570,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (!label.equals("")) button.setText(label);
         button.setVisibility(visibility);
         if (rotation) {
-            float dp = 52.0f;
-            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
+
+            float dp = (float) mSettings.getFunctionKeyWidth();
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 dp *= 1.25f;
             }
             int px = (int) Math.ceil(dp * getResources().getDisplayMetrics().density);

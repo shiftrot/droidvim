@@ -162,6 +162,8 @@
     <string name="summary_statusbar_icon_on_preference">Show/Hide status bar icon.</string>
     <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon.</string>
 
+    <string name="title_function_key_width_preference">Function key width</string>
+    <string name="dialog_title_function_key_width_preference">Function key width (Default : 52)</string>
     <string name="title_functionbar_preference">Functionbar</string>
     <string name="summary_functionbar_preference">The button size is fixed. The function bar can be shown or hidden from the menu.</string>
     <string name="title_navigation_button_preference">Functionbar (Screen fit)</string>
@@ -174,12 +176,12 @@
     <string name="title_oneline_textbox_cr_preference">\"Send\" button (One-line text box)</string>
 
     <string name="title_functionbar_key_preference">Functionbar</string>
-    <string name="title_functionbar_key_2_preference">Function key (F1-F12)</string>
-    <string name="title_functionbar_fkey_preference">Functionbar (F1-F12)</string>
-    <string name="title_functionbar_fkey_label_preference">Label (F1-F12)</string>
-    <string name="summary_functionbar_fkey_label_preferences">Set the label to the function key (F1-F12).</string>
-    <string name="title_functionbar_fkey_command_preference">Command (F1-F12)</string>
-    <string name="summary_functionbar_fkey_command_preferences">Set the command to the function key (F1-F12).</string>
+    <string name="title_functionbar_key_2_preference">Functionbar (F1 - F12)</string>
+    <string name="title_functionbar_fkey_preference">Functionbar (F1 - F12)</string>
+    <string name="title_functionbar_fkey_label_preference">Label (F1 - F12)</string>
+    <string name="summary_functionbar_fkey_label_preferences">Set the label to the function key (F1 - F12).</string>
+    <string name="title_functionbar_fkey_command_preference">Command (F1 - F12)</string>
+    <string name="summary_functionbar_fkey_command_preferences">Set the command to the function key (F1 - F12).</string>
 
     <string name="title_navigation_key_preference">Functionbar (Screen fit)</string>
     <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>

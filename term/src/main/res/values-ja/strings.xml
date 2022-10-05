@@ -164,6 +164,8 @@
     <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示</string>
     <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示</string>
 
+    <string name="title_function_key_width_preference">ファンクションキーの横幅</string>
+    <string name="dialog_title_function_key_width_preference">ファンクションキーの横幅 (デフォルト : 52)</string>
     <string name="title_functionbar_preference">ファンクションバー</string>
     <string name="summary_functionbar_preference">ボタンサイズは固定. 表示/非表示をメニューから切替可能なファンクションバー</string>
     <string name="title_navigation_button_preference">ファンクションバー (画面固定)</string>
@@ -176,7 +178,7 @@
     <string name="title_oneline_textbox_cr_preference">\"送出\"ボタンを表示(一行テキストボックス)</string>
 
     <string name="title_functionbar_key_preference">ファンクションバー</string>
-    <string name="title_functionbar_key_2_preference">ファンクションキー (F1-F12)</string>
+    <string name="title_functionbar_key_2_preference">ファンクショバー (F1-F12)</string>
     <string name="title_functionbar_fkey_preference">ファンクションバー (F1-F12)</string>
     <string name="title_functionbar_fkey_label_preference">ラベル名 (F1-F12)</string>
     <string name="summary_functionbar_fkey_label_preferences">ファンクションキー(F1-F12)に表示されるラベル名を変更します.</string>
