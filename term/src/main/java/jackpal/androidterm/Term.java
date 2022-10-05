@@ -4528,7 +4528,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (key.equals("navigationbar_menu_minus")) visibility = View.GONE;
         if (key.equals("navigationbar_menu_x")) visibility = View.GONE;
         String label = prefs.getString(FKEY_LABEL + key, "");
-        setFunctionBarButton(id, visibility, label);
+        boolean rotation = key.startsWith("function");
+        if (key.startsWith("functionbar_prev") || key.startsWith("functionbar_next")) rotation = false;
+        setFunctionBarButton(id, visibility, label, rotation);
 
         Button button = findViewById(R.id.button_oneline_text_box_enter);
         visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
@@ -4563,16 +4565,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @SuppressLint("NewApi")
-    private void setFunctionBarButton(int id, int visibility, String label) {
+    private void setFunctionBarButton(int id, int visibility, String label, boolean rotation) {
         Button button = findViewById(id);
         if (!label.equals("")) button.setText(label);
         button.setVisibility(visibility);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float fs = mSettings.getFontSize();
-        if (fs == 0) fs = EmulatorView.getTextSize(this);
-        int height = (int) Math.ceil(fs * metrics.density * metrics.scaledDensity);
-        button.setMinHeight(height);
+        if (rotation) {
+            float dp = 52.0f;
+            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
+                dp *= 1.25f;
+            }
+            int px = (int) Math.ceil(dp * getResources().getDisplayMetrics().density);
+            button.setMinWidth(px);
+        }
         button.setAllCaps(false);
         setScreenFitFunctionBarShortLabel();
     }
