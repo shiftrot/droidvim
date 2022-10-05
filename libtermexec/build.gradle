@@ -50,6 +50,7 @@ android {
             universalApk buildUniversalApk
         }
     }
+    namespace 'jackpal.androidterm.libtermexec'
 
     packagingOptions {
         jniLibs {

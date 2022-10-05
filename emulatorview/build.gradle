@@ -25,6 +25,7 @@ android {
             useLegacyPackaging = true
         }
     }
+    namespace 'jackpal.androidterm.emulatorview'
 }
 
 dependencies {

@@ -101,7 +101,7 @@ android {
             jniLibs.srcDirs += ['src/vim/jniLibs']
         }
     }
-
+    namespace 'jackpal.androidterm'
 }
 
 dependencies {
