@@ -541,7 +541,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
 
             ParcelFileDescriptor pfd = null;
             FileOutputStream fos = null;
-            pfd = contentResolver.openFileDescriptor(uri, "w");
+            pfd = contentResolver.openFileDescriptor(uri, "wt");
             fos = new FileOutputStream(pfd.getFileDescriptor());
             BufferedOutputStream writer = new BufferedOutputStream(fos);
 
