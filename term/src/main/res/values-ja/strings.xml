@@ -539,7 +539,8 @@
     <string name="storage_intent_error">ストレージはこのアクションを実行できません.\n数秒待ってからもう一度お試しください.</string>
     <string name="storage_manager">管理</string>
     <string name="storage_permission_error">ストレージの権限が有効ではありません.</string>
-    <string name="storage_permission_granted">設定を有効にするため, このアプリを再起動してください.</string>
+    <string name="permission_granted_suggestion">設定を有効にするため, このアプリを再起動してください.</string>
+    <string name="permission_granted_restart">設定を有効にするため, このアプリを再起動します.</string>
     <string name="storage_read_error">読み込みまたは編集に失敗しました.\nファイルが存在しないか, 権限がありません.\nクラウドストレージ上のファイルの場合はネットワーク接続を確認してください.</string>
     <string name="storage_write_error_title">ファイルの書き込みに失敗しました</string>
     <string name="storage_write_error">・ドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)\n・ファイルの書き込み先が正常に動作しているか確認してください.</string>

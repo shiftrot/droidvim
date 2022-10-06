@@ -643,7 +643,7 @@ final class TermVimInstaller {
                     bld.setTitle(activity.getString(R.string.tips_vim_title));
                     String message = activity.getString(R.string.tips_vim);
                     if (SCOPED_STORAGE) {
-                        message = activity.getString(R.string.scoped_storage_first_warning_message) + "\n\n" + message;
+                        message = message + "\n\n" + activity.getString(R.string.scoped_storage_first_warning_message);
                     }
                     bld.setMessage(message);
                 } else {

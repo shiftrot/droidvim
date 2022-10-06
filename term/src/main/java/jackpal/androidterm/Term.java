@@ -1134,7 +1134,35 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_NOTIFICATIONS:
-                // Do nothing
+                for (int i = 0; i < permissions.length; i++) {
+                    if (permissions[i].equals(Manifest.permission.POST_NOTIFICATIONS)) {
+                        String message;
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            message = getString(R.string.permission_granted_restart);
+                        } else {
+                            message = getString(R.string.summary_notifications_permission_request);
+                        }
+                        final boolean restart = grantResults[i] == PackageManager.PERMISSION_GRANTED;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                                bld.setTitle(getString(R.string.title_notifications_permission));
+                                bld.setMessage(message);
+                                bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                        if (restart) doCloseWindow();
+                                    }
+                                });
+                                bld.setCancelable(false);
+                                AlertDialog dialog = bld.create();
+                                dialog.show();
+                            }
+                        });
+                    }
+                }
                 break;
             case REQUEST_STORAGE:
                 for (int i = 0; i < permissions.length; i++) {
@@ -1146,7 +1174,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                 public void run() {
                                     AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
                                     bld.setIcon(android.R.drawable.ic_dialog_alert);
-                                    bld.setMessage(R.string.storage_permission_granted);
+                                    bld.setMessage(R.string.permission_granted_suggestion);
                                     bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.dismiss();
