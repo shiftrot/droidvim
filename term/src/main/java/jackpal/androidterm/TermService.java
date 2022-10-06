@@ -263,10 +263,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         } else {
             builder = new Notification.Builder(this);
         }
-        // builder.setContentTitle(contentText);
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
-            builder.setContentText(getText(R.string.service_notify_text));
-        }
+        builder.setContentText(getText(R.string.service_notify_text));
+        builder.setContentTitle(contentText);
         builder.setTicker(contentText);
         builder.setContentIntent(pendingIntent);
         builder.setLargeIcon(largeIconBitmap);
