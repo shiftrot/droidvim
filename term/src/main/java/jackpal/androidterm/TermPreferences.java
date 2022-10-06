@@ -1166,14 +1166,15 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
             final String MRU_KEY = "mru_command";
             Preference prefsMru = getPreferenceScreen().findPreference(MRU_KEY);
-            prefsMru.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if (mTermPreference != null) mTermPreference.mruCommand(MRU_KEY);
-                    return true;
-                }
-            });
-            setHasOptionsMenu(true);
+            if (prefsMru != null) {
+                prefsMru.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        if (mTermPreference != null) mTermPreference.mruCommand(MRU_KEY);
+                        return true;
+                    }
+                });
+            }
 
             try {
                 bindPreferenceSummaryToValue(findPreference("external_app_action_mode"));
@@ -1181,10 +1182,16 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             } catch (Exception e) {
                 // Do nothing
             }
-            bindPreferenceSummaryToValue(findPreference("cloud_dropbox_filepicker"));
-            bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
-            bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));
-            bindPreferenceSummaryToValue(findPreference("html_viewer_mode"));
+            try {
+                bindPreferenceSummaryToValue(findPreference("cloud_dropbox_filepicker"));
+                bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
+                bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));
+                bindPreferenceSummaryToValue(findPreference("html_viewer_mode"));
+            } catch (Exception e) {
+                // Do nothing
+            }
+
+            setHasOptionsMenu(true);
         }
 
         @Override

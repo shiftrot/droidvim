@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:title="@string/title_use_app_files_button"
+        android:key="use_app_files_button_rev2"
+        android:defaultValue="@bool/pref_use_app_files_button_default"/>
+
+    <SwitchPreference
+        android:key="pref_key_show_dotfiles"
+        android:title="@string/title_show_dotfiles"
+        android:summary="@string/summary_show_dotfiles"
+        android:defaultValue="@bool/pref_show_dotfiles_default"/>
+</PreferenceScreen>
