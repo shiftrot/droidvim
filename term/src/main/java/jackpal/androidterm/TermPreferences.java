@@ -1185,7 +1185,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             try {
                 bindPreferenceSummaryToValue(findPreference("cloud_dropbox_filepicker"));
                 bindPreferenceSummaryToValue(findPreference("cloud_googledrive_filepicker"));
-                bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));
+                // bindPreferenceSummaryToValue(findPreference("cloud_onedrive_filepicker"));
                 bindPreferenceSummaryToValue(findPreference("html_viewer_mode"));
             } catch (Exception e) {
                 // Do nothing

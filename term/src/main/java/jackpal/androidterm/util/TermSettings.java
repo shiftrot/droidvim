@@ -798,7 +798,8 @@ public class TermSettings {
     }
 
     public int getOneDriveFilePicker() {
-        return mOneDriveFilePicker;
+        return 0;
+        // return mOneDriveFilePicker;
     }
 
     public void setOneDriveFilePicker(int value) {
