@@ -55,7 +55,7 @@
                 android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.15"
+                android:layout_weight="0.05"
                 android:minHeight="48dp"
                 android:minWidth="56dp"
                 android:text="@string/string_functionbar_clear"/>
@@ -67,9 +67,9 @@
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
+                android:layout_weight="0.05"
                 android:minHeight="48dp"
-                android:minWidth="56dp"
+                android:minWidth="60dp"
                 android:text="@string/string_functionbar_enter"/>
 
         </LinearLayout>
