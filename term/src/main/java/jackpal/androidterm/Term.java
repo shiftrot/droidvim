@@ -914,7 +914,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             public void onClick(View v) {
                 getDrawer().closeDrawers();
                 if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                    sendKeyStrings(":confirm qa\r", true);
+                    sendKeyStrings(AppCommand.QUIT, true);
                 } else {
                     confirmCloseWindow();
                 }
@@ -2138,7 +2138,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (key == KEY_ACTION_1251) {
             if (mTermSessions != null) {
                 if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                    sendKeyStrings(":confirm qa\r", true);
+                    sendKeyStrings(AppCommand.QUIT, true);
                 } else {
                     confirmCloseWindow();
                 }
@@ -2149,7 +2149,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             imm.showInputMethodPicker();
         } else if (key == KEY_ACTION_1253) {
             if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                sendKeyStrings(":confirm qa\r", true);
+                sendKeyStrings(AppCommand.QUIT, true);
             } else {
                 confirmCloseWindow();
             }
@@ -4883,7 +4883,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 mUninstall = true;
                 shell("rm " + TermService.getVersionFilesDir() + "/version");
                 if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                    sendKeyStrings(":confirm qa\r", true);
+                    sendKeyStrings(AppCommand.QUIT, true);
                 } else {
                     doExitShell();
                 }
