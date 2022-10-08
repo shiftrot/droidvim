@@ -1642,68 +1642,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return cmd;
     }
 
-    private void installFromRemotoInterface() {
-        String initialCmd = mSettings.getInitialCommand();
-        initialCmd = mTermService.getInitialCommand(initialCmd, true);
-        String postCmd = "";
-        shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
-        postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
-        String[] list = initialCmd.split("\n");
-        for (String str : list) {
-            if (str.matches("^(bash|-?vim.app).*")) {
-                postCmd = postCmd + str + "\n";
-            }
-        }
-
-        if (RemoteInterface.IntentCommand != null) {
-            String ESC_CMD = FLAVOR_VIM ? "\u001b" : "";
-            postCmd += ESC_CMD + RemoteInterface.IntentCommand + "\n";
-        }
-        final String riCmd = postCmd;
-        if (!FLAVOR_TERMINAL) {
-            if (RemoteInterface.ShareText != null) {
-                String filename = RemoteInterface.FILE_CLIPBOARD;
-                Term.writeStringToFile(filename, "\n" + RemoteInterface.ShareText.toString());
-                postCmd += "\u001b" + ":ATEMod _paste\n";
-            }
-        }
-        try {
-            TermVimInstaller.doInstallVim(Term.this, new Runnable() {
-                @Override
-                public void run() {
-                    String cmd = riCmd;
-                    if (getCurrentTermSession() != null) {
-                        sendKeyStrings(cmd, false);
-                    } else {
-                        ShellTermSession.setPostCmd(cmd);
-                    }
-                    AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
-                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    bld.setTitle(getString(R.string.title_remote_interface_installer_warning));
-                    bld.setMessage(getString(R.string.message_remote_interface_installer_warning));
-                    bld.setPositiveButton(getString(R.string.quit), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int m) {
-                            dialog.dismiss();
-                            sendKeyStrings(":confirm qa\r", true);
-                        }
-                    });
-                    bld.setNeutralButton(getString(R.string.button_continue), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int m) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dlg = bld.create();
-                    dlg.setCancelable(false);
-                    dlg.setCanceledOnTouchOutside(false);
-                    dlg.show();
-                    permissionCheck();
-                }
-            }, true);
-        } catch (Exception e) {
-            // Do nothing
-        }
-    }
-
     static public void showProgressRing(final DrawerLayout layout, final ProgressBar progressBar) {
         try {
             if (layout == null || progressBar == null) return;
@@ -3022,9 +2960,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
-            case EscCmd.VKEYCODE_0990:
-                installFromRemotoInterface();
-                return true;
             case EscCmd.VKEYCODE_0998:
                 if (mTermSessions.size() > 1) {
                     return true;

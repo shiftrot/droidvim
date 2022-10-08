@@ -58,6 +58,8 @@
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
     <string name="menu_drawer">Storage</string>
+    <string name="setup_error_title">This app has not yet been set up.</string>
+    <string name="setup_error">Please restart this app from the home launcher.</string>
     <string name="update_message">Updating binaries and libraries.</string>
     <string name="update_warning">Do not run in the background or forcibly rotate the screen.</string>
     <string name="update_vim_warning">(Please wait until Vim starts even if the dialog disappears)</string>

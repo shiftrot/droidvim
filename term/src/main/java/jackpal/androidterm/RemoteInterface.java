@@ -73,11 +73,8 @@ public class RemoteInterface extends AppCompatActivity {
 
     private TermService mTermService;
     private Intent mTSIntent;
-    public static String IntentCommand = null;
     public static CharSequence ShareText = null;
     public static String FILE_CLIPBOARD = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/.clipboard";
-    private boolean mDoInstall = false;
-    private final String DO_INSTALL = "echo -n -e \"\\0033[990t\"";
 
     private ServiceConnection mTSConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -216,18 +213,28 @@ public class RemoteInterface extends AppCompatActivity {
             return;
         }
         String nativeLibraryDir = this.getApplicationContext().getApplicationInfo().nativeLibraryDir;
-        mDoInstall = !isInstalled(nativeLibraryDir);
-        if (mDoInstall) {
+        if (!isInstalled(nativeLibraryDir)) {
             if (FLAVOR_TERMINAL) {
                 TermVimInstaller.doInstallTerm = true;
             } else if (FLAVOR_VIM) {
                 TermVimInstaller.doInstallVim = true;
             }
+            AlertDialog.Builder bld = new AlertDialog.Builder(this);
+            bld.setIcon(android.R.drawable.ic_dialog_alert);
+            bld.setTitle(getString(R.string.setup_error_title));
+            bld.setMessage(getString(R.string.setup_error));
+            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finish();
+                }
+            });
+            bld.setCancelable(false);
+            bld.create().show();
+            return;
         }
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
-        IntentCommand = null;
         ShareText = null;
 
         if (action == null) {
@@ -272,7 +279,6 @@ public class RemoteInterface extends AppCompatActivity {
                 if (new File(path).canRead()) {
                     path = quotePath(path, "".equals(CMD_ESC));
                     String command = CMD_ESC + intentCommand + " " + path;
-                    if (mDoInstall) IntentCommand = command;
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -302,7 +308,6 @@ public class RemoteInterface extends AppCompatActivity {
                 if (path != null) {
                     path = quotePath(path, "".equals(CMD_ESC));
                     command = CMD_ESC + intentCommand + " " + path;
-                    if (mDoInstall) IntentCommand = command;
                 } else if (getContentResolver() != null) {
                     try {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
@@ -326,7 +331,6 @@ public class RemoteInterface extends AppCompatActivity {
                             path = quotePath(path, "".equals(CMD_ESC));
                             command = CMD_ESC + intentCommand + " " + path;
                         }
-                        if (mDoInstall) IntentCommand = command;
                     }
                 }
                 // Find the target window
@@ -349,7 +353,6 @@ public class RemoteInterface extends AppCompatActivity {
                 if (command.matches("^:.*")) {
                     url = quotePath(url, "".equals(CMD_ESC));
                     command = CMD_ESC + command + " " + url;
-                    if (mDoInstall) IntentCommand = command;
                     // Find the target window
                     mReplace = true;
                     mHandle = switchToWindow(mHandle, command);
@@ -357,12 +360,10 @@ public class RemoteInterface extends AppCompatActivity {
                 } else if ((mHandle != null) && (url.equals(mFname))) {
                     // Target the request at an existing window if open
                     command = command + " " + url;
-                    if (mDoInstall) IntentCommand = command;
                     mHandle = switchToWindow(mHandle, command);
                 } else {
                     // Open a new window
                     command = command + " " + url;
-                    if (mDoInstall) IntentCommand = command;
                     mHandle = openNewWindow(command);
                 }
                 mFname = url;
@@ -397,7 +398,6 @@ public class RemoteInterface extends AppCompatActivity {
                 FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
                 Term.writeStringToFile(FILE_CLIPBOARD, shareText);
                 String command = "\u001b" + ":ATEMod _paste";
-                if (mDoInstall) IntentCommand = command;
                 // Find the target window
                 mReplace = true;
                 mHandle = switchToWindow(mHandle, command);
@@ -443,14 +443,6 @@ public class RemoteInterface extends AppCompatActivity {
         String initialCommand = getInitialCommand();
         if (iInitialCommand != null) {
             if (initialCommand != null) {
-                if (mDoInstall) {
-                    if (FLAVOR_TERMINAL) {
-                        initialCommand = initialCommand.replaceFirst("-?bash.app\\s*$", "");
-                    } else if (FLAVOR_VIM) {
-                        initialCommand = initialCommand.replaceFirst("-?vim.app\\s*$", "");
-                    }
-                    iInitialCommand = DO_INSTALL;
-                }
                 initialCommand += "\r" + iInitialCommand;
             } else {
                 initialCommand = iInitialCommand;
