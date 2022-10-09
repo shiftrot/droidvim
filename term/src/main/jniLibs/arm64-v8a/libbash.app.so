@@ -3,4 +3,4 @@ if [ -x $APPFILES/usr/bin/bash ]; then
 else
     sh $@
 fi
-echo -n -e "\0033[999t"
+echo -n -e '\e[999t'

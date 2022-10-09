@@ -1,8 +1,8 @@
 vim $@
 if [ $? -ne 0 ]; then
-  echo -n -e "\0033[9998t"
+  echo -n -e '\e[9998t'
   exit
 else
-  echo -n -e "\0033[999t"
+  echo -n -e '\e[999t'
 fi
 

@@ -692,13 +692,11 @@ class TerminalEmulator {
             esc = mArgs[i];
         }
         setOSCMode(esc);
-        return;
     }
 
     public void setOSCMode(int esc) {
         mEscSeq.offer(esc);
         mUTF8ModeNotify.onUpdate();
-        return;
     }
 
     public int getEscCtrlMode() {
@@ -1627,6 +1625,14 @@ class TerminalEmulator {
         case 1: // Change icon name to T
         case 2: // Change window title to T
             changeTitle(ps, nextOSCString(-1));
+            break;
+        case 99:
+            String str = nextOSCString(-1);
+            try {
+                setOSCMode(Integer.parseInt(str));
+            } catch (NumberFormatException e) {
+                Log.e(EmulatorDebug.LOG_TAG, str + e.toString());
+            }
             break;
         default:
             unknownParameter(ps);

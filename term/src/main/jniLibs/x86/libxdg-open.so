@@ -4,4 +4,4 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 echo "android.intent.action.VIEW\n%open%$*" > $APPFILES/.intent
-echo -n -e "\0033[1001t"
+echo -n -e '\e[1001t'
