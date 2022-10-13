@@ -231,8 +231,6 @@ final class TermVimInstaller {
                         }
                     }
                     setMessage(activity, pd, "binaries");
-                    id = activity.getResources().getIdentifier("libpreload", "raw", activity.getPackageName());
-                    installZip(path, getInputStream(activity, id));
                     installInternalBusybox(path + "/usr/bin");
                     setMessage(activity, pd, "binaries - bin tools");
                     installSoZip(path, "bin");

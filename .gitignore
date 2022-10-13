@@ -1,15 +1,13 @@
 *.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
+.externalNativeBuild
+.gradle
 /build
 /captures
-.externalNativeBuild
-output.json
+/local.properties
 Thumbs.db
 obj/
+output.json
 
 # Built application files
 *.aab
@@ -50,7 +48,6 @@ captures/
 
 # Intellij
 .idea
-.idea/workspace.xml
 
 # Keystore files
 *.jks
