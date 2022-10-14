@@ -111,10 +111,10 @@ public class JniLibsToBin {
             }
         };
         jniLibsToBin(targetDir, maps);
-        File symlink = new File(targetDir + symlinkName);
+        File symlink = new File(targetDir, symlinkName);
         if (symlink.exists() && ASFUtils.isSymlink(symlink)) return true;
         String SOLIB_PATH = TermService.getAPPLIB();
-        File libFile = new File(SOLIB_PATH + "/" + lib);
+        File libFile = new File(SOLIB_PATH, lib);
         long size = 0;
         long libSize = 0;
         try {
@@ -132,9 +132,9 @@ public class JniLibsToBin {
         for (Map.Entry<String, String> entry : maps.entrySet()) {
             if (entry.getKey().contains("grep32") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) continue;
             try {
-                File soFile = new File(SOLIB_PATH + "/" + entry.getKey());
+                File soFile = new File(SOLIB_PATH, entry.getKey());
                 if (!soFile.exists()) continue;
-                File symlink = new File(targetDir + "/" + entry.getValue());
+                File symlink = new File(targetDir, entry.getValue());
                 File parent = new File(symlink.getParent());
                 if (!parent.isDirectory()) {
                     parent.mkdirs();
