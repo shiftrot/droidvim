@@ -6,7 +6,7 @@ buildscript {
         'compileSdk'  : 33,
         'targetSdk'   : 28,
         'minSdk'      : 21,
-        'NDK'         : '21.4.7075529',
+        // 'NDK'         : '21.4.7075529',
         'sourceCompatibility' : '1.8',
         'targetCompatibility' : '1.8'
     ]
@@ -26,7 +26,7 @@ buildscript {
         'documentfile'     : '1.0.1',
         'drawerlayout'     : '1.1.1',
         'fragment_ktx'     : '1.5.3',
-        'kotlin'           : '1.7.10',
+        'kotlin'           : '1.7.20',
         'material'         : '1.6.1',
         'preference'       : '1.2.0',
         'vectordrawable'   : '1.1.0',
@@ -41,7 +41,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
 }
