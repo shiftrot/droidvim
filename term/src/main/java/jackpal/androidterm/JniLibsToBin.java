@@ -38,6 +38,7 @@ public class JniLibsToBin {
             put("libxdg-open.so"             , "/bin/xdg-open");
             put("libusr.bin.busybox-setup.so", "/usr/bin/busybox-setup");
             put("libusr.bin.cphome.so"       , "/usr/bin/cphome");
+            put("libsrc.vim.default.so"      , "/bin/vim");
             put("libvim.app.default.so"      , "/bin/vim.app.default");
             put("libvim.app.so"              , "/bin/vim.app");
             put("libproot.so"                , "/bin/proot");

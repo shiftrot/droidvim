@@ -220,16 +220,6 @@ final class TermVimInstaller {
                     int id;
                     id = activity.getResources().getIdentifier("shell_vim", "raw", activity.getPackageName());
                     installZip(path, getInputStream(activity, id));
-                    String vimsh = TermService.getAPPFILES() + "/bin/vim";
-                    if (!new File(vimsh).exists()) {
-                        String libSrcDefaultVim = TermService.getAPPLIB() + "/libsrc.vim.default.so";
-                        if (new File(libSrcDefaultVim).exists()) {
-                            JniLibsToBin.jniLibsToBin(path, "libsrc.vim.default.so", "/bin/vim");
-                        } else {
-                            shell("cat " + TermService.getAPPFILES() + "/usr/etc/src.vim.default" + " > " + vimsh);
-                            shell("chmod 755 " + vimsh);
-                        }
-                    }
                     setMessage(activity, pd, "binaries");
                     installInternalBusybox(path + "/usr/bin");
                     setMessage(activity, pd, "binaries - bin tools");
