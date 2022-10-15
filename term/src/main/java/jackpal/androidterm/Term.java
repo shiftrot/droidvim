@@ -3871,9 +3871,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setTitle(R.string.clipboard_warning_title);
         builder.setMessage(R.string.clipboard_warning);
-        builder.setPositiveButton(getString(R.string.paste), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.paste_shell), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int m) {
-                choosePasteMode();
+                // choosePasteMode();
+                doTermPaste();
             }
         });
         builder.setNeutralButton(getString(R.string.share_title), new DialogInterface.OnClickListener() {
