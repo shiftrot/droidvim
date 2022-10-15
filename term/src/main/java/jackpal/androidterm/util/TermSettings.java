@@ -667,10 +667,10 @@ public class TermSettings {
     }
 
     public int getBackKeyAction() {
-        if (mBackKeyAction == BACK_KEY_TOGGLE_IME_ESC) mBackKeyAction = BACK_KEY_TOGGLE_IME;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (mBackKeyAction == BACK_KEY_CLOSES_ACTIVITY && !mBackAsEsc) return BACK_KEY_DEFAULT;
+            if (mBackKeyAction == BACK_KEY_CLOSES_ACTIVITY) mBackKeyAction = BACK_KEY_DEFAULT;
         }
+        if (mBackKeyAction == BACK_KEY_TOGGLE_IME_ESC) return BACK_KEY_TOGGLE_IME;
         if (mBackKeyAction == BACK_KEY_DEFAULT && mBackAsEsc) return BACK_KEY_CLOSES_ACTIVITY;
         return mBackKeyAction;
     }
