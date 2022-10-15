@@ -548,6 +548,8 @@
     <string name="storage_write_error">・ドロワーメニューの\"ファイルを開く\"ボタンを使用して編集用にファイルを再度開いてください. (このバッファの編集状態は失われます.)\n・ファイルの書き込み先が正常に動作しているか確認してください.</string>
     <string name="storage_offline_write_error_title">オフラインでのファイルの書き込みに失敗しました</string>
     <string name="storage_offline_write_error">このファイルの編集状態は保存されていません. このデバイスがオンラインになった後に再度書き込んでください.</string>
+    <string name="storage_write_backup_file">バックアップファイルは以下に保存されています:\n</string>
+    <string name="storage_write_backup_file_error"> !!! 重要 !!!\n書き込み先のファイルが失われました.\nこのバッファの内容を保存してください.</string>
     <string name="title_cloud_storage_read_check">クラウドストレージ読み込みチェック</string>
     <string name="summary_cloud_storage_read_check">クラウドストレージへの書き込み前に書き込み先の状態チェックを行う\n(Dropbox/GoogleDrive/OneDrive)</string>
     <string name="title_cloud_storage_write_check">クラウドストレージ書き込みチェック</string>

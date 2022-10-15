@@ -348,7 +348,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
             mSyncFileObserver.setActivity(activity);
         }
-        File sfofile = new File(dir.getAbsolutePath() + "/" + mSyncFileObserverFile);
+        mSyncFileObserver.setBackupFilesDir(TermService.getHOME());
+        File sfofile = new File(dir.getAbsolutePath(), mSyncFileObserverFile);
         mSyncFileObserver.restoreHashMap(sfofile);
         mSyncFileObserver.restoreStartWatching();
         return mSyncFileObserver;
@@ -509,9 +510,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     public static boolean isInternalPrivateStorageDocument(Uri uri) {
-        String appId = BuildConfig.APPLICATION_ID;
-        if (FLAVOR_TERMINAL) appId = "jackpal.androidterm";
-        return (appId + ".storage.documents").equals(uri.getAuthority());
+        return (BuildConfig.APPLICATION_ID + ".storage.documents").equals(uri.getAuthority());
     }
 
     public static boolean isDownloadDocument(Uri uri) {

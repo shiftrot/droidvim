@@ -547,6 +547,8 @@
     <string name="storage_write_error">* Reopen the file for editing via \"Open file…\" button on the drawer menu. (The edit state of this buffer is lost.)\n* Check if the file write destination is working properly.</string>
     <string name="storage_offline_write_error_title">Failed to write the file offline</string>
     <string name="storage_offline_write_error">The edit state of this file is lost. Please write again after this device comes online.</string>
+    <string name="storage_write_backup_file">The backup files are located in the following directory:\n</string>
+    <string name="storage_write_backup_file_error"> !!! IMPORTANT !!!\nFile has been lost.\nSave the contents of this buffer.</string>
     <string name="title_cloud_storage_read_check">Cloud storage read check</string>
     <string name="summary_cloud_storage_read_check">Before writing the file, check the status of the writing destination.\n(Dropbox/GoogleDrive/OneDrive)</string>
     <string name="title_cloud_storage_write_check">Cloud storage write check</string>
