@@ -112,25 +112,23 @@
     </string-array>
 
     <string-array name="entries_actionbar_icon_preference">
-        <item>ドロワーのトグル</item>
         <item>IMEのトグル</item>
-        <item>ファンクションバーのトグル</item>
         <item>一行テキスト入力</item>
-        <item>フォントスケールのリセット</item>
-        <item>IMEの選択</item>
+        <item>「コマンド入力モード」/「通常入力モード」のトグル</item>
+        <item>ファンクションバーのトグル</item>
+        <item>ファンクションバーのカーソルキーの方向をトグル"</item>
+        <item>ドロワーのトグル</item>
         <item>音声入力</item>
         <item>貼り付け</item>
         <item>ターミナルから ESC を送出</item>
-        <item>ターミナルから i を送出</item>
         <item>ターミナルから : を送出</item>
         <item>ターミナルから / を送出</item>
-        <item>IMEアクション</item>
-        <item>「コマンド入力モード」/「通常入力モード」のトグル</item>
-        <item>ファンクションバーのカーソルキーの方向をトグル"</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
         <item>&lt;C-^&gt; (iminsert)</item>
-        <item>新規タブでファイルを開く(Vim)</item>
+        <item>IMEアクション</item>
+        <item>IMEの選択</item>
+        <item>フォントスケールのリセット</item>
         <item>画面の向き</item>
         <item>終了</item>
         <item>なし</item>

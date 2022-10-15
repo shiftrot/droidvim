@@ -118,25 +118,23 @@
     </string-array>
 
     <string-array name="entries_actionbar_icon_preference">
-        <item>Toogle drawer</item>
         <item>Toggle soft keyboard</item>
-        <item>Toggle function bar</item>
         <item>One-line text box</item>
-        <item>Reset font scale</item>
-        <item>Choose input method</item>
+        <item>Toggle \"Command input mode\"/\"Normal Input mode\"</item>
+        <item>Toggle function bar</item>
+        <item>Toggle function bar cursor button direction"</item>
+        <item>Toogle drawer</item>
         <item>Voice input</item>
         <item>Paste</item>
         <item>Sends ESC from terminal</item>
-        <item>Sends i from terminal</item>
         <item>Sends : from terminal</item>
         <item>Sends / from terminal</item>
-        <item>IME shortcut</item>
-        <item>Toggle \"Command input mode\"/\"Normal Input mode\"</item>
-        <item>Toggle function bar cursor button direction"</item>
         <item>Language switch (Shift+Space)</item>
         <item>Language switch (Alt+Space)</item>
         <item>Sends &lt;C-^&gt; (iminsert)</item>
-        <item>Open file in new tab (Vim)</item>
+        <item>IME shortcut</item>
+        <item>Choose input method</item>
+        <item>Reset font scale</item>
         <item>Orientation</item>
         <item>Quit</item>
         <item>None</item>
