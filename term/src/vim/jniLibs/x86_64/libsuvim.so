@@ -1,5 +1,5 @@
 if [ `$APPFILES/usr/bin/busybox whoami` != "root" ]; then
-  su -c $APPFILES/bin/vim.sh
+  su -c $APPFILES/bin/vim.sh $@
 else
-  $APPFILES/bin/vim.sh
+  $APPFILES/bin/vim.sh $@
 fi

@@ -47,6 +47,7 @@ public class JniLibsToBin {
             put("libproot.bash.so"           , "/bin/proot.bash");
             put("libproot.sh.so"             , "/bin/proot.sh");
             put("libsuvim.so"                , "/bin/suvim");
+            put("libsuproot.so"              , "/bin/suproot");
         }
     };
 
