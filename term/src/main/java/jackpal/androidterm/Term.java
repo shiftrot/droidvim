@@ -1278,7 +1278,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void editVimrc() {
-        final Runnable editVimrc = () -> chooseEditVimFiles();
+        final Runnable editVimrc = this::chooseEditVimFiles;
         String message = getString(R.string.edit_vimrc_message);
         // message += getString(R.string.edit_vimrc_message_symboliclink);
         // message += getString(R.string.edit_vimrc_message_file_manager);
@@ -1311,28 +1311,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
                     b.setIcon(android.R.drawable.ic_dialog_info);
                     b.setMessage(items[which]);
-                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            if (getString(R.string.backup_home_directory).equals(items[which])) {
-                                backupFromHome();
-                            } else if (getString(R.string.restore_home_directory).equals(items[which])) {
-                                restoreToHome();
-                            } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
-                                showSnackbar(getString(R.string.message_please_wait));
-                                sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
-                            } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
-                                showSnackbar(getString(R.string.message_please_wait));
-                                sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
-                            }
+                    b.setPositiveButton(android.R.string.ok, (dialog1, id) -> {
+                        dialog1.dismiss();
+                        if (getString(R.string.backup_home_directory).equals(items[which])) {
+                            backupFromHome();
+                        } else if (getString(R.string.restore_home_directory).equals(items[which])) {
+                            restoreToHome();
+                        } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
+                            showSnackbar(getString(R.string.message_please_wait));
+                            sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
+                        } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
+                            showSnackbar(getString(R.string.message_please_wait));
+                            sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
                         }
                     });
-                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            backupAndRestoreHome();
-                        }
+                    b.setNegativeButton(android.R.string.no, (dialog12, which1) -> {
+                        dialog12.dismiss();
+                        backupAndRestoreHome();
                     });
                     b.show();
                 })
@@ -2285,7 +2280,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String WARNING_ID_FILE_PICKER = "google_storage_filer";
         final String mruCommand = mSettings.getMRUCommand();
         final LinkedList<SyncFileObserverMru> list = mSyncFileObserver.getMRU();
-        final Runnable runFiler = () -> doFilePicker();
+        final Runnable runFiler = this::doFilePicker;
         if (mruCommand.equals("") || list == null || list.size() == 0) {
             doWarningDialogRun(null, getString(R.string.google_file_chooser_warning_message), WARNING_ID_FILE_PICKER, false, runFiler);
             return;
@@ -2362,19 +2357,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 String message = getString(R.string.storage_url_error);
                 message += "\n\n" + SyncFileObserver.ErrorState;
                 b.setMessage(message);
-                b.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        SyncFileObserverMru mru = list.get(which);
-                        mSyncFileObserver.remove(mru);
-                        filePicker();
-                    }
+                b.setPositiveButton(getString(android.R.string.ok), (dialog1, id) -> {
+                    SyncFileObserverMru mru = list.get(which);
+                    mSyncFileObserver.remove(mru);
+                    filePicker();
                 });
-                b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        chooseExternalFileMru();
-                    }
-                });
+                b.setNegativeButton(android.R.string.no, (dialogInterface, i) -> chooseExternalFileMru());
                 b.show();
             }
         }).setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> filePicker())
@@ -3823,21 +3811,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mEditText.setText("");
         setEditTextView(mode);
         mEditText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    // do nothing
-                } else if ((actionId == EditorInfo.IME_ACTION_DONE)
-                        || (actionId == EditorInfo.IME_ACTION_SEND)
-                        || (actionId == EditorInfo.IME_ACTION_UNSPECIFIED)) {
-                    String str = v.getText().toString();
-                    if (str.equals("")) str = "\r";
-                    sendKeyStrings(str, false);
-                    v.setText("");
-                }
-                return true;
+        mEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                // do nothing
+            } else if ((actionId == EditorInfo.IME_ACTION_DONE)
+                    || (actionId == EditorInfo.IME_ACTION_SEND)
+                    || (actionId == EditorInfo.IME_ACTION_UNSPECIFIED)) {
+                String str = v.getText().toString();
+                if (str.equals("")) str = "\r";
+                sendKeyStrings(str, false);
+                v.setText("");
             }
+            return true;
         });
         mEditText.setOnKeyListener((view, keyCode, event) -> {
             onLastKey();
@@ -4130,7 +4115,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 case "navigationbar_down":
                 case "navigationbar_left":
                 case "navigationbar_right":
-                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, 25, v -> Term.this.onClick(v)));
+                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, 25, Term.this));
                     switch (fkey.prefId) {
                         case "functionbar_up":
                         case "navigationbar_up":

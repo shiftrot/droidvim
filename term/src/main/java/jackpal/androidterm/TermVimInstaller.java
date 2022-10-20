@@ -3,7 +3,6 @@ package jackpal.androidterm;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Environment;
@@ -71,17 +70,13 @@ final class TermVimInstaller {
             b.setIcon(android.R.drawable.ic_dialog_info);
             //        b.setTitle(activity.getString(R.string.install_runtime_doc_dialog_title));
             b.setMessage(activity.getString(R.string.install_runtime_doc_message));
-            b.setPositiveButton(activity.getString(R.string.button_yes), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    doInstallVim(activity, whenDone, true);
-                }
+            b.setPositiveButton(activity.getString(R.string.button_yes), (dialog, id) -> {
+                dialog.dismiss();
+                doInstallVim(activity, whenDone, true);
             });
-            b.setNegativeButton(activity.getString(R.string.button_no), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    doInstallVim(activity, whenDone, false);
-                }
+            b.setNegativeButton(activity.getString(R.string.button_no), (dialog, id) -> {
+                dialog.dismiss();
+                doInstallVim(activity, whenDone, false);
             });
             b.setCancelable(false);
             b.show();
@@ -94,12 +89,7 @@ final class TermVimInstaller {
 
     static private void fixOrientation(final AppCompatActivity activity, final int orientation) {
         if (activity != null && !activity.isFinishing()) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activity.setRequestedOrientation(orientation);
-                }
-            });
+            activity.runOnUiThread(() -> activity.setRequestedOrientation(orientation));
         }
     }
 
@@ -123,15 +113,12 @@ final class TermVimInstaller {
 
     static void installTerm(final AppCompatActivity activity, Runnable whenDone) {
         if (getTermInstallStatus(activity)) return;
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    toast(activity, activity.getString(R.string.message_please_wait));
-                    doInstallTerm(activity, whenDone);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        activity.runOnUiThread(() -> {
+            try {
+                toast(activity, activity.getString(R.string.message_please_wait));
+                doInstallTerm(activity, whenDone);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -308,18 +295,15 @@ final class TermVimInstaller {
                     new PrefValue(activity).setString(TermService.VERSION_NAME_KEY, TermService.APP_VERSION);
                 } finally {
                     if (!activity.isFinishing() && pd != null) {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    pd.dismiss();
-                                    Term.dismissProgressRing(layout, progressBar);
-                                } catch (Exception e) {
-                                    // Do nothing
-                                }
-                                doInstallVim = false;
-                                if (whenDone != null) whenDone.run();
+                        activity.runOnUiThread(() -> {
+                            try {
+                                pd.dismiss();
+                                Term.dismissProgressRing(layout, progressBar);
+                            } catch (Exception e) {
+                                // Do nothing
                             }
+                            doInstallVim = false;
+                            if (whenDone != null) whenDone.run();
                         });
                     }
                     if (!activity.isFinishing()) fixOrientation(activity, orientation);
@@ -458,22 +442,19 @@ final class TermVimInstaller {
             }
             if (mProgressToast) {
                 try {
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mProgressToastHandlerMillis += PROGRESS_TOAST_HANDLER_MILLIS;
-                            CharSequence mes;
-                            if (mProgressToastHandlerMillis >= 3 * 60 * 1000) {
-                                mes = "ERROR : Time out.";
-                                mProgressToast = false;
-                            } else {
-                                mes = mActivity.getString(R.string.message_please_wait);
-                                if (mProgressToastHandler != null) {
-                                    mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
-                                }
+                    mActivity.runOnUiThread(() -> {
+                        mProgressToastHandlerMillis += PROGRESS_TOAST_HANDLER_MILLIS;
+                        CharSequence mes;
+                        if (mProgressToastHandlerMillis >= 3 * 60 * 1000) {
+                            mes = "ERROR : Time out.";
+                            mProgressToast = false;
+                        } else {
+                            mes = mActivity.getString(R.string.message_please_wait);
+                            if (mProgressToastHandler != null) {
+                                mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
                             }
-                            toast(mActivity, mes.toString());
                         }
+                        toast(mActivity, mes.toString());
                     });
                 } catch (Exception e) {
                     // Activity already dismissed - ignore.
@@ -494,12 +475,7 @@ final class TermVimInstaller {
             if (mProgressToastHandler != null)
                 mProgressToastHandler.removeCallbacks(mProgressToastRunner);
             mProgressToastHandlerMillis = 0;
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS);
-                }
-            });
+            activity.runOnUiThread(() -> mProgressToastHandler.postDelayed(mProgressToastRunner, PROGRESS_TOAST_HANDLER_MILLIS));
         } catch (Exception e) {
             // Do nothing
         }
@@ -625,36 +601,31 @@ final class TermVimInstaller {
     static void showWhatsNew(final AppCompatActivity activity, final boolean first) {
         final String whatsNew = BuildConfig.WHATS_NEW;
         if (!first && whatsNew.equals("")) return;
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                if (first) {
-                    bld.setTitle(activity.getString(R.string.tips_vim_title));
-                    String message = activity.getString(R.string.tips_vim);
-                    if (SCOPED_STORAGE) {
-                        message = message + "\n\n" + activity.getString(R.string.scoped_storage_first_warning_message);
-                    }
-                    bld.setMessage(message);
-                } else {
-                    bld.setTitle(activity.getString(R.string.whats_new_title));
-                    bld.setMessage(whatsNew);
+        activity.runOnUiThread(() -> {
+            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+            if (first) {
+                bld.setTitle(activity.getString(R.string.tips_vim_title));
+                String message = activity.getString(R.string.tips_vim);
+                if (SCOPED_STORAGE) {
+                    message = message + "\n\n" + activity.getString(R.string.scoped_storage_first_warning_message);
                 }
-                bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        if (!first) showVimTips(activity);
-                    }
-                });
-                final Term term = (Term) activity;
-                try {
-                    AlertDialog dialog = bld.create();
-                    dialog.show();
-                    Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positive.requestFocus();
-                } catch (Exception e) {
-                    // do nothing
-                }
+                bld.setMessage(message);
+            } else {
+                bld.setTitle(activity.getString(R.string.whats_new_title));
+                bld.setMessage(whatsNew);
+            }
+            bld.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+                dialog.dismiss();
+                if (!first) showVimTips(activity);
+            });
+            final Term term = (Term) activity;
+            try {
+                AlertDialog dialog = bld.create();
+                dialog.show();
+                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positive.requestFocus();
+            } catch (Exception e) {
+                // do nothing
             }
         });
     }
@@ -831,23 +802,13 @@ final class TermVimInstaller {
 
     static private void setMessage(final AppCompatActivity activity, final AlertDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    pd.setMessage(INSTALL_ZIP + "\n- " + message + INSTALL_WARNING);
-                }
-            });
+            activity.runOnUiThread(() -> pd.setMessage(INSTALL_ZIP + "\n- " + message + INSTALL_WARNING));
         }
     }
 
     static private void setMessage(final AppCompatActivity activity, final ProgressRingDialog pd, final String message) {
         if (!activity.isFinishing() && pd != null) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    pd.setMessage(INSTALL_ZIP + "\n- " + message + INSTALL_WARNING);
-                }
-            });
+            activity.runOnUiThread(() -> pd.setMessage(INSTALL_ZIP + "\n- " + message + INSTALL_WARNING));
         }
     }
 
@@ -963,15 +924,12 @@ final class TermVimInstaller {
 
     static void toast(final AppCompatActivity activity, final String message) {
         try {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.term_coordinator_layout_top), message, Snackbar.LENGTH_LONG);
-                    View snackbarView = snackbar.getView();
-                    TextView tv= snackbarView.findViewById(R.id.snackbar_text);
-                    tv.setMaxLines(3);
-                    snackbar.show();
-                }
+            activity.runOnUiThread(() -> {
+                Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.term_coordinator_layout_top), message, Snackbar.LENGTH_LONG);
+                View snackbarView = snackbar.getView();
+                TextView tv= snackbarView.findViewById(R.id.snackbar_text);
+                tv.setMaxLines(3);
+                snackbar.show();
             });
         } catch (Exception e) {
             // Activity already dismissed - ignore.
