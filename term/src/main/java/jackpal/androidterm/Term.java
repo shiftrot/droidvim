@@ -116,6 +116,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -173,7 +174,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final String EXEC_STATUS_CHECK_CMD_FILE = "/" + EXEC_STATUS_CHECK_CMD;
     public static final String EXEC_STATUS_FILE = "/exec.ok";
     public static final String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
-    public static final String FKEY_LABEL = "fkey_label";
+    private static final String FKEY_LABEL = "fkey_label";
+    private static final int FKEY_MAX = 12;
+    private static final String[] mCmd_FKEY = new String[FKEY_MAX];
     private static final int VIEW_FLIPPER = R.id.view_flipper;
     private static final int PASTE_ID = 0;
     private static final int COPY_ALL_ID = 1;
@@ -190,7 +193,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final String APP_DROPBOX = "com.dropbox.android";
     private static final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
     private static final String APP_ONEDRIVE = "com.microsoft.skydrive";
-    private LinkedList<ExternalApp> mExternalApps;
     private String APP_FILER;
     public static final int TERMINAL_MODE_DISABLE = 0x00;
     public static final int TERMINAL_MODE_ENABLE = 0x01;
@@ -214,16 +216,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static boolean mEditTextView = false;
     private static int mFunctionBar = -1;
     private static int mSenderKeyEvent = KEYEVENT_SENDER_SHIFT_SPACE;
-    private static final Runnable keyEventSenderAction = new Runnable() {
-        public void run() {
-            KeyEventSender sender = new KeyEventSender();
-            sender.execute(mSenderKeyEvent);
-        }
+    private static final Runnable keyEventSenderAction = () -> {
+        KeyEventSender sender = new KeyEventSender();
+        sender.execute(mSenderKeyEvent);
     };
     private final Handler mKeepScreenHandler = new Handler();
     private long mLastKeyPress = System.currentTimeMillis();
     private ArrayList<String> mFilePickerItems;
     private boolean mFirst = true;
+
     private List<FunctionKey> mFunctionKeys = new ArrayList<>();
     private String FUNCTIONBAR_UP = "▲";
     private String FUNCTIONBAR_DOWN = "▼";
@@ -348,7 +349,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             mSyncFileObserver = new SyncFileObserver(dir.getAbsolutePath());
             mSyncFileObserver.setActivity(activity);
         }
-        mSyncFileObserver.setBackupFilesDir(TermService.getHOME());
+        SyncFileObserver.setBackupFilesDir(TermService.getHOME());
         File sfofile = new File(dir.getAbsolutePath(), mSyncFileObserverFile);
         mSyncFileObserver.restoreHashMap(sfofile);
         mSyncFileObserver.restoreStartWatching();
@@ -414,17 +415,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 fc.write(by);
                 fc.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     @SuppressLint("NewApi")
-    public static String handleOpenDocument(Uri uri, Cursor cursor) {
+    public static String getOpenDocumentPath(Uri uri, Cursor cursor) {
         if (uri == null || cursor == null) return null;
 
         String displayName = null;
@@ -504,7 +503,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
@@ -554,31 +552,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (TermSettings.AMBIWIDTH_KEY.equals(s)) {
             TermVimInstaller.setAmbiWidthToVimrc(mSettings.getAmbiWidth());
         }
-        if ("function_key_label_m1".equals(s)  ||
-            "function_key_label_m2".equals(s)  ||
-            "function_key_label_m3".equals(s)  ||
-            "function_key_label_m4".equals(s)  ||
-            "function_key_label_m5".equals(s)  ||
-            "function_key_label_m6".equals(s)  ||
-            "function_key_label_m7".equals(s)  ||
-            "function_key_label_m8".equals(s)  ||
-            "function_key_label_m9".equals(s)  ||
-            "function_key_label_m10".equals(s) ||
-            "function_key_label_m11".equals(s) ||
-            "function_key_label_m12".equals(s) ||
-            "function_key_cmd_m1".equals(s)  ||
-            "function_key_cmd_m2".equals(s)  ||
-            "function_key_cmd_m3".equals(s)  ||
-            "function_key_cmd_m4".equals(s)  ||
-            "function_key_cmd_m5".equals(s)  ||
-            "function_key_cmd_m6".equals(s)  ||
-            "function_key_cmd_m7".equals(s)  ||
-            "function_key_cmd_m8".equals(s)  ||
-            "function_key_cmd_m9".equals(s)  ||
-            "function_key_cmd_m10".equals(s) ||
-            "function_key_cmd_m11".equals(s) ||
-            "function_key_cmd_m12".equals(s) ) {
-                setFunctionKey();
+        if (s != null && (s.startsWith("function_key_label_m") || s.startsWith("function_key_cmd_m"))) {
+            setFunctionKey();
         }
 
         if (TermSettings.BACKACTION_KEY.equals(s)) {
@@ -700,12 +675,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (mOnBackInvokedCallback == null) {
-                mOnBackInvokedCallback = new OnBackInvokedCallback() {
-                    @Override
-                    public void onBackInvoked() {
-                        if (mOnBackPressedCallback != null && mOnBackPressedCallback.isEnabled()) {
-                            mOnBackPressedCallback.handleOnBackPressed();
-                        }
+                mOnBackInvokedCallback = () -> {
+                    if (mOnBackPressedCallback != null && mOnBackPressedCallback.isEnabled()) {
+                        mOnBackPressedCallback.handleOnBackPressed();
                     }
                 };
             }
@@ -725,10 +697,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private static long getAvailableSize(String path){
+    private static long getAvailableSize(String path) {
         long size = -1;
 
-        if( path != null ) {
+        if (path != null) {
             StatFs fs = new StatFs(path);
             long blockSize = fs.getBlockSizeLong();
             long availableBlockSize = fs.getAvailableBlocksLong();
@@ -777,8 +749,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         PackageManager pm = this.getApplicationContext().getPackageManager();
         APP_FILER = TermPreferences.getFilerApplicationId();
         String defaultAppButton = getString(R.string.external_app_button);
-        mExternalApps = new LinkedList<>();
-        mExternalApps.add(new ExternalApp(R.id.drawer_files_button      , mSettings.getFilerAppId()   , defaultAppButton               , mSettings.getFilerAppButtonMode()   ));
+        LinkedList<ExternalApp> mExternalApps = new LinkedList<>();
+        mExternalApps.add(new ExternalApp(R.id.drawer_files_button, mSettings.getFilerAppId(), defaultAppButton, mSettings.getFilerAppButtonMode()));
         if (FLAVOR_VIM) {
             mExternalApps.add(new ExternalApp(R.id.drawer_app_button        , mSettings.getExternalAppId(), defaultAppButton               , mSettings.getExternalAppButtonMode()));
             mExternalApps.add(new ExternalApp(R.id.drawer_dropbox_button    , APP_DROPBOX                 , getString(R.string.dropbox)    , mSettings.getDropboxFilePicker()    ));
@@ -797,28 +769,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             button.setVisibility(visibility);
             if (visibility == View.VISIBLE) {
                 try {
-                    findViewById(app.button).setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getDrawer().closeDrawers();
-                            if (app.appId.equals(APP_FILER)) {
-                                if (FLAVOR_VIM) {
-                                    final Runnable runFiler = new Runnable() {
-                                        public void run() {
-                                            launchExternalApp(2, APP_FILER);
-                                        }
-                                    };
-                                    final String WARNING_ID_FILE_MANAGER = "file_manager_app_warning";
-                                    String message = getString(R.string.google_file_chooser_warning_message) + getString(R.string.google_filer_app_warning_message);
-                                    doWarningDialogRun(null, message, WARNING_ID_FILE_MANAGER, false, runFiler);
-                                } else {
-                                    launchExternalApp(2, APP_FILER);
-                                }
-                            } else if (isAppInstalled(app.appId) || APP_DROPBOX.equals(app.appId) || APP_GOOGLEDRIVE.equals(app.appId) || APP_ONEDRIVE.equals(app.appId)) {
-                                launchExternalApp(app.action, app.appId);
+                    findViewById(app.button).setOnClickListener(v -> {
+                        getDrawer().closeDrawers();
+                        if (app.appId.equals(APP_FILER)) {
+                            if (FLAVOR_VIM) {
+                                final Runnable runFiler = () -> launchExternalApp(2, APP_FILER);
+                                final String WARNING_ID_FILE_MANAGER = "file_manager_app_warning";
+                                String message = getString(R.string.google_file_chooser_warning_message) + getString(R.string.google_filer_app_warning_message);
+                                doWarningDialogRun(null, message, WARNING_ID_FILE_MANAGER, false, runFiler);
                             } else {
-                                externalApp();
+                                launchExternalApp(2, APP_FILER);
                             }
+                        } else if (isAppInstalled(app.appId) || APP_DROPBOX.equals(app.appId) || APP_GOOGLEDRIVE.equals(app.appId) || APP_ONEDRIVE.equals(app.appId)) {
+                            launchExternalApp(app.action, app.appId);
+                        } else {
+                            externalApp();
                         }
                     });
                     if (defaultAppButton.equals(app.label)) {
@@ -857,66 +822,42 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFilePickerItems.add(getString(R.string.backup_restore));
         if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.menu_edit_vimrc));
         setExtraButton();
-        findViewById(R.id.drawer_extra_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                onExtraButtonClicked(v);
-            }
+        findViewById(R.id.drawer_extra_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            onExtraButtonClicked(v);
         });
-        findViewById(R.id.drawer_preference_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                doPreferences();
-            }
+        findViewById(R.id.drawer_preference_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            doPreferences();
         });
         setDebugButton();
-        findViewById(R.id.drawer_debug_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                onDebugButtonClicked(v);
-            }
+        findViewById(R.id.drawer_debug_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            onDebugButtonClicked(v);
         });
 
-        findViewById(R.id.drawer_storage_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                filePicker();
-            }
+        findViewById(R.id.drawer_storage_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            filePicker();
         });
-        findViewById(R.id.drawer_createfile_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                storageMenu(true);
-            }
+        findViewById(R.id.drawer_createfile_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            storageMenu(true);
         });
-        findViewById(R.id.drawer_clear_cache_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                confirmClearCache(true);
-            }
+        findViewById(R.id.drawer_clear_cache_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            confirmClearCache(true);
         });
-        findViewById(R.id.drawer_menu_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                openOptionsMenu();
-            }
+        findViewById(R.id.drawer_menu_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            openOptionsMenu();
         });
-        findViewById(R.id.drawer_quit_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDrawer().closeDrawers();
-                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                    sendKeyStrings(AppCommand.QUIT, true);
-                } else {
-                    confirmCloseWindow();
-                }
+        findViewById(R.id.drawer_quit_button).setOnClickListener(v -> {
+            getDrawer().closeDrawers();
+            if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
+                sendKeyStrings(AppCommand.QUIT, true);
+            } else {
+                confirmCloseWindow();
             }
         });
         if (mSettings.getColorTheme() % 2 == 0) {
@@ -1020,7 +961,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return null;
     }
 
-   static public Intent getDocumentsuiIntent(Context context, Intent intent) {
+    static public Intent getDocumentsuiIntent(Context context, Intent intent) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return intent;
         return addDocumentsuiClassName(context, intent);
     }
@@ -1028,11 +969,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void externalApp() {
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setMessage(R.string.external_app_id_error);
-        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                doPreferences();
-            }
+        bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+            dialog.dismiss();
+            doPreferences();
         });
         bld.create().show();
     }
@@ -1059,26 +998,37 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
+    private boolean doWarningCloudStorageDialog(String path) {
+        try {
+            if (path.contains("com.dropbox.android.FileCache") || path.contains("com.dropbox.product.android.dbapp")) {
+                // doWarningDialog(getString(R.string.dropbox_write_warning_title), getString(R.string.dropbox_write_warning_message), "do_warning_dropbox_write_warning", false);
+                return true;
+            } else if (path.contains("com.microsoft.skydrive.content")) {
+                // doWarningDialog(getString(R.string.onedrive_write_warning_title), getString(R.string.onedrive_write_warning_message), "do_warning_onedrive_write_warning", false);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private void confirmClearCache(boolean clearTmpdir) {
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_clear_cache_message);
-        final Runnable clearCache = new Runnable() {
-            public void run() {
-                if (mSyncFileObserver != null) mSyncFileObserver.clearCache();
-                if (mTermService != null) mTermService.clearTMPDIR();
-                String cacheDir = TermService.getCACHE_DIR();
-                TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "tmp"));
-                TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "vim"));
-                new File(cacheDir, "tmp").mkdirs();
-                new File(cacheDir, "vim").mkdirs();
-            }
+        final Runnable clearCache = () -> {
+            if (mSyncFileObserver != null) mSyncFileObserver.clearCache();
+            if (mTermService != null) mTermService.clearTMPDIR();
+            String cacheDir = TermService.getCACHE_DIR();
+            TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "tmp"));
+            TermVimInstaller.deleteFileOrFolder(new File(cacheDir, "vim"));
+            new File(cacheDir, "tmp").mkdirs();
+            new File(cacheDir, "vim").mkdirs();
         };
-        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                mHandler.post(clearCache);
-            }
+        b.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+            dialog.dismiss();
+            mHandler.post(clearCache);
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
@@ -1113,15 +1063,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String key = "manage_storage_permission";
         boolean warning = getPrefBoolean(Term.this, key, true);
         if (!warning) return true;
-        Runnable whenDone = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Runnable whenDone = () -> {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         };
         doWarningDialogRun(getString(R.string.manage_external_storage_permission), getString(R.string.manage_external_storage_permission_summary), key, false, whenDone);
@@ -1142,23 +1089,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             message = getString(R.string.summary_notifications_permission_request);
                         }
                         final boolean restart = grantResults[i] == PackageManager.PERMISSION_GRANTED;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
-                                bld.setIcon(android.R.drawable.ic_dialog_alert);
-                                bld.setTitle(getString(R.string.title_notifications_permission));
-                                bld.setMessage(message);
-                                bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                        if (restart) doCloseWindow();
-                                    }
-                                });
-                                bld.setCancelable(false);
-                                AlertDialog dialog = bld.create();
-                                dialog.show();
-                            }
+                        runOnUiThread(() -> {
+                            AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                            bld.setIcon(android.R.drawable.ic_dialog_alert);
+                            bld.setTitle(getString(R.string.title_notifications_permission));
+                            bld.setMessage(message);
+                            bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                                dialog.dismiss();
+                                if (restart) doCloseWindow();
+                            });
+                            bld.setCancelable(false);
+                            AlertDialog dialog = bld.create();
+                            dialog.show();
                         });
                     }
                 }
@@ -1168,20 +1110,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                             TermVimInstaller.setupStorageSymlinks(this);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
-                                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                                    bld.setMessage(R.string.permission_granted_suggestion);
-                                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    AlertDialog dialog = bld.create();
-                                    dialog.show();
-                                }
+                            runOnUiThread(() -> {
+                                AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                                bld.setMessage(R.string.permission_granted_suggestion);
+                                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> dialog.dismiss());
+                                AlertDialog dialog = bld.create();
+                                dialog.show();
                             });
                         }
                         break;
@@ -1284,19 +1219,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             builder.setView(view);
             final CheckBox cb = view.findViewById(R.id.dont_show_again);
             cb.setChecked(false);
-            builder.setPositiveButton(getString(R.string.button_continue), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    if (cb.isChecked()) {
-                        setPrefBoolean(Term.this, warningKey, false);
-                    }
-                    doOnStart();
+            builder.setPositiveButton(getString(R.string.button_continue), (d, m) -> {
+                if (cb.isChecked()) {
+                    setPrefBoolean(Term.this, warningKey, false);
                 }
+                doOnStart();
             });
-            builder.setNeutralButton(R.string.quit, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    doExitShell();
-                }
-            });
+            builder.setNeutralButton(R.string.quit, (dialog, id) -> doExitShell());
             AlertDialog dialog = builder.create();
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
@@ -1313,11 +1242,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(MESSAGE);
             bld.setMessage(R.string.please_restart);
-            bld.setPositiveButton(R.string.quit, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    throw new IllegalStateException(MESSAGE);
-                }
+            bld.setPositiveButton(R.string.quit, (dialog, id) -> {
+                dialog.dismiss();
+                throw new IllegalStateException(MESSAGE);
             });
             AlertDialog dialog = bld.create();
             dialog.show();
@@ -1351,11 +1278,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void editVimrc() {
-        final Runnable editVimrc = new Runnable() {
-            public void run() {
-                chooseEditVimFiles();
-            }
-        };
+        final Runnable editVimrc = () -> chooseEditVimFiles();
         String message = getString(R.string.edit_vimrc_message);
         // message += getString(R.string.edit_vimrc_message_symboliclink);
         // message += getString(R.string.edit_vimrc_message_file_manager);
@@ -1384,37 +1307,34 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.backup_restore))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
-                        b.setIcon(android.R.drawable.ic_dialog_info);
-                        b.setMessage(items[which]);
-                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                if (getString(R.string.backup_home_directory).equals(items[which])) {
-                                    backupFromHome();
-                                } else if (getString(R.string.restore_home_directory).equals(items[which])) {
-                                    restoreToHome();
-                                } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
-                                    showSnackbar(getString(R.string.message_please_wait));
-                                    sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
-                                } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
-                                    showSnackbar(getString(R.string.message_please_wait));
-                                    sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
-                                }
+                .setItems(items, (dialog, which) -> {
+                    final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
+                    b.setIcon(android.R.drawable.ic_dialog_info);
+                    b.setMessage(items[which]);
+                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            if (getString(R.string.backup_home_directory).equals(items[which])) {
+                                backupFromHome();
+                            } else if (getString(R.string.restore_home_directory).equals(items[which])) {
+                                restoreToHome();
+                            } else if (getString(R.string.backup_home_to_appextfiles).equals(items[which])) {
+                                showSnackbar(getString(R.string.message_please_wait));
+                                sendKeyStrings(":echo system(\"cphome backup\")" + "\r", true);
+                            } else if (getString(R.string.restore_home_from_appextfiles).equals(items[which])) {
+                                showSnackbar(getString(R.string.message_please_wait));
+                                sendKeyStrings(":echo system(\"cphome restore\")" + "\r", true);
                             }
-                        });
-                        b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                backupAndRestoreHome();
-                            }
-                        });
-                        b.show();
-                    }
+                        }
+                    });
+                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            backupAndRestoreHome();
+                        }
+                    });
+                    b.show();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
@@ -1486,7 +1406,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             warning = getPrefBoolean(Term.this, key, true);
             try {
                 if (warning) {
-                    final long LOW_STORAGE_WARNING_SIZE = (long)(0.4 * 1024 * 1024 * 1024);
+                    final long LOW_STORAGE_WARNING_SIZE = (long) (0.4 * 1024 * 1024 * 1024);
                     long mStorageAvailableSize = getAvailableSize(Environment.getDataDirectory().getPath());
                     if (mStorageAvailableSize < LOW_STORAGE_WARNING_SIZE) {
                         String manufacturer = Build.MANUFACTURER;
@@ -1526,27 +1446,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             final CheckBox cb = view.findViewById(R.id.dont_show_again);
             final String warningKey = key;
             cb.setChecked(doNotShowAgain);
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    if (cb.isChecked()) {
-                        setPrefBoolean(Term.this, warningKey, false);
-                    }
-                    doExitShell();
+            builder.setPositiveButton(android.R.string.yes, (d, m) -> {
+                if (cb.isChecked()) {
+                    setPrefBoolean(Term.this, warningKey, false);
                 }
+                doExitShell();
             });
         } else {
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    doExitShell();
-                }
-            });
+            builder.setPositiveButton(android.R.string.yes, (d, m) -> doExitShell());
         }
         if (key.equals("scoped_storage_warning_backup") && isAppInstalled(APP_FILER)) {
-            builder.setNeutralButton(getString(R.string.app_files), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface d, int m) {
-                    intentMainActivity(APP_FILER);
-                    doExitShell();
-                }
+            builder.setNeutralButton(getString(R.string.app_files), (d, m) -> {
+                intentMainActivity(APP_FILER);
+                doExitShell();
             });
         }
         AlertDialog dialog = builder.create();
@@ -1622,17 +1534,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             final String postCmd = _postCmd;
             cmd = preCmd;
-            TermVimInstaller.installVim(Term.this, new Runnable() {
-                @Override
-                public void run() {
-                    if (getCurrentTermSession() != null) {
-                        sendKeyStrings(postCmd, false);
-                    } else {
-                        ShellTermSession.setPostCmd(postCmd);
-                    }
-                    permissionCheck();
-                    if (FLAVOR_VIM) openDrawerAfterInstall();
+            TermVimInstaller.installVim(Term.this, () -> {
+                if (getCurrentTermSession() != null) {
+                    sendKeyStrings(postCmd, false);
+                } else {
+                    ShellTermSession.setPostCmd(postCmd);
                 }
+                permissionCheck();
+                if (FLAVOR_VIM) openDrawerAfterInstall();
             });
         } else {
             permissionCheck();
@@ -1693,13 +1602,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final CheckBox cb = view.findViewById(R.id.dont_show_again);
         final String warningKey = key;
         cb.setChecked(dontShowAgain);
-        builder.setPositiveButton(getString(R.string.button_continue), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int m) {
-                if (cb.isChecked()) {
-                    setPrefBoolean(Term.this, warningKey, false);
-                }
-                if (whenDone != null) whenDone.run();
+        builder.setPositiveButton(getString(R.string.button_continue), (d, m) -> {
+            if (cb.isChecked()) {
+                setPrefBoolean(Term.this, warningKey, false);
             }
+            if (whenDone != null) whenDone.run();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -1824,26 +1731,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = {getString(R.string.copy_share_current_screen), getString(R.string.copy_share_screen_buffer), screenLockItem, getString(R.string.dialog_title_orientation_preference), getString(R.string.reset)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.screen))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (getString(R.string.dialog_title_orientation_preference).equals(items[which])) {
-                            setCurrentOrientation();
-                        } else if (getString(R.string.copy_share_current_screen).equals(items[which])) {
-                            String strings = getCurrentEmulatorView().getTranscriptCurrentText();
-                            showTextInWebview("html_text", strings);
-                        } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
-                            doHideSoftKeyboard();
-                            String strings = getCurrentEmulatorView().getTranscriptText().trim();
-                            showTextInWebview("html_log", strings);
-                        } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
-                            if (keepScreen) mKeepScreenEnableAuto = false;
-                            doToggleKeepScreen();
-                            if (!keepScreen) mKeepScreenEnableAuto = true;
-                        } else if (getString(R.string.reset).equals(items[which])) {
-                            doResetTerminal();
-                            updatePrefs();
-                        }
+                .setItems(items, (dialog, which) -> {
+                    if (getString(R.string.dialog_title_orientation_preference).equals(items[which])) {
+                        setCurrentOrientation();
+                    } else if (getString(R.string.copy_share_current_screen).equals(items[which])) {
+                        String strings = getCurrentEmulatorView().getTranscriptCurrentText();
+                        showTextInWebview("html_text", strings);
+                    } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
+                        doHideSoftKeyboard();
+                        String strings = getCurrentEmulatorView().getTranscriptText().trim();
+                        showTextInWebview("html_log", strings);
+                    } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
+                        if (keepScreen) mKeepScreenEnableAuto = false;
+                        doToggleKeepScreen();
+                        if (!keepScreen) mKeepScreenEnableAuto = true;
+                    } else if (getString(R.string.reset).equals(items[which])) {
+                        doResetTerminal();
+                        updatePrefs();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -1854,14 +1758,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = {getString(R.string.new_window), getString(R.string.close_window)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.menu_window))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (getString(R.string.new_window).equals(items[which])) {
-                            doCreateNewWindow();
-                        } else if (getString(R.string.close_window).equals(items[which])) {
-                            confirmCloseWindow();
-                        }
+                .setItems(items, (dialog, which) -> {
+                    if (getString(R.string.new_window).equals(items[which])) {
+                        doCreateNewWindow();
+                    } else if (getString(R.string.close_window).equals(items[which])) {
+                        confirmCloseWindow();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -1872,12 +1773,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = getResources().getStringArray(R.array.entries_orientation_preference);
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.dialog_title_orientation_preference))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mOrientation = which;
-                        updatePrefs();
-                    }
+                .setItems(items, (dialog, which) -> {
+                    mOrientation = which;
+                    updatePrefs();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
@@ -2264,19 +2162,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void openDrawerAfterInstall() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+        runOnUiThread(() -> {
+            openDrawer();
+            /*
+            String key = "open_drawer_after_first_install";
+            boolean warning = getPrefBoolean(Term.this, key, true);
+            if (warning) {
                 openDrawer();
-                /*
-                String key = "open_drawer_after_first_install";
-                boolean warning = getPrefBoolean(Term.this, key, true);
-                if (warning) {
-                    openDrawer();
-                    setPrefBoolean(Term.this, key, false);
-                }
-                 */
+                setPrefBoolean(Term.this, key, false);
             }
+             */
         });
     }
 
@@ -2331,16 +2226,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_window_close_message);
-        final Runnable closeWindow = new Runnable() {
-            public void run() {
-                doCloseWindow();
-            }
-        };
-        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                mHandler.post(closeWindow);
-            }
+        final Runnable closeWindow = () -> doCloseWindow();
+        b.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+            dialog.dismiss();
+            mHandler.post(closeWindow);
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
@@ -2396,11 +2285,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String WARNING_ID_FILE_PICKER = "google_storage_filer";
         final String mruCommand = mSettings.getMRUCommand();
         final LinkedList<SyncFileObserverMru> list = mSyncFileObserver.getMRU();
-        final Runnable runFiler = new Runnable() {
-            public void run() {
-                doFilePicker();
-            }
-        };
+        final Runnable runFiler = () -> doFilePicker();
         if (mruCommand.equals("") || list == null || list.size() == 0) {
             doWarningDialogRun(null, getString(R.string.google_file_chooser_warning_message), WARNING_ID_FILE_PICKER, false, runFiler);
             return;
@@ -2414,19 +2299,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 mru,
                 getString(R.string.use_clear_mru_cache)};
         final String[] items = mruCommand.equals("MRU") ? mruCacheItems : mruCommands;
-        new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String item = items[which];
-                if (item.equals(getString(R.string.use_file_chooser))) {
-                    doWarningDialogRun(null, getString(R.string.google_file_chooser_warning_message), WARNING_ID_FILE_PICKER, false, runFiler);
-                } else if (item.equals(getString(R.string.use_mru))) {
-                    sendKeyStrings(mruCommand + "\r", true);
-                } else if (item.equals(getString(R.string.use_mru_cache))) {
-                    chooseExternalFileMru();
-                } else if (item.equals(getString(R.string.use_clear_mru_cache))) {
-                    confirmClearCache(false);
-                }
+        new AlertDialog.Builder(this).setItems(items, (dialog, which) -> {
+            String item = items[which];
+            if (item.equals(getString(R.string.use_file_chooser))) {
+                doWarningDialogRun(null, getString(R.string.google_file_chooser_warning_message), WARNING_ID_FILE_PICKER, false, runFiler);
+            } else if (item.equals(getString(R.string.use_mru))) {
+                sendKeyStrings(mruCommand + "\r", true);
+            } else if (item.equals(getString(R.string.use_mru_cache))) {
+                chooseExternalFileMru();
+            } else if (item.equals(getString(R.string.use_clear_mru_cache))) {
+                confirmClearCache(false);
             }
         }).setNegativeButton(android.R.string.cancel, null)
                 .setTitle(getString(R.string.file_chooser))
@@ -2462,48 +2344,40 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             item = new File(item).getName();
             items[i] = item;
         }
-        new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String item = items[which];
-                if (item == null) {
-                    // do nothing
-                } else {
-                    if (mSyncFileObserver != null) {
-                        Uri uri = list.get(which).getUri();
-                        String path = list.get(which).getPath();
-                        if (mSyncFileObserver.putUriAndLoad(uri, path)) {
-                            doShellIntentCommand(path, mSettings.getIntentCommand());
-                            return;
-                        }
+        new AlertDialog.Builder(this).setItems(items, (dialog, which) -> {
+            String item = items[which];
+            if (item == null) {
+                // do nothing
+            } else {
+                if (mSyncFileObserver != null) {
+                    Uri uri = list.get(which).getUri();
+                    String path = list.get(which).getPath();
+                    if (mSyncFileObserver.putUriAndLoad(uri, path)) {
+                        doShellIntentCommand(path, mSettings.getIntentCommand());
+                        return;
                     }
-                    final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
-                    b.setIcon(android.R.drawable.ic_dialog_alert);
-                    String message = getString(R.string.storage_url_error);
-                    message += "\n\n" + jackpal.androidterm.SyncFileObserver.ErrorState;
-                    b.setMessage(message);
-                    b.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            SyncFileObserverMru mru = list.get(which);
-                            mSyncFileObserver.remove(mru);
-                            filePicker();
-                        }
-                    });
-                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            chooseExternalFileMru();
-                        }
-                    });
-                    b.show();
                 }
+                final AlertDialog.Builder b = new AlertDialog.Builder(Term.this);
+                b.setIcon(android.R.drawable.ic_dialog_alert);
+                String message = getString(R.string.storage_url_error);
+                message += "\n\n" + SyncFileObserver.ErrorState;
+                b.setMessage(message);
+                b.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SyncFileObserverMru mru = list.get(which);
+                        mSyncFileObserver.remove(mru);
+                        filePicker();
+                    }
+                });
+                b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        chooseExternalFileMru();
+                    }
+                });
+                b.show();
             }
-        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                filePicker();
-            }
-        })
+        }).setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> filePicker())
                 .setTitle(getString(R.string.use_mru_cache))
                 .show();
     }
@@ -2552,15 +2426,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         b.setIcon(android.R.drawable.ic_dialog_info);
         b.setMessage(getString(R.string.open_document_tree_summary));
         final AppCompatActivity activity = this;
-        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
-                intent = getDocumentsuiIntent(activity.getApplicationContext(), intent);
-                if (checkImplicitIntent(activity, intent))
-                    doStartActivityForResult(intent, REQUEST_DOCUMENT_TREE);
-            }
+        b.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            intent = getDocumentsuiIntent(activity.getApplicationContext(), intent);
+            if (checkImplicitIntent(activity, intent))
+                doStartActivityForResult(intent, REQUEST_DOCUMENT_TREE);
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
@@ -2594,31 +2466,28 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         final String[] items = itemArray.toArray(new String[0]);
         final String[] appId = appIdArray.toArray(new String[0]);
-        new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String item = items[which];
-                if (item == null) {
-                    // do nothing
-                } else if (item.equals(getString(R.string.file_chooser))) {
-                    filePicker();
-                } else if (getString(R.string.open_document_tree).equals(item)) {
-                    requestDocumentTreeWritePermission();
-                } else if (getString(R.string.create_file).equals(item)) {
-                    fileCreate();
-                } else if (getString(R.string.delete_file).equals(item)) {
-                    fileDelete();
-                } else if (getString(R.string.clear_cache).equals(item)) {
-                    confirmClearCache(true);
-                } else if (getString(R.string.create_symlinks).equals(item)) {
-                    setupStorageSymlinks(Term.this);
-                } else if (getString(R.string.backup_restore).equals(item)) {
-                    backupAndRestoreHome();
-                } else if (getString(R.string.menu_edit_vimrc).equals(item)) {
-                    editVimrc();
-                } else {
-                    intentMainActivity(appId[which]);
-                }
+        new AlertDialog.Builder(this).setItems(items, (dialog, which) -> {
+            String item = items[which];
+            if (item == null) {
+                // do nothing
+            } else if (item.equals(getString(R.string.file_chooser))) {
+                filePicker();
+            } else if (getString(R.string.open_document_tree).equals(item)) {
+                requestDocumentTreeWritePermission();
+            } else if (getString(R.string.create_file).equals(item)) {
+                fileCreate();
+            } else if (getString(R.string.delete_file).equals(item)) {
+                fileDelete();
+            } else if (getString(R.string.clear_cache).equals(item)) {
+                confirmClearCache(true);
+            } else if (getString(R.string.create_symlinks).equals(item)) {
+                setupStorageSymlinks(Term.this);
+            } else if (getString(R.string.backup_restore).equals(item)) {
+                backupAndRestoreHome();
+            } else if (getString(R.string.menu_edit_vimrc).equals(item)) {
+                editVimrc();
+            } else {
+                intentMainActivity(appId[which]);
             }
         }).setNegativeButton(android.R.string.cancel, null)
                 .setTitle(getString(R.string.storage_menu))
@@ -2648,7 +2517,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String path = UriToPath.getPath(this, uri);
         if (path == null) {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
-            path = handleOpenDocument(uri, cursor);
+            path = getOpenDocumentPath(uri, cursor);
             if (path == null) {
                 alert(getString(R.string.storage_read_error));
                 return;
@@ -2658,14 +2527,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(file);
-        b.setPositiveButton(getString(R.string.delete_file), new DialogInterface.OnClickListener() {
-            @SuppressLint("NewApi")
-            public void onClick(DialogInterface dialog, int id) {
-                try {
-                    deleteDocument(getContentResolver(), uri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        b.setPositiveButton(getString(R.string.delete_file), (dialog, id) -> {
+            try {
+                deleteDocument(getContentResolver(), uri);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         b.setNegativeButton(android.R.string.no, null);
@@ -2711,13 +2577,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         sp_encoding.setAdapter(sp_adapter);
 
         builder.setView(layout_encoding);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int m) {
-                String encoding = textView.getText().toString();
-                String cmd = ":e!";
-                if (!encoding.equals("")) cmd += " ++enc=" + encoding;
-                sendKeyStrings(cmd + "\r", true);
-            }
+        builder.setPositiveButton(android.R.string.yes, (d, m) -> {
+            String encoding = textView.getText().toString();
+            String cmd = ":e!";
+            if (!encoding.equals("")) cmd += " ++enc=" + encoding;
+            sendKeyStrings(cmd + "\r", true);
         });
         builder.setNegativeButton(android.R.string.no, null);
         builder.create().show();
@@ -2765,12 +2629,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     try {
                         Uri uri = data.getData();
                         final int takeFlags =
-                                 (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         getContentResolver().takePersistableUriPermission(uri, takeFlags);
                         alert(getString(R.string.request_approved));
                     } catch (Exception e) {
-                        alert(getString(R.string.request_approved) + "\n\n" + e.toString());
+                        alert(getString(R.string.request_approved) + "\n\n" + e);
                         break;
                     }
                 }
@@ -2783,8 +2647,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
                 if (result == RESULT_OK && data != null) {
                     final int takeFlags =
-                             (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     Uri uri = data.getData();
                     if (uri != null) {
                         getContentResolver().takePersistableUriPermission(uri, takeFlags);
@@ -2814,7 +2678,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         try {
                             Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                             if (mSyncFileObserver != null) {
-                                path = handleOpenDocument(uri, cursor);
+                                path = getOpenDocumentPath(uri, cursor);
                                 if (path == null) {
                                     alert(getString(R.string.storage_read_error));
                                     break;
@@ -2830,7 +2694,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             }
                         } catch (Exception e) {
                             Log.d("FilePicker", e.toString());
-                            alert(getString(R.string.storage_read_error) + "\n" + e.toString());
+                            alert(getString(R.string.storage_read_error) + "\n" + e);
                             break;
                         }
                     }
@@ -2956,6 +2820,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private boolean mPressBackTwice = false;
+
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -3092,6 +2957,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             mPressBackTwice = false;
                         }
                     }
+
                     @Override
                     public void onShown(Snackbar snackbar) {
                         mPressBackTwice = true;
@@ -3173,17 +3039,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 message += getString(R.string.security_app_in_sdcard_message);
             }
             bld.setMessage(message);
-            bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int m) {
-                    dialog.dismiss();
-                    fatalCrashQuit();
-                }
+            bld.setPositiveButton(getString(android.R.string.ok), (dialog, m) -> {
+                dialog.dismiss();
+                fatalCrashQuit();
             });
-            bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int m) {
-                    dialog.dismiss();
-                    troubleShooting(true);
-                }
+            bld.setNeutralButton(getString(R.string.crash_trouble_shooting_button), (dialog, m) -> {
+                dialog.dismiss();
+                troubleShooting(true);
             });
             AlertDialog dlg = bld.create();
             dlg.setCancelable(false);
@@ -3213,30 +3075,25 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = itemList.toArray(new String[0]);
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_choose))
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (getString(R.string.launch_default_vim).equals(items[which])) {
-                            if (new File(TermService.getAPPFILES() + "/bin/vim.default").canExecute()) {
-                                sendKeyStrings("vim.app.default\r", false);
-                            } else {
-                                sendKeyStrings("vim.app\r", false);
-                            }
-                        } else if (getString(R.string.quit_to_shell).equals(items[which])) {
-                            quitToShell();
-                        } else if (getString(R.string.crash_quit_button).equals(items[which])) {
-                            doCloseCrashWindow();
+                .setSingleChoiceItems(items, -1, (dialog, which) -> {
+                    dialog.dismiss();
+                    if (getString(R.string.launch_default_vim).equals(items[which])) {
+                        if (new File(TermService.getAPPFILES() + "/bin/vim.default").canExecute()) {
+                            sendKeyStrings("vim.app.default\r", false);
                         } else {
-                            fatalCrash();
+                            sendKeyStrings("vim.app\r", false);
                         }
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
+                    } else if (getString(R.string.quit_to_shell).equals(items[which])) {
+                        quitToShell();
+                    } else if (getString(R.string.crash_quit_button).equals(items[which])) {
+                        doCloseCrashWindow();
+                    } else {
                         fatalCrash();
                     }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), (dialog, m) -> {
+                    dialog.dismiss();
+                    fatalCrash();
                 })
                 .create();
         dlg.setCancelable(false);
@@ -3249,16 +3106,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setIcon(android.R.drawable.ic_dialog_alert);
         String message = getString(R.string.quit_to_shell);
         bld.setMessage(message);
-        bld.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                alert(getString(R.string.shell_exit_command_message));
-            }
-        });
-        bld.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                fatalCrash();
-            }
-        });
+        bld.setPositiveButton(getString(android.R.string.ok), (dialog, id) -> alert(getString(R.string.shell_exit_command_message)));
+        bld.setNegativeButton(getString(android.R.string.cancel), (dialog, id) -> fatalCrash());
         bld.create().show();
     }
 
@@ -3269,24 +3118,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle(getString(R.string.crash_trouble_shooting_button))
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (getString(R.string.revert_to_default_vim).equals(items[which])) {
-                            setUninstallExtraContents(true);
-                            doCloseCrashWindow(getString(R.string.revert_to_default_vim));
-                        }
+                .setSingleChoiceItems(items, -1, (dialog, which) -> {
+                    dialog.dismiss();
+                    if (getString(R.string.revert_to_default_vim).equals(items[which])) {
+                        setUninstallExtraContents(true);
+                        doCloseCrashWindow(getString(R.string.revert_to_default_vim));
                     }
                 })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int m) {
-                        dialog.dismiss();
-                        if (mFatalTroubleShooting) {
-                            fatalCrash();
-                        } else {
-                            mUninstall = false;
-                        }
+                .setNegativeButton(getString(android.R.string.cancel), (dialog, m) -> {
+                    dialog.dismiss();
+                    if (mFatalTroubleShooting) {
+                        fatalCrash();
+                    } else {
+                        mUninstall = false;
                     }
                 })
                 .create();
@@ -3305,18 +3149,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         bld.setCancelable(false);
         bld.setTitle(R.string.close_window);
         if (message != null) bld.setMessage(message);
-        bld.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                if (mUninstall) doUninstallExtraContents();
-                doCloseWindow();
-            }
+        bld.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+            dialog.dismiss();
+            if (mUninstall) doUninstallExtraContents();
+            doCloseWindow();
         });
-        bld.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                fatalCrash();
-            }
+        bld.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
+            dialog.dismiss();
+            fatalCrash();
         });
         AlertDialog dlg = bld.create();
         dlg.setCancelable(false);
@@ -3464,7 +3304,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                         if (!ext.equals("")) hash += "." + ext;
 
                         File cacheDir = new File(getIntentCacheDir());
-                        File cache = new File(cacheDir.toString() + "/" + hash);
+                        File cache = new File(cacheDir + "/" + hash);
                         if (cache.isDirectory()) {
                             shell("rm -rf " + cache.getAbsolutePath());
                         }
@@ -3559,7 +3399,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private String getIntentCacheDir() {
         try {
             return getApplicationContext().getCacheDir().toString() + "/intent";
-        } catch(Exception e) {
+        } catch (Exception e) {
             return "/data/data/" + BuildConfig.APPLICATION_ID + "/cache/intent";
         }
     }
@@ -3574,7 +3414,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 ByteBuffer bbuf;
                 bbuf = fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
                 // Create a read-only CharBuffer on the file
-                CharBuffer cbuf = Charset.forName("UTF-8").newDecoder().decode(bbuf);
+                CharBuffer cbuf = StandardCharsets.UTF_8.newDecoder().decode(bbuf);
                 String str = cbuf.toString();
                 ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                         .getManager(getApplicationContext());
@@ -3665,23 +3505,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = {getString(R.string.share_buffer_text), getString(R.string.share_visual_text), getString(R.string.share_unnamed_text), getString(R.string.share_file)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.share_title))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                sendKeyStrings(":ShareIntent\r", true);
-                                break;
-                            case 1:
-                                sendKeyStrings(":ShareIntent!\r", true);
-                                break;
-                            case 2:
-                                sendKeyStrings(":ShareIntent u\r", true);
-                                break;
-                            case 3:
-                                sendKeyStrings(":ShareIntent file\r", true);
-                                break;
-                        }
+                .setItems(items, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            sendKeyStrings(":ShareIntent\r", true);
+                            break;
+                        case 1:
+                            sendKeyStrings(":ShareIntent!\r", true);
+                            break;
+                        case 2:
+                            sendKeyStrings(":ShareIntent u\r", true);
+                            break;
+                        case 3:
+                            sendKeyStrings(":ShareIntent file\r", true);
+                            break;
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -3721,7 +3558,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, "Share"));
         } catch (Exception e) {
-            complain("ShareIntent Text: " + e.toString());
+            complain("ShareIntent Text: " + e);
         }
     }
 
@@ -3729,12 +3566,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = {getString(R.string.copy_screen_current), getString(R.string.copy_screen_buffer)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.share_screen_text))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        doCopyAll(which + 2);
-                    }
-                })
+                .setItems(items, (dialog, which) -> doCopyAll(which + 2))
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
@@ -3743,12 +3575,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String[] items = {getString(R.string.copy_screen_current), getString(R.string.copy_screen_buffer)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.copy_screen))
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        doCopyAll(which);
-                    }
-                })
+                .setItems(items, (dialog, which) -> doCopyAll(which))
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
@@ -3808,16 +3635,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.clipboard))
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        String item = items[which];
-                        if (getString(R.string.paste_vim).equals(item)) {
-                            sendKeyStrings("\"*p", true);
-                        } else if (getString(R.string.paste_shell).equals(item)) {
-                            doTermPaste();
-                        }
+                .setSingleChoiceItems(items, -1, (dialog1, which) -> {
+                    dialog1.cancel();
+                    String item = items[which];
+                    if (getString(R.string.paste_vim).equals(item)) {
+                        sendKeyStrings("\"*p", true);
+                    } else if (getString(R.string.paste_shell).equals(item)) {
+                        doTermPaste();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -3831,16 +3655,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.clipboard))
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        String item = items[which];
-                        if (getString(R.string.copy_to_clipboard).equals(item)) {
-                            doScreenMenu();
-                        } else if (getString(R.string.paste_shell).equals(item)) {
-                            doTermPaste();
-                        }
+                .setSingleChoiceItems(items, -1, (dialog1, which) -> {
+                    dialog1.cancel();
+                    String item = items[which];
+                    if (getString(R.string.copy_to_clipboard).equals(item)) {
+                        doScreenMenu();
+                    } else if (getString(R.string.paste_shell).equals(item)) {
+                        doTermPaste();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -3870,17 +3691,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setTitle(R.string.clipboard_warning_title);
         builder.setMessage(R.string.clipboard_warning);
-        builder.setPositiveButton(getString(R.string.paste_shell), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int m) {
-                // choosePasteMode();
-                doTermPaste();
-            }
+        builder.setPositiveButton(getString(R.string.paste_shell), (d, m) -> {
+            // choosePasteMode();
+            doTermPaste();
         });
-        builder.setNeutralButton(getString(R.string.share_title), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int m) {
-                shareIntentTextDialog();
-            }
-        });
+        builder.setNeutralButton(getString(R.string.share_title), (d, m) -> shareIntentTextDialog());
         builder.setNegativeButton(android.R.string.no, null);
         builder.create().show();
     }
@@ -4024,40 +3839,37 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 return true;
             }
         });
-        mEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent event) {
-                onLastKey();
-                if (keyCode == KeycodeConstants.KEYCODE_TAB) {
-                    return true;
-                }
-                int shortcut = EmulatorView.getPreIMEShortcutsStatus(keyCode, event);
-                if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION) {
-                    int action = mSettings.getImeShortcutsAction();
-                    if (action == KEY_ACTION_0) {
-                        doToggleSoftKeyboard();
-                    } else if (action == KEY_ACTION_1261) {
-                        doEditTextFocusAction();
-                    } else if (action == KEY_ACTION_1361) {
-                        keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
-                    } else if (action == KEY_ACTION_1362) {
-                        keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
-                    } else {
-                        int inputType = mEditText.getInputType();
-                        if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
-                            setEditTextInputType(action);
-                        } else {
-                            inputType = EditorInfo.TYPE_CLASS_TEXT;
-                            mEditText.setInputType(inputType);
-                        }
-                    }
-                    return true;
-                } else if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION2) {
-                    doEditTextFocusAction();
-                    return true;
-                }
-                return false;
+        mEditText.setOnKeyListener((view, keyCode, event) -> {
+            onLastKey();
+            if (keyCode == KeycodeConstants.KEYCODE_TAB) {
+                return true;
             }
+            int shortcut = EmulatorView.getPreIMEShortcutsStatus(keyCode, event);
+            if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION) {
+                int action = mSettings.getImeShortcutsAction();
+                if (action == KEY_ACTION_0) {
+                    doToggleSoftKeyboard();
+                } else if (action == KEY_ACTION_1261) {
+                    doEditTextFocusAction();
+                } else if (action == KEY_ACTION_1361) {
+                    keyEventSender(KEYEVENT_SENDER_SHIFT_SPACE);
+                } else if (action == KEY_ACTION_1362) {
+                    keyEventSender(KEYEVENT_SENDER_ALT_SPACE);
+                } else {
+                    int inputType = mEditText.getInputType();
+                    if ((inputType & EditorInfo.TYPE_CLASS_TEXT) != 0) {
+                        setEditTextInputType(action);
+                    } else {
+                        inputType = EditorInfo.TYPE_CLASS_TEXT;
+                        mEditText.setInputType(inputType);
+                    }
+                }
+                return true;
+            } else if (shortcut == EmulatorView.PREIME_SHORTCUT_ACTION2) {
+                doEditTextFocusAction();
+                return true;
+            }
+            return false;
         });
     }
 
@@ -4165,19 +3977,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private static String mCmd_F1  =  "";
-    private static String mCmd_F2  =  "";
-    private static String mCmd_F3  =  "";
-    private static String mCmd_F4  =  "";
-    private static String mCmd_F5  =  "";
-    private static String mCmd_F6  =  "";
-    private static String mCmd_F7  =  "";
-    private static String mCmd_F8  =  "";
-    private static String mCmd_F9  =  "";
-    private static String mCmd_F10 =  "";
-    private static String mCmd_F11 =  "";
-    private static String mCmd_F12 =  "";
-
     private void setFunctionKey() {
         final String UP = FUNCTIONBAR_UP;
         final String DOWN = FUNCTIONBAR_DOWN;
@@ -4195,31 +3994,13 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String MENU = "≡";
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final String F1  = prefs.getString("function_key_label_m1", "F1");
-        final String F2  = prefs.getString("function_key_label_m2", "F2");
-        final String F3  = prefs.getString("function_key_label_m3", "F3");
-        final String F4  = prefs.getString("function_key_label_m4", "F4");
-        final String F5  = prefs.getString("function_key_label_m5", "F5");
-        final String F6  = prefs.getString("function_key_label_m6", "F6");
-        final String F7  = prefs.getString("function_key_label_m7", "F7");
-        final String F8  = prefs.getString("function_key_label_m8", "F8");
-        final String F9  = prefs.getString("function_key_label_m9", "F9");
-        final String F10 = prefs.getString("function_key_label_m10", "F10");
-        final String F11 = prefs.getString("function_key_label_m11", "F11");
-        final String F12 = prefs.getString("function_key_label_m12", "F12");
 
-        mCmd_F1  = prefs.getString("function_key_cmd_m1", "");
-        mCmd_F2  = prefs.getString("function_key_cmd_m2", "");
-        mCmd_F3  = prefs.getString("function_key_cmd_m3", "");
-        mCmd_F4  = prefs.getString("function_key_cmd_m4", "");
-        mCmd_F5  = prefs.getString("function_key_cmd_m5", "");
-        mCmd_F6  = prefs.getString("function_key_cmd_m6", "");
-        mCmd_F7  = prefs.getString("function_key_cmd_m7", "");
-        mCmd_F8  = prefs.getString("function_key_cmd_m8", "");
-        mCmd_F9  = prefs.getString("function_key_cmd_m9", "");
-        mCmd_F10 = prefs.getString("function_key_cmd_m10", "");
-        mCmd_F11 = prefs.getString("function_key_cmd_m11", "");
-        mCmd_F12 = prefs.getString("function_key_cmd_m12", "");
+        String[] fKey = new String[mCmd_FKEY.length];
+        for (int i = 0; i < mCmd_FKEY.length; i++) {
+            String id = String.valueOf(i+1);
+            fKey[i] = prefs.getString("function_key_label_m" + id, "F" + id);
+            mCmd_FKEY[i]  = prefs.getString("function_key_cmd_m" + id, "");
+        }
 
         Resources res = getResources();
         mFunctionKeys = new ArrayList<>();
@@ -4251,18 +4032,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_18       , "functionbar_equal"          , "="          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_19       , "functionbar_asterisk"       , "*"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_20       , "functionbar_pipe"           , "|"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_f1"             , F1           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_f2"             , F2           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_f3"             , F3           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_f4"             , F4           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_f5"             , F5           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_f6"             , F6           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_f7"             , F7           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_f8"             , F8           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_f9"             , F9           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_f10"            , F10          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_31       , "functionbar_f11"            , F11          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_f12"            , F12          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_21       , "functionbar_f1"             , fKey[0]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_22       , "functionbar_f2"             , fKey[1]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_23       , "functionbar_f3"             , fKey[2]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_24       , "functionbar_f4"             , fKey[3]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_25       , "functionbar_f5"             , fKey[4]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_26       , "functionbar_f6"             , fKey[5]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_27       , "functionbar_f7"             , fKey[6]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_28       , "functionbar_f8"             , fKey[7]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_f9"             , fKey[8]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_f10"            , fKey[9]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_31       , "functionbar_f11"            , fKey[10]     , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_f12"            , fKey[11]     , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_33       , "functionbar_invert"         , "○"         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_34       , "functionbar_menu_user"      , "□"         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_35       , "functionbar_menu_x"         , "×"         , false ));
@@ -4277,18 +4058,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_44       , "functionbar_menu_quit"      , MENU_QUIT    , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_45       , "functionbar_menu"           , MENU         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_46       , "functionbar_menu_hide"      , "∇"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , F1           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , F2           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , F3           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m4                , "functionbar_m4"             , F4           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m5                , "functionbar_m5"             , F5           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m6                , "functionbar_m6"             , F6           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m7                , "functionbar_m7"             , F7           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m8                , "functionbar_m8"             , F8           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m9                , "functionbar_m9"             , F9           , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m10               , "functionbar_m10"            , F10          , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m11               , "functionbar_m11"            , F11          , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_m12               , "functionbar_m12"            , F12          , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , fKey[0]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , fKey[1]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , fKey[2]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m4                , "functionbar_m4"             , fKey[3]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m5                , "functionbar_m5"             , fKey[4]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m6                , "functionbar_m6"             , fKey[5]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m7                , "functionbar_m7"             , fKey[6]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m8                , "functionbar_m8"             , fKey[7]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m9                , "functionbar_m9"             , fKey[8]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m10               , "functionbar_m10"            , fKey[9]      , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m11               , "functionbar_m11"            , fKey[10]     , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_m12               , "functionbar_m12"            , fKey[11]     , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_1      , "navigationbar_esc"          , "Esc"        , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_2      , "navigationbar_ctrl"         , "Ctrl"       , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_3      , "navigationbar_alt"          , "Alt"        , false ));
@@ -4309,18 +4090,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_18     , "navigationbar_equal"        , "="          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_19     , "navigationbar_asterisk"     , "*"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_20     , "navigationbar_pipe"         , "|"          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_21     , "navigationbar_f1"           , F1           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_22     , "navigationbar_f2"           , F2           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_23     , "navigationbar_f3"           , F3           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_24     , "navigationbar_f4"           , F4           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_25     , "navigationbar_f5"           , F5           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_26     , "navigationbar_f6"           , F6           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_27     , "navigationbar_f7"           , F7           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_28     , "navigationbar_f8"           , F8           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29     , "navigationbar_f9"           , F9           , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30     , "navigationbar_f10"          , F10          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31     , "navigationbar_f11"          , F11          , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_f12"          , F12          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_21     , "navigationbar_f1"           , fKey[0]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_22     , "navigationbar_f2"           , fKey[1]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_23     , "navigationbar_f3"           , fKey[2]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_24     , "navigationbar_f4"           , fKey[3]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_25     , "navigationbar_f5"           , fKey[4]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_26     , "navigationbar_f6"           , fKey[5]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_27     , "navigationbar_f7"           , fKey[6]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_28     , "navigationbar_f8"           , fKey[7]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29     , "navigationbar_f9"           , fKey[8]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30     , "navigationbar_f10"          , fKey[9]      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31     , "navigationbar_f11"          , fKey[10]     , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_f12"          , fKey[11]     , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33     , "navigationbar_invert"       , "○"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_34     , "navigationbar_menu_user"    , "□"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_35     , "navigationbar_menu_x"       , "×"         , false ));
@@ -4349,11 +4130,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 case "navigationbar_down":
                 case "navigationbar_left":
                 case "navigationbar_right":
-                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, 25, new OnClickListener() {
-                        public void onClick(View v) {
-                            Term.this.onClick(v);
-                        }
-                    }));
+                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, 25, v -> Term.this.onClick(v)));
                     switch (fkey.prefId) {
                         case "functionbar_up":
                         case "navigationbar_up":
@@ -4380,12 +4157,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 case "navigationbar_fn_toggle":
                 case "navigationbar_ime_toggle":
                     button.setOnClickListener(this);
-                    button.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
-                            return true;
-                        }
+                    button.setOnLongClickListener(v -> {
+                        VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
+                        return true;
                     });
                     break;
                 default:
@@ -4394,22 +4168,12 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
         Button button = findViewById(R.id.button_oneline_text_box_clear);
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onelineTextBoxClear();
-            }
-        });
+        button.setOnClickListener(v -> onelineTextBoxClear());
 
         int visibility = (mSettings.getOneLineTextBoxCr()) ? View.VISIBLE : View.GONE;
         button = findViewById(R.id.button_oneline_text_box_enter);
         button.setVisibility(visibility);
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onelineTextBoxEnter(true);
-            }
-        });
+        button.setOnClickListener(v -> onelineTextBoxEnter(true));
 
     }
 
@@ -4492,7 +4256,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (key.equals("navigationbar_menu_x")) visibility = View.GONE;
         String label = prefs.getString(FKEY_LABEL + key, "");
         boolean rotation = key.startsWith("function");
-        if (key.startsWith("functionbar_prev") || key.startsWith("functionbar_next")) rotation = false;
+        if (key.startsWith("functionbar_prev") || key.startsWith("functionbar_next"))
+            rotation = false;
         setFunctionBarButton(id, visibility, label, rotation);
 
         Button button = findViewById(R.id.button_oneline_text_box_enter);
@@ -4547,13 +4312,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void setScreenFitFunctionBarShortLabel() {
         View view = getCurrentEmulatorView();
-        if (view != null) view.post(new Thread(new Runnable() {
-            public void run() {
-                setShortButtonLabel("navigationbar_esc", "Esc");
-                setShortButtonLabel("navigationbar_ctrl", "Ctrl");
-                setShortButtonLabel("navigationbar_tab", "Tab");
-                setShortButtonLabel("navigationbar_alt", "Alt");
-            }
+        if (view != null) view.post(new Thread(() -> {
+            setShortButtonLabel("navigationbar_esc", "Esc");
+            setShortButtonLabel("navigationbar_ctrl", "Ctrl");
+            setShortButtonLabel("navigationbar_tab", "Tab");
+            setShortButtonLabel("navigationbar_alt", "Alt");
         }));
     }
 
@@ -4778,62 +4541,62 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case "functionbar_f1":
             case "functionbar_m1":
             case "navigationbar_f1":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F1, mCmd_F1);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F1, mCmd_FKEY[0]);
                 break;
             case "functionbar_f2":
             case "functionbar_m2":
             case "navigationbar_f2":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F2, mCmd_F2);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F2, mCmd_FKEY[1]);
                 break;
             case "functionbar_f3":
             case "functionbar_m3":
             case "navigationbar_f3":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F3, mCmd_F3);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F3, mCmd_FKEY[2]);
                 break;
             case "functionbar_f4":
             case "functionbar_m4":
             case "navigationbar_f4":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F4, mCmd_F4);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F4, mCmd_FKEY[3]);
                 break;
             case "functionbar_f5":
             case "functionbar_m5":
             case "navigationbar_f5":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F5, mCmd_F5);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F5, mCmd_FKEY[4]);
                 break;
             case "navigationbar_f6":
             case "functionbar_f6":
             case "functionbar_m6":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F6, mCmd_F6);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F6, mCmd_FKEY[5]);
                 break;
             case "functionbar_f7":
             case "functionbar_m7":
             case "navigationbar_f7":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F7, mCmd_F7);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F7, mCmd_FKEY[6]);
                 break;
             case "functionbar_f8":
             case "functionbar_m8":
             case "navigationbar_f8":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F8, mCmd_F8);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F8, mCmd_FKEY[7]);
                 break;
             case "functionbar_f9":
             case "functionbar_m9":
             case "navigationbar_f9":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F9, mCmd_F9);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F9, mCmd_FKEY[8]);
                 break;
             case "functionbar_f10":
             case "functionbar_m10":
             case "navigationbar_f10":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F10, mCmd_F10);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F10, mCmd_FKEY[9]);
                 break;
             case "functionbar_f11":
             case "functionbar_m11":
             case "navigationbar_f11":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F11, mCmd_F11);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F11, mCmd_FKEY[10]);
                 break;
             case "functionbar_f12":
             case "functionbar_m12":
             case "navigationbar_f12":
-                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F12, mCmd_F12);
+                doSendActionBarFKey(view, KeycodeConstants.KEYCODE_F12, mCmd_FKEY[11]);
                 break;
         }
     }
@@ -4858,14 +4621,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         items = standardItems;
         AlertDialog dialog = new AlertDialog.Builder(this)
             .setTitle(getString(R.string.choose_extra_contents_dialog_title))
-            .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                    String item = items[which];
-                    if (getString(R.string.extra_contents_action_clean).equals(item)) {
-                        uninstallExtraContents(activity, arg0);
-                    }
+            .setSingleChoiceItems(items, -1, (dialog1, which) -> {
+                dialog1.cancel();
+                String item = items[which];
+                if (getString(R.string.extra_contents_action_clean).equals(item)) {
+                    uninstallExtraContents(activity, arg0);
                 }
             })
             .setNegativeButton(android.R.string.cancel, null)
@@ -4877,23 +4637,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final AlertDialog.Builder r = new AlertDialog.Builder(activity.getApplicationContext());
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_uninstall_extra_contents);
-        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                mUninstall = true;
-                shell("rm " + TermService.getVersionFilesDir() + "/version");
-                if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
-                    sendKeyStrings(AppCommand.QUIT, true);
-                } else {
-                    doExitShell();
-                }
+        b.setPositiveButton(android.R.string.yes, (dialog, id) -> {
+            dialog.dismiss();
+            mUninstall = true;
+            shell("rm " + TermService.getVersionFilesDir() + "/version");
+            if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
+                sendKeyStrings(AppCommand.QUIT, true);
+            } else {
+                doExitShell();
             }
         });
-        b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                doExtraContentsAction(activity, arg0);
-            }
+        b.setNegativeButton(android.R.string.no, (dialog, id) -> {
+            dialog.dismiss();
+            doExtraContentsAction(activity, arg0);
         });
         b.show();
     }
@@ -5040,10 +4796,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private class EmulatorViewDoubleTapListener implements GestureDetector.OnDoubleTapListener {
-        private final EmulatorView view;
 
         public EmulatorViewDoubleTapListener(EmulatorView view) {
-            this.view = view;
         }
 
         @Override

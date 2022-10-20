@@ -3,9 +3,7 @@ package jackpal.androidterm;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -13,8 +11,8 @@ import android.os.Build;
 import android.os.FileObserver;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
-import android.provider.OpenableColumns;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,15 +31,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
-import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +65,7 @@ class SyncFileObserverMru {
 }
 
 public class SyncFileObserver extends RecursiveFileObserver {
-    class Info {
+    static class Info {
         private String uriString;
         private String hash;
         private long time;
@@ -123,6 +118,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
             else return (c > 0 ? 1 : -1);
         }
 
+        @NonNull
         @Override
         public String toString() {
             String str = null;
@@ -135,6 +131,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            assert str != null;
             return str;
         }
     }
@@ -174,21 +171,23 @@ public class SyncFileObserver extends RecursiveFileObserver {
     @Override
     public void onEvent(int event, String path) {
         if (!mActive || !mHashMap.containsKey(path)) return;
+        Info info = mHashMap.get(path);
+        if (info == null) return;
         switch (event) {
             // case FileObserver.DELETE_SELF:
             case FileObserver.DELETE:
-                confirmDelete(mHashMap.get(path).getUri(), new File(path), mContentResolver);
+                confirmDelete(info.getUri(), new File(path), mContentResolver);
                 break;
             case FileObserver.OPEN:
-                mHashMap.get(path).setTime(System.currentTimeMillis());
+                info.setTime(System.currentTimeMillis());
                 break;
             // case FileObserver.MODIFY:
             case FileObserver.CLOSE_WRITE:
-                mHashMap.get(path).setTime(System.currentTimeMillis());
-                flushCache(mHashMap.get(path).getUri(), new File(path), mContentResolver);
+                info.setTime(System.currentTimeMillis());
+                flushCache(info.getUri(), new File(path), mContentResolver);
                 break;
             // case FileObserver.ACCESS:
-            //     mHashMap.get(path).setTime(System.currentTimeMillis());
+            //     info.setTime(System.currentTimeMillis());
             //     break;
             default:
                 break;
@@ -215,19 +214,15 @@ public class SyncFileObserver extends RecursiveFileObserver {
     private static int mMaxSyncFiles = 300;
 
     public void setMaxSyncFiles(int max) {
-        mMaxSyncFiles = max > 100 ? max : 100;
+        mMaxSyncFiles = Math.max(max, 100);
     }
 
     LinkedList<SyncFileObserverMru> getMRU() {
-        if (mCacheDir == null || mHashMap == null) return null;
+        if (mCacheDir == null) return null;
         List<Map.Entry<String, Info>> list_entries = new ArrayList<>(mHashMap.entrySet());
 
-        Collections.sort(list_entries, new Comparator<Map.Entry<String, Info>>() {
-            public int compare(Map.Entry<String, Info> obj1, Map.Entry<String, Info> obj2) {
-                return obj1.getValue().compareTo(obj2.getValue());
-            }
-        });
-        LinkedList<SyncFileObserverMru> mru = new LinkedList<SyncFileObserverMru>();//[1]
+        Collections.sort(list_entries, (obj1, obj2) -> obj1.getValue().compareTo(obj2.getValue()));
+        LinkedList<SyncFileObserverMru> mru = new LinkedList<>();//[1]
         for (Map.Entry<String, Info> map : list_entries) {
             Info info = map.getValue();
             mru.add(new SyncFileObserverMru(info.getUri(), map.getKey()));
@@ -236,16 +231,12 @@ public class SyncFileObserver extends RecursiveFileObserver {
     }
 
     void clearOldCache() {
-        if (mCacheDir == null || mHashMap == null) return;
+        if (mCacheDir == null) return;
         if (mHashMap.size() <= mMaxSyncFiles) return;
 
         List<Map.Entry<String, Info>> list_entries = new ArrayList<>(mHashMap.entrySet());
 
-        Collections.sort(list_entries, new Comparator<Map.Entry<String, Info>>() {
-            public int compare(Map.Entry<String, Info> obj1, Map.Entry<String, Info> obj2) {
-                return obj1.getValue().compareTo(obj2.getValue());
-            }
-        });
+        Collections.sort(list_entries, (obj1, obj2) -> obj1.getValue().compareTo(obj2.getValue()));
         int size = list_entries.size() - 1;
         int minSize = (size * 3) / 4;
         for (int i = size; i > minSize; i--) {
@@ -315,7 +306,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
 
     public static String normalizePath(String srcPath) {
         if (srcPath == null) return "";
-        String path = srcPath.replaceAll("\\%+", "/");
+        String path = srcPath.replaceAll("%+", "/");
         path = path.replaceAll("//+", "/");
         path = new File(path).getAbsolutePath();
         return path;
@@ -407,33 +398,23 @@ public class SyncFileObserver extends RecursiveFileObserver {
     }
 
     private void errorDialog(final AppCompatActivity activity, final String title, final String message) {
-        if (activity != null) activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!mDialogIsActive) {
-                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    if (title != null) bld.setTitle(title);
-                    if (message != null) bld.setMessage(message);
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setCancelable(false);
-                    try {
-                        bld.create().show();
-                        mDialogIsActive = true;
-                    } catch (Exception e) {
-                        // do nothing
-                    }
+        if (activity != null) activity.runOnUiThread(() -> {
+            if (!mDialogIsActive) {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                if (title != null) bld.setTitle(title);
+                if (message != null) bld.setMessage(message);
+                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
+                });
+                bld.setOnCancelListener(dialog -> mDialogIsActive = false);
+                bld.setCancelable(false);
+                try {
+                    bld.create().show();
+                    mDialogIsActive = true;
+                } catch (Exception e) {
+                    // do nothing
                 }
             }
         });
@@ -449,7 +430,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
     }
 
     static String digest(InputStream is)
-            throws NoSuchAlgorithmException, IOException, DigestException {
+            throws NoSuchAlgorithmException, IOException {
         MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
 
         byte[] buf = new byte[4096];
@@ -577,8 +558,8 @@ public class SyncFileObserver extends RecursiveFileObserver {
         ParcelFileDescriptor pfd = null;
         FileInputStream fis = null;
         FileOutputStream fos = null;
-        BufferedInputStream reader = null;
-        BufferedOutputStream writer = null;
+        BufferedInputStream reader;
+        BufferedOutputStream writer;
 
         boolean isWriteError = false;
         try {
@@ -683,192 +664,138 @@ public class SyncFileObserver extends RecursiveFileObserver {
     }
 
     private void urlErrorDialog(final AppCompatActivity activity, final ContentResolver contentResolver) {
-        if (activity != null) activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!mDialogIsActive) {
-                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    bld.setTitle(R.string.storage_write_check_error_title);
-                    bld.setMessage(R.string.storage_url_error);
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setNeutralButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                            try {
-                                Term term = (Term) activity;
-                                term.intentFilePicker();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setCancelable(false);
+        if (activity != null) activity.runOnUiThread(() -> {
+            if (!mDialogIsActive) {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                bld.setTitle(R.string.storage_write_check_error_title);
+                bld.setMessage(R.string.storage_url_error);
+                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
+                });
+                bld.setNeutralButton(R.string.file_chooser, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
                     try {
-                        bld.create().show();
-                        mDialogIsActive = true;
+                        Term term = (Term) activity;
+                        term.intentFilePicker();
                     } catch (Exception e) {
-                        // do nothing
+                        e.printStackTrace();
                     }
+                });
+                bld.setOnCancelListener(dialog -> mDialogIsActive = false);
+                bld.setCancelable(false);
+                try {
+                    bld.create().show();
+                    mDialogIsActive = true;
+                } catch (Exception e) {
+                    // do nothing
                 }
             }
         });
     }
 
     private void flushCacheErrorDialog(final AppCompatActivity activity, final String errorMessage, final Uri uri, final File file, final ContentResolver contentResolver, final Exception e) {
-        if (activity != null) activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!mDialogIsActive) {
-                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    bld.setTitle(R.string.storage_write_error_title);
-                    bld.setMessage(errorMessage + "\n" + R.string.storage_flush_cache_error + "\n\n" + e.getMessage());
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                            // doFlushCache(uri, file, contentResolver);
-                        }
-                    });
-                    // bld.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    //     public void onClick(DialogInterface dialog, int id) {
-                    //         dialog.cancel();
-                    //         mDialogIsActive = false;
-                    //     }
-                    // });
-                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setCancelable(false);
-                    try {
-                        bld.create().show();
-                        mDialogIsActive = true;
-                    } catch (Exception e) {
-                        // do nothing
-                    }
+        if (activity != null) activity.runOnUiThread(() -> {
+            if (!mDialogIsActive) {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                bld.setTitle(R.string.storage_write_error_title);
+                bld.setMessage(errorMessage + "\n" + R.string.storage_flush_cache_error + "\n\n" + e.getMessage());
+                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
+                    // doFlushCache(uri, file, contentResolver);
+                });
+                bld.setOnCancelListener(dialog -> mDialogIsActive = false);
+                bld.setCancelable(false);
+                try {
+                    bld.create().show();
+                    mDialogIsActive = true;
+                } catch (Exception e1) {
+                    // do nothing
                 }
             }
         });
     }
 
     private void hashErrorDialog(final AppCompatActivity activity, final Uri uri, final File file, final ContentResolver contentResolver) {
-        if (activity != null) activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!mDialogIsActive) {
-                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    bld.setTitle(R.string.storage_hash_error_title);
-                    bld.setMessage(R.string.storage_hash_error);
-                    bld.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setNeutralButton(R.string.storage_hash_overwrite, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                            flushCache(uri, file, contentResolver, true);
-                        }
-                    });
-                    bld.setPositiveButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                            mDialogIsActive = false;
-                            try {
-                                Term term = (Term) activity;
-                                term.intentFilePicker();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setCancelable(false);
+        if (activity != null) activity.runOnUiThread(() -> {
+            if (!mDialogIsActive) {
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                bld.setTitle(R.string.storage_hash_error_title);
+                bld.setMessage(R.string.storage_hash_error);
+                bld.setNegativeButton(android.R.string.no, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
+                });
+                bld.setNeutralButton(R.string.storage_hash_overwrite, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
+                    flushCache(uri, file, contentResolver, true);
+                });
+                bld.setPositiveButton(R.string.file_chooser, (dialog, id) -> {
+                    dialog.cancel();
+                    mDialogIsActive = false;
                     try {
-                        bld.create().show();
-                        mDialogIsActive = true;
+                        Term term = (Term) activity;
+                        term.intentFilePicker();
                     } catch (Exception e) {
-                        // do nothing
+                        e.printStackTrace();
                     }
+                });
+                bld.setOnCancelListener(dialog -> mDialogIsActive = false);
+                bld.setCancelable(false);
+                try {
+                    bld.create().show();
+                    mDialogIsActive = true;
+                } catch (Exception e) {
+                    // do nothing
                 }
             }
         });
     }
 
     private void writeErrorDialog(final AppCompatActivity activity, File file, ContentResolver contentResolver, String errorMessage) {
-        if (activity != null) activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!mDialogIsActive) {
-                    String title = activity.getString(R.string.storage_write_error_title);
-                    String message = activity.getString(R.string.storage_write_error);
-                    message += "\n\n" + errorMessage;
-                    boolean isConnected = mObjectActivity != null && isConnected(activity.getApplicationContext());
-                    if (!isConnected) {
-                        title = activity.getString(R.string.storage_offline_write_error_title);
-                        message = activity.getString(R.string.storage_offline_write_error);
-                    }
-                    AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                    bld.setIcon(android.R.drawable.ic_dialog_alert);
-                    bld.setTitle(title);
-                    bld.setMessage(message);
-                    bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            mDialogIsActive = false;
+        if (activity != null) activity.runOnUiThread(() -> {
+            if (!mDialogIsActive) {
+                String title = activity.getString(R.string.storage_write_error_title);
+                String message = activity.getString(R.string.storage_write_error);
+                message += "\n\n" + errorMessage;
+                boolean isConnected = mObjectActivity != null && isConnected(activity.getApplicationContext());
+                if (!isConnected) {
+                    title = activity.getString(R.string.storage_offline_write_error_title);
+                    message = activity.getString(R.string.storage_offline_write_error);
+                }
+                AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                bld.setTitle(title);
+                bld.setMessage(message);
+                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                    dialog.dismiss();
+                    mDialogIsActive = false;
+                });
+                if (isConnected) {
+                    bld.setNeutralButton(R.string.file_chooser, (dialog, id) -> {
+                        dialog.dismiss();
+                        mDialogIsActive = false;
+                        try {
+                            Term term = (Term) activity;
+                            term.intentFilePicker();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     });
-                    if (isConnected) {
-                        bld.setNeutralButton(R.string.file_chooser, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                mDialogIsActive = false;
-                                try {
-                                    Term term = (Term) activity;
-                                    term.intentFilePicker();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                    bld.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            mDialogIsActive = false;
-                        }
-                    });
-                    bld.setCancelable(false);
-                    try {
-                        bld.create().show();
-                        mDialogIsActive = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                }
+                bld.setOnCancelListener(dialog -> mDialogIsActive = false);
+                bld.setCancelable(false);
+                try {
+                    bld.create().show();
+                    mDialogIsActive = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -878,28 +805,23 @@ public class SyncFileObserver extends RecursiveFileObserver {
     private void confirmDelete(final Uri uri, final File path, final ContentResolver contentResolver) {
         if (!mConfirmDeleteFromStorage || mObjectActivity == null) return;
         final AppCompatActivity activity = (AppCompatActivity) mObjectActivity;
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String file = path.getName();
-                final AlertDialog.Builder b = new AlertDialog.Builder(activity);
-                b.setIcon(android.R.drawable.ic_dialog_alert);
-                b.setTitle(R.string.storage_delete_file);
-                b.setMessage(file);
-                b.setPositiveButton(R.string.delete_file, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        try {
-                            DocumentsContract.deleteDocument(contentResolver, uri);
-                            deleteEmptyDirectory(mCacheDir);
-                            dialog.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                b.setNegativeButton(android.R.string.no, null);
-                b.show();
-            }
+        activity.runOnUiThread(() -> {
+            String file = path.getName();
+            final AlertDialog.Builder b = new AlertDialog.Builder(activity);
+            b.setIcon(android.R.drawable.ic_dialog_alert);
+            b.setTitle(R.string.storage_delete_file);
+            b.setMessage(file);
+            b.setPositiveButton(R.string.delete_file, (dialog, id) -> {
+                try {
+                    DocumentsContract.deleteDocument(contentResolver, uri);
+                    deleteEmptyDirectory(mCacheDir);
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            b.setNegativeButton(android.R.string.no, null);
+            b.show();
         });
     }
 
@@ -933,7 +855,7 @@ public class SyncFileObserver extends RecursiveFileObserver {
                         Info info = new Info();
                         info.uriString = (String) jsonOneRecord.get("info.uriString");
                         info.hash = (String) jsonOneRecord.get("info.hash");
-                        info.time = Long.valueOf((String) jsonOneRecord.get("info.time"));
+                        info.time = Long.parseLong((String) jsonOneRecord.get("info.time"));
                         mHashMap.put(path, info);
                     } catch (Exception e) {
                         // invalid data
@@ -953,9 +875,9 @@ public class SyncFileObserver extends RecursiveFileObserver {
     boolean saveHashMap(File hashMapFile) {
         try {
             JSONObject jsonObject = new JSONObject();
-            JSONArray jsonArary = new JSONArray();
+            JSONArray jsonArray = new JSONArray();
 
-            if (mHashMap == null || mHashMap.size() == 0) return true;
+            if (mHashMap.size() == 0) return true;
             for (Map.Entry<String, Info> entry : mHashMap.entrySet()) {
                 JSONObject jsonOneData = new JSONObject();
                 jsonOneData.put("path", entry.getKey());
@@ -963,9 +885,9 @@ public class SyncFileObserver extends RecursiveFileObserver {
                 jsonOneData.put("info.uriString", info.uriString);
                 jsonOneData.put("info.hash", info.hash);
                 jsonOneData.put("info.time", String.valueOf(info.time));
-                jsonArary.put(jsonOneData);
+                jsonArray.put(jsonOneData);
             }
-            jsonObject.put("mHashMap", jsonArary);
+            jsonObject.put("mHashMap", jsonArray);
 
             FileWriter fileWriter = new FileWriter(hashMapFile);
             BufferedWriter bw = new BufferedWriter(fileWriter);

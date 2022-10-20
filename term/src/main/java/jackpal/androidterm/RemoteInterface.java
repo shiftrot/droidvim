@@ -311,7 +311,7 @@ public class RemoteInterface extends AppCompatActivity {
                 } else if (getContentResolver() != null) {
                     try {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
-                        path = Term.handleOpenDocument(uri, cursor);
+                        path = Term.getOpenDocumentPath(uri, cursor);
                     } catch (Exception e) {
                         alert(e.toString() + "\n" + this.getString(R.string.storage_read_error));
                         finish();
