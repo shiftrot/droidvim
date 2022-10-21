@@ -15,12 +15,14 @@ import static android.provider.DocumentsContract.getDocumentId;
 
 public class UriToPath {
     public static String getPath(final Context context, final Uri uri) {
+        if (context == null || uri == null) return null;
         String path = getPathFromURI(context, uri);
         if (path != null && new File(path).canWrite()) return path;
         return null;
     }
 
     private static String getPathFromURI(final Context context, final Uri uri) {
+        if (context == null || uri == null) return null;
         String path = getLocalStorageProviderPath(uri);
         if (path != null) return path;
         if (DocumentsContract.isDocumentUri(context, uri)) {
@@ -104,6 +106,7 @@ public class UriToPath {
     }
 
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        if (context == null || uri == null) return null;
         final String[] projection = {
                 MediaStore.Files.FileColumns.DATA
         };
