@@ -147,6 +147,7 @@ public class LocalStorageProvider extends DocumentsProvider {
                     Root.FLAG_SUPPORTS_SEARCH |
                     Root.FLAG_SUPPORTS_IS_CHILD);
         }
+        row.add(Root.FLAG_LOCAL_ONLY);
 
         // COLUMN_TITLE is the root title (e.g. what will be displayed to identify your provider).
         row.add(Root.COLUMN_TITLE, TITLE);
