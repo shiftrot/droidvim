@@ -16,6 +16,14 @@
 
 package jackpal.androidterm;
 
+import static android.provider.DocumentsContract.Document;
+import static android.provider.DocumentsContract.deleteDocument;
+import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
+import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
+import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
+import static jackpal.androidterm.TermVimInstaller.copyScript;
+import static jackpal.androidterm.TermVimInstaller.shell;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Instrumentation;
@@ -37,12 +45,12 @@ import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.StatFs;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -122,6 +130,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
@@ -132,14 +142,6 @@ import jackpal.androidterm.emulatorview.compat.EscCmd;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
-
-import static android.provider.DocumentsContract.Document;
-import static android.provider.DocumentsContract.deleteDocument;
-import static jackpal.androidterm.StaticConfig.FLAVOR_TERMINAL;
-import static jackpal.androidterm.StaticConfig.FLAVOR_VIM;
-import static jackpal.androidterm.StaticConfig.SCOPED_STORAGE;
-import static jackpal.androidterm.TermVimInstaller.copyScript;
-import static jackpal.androidterm.TermVimInstaller.shell;
 
 /**
  * A terminal emulator activity.
@@ -4618,22 +4620,41 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         keyEventSenderAction.run();
     }
 
-    static private class KeyEventSender extends AsyncTask<Integer, Integer, Integer> {
-        @Override
-        protected Integer doInBackground(Integer... params) {
-            try {
-                Instrumentation inst = new Instrumentation();
-                if (params[0] == KEYEVENT_SENDER_SHIFT_SPACE) {
-                    inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
-                } else if (params[0] == KEYEVENT_SENDER_ALT_SPACE) {
-                    inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
-                } else {
-                    inst.sendKeyDownUpSync(params[0]);
+    private static class KeyEventSender {
+        private int event;
+
+        private class AsyncRunnable implements Runnable {
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            @Override
+            public void run() {
+                try {
+                    Instrumentation inst = new Instrumentation();
+                    if (event == KEYEVENT_SENDER_SHIFT_SPACE) {
+                        inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_SHIFT_ON));
+                    } else if (event == KEYEVENT_SENDER_ALT_SPACE) {
+                        inst.sendKeySync(new KeyEvent(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 1, KeyEvent.META_ALT_ON));
+                    } else {
+                        inst.sendKeyDownUpSync(event);
+                    }
+                } catch (Exception e) {
+                    // Do nothing
                 }
-            } catch (Exception e) {
-                // Do nothing
+                handler.post(() -> onPostExecute());
             }
-            return null;
+        }
+
+        void onPreExecute() {
+        }
+
+        void execute(int senderKeyEvent) {
+            event = senderKeyEvent;
+            onPreExecute();
+            ExecutorService executorService  = Executors.newSingleThreadExecutor();
+            executorService.submit(new AsyncRunnable());
+        }
+
+        void onPostExecute() {
         }
     }
 
