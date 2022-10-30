@@ -75,6 +75,7 @@ public class TermSettings {
     private int mFnKeyId;
     private int mUseCookedIME;
     private int mUseDirectCookedIME;
+    private boolean mUseBuiltInFilePicker;
     private String mMRUCommand;
     private String mExternalAppId;
     private int mExternalAppButtonMode;
@@ -158,6 +159,7 @@ public class TermSettings {
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
     private static final String IME_DIRECT_KEY = "ime_direct_input_method";
+    private static final String USE_BUILT_IN_FILE_PICKER = "pref_use_built_in_file_picker";
     private static final String MRU_COMMAND_KEY = "mru_command";
     private static final String EXTERNAL_APP_ID_KEY = "external_app_package_name";
     private static final String EXTERNAL_APP_BUTTON_MODE_KEY = "external_app_action_mode";
@@ -313,6 +315,7 @@ public class TermSettings {
         mLeftDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_left_double_tap_default));
         mBottomDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_bottom_double_tap_default));
         mTopDoubleTapAction = Integer.parseInt(res.getString(R.string.pref_top_double_tap_default));
+        mUseBuiltInFilePicker = res.getBoolean(R.bool.pref_use_built_in_file_picker_default);
         mMRUCommand = res.getString(R.string.pref_mru_command_default);
         SHOW_DOTFILES_KEY = res.getString(R.string.pref_key_show_dotfiles);
         mShowDotfiles = res.getBoolean(R.bool.pref_show_dotfiles_default);
@@ -400,6 +403,7 @@ public class TermSettings {
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId, FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mUseDirectCookedIME = readIntPref(IME_DIRECT_KEY, mUseDirectCookedIME, 1);
+        mUseBuiltInFilePicker = readBooleanPref(USE_BUILT_IN_FILE_PICKER, mUseBuiltInFilePicker);
         mMRUCommand = readStringPref(MRU_COMMAND_KEY, mMRUCommand);
         mShowDotfiles = readBooleanPref(SHOW_DOTFILES_KEY, mShowDotfiles);
         mExternalAppId = readStringPref(EXTERNAL_APP_ID_KEY, mExternalAppId);
@@ -756,6 +760,10 @@ public class TermSettings {
 
     public int getFnKeyCode() {
         return FN_KEY_SCHEMES[mFnKeyId];
+    }
+
+    public boolean getUseBuiltInFilePicker() {
+        return mUseBuiltInFilePicker;
     }
 
     public String getMRUCommand() {

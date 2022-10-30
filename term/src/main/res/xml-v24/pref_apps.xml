@@ -81,4 +81,9 @@
         android:title="@string/title_mrucommand_preference"
         android:summary="@string/summary_mrucommand_preference"/>
 
+    <SwitchPreference
+        android:key="pref_use_built_in_file_picker"
+        android:title="@string/title_use_built_in_file_picker"
+        android:defaultValue="@bool/pref_use_built_in_file_picker_default"/>
+
 </PreferenceScreen>

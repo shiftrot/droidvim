@@ -2324,7 +2324,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
+        if (mSettings.getUseBuiltInFilePicker()) intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
         if (checkImplicitIntent(this, intent))
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
     }

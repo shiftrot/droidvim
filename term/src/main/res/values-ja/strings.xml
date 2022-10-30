@@ -335,6 +335,7 @@
     <string name="summary_intentcommand_preference">インテント呼出時に実行するコマンド</string>
     <string name="dialog_title_intentcommand_preference">インテントコマンド</string>
 
+    <string name="title_use_built_in_file_picker">ビルトインのファイルピッカーを使用</string>
     <string name="title_mrucommand_preference">MRUコマンド</string>
     <string name="summary_mrucommand_preference">\"ファイルを開く\"ボタンにMRUコマンドを設定する.</string>
     <string name="dialog_title_mrucommand_preference">MRUコマンド</string>
