@@ -22,12 +22,10 @@ import android.app.Instrumentation;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -115,17 +113,14 @@ import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 import jackpal.androidterm.emulatorview.EmulatorView;
@@ -373,29 +368,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return session;
     }
 
-    public static int getUserId(Context context) {
-        int uid;
-        try {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
-            uid = info.uid;
-        } catch (Exception e) {
-            uid = -1;
-        }
-        return uid;
-    }
-
-    public static String getVersionName(Context context) {
-        PackageManager pm = context.getPackageManager();
-        String versionName = "";
-        try {
-            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
-            versionName = packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return versionName;
-    }
-
     static public void setUninstallExtraContents(boolean uninstall) {
         mUninstall = uninstall;
     }
@@ -428,7 +400,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         String displayName = null;
         try {
-            int index = -1;
+            int index;
             cursor.moveToFirst();
             index = cursor.getColumnIndex(Document.COLUMN_DISPLAY_NAME);
             if (index != -1) displayName = cursor.getString(index);
@@ -436,7 +408,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             // do nothing
         }
 
-        String path = null;
+        String path;
         if (!SCOPED_STORAGE && isExternalStorageDocument(uri)) {
             path = uri.getPath();
             path = path.replaceAll(":", "/");
@@ -472,7 +444,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 if (displayName != null && !fname.equals(displayName)) {
                     path = path + "/" + displayName;
                 }
-                path = path.replaceAll(":|\\|", "-");
+                path = path.replaceAll("[:|]", "-");
                 path = path.replaceAll("//+", "/");
             }
         }
@@ -733,7 +705,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Button button = findViewById(R.id.drawer_extra_button);
         int visibilty = View.VISIBLE;
         button.setVisibility(visibilty);
-        int color = mSettings.getColorTheme() % 2 == 0 ? R.drawable.sidebar_button_dark : R.drawable.sidebar_button;
     }
 
     private void setDebugButton() {
@@ -810,14 +781,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (FLAVOR_VIM) {
             button = findViewById(R.id.drawer_storage_button);
             button.setVisibility(View.VISIBLE);
-            button = findViewById(R.id.drawer_createfile_button);
-            button.setVisibility(View.VISIBLE);
-            mFilePickerItems.add(getString(R.string.clear_cache));
-        } else {
-            button = findViewById(R.id.drawer_createfile_button);
-            button.setVisibility(View.VISIBLE);
-            mFilePickerItems.add(getString(R.string.clear_cache));
         }
+        button = findViewById(R.id.drawer_createfile_button);
+        button.setVisibility(View.VISIBLE);
+        mFilePickerItems.add(getString(R.string.clear_cache));
         mFilePickerItems.add(getString(R.string.create_symlinks));
         mFilePickerItems.add(getString(R.string.backup_restore));
         if (FLAVOR_VIM) mFilePickerItems.add(getString(R.string.menu_edit_vimrc));
@@ -846,7 +813,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         });
         findViewById(R.id.drawer_clear_cache_button).setOnClickListener(v -> {
             getDrawer().closeDrawers();
-            confirmClearCache(true);
+            confirmClearCache();
         });
         findViewById(R.id.drawer_menu_button).setOnClickListener(v -> {
             getDrawer().closeDrawers();
@@ -998,22 +965,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-    private boolean doWarningCloudStorageDialog(String path) {
-        try {
-            if (path.contains("com.dropbox.android.FileCache") || path.contains("com.dropbox.product.android.dbapp")) {
-                // doWarningDialog(getString(R.string.dropbox_write_warning_title), getString(R.string.dropbox_write_warning_message), "do_warning_dropbox_write_warning", false);
-                return true;
-            } else if (path.contains("com.microsoft.skydrive.content")) {
-                // doWarningDialog(getString(R.string.onedrive_write_warning_title), getString(R.string.onedrive_write_warning_message), "do_warning_onedrive_write_warning", false);
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private void confirmClearCache(boolean clearTmpdir) {
+    private void confirmClearCache() {
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_clear_cache_message);
@@ -1035,7 +987,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private DrawerLayout getDrawer() {
-        return (DrawerLayout) findViewById(R.id.drawer_layout);
+        return findViewById(R.id.drawer_layout);
     }
 
     @SuppressLint("NewApi")
@@ -1168,28 +1120,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private String makePathFromBundle(Bundle extras) {
-        if (extras == null || extras.size() == 0) {
-            return "";
-        }
-
-        String[] keys = new String[extras.size()];
-        keys = extras.keySet().toArray(keys);
-        Collator collator = Collator.getInstance(Locale.US);
-        Arrays.sort(keys, collator);
-
-        StringBuilder path = new StringBuilder();
-        for (String key : keys) {
-            String dir = extras.getString(key);
-            if (dir != null && !dir.equals("")) {
-                path.append(dir);
-                path.append(":");
-            }
-        }
-
-        return path.substring(0, path.length() - 1);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -1212,8 +1142,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setIcon(android.R.drawable.ic_dialog_alert);
-            if (title != null) builder.setTitle(title);
-            if (message != null) builder.setMessage(message);
+            builder.setTitle(title);
+            builder.setMessage(message);
             LayoutInflater inflater = LayoutInflater.from(this);
             View view = inflater.inflate(R.layout.alert_checkbox, null);
             builder.setView(view);
@@ -1269,7 +1199,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         return true;
     }
 
-    private void setupStorageSymlinks(final Context context) {
+    private void setupStorageSymlinks() {
         if (TermVimInstaller.setupStorageSymlinks(this)) {
             alert("Symbolic links are created.");
         } else {
@@ -1367,10 +1297,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void showAds(boolean show) {
-        if (BuildConfig.DEBUG) return;
-    }
-
     private void destroyAppWarning() {
         if (mUninstall) {
             doExitShell();
@@ -1383,15 +1309,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         String message = null;
         String key = null;
         boolean doNotShowAgain = false;
-        boolean warning = false;
+        boolean warning;
 
         boolean symlink = ASFUtils.isSymlink(new File(TermService.getAPPFILES() + "/bin/bash.app"));
-        if (!symlink && message == null) {
+        if (!symlink) {
             key = "warning_rev" + BuildConfig.VERSION_CODE;
             warning = getPrefBoolean(Term.this, key, true);
             if (warning) {
                 title = "External storage warning";
-                if (!symlink) message = getString(R.string.string_install_on_external_storage_warning) + "\n\n";
+                message = getString(R.string.string_install_on_external_storage_warning) + "\n\n";
             }
         }
 
@@ -1706,17 +1632,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
 
         int orientation = getOrientation();
-        int o = 0;
+        int o = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
         if (orientation == 0) {
             o = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
         } else if (orientation == 1) {
             o = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         } else if (orientation == 2) {
             o = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-        } else {
-            /* Shouldn't be happened. */
         }
-        setRequestedOrientation(o);
+        if (o != ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) setRequestedOrientation(o);
         mKeepScreenEnableAuto = mSettings.getKeepScreenAtStartup();
     }
 
@@ -1740,11 +1664,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     if (getString(R.string.dialog_title_orientation_preference).equals(items[which])) {
                         setCurrentOrientation();
                     } else if (getString(R.string.copy_share_current_screen).equals(items[which])) {
-                        String strings = getCurrentEmulatorView().getTranscriptCurrentText();
+                        String strings = Objects.requireNonNull(getCurrentEmulatorView()).getTranscriptCurrentText();
                         showTextInWebview("html_text", strings);
                     } else if (getString(R.string.copy_share_screen_buffer).equals(items[which])) {
                         doHideSoftKeyboard();
-                        String strings = getCurrentEmulatorView().getTranscriptText().trim();
+                        String strings = Objects.requireNonNull(getCurrentEmulatorView()).getTranscriptText().trim();
                         showTextInWebview("html_log", strings);
                     } else if ((getString(R.string.disable_keepscreen).equals(items[which])) || (getString(R.string.enable_keepscreen).equals(items[which]))) {
                         if (keepScreen) mKeepScreenEnableAuto = false;
@@ -1894,7 +1818,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
         setSoftInputMode(mHaveFullHwKeyboard);
@@ -1948,12 +1872,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doWindowMenu();
         } else if (id == R.id.menu_copy_screen) {
             String strings;
-            if (FLAVOR_VIM) {
-                strings = getCurrentEmulatorView().getTranscriptCurrentText();
-            } else {
-                strings = getCurrentEmulatorView().getTranscriptText().trim();
+            EmulatorView view = getCurrentEmulatorView();
+            if (view != null) {
+                if (FLAVOR_VIM) {
+                    strings = view.getTranscriptCurrentText();
+                } else {
+                    strings = view.getTranscriptText().trim();
+                }
+                showTextInWebview("html_text", strings);
             }
-            showTextInWebview("html_text", strings);
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
         } else if (id == R.id.menu_toggle_soft_keyboard) {
@@ -2167,17 +2094,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void openDrawerAfterInstall() {
-        runOnUiThread(() -> {
-            openDrawer();
-            /*
-            String key = "open_drawer_after_first_install";
-            boolean warning = getPrefBoolean(Term.this, key, true);
-            if (warning) {
-                openDrawer();
-                setPrefBoolean(Term.this, key, false);
-            }
-             */
-        });
+        runOnUiThread(this::openDrawer);
     }
 
     private void toggleDrawer() {
@@ -2231,7 +2148,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setIcon(android.R.drawable.ic_dialog_alert);
         b.setMessage(R.string.confirm_window_close_message);
-        final Runnable closeWindow = () -> doCloseWindow();
+        final Runnable closeWindow = this::doCloseWindow;
         b.setPositiveButton(android.R.string.yes, (dialog, id) -> {
             dialog.dismiss();
             mHandler.post(closeWindow);
@@ -2313,7 +2230,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             } else if (item.equals(getString(R.string.use_mru_cache))) {
                 chooseExternalFileMru();
             } else if (item.equals(getString(R.string.use_clear_mru_cache))) {
-                confirmClearCache(false);
+                confirmClearCache();
             }
         }).setNegativeButton(android.R.string.cancel, null)
                 .setTitle(getString(R.string.file_chooser))
@@ -2332,7 +2249,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     private void chooseExternalFileMru() {
         final LinkedList<SyncFileObserverMru> mruList = mSyncFileObserver.getMRU();
-        final LinkedList<SyncFileObserverMru> list = new LinkedList<SyncFileObserverMru>();
+        final LinkedList<SyncFileObserverMru> list = new LinkedList<>();
         int MRU_FILES = 8;
         for (SyncFileObserverMru mru : mruList) {
             list.add(mru);
@@ -2477,9 +2394,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             } else if (getString(R.string.delete_file).equals(item)) {
                 fileDelete();
             } else if (getString(R.string.clear_cache).equals(item)) {
-                confirmClearCache(true);
+                confirmClearCache();
             } else if (getString(R.string.create_symlinks).equals(item)) {
-                setupStorageSymlinks(Term.this);
+                setupStorageSymlinks();
             } else if (getString(R.string.backup_restore).equals(item)) {
                 backupAndRestoreHome();
             } else if (getString(R.string.menu_edit_vimrc).equals(item)) {
@@ -2682,7 +2599,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                     break;
                                 }
                                 String fname = new File(path).getName();
-                                if (path != null && mSyncFileObserver != null) {
+                                if (mSyncFileObserver != null) {
                                     path = mSyncFileObserver.getObserverDir() + path;
                                     if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
                                         alert(fname + "\n" + getString(R.string.storage_read_error));
@@ -2773,7 +2690,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case SELECT_TEXT_ID:
-                getCurrentEmulatorView().toggleSelectingText();
+                Objects.requireNonNull(getCurrentEmulatorView()).toggleSelectingText();
                 return true;
             case COPY_ALL_ID:
                 doCopyAll();
@@ -2887,7 +2804,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case EscCmd.VKEYCODE_1007:
                 return true;
             case EscCmd.VKEYCODE_1008:
-                setupStorageSymlinks(this);
+                setupStorageSymlinks();
                 return true;
             case EscCmd.VKEYCODE_1009:
                 return true;
@@ -3171,7 +3088,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             float px = EDGE * (metrics.densityDpi / 160.0f);
             int size = (int) Math.ceil(px);
 
-            int height = getCurrentEmulatorView().getVisibleHeight();
+            int height = Objects.requireNonNull(getCurrentEmulatorView()).getVisibleHeight();
             int width = getCurrentEmulatorView().getVisibleWidth();
             int rightAction = mSettings.getRightDoubleTapAction();
             int leftAction = mSettings.getLeftDoubleTapAction();
@@ -3222,7 +3139,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         if (str0 == null) return;
         String action = str0;
         if (action.equalsIgnoreCase("symlinks")) {
-            setupStorageSymlinks(this);
+            setupStorageSymlinks();
             return;
         }
         if (str1 == null) return;
@@ -3253,7 +3170,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         String MIME_HTML = MimeTypeMap.getSingleton().getMimeTypeFromExtension("html");
         String mime;
-        String ext = "";
+        String ext;
         int ch = str1.lastIndexOf('.');
         ext = (ch >= 0) ? str1.substring(ch + 1) : "";
         ext = ext.toLowerCase();
@@ -3583,20 +3500,22 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .getManager(getApplicationContext());
         String str;
         String mes;
+        EmulatorView view = getCurrentEmulatorView();
+        if (view == null) return;
         if (mode == 0) {
-            str = getCurrentEmulatorView().getTranscriptCurrentText();
+            str = view.getTranscriptCurrentText();
             clip_setText(clip, str);
             mes = getString(R.string.toast_clipboard);
         } else if (mode == 1) {
-            str = getCurrentEmulatorView().getTranscriptText().trim();
+            str = view.getTranscriptText().trim();
             clip_setText(clip, str);
             mes = getString(R.string.toast_clipboard);
         } else if (mode == 2) {
-            str = getCurrentEmulatorView().getTranscriptCurrentText();
+            str = view.getTranscriptCurrentText();
             doShareIntentText(str);
             return;
         } else if (mode == 3) {
-            str = getCurrentEmulatorView().getTranscriptText().trim();
+            str = view.getTranscriptText().trim();
             doShareIntentText(str);
             return;
         } else {
@@ -3673,7 +3592,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        if (clip == null) return;
         CharSequence paste = clip.getText();
         if (paste == null) return;
         TermSession session = getCurrentTermSession();
@@ -3699,11 +3617,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doSendControlKey() {
-        getCurrentEmulatorView().sendControlKey();
+        Objects.requireNonNull(getCurrentEmulatorView()).sendControlKey();
     }
 
     private void doSendFnKey() {
-        getCurrentEmulatorView().sendFnKey();
+        Objects.requireNonNull(getCurrentEmulatorView()).sendFnKey();
     }
 
     private void doRestartSoftKeyboard() {
@@ -4671,7 +4589,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     void alert(String title, String message) {
         try {
             AlertDialog.Builder bld = new AlertDialog.Builder(this);
-            if (bld == null) return;
             if (title != null) {
                 bld.setTitle(title);
                 bld.setIcon(android.R.drawable.ic_dialog_alert);
@@ -4868,14 +4785,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
         static String getPreferenceId(int id) {
             String res = String.valueOf(id);
-            if (preferenceMap != null && preferenceMap.containsKey(res)) {
+            if (preferenceMap.containsKey(res)) {
                 return preferenceMap.get(res);
             }
             return null;
         }
 
         static int getResourceId(String id) {
-            if (resourceMap != null && resourceMap.containsKey(id)) {
+            if (resourceMap.containsKey(id)) {
                 String str = resourceMap.get(id);
                 if (str != null) return Integer.parseInt(str);
                 else return -1;
