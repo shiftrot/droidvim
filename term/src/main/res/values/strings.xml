@@ -41,11 +41,11 @@
     <string name="toast_clipboard">Text copied to the clipboard.</string>
     <string name="toast_clipboard_error">Text is not included.</string>
 
-    <string name="clipboard_warning_title">About the clipboard</string>
+    <string name="clipboard_warning_title">Clipboard</string>
     <string name="paste_vim">\"*p - Paste to Vim</string>
     <string name="paste_shell">Paste to shell</string>
     <string name="copy_to_clipboard">Copy to the clipboard</string>
-    <string name="clipboard_warning">Please use Vim command or \"Share\" intent for copy/paste.\n\nVim command:\n\"*p - From the clipboard to Vim.\n\"*y - From Vim to the clipboard.\ngY - From the unnamed register to the clipboard. (Only on DroidVim. e.g. yygY)</string>
+    <string name="clipboard_warning">\"Share\" can also be used.</string>
 
     <string name="edit_vimrc_message_show_dotfiles">- File manager\n DroidVim\'s preferences > Drawer &amp; External apps > Show dotfiles</string>
     <string name="edit_vimrc_message">If you have Vimfiles (.vimrc and .vim), there are several ways to copy them to Home directory ($HOME).\nSee \"Help\" > \"Vimfiles\".\n\n</string>

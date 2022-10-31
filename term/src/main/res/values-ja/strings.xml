@@ -40,11 +40,11 @@
     <string name="toast_clipboard">テキストをクリップボードへコピーしました.</string>
     <string name="toast_clipboard_error">テキストが含まれていません.</string>
 
-    <string name="clipboard_warning_title">クリップボードについて</string>
+    <string name="clipboard_warning_title">クリップボード</string>
     <string name="paste_vim">\"*p - Vimへ貼り付け</string>
     <string name="paste_shell">Shellへ貼り付け</string>
     <string name="copy_to_clipboard">クリップボードへコピー</string>
-    <string name="clipboard_warning">クリップボードへの\"コピー/貼り付け\"には, Vimコマンドか\"Share\"インテントを使用してください.\n\nVimコマンド:\n\"*p - クリップボードからVimへコピー.\n\"*y - Vimからクリップボードへコピー.\ngY - 無名レジスタをクリップボードへコピー. (DroidVimのみ. 例: yygY)</string>
+    <string name="clipboard_warning">\"共有\"も使用できます.</string>
 
     <string name="edit_vimrc_message_show_dotfiles">- ファイルマネージャー\n「DroidVimの設定→ドロワー＆外部アプリ→ドットファイルを表示」</string>
     <string name="edit_vimrc_message">すでにあなたのVimfiles(.vimrc, .vim)がある場合はホームディレクトリ($HOME)へコピーする方法がいくつかあります.\n(詳しくは「ヘルプ」>「Vimfiles」参照)\n\n</string>

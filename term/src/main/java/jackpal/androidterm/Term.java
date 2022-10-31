@@ -1873,16 +1873,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_window) {
             doWindowMenu();
         } else if (id == R.id.menu_copy_screen) {
-            String strings;
-            EmulatorView view = getCurrentEmulatorView();
-            if (view != null) {
-                if (FLAVOR_VIM) {
-                    strings = view.getTranscriptCurrentText();
-                } else {
-                    strings = view.getTranscriptText().trim();
-                }
-                showTextInWebview("html_text", strings);
-            }
+            doCopyText();
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
         } else if (id == R.id.menu_toggle_soft_keyboard) {
@@ -3587,6 +3578,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 .show();
     }
 
+    private void doCopyText() {
+        String strings;
+        EmulatorView view = getCurrentEmulatorView();
+        if (view != null) {
+            if (FLAVOR_VIM) {
+                strings = view.getTranscriptCurrentText();
+            } else {
+                strings = view.getTranscriptText().trim();
+            }
+            showTextInWebview("html_text", strings);
+        }
+    }
+
     private void doTermPaste() {
         if (!canPaste()) {
             alert(getString(R.string.toast_clipboard_error));
@@ -3609,11 +3613,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setTitle(R.string.clipboard_warning_title);
         builder.setMessage(R.string.clipboard_warning);
-        builder.setPositiveButton(getString(R.string.paste_shell), (d, m) -> {
+        builder.setPositiveButton(getString(R.string.paste), (d, m) -> {
             // choosePasteMode();
             doTermPaste();
         });
-        builder.setNeutralButton(getString(R.string.share_title), (d, m) -> shareIntentTextDialog());
+        builder.setNeutralButton(getString(R.string.select_text), (d, m) -> doCopyText());
         builder.setNegativeButton(android.R.string.no, null);
         builder.create().show();
     }
