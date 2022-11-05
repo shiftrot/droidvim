@@ -1872,8 +1872,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doScreenMenu();
         } else if (id == R.id.menu_window) {
             doWindowMenu();
-        } else if (id == R.id.menu_copy_screen) {
-            doCopyText();
         } else if (id == R.id.menu_share_text) {
             shareIntentTextDialog();
         } else if (id == R.id.menu_toggle_soft_keyboard) {
@@ -3617,7 +3615,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             // choosePasteMode();
             doTermPaste();
         });
-        builder.setNeutralButton(getString(R.string.select_text), (d, m) -> doCopyText());
+        builder.setNeutralButton(getString(R.string.copy_text), (d, m) -> doCopyText());
         builder.setNegativeButton(android.R.string.no, null);
         builder.create().show();
     }

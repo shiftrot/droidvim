@@ -97,6 +97,7 @@
     <string name="disable_wifilock">WifiLockを解除</string>
 
     <string name="edit_text">テキスト編集</string>
+    <string name="copy_text">コピー</string>
     <string name="select_text">テキスト選択</string>
     <string name="copy_all">すべてコピー</string>
     <string name="copy_share_screen_buffer">スクリーンバッファのコピー</string>

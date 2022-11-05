@@ -98,6 +98,7 @@
     <string name="disable_wifilock">Drop WifiLock</string>
 
     <string name="edit_text">Edit text</string>
+    <string name="copy_text">Copy</string>
     <string name="select_text">Select text</string>
     <string name="copy_all">Copy all</string>
     <string name="copy_share_screen_buffer">Copy screen buffer</string>

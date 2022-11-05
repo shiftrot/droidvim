@@ -35,9 +35,6 @@
         android:id="@+id/menu_edit_vimrc"
         android:title="@string/menu_edit_vimrc"/>
     <item
-        android:id="@+id/menu_copy_screen"
-        android:title="@string/menu_copy_screen"/>
-    <item
         android:id="@+id/menu_paste"
         android:title="@string/menu_clipboard"/>
     <item
