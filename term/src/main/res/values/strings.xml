@@ -29,7 +29,7 @@
     <string name="send_email">Email to</string>
     <string name="special_keys">Special keys</string>
     <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
-    <string name="toggle_function_bar">Functionbar</string>
+    <string name="toggle_function_bar">Function bar</string>
     <string name="quit">Quit</string>
 
     <string name="faild_to_bind_to_termservice">Faild to bind to TermService</string>
@@ -54,7 +54,7 @@
     <string name="edit_vimrc_message_change_home">- Change the Home directory to a directory in the internal storage or \"$APPEXTHOME\".\n</string>
     <string name="edit_vimrc_message_backup_restore">- Backup/Restore\n Use \"Long press menu > Storage > Backup/Restore\"\n</string>
 
-    <string name="title_cursor_direction_ctrl_mode_preference">Functionbar cursor direction</string>
+    <string name="title_cursor_direction_ctrl_mode_preference">Cursor button direction</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRL button to change the direction of the cursor button. ESC button to cancel.</string>
     <string name="text_box">One-line text box</string>
     <string name="menu_drawer">Storage</string>
@@ -165,29 +165,29 @@
     <string name="summary_statusbar_icon_on_preference">Show/Hide status bar icon.</string>
     <string name="summary_statusbar_icon_off_preference">Show/Hide status bar icon.</string>
 
-    <string name="title_function_key_width_preference">Function key width</string>
-    <string name="dialog_title_function_key_width_preference">Function key width (Default : 52)</string>
-    <string name="title_functionbar_preference">Functionbar</string>
-    <string name="summary_functionbar_preference">The button size is fixed. The function bar can be shown or hidden from the menu.</string>
-    <string name="title_navigation_button_preference">Functionbar (Screen fit)</string>
-    <string name="summary_navigation_button_preference">The button size is automatically adjusted according to the screen.</string>
+    <string name="title_function_key_width_preference">Function bar button width</string>
+    <string name="dialog_title_function_key_width_preference">Function bar button width (Default : 52)</string>
+    <string name="title_functionbar_preference">Function bar</string>
+    <string name="summary_functionbar_preference">A function bar that scrolls left/right when buttons do not fit on the screen.</string>
+    <string name="title_navigation_button_preference">Function bar (Screen fit)</string>
+    <string name="summary_navigation_button_preference">Button size is automatically adjusted to fit the screen.</string>
     <string name="title_oneline_textbox_preference">One-line text box</string>
     <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
-    <string name="title_oneline_textbox_esc_preference">Press ESC to hide (One-line text box)</string>
+    <string name="title_oneline_textbox_esc_preference">ESC processing (One-line text box)</string>
     <string name="summary_oneline_textbox_esc_on">Move focus, send ESC and hide.</string>
     <string name="summary_oneline_textbox_esc_off">Move focus.</string>
-    <string name="title_oneline_textbox_cr_preference">\"Send\" button (One-line text box)</string>
+    <string name="title_oneline_textbox_cr_preference">Send button (One-line text box)</string>
 
-    <string name="title_functionbar_key_preference">Functionbar</string>
-    <string name="title_functionbar_key_2_preference">Functionbar (F1 - F12)</string>
-    <string name="title_functionbar_fkey_preference">Functionbar (F1 - F12)</string>
+    <string name="title_functionbar_key_preference">Function bar</string>
+    <string name="title_functionbar_key_2_preference">Function bar (F1 - F12)</string>
+    <string name="title_functionbar_fkey_preference">Function bar (F1 - F12)</string>
     <string name="title_functionbar_fkey_label_preference">Label (F1 - F12)</string>
     <string name="summary_functionbar_fkey_label_preferences">Set the label to the function key (F1 - F12).</string>
     <string name="title_functionbar_fkey_command_preference">Command (F1 - F12)</string>
     <string name="summary_functionbar_fkey_command_preferences">Set the command to the function key (F1 - F12).</string>
 
-    <string name="title_navigation_key_preference">Functionbar (Screen fit)</string>
-    <string name="summary_functionbar_key_preference">Show/hide functionbar\'s key</string>
+    <string name="title_navigation_key_preference">Function bar (Screen fit)</string>
+    <string name="summary_functionbar_key_preference">Show/hide function bar\'s key</string>
 
     <string name="title_actionbar_preference">Action bar</string>
     <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
@@ -287,8 +287,8 @@
     <string name="title_bottom_double_tap_preference">Double tap near the bottom edge</string>
     <string name="summary_bottom_double_tap_preference">Choose what double tap near the bottom edge does.</string>
     <string name="dialog_title_bottom_double_tap_preference">Double tap near the bottom edge</string>
-    <string name="functionbar_preferences">Functionbar</string>
-    <string name="summary_functionbar_preferences">Select the functionbar key to use.</string>
+    <string name="functionbar_preferences">Function bar</string>
+    <string name="summary_functionbar_preferences">Choose the function bar key to use.</string>
     <string name="gesture_preferences">Gestures &amp; Buttons</string>
 
     <string name="keyboard_preferences">Physical keyboard</string>
@@ -450,8 +450,8 @@
     <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
     <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
-    <string name="title_auto_hide_functionbar">Hide functionbar</string>
-    <string name="auto_hide_functionbar_summary">Hide functionbar if physical keyboard is connected.</string>
+    <string name="title_auto_hide_functionbar">Hide function bar</string>
+    <string name="auto_hide_functionbar_summary">Hide function bar if physical keyboard is connected.</string>
 
     <string name="ime_input_method_preferences">Text input mode</string>
     <string name="title_pre_ime_shortcuts">IME shortcuts</string>
@@ -552,9 +552,9 @@
     <string name="storage_offline_write_error">The edit state of this file is lost. Please write again after this device comes online.</string>
     <string name="storage_write_backup_file">The backup files are located in the following directory:\n</string>
     <string name="storage_write_backup_file_error"> !!! IMPORTANT !!!\nFile has been lost.\nSave the contents of this buffer.</string>
-    <string name="title_cloud_storage_read_check">Cloud storage read check</string>
+    <string name="title_cloud_storage_read_check">Read check</string>
     <string name="summary_cloud_storage_read_check">Before writing the file, check the status of the writing destination.\n(Dropbox/GoogleDrive/OneDrive)</string>
-    <string name="title_cloud_storage_write_check">Cloud storage write check</string>
+    <string name="title_cloud_storage_write_check">Write check</string>
     <string name="summary_cloud_storage_write_check">Check the write status a few seconds after writing the file.\n(Dropbox/GoogleDrive/OneDrive)</string>
     <string name="storage_write_check_error_title">Write check error</string>
     <string name="storage_write_check_error">Write error or write not completed. (The edit state of this buffer is lost.)</string>

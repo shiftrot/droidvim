@@ -167,21 +167,21 @@
     <string name="summary_statusbar_icon_on_preference">ステータスバーアイコンの表示/非表示</string>
     <string name="summary_statusbar_icon_off_preference">ステータスバーアイコンの表示/非表示</string>
 
-    <string name="title_function_key_width_preference">ファンクションキーの横幅</string>
-    <string name="dialog_title_function_key_width_preference">ファンクションキーの横幅 (デフォルト : 52)</string>
+    <string name="title_function_key_width_preference">ファンクションバーのボタンの幅</string>
+    <string name="dialog_title_function_key_width_preference">ファンクションバーのボタンの幅 (デフォルト : 52)</string>
     <string name="title_functionbar_preference">ファンクションバー</string>
-    <string name="summary_functionbar_preference">ボタンサイズは固定. 表示/非表示をメニューから切替可能なファンクションバー</string>
+    <string name="summary_functionbar_preference">ボタンが画面に収まらない場合は, 左右にスクロールするファンクションバー</string>
     <string name="title_navigation_button_preference">ファンクションバー (画面固定)</string>
-    <string name="summary_navigation_button_preference">ボタンサイズを画面に応じて自動調整する固定サイズのファンクションバー</string>
+    <string name="summary_navigation_button_preference">ボタンサイズを画面に応じて自動調整するファンクションバー</string>
     <string name="title_oneline_textbox_preference">一行テキスト入力</string>
     <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
-    <string name="title_oneline_textbox_esc_preference">ESCで一行テキストボックスを非表示にする</string>
+    <string name="title_oneline_textbox_esc_preference">拡張ESC処理(一行テキストボックス)</string>
     <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
     <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
-    <string name="title_oneline_textbox_cr_preference">\"送出\"ボタンを表示(一行テキストボックス)</string>
+    <string name="title_oneline_textbox_cr_preference">送出ボタン(一行テキストボックス)</string>
 
     <string name="title_functionbar_key_preference">ファンクションバー</string>
-    <string name="title_functionbar_key_2_preference">ファンクショバー (F1-F12)</string>
+    <string name="title_functionbar_key_2_preference">ファンクションバー (F1-F12)</string>
     <string name="title_functionbar_fkey_preference">ファンクションバー (F1-F12)</string>
     <string name="title_functionbar_fkey_label_preference">ラベル名 (F1-F12)</string>
     <string name="summary_functionbar_fkey_label_preferences">ファンクションキー(F1-F12)に表示されるラベル名を変更します.</string>
@@ -443,7 +443,7 @@
 
     <string name="title_mouse_tracking_preference">マウスイベントの送出</string>
     <string name="summary_mouse_tracking_preference">タップやスワイプを端末へのエスケープシーケンスに変換する</string>
-    <string name="title_volume_as_cursor_tracking_preference">ボリュームボタンをカーソルとして使用</string>
+    <string name="title_volume_as_cursor_tracking_preference">音量ボタンをカーソル化</string>
     <string name="title_pinch_in_out_preference">ピンチイン・アウト</string>
     <string name="summary_pinch_in_out_preference">フォントスケールを変更</string>
 
@@ -452,7 +452,7 @@
     <string name="use_keyboard_shortcuts_summary_off">キーボードショートカットを使用しない</string>
 
     <string name="title_auto_hide_functionbar">ファンクションバーを隠す</string>
-    <string name="auto_hide_functionbar_summary">ハードウェアキーボード接続時にファンクションバーを自動で隠す</string>
+    <string name="auto_hide_functionbar_summary">物理キーボード接続時にファンクションバーを自動で隠す</string>
 
     <string name="ime_input_method_preferences">テキスト入力モード</string>
     <string name="title_pre_ime_shortcuts">IMEショートカット</string>
@@ -508,7 +508,7 @@
     <string name="error_not_supported_device">このデバイスはサポート外です.\nAndroid 4.3以降にアップデートしてください.</string>
     <string name="title_remote_interface_installer_warning">インストールが終了しました</string>
     <string name="message_remote_interface_installer_warning">設定を有効にするため, このアプリを再起動してください.\nこのアプリを再起動しなくてもファイルを閲覧できますが, 書き込みができない場合があります.</string>
-    <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, ハードウェアキーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- "🔤"ボタン\n- IMEショートカット\n- \"コマンド入力モード\"を\"通常入力モード\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
+    <string name="keyboard_warning">デフォルトでは直接入力を強制しているため, 物理キーボードから日本語入力が行なえないことがあります.\nその場合は以下を試してください.\n\n- "🔤"ボタン\n- IMEショートカット\n- \"コマンド入力モード\"を\"通常入力モード\"に変更\n- Vimスクリプトから入力モードを変更\n\n詳しくはヘルプを参照してください.</string>
 
 
 
@@ -553,9 +553,9 @@
     <string name="storage_offline_write_error">このファイルの編集状態は保存されていません. このデバイスがオンラインになった後に再度書き込んでください.</string>
     <string name="storage_write_backup_file">バックアップファイルは以下に保存されています:\n</string>
     <string name="storage_write_backup_file_error"> !!! 重要 !!!\n書き込み先のファイルが失われました.\nこのバッファの内容を保存してください.</string>
-    <string name="title_cloud_storage_read_check">クラウドストレージ読み込みチェック</string>
+    <string name="title_cloud_storage_read_check">読み込みチェック</string>
     <string name="summary_cloud_storage_read_check">クラウドストレージへの書き込み前に書き込み先の状態チェックを行う\n(Dropbox/GoogleDrive/OneDrive)</string>
-    <string name="title_cloud_storage_write_check">クラウドストレージ書き込みチェック</string>
+    <string name="title_cloud_storage_write_check">書き込みチェック</string>
     <string name="summary_cloud_storage_write_check">クラウドストレージへ書き込んだ数秒後に書き込み結果をチェックする\n(Dropbox/GoogleDrive/OneDrive)</string>
     <string name="storage_write_check_error_title">書き込みチェックエラー</string>
     <string name="storage_write_check_error">書き込みエラーまたは書き込みが完了していません. (このバッファの編集状態は失われます.)</string>

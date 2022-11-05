@@ -11,11 +11,10 @@
     <string name="title_functionbar_ime_toggle">"✏" - Toggle keyboard</string>
     <string name="title_functionbar_softkeyboard">"🔤"</string>
     <string name="title_functionbar_quit">"📲" - Quit</string>
-    <string name="title_navigationbar_fn_toggle">"➖" - Toggle functionbar</string>
+    <string name="title_navigationbar_fn_toggle">"➖" - Toggle function bar</string>
     <string name="title_functionbar_open_file">"📁" - Open File</string>
     <string name="title_functionbar_voice_input">"🎤" - Voice input</string>
-    <string name="title_functionbar_hide">▽ - Hide functionbar</string>
-    <string name="title_navigationbar_hide">▽ - Hide functionbar (Fixed)</string>
+    <string name="title_functionbar_hide">▽ - Hide this function bar</string>
     <string name="title_functionbar_change">∧ - F1-F12</string>
     <string name="title_functionbar_change_fkey">∨ - Hide F1-F12</string>
 

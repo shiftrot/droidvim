@@ -12,8 +12,7 @@
     <string name="title_functionbar_vim_paste">&quot;*p - Vim 貼り付けコマンド</string>
     <string name="title_functionbar_ime_toggle">"✏" - IMEのトグル</string>
     <string name="title_navigationbar_fn_toggle">"➖" - ファンクションバーのトグル</string>
-    <string name="title_functionbar_hide">▽ - ファンクションバーを隠す</string>
-    <string name="title_navigationbar_hide">▽ - ファンクションバー(固定)を隠す</string>
+    <string name="title_functionbar_hide">▽ - このファンクションバーを隠す</string>
     <string name="title_functionbar_change">∧ - F1-F12表示</string>
     <string name="title_functionbar_change_fkey">∨ - F1-F12非表示</string>
 </resources>
