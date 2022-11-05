@@ -704,6 +704,11 @@
             android:title="@string/title_navigationbar_fn_toggle"/>
 
         <CheckBoxPreference
+            android:key="navigationbar_menu_hide"
+            android:defaultValue="false"
+            android:title="@string/title_navigationbar_hide"/>
+
+        <CheckBoxPreference
             android:key="navigationbar_ime_toggle"
             android:defaultValue="true"
             android:title="@string/title_functionbar_ime_toggle"/>

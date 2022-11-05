@@ -15,6 +15,7 @@
     <string name="title_functionbar_open_file">"📁" - Open File</string>
     <string name="title_functionbar_voice_input">"🎤" - Voice input</string>
     <string name="title_functionbar_hide">▽ - Hide functionbar</string>
+    <string name="title_navigationbar_hide">▽ - Hide functionbar (Fixed)</string>
     <string name="title_functionbar_change">∧ - F1-F12</string>
     <string name="title_functionbar_change_fkey">∨ - Hide F1-F12</string>
 

@@ -1796,9 +1796,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
         if (mPrevHaveFullHwKeyboard == -1 || (haveFullHwKeyboard != (mPrevHaveFullHwKeyboard == 1))) {
             mHideFunctionBar = haveFullHwKeyboard && mSettings.getAutoHideFunctionbar();
-            if (!haveFullHwKeyboard) mFunctionBar = mSettings.showFunctionBar() ? 1 : 0;
             if (haveFullHwKeyboard) doWarningHwKeyboard();
-            // if (!haveFullHwKeyboard) mOnelineTextBox = mSettings.showOnelineTextBox() ? 1 : 0;
         }
         mPrevHaveFullHwKeyboard = haveFullHwKeyboard ? 1 : 0;
         return haveFullHwKeyboard;
@@ -1877,7 +1875,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_toggle_soft_keyboard) {
             doToggleSoftKeyboard();
         } else if (id == R.id.menu_toggle_function_bar) {
-            setFunctionBar(2);
+            setNavigationBar(2);
         } else if (id == R.id.menu_tutorial) {
             sendKeyStrings(":Vimtutor\r", true);
         } else if (id == R.id.menu_disable_keepscreen) {
@@ -3879,13 +3877,17 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         doWarningDialog(getString(R.string.edit_text_view_warning_title), getString(R.string.edit_text_view_warning), "do_warning_edit_text_view", true);
     }
 
+    private void setNavigationBar(int mode) {
+        if (mode < 2) mHideFunctionBar = (mode == 0);
+        else mHideFunctionBar = findViewById(R.id.view_navigation_bar).getVisibility() != View.GONE;
+        setFunctionKeyVisibility();
+    }
+
     private void setFunctionBar(int mode) {
         boolean focus = false;
         if (mEditText != null && mEditTextView) focus = mEditText.hasFocus();
         if (mode == 2) {
             mFunctionBar = mFunctionBar == 0 ? 1 : 0;
-            if (mHideFunctionBar) mFunctionBar = 1;
-            mHideFunctionBar = false;
         } else mFunctionBar = mode;
         if (mAlreadyStarted) updatePrefs();
         if (!focus && mEditText != null) {
@@ -4031,8 +4033,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_42     , "navigationbar_vim_yank"     , "\"yy"       , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_menu_quit"    , MENU_QUIT    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_menu"         , MENU         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_menu_hide"    , "∇"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_menu_hide"    , "∇"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_47     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
 
         for (FunctionKey fkey : mFunctionKeys) {
@@ -4182,10 +4184,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         button.setVisibility(visibility);
 
         setCursorDirectionLabel();
-
-        visibility = mSettings.showFunctionBarNavigationButton() ? View.VISIBLE : View.GONE;
-        LinearLayout layout = findViewById(R.id.virtual_navigation_bar);
-        layout.setVisibility(visibility);
     }
 
     private void setFunctionKeyVisibility() {
@@ -4194,6 +4192,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             visibility = View.GONE;
             findViewById(R.id.view_function_bar).setVisibility(visibility);
             findViewById(R.id.view_function_bar2).setVisibility(visibility);
+            findViewById(R.id.view_navigation_bar).setVisibility(visibility);
             return;
         }
 
@@ -4207,6 +4206,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         findViewById(R.id.view_function_bar1).setVisibility(visibility);
         visibility = (mFunctionBar == 1 && mFunctionBarId == 1) ? View.VISIBLE : View.GONE;
         findViewById(R.id.view_function_bar2).setVisibility(visibility);
+
+        visibility = mSettings.showFunctionBarNavigationButton() ? View.VISIBLE : View.GONE;
+        LinearLayout layout = findViewById(R.id.view_navigation_bar);
+        layout.setVisibility(visibility);
     }
 
     @SuppressLint("NewApi")
@@ -4444,9 +4447,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 openOptionsMenu();
                 break;
             case "navigationbar_fn_toggle":
-            case "navigationbar_menu_hide":
             case "functionbar_menu_hide":
                 setFunctionBar(2);
+                break;
+            case "navigationbar_menu_hide":
+                setNavigationBar(0);
                 break;
             case "functionbar_next0":
             case "functionbar_prev":

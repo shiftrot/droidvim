@@ -871,7 +871,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/virtual_navigation_bar"
+            android:id="@+id/view_navigation_bar"
             android:orientation="horizontal"
             android:visibility="gone"
             android:focusable="false"
