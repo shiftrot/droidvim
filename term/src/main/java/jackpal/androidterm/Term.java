@@ -167,9 +167,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     public static final int REQUEST_STORAGE_CREATE = 10002;
     public static final int REQUEST_FOREGROUND_SERVICE_PERMISSION = 10003;
     public static final int REQUEST_NOTIFICATIONS = 10004;
-    public static final String EXEC_STATUS_CHECK_CMD = "exec.check";
-    public static final String EXEC_STATUS_CHECK_CMD_FILE = "/" + EXEC_STATUS_CHECK_CMD;
-    public static final String EXEC_STATUS_FILE = "/exec.ok";
     public static final String SHELL_ESCAPE = "([ *?\\[{`$&%#'\"|!<;])";
     private static final String FKEY_LABEL = "fkey_label";
     private static final int FKEY_MAX = 12;
@@ -1452,10 +1449,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         if (doInstall) {
             String _postCmd = "";
-            if (FLAVOR_VIM) {
-                shell("rm " + TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
-                _postCmd += TermService.getVersionFilesDir() + EXEC_STATUS_CHECK_CMD_FILE + "\n";
-            }
             String[] list = cmd.split("\n");
             String preCmd = "";
             for (String str : list) {
@@ -2930,12 +2923,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             if (file.exists()) {
                 message += "\n\n";
                 message += getString(R.string.proot_error_message);
-            }
-
-            file = new File(TermService.getVersionFilesDir() + EXEC_STATUS_FILE);
-            if (!file.exists()) {
-                message += "\n\n";
-                message += getString(R.string.security_error_message);
             }
 
             if (isInExternalStorage()) {

@@ -246,7 +246,6 @@ final class TermVimInstaller {
                     dst = TermService.getAPPFILES() + "/bin/vim.sh";
                     copyScript(activity.getResources().openRawResource(id), dst);
                     shell("chmod 755 " + dst);
-                    createExecCheckCmdFile(activity);
 
                     String runtimeDir = TermService.getVimRuntimeInstallDir();
                     setMessage(activity, pd, "runtime");
@@ -317,19 +316,6 @@ final class TermVimInstaller {
             busybox("sed -i -e 's/set ambiwidth=double/set ambiwidth=single/g' " + TermService.getAPPFILES() + "/vimrc");
         } else {
             busybox("sed -i -e 's/set ambiwidth=single/set ambiwidth=double/g' " + TermService.getAPPFILES() + "/vimrc");
-        }
-    }
-
-    static public void createExecCheckCmdFile(AppCompatActivity activity) {
-        try {
-            String dst = TermService.getVersionFilesDir() + Term.EXEC_STATUS_CHECK_CMD_FILE;
-            if (new File(dst).exists()) return;
-            int id = activity.getResources().getIdentifier("exec_check", "raw", activity.getPackageName());
-            copyScript(activity.getResources().openRawResource(id), dst);
-            shell("chmod 755 " + dst);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Do nothing
         }
     }
 
