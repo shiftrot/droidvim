@@ -1916,6 +1916,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private static final int KEY_ACTION_1253 = 1253;
     private static final int KEY_ACTION_1254 = 1254;
     private static final int KEY_ACTION_1255 = 1255;
+    private static final int KEY_ACTION_1256 = 1256;
     private static final int KEY_ACTION_1257 = 1257;
     private static final int KEY_ACTION_1260 = 1260;
     private static final int KEY_ACTION_1261 = 1261;
@@ -1974,6 +1975,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             sendKeyStrings(":", false);
         } else if (key == KEY_ACTION_1255) {
             setFunctionBar(2);
+        } else if (key == KEY_ACTION_1256) {
+            setNavigationBar(2);
         } else if (key == KEY_ACTION_1257) {
             VoiceInput.start(Term.this, REQUEST_VOICE_INPUT);
         } else if (key == KEY_ACTION_1260) {

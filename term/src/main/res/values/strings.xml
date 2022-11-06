@@ -173,13 +173,13 @@
     <string name="summary_navigation_button_preference">Button size is automatically adjusted to fit the screen.</string>
     <string name="title_oneline_textbox_preference">One-line text box</string>
     <string name="summary_oneline_textbox_preference">Show one-line text box on start up.</string>
-    <string name="title_oneline_textbox_esc_preference">ESC processing (One-line text box)</string>
+    <string name="title_oneline_textbox_esc_preference">Enhansed ESC button</string>
     <string name="summary_oneline_textbox_esc_on">Move focus, send ESC and hide.</string>
     <string name="summary_oneline_textbox_esc_off">Move focus.</string>
-    <string name="title_oneline_textbox_cr_preference">Send button (One-line text box)</string>
+    <string name="title_oneline_textbox_cr_preference">Send button</string>
 
     <string name="title_functionbar_key_preference">Function bar</string>
-    <string name="title_functionbar_key_2_preference">Function bar (F1 - F12)</string>
+    <string name="title_functionbar_key_2_preference">Function key (F1 - F12)</string>
     <string name="title_functionbar_fkey_preference">Function bar (F1 - F12)</string>
     <string name="title_functionbar_fkey_label_preference">Label (F1 - F12)</string>
     <string name="summary_functionbar_fkey_label_preferences">Set the label to the function key (F1 - F12).</string>

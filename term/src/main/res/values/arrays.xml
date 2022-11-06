@@ -122,13 +122,11 @@
         <item>One-line text box</item>
         <item>Toggle \"Command input mode\"/\"Normal Input mode\"</item>
         <item>Toggle function bar</item>
+        <item>Show/Hide function bar</item>
         <item>Toggle function bar cursor button direction"</item>
         <item>Toogle drawer</item>
         <item>Voice input</item>
         <item>Paste</item>
-        <item>Sends ESC from terminal</item>
-        <item>Sends : from terminal</item>
-        <item>Sends / from terminal</item>
         <item>Language switch (Shift+Space)</item>
         <item>Language switch (Alt+Space)</item>
         <item>Sends &lt;C-^&gt; (iminsert)</item>

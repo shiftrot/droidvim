@@ -1,5 +1,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+        android:key="force_normal_input_to_physical_keyboard"
+        android:defaultValue="@bool/pref_force_normal_input_to_physical_keyboard"
+        android:title="@string/pref_force_normal_input_to_physical_keyboard"
+        android:summary="@string/summary_force_normal_input_to_physical_keyboard_preference"/>
+
+    <SwitchPreference
+        android:title="@string/title_auto_hide_functionbar"
+        android:key="auto_hide_functionbar"
+        android:defaultValue="@bool/pref_auto_hide_functionbar_default"
+        android:summary="@string/auto_hide_functionbar_summary"/>
+
     <PreferenceScreen
         android:title="@string/title_pre_ime_shortcuts"
         android:summary="@string/summary_title_pre_ime_shortcuts">
@@ -66,12 +78,6 @@
         android:defaultValue="false"
         android:title="@string/pref_title_ctrl_space_to_shell"
         android:summary="@string/pref_summary_ctrl_space_to_shell" />
-
-    <SwitchPreference
-        android:key="force_normal_input_to_physical_keyboard"
-        android:defaultValue="@bool/pref_force_normal_input_to_physical_keyboard"
-        android:title="@string/pref_force_normal_input_to_physical_keyboard"
-        android:summary="@string/summary_force_normal_input_to_physical_keyboard_preference"/>
 
     <SwitchPreference
         android:title="@string/alt_uses_8bit_meta"

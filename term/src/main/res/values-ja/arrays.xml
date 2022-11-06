@@ -116,13 +116,11 @@
         <item>一行テキスト入力</item>
         <item>「コマンド入力モード」/「通常入力モード」のトグル</item>
         <item>ファンクションバーのトグル</item>
+        <item>ファンクションバーを表示/非表示</item>
         <item>ファンクションバーのカーソルキーの方向をトグル"</item>
         <item>ドロワーのトグル</item>
         <item>音声入力</item>
         <item>貼り付け</item>
-        <item>ターミナルから ESC を送出</item>
-        <item>ターミナルから : を送出</item>
-        <item>ターミナルから / を送出</item>
         <item>言語切替 (Shift+Space)</item>
         <item>言語切替 (Alt+Space)</item>
         <item>&lt;C-^&gt; (iminsert)</item>

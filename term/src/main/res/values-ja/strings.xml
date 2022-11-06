@@ -175,13 +175,13 @@
     <string name="summary_navigation_button_preference">ボタンサイズを画面に応じて自動調整するファンクションバー</string>
     <string name="title_oneline_textbox_preference">一行テキスト入力</string>
     <string name="summary_oneline_textbox_preference">一行テキスト入力を起動時に表示する.</string>
-    <string name="title_oneline_textbox_esc_preference">拡張ESC処理(一行テキストボックス)</string>
+    <string name="title_oneline_textbox_esc_preference">拡張ESC処理</string>
     <string name="summary_oneline_textbox_esc_on">フォーカス移動+ESC送出+一行テキスト入力を隠す.</string>
     <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
-    <string name="title_oneline_textbox_cr_preference">送出ボタン(一行テキストボックス)</string>
+    <string name="title_oneline_textbox_cr_preference">送出ボタン</string>
 
     <string name="title_functionbar_key_preference">ファンクションバー</string>
-    <string name="title_functionbar_key_2_preference">ファンクションバー (F1-F12)</string>
+    <string name="title_functionbar_key_2_preference">ファンクションキー (F1-F12)</string>
     <string name="title_functionbar_fkey_preference">ファンクションバー (F1-F12)</string>
     <string name="title_functionbar_fkey_label_preference">ラベル名 (F1-F12)</string>
     <string name="summary_functionbar_fkey_label_preferences">ファンクションキー(F1-F12)に表示されるラベル名を変更します.</string>
