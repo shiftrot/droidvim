@@ -89,6 +89,7 @@
         android:theme="@style/App_Theme_Light" >
         <activity
             android:name=".ExtraContents"
+            android:exported="false"
             android:label="@string/title_activity_extra_contents" >
         </activity>
         <activity
@@ -171,9 +172,11 @@
         </activity>
         <activity
             android:name=".TermPreferences"
+            android:exported="false"
             android:label="@string/preferences" />
         <activity
             android:name=".WebViewActivity"
+            android:exported="false"
             android:label="Local HTML Viewer"/>
 
         <service android:name=".TermService"
