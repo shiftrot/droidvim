@@ -2546,12 +2546,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
             case REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME:
                 if (result == RESULT_OK && data != null) {
-                    final int takeFlags =
-                            (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     Uri uri = data.getData();
                     if (uri != null) {
-                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
                         switch (request) {
                             case REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME:
                                 ASFUtils.backupToTreeUri(Term.this, uri, TermService.getHOME());
