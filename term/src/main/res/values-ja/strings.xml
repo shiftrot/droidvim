@@ -525,9 +525,9 @@
     <string name="restore_home_directory">\"$HOME\"へリストア</string>
 
 
-    <string name="same_directory_error">送り側と受け側が同じです.</string>
     <string name="root_directory_error">このストレージまたはディレクトリはバックアップ/リストア先に指定できません.\n内部ストレージまたはSDカードのディレクトリを指定してください.</string>
     <string name="backup_restore_complete">バックアップ/リストアを完了しました.\n\n - タイムスタンプが新しいファイルのみバックアップ/リストアしました.\n - シンボリックリンクはバックアップ/リストアしませんでした.\n - ミラーリングは行っていません.</string>
+    <string name="backup_restore_error">バックアップ/リストアは完了していません.</string>
     <string name="use_file_chooser">ファイル選択</string>
 
     <string name="use_mru_cache">外部ストレージMRU</string>

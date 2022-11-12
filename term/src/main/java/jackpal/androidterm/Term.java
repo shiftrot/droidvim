@@ -1217,11 +1217,11 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void backupFromHome() {
-        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME);
+        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
     }
 
     private void restoreToHome() {
-        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME);
+        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME, Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
     private void backupAndRestoreHome() {
@@ -2299,9 +2299,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         sendKeyStrings(path, CMD_ESC);
     }
 
-    private void documentTreePicker(int requestCode) {
+    private void documentTreePicker(int requestCode, int flags) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
+        intent.addFlags(flags);
         doStartActivityForResult(intent, requestCode);
     }
 
@@ -2328,6 +2329,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final AppCompatActivity activity = this;
         b.setPositiveButton(android.R.string.ok, (dialog, id) -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("*/*");
             intent = getDocumentsuiIntent(activity.getApplicationContext(), intent);

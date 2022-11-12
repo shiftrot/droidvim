@@ -2,7 +2,6 @@ package jackpal.androidterm;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -27,34 +26,27 @@ public class ASFUtils {
     static AlertDialog mProcessingDialog = null;
     static private boolean mCANCEL = false;
 
-    static public void directoryPicker(final AppCompatActivity activity, final int request, String mes, final ChooserDialog.Result r) {
+    static public void directoryPicker(final AppCompatActivity activity, final int request, String mes, final ChooserDialog.Result r, int flags) {
         AlertDialog.Builder bld = new AlertDialog.Builder(activity);
         bld.setIcon(android.R.drawable.ic_dialog_info);
         bld.setTitle(activity.getString(R.string.select_directory_message));
         bld.setMessage(mes);
-        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                documentTreePicker(activity, request);
-            }
+        bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+            dialog.dismiss();
+            documentTreePicker(activity, request, flags);
         });
-        bld.setNegativeButton(activity.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        bld.setNeutralButton(activity.getString(R.string.reset_directory), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                r.onChoosePath(null, null);
-            }
+        bld.setNegativeButton(activity.getString(android.R.string.cancel), (dialog, id) -> dialog.dismiss());
+        bld.setNeutralButton(activity.getString(R.string.reset_directory), (dialog, id) -> {
+            dialog.dismiss();
+            r.onChoosePath(null, null);
         });
         bld.create().show();
     }
 
-    static public void documentTreePicker(final AppCompatActivity activity, int requestCode) {
+    static public void documentTreePicker(final AppCompatActivity activity, int requestCode, int flags) {
         mCANCEL = false;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.addFlags(flags);
         doStartActivityForResult(activity, intent, requestCode);
     }
 
@@ -77,19 +69,15 @@ public class ASFUtils {
             final AlertDialog dlg = createProcessingDialog(activity);
             mProcessingDialog = dlg;
             showDialog(activity, dlg);
-            final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-            bld.setMessage(activity.getString(R.string.backup_restore_complete));
-            bld.setPositiveButton(android.R.string.ok, null);
-            final AlertDialog completeDlg = bld.create();
             try {
                 new Thread() {
                     @Override
                     public void run() {
                         try {
-                            doBackupToTreeUri(activity, TermService.getHOME(), root);
-                            showDialog(activity, completeDlg);
+                            doBackupToTreeUri(activity, path, root);
+                            alertDialog(activity, activity.getString(R.string.backup_restore_complete));
                         } catch (Exception e) {
-                            // Do nothing
+                            alertDialog(activity, activity.getString(R.string.backup_restore_error) + "\n\n" + e.getMessage());
                         } finally {
                             dismissDialog(activity, dlg);
                         }
@@ -107,10 +95,7 @@ public class ASFUtils {
         if (local != null) local = local.replaceFirst("/tree/", "");
         if (local != null && local.startsWith(TermService.getHOME()) && new File(local).canWrite()) {
             if (activity != null) {
-                final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-                bld.setMessage(activity.getString(R.string.same_directory_error));
-                bld.setPositiveButton(android.R.string.ok, null);
-                showDialog(activity, bld.create());
+                alertDialog(activity, activity.getString(R.string.root_directory_error));
             }
             return true;
         }
@@ -126,13 +111,15 @@ public class ASFUtils {
     }
 
     static private void alertDialog(AppCompatActivity activity, String message) {
-        final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-        bld.setMessage(message);
-        bld.setPositiveButton(android.R.string.ok, null);
-        showDialog(activity, bld.create());
+        activity.runOnUiThread(() -> {
+            final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
+            bld.setMessage(message);
+            bld.setPositiveButton(android.R.string.ok, null);
+            bld.show();
+        });
     }
 
-    static private void doBackupToTreeUri(AppCompatActivity activity, String rootPath, DocumentFile docRoot) {
+    static private void doBackupToTreeUri(AppCompatActivity activity, String rootPath, DocumentFile docRoot) throws Exception {
         File dir = new File(rootPath);
         File[] list = dir.listFiles();
         if (list != null) {
@@ -156,20 +143,16 @@ public class ASFUtils {
                         ext = ext.replaceAll("(html?)#.*", "$1");
                         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
                         DocumentFile dstDoc = docRoot.findFile(name);
-                        try {
-                            File src = new File(rootPath + "/" + name);
-                            if (dstDoc == null || src.lastModified() > dstDoc.lastModified()) {
-                                if (dstDoc == null)
-                                    dstDoc = docRoot.createFile(mimeType != null ? mimeType : "application/octet-stream", name);
-                                if (dstDoc != null) {
-                                    InputStream is = new FileInputStream(src);
-                                    OutputStream os = activity.getContentResolver().openOutputStream(dstDoc.getUri());
-                                    cpStream(is, os);
-                                    setLastModified(dstDoc, activity, src.lastModified());
-                                }
+                        File src = new File(rootPath + "/" + name);
+                        if (dstDoc == null || src.lastModified() > dstDoc.lastModified()) {
+                            if (dstDoc == null)
+                                dstDoc = docRoot.createFile(mimeType != null ? mimeType : "application/octet-stream", name);
+                            if (dstDoc != null) {
+                                InputStream is = new FileInputStream(src);
+                                OutputStream os = activity.getContentResolver().openOutputStream(dstDoc.getUri());
+                                cpStream(is, os);
+                                setLastModified(dstDoc, activity, src.lastModified());
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
                 }
@@ -177,21 +160,21 @@ public class ASFUtils {
         }
     }
 
-    static private boolean setLastModified(DocumentFile docFile, Context context, long time) {
+    static private void setLastModified(DocumentFile docFile, Context context, long time) {
         try {
             Uri uri = docFile.getUri();
             String path = UriToPath.getPath(context, uri);
-            if (path != null) return (new File(path).setLastModified(time));
-            return false;
-        } catch (Exception e) {
-            return false;
+            if (path != null) {
+                new File(path).setLastModified(time);
+            }
+        } catch (Exception ignored) {
         }
     }
 
     static private void cpStream(InputStream is, OutputStream os) {
         try {
             byte[] buf = new byte[1024 * 4];
-            int len = 0;
+            int len;
 
             while ((len = is.read(buf)) > 0) {
                 os.write(buf, 0, len);
@@ -222,18 +205,14 @@ public class ASFUtils {
         String message = rootUri.getPath();
         if (message != null) setDialogMessage(activity, mProcessingDialog, message);
         showDialog(activity, dlg);
-        final AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-        bld.setMessage(activity.getString(R.string.backup_restore_complete));
-        bld.setPositiveButton(android.R.string.ok, null);
-        final AlertDialog completeDlg = bld.create();
         new Thread() {
             @Override
             public void run() {
                 try {
                     doRestoreHomeFromTreeUri(activity, rootUri, path);
-                    showDialog(activity, completeDlg);
+                    alertDialog(activity, activity.getString(R.string.backup_restore_complete));
                 } catch (Exception e) {
-                    // Do nothing
+                    alertDialog(activity, activity.getString(R.string.backup_restore_error) + "\n\n" + e.getMessage());
                 } finally {
                     dismissDialog(activity, mProcessingDialog);
                 }
@@ -241,7 +220,7 @@ public class ASFUtils {
         }.start();
     }
 
-    static public void doRestoreHomeFromTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
+    static private void doRestoreHomeFromTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) throws Exception {
         if (rootUri == null) return;
         if (isHomeDirectory(activity, rootUri)) return;
         ContentResolver contentResolver = activity.getContentResolver();
@@ -266,7 +245,7 @@ public class ASFUtils {
                 String mimeType = childCursor.getString(1);
                 String docId = childCursor.getString(2);
                 long mtime = Long.parseLong((childCursor.getString(3)));
-                int flag = Integer.parseInt(childCursor.getString(4));
+                // int flag = Integer.parseInt(childCursor.getString(4));
                 Uri uri = DocumentsContract.buildChildDocumentsUriUsingTree(rootUri, docId);
                 if (!isSymlink(uri)) {
                     if (isDirectory(mimeType)) {
@@ -281,14 +260,10 @@ public class ASFUtils {
                     } else {
                         File dstFile = new File(path + "/" + fileName);
                         if (dstFile.lastModified() < mtime) {
-                            try {
-                                InputStream is = activity.getContentResolver().openInputStream(uri);
-                                OutputStream os = new FileOutputStream(dstFile);
-                                cpStream(is, os);
-                                dstFile.setLastModified(mtime);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            InputStream is = activity.getContentResolver().openInputStream(uri);
+                            OutputStream os = new FileOutputStream(dstFile);
+                            cpStream(is, os);
+                            dstFile.setLastModified(mtime);
                         }
                     }
                 }
@@ -303,7 +278,7 @@ public class ASFUtils {
         return DocumentsContract.Document.MIME_TYPE_DIR.equals(mimeType);
     }
 
-    public static boolean isSymlink(Uri uri) {
+    private static boolean isSymlink(Uri uri) {
         return false;
     }
 
@@ -343,11 +318,9 @@ public class ASFUtils {
     static private AlertDialog createProcessingDialog(AppCompatActivity activity) {
         AlertDialog.Builder bld = new AlertDialog.Builder(activity);
         bld.setMessage(activity.getString(R.string.message_please_wait));
-        bld.setNegativeButton(activity.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                mCANCEL = true;
-                dialog.dismiss();
-            }
+        bld.setNegativeButton(activity.getString(android.R.string.cancel), (dialog, id) -> {
+            mCANCEL = true;
+            dialog.dismiss();
         });
         bld.setCancelable(false);
         return bld.create();
@@ -363,12 +336,7 @@ public class ASFUtils {
 
     static private void dismissDialog(AppCompatActivity activity, AlertDialog dlg) {
         try {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    dlg.dismiss();
-                }
-            });
+            activity.runOnUiThread(dlg::dismiss);
         } catch (Exception e) {
             // Do nothing
         }
@@ -376,14 +344,11 @@ public class ASFUtils {
 
     static private void showDialog(AppCompatActivity activity, AlertDialog dlg) {
         try {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        dlg.show();
-                    } catch (Exception e) {
-                        // Do nothing
-                    }
+            activity.runOnUiThread(() -> {
+                try {
+                    dlg.show();
+                } catch (Exception e) {
+                    // Do nothing
                 }
             });
         } catch (Exception e) {

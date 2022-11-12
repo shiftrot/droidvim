@@ -524,8 +524,8 @@
     <string name="restore_home_directory">Restore to \"$HOME\"</string>
     <string name="backup_home_to_appextfiles">\"$HOME\" > \"$APPEXTHOME\"</string>
     <string name="restore_home_from_appextfiles">\"$APPEXTHOME\" > \"$HOME\"</string>
-    <string name="same_directory_error">The source and destination are the same.</string>
     <string name="root_directory_error">This directory cannot be specified as a destination.\nPlease choose the directory of internal storage or SD card.</string>
+    <string name="backup_restore_error">Backup / Restore not completed.</string>
     <string name="backup_restore_complete">Backup / Restore completed.\n\n- Backup/Restore only copies files with new timestamp.\n- Backup/Restore does not copy symbolic links.\n- No mirroring.</string>
     <string name="use_file_chooser">File chooser</string>
     <string name="use_mru">MRU</string>
