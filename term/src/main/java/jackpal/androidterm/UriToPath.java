@@ -110,46 +110,49 @@ public class UriToPath {
         final String[] projection = {
                 MediaStore.Files.FileColumns.DATA
         };
-        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null)) {
+        try {
+            Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
-                try {
-                    final int index = cursor.getColumnIndexOrThrow(projection[0]);
-                    return cursor.getString(index);
-                } catch (Exception e) {
-                    // do nothing
-                }
+                final int index = cursor.getColumnIndexOrThrow(projection[0]);
+                String data = cursor.getString(index);
+                cursor.close();
+                return data;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
         return null;
     }
 
     public static String getFileProviderPath(Uri uri) {
-        List<String> uriList = uri.getPathSegments();
-        List<String> segments = uriList.subList(1, uriList.size());
-        if (uriList.size() > 3) {
-            StringBuilder path = new StringBuilder();
-            for (String segment : segments) {
-                path.append(File.separator);
-                path.append(segment);
+        try {
+            List<String> uriList = uri.getPathSegments();
+            List<String> segments = uriList.subList(1, uriList.size());
+            if (uriList.size() > 3) {
+                StringBuilder path = new StringBuilder();
+                for (String segment : segments) {
+                    path.append(File.separator);
+                    path.append(segment);
+                }
+
+                File file = new File(path.toString());
+                if (file.isFile()) return path.toString();
             }
 
-            File file = new File(path.toString());
-            if (file.isFile()) return path.toString();
-        }
+            if (uriList.size() > 1) {
+                StringBuilder path = new StringBuilder();
+                path.append(Environment.getExternalStorageDirectory());
+                for (String segment : segments) {
+                    path.append(File.separator);
+                    path.append(segment);
+                }
 
-        if (uriList.size() > 1) {
-            StringBuilder path = new StringBuilder();
-            path.append(Environment.getExternalStorageDirectory());
-            for (String segment : segments) {
-                path.append(File.separator);
-                path.append(segment);
+                File file = new File(path.toString());
+                if (file.isFile()) return path.toString();
             }
-
-            File file = new File(path.toString());
-            if (file.isFile()) return path.toString();
+        } catch (Exception e) {
+            return null;
         }
-
         return null;
     }
 
