@@ -1882,8 +1882,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         } else if (id == R.id.menu_reload) {
             fileReload();
         } else if (id == R.id.action_help) {
-            Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
-            startActivity(openHelp);
+            String url = getString(R.string.help_url);
+            try {
+                Intent openHelp = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(openHelp);
+            } catch (Exception e) {
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", url);
+                WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
+                startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
+            }
         } else if (id == R.id.menu_quit) {
             EmulatorView view = getCurrentEmulatorView();
             if (view != null) doSendActionBarKey(view, mSettings.getActionBarQuitKeyAction());
@@ -3125,7 +3133,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             try {
                 startActivity(new Intent(this, Class.forName(str1)));
             } catch (Exception e) {
-                e.printStackTrace();
                 alert("Unknown activity:\n" + str1);
             }
             return;
