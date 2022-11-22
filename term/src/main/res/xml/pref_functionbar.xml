@@ -460,8 +460,13 @@
 
         <CheckBoxPreference
             android:key="functionbar_open_file"
-            android:defaultValue="true"
+            android:defaultValue="@bool/pref_functionbar_open_file_default"
             android:title="@string/title_functionbar_open_file"/>
+
+        <CheckBoxPreference
+            android:key="functionbar_new_file"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_new_file"/>
 
         <CheckBoxPreference
             android:key="functionbar_voice_input"
@@ -688,6 +693,11 @@
             android:key="navigationbar_open_file"
             android:defaultValue="false"
             android:title="@string/title_functionbar_open_file"/>
+
+        <CheckBoxPreference
+            android:key="navigationbar_new_file"
+            android:defaultValue="false"
+            android:title="@string/title_functionbar_new_file"/>
 
         <CheckBoxPreference
             android:key="navigationbar_voice_input"

@@ -857,6 +857,18 @@
                         android:text=""/>
 
                     <Button
+                        android:id="@+id/button_function_47"
+                        android:visibility="gone"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="0dp"
+                        android:minHeight="48dp"
+                        android:text=""/>
+
+                    <Button
                         android:id="@+id/button_next_functionbar2"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -1387,6 +1399,17 @@
 
             <Button
                 android:id="@+id/button_navigation_47"
+                android:visibility="gone"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text=""/>
+
+            <Button
+                android:id="@+id/button_navigation_48"
                 android:visibility="gone"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
