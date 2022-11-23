@@ -4,6 +4,7 @@
     <string name="title_functionbar_fixed_ctrl">Ctrl (固定)</string>
     <string name="title_functionbar_fixed_alt">Alt (固定)</string>
     <string name="title_functionbar_fixed_tab">Tab (固定)</string>
+    <string name="title_functionbar_fixed_colon">:  (固定)</string>
     <string name="title_functionbar_menu">≡ - メニュー</string>
     <string name="title_functionbar_softkeyboard">"🔤"</string>
     <string name="title_functionbar_quit">"📲" - 終了</string>

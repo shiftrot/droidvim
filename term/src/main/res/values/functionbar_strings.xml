@@ -5,6 +5,7 @@
     <string name="title_functionbar_fixed_ctrl">Ctrl (Fixed)</string>
     <string name="title_functionbar_fixed_alt">Alt (Fixed)</string>
     <string name="title_functionbar_fixed_tab">Tab (Fixed)</string>
+    <string name="title_functionbar_fixed_colon">:  (Fixed)</string>
     <string name="title_functionbar_menu">≡ - Menu</string>
     <string name="title_functionbar_vim_yank">&quot;*yy - Vim yank command</string>
     <string name="title_functionbar_vim_paste">&quot;*p - Vim paste command</string>
