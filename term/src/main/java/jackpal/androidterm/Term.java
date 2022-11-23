@@ -1309,16 +1309,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         boolean doNotShowAgain = false;
         boolean warning;
 
-        boolean symlink = ASFUtils.isSymlink(new File(TermService.getAPPFILES() + "/bin/bash.app"));
-        if (!symlink) {
-            key = "warning_rev" + BuildConfig.VERSION_CODE;
-            warning = getPrefBoolean(Term.this, key, true);
-            if (warning) {
-                title = "External storage warning";
-                message = getString(R.string.string_install_on_external_storage_warning) + "\n\n";
-            }
-        }
-
         if (SCOPED_STORAGE && message == null) {
             key = "scoped_storage_warning_backup";
             warning = getPrefBoolean(Term.this, key, true);

@@ -355,7 +355,6 @@
     <string name="title_do_path_extensions_preference">PATH拡張の許可</string>
     <string name="summary_do_path_extensions_preference">他のアプリから追加のコマンドの提供を許可する (PATHへの追加)</string>
 
-    <string name="string_install_on_external_storage_warning">外部ストレージ:\nこのアプリは外部ストレージにインストールされている可能性があります.\nこのアプリを内部ストレージへ移動しない場合は以下の問題が起きる可能性があります.\n・コマンドが正しく機能しない. (特にAndroid10以降)\n・特定のデバイスでアプリの更新が失敗する.\n</string>
     <string name="low_strage_warning_title">十分な空き容量がありません</string>
     <string name="low_strage_warning_message">このデバイスに十分な空きストレージ容量がないため, タスクの切り替え時などにこのアプリがクラッシュする可能性があります.\n1.0ギガバイト以上の空き容量を確保することをお勧めします.\n\n（これはほとんどのデバイスにとって問題ではありませんが、一部のデバイスは十分な空きストレージスペースがない場合にフォアグラウンドサービスを適切に処理できません.）</string>
     <string name="low_strage_warning_ignore">次回からこの警告を無視してアプリを実行.</string>
