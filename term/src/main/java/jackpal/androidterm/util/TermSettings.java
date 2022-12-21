@@ -154,7 +154,7 @@ public class TermSettings {
     private static final String LEFT_DOUBLE_TAP_KEY = "left_double_tap_action";
     private static final String BOTTOM_DOUBLE_TAP_KEY = "bottom_double_tap_action";
     private static final String TOP_DOUBLE_TAP_KEY = "top_double_tap_action";
-    public static final String BACKACTION_KEY = "backaction";
+    public static final String BACKACTION_KEY = "backaction_rev2";
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";

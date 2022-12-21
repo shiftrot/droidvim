@@ -135,7 +135,7 @@
     <string-array name="entries_backaction_preference">
         <item>すべてのターミナルウインドウを閉じる</item>
         <item>現在のターミナルウインドウを閉じる</item>
-        <item>アクティビティを閉じ，セッションは実行を継続</item>
+        <item>デフォルト</item>
         <item>ターミナルにESCを送出</item>
         <item>IMEのトグル</item>
         <item>AndroidのBackボタン</item>
@@ -143,7 +143,7 @@
 
     <string-array name="entries_vim_backaction_preference">
         <item>現在のターミナルウインドウを閉じる</item>
-        <item>アクティビティを閉じ，セッションは実行を継続</item>
+        <item>デフォルト</item>
         <item>ターミナルにESCを送出</item>
         <item>IMEのトグル</item>
         <item>AndroidのBackボタン</item>

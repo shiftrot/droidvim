@@ -141,7 +141,7 @@
     <string-array name="entries_backaction_preference">
         <item>Closes all terminal windows</item>
         <item>Closes this terminal window only</item>
-        <item>Closes activity, leaving sessions running</item>
+        <item>Default</item>
         <item>Sends ESC to terminal</item>
         <item>Toggle soft keyboard</item>
         <item>Android Back Button</item>
@@ -149,7 +149,7 @@
 
     <string-array name="entries_vim_backaction_preference">
         <item>Closes this terminal window</item>
-        <item>Closes activity, leaving sessions running</item>
+        <item>Default</item>
         <item>Sends ESC to terminal</item>
         <item>Toggle soft keyboard</item>
         <item>Android Back Button</item>

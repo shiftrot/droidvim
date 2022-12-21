@@ -983,7 +983,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_gesture);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("backaction"));
+            bindPreferenceSummaryToValue(findPreference("backaction_rev2"));
             bindPreferenceSummaryToValue(findPreference("double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("right_double_tap_action"));
             bindPreferenceSummaryToValue(findPreference("left_double_tap_action"));

@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="backaction"
+        android:key="backaction_rev2"
         android:defaultValue="@string/pref_backaction_default"
         android:title="@string/title_backaction_preference"
         android:entries="@array/entries_vim_backaction_preference"
