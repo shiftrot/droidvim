@@ -1844,6 +1844,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     static private int getIMEID(String defime) {
         int ime = IME_ID_NORMAL;
+        if (defime == null) return ime;
         if (defime.matches(IME_GBOARD)) {
             ime = IME_ID_GBOARD;
         } else if (defime.matches(IME_SWIFT)) {
