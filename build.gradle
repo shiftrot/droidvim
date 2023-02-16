@@ -20,17 +20,17 @@ buildscript {
 
     ext.versions += [
         'annotation'       : '1.5.0',
-        'appcompat'        : '1.5.1',
+        'appcompat'        : '1.6.1',
         'constraintlayout' : '2.1.4',
         'core_ktx'         : '1.9.0',
         'documentfile'     : '1.0.1',
         'drawerlayout'     : '1.1.1',
         'fragment_ktx'     : '1.5.5',
-        'kotlin'           : '1.7.20',
-        'material'         : '1.7.0',
+        'kotlin'           : '1.8.0',
+        'material'         : '1.8.0',
         'preference'       : '1.2.0',
         'vectordrawable'   : '1.1.0',
-        'webkit'           : '1.5.0',
+        'webkit'           : '1.6.0',
         'kotlin_coroutines': '1.4.1',
         'kotlin_coroutines_core': '1.3.7',
     ]
@@ -41,7 +41,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:7.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }
 }
