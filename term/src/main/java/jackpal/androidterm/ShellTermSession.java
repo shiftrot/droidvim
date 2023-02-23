@@ -183,7 +183,7 @@ public class ShellTermSession extends GenericTermSession {
     static String[] getProotCommand(String... commands) {
         String appLib = TermService.getAPPLIB();
         List<String> prootCommands = new ArrayList<>();
-        if (!new File(appLib + "/libproot.so").exists()) return prootCommands.toArray(new String[0]);
+        if (!new File(appLib + "/libproot.so").exists() || !mProotEnable) return prootCommands.toArray(new String[0]);
         prootCommands.add("export PROOT_TMP_DIR=" + TermService.getTMPDIR());
         if (mProotNoSecComp) prootCommands.add("export PROOT_NO_SECCOMP=1");
 
