@@ -770,4 +770,9 @@
         android:entryValues="@array/entryvalues_cursor_direction_ctrl_mode_preference"
         android:summary="@string/summary_cursor_direction_ctrl_mode_preference"/>
 
+    <SwitchPreference
+        android:key="fast_cursor_mode"
+        android:defaultValue="@bool/pref_fast_cursor_mode_default"
+        android:title="@string/title_fast_cursor_mode_preference" />
+
 </PreferenceScreen>

@@ -55,6 +55,7 @@
 
     <string name="title_cursor_direction_ctrl_mode_preference">カーソルボタンの方向</string>
     <string name="summary_cursor_direction_ctrl_mode_preference">CTRLボタンでカーソルボタンの方向切替. ESCボタンでキャンセル.</string>
+    <string name="title_fast_cursor_mode_preference">高速リピートするカーソルボタン</string>
     <string name="text_box">一行テキスト入力</string>
     <string name="menu_drawer">ストレージ</string>
     <string name="setup_error_title">セットアップがまだ行われていません.</string>

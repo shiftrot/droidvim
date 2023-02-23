@@ -527,6 +527,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             setFunctionKey();
         }
 
+        if (TermSettings.FAST_CURSOR_MODE.equals(s)) {
+            setFunctionKey();
+        }
+
         if (TermSettings.BACKACTION_KEY.equals(s)) {
             setOnBackPressedCallbackEnabled(mSettings.getBackKeyAction() != TermSettings.BACK_KEY_DEFAULT);
         }
@@ -4033,7 +4037,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 case "navigationbar_down":
                 case "navigationbar_left":
                 case "navigationbar_right":
-                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, 25, Term.this));
+                    int interval = mSettings.getFastCursorMode() ? 30 : 60;
+                    findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, interval, Term.this));
                     switch (fkey.prefId) {
                         case "functionbar_up":
                         case "navigationbar_up":

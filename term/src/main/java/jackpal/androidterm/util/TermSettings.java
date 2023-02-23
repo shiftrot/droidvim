@@ -39,6 +39,7 @@ public class TermSettings {
     private boolean mFunctionBar;
     private boolean mFunctionBarNavigationButton;
     private int mCursorDirectionCtrl;
+    private boolean mFastCursorMode;
     private boolean mOnelineTextBox;
     private boolean mOnelineTextBoxEsc;
     private boolean mOnelineTextBoxCr;
@@ -123,6 +124,7 @@ public class TermSettings {
     private static final String FUNCTIONBAR_KEY = "functionbar";
     private static final String FUNCTIONBAR_NAVIAGATION_BUTTON_KEY = "functionbar_navigation_button";
     private static final String CURSOR_DIRECTION_CTRL = "cursor_direction_ctrl_mode";
+    public static final String FAST_CURSOR_MODE = "fast_cursor_mode";
     private static final String ONELINE_TEXTBOX_KEY = "oneline_textbox";
     private static final String ONELINE_TEXTBOX_ESC_KEY = "oneline_textbox_esc_rev2";
     private static final String ONELINE_TEXTBOX_CR_KEY = "oneline_textbox_cr";
@@ -284,6 +286,7 @@ public class TermSettings {
         mFunctionBar = res.getBoolean(R.bool.pref_functionbar_default);
         mFunctionBarNavigationButton = res.getBoolean(R.bool.pref_functionbar_navigation_button_default);
         mCursorDirectionCtrl = Integer.parseInt(res.getString(R.string.pref_cursor_direction_ctrl_mode_default));
+        mFastCursorMode = res.getBoolean(R.bool.pref_fast_cursor_mode_default);
         mOnelineTextBox = res.getBoolean(R.bool.pref_one_line_textbox_default);
         mOnelineTextBoxEsc = res.getBoolean(R.bool.pref_one_line_textbox_esc_default);
         mOnelineTextBoxCr = res.getBoolean(R.bool.pref_one_line_textbox_cr_default);
@@ -367,6 +370,7 @@ public class TermSettings {
         mFunctionBar = readBooleanPref(FUNCTIONBAR_KEY, mFunctionBar);
         mFunctionBarNavigationButton = readBooleanPref(FUNCTIONBAR_NAVIAGATION_BUTTON_KEY, mFunctionBarNavigationButton);
         mCursorDirectionCtrl = readIntPref(CURSOR_DIRECTION_CTRL, mCursorDirectionCtrl, 3);
+        mFastCursorMode = readBooleanPref(FAST_CURSOR_MODE, mFastCursorMode);
         mOnelineTextBox = readBooleanPref(ONELINE_TEXTBOX_KEY, mOnelineTextBox);
         mOnelineTextBoxEsc = readBooleanPref(ONELINE_TEXTBOX_ESC_KEY, mOnelineTextBoxEsc);
         mOnelineTextBoxCr = readBooleanPref(ONELINE_TEXTBOX_CR_KEY, mOnelineTextBoxCr);
@@ -513,6 +517,10 @@ public class TermSettings {
 
     public int getCursorDirectionControlMode() {
         return mCursorDirectionCtrl;
+    }
+
+    public boolean getFastCursorMode() {
+        return mFastCursorMode;
     }
 
     public boolean showOnelineTextBox() {
