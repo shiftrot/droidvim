@@ -252,7 +252,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 || KeyboardPreferenceFragment.class.getName().equals(fragmentName)
                 || AppsPreferenceFragment.class.getName().equals(fragmentName)
                 || ShellPreferenceFragment.class.getName().equals(fragmentName)
-                || PermissionPreferenceFragment.class.getName().equals(fragmentName)
                 || PrefsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -1233,11 +1232,11 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                 }).show();
     }
 
-    public static class PermissionPreferenceFragment extends PreferenceFragment {
+    public static class PrefsPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_permissions);
+            addPreferencesFromResource(R.xml.pref_user_setting);
 
             final String BATTERY_OPTIMIZATIONS_KEY = "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS";
             Preference manageBatteryOptimizations = getPreferenceScreen().findPreference(BATTERY_OPTIMIZATIONS_KEY);
@@ -1276,25 +1275,6 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                     }
                 });
             }
-
-            final String APP_INFO_KEY = "app_info";
-            Preference appInfoPref = getPreferenceScreen().findPreference(APP_INFO_KEY);
-            appInfoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if (mTermPreference != null) mTermPreference.applicationInfo();
-                    return true;
-                }
-            });
-
-            setHasOptionsMenu(true);
-        }
-    }
-    public static class PrefsPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_user_setting);
 
             final String PREFS_KEY = "prefs_rw";
             Preference prefsPicker = getPreferenceScreen().findPreference(PREFS_KEY);

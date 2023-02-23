@@ -33,10 +33,6 @@
         android:title="@string/shell_preferences"/>
 
     <header
-        android:fragment="jackpal.androidterm.TermPreferences$PermissionPreferenceFragment"
-        android:title="@string/permission_preferences"/>
-
-    <header
         android:fragment="jackpal.androidterm.TermPreferences$PrefsPreferenceFragment"
         android:title="@string/prefs_preferences"/>
 
