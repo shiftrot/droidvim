@@ -53,8 +53,10 @@ allprojects {
     }
 
     gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
+        tasks.withType(JavaCompile).tap {
+            configureEach {
 //            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            }
         }
     }
 }
@@ -66,4 +68,8 @@ subprojects {
             && (androidHome = androidHome as File).exists()
             && androidHome.canWrite())
         apply plugin: 'android-sdk-manager'
+}
+
+tasks.register('clean') {
+    delete rootProject.buildDir
 }

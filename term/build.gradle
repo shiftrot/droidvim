@@ -75,7 +75,7 @@ android {
         }
     }
 
-    flavorDimensions "appType"
+    flavorDimensions = ["appType"]
     productFlavors {
         terminal {
             dimension "appType"
