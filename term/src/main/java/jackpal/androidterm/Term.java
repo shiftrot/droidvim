@@ -4557,6 +4557,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             dialog.dismiss();
             mUninstall = true;
             shell("rm " + TermService.getVersionFilesDir() + "/version");
+            shell("rm -rf " + TermService.getVIMRUNTIME());
             if (mSettings.getInitialCommand().matches("(.|\n)*(^|\n)-?vim\\.app(.|\n)*")) {
                 sendKeyStrings(AppCommand.QUIT, true);
             } else {
