@@ -995,17 +995,21 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     @SuppressLint("NewApi")
     void permissionCheck() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (!notificationManager.areNotificationsEnabled()) {
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_NOTIFICATIONS);
-            }
-        }
+        manageNotificationPermission();
         if (SCOPED_STORAGE) {
             manageExternalStoragePermission();
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+            }
+        }
+    }
+
+    private void manageNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (!notificationManager.areNotificationsEnabled()) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_NOTIFICATIONS);
             }
         }
     }
@@ -1036,26 +1040,19 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case REQUEST_NOTIFICATIONS:
                 for (int i = 0; i < permissions.length; i++) {
                     if (permissions[i].equals(Manifest.permission.POST_NOTIFICATIONS)) {
-                        String message;
                         if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                            message = getString(R.string.permission_granted_restart);
-                        } else {
-                            message = getString(R.string.summary_notifications_permission_request);
-                        }
-                        final boolean restart = grantResults[i] == PackageManager.PERMISSION_GRANTED;
-                        runOnUiThread(() -> {
-                            AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
-                            bld.setIcon(android.R.drawable.ic_dialog_alert);
-                            bld.setTitle(getString(R.string.title_notifications_permission));
-                            bld.setMessage(message);
-                            bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-                                dialog.dismiss();
-                                if (restart) doCloseWindow();
+                            runOnUiThread(() -> {
+                                AlertDialog.Builder bld = new AlertDialog.Builder(Term.this);
+                                bld.setIcon(android.R.drawable.ic_dialog_alert);
+                                bld.setTitle(getString(R.string.title_notifications_permission));
+                                bld.setMessage(getString(R.string.permission_granted_suggestion));
+                                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                                    dialog.dismiss();
+                                });
+                                AlertDialog dialog = bld.create();
+                                dialog.show();
                             });
-                            bld.setCancelable(false);
-                            AlertDialog dialog = bld.create();
-                            dialog.show();
-                        });
+                        }
                     }
                 }
                 break;
