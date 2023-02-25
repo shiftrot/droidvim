@@ -19,7 +19,7 @@
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_DATA_SYNC" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission
@@ -182,6 +182,8 @@
             android:label="Local HTML Viewer"/>
 
         <service android:name=".TermService"
+            android:foregroundServiceType="dataSync"
+            android:permission="android.permission.FOREGROUND_SERVICE_TYPE_DATA_SYNC"
             android:exported="false">
             <intent-filter>
                 <action android:name="jackpal.androidterm.action.START_TERM.v1"/>

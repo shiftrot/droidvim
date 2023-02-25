@@ -30,6 +30,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -213,7 +214,11 @@ public class TermService extends Service implements TermSession.FinishCallback {
             Notification notification = buildNotification(channelId, showStatusIcon);
             if (notification != null) {
                 if (useNotificationForgroundService()) {
-                    startForeground(RUNNING_NOTIFICATION, notification);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        startForeground(RUNNING_NOTIFICATION, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+                    } else {
+                        startForeground(RUNNING_NOTIFICATION, notification);
+                    }
                 } else {
                     compat = new ServiceForegroundCompat(this);
                     compat.startForeground(RUNNING_NOTIFICATION, notification);
