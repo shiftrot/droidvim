@@ -1046,9 +1046,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                                 bld.setIcon(android.R.drawable.ic_dialog_alert);
                                 bld.setTitle(getString(R.string.title_notifications_permission));
                                 bld.setMessage(getString(R.string.permission_granted_suggestion));
-                                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-                                    dialog.dismiss();
-                                });
+                                bld.setPositiveButton(android.R.string.ok, (dialog, id) -> dialog.dismiss());
                                 AlertDialog dialog = bld.create();
                                 dialog.show();
                             });
@@ -1310,7 +1308,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         boolean doNotShowAgain = false;
         boolean warning;
 
-        if (SCOPED_STORAGE && message == null) {
+        if (SCOPED_STORAGE) {
             key = "scoped_storage_warning_backup";
             warning = getPrefBoolean(Term.this, key, true);
             if (first || (warning && mRandom.nextInt(100) == 1)) {
@@ -1438,18 +1436,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             doInstall = !TermVimInstaller.getTermInstallStatus(this);
         }
         if (doInstall) {
-            String _postCmd = "";
+            StringBuilder _postCmd = new StringBuilder();
             String[] list = cmd.split("\n");
-            String preCmd = "";
+            StringBuilder preCmd = new StringBuilder();
             for (String str : list) {
                 if (str.matches("^(bash|-?vim.app).*")) {
-                    _postCmd = _postCmd + str + "\n";
+                    _postCmd.append(str).append("\n");
                 } else {
-                    preCmd = preCmd + str + "\n";
+                    preCmd.append(str).append("\n");
                 }
             }
-            final String postCmd = _postCmd;
-            cmd = preCmd;
+            final String postCmd = _postCmd.toString();
+            cmd = preCmd.toString();
             TermVimInstaller.installVim(Term.this, () -> {
                 if (getCurrentTermSession() != null) {
                     sendKeyStrings(postCmd, false);
@@ -3077,7 +3075,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 doSendActionBarKey(getCurrentEmulatorView(), leftAction);
             } else if (bottomAction != KEY_ACTION_999 && me.getY() > (height - size)) {
                 doSendActionBarKey(getCurrentEmulatorView(), bottomAction);
-            } else if (topAction != KEY_ACTION_999 && me.getY() < size + (size / 2)) {
+            } else if (topAction != KEY_ACTION_999 && me.getY() < size + (size / 2.0f)) {
                 EmulatorView.setTextScale(1.0f);
                 v.setFontSize();
             } else {
