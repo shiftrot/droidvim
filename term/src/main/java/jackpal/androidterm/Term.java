@@ -993,16 +993,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     @SuppressLint("NewApi")
-    void permissionCheck() {
+    private void permissionCheck() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         manageNotificationPermission();
-        if (SCOPED_STORAGE) {
-            manageExternalStoragePermission();
-        } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-            }
-        }
+        manageExternalStoragePermission();
     }
 
     private void manageNotificationPermission() {
@@ -1014,13 +1008,20 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    boolean manageExternalStoragePermission() {
-        if (!SCOPED_STORAGE) return false;
+    private void manageExternalStoragePermission() {
+        if (!SCOPED_STORAGE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+                }
+            }
+            return;
+        }
         File sharedDir = Environment.getExternalStorageDirectory();
-        if (sharedDir.canWrite()) return true;
+        if (sharedDir.canWrite()) return;
         String key = "manage_storage_permission";
         boolean warning = getPrefBoolean(Term.this, key, true);
-        if (!warning) return true;
+        if (!warning) return;
         Runnable whenDone = () -> {
             try {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
@@ -1030,7 +1031,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         };
         doWarningDialogRun(getString(R.string.manage_external_storage_permission), getString(R.string.manage_external_storage_permission_summary), key, false, whenDone);
-        return true;
     }
 
     @Override
