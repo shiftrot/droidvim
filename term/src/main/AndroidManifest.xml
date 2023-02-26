@@ -16,11 +16,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission
         android:name="android.permission.BATTERY_STATS"
@@ -54,10 +54,11 @@
         tools:ignore="ProtectedPermissions"/>
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="ProtectedPermissions"/>
+        tools:ignore="ProtectedPermissions,QueryAllPackagesPermission"/>
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ProtectedPermissions"/>
+        tools:ignore="ProtectedPermissions,ScopedStorage"/>
+
     <queries>
         <package android:name="com.android.documentsui" />
         <package android:name="com.google.android.apps.docs" />
@@ -77,16 +78,17 @@
     <application
         android:localeConfig="@xml/locales_config"
         android:enableOnBackInvokedCallback="true"
-        android:requestLegacyExternalStorage="true"
         android:extractNativeLibs="true"
         android:resizeableActivity="true"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_terminal"
-        android:theme="@style/App_Theme_Light" >
+        android:theme="@style/App_Theme_Light"
+        tools:ignore="DataExtractionRules">
         <activity
             android:name=".ExtraContents"
             android:exported="false"
