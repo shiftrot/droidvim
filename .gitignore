@@ -8,6 +8,8 @@
 Thumbs.db
 obj/
 output.json
+output-metadata.json
+*.hprof
 
 # Built application files
 *.aab
