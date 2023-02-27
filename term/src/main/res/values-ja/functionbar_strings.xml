@@ -9,8 +9,8 @@
     <string name="title_functionbar_softkeyboard">"🔤"</string>
     <string name="title_functionbar_quit">"📲" - 終了</string>
     <string name="title_functionbar_voice_input">"🎤" - 音声入力</string>
-    <string name="title_functionbar_vim_yank">&quot;*yy - Vim ヤンクコマンド</string>
-    <string name="title_functionbar_vim_paste">&quot;*p - Vim 貼り付けコマンド</string>
+    <string name="title_functionbar_vim_yank">\"*yy - Vim ヤンクコマンド</string>
+    <string name="title_functionbar_vim_paste">\"*p - Vim 貼り付けコマンド</string>
     <string name="title_functionbar_ime_toggle">"✏" - IMEのトグル</string>
     <string name="title_navigationbar_fn_toggle">"➖" - ファンクションバーのトグル</string>
     <string name="title_functionbar_open_file">"📁" - ファイルを開く</string>

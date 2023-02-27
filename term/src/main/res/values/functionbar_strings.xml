@@ -19,13 +19,17 @@
     <string name="title_functionbar_hide">▽ - Hide this function bar</string>
     <string name="title_functionbar_change">∧ - F1-F12</string>
     <string name="title_functionbar_change_fkey">∨ - Hide F1-F12</string>
+    <string name="title_functionbar_backspace">"🔙" - Backspace</string>
+    <string name="title_functionbar_page_up">"🔼" - Page Up</string>
+    <string name="title_functionbar_page_down">"🔽" - Page Down</string>
+    <string name="title_functionbar_enter">"↲" - Enter</string>
 
     <string name="string_functionbar_quit">"📲"</string>
     <string name="string_functionbar_dia">"🔤"</string>
     <string name="string_functionbar_enter">"↲"</string>
     <string name="string_functionbar_open_file">"📁"</string>
     <string name="string_functionbar_new_file">"📝"</string>
-    <string name="string_functionbar_ime_toggle">✏</string>
+    <string name="string_functionbar_ime_toggle">"✏"</string>
     <string name="string_functionbar_voice_input">"🎤"</string>
     <string name="string_functionbar_fn_toggle">"➖"</string>
     <string name="string_functionbar_fn_up">∧</string>
@@ -35,4 +39,7 @@
     <string name="string_functionbar_left">◀</string>
     <string name="string_functionbar_right">▶</string>
     <string name="string_functionbar_clear">×</string>
+    <string name="string_functionbar_backspace">"🔙"</string>
+    <string name="string_functionbar_page_up">"🔼"</string>
+    <string name="string_functionbar_page_down">"🔽"</string>
 </resources>

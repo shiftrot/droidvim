@@ -3884,7 +3884,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String LEFT = FUNCTIONBAR_LEFT;
         final String FN_UP = getString(R.string.string_functionbar_fn_up);
         final String FN_DOWN = getString(R.string.string_functionbar_fn_down);
+        final String PAGE_UP = getString(R.string.string_functionbar_page_up);
+        final String PAGE_DOWN = getString(R.string.string_functionbar_page_down);
         final String FN_TOGGLE = getString(R.string.string_functionbar_fn_toggle);
+        final String BACKSPACE = getString(R.string.string_functionbar_backspace);
         final String ENTER = getString(R.string.string_functionbar_enter);
         final String OPEN_FILE = getString(R.string.string_functionbar_open_file);
         final String NEW_FILE = getString(R.string.string_functionbar_new_file);
@@ -3922,10 +3925,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_6        , "functionbar_down"           , DOWN         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_7        , "functionbar_left"           , LEFT         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_8        , "functionbar_right"          , RIGHT        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_9        , "functionbar_backspace"      , "BS"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_9        , "functionbar_backspace"      , BACKSPACE    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_10       , "functionbar_enter"          , ENTER        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_11       , "functionbar_page_up"        , "PU"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_12       , "functionbar_page_down"      , "PD"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_11       , "functionbar_page_up"        , PAGE_UP      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_12       , "functionbar_page_down"      , PAGE_DOWN    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_13       , "functionbar_colon2"         , ":"          , false  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_14       , "functionbar_slash"          , "/"          , res.getBoolean(R.bool.pref_functionbar_slash_default) ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_15       , "functionbar_plus"           , "+"          , false ));
@@ -3980,10 +3983,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_6      , "navigationbar_down"         , DOWN         , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_7      , "navigationbar_left"         , LEFT         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_8      , "navigationbar_right"        , RIGHT        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_9      , "navigationbar_backspace"    , "BS"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_9      , "navigationbar_backspace"    , BACKSPACE    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_10     , "navigationbar_enter"        , ENTER        , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_11     , "navigationbar_page_up"      , "PU"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_12     , "navigationbar_page_down"    , "PD"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_11     , "navigationbar_page_up"      , PAGE_UP      , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_12     , "navigationbar_page_down"    , PAGE_DOWN    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13     , "navigationbar_colon"        , ":"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_14     , "navigationbar_slash"        , "/"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_15     , "navigationbar_plus"         , "+"          , false ));
@@ -4217,14 +4220,16 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private void setScreenFitFunctionBarShortLabel() {
         View view = getCurrentEmulatorView();
         if (view != null) view.post(new Thread(() -> {
-            setShortButtonLabel("navigationbar_esc", "Esc");
-            setShortButtonLabel("navigationbar_ctrl", "Ctrl");
-            setShortButtonLabel("navigationbar_tab", "Tab");
-            setShortButtonLabel("navigationbar_alt", "Alt");
+            setShortButtonLabel("navigationbar_esc", "Esc", "E");
+            setShortButtonLabel("navigationbar_ctrl", "Ctrl", "C");
+            setShortButtonLabel("navigationbar_tab", "Tab", "T");
+            setShortButtonLabel("navigationbar_alt", "Alt", "A");
+            setShortButtonLabel("navigationbar_vim_paste", "\"*p", "p");
+            setShortButtonLabel("navigationbar_vim_yank", "\"*yy", "y");
         }));
     }
 
-    private void setShortButtonLabel(String resId, String label) {
+    private void setShortButtonLabel(String resId, String label, String shortLabel) {
         Button button = findViewById(FunctionKey.getResourceId(resId));
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -4236,7 +4241,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             int buttonMaxWidth = button.getWidth() - padding;
             float textWidth = paint.measureText(label);
             if (textWidth > buttonMaxWidth) {
-                label = label.substring(0, 1);
+                label = shortLabel;
             }
             button.setText(label);
         }

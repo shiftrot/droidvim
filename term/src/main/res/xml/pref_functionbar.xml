@@ -327,22 +327,22 @@
         <CheckBoxPreference
             android:key="functionbar_backspace"
             android:defaultValue="false"
-            android:title="BS"/>
+            android:title="@string/title_functionbar_backspace"/>
 
         <CheckBoxPreference
             android:key="functionbar_enter"
             android:defaultValue="false"
-            android:title="ENTER"/>
+            android:title="@string/title_functionbar_enter"/>
 
         <CheckBoxPreference
             android:key="functionbar_page_up"
             android:defaultValue="false"
-            android:title="PU - PageUp"/>
+            android:title="@string/title_functionbar_page_up"/>
 
         <CheckBoxPreference
             android:key="functionbar_page_down"
             android:defaultValue="false"
-            android:title="PD - PageDown"/>
+            android:title="@string/title_functionbar_page_down"/>
 
         <CheckBoxPreference
             android:key="functionbar_colon2"
@@ -559,22 +559,22 @@
         <CheckBoxPreference
             android:key="navigationbar_backspace"
             android:defaultValue="false"
-            android:title="BS"/>
+            android:title="@string/title_functionbar_backspace"/>
 
         <CheckBoxPreference
             android:key="navigationbar_enter"
             android:defaultValue="false"
-            android:title="ENTER"/>
+            android:title="@string/title_functionbar_enter"/>
 
         <CheckBoxPreference
             android:key="navigationbar_page_up"
             android:defaultValue="false"
-            android:title="PU - PageUp"/>
+            android:title="@string/title_functionbar_page_up"/>
 
         <CheckBoxPreference
             android:key="navigationbar_page_down"
             android:defaultValue="false"
-            android:title="PD - PageDown"/>
+            android:title="@string/title_functionbar_page_down"/>
 
         <CheckBoxPreference
             android:key="navigationbar_colon"
