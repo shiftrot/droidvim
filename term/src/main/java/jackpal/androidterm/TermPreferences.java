@@ -182,11 +182,8 @@ public class TermPreferences extends AppCompatPreferenceActivity {
                             items.put(app.loadLabel(pm).toString(), app.packageName);
                     }
                     List<String> list = new ArrayList<>(items.keySet());
-                    String appId = getFilerApplicationId();
-                    if (!"".equals(appId)) list.add(0, context.getString(R.string.app_files));
                     mLabels = list.toArray(new String[0]);
                     list = new ArrayList<>(items.values());
-                    if (!"".equals(appId)) list.add(0, "");
                     mPackageNames = list.toArray(new String[0]);
                 }
             }.start();

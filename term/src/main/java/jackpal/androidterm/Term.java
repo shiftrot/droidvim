@@ -724,7 +724,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         APP_FILER = TermPreferences.getFilerApplicationId();
         String defaultAppButton = getString(R.string.external_app_button);
         LinkedList<ExternalApp> mExternalApps = new LinkedList<>();
-        mExternalApps.add(new ExternalApp(R.id.drawer_files_button, mSettings.getFilerAppId(), defaultAppButton, mSettings.getFilerAppButtonMode()));
+        mExternalApps.add(new ExternalApp(R.id.drawer_files_button, APP_FILER, getString(R.string.app_files), mSettings.getFilerAppButtonMode()));
         if (FLAVOR_VIM) {
             mExternalApps.add(new ExternalApp(R.id.drawer_app_button        , mSettings.getExternalAppId(), defaultAppButton               , mSettings.getExternalAppButtonMode()));
             mExternalApps.add(new ExternalApp(R.id.drawer_dropbox_button    , APP_DROPBOX                 , getString(R.string.dropbox)    , mSettings.getDropboxFilePicker()    ));
@@ -733,10 +733,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
         mFilePickerItems = new ArrayList<>();
         for (ExternalApp app : mExternalApps) {
-            if (app.appId.equals(getString(R.string.pref_filer_app_id_default))) {
-                app.appId = APP_FILER;
-                app.label = getString(R.string.app_files);
-            }
             int visibility = (app.action > 0) ? View.VISIBLE : View.GONE;
             Button button = findViewById(app.button);
             button.setVisibility(visibility);
@@ -769,6 +765,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                 } catch (Exception e) {
                     button.setText(defaultAppButton);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) button.setVisibility(View.GONE);
                 }
             }
             if ((isAppInstalled(app.appId) && app.action > 0)
