@@ -181,6 +181,10 @@ public class RemoteInterface extends AppCompatActivity {
             handleIntent();
             return;
         }
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            handleIntent();
+            return;
+        }
         try {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);

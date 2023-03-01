@@ -1007,28 +1007,29 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void manageExternalStoragePermission() {
-        if (!SCOPED_STORAGE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
+        if (SCOPED_STORAGE) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) return;
+            String key = "manage_storage_permission";
+            boolean warning = getPrefBoolean(Term.this, key, true);
+            if (!warning) return;
+            Runnable whenDone = () -> {
+                try {
+                    Uri uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID);
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
+                    startActivity(intent);
+                } catch (Exception e){
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    startActivity(intent);
                 }
+            };
+            doWarningDialogRun(getString(R.string.manage_external_storage_permission), getString(R.string.manage_external_storage_permission_summary), key, false, whenDone);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
             }
-            return;
         }
-        File sharedDir = Environment.getExternalStorageDirectory();
-        if (sharedDir.canWrite()) return;
-        String key = "manage_storage_permission";
-        boolean warning = getPrefBoolean(Term.this, key, true);
-        if (!warning) return;
-        Runnable whenDone = () -> {
-            try {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-        doWarningDialogRun(getString(R.string.manage_external_storage_permission), getString(R.string.manage_external_storage_permission_summary), key, false, whenDone);
     }
 
     @Override

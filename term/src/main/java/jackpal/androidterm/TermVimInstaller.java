@@ -570,7 +570,13 @@ final class TermVimInstaller {
                     File dir = dirs[i];
                     if (dir == null) continue;
                     String symlinkName = "external-" + i;
-                    if (dir.canWrite()) {
+                    String root = dir.getAbsolutePath();
+                    root = root.replaceAll("/Android/data/" + BuildConfig.APPLICATION_ID + "/.*", "");
+                    if (new File(root).canWrite()) {
+                        File link = new File(storageDir, symlinkName);
+                        shell("rm " + link.getAbsolutePath());
+                        Os.symlink(root, link.getAbsolutePath());
+                    } else if (dir.canWrite()) {
                         File link = new File(storageDir, symlinkName);
                         shell("rm " + link.getAbsolutePath());
                         Os.symlink(dir.getAbsolutePath(), link.getAbsolutePath());
