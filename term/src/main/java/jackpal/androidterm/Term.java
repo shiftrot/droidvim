@@ -766,7 +766,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     }
                 } catch (Exception e) {
                     button.setText(defaultAppButton);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) button.setVisibility(View.GONE);
+                    button.setVisibility(View.GONE);
                 }
             }
             if ((isAppInstalled(app.appId) && app.action > 0)
