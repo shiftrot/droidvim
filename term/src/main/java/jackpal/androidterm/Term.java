@@ -28,6 +28,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Instrumentation;
 import android.app.NotificationManager;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -2308,6 +2309,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         if (mSettings.getUseBuiltInFilePicker()) intent = getDocumentsuiIntent(this.getApplicationContext(), intent);
         if (checkImplicitIntent(this, intent))
             doStartActivityForResult(intent, REQUEST_FILE_PICKER);
@@ -2559,37 +2561,46 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 }
                 break;
             case REQUEST_FILE_PICKER:
-                String path = null;
                 if (result == RESULT_OK && data != null) {
+                    int items = 1;
                     Uri uri = data.getData();
-                    path = UriToPath.getPath(this, uri);
-                    if (path == null) {
-                        try {
-                            Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
-                            if (mSyncFileObserver != null) {
-                                path = getOpenDocumentPath(uri, cursor);
-                                if (path == null) {
-                                    alert(getString(R.string.storage_read_error));
-                                    break;
-                                }
-                                String fname = new File(path).getName();
+                    ClipData clipData = data.getClipData();
+                    if (clipData != null) items = clipData.getItemCount();
+                    for (int i = 0; i < items; i++) {
+                        if (clipData != null) {
+                            ClipData.Item item = clipData.getItemAt(i);
+                            uri = item.getUri();
+                        }
+                        String path = null;
+                        path = UriToPath.getPath(this, uri);
+                        if (path == null) {
+                            try {
+                                Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                                 if (mSyncFileObserver != null) {
-                                    path = mSyncFileObserver.getObserverDir() + path;
-                                    if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
-                                        alert(fname + "\n" + getString(R.string.storage_read_error));
+                                    path = getOpenDocumentPath(uri, cursor);
+                                    if (path == null) {
+                                        alert(getString(R.string.storage_read_error));
                                         break;
                                     }
+                                    String fname = new File(path).getName();
+                                    if (mSyncFileObserver != null) {
+                                        path = mSyncFileObserver.getObserverDir() + path;
+                                        if (path.equals("") || !mSyncFileObserver.putUriAndLoad(uri, path)) {
+                                            alert(fname + "\n" + getString(R.string.storage_read_error));
+                                            break;
+                                        }
+                                    }
                                 }
+                            } catch (Exception e) {
+                                Log.d("FilePicker", e.toString());
+                                alert(getString(R.string.storage_read_error) + "\n" + e);
+                                break;
                             }
-                        } catch (Exception e) {
-                            Log.d("FilePicker", e.toString());
-                            alert(getString(R.string.storage_read_error) + "\n" + e);
-                            break;
+                        }
+                        if (path != null) {
+                            doShellIntentCommand(path, mSettings.getIntentCommand());
                         }
                     }
-                }
-                if (path != null) {
-                    doShellIntentCommand(path, mSettings.getIntentCommand());
                 }
                 break;
             case REQUEST_CHOOSE_WINDOW:
