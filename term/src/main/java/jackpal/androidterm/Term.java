@@ -4692,7 +4692,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             EmulatorView view = getCurrentEmulatorView();
             if (view == null) return false;
             if (Math.abs(distanceX) < Math.abs(distanceY)) return false;
-            if ((int) e1.getY() < view.getVisibleHeight() / mDeltaColumnsEdge) return false;
+            if (((int) e1.getY() < view.getVisibleHeight() / mDeltaColumnsEdge) && (mTermSessions.size() > 1)) return false;
 
             distanceX += mDeltaColumnsReminder;
             int mCharacterWidth = view.getCharacterWidth();
@@ -4722,6 +4722,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
             mDeltaColumnsReminder = 0.0f;
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
+                if (mTermSessions.size() == 1) return false;
                 if ((int) e1.getY() >= view.getVisibleHeight() / mDeltaColumnsEdge) return false;
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
