@@ -404,7 +404,7 @@
     <string name="scoped_storage_warning_title">Scoped storage</string>
     <string name="scoped_storage_first_warning_message">Scoped Storage:\n\"Scoped storage\" is enabled for this device. Therefore, direct access via Vim commands to other than the \"HOME directory\" is prohibited. Please use \"Open File\" in the drawer menu (Double tap on the screen).</string>
     <string name="scoped_storage_uninstall_warning_message">We recommend regular file backup of \"app-specific directory\".\n\nAll files saved in the \"Home directory\" will be deleted when uninstalling.</string>
-    <string name="google_file_chooser_warning_message">- 3-dot menu in the file manager to show or hide the following:\n - Internal storage/SD card.\n - hidden files (dotfiles)\n\n- Dotfiles in the root of $HOME\n - This app\'s Preferences > Drawer &amp; External Apps > Show dotfiles</string>
+    <string name="google_file_chooser_warning_message">If you cannot access the internal storage or SD card, use the 3-dot menu option.</string>
     <string name="google_filer_app_warning_message">\n\n- Backup/Restore Vimfiles (.vimrc and .vim)\n - Drawer menu > Storage > Backup/Restore</string>
 
     <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>

@@ -405,7 +405,7 @@
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
-    <string name="google_file_chooser_warning_message">- ファイルマネージャーの3ドットメニューで以下の表示を切り替え可能です.\n - 内部ストレージ/SDカード\n - 隠しファイル(ドットファイル)\n\n- ホームディレクトリのドットファイルを表示\n - このアプリの設定 > ドロワー＆外部アプリ > ドットファイルの表示</string>
+    <string name="google_file_chooser_warning_message">- 内蔵ストレージやSDカードにアクセスできない場合は, 3ドットメニューのオプションを確認してください.</string>
     <string name="google_filer_app_warning_message">\n\n- Vimfiles(.vimrc and .vim)のバックアップ/リストア\n - ドロワーメニュー > ストレージ > バックアップ/リストア</string>
 
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
