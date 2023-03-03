@@ -1338,15 +1338,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             }
         }
 
-        if (mSettings.getShowDotfiles() && message == null) {
-            key = "show_dotfiles_warning";
-            warning = getPrefBoolean(Term.this, key, true);
-            if (warning && mRandom.nextInt(50) == 1) {
-                title = getString(R.string.title_show_dotfiles_warning);
-                message = getString(R.string.show_dotfiles_warning_message);
-            }
-        }
-
         if (message == null) {
             doExitShell();
             return;
