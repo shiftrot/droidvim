@@ -476,12 +476,12 @@ public class SyncFileObserver extends RecursiveFileObserver {
         flushCache(uri, file, contentResolver, false);
     }
 
+    final String APP_DROPBOX = "com.dropbox";
+    final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
+    final String APP_ONEDRIVE = "com.microsoft.skydrive";
     private void flushCache(final Uri uri, final File file, final ContentResolver contentResolver, boolean overWrite) {
         if (contentResolver == null) return;
         int hashCheckMode = HASH_CHECK_MODE;
-        final String APP_DROPBOX = "com.dropbox";
-        final String APP_GOOGLEDRIVE = "com.google.android.apps.docs";
-        final String APP_ONEDRIVE = "com.microsoft.skydrive";
         if (uri.toString().startsWith("content://" + APP_DROPBOX)) hashCheckMode = CLOUD_STORAGE_HASH_CHECK_MODE;
         if (uri.toString().startsWith("content://" + APP_GOOGLEDRIVE)) hashCheckMode = CLOUD_STORAGE_HASH_CHECK_MODE;
         if (uri.toString().startsWith("content://" + APP_ONEDRIVE)) hashCheckMode = CLOUD_STORAGE_HASH_CHECK_MODE;
@@ -563,10 +563,16 @@ public class SyncFileObserver extends RecursiveFileObserver {
 
         boolean isWriteError = false;
         try {
-            pfd = contentResolver.openFileDescriptor(uri, "w");
-            if (pfd.canDetectErrors()) pfd.checkError();
-            fos = new FileOutputStream(pfd.getFileDescriptor());
-            fos.getChannel().truncate(0);
+            if (uri.toString().startsWith("content://" + APP_ONEDRIVE)) {
+                pfd = contentResolver.openFileDescriptor(uri, "w");
+                if (pfd.canDetectErrors()) pfd.checkError();
+                fos = new FileOutputStream(pfd.getFileDescriptor());
+                fos.getChannel().truncate(0);
+            } else {
+                pfd = contentResolver.openFileDescriptor(uri, "wt");
+                if (pfd.canDetectErrors()) pfd.checkError();
+                fos = new FileOutputStream(pfd.getFileDescriptor());
+            }
             writer = new BufferedOutputStream(fos);
             reader = new BufferedInputStream(new FileInputStream(file));
             isWriteError = true;
