@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="pref_functionbar_slash_default">true</bool>
-    <bool name="pref_functionbar_open_file_default">true</bool>
+    <bool name="pref_functionbar_open_file_default">false</bool>
     <bool name="pref_functionbar_voice_input_default">false</bool>
     <bool name="pref_functionbar_vim_paste_default">false</bool>
     <bool name="pref_functionbar_vim_yank_default">false</bool>
