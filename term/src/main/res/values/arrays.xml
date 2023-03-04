@@ -236,6 +236,11 @@
         <item>Application</item>
     </string-array>
 
+    <string-array name="entries_app_button_preference">
+        <item>Hide</item>
+        <item>Application</item>
+    </string-array>
+
     <string-array name="entries_html_viewer_mode_preference">
         <item>Internal browser</item>
         <item>Default browser</item>

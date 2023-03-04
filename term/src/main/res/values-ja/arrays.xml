@@ -230,6 +230,11 @@
         <item>アプリ起動</item>
     </string-array>
 
+    <string-array name="entries_app_button_preference">
+        <item>非表示</item>
+        <item>アプリ起動</item>
+    </string-array>
+
     <string-array name="entries_html_viewer_mode_preference">
         <item>内部ブラウザ</item>
         <item>デフォルトブラウザ</item>

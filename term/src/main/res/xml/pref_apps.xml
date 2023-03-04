@@ -31,24 +31,24 @@
         android:key="cloud_dropbox_filepicker"
         android:defaultValue="@string/pref_cloud_dropbox_filepicker_default"
         android:title="@string/title_cloud_dropbox_preference"
-        android:entries="@array/entries_app_filepicker_preference"
-        android:entryValues="@array/entryvalues_app_filepicker_preference"
+        android:entries="@array/entries_app_button_preference"
+        android:entryValues="@array/entryvalues_app_button_preference"
         android:dialogTitle="@string/title_cloud_dropbox_preference"/>
 
     <ListPreference
         android:key="cloud_googledrive_filepicker"
         android:defaultValue="@string/pref_cloud_googledrive_filepicker_default"
         android:title="@string/title_cloud_googledrive_preference"
-        android:entries="@array/entries_app_filepicker_preference"
-        android:entryValues="@array/entryvalues_app_filepicker_preference"
+        android:entries="@array/entries_app_button_preference"
+        android:entryValues="@array/entryvalues_app_button_preference"
         android:dialogTitle="@string/title_cloud_googledrive_preference"/>
 
     <!-- <ListPreference -->
     <!--     android:key="cloud_onedrive_filepicker" -->
     <!--     android:defaultValue="@string/pref_cloud_onedrive_filepicker_default" -->
     <!--     android:title="@string/title_cloud_onedrive_preference" -->
-    <!--     android:entries="@array/entries_app_filepicker_preference" -->
-    <!--     android:entryValues="@array/entryvalues_app_filepicker_preference" -->
+    <!--     android:entries="@array/entries_app_button_preference" -->
+    <!--     android:entryValues="@array/entryvalues_app_button_preference" -->
     <!--     android:dialogTitle="@string/title_cloud_onedrive_preference"/> -->
 
     <SwitchPreference
