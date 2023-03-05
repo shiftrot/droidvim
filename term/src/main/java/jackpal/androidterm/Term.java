@@ -3916,7 +3916,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_ctrl              , "functionbar_ctrl"           , "Ctrl"       , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_alt               , "functionbar_alt"            , "Alt"        , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_tab               , "functionbar_tab"            , "Tab"        , true ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_colon             , "functionbar_colon"          , ":"          , true ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_colon             , "functionbar_colon"          , ":"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_1        , "functionbar_esc2"           , "Esc"        , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_2        , "functionbar_ctrl2"          , "Ctrl"       , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_3        , "functionbar_alt2"           , "Alt"        , false ));
@@ -3987,7 +3987,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_10     , "navigationbar_enter"        , ENTER        , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_11     , "navigationbar_page_up"      , PAGE_UP      , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_12     , "navigationbar_page_down"    , PAGE_DOWN    , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13     , "navigationbar_colon"        , ":"          , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13     , "navigationbar_colon"        , ":"          , true ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_14     , "navigationbar_slash"        , "/"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_15     , "navigationbar_plus"         , "+"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_16     , "navigationbar_minus"        , "-"          , false ));
@@ -4060,7 +4060,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     break;
                 case "functionbar_softkeyboard":
                 case "navigationbar_softkeyboard":
-                case "navigationbar_fn_toggle":
                 case "navigationbar_ime_toggle":
                     button.setOnClickListener(this);
                     button.setOnLongClickListener(v -> {

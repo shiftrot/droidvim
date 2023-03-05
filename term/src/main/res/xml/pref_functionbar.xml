@@ -281,7 +281,7 @@
 
         <CheckBoxPreference
             android:key="functionbar_colon"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/title_functionbar_fixed_colon"/>
 
         <CheckBoxPreference
@@ -578,7 +578,7 @@
 
         <CheckBoxPreference
             android:key="navigationbar_colon"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:title=":"/>
 
         <CheckBoxPreference
