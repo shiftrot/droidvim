@@ -17,6 +17,7 @@ public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
 
     @Override
     public CharSequence getText() {
+        if (!hasText()) return null;
         ClipData.Item item = clip.getPrimaryClip().getItemAt(0);
         return item.getText();
     }
@@ -25,8 +26,8 @@ public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
     public boolean hasText() {
         ClipData data = clip.getPrimaryClip();
         if (data == null) return false;
-        ClipData.Item item = clip.getPrimaryClip().getItemAt(0);
-        return (clip.hasPrimaryClip() && item.getText() != null);
+        ClipData.Item item = data.getItemAt(0);
+        return (item != null && item.getText() != null && (item.getText().toString().length() > 0));
     }
 
     @Override

@@ -3363,7 +3363,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private boolean canPaste() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
-        return clip.hasText() && (clip.getText().toString().length() > 0);
+        return clip.hasText();
     }
 
     private void doPreferences() {
