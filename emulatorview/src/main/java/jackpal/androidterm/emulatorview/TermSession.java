@@ -253,6 +253,10 @@ public class TermSession {
         mWriterThread.start();
     }
 
+    static public int getTranscriptRows() {
+        return TRANSCRIPT_ROWS;
+    }
+
     /**
      * Write data to the terminal output.  The written data will be consumed by
      * the emulation client as input.
