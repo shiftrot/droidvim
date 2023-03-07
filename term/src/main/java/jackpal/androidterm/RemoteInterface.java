@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -199,13 +198,12 @@ public class RemoteInterface extends AppCompatActivity {
     private boolean isInstalled(String nativeLibraryDir) {
         if (FLAVOR_TERMINAL) {
             boolean status = (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory());
-            if (status) return false;
+            return !status;
         } else if (FLAVOR_VIM) {
             boolean status = (!new File(this.getFilesDir() + "/bin").isDirectory() || !new File(this.getFilesDir() + "/usr").isDirectory());
             if (status) return false;
             String APP_VERSION = TermService.APP_VERSION_KEY + nativeLibraryDir;
-            if (!APP_VERSION.equals(new PrefValue(this).getString(TermService.VERSION_NAME_KEY, "")))
-                return false;
+            return APP_VERSION.equals(new PrefValue(this).getString(TermService.VERSION_NAME_KEY, ""));
         }
         return true;
     }
@@ -227,11 +225,7 @@ public class RemoteInterface extends AppCompatActivity {
             bld.setIcon(android.R.drawable.ic_dialog_alert);
             bld.setTitle(getString(R.string.setup_error_title));
             bld.setMessage(getString(R.string.setup_error));
-            bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    finish();
-                }
-            });
+            bld.setPositiveButton(android.R.string.ok, (dialog, id) -> finish());
             bld.setCancelable(false);
             bld.create().show();
             return;
@@ -291,13 +285,8 @@ public class RemoteInterface extends AppCompatActivity {
                 } else {
                     try {
                         AlertDialog.Builder bld = new AlertDialog.Builder(this);
-                        if (bld == null) return;
                         bld.setMessage(getString(R.string.storage_read_error));
-                        bld.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                finish();
-                            }
-                        });
+                        bld.setPositiveButton(android.R.string.ok, (dialog, id) -> finish());
                         bld.setCancelable(false);
                         bld.create().show();
                     } catch (Exception e) {
@@ -317,7 +306,7 @@ public class RemoteInterface extends AppCompatActivity {
                         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
                         path = Term.getOpenDocumentPath(uri, cursor);
                     } catch (Exception e) {
-                        alert(e.toString() + "\n" + this.getString(R.string.storage_read_error));
+                        alert(e + "\n" + this.getString(R.string.storage_read_error));
                         finish();
                     }
                     if (path == null) {
@@ -396,20 +385,18 @@ public class RemoteInterface extends AppCompatActivity {
         }
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(this.getApplicationContext());
-        if (clip != null) {
-            String shareText = str.toString().replaceAll("[\\xC2\\xA0]", " ");
-            if (FLAVOR_VIM) {
-                FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
-                Term.writeStringToFile(FILE_CLIPBOARD, shareText);
-                String command = "\u001b" + ":ATEMod _paste";
-                // Find the target window
-                mReplace = true;
-                mHandle = switchToWindow(mHandle, command);
-                mReplace = false;
-            } else {
-                clip.setText(shareText);
-                alert(this.getString(R.string.toast_clipboard));
-            }
+        String shareText = str.toString().replaceAll("[\\xC2\\xA0]", " ");
+        if (FLAVOR_VIM) {
+            FILE_CLIPBOARD = TermService.getAPPFILES() + "/.clipboard";
+            Term.writeStringToFile(FILE_CLIPBOARD, shareText);
+            String command = "\u001b" + ":ATEMod _paste";
+            // Find the target window
+            mReplace = true;
+            mHandle = switchToWindow(mHandle, command);
+            mReplace = false;
+        } else {
+            clip.setText(shareText);
+            alert(this.getString(R.string.toast_clipboard));
         }
     }
 
