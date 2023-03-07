@@ -1421,6 +1421,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     private String getInitialCommand() {
         String cmd = mSettings.getInitialCommand();
         cmd = mTermService.getInitialCommand(cmd, (mFirst && mTermService.getSessions().size() == 0));
+        cmd = RemoteInterface.getInitialCommand(cmd);
         boolean doInstall = TermVimInstaller.doInstallVim;
         if (FLAVOR_TERMINAL) {
             doInstall = !TermVimInstaller.getTermInstallStatus(this);
