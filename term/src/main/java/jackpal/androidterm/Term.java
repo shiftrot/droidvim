@@ -1474,18 +1474,6 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         }
     }
 
-    private void showVimTips() {
-        if (!FLAVOR_VIM) return;
-        if (true) return;
-
-        String title = getString(R.string.tips_vim_title);
-        String key = "do_warning_vim_tips";
-        String[] list = getString(R.string.tips_vim_list).split("\\|");
-        int index = mRandom.nextInt(list.length - 1) + 1;
-        String message = list[index];
-        doWarningDialog(title, message, key, false);
-    }
-
     private void doWarningDialog(String title, String message, String key, boolean dontShowAgain) {
         doWarningDialogRun(title, message, key, dontShowAgain, null);
     }

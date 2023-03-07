@@ -608,7 +608,6 @@ final class TermVimInstaller {
             }
             bld.setPositiveButton(android.R.string.yes, (dialog, id) -> {
                 dialog.dismiss();
-                if (!first) showVimTips(activity);
             });
             final Term term = (Term) activity;
             try {
@@ -891,24 +890,6 @@ final class TermVimInstaller {
             if (process != null) {
                 process.destroy();
             }
-        }
-    }
-
-    public static void showVimTips(final AppCompatActivity activity) {
-        if (!FLAVOR_VIM) return;
-        try {
-            String title = activity.getString(R.string.tips_vim_title);
-            String[] list = activity.getString(R.string.tips_vim_list).split("\t");
-            int index = mRandom.nextInt(list.length);
-            String message = list[index];
-            AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-            bld.setTitle(title);
-            bld.setMessage(message);
-            bld.setPositiveButton(android.R.string.yes, null);
-            AlertDialog dialog = bld.create();
-            dialog.show();
-        } catch (Exception e) {
-            // do nothing
         }
     }
 
