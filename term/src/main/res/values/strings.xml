@@ -335,7 +335,7 @@
     <string name="summary_intentcommand_preference">Command for intent.</string>
     <string name="dialog_title_intentcommand_preference">Intent Command</string>
 
-    <string name="title_use_built_in_file_picker">Use the built-in file picker</string>
+    <string name="title_use_built_in_file_picker">Built-in file picker</string>
     <string name="title_mrucommand_preference">MRU command</string>
     <string name="summary_mrucommand_preference">Set MRU Command to \"Open file…\" button.</string>
     <string name="dialog_title_mrucommand_preference">MRU Command</string>
@@ -585,15 +585,15 @@
     <string name="title_scoped_storage_startup_path_mode_preference">Change Startup directory</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">Use \"$APPEXTHOME\" as the startup directory.</string>
     <string name="title_show_dotfiles">Show dotfiles ($HOME)</string>
-    <string name="summary_show_dotfiles">Allows you to access the dotfiles (.vimrc, .bashrc, etc.) in the home directory using the file manager.\nFor security reasons, we recommend disabling the option only when necessary.</string>
+    <string name="summary_show_dotfiles">Allow the file manager to access the dot files (.bashrc, .vimrc, etc.) in the home directory.\nFor security reasons, we recommend disabling the option only when necessary.</string>
 
     <string name="dialog_title_local_storage_provider_path_mode_preference">Choose path</string>
-    <string name="title_filer_app_preference">Filer App button</string>
+    <string name="title_filer_app_preference">\"Filer App\" button</string>
     <string name="external_app_button">External App</string>
     <string name="summary_external_app_button">Choose the app for the \"External App\" button.</string>
     <string name="summary_external_app_button_on_preference">Show App button on drawer.</string>
     <string name="summary_external_app_button_off_preference">Hide App button on drawer.</string>
-    <string name="title_external_app_id_preference">External App button</string>
+    <string name="title_external_app_id_preference">\"External App\" button</string>
     <string name="external_app_id_error">Application ID is not correct or not set.\nPlease set it from preferences.</string>
     <string name="external_app_activity_error">This application does not exist or there is no callable activity.</string>
     <string name="title_cloud_dropbox_preference">Dropbox</string>

@@ -405,7 +405,7 @@
     <string name="scoped_storage_warning_title">\"Scoped storage\"</string>
     <string name="scoped_storage_first_warning_message">▼Scoped Storage:\nこのデバイスでは\"Scoped storage\"が有効になっています.そのため「ホームディレクトリ」以外へのVimコマンドを介した直接アクセスはできません. 最初にドロワーメニュー(画面をダブルタップ)の「ファイルを開く」を利用してください.</string>
     <string name="scoped_storage_uninstall_warning_message">定期的な「アプリ固有ディレクトリ」のファイルバックアップをおすすめします.\n\nアンインストール時にホームディレクトリや以下の「アプリ固有ディレクトリ」に保存されているファイルは全て削除されます.</string>
-    <string name="google_file_chooser_warning_message">- 内蔵ストレージやSDカードにアクセスできない場合は, 3ドットメニューのオプションを確認してください.</string>
+    <string name="google_file_chooser_warning_message">- 内部ストレージやSDカードにアクセスできない場合は, 3ドットメニューのオプションを確認してください.</string>
     <string name="google_filer_app_warning_message">\n\n- Vimfiles(.vimrc and .vim)のバックアップ/リストア\n - ドロワーメニュー > ストレージ > バックアップ/リストア</string>
 
     <string name="perm_run_script">端末エミュレータで任意のコマンドを実行</string>
@@ -586,7 +586,7 @@
     <string name="title_scoped_storage_startup_path_mode_preference">スタートアップディレクトリを変更</string>
     <string name="summary_scoped_storage_startup_path_mode_preference">\"$APPEXTHOME\"をスタートアップディレクトリとして使用します.</string>
     <string name="title_show_dotfiles">ドットファイルを表示 ($HOME)</string>
-    <string name="summary_show_dotfiles">「ファイル管理」からホームディレクトリ内のドットファイル（.bashrc、.vimrcなど）へアクセス可能にします.\nセキュリティ上の理由から、必要な場合以外はオプションを無効にすることをお勧めします.</string>
+    <string name="summary_show_dotfiles">ファイルマネージャーにホームディレクトリ内のドットファイル（.bashrc、.vimrcなど）へのアクセスを許可します.\nセキュリティ上の理由から、必要な場合以外はオプションを無効にすることをお勧めします.</string>
 
     <string name="dialog_title_local_storage_provider_path_mode_preference">パスを選択</string>
 
@@ -594,7 +594,7 @@
     <string name="summary_external_app_button">「外部アプリ」ボタンのアプリを選択します.</string>
     <string name="summary_external_app_button_on_preference">ドロワーに外部アプリボタンを表示.</string>
     <string name="summary_external_app_button_off_preference">ドロワーの外部アプリボタンを隠す.</string>
-    <string name="title_external_app_id_preference">外部アプリボタン</string>
+    <string name="title_external_app_id_preference">「外部アプリ」ボタン</string>
     <string name="external_app_id_error">アプリケーションIDが正しくないか, 設定されていません.\n環境設定から設定してください.</string>
     <string name="external_app_activity_error">このアプリケーションは存在しないか, 呼び出し可能なアクティビティがありません.</string>
 
