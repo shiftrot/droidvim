@@ -41,8 +41,10 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
+import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.util.SessionList;
@@ -426,6 +428,7 @@ public class RemoteInterface extends AppCompatActivity {
     }
 
     protected String openNewWindow(String iInitialCommand) {
+        TermService service = getTermService();
         Term.restoreSyncFileObserver(this);
 
         String initialCommand = getInitialCommand();
@@ -438,8 +441,13 @@ public class RemoteInterface extends AppCompatActivity {
         }
 
         try {
-            mInitialCommand = initialCommand;
+            TermSession session = Term.createTermSession(this, mSettings, initialCommand);
+
+            session.setFinishCallback(service);
+            service.getSessions().add(session);
+
             String handle = UUID.randomUUID().toString();
+            ((GenericTermSession) session).setHandle(handle);
 
             Intent intent = new Intent(PRIVACT_OPEN_NEW_WINDOW);
             intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -449,17 +457,9 @@ public class RemoteInterface extends AppCompatActivity {
             startActivity(intent);
 
             return handle;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return null;
         }
-    }
-
-    static private String mInitialCommand = null;
-    static public String getInitialCommand(String initialCommand) {
-        if (mInitialCommand == null) return initialCommand;
-        initialCommand = mInitialCommand;
-        mInitialCommand = null;
-        return initialCommand;
     }
 
     private boolean mReplace = false;
