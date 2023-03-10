@@ -4019,10 +4019,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 case "functionbar_down":
                 case "functionbar_left":
                 case "functionbar_right":
+                case "functionbar_page_up":
+                case "functionbar_page_down":
                 case "navigationbar_up":
                 case "navigationbar_down":
                 case "navigationbar_left":
                 case "navigationbar_right":
+                case "navigationbar_page_up":
+                case "navigationbar_page_down":
                     int interval = mSettings.getFastCursorMode() ? 30 : 60;
                     findViewById(fkey.resId).setOnTouchListener(new RepeatListener(400, interval, Term.this));
                     switch (fkey.prefId) {
