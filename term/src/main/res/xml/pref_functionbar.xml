@@ -486,7 +486,7 @@
 
         <CheckBoxPreference
             android:key="functionbar_menu_quit"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/title_functionbar_quit"/>
 
         <CheckBoxPreference
@@ -496,7 +496,7 @@
 
         <CheckBoxPreference
             android:key="functionbar_menu_hide"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/title_functionbar_hide"/>
 
         <CheckBoxPreference
@@ -713,7 +713,7 @@
 
         <CheckBoxPreference
             android:key="navigationbar_menu_quit"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:title="@string/title_functionbar_quit"/>
 
         <CheckBoxPreference
@@ -723,7 +723,7 @@
 
         <CheckBoxPreference
             android:key="navigationbar_fn_toggle"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/title_navigationbar_fn_toggle"/>
 
         <CheckBoxPreference

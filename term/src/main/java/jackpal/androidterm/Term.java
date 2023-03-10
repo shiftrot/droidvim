@@ -3948,9 +3948,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_43       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_44       , "functionbar_menu_quit"      , MENU_QUIT    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_44       , "functionbar_menu_quit"      , MENU_QUIT    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_45       , "functionbar_menu"           , MENU         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_46       , "functionbar_menu_hide"      , "∇"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_46       , "functionbar_menu_hide"      , "∇"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , fKey[0]      , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , fKey[1]      , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , fKey[2]      , true  ));
@@ -3975,7 +3975,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_10     , "navigationbar_enter"        , ENTER        , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_11     , "navigationbar_page_up"      , PAGE_UP      , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_12     , "navigationbar_page_down"    , PAGE_DOWN    , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13     , "navigationbar_colon"        , ":"          , true ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_13     , "navigationbar_colon"        , ":"          , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_14     , "navigationbar_slash"        , "/"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_15     , "navigationbar_plus"         , "+"          , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_16     , "navigationbar_minus"        , "-"          , false ));
@@ -4005,9 +4005,9 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_40     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_41     , "navigationbar_vim_paste"    , "\"*p"       , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_42     , "navigationbar_vim_yank"     , "\"yy"       , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_menu_quit"    , MENU_QUIT    , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_menu_quit"    , MENU_QUIT    , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_menu"         , MENU         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_fn_toggle"    , FN_TOGGLE    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_fn_toggle"    , FN_TOGGLE    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_menu_hide"    , "∇"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_47     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
 
