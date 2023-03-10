@@ -2195,7 +2195,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void doFilePicker() {
-        if (SCOPED_STORAGE) {
+        if (SCOPED_STORAGE || Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             intentFilePicker();
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FILE_PICKER);
