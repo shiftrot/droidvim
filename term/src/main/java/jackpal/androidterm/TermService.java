@@ -112,11 +112,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
             File[] dirs = context.getExternalFilesDirs(null);
             mAPPEXTFILES = dirs[sdcard].toString();
         }
-        try {
-            mAPPEXTHOME = context.getExternalFilesDir(null).getAbsolutePath() + "/home";
-        } catch (Exception e) {
-            mAPPEXTHOME = mAPPEXTFILES + "/home";
-        }
 
         String defHomeValue;
         if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
@@ -127,15 +122,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
             if (!home.exists()) home.mkdir();
         }
         String homePath = prefs.getString("home_path", defHomeValue);
-        if ("$APPEXTHOME".equals(homePath)) homePath = mAPPEXTHOME;
         if (!new File(homePath).canWrite()) homePath = defHomeValue;
         mHOME = homePath;
-        if (SCOPED_STORAGE) {
-            int modeHome = Integer.parseInt( prefs.getString("scoped_storage_home_path_mode", "0"));
-            if (modeHome != 0) mHOME = mAPPEXTHOME;
-            boolean appExtHome = prefs.getBoolean("scoped_storage_startup_path_is_APPEXTHOME", false);
-            if (appExtHome) mSTARTUP_DIR = mAPPEXTHOME;
-        }
         File sharedDir = Environment.getExternalStorageDirectory();
         if (sharedDir.canWrite()) {
             mEXTSTORAGE = sharedDir.toString();
@@ -304,7 +292,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
     @SuppressLint("NewApi")
     private static String mAPPBASE;
     private static String mAPPEXTFILES;
-    private static String mAPPEXTHOME;
     private static String mAPPFILES;
     private static String mAPPLIB;
     private static String mARCH;
@@ -335,7 +322,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
         cmd = cmd.replaceAll("%APPBASE%", mAPPBASE);
         cmd = cmd.replaceAll("%APPFILES%", mAPPFILES);
         cmd = cmd.replaceAll("%APPEXTFILES%", mAPPEXTFILES);
-        cmd = cmd.replaceAll("%APPEXTHOME%", mAPPEXTHOME);
         cmd = cmd.replaceAll("%APPLIB%", mAPPLIB);
         cmd = cmd.replaceAll("%INTERNAL_STORAGE%", mEXTSTORAGE);
         cmd = cmd.replaceAll("%TMPDIR%", mTMPDIR);
@@ -447,10 +433,6 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
     static public String getAPPEXTFILES() {
         return mAPPEXTFILES;
-    }
-
-    static public String getAPPEXTHOME() {
-        return mAPPEXTHOME;
     }
 
     static public String getEXTSTORAGE() {

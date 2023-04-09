@@ -99,7 +99,6 @@ public class ShellTermSession extends GenericTermSession {
         envList.add("APPBASE=" + TermService.getAPPBASE());
         envList.add("APPFILES=" + TermService.getAPPFILES());
         envList.add("APPEXTFILES=" + TermService.getAPPEXTFILES());
-        envList.add("APPEXTHOME=" + TermService.getAPPEXTHOME());
         envList.add("APPLIB=" + TermService.getAPPLIB());
         envList.add("LD_LIBRARY_PATH=" + TermService.getLD_LIBRARY_PATH());
         envList.add("INTERNAL_STORAGE=" + TermService.getEXTSTORAGE());

@@ -275,11 +275,7 @@ final class TermVimInstaller {
                         id = activity.getResources().getIdentifier("runtime_user", "raw", activity.getPackageName());
                         String homeDir = TermService.getHOME();
                         installZip(homeDir, getInputStream(activity, id));
-                    }
-                    File appExtHome= new File(TermService.getAPPEXTHOME());
-                    if (!appExtHome.exists()) {
-                        appExtHome.mkdirs();
-                        id = activity.getResources().getIdentifier("app_ext_home", "raw", activity.getPackageName());
+                        id = activity.getResources().getIdentifier("app_ext_files", "raw", activity.getPackageName());
                         installZip(TermService.getAPPEXTFILES(), getInputStream(activity, id));
                     }
                     setMessage(activity, pd, "symlinks");
@@ -650,7 +646,6 @@ final class TermVimInstaller {
                 if (colorFgBg == null) colorFgBg = "";
                 String appBase = TermService.getAPPBASE();
                 String appExtFiles = TermService.getAPPEXTFILES();
-                String appExtHome = TermService.getAPPEXTHOME();
                 String appFiles = TermService.getAPPFILES();
                 String appLib = TermService.getAPPLIB();
                 String home = TermService.getHOME();
@@ -669,7 +664,6 @@ final class TermVimInstaller {
                 while ((str = br.readLine()) != null) {
                     str = str.replaceAll("%APPBASE%", appBase);
                     str = str.replaceAll("%APPEXTFILES%", appExtFiles);
-                    str = str.replaceAll("%APPEXTHOME%", appExtHome);
                     str = str.replaceAll("%APPFILES%", appFiles);
                     str = str.replaceAll("%APPLIB%", appLib);
                     str = str.replaceAll("%COLORFGBG%", colorFgBg);
