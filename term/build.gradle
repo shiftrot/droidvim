@@ -50,6 +50,10 @@ android {
         targetCompatibility = versions.targetCompatibility
     }
 
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+    }
+
     buildFeatures {
         viewBinding true
     }

@@ -51,6 +51,9 @@ android {
         }
     }
     namespace 'jackpal.androidterm.libtermexec'
+    buildFeatures {
+        aidl true
+    }
 
     packagingOptions {
         jniLibs {
