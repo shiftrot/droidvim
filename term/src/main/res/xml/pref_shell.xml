@@ -40,6 +40,12 @@
         android:title="@string/title_home_path_preference"
         android:summary="@string/summary_home_path_preference"/>
 
+    <EditTextPreference
+        android:key="locale"
+        android:title="@string/title_locale_preference"
+        android:dialogTitle="@string/dialog_title_locale_preference"
+        android:summary="@string/summary_locale_preference"/>
+
     <SwitchPreference
         android:key="proot"
         android:defaultValue="@bool/pref_proot_default"

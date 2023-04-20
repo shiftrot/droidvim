@@ -381,7 +381,11 @@
     <string name="summary_allow_prepend_path_preference">他のアプリから既存のコマンドの上書きを許可する (PATHの先頭に追加)</string>
 
     <string name="title_home_path_preference">ホームディレクトリ</string>
-    <string name="summary_home_path_preference">ホームディレクトリとして扱う書き込み可能なディレクトリ(要再起動)</string>
+    <string name="summary_home_path_preference">ホームディレクトリ($HOME)として扱う書き込み可能なディレクトリ(要再起動)</string>
+
+
+    <string name="dialog_title_locale_preference">LOCALE (例: ja_JP)</string>
+    <string name="summary_locale_preference">ロケールを設定します(要再起動)</string>
 
     <string name="title_proot_preference">proot</string>
     <string name="summary_proot_preference">Android 10以降でホームディレクトリ内のシェルスクリプトを実行したい場合はprootを有効にします. (要再起動)\nsuなど一部のコマンドが動作しなくなります.</string>

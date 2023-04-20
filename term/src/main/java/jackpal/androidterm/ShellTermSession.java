@@ -102,7 +102,7 @@ public class ShellTermSession extends GenericTermSession {
         envList.add("APPLIB=" + TermService.getAPPLIB());
         envList.add("LD_LIBRARY_PATH=" + TermService.getLD_LIBRARY_PATH());
         envList.add("INTERNAL_STORAGE=" + TermService.getEXTSTORAGE());
-        envList.add("LANG=" + TermService.getLANG());
+        envList.add("LANG=" + TermService.getLOCALE());
         envList.add("TERMINFO=" + TermService.getTERMINFO());
         mTerm = settings.getTermType();
         mColorFGBG = settings.getCOLORFGBG();

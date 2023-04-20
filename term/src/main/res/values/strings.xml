@@ -381,6 +381,10 @@
     <string name="title_home_path_preference">HOME</string>
     <string name="summary_home_path_preference">Path to a writable folder to be used as \"$HOME\". (Restart required)</string>
 
+    <string name="title_locale_preference">LOCALE</string>
+    <string name="dialog_title_locale_preference">LOCALE (E.g. en_US)</string>
+    <string name="summary_locale_preference">Set the locale environment variable. (Restart required)</string>
+
     <string name="title_proot_preference">proot</string>
     <string name="summary_proot_preference">If you want to run shell scripts in the home directory on Android 10 or later, enable proot. (Restart required)\nSome commands such as su will not work.</string>
 

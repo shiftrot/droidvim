@@ -650,7 +650,7 @@ final class TermVimInstaller {
                 String appLib = TermService.getAPPLIB();
                 String home = TermService.getHOME();
                 String internalStorage = TermService.getEXTSTORAGE();
-                String lang = TermService.getLANG();
+                String lang = TermService.getLOCALE();
                 String ld_library_path = TermService.getLD_LIBRARY_PATH();
                 String path = TermService.getPATH();
                 String terminfo = TermService.getTERMINFO();

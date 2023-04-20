@@ -51,7 +51,9 @@ import java.io.File;
 import java.util.Locale;
 import java.util.UUID;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 
 import jackpal.androidterm.compat.ServiceForegroundCompat;
@@ -135,6 +137,22 @@ public class TermService extends Service implements TermSession.FinishCallback {
 
         editor.putString("home_path", mHOME);
         editor.apply();
+
+        mLOCALE = prefs.getString("locale", "");
+        mLOCALE = mLOCALE.replace(".UTF-8", "");
+        if (mLOCALE.isEmpty()) {
+            LocaleListCompat appLocale = AppCompatDelegate.getApplicationLocales();
+            if (appLocale.size() == 1) {
+                mLOCALE = appLocale.toLanguageTags();
+                mLOCALE = mLOCALE.replaceAll("-", "_");
+            } else {
+                Locale locale = Locale.getDefault();
+                String language = locale.getLanguage();
+                String country = locale.getCountry();
+                mLOCALE = language + "_" + country;
+            }
+        }
+        mLOCALE += ".UTF-8";
 
         mCACHE_DIR = getCacheDir().getAbsolutePath();
         mTMPDIR = mCACHE_DIR + "/tmp";
@@ -298,6 +316,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
     private static String mCACHE_DIR;
     private static String mEXTSTORAGE;
     private static String mHOME;
+    private static String mLOCALE;
     private static String mLD_LIBRARY_PATH;
     private static String mPATH;
     private static String mSTARTUP_DIR;
@@ -419,11 +438,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
         return mAPPBASE;
     }
 
-    static public String getLANG() {
-        Locale locale = Locale.getDefault();
-        String language = locale.getLanguage();
-        String country = locale.getCountry();
-        return language + "_" + country +".UTF-8";
+    static public String getLOCALE() {
+        return mLOCALE;
     }
 
     static public String getAPPFILES() {
