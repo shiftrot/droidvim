@@ -141,16 +141,10 @@ public class TermService extends Service implements TermSession.FinishCallback {
         mLOCALE = prefs.getString("locale", "");
         mLOCALE = mLOCALE.replace(".UTF-8", "");
         if (mLOCALE.isEmpty()) {
-            LocaleListCompat appLocale = AppCompatDelegate.getApplicationLocales();
-            if (appLocale.size() == 1) {
-                mLOCALE = appLocale.toLanguageTags();
-                mLOCALE = mLOCALE.replaceAll("-", "_");
-            } else {
-                Locale locale = Locale.getDefault();
-                String language = locale.getLanguage();
-                String country = locale.getCountry();
-                mLOCALE = language + "_" + country;
-            }
+            Locale locale = Locale.getDefault();
+            String language = locale.getLanguage();
+            String country = locale.getCountry();
+            mLOCALE = language + "_" + country;
         }
         mLOCALE += ".UTF-8";
 
