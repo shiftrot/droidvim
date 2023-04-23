@@ -181,7 +181,7 @@
     <string name="summary_oneline_textbox_esc_off">フォーカスを移動する.</string>
     <string name="title_oneline_textbox_cr_preference">送出ボタン</string>
 
-    <string name="title_functionbar_key_preference">ファンクションバー</string>
+    <string name="title_functionbar_key_preference">ファンクションキー</string>
     <string name="title_functionbar_key_2_preference">ファンクションキー (F1 - F12)</string>
     <string name="title_functionbar_fkey_preference">ファンクションバー (F1 - F12)</string>
     <string name="title_functionbar_fkey_label_preference">ラベル名</string>
@@ -189,7 +189,7 @@
     <string name="title_functionbar_fkey_command_preference">コマンド</string>
     <string name="summary_functionbar_fkey_command_preferences">ファンクションキーで実行されるコマンドを設定します.</string>
 
-    <string name="title_navigation_key_preference">ファンクションバー (画面固定)</string>
+    <string name="title_navigation_key_preference">ファンクションキー (画面固定)</string>
     <string name="summary_functionbar_key_preference">ファンクションバーのキー表示設定</string>
 
     <string name="title_actionbar_preference">アクションバー</string>
@@ -383,9 +383,9 @@
     <string name="title_home_path_preference">ホームディレクトリ</string>
     <string name="summary_home_path_preference">ホームディレクトリ($HOME)として扱う書き込み可能なディレクトリ(要再起動)</string>
 
-
-    <string name="dialog_title_locale_preference">LOCALE (例: ja_JP)</string>
-    <string name="summary_locale_preference">ロケールを設定します(要再起動)</string>
+    <string name="title_locale_preference">ロケール</string>
+    <string name="dialog_title_locale_preference">ロケール (例: ja_JP)</string>
+    <string name="summary_locale_preference">ロケール($LANG)を設定します(要再起動)</string>
 
     <string name="title_proot_preference">proot</string>
     <string name="summary_proot_preference">Android 10以降でホームディレクトリ内のシェルスクリプトを実行したい場合はprootを有効にします. (要再起動)\nsuなど一部のコマンドが動作しなくなります.</string>

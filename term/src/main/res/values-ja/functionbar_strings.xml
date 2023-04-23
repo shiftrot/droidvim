@@ -15,6 +15,7 @@
     <string name="title_navigationbar_fn_toggle">"➖" - ファンクションバーのトグル</string>
     <string name="title_functionbar_open_file">"📁" - ファイルを開く</string>
     <string name="title_functionbar_new_file">"📝" - 新規ファイル</string>
+    <string name="title_functionbar_filemanager">"🗄" - ファイルマネージャー</string>
     <string name="title_functionbar_hide">▽ - このファンクションバーを隠す</string>
     <string name="title_functionbar_change">∧ - F1-F12表示</string>
     <string name="title_functionbar_change_fkey">∨ - F1-F12非表示</string>

@@ -179,7 +179,7 @@
     <string name="summary_oneline_textbox_esc_off">Move focus.</string>
     <string name="title_oneline_textbox_cr_preference">Send button</string>
 
-    <string name="title_functionbar_key_preference">Function bar</string>
+    <string name="title_functionbar_key_preference">Function keys</string>
     <string name="title_functionbar_key_2_preference">Function keys (F1 - F12)</string>
     <string name="title_functionbar_fkey_preference">Function bar (F1 - F12)</string>
     <string name="title_functionbar_fkey_label_preference">Label</string>
@@ -187,7 +187,7 @@
     <string name="title_functionbar_fkey_command_preference">Command</string>
     <string name="summary_functionbar_fkey_command_preferences">Set the command to the function key.</string>
 
-    <string name="title_navigation_key_preference">Function bar (Screen fit)</string>
+    <string name="title_navigation_key_preference">Function keys (Screen fit)</string>
     <string name="summary_functionbar_key_preference">Show/hide function bar\'s key</string>
 
     <string name="title_actionbar_preference">Action bar</string>
@@ -383,7 +383,7 @@
 
     <string name="title_locale_preference">LOCALE</string>
     <string name="dialog_title_locale_preference">LOCALE (E.g. en_US)</string>
-    <string name="summary_locale_preference">Set the locale environment variable. (Restart required)</string>
+    <string name="summary_locale_preference">Set the locale environment variable ($LANG) . (Restart required)</string>
 
     <string name="title_proot_preference">proot</string>
     <string name="summary_proot_preference">If you want to run shell scripts in the home directory on Android 10 or later, enable proot. (Restart required)\nSome commands such as su will not work.</string>

@@ -3879,6 +3879,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String ENTER = getString(R.string.string_functionbar_enter);
         final String OPEN_FILE = getString(R.string.string_functionbar_open_file);
         final String NEW_FILE = getString(R.string.string_functionbar_new_file);
+        final String FILEMANAGER = getString(R.string.string_functionbar_filemanager);
         final String IME_TOGGLE = getString(R.string.string_functionbar_ime_toggle);
         final String SOFTKEYBOARD = getString(R.string.string_functionbar_dia);
         final String VOICE_INPUT = getString(R.string.string_functionbar_voice_input);
@@ -3944,13 +3945,14 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_37       , "functionbar_softkeyboard"   , SOFTKEYBOARD , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_38       , "functionbar_open_file"      , OPEN_FILE    , res.getBoolean(R.bool.pref_functionbar_open_file_default) ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_39       , "functionbar_new_file"       , NEW_FILE     , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_40       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_43       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_44       , "functionbar_menu_quit"      , MENU_QUIT    , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_45       , "functionbar_menu"           , MENU         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_46       , "functionbar_menu_hide"      , "∇"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_40       , "functionbar_filemanager"    , FILEMANAGER  , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_41       , "functionbar_voice_input"    , VOICE_INPUT  , res.getBoolean(R.bool.pref_functionbar_voice_input_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_42       , "functionbar_ime_toggle"     , IME_TOGGLE   , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_43       , "functionbar_vim_paste"      , "\"*p"       , res.getBoolean(R.bool.pref_functionbar_vim_paste_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_44       , "functionbar_vim_yank"       , "\"*yy"      , res.getBoolean(R.bool.pref_functionbar_vim_yank_default) ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_45       , "functionbar_menu_quit"      , MENU_QUIT    , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_46       , "functionbar_menu"           , MENU         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_47       , "functionbar_menu_hide"      , "∇"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m1                , "functionbar_m1"             , fKey[0]      , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m2                , "functionbar_m2"             , fKey[1]      , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_m3                , "functionbar_m3"             , fKey[2]      , true  ));
@@ -4002,14 +4004,15 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_37     , "navigationbar_softkeyboard" , SOFTKEYBOARD , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_38     , "navigationbar_open_file"    , OPEN_FILE    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_39     , "navigationbar_new_file"     , NEW_FILE     , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_40     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_41     , "navigationbar_vim_paste"    , "\"*p"       , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_42     , "navigationbar_vim_yank"     , "\"yy"       , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_menu_quit"    , MENU_QUIT    , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_menu"         , MENU         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_fn_toggle"    , FN_TOGGLE    , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_menu_hide"    , "∇"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_47     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_40     , "navigationbar_filemanager"  , FILEMANAGER  , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_41     , "navigationbar_voice_input"  , VOICE_INPUT  , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_42     , "navigationbar_vim_paste"    , "\"*p"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_43     , "navigationbar_vim_yank"     , "\"yy"       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_44     , "navigationbar_menu_quit"    , MENU_QUIT    , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_45     , "navigationbar_menu"         , MENU         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_46     , "navigationbar_fn_toggle"    , FN_TOGGLE    , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_47     , "navigationbar_menu_hide"    , "∇"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_48     , "navigationbar_ime_toggle"   , IME_TOGGLE   , true  ));
 
         for (FunctionKey fkey : mFunctionKeys) {
             Button button = findViewById(fkey.resId);
@@ -4251,6 +4254,10 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
             case "navigationbar_new_file":
             case "functionbar_new_file":
                 fileCreate();
+                break;
+            case "navigationbar_filemanager":
+            case "functionbar_filemanager":
+                intentMainActivity(APP_FILER);
                 break;
             case "functionbar_voice_input":
             case "navigationbar_voice_input":

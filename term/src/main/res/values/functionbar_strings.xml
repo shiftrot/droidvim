@@ -15,6 +15,7 @@
     <string name="title_navigationbar_fn_toggle">"➖" - Toggle function bar</string>
     <string name="title_functionbar_open_file">"📁" - Open File</string>
     <string name="title_functionbar_new_file">"📝" - Create File</string>
+    <string name="title_functionbar_filemanager">"🗄" - File manager</string>
     <string name="title_functionbar_voice_input">"🎤" - Voice input</string>
     <string name="title_functionbar_hide">▽ - Hide this function bar</string>
     <string name="title_functionbar_change">∧ - F1-F12</string>
@@ -29,6 +30,7 @@
     <string name="string_functionbar_enter">"↲"</string>
     <string name="string_functionbar_open_file">"📁"</string>
     <string name="string_functionbar_new_file">"📝"</string>
+    <string name="string_functionbar_filemanager">"🗄"</string>
     <string name="string_functionbar_ime_toggle">"✏"</string>
     <string name="string_functionbar_voice_input">"🎤"</string>
     <string name="string_functionbar_fn_toggle">"➖"</string>
