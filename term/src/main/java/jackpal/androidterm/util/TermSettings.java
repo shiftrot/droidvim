@@ -422,6 +422,7 @@ public class TermSettings {
         mHtmlViewerMode = readIntPref(HTML_VIEWER_MODE_KEY, mHtmlViewerMode, 2);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
+        mInitialCommand = "cd %STARTUP_DIR%\n" + mInitialCommand;
         if (Term.mTerminalMode != 0) {
             mInitialCommand = "cd %STARTUP_DIR%";
             if ((Term.mTerminalMode & Term.TERMINAL_MODE_BASH) != 0) {
