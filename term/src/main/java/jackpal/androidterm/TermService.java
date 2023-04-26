@@ -115,6 +115,12 @@ public class TermService extends Service implements TermSession.FinishCallback {
             mAPPEXTFILES = dirs[sdcard].toString();
         }
 
+        File sharedDir = Environment.getExternalStorageDirectory();
+        if (sharedDir.canWrite()) {
+            mEXTSTORAGE = sharedDir.toString();
+        } else {
+            mEXTSTORAGE = mAPPEXTFILES;
+        }
         String defHomeValue;
         if (BuildConfig.APPLICATION_ID.equals("jackpal.androidterm")) {
             defHomeValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
@@ -124,15 +130,13 @@ public class TermService extends Service implements TermSession.FinishCallback {
             if (!home.exists()) home.mkdir();
         }
         String homePath = prefs.getString("home_path", defHomeValue);
+        homePath = homePath.replace("$INTERNAL_STORAGE", mEXTSTORAGE);
+        homePath = homePath.replace("$APPEXTFILES", mAPPEXTFILES);
         if (!new File(homePath).canWrite()) homePath = defHomeValue;
         mHOME = homePath;
-        File sharedDir = Environment.getExternalStorageDirectory();
-        if (sharedDir.canWrite()) {
-            mEXTSTORAGE = sharedDir.toString();
-        } else {
-            mEXTSTORAGE = mAPPEXTFILES;
-        }
         mSTARTUP_DIR = prefs.getString("startup_path", mHOME);
+        mSTARTUP_DIR = mSTARTUP_DIR.replace("$INTERNAL_STORAGE", mEXTSTORAGE);
+        mSTARTUP_DIR = mSTARTUP_DIR.replace("$APPEXTFILES", mAPPEXTFILES);
         if (!new File(mSTARTUP_DIR).canWrite()) mSTARTUP_DIR = mHOME;
 
         editor.putString("home_path", mHOME);
