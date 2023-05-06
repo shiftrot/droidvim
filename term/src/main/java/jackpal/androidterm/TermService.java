@@ -134,10 +134,7 @@ public class TermService extends Service implements TermSession.FinishCallback {
         homePath = homePath.replace("$APPEXTFILES", mAPPEXTFILES);
         if (!new File(homePath).canWrite()) homePath = defHomeValue;
         mHOME = homePath;
-        mSTARTUP_DIR = prefs.getString("startup_path", mHOME);
-        mSTARTUP_DIR = mSTARTUP_DIR.replace("$INTERNAL_STORAGE", mEXTSTORAGE);
-        mSTARTUP_DIR = mSTARTUP_DIR.replace("$APPEXTFILES", mAPPEXTFILES);
-        if (!new File(mSTARTUP_DIR).canWrite()) mSTARTUP_DIR = mHOME;
+        mSTARTUP_DIR = mHOME;
 
         editor.putString("home_path", mHOME);
         editor.apply();
