@@ -135,6 +135,9 @@
         <item>Reset font scale</item>
         <item>Orientation</item>
         <item>Quit</item>
+        <item>Sends ESC from terminal</item>
+        <item>Sends : from terminal</item>
+        <item>Sends / from terminal</item>
         <item>None</item>
     </string-array>
 

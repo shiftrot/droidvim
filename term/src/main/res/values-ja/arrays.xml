@@ -129,6 +129,9 @@
         <item>フォントスケールのリセット</item>
         <item>画面の向き</item>
         <item>終了</item>
+        <item>ターミナルから ESC を送出</item>
+        <item>ターミナルから : を送出</item>
+        <item>ターミナルから / を送出</item>
         <item>なし</item>
     </string-array>
 
