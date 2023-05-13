@@ -2,4 +2,8 @@
 <resources>
     <string name="title_functionbar_enter">"⏎" - Enter</string>
     <string name="string_functionbar_enter">"⏎"</string>
+    <string name="string_functionbar_menu_user">"▢"</string>
+    <string name="title_actionbar_user_preference">▢ button</string>
+    <string name="summary_actionbar_user_preference">Choose what pressing the ▢ button does.</string>
+    <string name="dialog_title_actionbar_user_preference">▢ button</string>
 </resources>

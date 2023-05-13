@@ -3885,6 +3885,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         final String VOICE_INPUT = getString(R.string.string_functionbar_voice_input);
         final String MENU_QUIT = getString(R.string.string_functionbar_quit);
         final String MENU = "≡";
+        final String INVERT = getString(R.string.string_functionbar_invert);
+        final String MENU_USER = getString(R.string.string_functionbar_menu_user);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -3937,8 +3939,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_function_29       , "functionbar_f10"            , fKey[9]      , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_30       , "functionbar_f11"            , fKey[10]     , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_31       , "functionbar_f12"            , fKey[11]     , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_invert"         , "○"         , true  ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_function_33       , "functionbar_menu_user"      , "□"         , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_32       , "functionbar_invert"         , INVERT       , true  ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_function_33       , "functionbar_menu_user"      , MENU_USER    , true  ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_34       , "functionbar_menu_x"         , "×"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_35       , "functionbar_menu_plus"      , "＋"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_function_36       , "functionbar_menu_minus"     , "－"         , false ));
@@ -3996,8 +3998,8 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_29     , "navigationbar_f10"          , fKey[9]      , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_30     , "navigationbar_f11"          , fKey[10]     , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_31     , "navigationbar_f12"          , fKey[11]     , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_invert"       , "○"         , false ));
-        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33     , "navigationbar_menu_user"    , "□"         , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_32     , "navigationbar_invert"       , INVERT       , false ));
+        mFunctionKeys.add(new FunctionKey(R.id.button_navigation_33     , "navigationbar_menu_user"    , MENU_USER    , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_34     , "navigationbar_menu_x"       , "×"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_35     , "navigationbar_menu_plus"    , "＋"         , false ));
         mFunctionKeys.add(new FunctionKey(R.id.button_navigation_36     , "navigationbar_menu_minus"   , "－"         , false ));

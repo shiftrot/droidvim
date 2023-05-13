@@ -44,4 +44,6 @@
     <string name="string_functionbar_backspace">"🔙"</string>
     <string name="string_functionbar_page_up">"🔼"</string>
     <string name="string_functionbar_page_down">"🔽"</string>
+    <string name="string_functionbar_invert">"◯"</string>
+    <string name="string_functionbar_menu_user">"□"</string>
 </resources>
