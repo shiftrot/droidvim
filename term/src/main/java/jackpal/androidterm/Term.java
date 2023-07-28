@@ -94,6 +94,8 @@ import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -1857,7 +1859,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra("url", url);
                 WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
-                startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
+                doStartActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
             }
         } else if (id == R.id.menu_quit) {
             EmulatorView view = getCurrentEmulatorView();
@@ -2278,11 +2280,18 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         doStartActivityForResult(intent, requestCode);
     }
 
+    private int mRequestCode = -1;
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                doOnActivityResult(mRequestCode, result.getResultCode(), result.getData());
+            });
+
     private void doStartActivityForResult(Intent intent, int requestCode) {
         intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
         intent.putExtra("android.content.extra.FANCY", true);
         intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
-        startActivityForResult(intent, requestCode);
+        mRequestCode = requestCode;
+        activityResultLauncher.launch(intent);
     }
 
     public void intentFilePicker() {
@@ -2475,9 +2484,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
 
     }
 
-    @Override
-    protected void onActivityResult(int request, int result, Intent data) {
-        super.onActivityResult(request, result, data);
+    void doOnActivityResult(int request, int result, Intent data) {
         switch (request) {
             case REQUEST_VOICE_INPUT:
                 if (result == RESULT_OK && data != null) {
@@ -3163,7 +3170,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                             intent = new Intent(this, WebViewActivity.class);
                             intent.putExtra("url", file.toString());
                             WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
-                            startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
+                            doStartActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
                             return;
                         } catch (Exception webViewErr) {
                             Log.d(TermDebug.LOG_TAG, webViewErr.getMessage());
@@ -3207,7 +3214,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
                     PackageManager pm = this.getApplicationContext().getPackageManager();
                     if (intent.resolveActivity(pm) != null) {
                         WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_FONT_SIZE, WEBVIEW_DEFAULT_FONT_SIZE));
-                        startActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
+                        doStartActivityForResult(intent, REQUEST_WEBVIEW_ACTIVITY);
                     }
                 } else {
                     intent.setAction(action);
@@ -3496,7 +3503,7 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
         intent = new Intent(this, WebViewActivity.class);
         intent.putExtra("url", file);
         WebViewActivity.setFontSize(new PrefValue(this).getInt(WEBVIEW_HTML_LOG_FONT_SIZE, 140));
-        startActivityForResult(intent, REQUEST_HTML_LOG_ACTIVITY);
+        doStartActivityForResult(intent, REQUEST_HTML_LOG_ACTIVITY);
     }
 
     private void doPaste() {
