@@ -16,7 +16,8 @@
 
     <Preference
         android:key="prefs_rw"
-        android:title="@string/title_prefs_preference"/>
+        android:title="@string/title_prefs_preference"
+        android:summary="@string/prefs_read_message"/>
 
     <Preference
         android:key="license"

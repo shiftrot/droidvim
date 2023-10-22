@@ -136,6 +136,8 @@
     <string name="title_prefs_preference">保存/読込</string>
     <string name="prefs_dialog_rw">設定の保存/読込を行います.</string>
     <string name="prefs_read">読込</string>
+    <string name="prefs_read_title">設定の読込が完了しました</string>
+    <string name="prefs_read_message">設定の読み込み後は, このアプリを再起動してください.</string>
     <string name="prefs_read_error_title">読込エラー</string>
     <string name="prefs_read_error">このファイルはバックアップファイルではないか, 古すぎるバックアップファイルです.</string>
     <string name="prefs_write">保存</string>

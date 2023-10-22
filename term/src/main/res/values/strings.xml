@@ -137,6 +137,8 @@
     <string name="title_prefs_preference">Backup/Restore</string>
     <string name="prefs_dialog_rw">Backup/Restore settings</string>
     <string name="prefs_read">Restore</string>
+    <string name="prefs_read_title">Configuration loading is completed.</string>
+    <string name="prefs_read_message">Restart this app after restoring the settings.</string>
     <string name="prefs_read_error_title">File read error</string>
     <string name="prefs_read_error">This file is not backup file or too old to restore.</string>
     <string name="prefs_write">Backup</string>

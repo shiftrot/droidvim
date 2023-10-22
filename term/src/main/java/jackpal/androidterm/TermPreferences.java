@@ -542,6 +542,9 @@ public class TermPreferences extends AppCompatPreferenceActivity {
     }
 
     private boolean readPrefs(Uri uri, boolean clearPrefs) {
+        String message = this.getString(R.string.prefs_read_title);
+        String title = this.getString(R.string.prefs_read_message);
+        boolean result = true;
         try {
             InputStream is = this.getApplicationContext().getContentResolver().openInputStream(uri);
             SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
@@ -560,15 +563,17 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             }
             prefEdit.apply();
         } catch (Exception e) {
-            AlertDialog.Builder bld = new AlertDialog.Builder(this);
-            bld.setIcon(android.R.drawable.ic_dialog_alert);
-            bld.setTitle(this.getString(R.string.prefs_read_error_title));
-            bld.setMessage(this.getString(R.string.prefs_read_error));
-            bld.setPositiveButton(this.getString(android.R.string.ok), null);
-            bld.create().show();
-            return false;
+            message = this.getString(R.string.prefs_read_error_title);
+            title = this.getString(R.string.prefs_read_error_title);
+            result = false;
         }
-        return true;
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setIcon(android.R.drawable.ic_dialog_alert);
+        bld.setTitle(title);
+        bld.setMessage(message);
+        bld.setPositiveButton(this.getString(android.R.string.ok), null);
+        bld.create().show();
+        return result;
     }
 
     private SharedPreferences.Editor putObject(final SharedPreferences.Editor edit, final String key, final Object val) {
@@ -728,7 +733,7 @@ public class TermPreferences extends AppCompatPreferenceActivity {
             case REQUEST_PREFS_READ_PICKER:
                 if (result == RESULT_OK && data != null) {
                     Uri uri = data.getData();
-                    if (readPrefs(uri, false)) recreate();
+                    if (readPrefs(uri, true)) recreate();
                     break;
                 }
                 break;
