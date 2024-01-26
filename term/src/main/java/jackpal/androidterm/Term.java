@@ -1216,11 +1216,23 @@ public class Term extends AppCompatActivity implements UpdateCallback, SharedPre
     }
 
     private void backupFromHome() {
-        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent = getDocumentsuiIntent(getApplicationContext(), intent);
+        if (checkImplicitIntent(this, intent))
+            doStartActivityForResult(intent, REQUEST_COPY_DOCUMENT_TREE_BACKUP_HOME);
     }
 
     private void restoreToHome() {
-        ASFUtils.documentTreePicker(this, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent = getDocumentsuiIntent(getApplicationContext(), intent);
+        if (checkImplicitIntent(this, intent))
+            doStartActivityForResult(intent, REQUEST_COPY_DOCUMENT_TREE_RESTORE_TO_HOME);
     }
 
     private void backupAndRestoreHome() {

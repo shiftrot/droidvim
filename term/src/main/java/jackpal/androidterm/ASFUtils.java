@@ -2,8 +2,6 @@ package jackpal.androidterm;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -25,37 +23,6 @@ import java.nio.file.Files;
 public class ASFUtils {
     static AlertDialog mProcessingDialog = null;
     static private boolean mCANCEL = false;
-
-    static public void directoryPicker(final AppCompatActivity activity, final int request, String mes, final ChooserDialog.Result r, int flags) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(activity);
-        bld.setIcon(android.R.drawable.ic_dialog_info);
-        bld.setTitle(activity.getString(R.string.select_directory_message));
-        bld.setMessage(mes);
-        bld.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-            dialog.dismiss();
-            documentTreePicker(activity, request, flags);
-        });
-        bld.setNegativeButton(activity.getString(android.R.string.cancel), (dialog, id) -> dialog.dismiss());
-        bld.setNeutralButton(activity.getString(R.string.reset_directory), (dialog, id) -> {
-            dialog.dismiss();
-            r.onChoosePath(null, null);
-        });
-        bld.create().show();
-    }
-
-    static public void documentTreePicker(final AppCompatActivity activity, int requestCode, int flags) {
-        mCANCEL = false;
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.addFlags(flags);
-        doStartActivityForResult(activity, intent, requestCode);
-    }
-
-    static private void doStartActivityForResult(AppCompatActivity activity, Intent intent, int requestCode) {
-        PackageManager pm = activity.getApplicationContext().getPackageManager();
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        if (intent.resolveActivity(pm) != null)
-            activity.startActivityForResult(intent, requestCode);
-    }
 
     static public void backupToTreeUri(final AppCompatActivity activity, final Uri rootUri, final String path) {
         if (rootUri == null) return;
