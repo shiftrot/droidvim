@@ -61,14 +61,14 @@ allprojects {
     }
 }
 
-subprojects {
-    def androidHome
-
-    if ((androidHome = System.env.'ANDROID_HOME')
-            && (androidHome = androidHome as File).exists()
-            && androidHome.canWrite())
-        apply plugin: 'android-sdk-manager'
-}
+//subprojects {
+//    def androidHome
+//
+//    if ((androidHome = System.env.'ANDROID_HOME')
+//            && (androidHome = androidHome as File).exists()
+//            && androidHome.canWrite())
+//        apply plugin: 'android-sdk-manager'
+//}
 
 tasks.register('clean') {
     delete File.getBuildDir()
