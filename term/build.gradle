@@ -32,6 +32,15 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        release {
+            storeFile = file("keystore/keystore_droidvim.jks")
+            storePassword System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
+
     externalNativeBuild {
         ndkBuild {
             path 'src/main/jni/Android.mk'
@@ -66,6 +75,7 @@ android {
             ndk {
                 debugSymbolLevel 'SYMBOL_TABLE'
             }
+            signingConfig signingConfigs.release
         }
     }
 
