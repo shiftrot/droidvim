@@ -53,3 +53,8 @@ captures/
 
 # Keystore files
 *.jks
+
+# Vim backup and swap files.
+*~
+*.swp
+
