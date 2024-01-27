@@ -12,11 +12,19 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Decode keystore
+      id: decode_keystore
+      env:
+        ENCODED_STRING: ${{ secrets.KEYSTORE }}
+      run: |
+        KEYSTORE_FILE_PATH="${GITHUB_WORKSPACE}"/term/keystore
+        mkdir -p "${KEYSTORE_FILE_PATH}"
+        echo $ENCODED_STRING | base64 -di > "${KEYSTORE_FILE_PATH}"/keystore_droidvim.jks
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -24,20 +32,25 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Grant execute permission for gradlew
+    - name: Grant execute permission for gradle wrapper
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assembleRelease
+      env:
+        SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+        SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
     - name: Upload droidvim flavor APK
       uses: actions/upload-artifact@v4
       with:
         name: term-droidvim-release.apk
-        path: ./term/build/outputs/apk/droidvim/release/term-droidvim-release-unsigned.apk
+        path: ./term/build/outputs/apk/droidvim/release/term-droidvim-release.apk
 
     - name: Upload terminal flavor APK
       uses: actions/upload-artifact@v4
       with:
         name: term-terminal-release.apk
-        path: ./term/build/outputs/apk/terminal/release/term-terminal-release-unsigned.apk
+        path: ./term/build/outputs/apk/terminal/release/term-terminal-release.apk
+
