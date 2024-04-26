@@ -19,7 +19,6 @@ android {
     }
 
     externalNativeBuild {
-        ndkVersion versions.NDK
         ndkBuild {
             path 'src/main/jni/Android.mk'
         }

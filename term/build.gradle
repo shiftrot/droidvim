@@ -22,7 +22,6 @@ android {
 
     defaultConfig {
         externalNativeBuild {
-            ndkVersion versions.NDK
             ndkBuild {
                 arguments '-C', 'src/main', '-j', Runtime.runtime.availableProcessors() + ''
                 if (abiArm) abiFilters 'arm64-v8a', 'armeabi-v7a'
@@ -56,6 +55,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 
     buildTypes {
@@ -135,7 +135,7 @@ dependencies {
 
 dependencies {
     implementation 'org.apache.commons:commons-compress:1.21'
-    implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-io:commons-io:2.13.0'
     implementation 'org.tukaani:xz:1.8'
 }
 
