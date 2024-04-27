@@ -215,8 +215,8 @@ public class TermService extends Service implements TermSession.FinishCallback {
             Notification notification = buildNotification(channelId, showStatusIcon);
             if (notification != null) {
                 if (useNotificationForgroundService()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        startForeground(RUNNING_NOTIFICATION, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        startForeground(RUNNING_NOTIFICATION, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
                     } else {
                         startForeground(RUNNING_NOTIFICATION, notification);
                     }

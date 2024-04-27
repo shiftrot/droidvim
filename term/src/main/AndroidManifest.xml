@@ -20,7 +20,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission
@@ -182,12 +182,13 @@
             android:label="Local HTML Viewer"/>
 
         <service android:name=".TermService"
-            android:foregroundServiceType="dataSync"
-            android:permission="android.permission.FOREGROUND_SERVICE_TYPE_DATA_SYNC"
+            android:foregroundServiceType="specialUse"
+            android:permission="android.permission.FOREGROUND_SERVICE_TYPE_SPECIAL_USE"
             android:exported="false">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                 android:value="Prevents this app from being forced to close in the background."/>
             <intent-filter>
                 <action android:name="jackpal.androidterm.action.START_TERM.v1"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
